@@ -60,3 +60,12 @@ struct Adapter {
 struct SkipCodegen {
   1: string reason;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/SkipCodegen")
+
+// This annotation is mainly used to rename symbols which can result in symbol
+// conflict errors in Hack codegen.
+// For ex: reserved keywords in Hack language, symbols with similar names from
+// other files in Hack
+struct Name {
+  1: string name;
+  2: string reason;
+} (thrift.uri = "facebook.com/thrift/annotation/hack/Name")

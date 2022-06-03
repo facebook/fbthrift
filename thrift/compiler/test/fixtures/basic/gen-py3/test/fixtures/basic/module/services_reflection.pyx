@@ -18,6 +18,57 @@ cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hac
 cimport test.fixtures.basic.module.types as _test_fixtures_basic_module_types
 
 
+cdef __InterfaceSpec get_reflection__FooService(bint for_clients):
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
+        name="FooService",
+        annotations={
+        },
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="simple_rpc",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec
+
+
+cdef __InterfaceSpec get_reflection__FB303Service(bint for_clients):
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
+        name="FB303Service",
+        annotations={
+        },
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="simple_rpc",
+            arguments=(
+                __ArgumentSpec._fbthrift_create(
+                    name="int_parameter",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=_test_fixtures_basic_module_types.ReservedKeyword,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec
+
+
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
     cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyService",

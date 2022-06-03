@@ -53,6 +53,38 @@ union MyUnion {
   4: set<float> floatSet;
 }
 
+@hack.Name{name = "MyRenamedStruct"}
+struct ReservedKeyword {
+  @hack.Name{name = "renamed_field"}
+  1: i32 reserved_field;
+}
+
+@hack.Name{name = "RenamedEnum"}
+enum HackEnum {
+  Value1 = 0,
+  @hack.Name{name = "renamedValue"}
+  Value2 = 1,
+}
+
+@hack.Name{name = "MyRenamedUnion"}
+union UnionToBeRenamed {
+  @hack.Name{name = "renamed_field"}
+  1: i32 reserved_field;
+}
+
+@hack.Name{name = "RenamedService"}
+service FooService {
+  void simple_rpc();
+}
+
+service FB303Service {
+  @hack.Name{name = "renamed_rpc"}
+  ReservedKeyword simple_rpc(
+    @hack.Name{name = "renamed_parameter"}
+    1: i32 int_parameter,
+  );
+}
+
 service MyService {
   void ping();
   string getRandomData();

@@ -6,5 +6,7 @@
  */
 #pragma once
 
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/FooServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/FB303ServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/DbMixedStackArgumentsAsyncClient.h"

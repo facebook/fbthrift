@@ -664,28 +664,28 @@ func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self3 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self3.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
-  self3.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
-  self3.processorMap["sink"] = &myServiceProcessorSink{handler:handler}
-  self3.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
-  self3.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
-  self3.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
-  self3.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
-  self3.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
-  self3.processorMap["invalid_return_for_hack"] = &myServiceProcessorInvalidReturnForHack{handler:handler}
-  self3.processorMap["rpc_skipped_codegen"] = &myServiceProcessorRpcSkippedCodegen{handler:handler}
-  self3.functionServiceMap["ping"] = "MyService"
-  self3.functionServiceMap["getRandomData"] = "MyService"
-  self3.functionServiceMap["sink"] = "MyService"
-  self3.functionServiceMap["putDataById"] = "MyService"
-  self3.functionServiceMap["hasDataById"] = "MyService"
-  self3.functionServiceMap["getDataById"] = "MyService"
-  self3.functionServiceMap["deleteDataById"] = "MyService"
-  self3.functionServiceMap["lobDataById"] = "MyService"
-  self3.functionServiceMap["invalid_return_for_hack"] = "MyService"
-  self3.functionServiceMap["rpc_skipped_codegen"] = "MyService"
-  return self3
+  self7 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self7.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
+  self7.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
+  self7.processorMap["sink"] = &myServiceProcessorSink{handler:handler}
+  self7.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
+  self7.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
+  self7.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
+  self7.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
+  self7.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self7.processorMap["invalid_return_for_hack"] = &myServiceProcessorInvalidReturnForHack{handler:handler}
+  self7.processorMap["rpc_skipped_codegen"] = &myServiceProcessorRpcSkippedCodegen{handler:handler}
+  self7.functionServiceMap["ping"] = "MyService"
+  self7.functionServiceMap["getRandomData"] = "MyService"
+  self7.functionServiceMap["sink"] = "MyService"
+  self7.functionServiceMap["putDataById"] = "MyService"
+  self7.functionServiceMap["hasDataById"] = "MyService"
+  self7.functionServiceMap["getDataById"] = "MyService"
+  self7.functionServiceMap["deleteDataById"] = "MyService"
+  self7.functionServiceMap["lobDataById"] = "MyService"
+  self7.functionServiceMap["invalid_return_for_hack"] = "MyService"
+  self7.functionServiceMap["rpc_skipped_codegen"] = "MyService"
+  return self7
 }
 
 type myServiceProcessorPing struct {
@@ -2901,13 +2901,13 @@ func (p *MyServiceInvalidReturnForHackResult)  ReadField0(iprot thrift.Protocol)
   tSet := make([]float32, 0, size)
   p.Success =  tSet
   for i := 0; i < size; i ++ {
-    var _elem5 float32
+    var _elem9 float32
     if v, err := iprot.ReadFloat(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem5 = v
+      _elem9 = v
     }
-    p.Success = append(p.Success, _elem5)
+    p.Success = append(p.Success, _elem9)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)

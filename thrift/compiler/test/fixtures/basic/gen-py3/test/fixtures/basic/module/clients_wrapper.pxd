@@ -28,6 +28,20 @@ cimport test.fixtures.basic.module.types as _test_fixtures_basic_module_types
 
 cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
+cdef extern from "src/gen-cpp2/FooService.h" namespace "::test::fixtures::basic":
+  cdef cppclass cFooServiceAsyncClient "::test::fixtures::basic::FooServiceAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cFooServiceClientWrapper] move(unique_ptr[cFooServiceClientWrapper])
+
+cdef extern from "src/gen-cpp2/FB303Service.h" namespace "::test::fixtures::basic":
+  cdef cppclass cFB303ServiceAsyncClient "::test::fixtures::basic::FB303ServiceAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cFB303ServiceClientWrapper] move(unique_ptr[cFB303ServiceClientWrapper])
+
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::test::fixtures::basic":
   cdef cppclass cMyServiceAsyncClient "::test::fixtures::basic::MyServiceAsyncClient":
       pass
@@ -47,6 +61,21 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
     pass
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::test::fixtures::basic":
+  cdef cppclass cFooServiceClientWrapper "::test::fixtures::basic::FooServiceClientWrapper":
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cFollyUnit] simple_rpc(cRpcOptions, )
+
+
+  cdef cppclass cFB303ServiceClientWrapper "::test::fixtures::basic::FB303ServiceClientWrapper":
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[_test_fixtures_basic_module_types.cReservedKeyword] simple_rpc(cRpcOptions, 
+      cint32_t arg_int_parameter,)
+
+
   cdef cppclass cMyServiceClientWrapper "::test::fixtures::basic::MyServiceClientWrapper":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)

@@ -21,6 +21,11 @@ class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
     MyValue2: MyEnum = ...
 
 
+class HackEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    Value1: HackEnum = ...
+    Value2: HackEnum = ...
+
+
 class MyStruct(_fbthrift_py3lite_types.Struct):
     MyIntField: _typing.Final[int] = ...
     MyStringField: _typing.Final[str] = ...
@@ -96,6 +101,91 @@ class MyUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct, MyDataItem, _typing.AbstractSet[float]]]
     type: Type
     def get_type(self) -> Type:...
+
+
+class ReservedKeyword(_fbthrift_py3lite_types.Struct):
+    reserved_field: _typing.Final[int] = ...
+    def __init__(
+        self, *,
+        reserved_field: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        reserved_field: _typing.Optional[int]=...
+    ) -> ReservedKeyword: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
+
+
+class UnionToBeRenamed(_fbthrift_py3lite_types.Union):
+    reserved_field: _typing.Final[int] = ...
+    def __init__(
+        self, *,
+        reserved_field: _typing.Optional[int]=...
+    ) -> None: ...
+
+
+    class Type(enum.Enum):
+        EMPTY: UnionToBeRenamed.Type = ...
+        reserved_field: UnionToBeRenamed.Type = ...
+
+    @classmethod
+    def fromValue(cls, value: _typing.Union[None, int]) -> UnionToBeRenamed: ...
+    value: _typing.Final[_typing.Union[None, int]]
+    type: Type
+    def get_type(self) -> Type:...
+
+
+class _fbthrift_FooService_simple_rpc_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_FooService_simple_rpc_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+class _fbthrift_FB303Service_simple_rpc_args(_fbthrift_py3lite_types.Struct):
+    int_parameter: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        int_parameter: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+
+class _fbthrift_FB303Service_simple_rpc_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[ReservedKeyword]
+
+    def __init__(
+        self, *, success: _typing.Optional[ReservedKeyword] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            ReservedKeyword,
+        ]]]: ...
 
 
 class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):

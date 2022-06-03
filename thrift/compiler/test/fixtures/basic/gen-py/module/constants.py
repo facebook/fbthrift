@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.hack.ttypes
 
 
-from .ttypes import UTF8STRINGS, MyEnum, MyStruct, MyDataItem, MyUnion
+from .ttypes import UTF8STRINGS, MyEnum, HackEnum, MyStruct, MyDataItem, MyUnion, ReservedKeyword, UnionToBeRenamed
 

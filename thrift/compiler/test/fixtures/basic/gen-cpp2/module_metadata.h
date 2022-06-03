@@ -15,6 +15,16 @@
 namespace test {
 namespace fixtures {
 namespace basic {
+class FooService;
+}}} // namespace test::fixtures::basic
+namespace test {
+namespace fixtures {
+namespace basic {
+class FB303Service;
+}}} // namespace test::fixtures::basic
+namespace test {
+namespace fixtures {
+namespace basic {
 class MyService;
 }}} // namespace test::fixtures::basic
 namespace test {
@@ -34,6 +44,11 @@ class EnumMetadata<::test::fixtures::basic::MyEnum> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class EnumMetadata<::test::fixtures::basic::HackEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::test::fixtures::basic::MyDataItem> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
@@ -47,6 +62,40 @@ template <>
 class StructMetadata<::test::fixtures::basic::MyUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::test::fixtures::basic::ReservedKeyword> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::test::fixtures::basic::UnionToBeRenamed> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FooService>> {
+ public:
+  static void gen(ThriftServiceMetadataResponse& response);
+ private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
+  static void gen_simple_rpc(ThriftMetadata& metadata, ThriftService& context);
+};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FB303Service>> {
+ public:
+  static void gen(ThriftServiceMetadataResponse& response);
+ private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
+  static void gen_simple_rpc(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>> {

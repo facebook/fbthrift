@@ -73,3 +73,14 @@ cdef class __MyDataItem_FieldsSetter(__StructFieldsSetter):
     @staticmethod
     cdef __MyDataItem_FieldsSetter _fbthrift_create(_test_fixtures_basic_module_types.cMyDataItem* struct_cpp_obj)
 
+
+ctypedef void (*__ReservedKeyword_FieldsSetterFunc)(__ReservedKeyword_FieldsSetter, object) except *
+
+cdef class __ReservedKeyword_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_basic_module_types.cReservedKeyword* _struct_cpp_obj
+    cdef cumap[__cstring_view, __ReservedKeyword_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __ReservedKeyword_FieldsSetter _fbthrift_create(_test_fixtures_basic_module_types.cReservedKeyword* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+

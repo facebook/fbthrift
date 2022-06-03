@@ -13,6 +13,39 @@ from abc import abstractmethod, ABCMeta
 import test.fixtures.basic.module.types as _test_fixtures_basic_module_types
 import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
+_FooServiceInterfaceT = _typing.TypeVar('_FooServiceInterfaceT', bound='FooServiceInterface')
+
+
+class FooServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta,
+):
+
+
+    @abstractmethod
+    async def simple_rpc(
+        self
+    ) -> None: ...
+    pass
+
+
+_FB303ServiceInterfaceT = _typing.TypeVar('_FB303ServiceInterfaceT', bound='FB303ServiceInterface')
+
+
+class FB303ServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta,
+):
+
+
+    @abstractmethod
+    async def simple_rpc(
+        self,
+        int_parameter: int
+    ) -> _test_fixtures_basic_module_types.ReservedKeyword: ...
+    pass
+
+
 _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceInterface')
 
 

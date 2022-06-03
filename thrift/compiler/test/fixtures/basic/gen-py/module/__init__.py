@@ -4,4 +4,4 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-__all__ = ['ttypes', 'constants', 'MyService', 'DbMixedStackArguments']
+__all__ = ['ttypes', 'constants', 'FooService', 'FB303Service', 'MyService', 'DbMixedStackArguments']

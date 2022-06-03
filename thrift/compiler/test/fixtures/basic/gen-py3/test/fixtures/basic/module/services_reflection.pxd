@@ -10,6 +10,18 @@ from thrift.py3.reflection cimport (
 )
 
 
+cdef __InterfaceSpec get_reflection__FooService(bint for_clients)
+
+cdef extern from "src/gen-cpp2/FooService.h" namespace "::test::fixtures::basic":
+    cdef cppclass cFooServiceSvIf "::test::fixtures::basic::FooServiceSvIf":
+        pass
+
+cdef __InterfaceSpec get_reflection__FB303Service(bint for_clients)
+
+cdef extern from "src/gen-cpp2/FB303Service.h" namespace "::test::fixtures::basic":
+    cdef cppclass cFB303ServiceSvIf "::test::fixtures::basic::FB303ServiceSvIf":
+        pass
+
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients)
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::test::fixtures::basic":

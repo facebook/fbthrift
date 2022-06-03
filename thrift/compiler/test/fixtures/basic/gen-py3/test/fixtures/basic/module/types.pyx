@@ -101,6 +101,48 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
 
+cdef __EnumData __HackEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cHackEnum](), HackEnum)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __HackEnumMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __HackEnum_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __HackEnum_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __HackEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __HackEnum_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class HackEnum(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __HackEnum_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cHackEnum].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.HackEnum"
+
+
+__SetMetaClass(<PyTypeObject*> HackEnum, <PyTypeObject*> __HackEnumMeta)
+
+
 
 cdef __UnionTypeEnumData __MyUnion_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
     __createEnumDataForUnionType[cMyUnion](),
@@ -134,6 +176,40 @@ cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
 
 
 __SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_TypeMeta)
+
+
+cdef __UnionTypeEnumData __UnionToBeRenamed_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
+    __createEnumDataForUnionType[cUnionToBeRenamed](),
+    __UnionToBeRenamedType,
+)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __UnionToBeRenamed_Union_TypeMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __UnionToBeRenamed_union_type_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __UnionToBeRenamed_union_type_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __UnionToBeRenamed_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __UnionToBeRenamed_union_type_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class __UnionToBeRenamedType(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __UnionToBeRenamed_union_type_enum_data.get_by_name(name)
+
+
+__SetMetaClass(<PyTypeObject*> __UnionToBeRenamedType, <PyTypeObject*> __UnionToBeRenamed_Union_TypeMeta)
 
 
 @__cython.auto_pickle(False)
@@ -558,6 +634,229 @@ cdef class MyUnion(thrift.py3.types.Union):
         self._cpp_obj = make_shared[cMyUnion]()
         with nogil:
             needed = serializer.cdeserialize[cMyUnion](buf, self._cpp_obj.get(), proto)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class ReservedKeyword(thrift.py3.types.Struct):
+    def __init__(ReservedKeyword self, **kwargs):
+        self._cpp_obj = make_shared[cReservedKeyword]()
+        self._fields_setter = _fbthrift_types_fields.__ReservedKeyword_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(ReservedKeyword self, **kwargs):
+        if not kwargs:
+            return self
+        cdef ReservedKeyword __fbthrift_inst = ReservedKeyword.__new__(ReservedKeyword)
+        __fbthrift_inst._cpp_obj = make_shared[cReservedKeyword](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__ReservedKeyword_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("ReservedKeyword", {
+          "reserved_field": deref(self._cpp_obj).reserved_field_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cReservedKeyword] cpp_obj):
+        __fbthrift_inst = <ReservedKeyword>ReservedKeyword.__new__(ReservedKeyword)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline reserved_field_impl(self):
+
+        return deref(self._cpp_obj).reserved_field_ref().value()
+
+    @property
+    def reserved_field(self):
+        return self.reserved_field_impl()
+
+
+    def __hash__(ReservedKeyword self):
+        return super().__hash__()
+
+    def __repr__(ReservedKeyword self):
+        return super().__repr__()
+
+    def __str__(ReservedKeyword self):
+        return super().__str__()
+
+
+    def __copy__(ReservedKeyword self):
+        cdef shared_ptr[cReservedKeyword] cpp_obj = make_shared[cReservedKeyword](
+            deref(self._cpp_obj)
+        )
+        return ReservedKeyword._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cReservedKeyword](
+            self._cpp_obj,
+            (<ReservedKeyword>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__ReservedKeyword()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cReservedKeyword].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.ReservedKeyword"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cReservedKeyword](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(ReservedKeyword self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cReservedKeyword](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(ReservedKeyword self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cReservedKeyword]()
+        with nogil:
+            needed = serializer.cdeserialize[cReservedKeyword](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+
+
+@__cython.auto_pickle(False)
+cdef class UnionToBeRenamed(thrift.py3.types.Union):
+    Type = __UnionToBeRenamedType
+
+    def __init__(
+        self, *,
+        reserved_field=None
+    ):
+        if reserved_field is not None:
+            if not isinstance(reserved_field, int):
+                raise TypeError(f'reserved_field is not a { int !r}.')
+            reserved_field = <cint32_t> reserved_field
+
+        self._cpp_obj = __to_shared_ptr(cmove(UnionToBeRenamed._make_instance(
+          NULL,
+          reserved_field,
+        )))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return UnionToBeRenamed()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <cint32_t> value
+                    return UnionToBeRenamed(reserved_field=value)
+                except OverflowError:
+                    pass
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cUnionToBeRenamed] _make_instance(
+        cUnionToBeRenamed* base_instance,
+        object reserved_field
+    ) except *:
+        cdef unique_ptr[cUnionToBeRenamed] c_inst = make_unique[cUnionToBeRenamed]()
+        cdef bint any_set = False
+        if reserved_field is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_reserved_field(reserved_field)
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return cmove(c_inst)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cUnionToBeRenamed] cpp_obj):
+        __fbthrift_inst = <UnionToBeRenamed>UnionToBeRenamed.__new__(UnionToBeRenamed)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
+
+    @property
+    def reserved_field(self):
+        if self.type.value != 1:
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not reserved_field')
+        return self.value
+
+
+    def __hash__(UnionToBeRenamed self):
+        return  super().__hash__()
+
+    cdef _load_cache(UnionToBeRenamed self):
+        self.type = UnionToBeRenamed.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+        elif type == 1:
+            self.value = deref(self._cpp_obj).get_reserved_field()
+
+    def __copy__(UnionToBeRenamed self):
+        cdef shared_ptr[cUnionToBeRenamed] cpp_obj = make_shared[cUnionToBeRenamed](
+            deref(self._cpp_obj)
+        )
+        return UnionToBeRenamed._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cUnionToBeRenamed](
+            self._cpp_obj,
+            (<UnionToBeRenamed>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__UnionToBeRenamed()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cUnionToBeRenamed].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.UnionToBeRenamed"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cUnionToBeRenamed](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(UnionToBeRenamed self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cUnionToBeRenamed](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(UnionToBeRenamed self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cUnionToBeRenamed]()
+        with nogil:
+            needed = serializer.cdeserialize[cUnionToBeRenamed](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed

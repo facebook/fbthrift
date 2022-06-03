@@ -38,6 +38,32 @@ FOLLY_POP_WARNING
 #endif
 }}} // test::fixtures::basic
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic::HackEnum>::size;
+folly::Range<::test::fixtures::basic::HackEnum const*> const TEnumTraits<::test::fixtures::basic::HackEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::HackEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::HackEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::HackEnum>::names);
+
+bool TEnumTraits<::test::fixtures::basic::HackEnum>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::basic::HackEnum>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace basic {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _HackEnum_EnumMapFactory::ValuesToNamesMapType _HackEnum_VALUES_TO_NAMES = _HackEnum_EnumMapFactory::makeValuesToNamesMap();
+const _HackEnum_EnumMapFactory::NamesToValuesMapType _HackEnum_NAMES_TO_VALUES = _HackEnum_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::basic
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -466,6 +492,191 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::test::fixtures::basic::MyDataItem>,
     "inconsistent use of json option");
+
+}}} // test::fixtures::basic
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test::fixtures::basic::ReservedKeyword>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic::ReservedKeyword>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test { namespace fixtures { namespace basic {
+
+const char* ReservedKeyword::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/basic/ReservedKeyword";
+}
+
+
+ReservedKeyword::ReservedKeyword(apache::thrift::FragileConstructor, ::std::int32_t reserved_field__arg) :
+    __fbthrift_field_reserved_field(std::move(reserved_field__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void ReservedKeyword::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_reserved_field = ::std::int32_t();
+  __isset = {};
+}
+
+bool ReservedKeyword::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool ReservedKeyword::operator==(const ReservedKeyword& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reserved_field_ref() == rhs.reserved_field_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool ReservedKeyword::operator<(const ReservedKeyword& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reserved_field_ref() == rhs.reserved_field_ref())) {
+    return lhs.reserved_field_ref() < rhs.reserved_field_ref();
+  }
+  return false;
+}
+
+
+void swap(ReservedKeyword& a, ReservedKeyword& b) {
+  using ::std::swap;
+  swap(a.reserved_field_ref().value(), b.reserved_field_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void ReservedKeyword::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ReservedKeyword::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ReservedKeyword::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ReservedKeyword::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ReservedKeyword::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ReservedKeyword::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ReservedKeyword::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ReservedKeyword::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}}} // test::fixtures::basic
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test::fixtures::basic::UnionToBeRenamed>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic::UnionToBeRenamed>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type>::size;
+folly::Range<::test::fixtures::basic::UnionToBeRenamed::Type const*> const TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::UnionToBeRenamed::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::UnionToBeRenamed::Type>::names);
+
+bool TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+}} // apache::thrift
+namespace test { namespace fixtures { namespace basic {
+
+const char* UnionToBeRenamed::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/basic/UnionToBeRenamed";
+}
+
+void UnionToBeRenamed::__fbthrift_clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::reserved_field:
+      destruct(value_.reserved_field);
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool UnionToBeRenamed::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
+bool UnionToBeRenamed::operator==(const UnionToBeRenamed& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::reserved_field:
+      return value_.reserved_field == rhs.value_.reserved_field;
+    default:
+      return true;
+  }
+}
+
+bool UnionToBeRenamed::operator<(const UnionToBeRenamed& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::reserved_field:
+      return lhs.value_.reserved_field < rhs.value_.reserved_field;
+    default:
+      return false;
+  }
+}
+
+void swap(UnionToBeRenamed& a, UnionToBeRenamed& b) {
+  UnionToBeRenamed temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void UnionToBeRenamed::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t UnionToBeRenamed::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnionToBeRenamed::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t UnionToBeRenamed::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void UnionToBeRenamed::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t UnionToBeRenamed::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t UnionToBeRenamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t UnionToBeRenamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // test::fixtures::basic
 

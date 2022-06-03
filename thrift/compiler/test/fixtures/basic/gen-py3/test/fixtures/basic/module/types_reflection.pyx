@@ -214,6 +214,51 @@ cdef __StructSpec get_reflection__MyUnion():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__ReservedKeyword():
+    cdef _test_fixtures_basic_module_types.ReservedKeyword defaults = _test_fixtures_basic_module_types.ReservedKeyword._fbthrift_create(
+        constant_shared_ptr[_test_fixtures_basic_module_types.cReservedKeyword](
+            default_inst[_test_fixtures_basic_module_types.cReservedKeyword]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="ReservedKeyword",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="reserved_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__UnionToBeRenamed():
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="UnionToBeRenamed",
+        kind=__StructType.UNION,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="reserved_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __SetSpec get_reflection__Set__float():
     return __SetSpec._fbthrift_create(
         value=float,

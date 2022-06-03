@@ -55,11 +55,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::test::fixtures::basi
     cdef cppclass cMyEnum "::test::fixtures::basic::MyEnum":
         pass
 
+    cdef cppclass cHackEnum "::test::fixtures::basic::HackEnum":
+        pass
+
 
 
 
 
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef class HackEnum(thrift.py3.types.CompiledEnum):
     pass
 
 cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
@@ -129,6 +136,35 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         cset[float]& set_floatSet(const cset[float]&)
 
 
+    cdef cppclass cReservedKeyword "::test::fixtures::basic::ReservedKeyword":
+        cReservedKeyword() except +
+        cReservedKeyword(const cReservedKeyword&) except +
+        bint operator==(cReservedKeyword&)
+        bint operator!=(cReservedKeyword&)
+        bint operator<(cReservedKeyword&)
+        bint operator>(cReservedKeyword&)
+        bint operator<=(cReservedKeyword&)
+        bint operator>=(cReservedKeyword&)
+        __field_ref[cint32_t] reserved_field_ref()
+
+    cdef enum cUnionToBeRenamed__type "::test::fixtures::basic::UnionToBeRenamed::Type":
+        cUnionToBeRenamed__type___EMPTY__ "::test::fixtures::basic::UnionToBeRenamed::Type::__EMPTY__",
+        cUnionToBeRenamed__type_reserved_field "::test::fixtures::basic::UnionToBeRenamed::Type::reserved_field",
+
+    cdef cppclass cUnionToBeRenamed "::test::fixtures::basic::UnionToBeRenamed":
+        cUnionToBeRenamed() except +
+        cUnionToBeRenamed(const cUnionToBeRenamed&) except +
+        bint operator==(cUnionToBeRenamed&)
+        bint operator!=(cUnionToBeRenamed&)
+        bint operator<(cUnionToBeRenamed&)
+        bint operator>(cUnionToBeRenamed&)
+        bint operator<=(cUnionToBeRenamed&)
+        bint operator>=(cUnionToBeRenamed&)
+        cUnionToBeRenamed__type getType() const
+        const cint32_t& get_reserved_field() const
+        cint32_t& set_reserved_field(const cint32_t&)
+
+
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -182,6 +218,37 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyUnion])
+
+
+
+cdef class ReservedKeyword(thrift.py3.types.Struct):
+    cdef shared_ptr[cReservedKeyword] _cpp_obj
+    cdef _fbthrift_types_fields.__ReservedKeyword_FieldsSetter _fields_setter
+    cdef inline object reserved_field_impl(self)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cReservedKeyword])
+
+cdef class __UnionToBeRenamedType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+
+
+cdef class UnionToBeRenamed(thrift.py3.types.Union):
+    cdef shared_ptr[cUnionToBeRenamed] _cpp_obj
+    cdef readonly __UnionToBeRenamedType type
+    cdef readonly object value
+    cdef _load_cache(UnionToBeRenamed self)
+
+    @staticmethod
+    cdef unique_ptr[cUnionToBeRenamed] _make_instance(
+        cUnionToBeRenamed* base_instance,
+        object reserved_field
+    ) except *
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cUnionToBeRenamed])
 
 
 cdef class Set__float(thrift.py3.types.Set):

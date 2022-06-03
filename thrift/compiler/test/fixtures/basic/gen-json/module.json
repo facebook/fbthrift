@@ -18,6 +18,23 @@
           "column" : 2
         }
       }
+    },
+    "HackEnum" : {
+      "lineno" : 63,
+      "constants" : {
+        "Value1" : 0,
+        "Value2" : 1
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 62,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 67,
+          "column" : 2
+        }
+      }
     }
   },
   "structs" : {
@@ -267,11 +284,148 @@
           "column" : 2
         }
       }
+    },
+    "ReservedKeyword" : {
+      "lineno" : 57,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "reserved_field" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 58,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 59,
+              "column" : 24
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 56,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 60,
+          "column" : 2
+        }
+      }
+    },
+    "UnionToBeRenamed" : {
+      "lineno" : 70,
+      "is_exception" : false,
+      "is_union" : true,
+      "fields" : {
+        "reserved_field" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 71,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 72,
+              "column" : 24
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 69,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 73,
+          "column" : 2
+        }
+      }
     }
   },
   "services" : {
+    "FooService" : {
+      "lineno" : 76,
+      "functions" : {
+        "FooService.simple_rpc" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 77,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 77,
+              "column" : 20
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 75,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 78,
+          "column" : 2
+        }
+      }
+
+    },
+    "FB303Service" : {
+      "lineno" : 80,
+      "functions" : {
+        "FB303Service.simple_rpc" : {
+          "return_type" : {
+            "type_enum" : "STRUCT",
+            "spec_args" : "ReservedKeyword"
+          },
+          "args" : [
+            {
+              "type_enum" : "I32",
+              "spec_args" : null
+            }
+          ],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 81,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 85,
+              "column" : 4
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 80,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 86,
+          "column" : 2
+        }
+      }
+
+    },
     "MyService" : {
-      "lineno" : 56,
+      "lineno" : 88,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -282,11 +436,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 57,
+              "line" : 89,
               "column" : 3
             },
             "end" : {
-              "line" : 57,
+              "line" : 89,
               "column" : 14
             }
           }
@@ -300,11 +454,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 58,
+              "line" : 90,
               "column" : 3
             },
             "end" : {
-              "line" : 58,
+              "line" : 90,
               "column" : 25
             }
           }
@@ -323,11 +477,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 59,
+              "line" : 91,
               "column" : 3
             },
             "end" : {
-              "line" : 59,
+              "line" : 91,
               "column" : 25
             }
           }
@@ -350,11 +504,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 61,
+              "line" : 93,
               "column" : 3
             },
             "end" : {
-              "line" : 61,
+              "line" : 93,
               "column" : 46
             }
           }
@@ -373,11 +527,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 62,
+              "line" : 94,
               "column" : 3
             },
             "end" : {
-              "line" : 62,
+              "line" : 94,
               "column" : 39
             }
           }
@@ -396,11 +550,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 63,
+              "line" : 95,
               "column" : 3
             },
             "end" : {
-              "line" : 63,
+              "line" : 95,
               "column" : 41
             }
           }
@@ -419,11 +573,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 64,
+              "line" : 96,
               "column" : 3
             },
             "end" : {
-              "line" : 64,
+              "line" : 96,
               "column" : 44
             }
           }
@@ -446,11 +600,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 65,
+              "line" : 97,
               "column" : 3
             },
             "end" : {
-              "line" : 65,
+              "line" : 97,
               "column" : 53
             }
           }
@@ -464,11 +618,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 67,
+              "line" : 99,
               "column" : 3
             },
             "end" : {
-              "line" : 68,
+              "line" : 100,
               "column" : 39
             }
           }
@@ -482,11 +636,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 70,
+              "line" : 102,
               "column" : 3
             },
             "end" : {
-              "line" : 71,
+              "line" : 103,
               "column" : 29
             }
           }
@@ -494,18 +648,18 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 56,
+          "line" : 88,
           "column" : 1
         },
         "end" : {
-          "line" : 72,
+          "line" : 104,
           "column" : 2
         }
       }
 
     },
     "DbMixedStackArguments" : {
-      "lineno" : 74,
+      "lineno" : 106,
       "functions" : {
         "DbMixedStackArguments.getDataByKey0" : {
           "return_type" : {
@@ -521,11 +675,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 75,
+              "line" : 107,
               "column" : 3
             },
             "end" : {
-              "line" : 75,
+              "line" : 107,
               "column" : 38
             }
           }
@@ -544,11 +698,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 76,
+              "line" : 108,
               "column" : 3
             },
             "end" : {
-              "line" : 76,
+              "line" : 108,
               "column" : 38
             }
           }
@@ -556,11 +710,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 74,
+          "line" : 106,
           "column" : 1
         },
         "end" : {
-          "line" : 77,
+          "line" : 109,
           "column" : 2
         }
       }

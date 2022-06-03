@@ -24,6 +24,22 @@
           }
         },
         "lineno" : 26
+      },
+      "HackEnum" : {
+        "name" : "HackEnum",
+        "constants" : {
+          "Value1" : {
+            "name" : "Value1",
+            "lineno" : 64,
+            "value" : 0
+          },
+          "Value2" : {
+            "name" : "Value2",
+            "lineno" : 66,
+            "value" : 1
+          }
+        },
+        "lineno" : 63
       }
       },
   "structs" :
@@ -161,23 +177,87 @@
         "is_exception" : false,
         "is_union" : true,
         "lineno" : 48
+      },
+      "ReservedKeyword" : {
+        "name" : "ReservedKeyword",
+        "fields" : {
+          "reserved_field" : {
+            "name" : "reserved_field",
+            "key" : 1,
+            "lineno" : 59,
+            "required" : "opt-in-req-out",
+            "type" : "i32"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 57
+      },
+      "UnionToBeRenamed" : {
+        "name" : "UnionToBeRenamed",
+        "fields" : {
+          "reserved_field" : {
+            "name" : "reserved_field",
+            "key" : 1,
+            "lineno" : 72,
+            "required" : "opt-in-req-out",
+            "type" : "i32"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : true,
+        "lineno" : 70
       }
       },
   "services" :
   {
+      "FooService" : {
+        "name" : "FooService",
+        "lineno" : 76,
+        "functions" : {
+          "simple_rpc" : {
+            "name" : "simple_rpc",
+            "returnType" : "void",
+            "lineno" : 77
+          }
+        }
+      },
+      "FB303Service" : {
+        "name" : "FB303Service",
+        "lineno" : 80,
+        "functions" : {
+          "simple_rpc" : {
+            "name" : "simple_rpc",
+            "args" : {
+              "int_parameter": {
+                "name" : "int_parameter",
+                "type" : "i32",
+                "key" : 1,
+                "lineno" : 84,
+                "required" : "opt-in-req-out"
+              }
+            },
+            "returnType" : {
+  "type" : "struct",
+  "name" : "ReservedKeyword"
+},
+            "lineno" : 82
+          }
+        }
+      },
       "MyService" : {
         "name" : "MyService",
-        "lineno" : 56,
+        "lineno" : 88,
         "functions" : {
           "ping" : {
             "name" : "ping",
             "returnType" : "void",
-            "lineno" : 57
+            "lineno" : 89
           },
           "getRandomData" : {
             "name" : "getRandomData",
             "returnType" : "string",
-            "lineno" : 58
+            "lineno" : 90
           },
           "sink" : {
             "name" : "sink",
@@ -186,12 +266,12 @@
                 "name" : "sink",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 59,
+                "lineno" : 91,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 59
+            "lineno" : 91
           },
           "putDataById" : {
             "name" : "putDataById",
@@ -200,19 +280,19 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 61,
+                "lineno" : 93,
                 "required" : "opt-in-req-out"
               },
               "data": {
                 "name" : "data",
                 "type" : "string",
                 "key" : 2,
-                "lineno" : 61,
+                "lineno" : 93,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 61
+            "lineno" : 93
           },
           "hasDataById" : {
             "name" : "hasDataById",
@@ -221,12 +301,12 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 62,
+                "lineno" : 94,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "bool",
-            "lineno" : 62
+            "lineno" : 94
           },
           "getDataById" : {
             "name" : "getDataById",
@@ -235,12 +315,12 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 63,
+                "lineno" : 95,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "string",
-            "lineno" : 63
+            "lineno" : 95
           },
           "deleteDataById" : {
             "name" : "deleteDataById",
@@ -249,12 +329,12 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 64,
+                "lineno" : 96,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 64
+            "lineno" : 96
           },
           "lobDataById" : {
             "name" : "lobDataById",
@@ -263,19 +343,19 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 65,
+                "lineno" : 97,
                 "required" : "opt-in-req-out"
               },
               "data": {
                 "name" : "data",
                 "type" : "string",
                 "key" : 2,
-                "lineno" : 65,
+                "lineno" : 97,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 65
+            "lineno" : 97
           },
           "invalid_return_for_hack" : {
             "name" : "invalid_return_for_hack",
@@ -283,18 +363,18 @@
   "type" : "set",
   "inner_type" : "float"
 },
-            "lineno" : 68
+            "lineno" : 100
           },
           "rpc_skipped_codegen" : {
             "name" : "rpc_skipped_codegen",
             "returnType" : "void",
-            "lineno" : 71
+            "lineno" : 103
           }
         }
       },
       "DbMixedStackArguments" : {
         "name" : "DbMixedStackArguments",
-        "lineno" : 74,
+        "lineno" : 106,
         "functions" : {
           "getDataByKey0" : {
             "name" : "getDataByKey0",
@@ -303,12 +383,12 @@
                 "name" : "key",
                 "type" : "string",
                 "key" : 1,
-                "lineno" : 75,
+                "lineno" : 107,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "binary",
-            "lineno" : 75
+            "lineno" : 107
           },
           "getDataByKey1" : {
             "name" : "getDataByKey1",
@@ -317,12 +397,12 @@
                 "name" : "key",
                 "type" : "string",
                 "key" : 1,
-                "lineno" : 76,
+                "lineno" : 108,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "binary",
-            "lineno" : 76
+            "lineno" : 108
           }
         }
       }

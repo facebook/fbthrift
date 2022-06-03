@@ -33,3 +33,15 @@ cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
         yield "myDataItem", self.myDataItem
         yield "floatSet", self.floatSet
 
+cdef class ReservedKeyword_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_basic_module_types.ReservedKeyword
+
+    def __iter__(self):
+        yield "reserved_field", self.reserved_field
+
+cdef class UnionToBeRenamed_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_basic_module_types.UnionToBeRenamed
+
+    def __iter__(self):
+        yield "reserved_field", self.reserved_field
+

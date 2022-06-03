@@ -54,9 +54,37 @@ import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack
 
 cimport test.fixtures.basic.module.services_reflection as _services_reflection
 
+from test.fixtures.basic.module.clients_wrapper cimport cFooServiceAsyncClient, cFooServiceClientWrapper
+from test.fixtures.basic.module.clients_wrapper cimport cFB303ServiceAsyncClient, cFB303ServiceClientWrapper
 from test.fixtures.basic.module.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
 from test.fixtures.basic.module.clients_wrapper cimport cDbMixedStackArgumentsAsyncClient, cDbMixedStackArgumentsClientWrapper
 
+
+cdef void FooService_simple_rpc_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void FB303Service_simple_rpc_callback(
+    cFollyTry[_test_fixtures_basic_module_types.cReservedKeyword]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_test_fixtures_basic_module_types.ReservedKeyword._fbthrift_create(make_shared[_test_fixtures_basic_module_types.cReservedKeyword](result.value())))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_ping_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -214,6 +242,114 @@ cdef void DbMixedStackArguments_getDataByKey1_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+
+cdef object _FooService_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class FooService(thrift.py3.client.Client):
+    annotations = _FooService_annotations
+
+    cdef const type_info* _typeid(FooService self):
+        return &typeid(cFooServiceAsyncClient)
+
+    cdef bind_client(FooService self, cRequestChannel_ptr&& channel):
+        self._client = makeClientWrapper[cFooServiceAsyncClient, cFooServiceClientWrapper](
+            cmove(channel)
+        )
+
+    @cython.always_allow_keywords(True)
+    def simple_rpc(
+            FooService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cFooServiceClientWrapper, cClientWrapper](self._client.get()).simple_rpc(rpc_options._cpp_obj, 
+            ),
+            FooService_simple_rpc_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__FooService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cFooServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.FooService"
+
+cdef object _FB303Service_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class FB303Service(thrift.py3.client.Client):
+    annotations = _FB303Service_annotations
+
+    cdef const type_info* _typeid(FB303Service self):
+        return &typeid(cFB303ServiceAsyncClient)
+
+    cdef bind_client(FB303Service self, cRequestChannel_ptr&& channel):
+        self._client = makeClientWrapper[cFB303ServiceAsyncClient, cFB303ServiceClientWrapper](
+            cmove(channel)
+        )
+
+    @cython.always_allow_keywords(True)
+    def simple_rpc(
+            FB303Service self,
+            int_parameter not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(int_parameter, int):
+            raise TypeError(f'int_parameter is not a {int !r}.')
+        else:
+            int_parameter = <cint32_t> int_parameter
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[_test_fixtures_basic_module_types.cReservedKeyword](
+            self._executor,
+            down_cast_ptr[cFB303ServiceClientWrapper, cClientWrapper](self._client.get()).simple_rpc(rpc_options._cpp_obj, 
+                int_parameter,
+            ),
+            FB303Service_simple_rpc_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__FB303Service(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cFB303ServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.FB303Service"
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
 })

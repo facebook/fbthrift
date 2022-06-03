@@ -37,6 +37,19 @@ void EnumMetadata<::test::fixtures::basic::MyEnum>::gen(ThriftMetadata& metadata
     enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
+void EnumMetadata<::test::fixtures::basic::HackEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums()->emplace("module.HackEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name() = "module.HackEnum";
+  using EnumTraits = TEnumTraits<::test::fixtures::basic::HackEnum>;
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+  }
+  enum_metadata.structured_annotations()->push_back(*cvStruct("hack.Name", {{"name", cvString(R"(RenamedEnum)")}}).cv_struct_ref());
+}
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::test::fixtures::basic::MyDataItem>::gen(ThriftMetadata& metadata) {
@@ -108,7 +121,151 @@ StructMetadata<::test::fixtures::basic::MyUnion>::gen(ThriftMetadata& metadata) 
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::test::fixtures::basic::ReservedKeyword>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.ReservedKeyword", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ReservedKeyword = res.first->second;
+  module_ReservedKeyword.name() = "module.ReservedKeyword";
+  module_ReservedKeyword.is_union() = false;
+  static const EncodedThriftField
+  module_ReservedKeyword_fields[] = {
+    {1, "reserved_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Name", {{"name", cvString(R"(renamed_field)")}}).cv_struct_ref(), }},
+  };
+  for (const auto& f : module_ReservedKeyword_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_ReservedKeyword.fields()->push_back(std::move(field));
+  }
+  module_ReservedKeyword.structured_annotations()->push_back(*cvStruct("hack.Name", {{"name", cvString(R"(MyRenamedStruct)")}}).cv_struct_ref());
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::test::fixtures::basic::UnionToBeRenamed>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.UnionToBeRenamed", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_UnionToBeRenamed = res.first->second;
+  module_UnionToBeRenamed.name() = "module.UnionToBeRenamed";
+  module_UnionToBeRenamed.is_union() = true;
+  static const EncodedThriftField
+  module_UnionToBeRenamed_fields[] = {
+    {1, "reserved_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Name", {{"name", cvString(R"(renamed_field)")}}).cv_struct_ref(), }},
+  };
+  for (const auto& f : module_UnionToBeRenamed_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_UnionToBeRenamed.fields()->push_back(std::move(field));
+  }
+  module_UnionToBeRenamed.structured_annotations()->push_back(*cvStruct("hack.Name", {{"name", cvString(R"(MyRenamedUnion)")}}).cv_struct_ref());
+  return res.first->second;
+}
 
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FooService>>::gen_simple_rpc(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "simple_rpc";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
+}
+
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FooService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FooService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_FooService;
+  module_FooService.name() = "module.FooService";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FooService>>::gen_simple_rpc,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_FooService);
+  }
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  module_FooService.structured_annotations()->push_back(*cvStruct("hack.Name", {{"name", cvString(R"(RenamedService)")}}).cv_struct_ref());
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services()->emplace("module.FooService", std::move(module_FooService));
+  context.service_name() = "module.FooService";
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.name() = "module";
+  context.module() = std::move(module);
+  return &context;
+}
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FB303Service>>::gen_simple_rpc(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "simple_rpc";
+  auto func_ret_type = std::make_unique<Struct<::test::fixtures::basic::ReservedKeyword>>("module.ReservedKeyword");
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  ::apache::thrift::metadata::ThriftField module_FB303Service_simple_rpc_int_parameter_1;
+  module_FB303Service_simple_rpc_int_parameter_1.id() = 1;
+  module_FB303Service_simple_rpc_int_parameter_1.name() = "int_parameter";
+  module_FB303Service_simple_rpc_int_parameter_1.is_optional() = false;
+  module_FB303Service_simple_rpc_int_parameter_1.structured_annotations() = {
+      *cvStruct("hack.Name", {{"name", cvString(R"(renamed_parameter)")}}).cv_struct_ref(),
+  };
+  auto module_FB303Service_simple_rpc_int_parameter_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_FB303Service_simple_rpc_int_parameter_1_type->writeAndGenType(*module_FB303Service_simple_rpc_int_parameter_1.type(), metadata);
+  func.arguments()->push_back(std::move(module_FB303Service_simple_rpc_int_parameter_1));
+  func.is_oneway() = false;
+  func.structured_annotations()->push_back(*cvStruct("hack.Name", {{"name", cvString(R"(renamed_rpc)")}}).cv_struct_ref());
+  service.functions()->push_back(std::move(func));
+}
+
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FB303Service>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FB303Service>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_FB303Service;
+  module_FB303Service.name() = "module.FB303Service";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::FB303Service>>::gen_simple_rpc,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_FB303Service);
+  }
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services()->emplace("module.FB303Service", std::move(module_FB303Service));
+  context.service_name() = "module.FB303Service";
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.name() = "module";
+  context.module() = std::move(module);
+  return &context;
+}
 void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;

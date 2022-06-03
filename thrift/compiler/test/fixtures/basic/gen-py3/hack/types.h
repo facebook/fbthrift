@@ -50,6 +50,19 @@ void reset_field<::facebook::thrift::annotation::hack::SkipCodegen>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::hack::Name>(
+    ::facebook::thrift::annotation::hack::Name& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Name>().name_ref());
+      return;
+    case 1:
+      obj.reason_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Name>().reason_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -72,6 +85,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::SkipCodegen>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::Name>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

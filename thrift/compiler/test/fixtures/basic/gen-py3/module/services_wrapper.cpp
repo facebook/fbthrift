@@ -13,6 +13,102 @@ namespace test {
 namespace fixtures {
 namespace basic {
 
+FooServiceWrapper::FooServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
+  {
+    import_test__fixtures__basic__module__services();
+  }
+
+
+void FooServiceWrapper::async_tm_simple_rpc(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+        call_cy_FooService_simple_rpc(
+            this->if_object,
+            ctx,
+            std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+std::shared_ptr<apache::thrift::ServerInterface> FooServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<FooServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> FooServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_FooService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> FooServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_FooService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+
+
+FB303ServiceWrapper::FB303ServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
+  {
+    import_test__fixtures__basic__module__services();
+  }
+
+
+void FB303ServiceWrapper::async_tm_simple_rpc(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test::fixtures::basic::ReservedKeyword>>> callback
+    , int32_t int_parameter
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+int_parameter    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<::test::fixtures::basic::ReservedKeyword>>();
+        call_cy_FB303Service_simple_rpc(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            int_parameter        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<::test::fixtures::basic::ReservedKeyword>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+std::shared_ptr<apache::thrift::ServerInterface> FB303ServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<FB303ServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> FB303ServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_FB303Service_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> FB303ServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_FB303Service_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+
+
 MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {

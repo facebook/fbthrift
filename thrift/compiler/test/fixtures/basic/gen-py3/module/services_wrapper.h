@@ -6,6 +6,8 @@
  */
 
 #pragma once
+#include <src/gen-cpp2/FooService.h>
+#include <src/gen-cpp2/FB303Service.h>
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/DbMixedStackArguments.h>
 #include <folly/python/futures.h>
@@ -16,6 +18,36 @@
 namespace test {
 namespace fixtures {
 namespace basic {
+
+class FooServiceWrapper : virtual public FooServiceSvIf {
+  protected:
+    PyObject *if_object;
+    folly::Executor *executor;
+  public:
+    explicit FooServiceWrapper(PyObject *if_object, folly::Executor *exc);
+    void async_tm_simple_rpc(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> FooServiceInterface(PyObject *if_object, folly::Executor *exc);
+
+
+class FB303ServiceWrapper : virtual public FB303ServiceSvIf {
+  protected:
+    PyObject *if_object;
+    folly::Executor *executor;
+  public:
+    explicit FB303ServiceWrapper(PyObject *if_object, folly::Executor *exc);
+    void async_tm_simple_rpc(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test::fixtures::basic::ReservedKeyword>>> callback
+        , int32_t int_parameter
+    ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> FB303ServiceInterface(PyObject *if_object, folly::Executor *exc);
+
 
 class MyServiceWrapper : virtual public MyServiceSvIf {
   protected:

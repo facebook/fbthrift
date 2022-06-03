@@ -21,6 +21,15 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::basic
   "MyValue2",
 }};
 
+const std::array<::test::fixtures::basic::HackEnum, 2> TEnumDataStorage<::test::fixtures::basic::HackEnum>::values = {{
+  type::Value1,
+  type::Value2,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::basic::HackEnum>::names = {{
+  "Value1",
+  "Value2",
+}};
+
 const std::array<::test::fixtures::basic::MyUnion::Type, 4> TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::values = {{
   type::myEnum,
   type::myStruct,
@@ -32,6 +41,13 @@ const std::array<folly::StringPiece, 4> TEnumDataStorage<::test::fixtures::basic
   "myStruct",
   "myDataItem",
   "floatSet",
+}};
+
+const std::array<::test::fixtures::basic::UnionToBeRenamed::Type, 1> TEnumDataStorage<::test::fixtures::basic::UnionToBeRenamed::Type>::values = {{
+  type::reserved_field,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::test::fixtures::basic::UnionToBeRenamed::Type>::names = {{
+  "reserved_field",
 }};
 
 const std::array<folly::StringPiece, 0> TStructDataStorage<::test::fixtures::basic::MyDataItem>::fields_names = {{
@@ -92,6 +108,26 @@ const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::basic:
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_SET,
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test::fixtures::basic::ReservedKeyword>::fields_names = {{
+  "reserved_field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::test::fixtures::basic::ReservedKeyword>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic::ReservedKeyword>::fields_types = {{
+  TType::T_I32,
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test::fixtures::basic::UnionToBeRenamed>::fields_names = {{
+  "reserved_field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::test::fixtures::basic::UnionToBeRenamed>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic::UnionToBeRenamed>::fields_types = {{
+  TType::T_I32,
 }};
 
 } // namespace thrift

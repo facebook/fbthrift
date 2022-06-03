@@ -16,6 +16,31 @@ import test.fixtures.basic.module.types as _test_fixtures_basic_module_types
 import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
 
+_FooServiceT = _typing.TypeVar('_FooServiceT', bound='FooService')
+
+
+class FooService(thrift.py3.client.Client):
+
+    async def simple_rpc(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+
+
+
+_FB303ServiceT = _typing.TypeVar('_FB303ServiceT', bound='FB303Service')
+
+
+class FB303Service(thrift.py3.client.Client):
+
+    async def simple_rpc(
+        self,
+        int_parameter: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _test_fixtures_basic_module_types.ReservedKeyword: ...
+
+
+
 _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')
 
 

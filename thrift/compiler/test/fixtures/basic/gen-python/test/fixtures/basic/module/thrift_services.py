@@ -17,6 +17,83 @@ import test.fixtures.basic.module.thrift_types
 import test.fixtures.basic.module.thrift_metadata
 import facebook.thrift.annotation.hack.thrift_types
 
+class FooServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta
+):
+
+    @staticmethod
+    def service_name() -> bytes:
+        return b"FooService"
+
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
+        functionTable = {
+            b"simple_rpc": self._fbthrift__handler_simple_rpc,
+        }
+        return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.FooService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
+
+
+
+    async def simple_rpc(
+            self
+        ) -> None:
+        raise NotImplementedError("async def simple_rpc is not implemented")
+
+    async def _fbthrift__handler_simple_rpc(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
+        args_struct = deserialize(test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_args, args, protocol)
+        value = await self.simple_rpc()
+        return_struct = test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result()
+
+        return serialize_iobuf(return_struct, protocol)
+
+class FB303ServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta
+):
+
+    @staticmethod
+    def service_name() -> bytes:
+        return b"FB303Service"
+
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
+        functionTable = {
+            b"simple_rpc": self._fbthrift__handler_simple_rpc,
+        }
+        return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.FB303Service"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
+
+
+
+    async def simple_rpc(
+            self,
+            int_parameter: int
+        ) -> test.fixtures.basic.module.thrift_types.ReservedKeyword:
+        raise NotImplementedError("async def simple_rpc is not implemented")
+
+    async def _fbthrift__handler_simple_rpc(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
+        args_struct = deserialize(test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_args, args, protocol)
+        value = await self.simple_rpc(args_struct.int_parameter,)
+        return_struct = test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_result(success=value)
+
+        return serialize_iobuf(return_struct, protocol)
+
 class MyServiceInterface(
     ServiceInterface,
     metaclass=ABCMeta

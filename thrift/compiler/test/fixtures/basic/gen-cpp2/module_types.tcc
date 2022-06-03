@@ -18,6 +18,13 @@ namespace std {
 
 } // std
 
+namespace test { namespace fixtures { namespace basic {
+
+}}} // test::fixtures::basic
+namespace std {
+
+} // std
+
 
 namespace apache {
 namespace thrift {
@@ -39,6 +46,20 @@ struct TccStructTraits<::test::fixtures::basic::MyStruct> {
 };
 template <>
 struct TccStructTraits<::test::fixtures::basic::MyUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
+template <>
+struct TccStructTraits<::test::fixtures::basic::ReservedKeyword> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
+template <>
+struct TccStructTraits<::test::fixtures::basic::UnionToBeRenamed> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -752,5 +773,230 @@ extern template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader
 extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // test::fixtures::basic
+namespace test { namespace fixtures { namespace basic {
+
+template <class Protocol_>
+void ReservedKeyword::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_reserved_field:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_reserved_field, _readState);
+    
+  }
+ this->__isset.set(0, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ReservedKeyword>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+        goto _readField_reserved_field;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t ReservedKeyword::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ReservedKeyword");
+  {
+    xfer += prot_->serializedFieldSize("reserved_field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_reserved_field);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ReservedKeyword::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ReservedKeyword");
+  {
+    xfer += prot_->serializedFieldSize("reserved_field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_reserved_field);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ReservedKeyword::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("ReservedKeyword");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "reserved_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_reserved_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void ReservedKeyword::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ReservedKeyword::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ReservedKeyword::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ReservedKeyword::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ReservedKeyword::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ReservedKeyword::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ReservedKeyword::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ReservedKeyword::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // test::fixtures::basic
+namespace test { namespace fixtures { namespace basic {
+
+template <class Protocol_>
+void UnionToBeRenamed::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.atStop()) {
+    apache::thrift::clear(*this);
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<UnionToBeRenamed>>();
+    }
+    switch (_readState.fieldId) {
+      case 1:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
+          this->set_reserved_field();
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.reserved_field, _readState);
+          
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(!_readState.atStop())) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t UnionToBeRenamed::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnionToBeRenamed");
+  switch(this->getType()) {
+    case UnionToBeRenamed::Type::reserved_field:
+    {
+      xfer += prot_->serializedFieldSize("reserved_field", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.reserved_field);
+      break;
+    }
+    case UnionToBeRenamed::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnionToBeRenamed::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnionToBeRenamed");
+  switch(this->getType()) {
+    case UnionToBeRenamed::Type::reserved_field:
+    {
+      xfer += prot_->serializedFieldSize("reserved_field", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.reserved_field);
+      break;
+    }
+    case UnionToBeRenamed::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnionToBeRenamed::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("UnionToBeRenamed");
+  switch(this->getType()) {
+    case UnionToBeRenamed::Type::reserved_field:
+    {
+      constexpr int16_t kPrevFieldId = 0;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "reserved_field", false);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.reserved_field);
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case UnionToBeRenamed::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void UnionToBeRenamed::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t UnionToBeRenamed::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t UnionToBeRenamed::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t UnionToBeRenamed::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void UnionToBeRenamed::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t UnionToBeRenamed::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t UnionToBeRenamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t UnionToBeRenamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // test::fixtures::basic

@@ -41,6 +41,51 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
 }
 
 /**
+ * Original thrift enum:-
+ * HackEnum
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/HackEnum'))>>
+enum HackEnum: int {
+  Value1 = 0;
+  Value2 = 1;
+}
+
+class HackEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.HackEnum",
+        "elements" => dict[
+          0 => "Value1",
+          1 => "Value2",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[
+        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+          shape(
+            "name" => "RenamedEnum",
+          )
+        ),
+      ],
+      'constants' => dict[
+        'Value2' => dict[
+          '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+            shape(
+              "name" => "renamedValue",
+            )
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/**
  * Original thrift struct:-
  * MyStruct
  */
@@ -720,6 +765,316 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyUni
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;
       $this->_type = \fixtures\basic\MyUnionEnum::myDataItem;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ReservedKeyword
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/ReservedKeyword'))>>
+class ReservedKeyword implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'reserved_field',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'reserved_field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'reserved_field' => ?int,
+  );
+
+  const type TShape = shape(
+    'reserved_field' => int,
+    ...
+  );
+  const int STRUCTURAL_ID = 9144321583101923955;
+  /**
+   * Original thrift field:-
+   * 1: i32 reserved_field
+   */
+  public int $reserved_field;
+
+  public function __construct(?int $reserved_field = null  )[] {
+    $this->reserved_field = $reserved_field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'reserved_field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ReservedKeyword';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ReservedKeyword",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "reserved_field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+          shape(
+            "name" => "MyRenamedStruct",
+          )
+        ),
+      ],
+      'fields' => dict[
+        'reserved_field' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+              shape(
+                "name" => "renamed_field",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['reserved_field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'reserved_field' => $this->reserved_field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'reserved_field') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['reserved_field'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->reserved_field = (int)$_tmp0;
+      }
+    }    
+  }
+
+}
+
+enum UnionToBeRenamedEnum: int {
+  _EMPTY_ = 0;
+  reserved_field = 1;
+}
+
+/**
+ * Original thrift struct:-
+ * UnionToBeRenamed
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/UnionToBeRenamed'))>>
+class UnionToBeRenamed implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\UnionToBeRenamedEnum>, \IThriftShapishSyncStruct {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'reserved_field',
+      'union' => true,
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'reserved_field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'reserved_field' => ?int,
+  );
+
+  const type TShape = shape(
+    ?'reserved_field' => ?int,
+    ...
+  );
+  const int STRUCTURAL_ID = 9144321583101923955;
+  /**
+   * Original thrift field:-
+   * 1: i32 reserved_field
+   */
+  public ?int $reserved_field;
+  protected \fixtures\basic\UnionToBeRenamedEnum $_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+
+  public function __construct(?int $reserved_field = null  )[] {
+    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+    if ($reserved_field !== null) {
+      $this->reserved_field = $reserved_field;
+      $this->_type = \fixtures\basic\UnionToBeRenamedEnum::reserved_field;
+    }
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'reserved_field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'UnionToBeRenamed';
+  }
+
+  public function getType()[]: \fixtures\basic\UnionToBeRenamedEnum {
+    return $this->_type;
+  }
+
+  public function reset()[write_props]: void {
+    switch ($this->_type) {
+      case \fixtures\basic\UnionToBeRenamedEnum::reserved_field:
+        $this->reserved_field = null;
+        break;
+      case \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+  }
+
+  public function set_reserved_field(int $reserved_field)[write_props]: this {
+    $this->reset();
+    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::reserved_field;
+    $this->reserved_field = $reserved_field;
+    return $this;
+  }
+
+  public function get_reserved_field()[]: ?int {
+    return $this->reserved_field;
+  }
+
+  public function getx_reserved_field()[]: int {
+    invariant(
+      $this->_type === \fixtures\basic\UnionToBeRenamedEnum::reserved_field,
+      'get_reserved_field called on an instance of UnionToBeRenamed whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->reserved_field as nonnull;
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.UnionToBeRenamed",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "reserved_field",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+          shape(
+            "name" => "MyRenamedUnion",
+          )
+        ),
+      ],
+      'fields' => dict[
+        'reserved_field' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+              shape(
+                "name" => "renamed_field",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'reserved_field'),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'reserved_field' => $this->reserved_field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'reserved_field') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['reserved_field'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->reserved_field = (int)$_tmp0;
+      }
+      $this->_type = \fixtures\basic\UnionToBeRenamedEnum::reserved_field;
     }    
   }
 

@@ -13,6 +13,38 @@ namespace basic {
 
 
 folly::Future<folly::Unit>
+FooServiceClientWrapper::simple_rpc(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::test::fixtures::basic::FooServiceAsyncClient*>(async_client_.get());
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_simple_rpc, channel_);
+  client->simple_rpc(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
+folly::Future<::test::fixtures::basic::ReservedKeyword>
+FB303ServiceClientWrapper::simple_rpc(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_int_parameter) {
+  auto* client = static_cast<::test::fixtures::basic::FB303ServiceAsyncClient*>(async_client_.get());
+  folly::Promise<::test::fixtures::basic::ReservedKeyword> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<::test::fixtures::basic::ReservedKeyword>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_simple_rpc, channel_);
+  client->simple_rpc(
+    rpcOptions,
+    std::move(callback),
+    arg_int_parameter
+  );
+  return _future;
+}
+
+folly::Future<folly::Unit>
 MyServiceClientWrapper::ping(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::test::fixtures::basic::MyServiceAsyncClient*>(async_client_.get());

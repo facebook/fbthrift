@@ -6,5 +6,7 @@
  */
 #pragma once
 
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/FooService.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/FB303Service.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyService.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/DbMixedStackArguments.h"

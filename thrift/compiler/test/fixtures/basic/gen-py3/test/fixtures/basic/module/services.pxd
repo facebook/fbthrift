@@ -8,6 +8,16 @@
 from thrift.py3.server cimport ServiceInterface
 
 
+cdef class FooServiceInterface(ServiceInterface):
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_simple_rpc
+    pass
+
+cdef class FB303ServiceInterface(ServiceInterface):
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_simple_rpc
+    pass
+
 cdef class MyServiceInterface(ServiceInterface):
     # these are to avoid weird Cython multiple inheritance issue
     cdef bint _for_cython_ping

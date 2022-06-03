@@ -391,3 +391,155 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Name
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Name'))>>
+class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'reason',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+    'reason' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+    ?'reason' => ?string,
+  );
+
+  const type TShape = shape(
+    'name' => string,
+    'reason' => string,
+  );
+  const int STRUCTURAL_ID = 4844827548325959202;
+  /**
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+  /**
+   * Original thrift field:-
+   * 2: string reason
+   */
+  public string $reason;
+
+  public function __construct(?string $name = null, ?string $reason = null  )[] {
+    $this->name = $name ?? '';
+    $this->reason = $reason ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'reason'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'name'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'reason'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Name';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.Name",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "reason",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['name'],
+      $shape['reason'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'name' => $this->name,
+      'reason' => $this->reason,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'name') !== null) {
+      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+    }    
+    if (idx($parsed, 'reason') !== null) {
+      $this->reason = /* HH_FIXME[4110] */ $parsed['reason'];
+    }    
+  }
+
+}
+

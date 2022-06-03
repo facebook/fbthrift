@@ -7,6 +7,12 @@
 cimport thrift.py3.client
 
 
+cdef class FooService(thrift.py3.client.Client):
+    pass
+
+cdef class FB303Service(thrift.py3.client.Client):
+    pass
+
 cdef class MyService(thrift.py3.client.Client):
     pass
 

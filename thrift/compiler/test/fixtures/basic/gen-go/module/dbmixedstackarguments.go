@@ -269,12 +269,12 @@ func (p *DbMixedStackArgumentsProcessor) FunctionServiceMap() map[string]string 
 }
 
 func NewDbMixedStackArgumentsProcessor(handler DbMixedStackArguments) *DbMixedStackArgumentsProcessor {
-  self6 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self6.processorMap["getDataByKey0"] = &dbMixedStackArgumentsProcessorGetDataByKey0{handler:handler}
-  self6.processorMap["getDataByKey1"] = &dbMixedStackArgumentsProcessorGetDataByKey1{handler:handler}
-  self6.functionServiceMap["getDataByKey0"] = "DbMixedStackArguments"
-  self6.functionServiceMap["getDataByKey1"] = "DbMixedStackArguments"
-  return self6
+  self10 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self10.processorMap["getDataByKey0"] = &dbMixedStackArgumentsProcessorGetDataByKey0{handler:handler}
+  self10.processorMap["getDataByKey1"] = &dbMixedStackArgumentsProcessorGetDataByKey1{handler:handler}
+  self10.functionServiceMap["getDataByKey0"] = "DbMixedStackArguments"
+  self10.functionServiceMap["getDataByKey1"] = "DbMixedStackArguments"
+  return self10
 }
 
 type dbMixedStackArgumentsProcessorGetDataByKey0 struct {

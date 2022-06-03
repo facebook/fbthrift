@@ -44,3 +44,15 @@ class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class ReservedKeyword_Builder(thrift.py3.builder.StructBuilder):
+    reserved_field: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class UnionToBeRenamed_Builder(thrift.py3.builder.StructBuilder):
+    reserved_field: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

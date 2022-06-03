@@ -50,6 +50,23 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct ReservedKeyword {
+        pub reserved_field: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+    pub enum UnionToBeRenamed {
+        reserved_field(::std::primitive::i32),
+        UnknownField(::std::primitive::i32),
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct MyEnum(pub ::std::primitive::i32);
 
@@ -157,6 +174,116 @@ pub mod types {
         #[inline]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             ::std::result::Result::Ok(MyEnum::from(p.read_i32()?))
+        }
+    }
+
+    #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    pub struct HackEnum(pub ::std::primitive::i32);
+
+    impl HackEnum {
+        pub const Value1: Self = HackEnum(0i32);
+        pub const Value2: Self = HackEnum(1i32);
+    }
+
+    impl ::fbthrift::ThriftEnum for HackEnum {
+        fn enumerate() -> &'static [(HackEnum, &'static str)] {
+            &[
+                (HackEnum::Value1, "Value1"),
+                (HackEnum::Value2, "Value2"),
+            ]
+        }
+
+        fn variants() -> &'static [&'static str] {
+            &[
+                "Value1",
+                "Value2",
+            ]
+        }
+
+        fn variant_values() -> &'static [HackEnum] {
+            &[
+                HackEnum::Value1,
+                HackEnum::Value2,
+            ]
+        }
+    }
+
+    impl ::std::default::Default for HackEnum {
+        fn default() -> Self {
+            HackEnum(::fbthrift::__UNKNOWN_ID)
+        }
+    }
+
+    impl<'a> ::std::convert::From<&'a HackEnum> for ::std::primitive::i32 {
+        #[inline]
+        fn from(x: &'a HackEnum) -> Self {
+            x.0
+        }
+    }
+
+    impl ::std::convert::From<HackEnum> for ::std::primitive::i32 {
+        #[inline]
+        fn from(x: HackEnum) -> Self {
+            x.0
+        }
+    }
+
+    impl ::std::convert::From<::std::primitive::i32> for HackEnum {
+        #[inline]
+        fn from(x: ::std::primitive::i32) -> Self {
+            Self(x)
+        }
+    }
+
+    impl ::std::fmt::Display for HackEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("Value1", 0),
+                ("Value2", 1),
+            ];
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        }
+    }
+
+    impl ::std::fmt::Debug for HackEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(fmt, "HackEnum::{}", self)
+        }
+    }
+
+    impl ::std::str::FromStr for HackEnum {
+        type Err = ::anyhow::Error;
+
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("Value1", 0),
+                ("Value2", 1),
+            ];
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "HackEnum").map(HackEnum)
+        }
+    }
+
+    impl ::fbthrift::GetTType for HackEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for HackEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        #[inline]
+        fn write(&self, p: &mut P) {
+            p.write_i32(self.into())
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for HackEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        #[inline]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(HackEnum::from(p.read_i32()?))
         }
     }
 
@@ -454,6 +581,140 @@ pub mod types {
         }
     }
 
+    impl ::std::default::Default for self::ReservedKeyword {
+        fn default() -> Self {
+            Self {
+                reserved_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ReservedKeyword {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ReservedKeyword")
+                .field("reserved_field", &self.reserved_field)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::ReservedKeyword {}
+    unsafe impl ::std::marker::Sync for self::ReservedKeyword {}
+
+    impl ::fbthrift::GetTType for self::ReservedKeyword {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::ReservedKeyword
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("ReservedKeyword");
+            p.write_field_begin("reserved_field", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.reserved_field, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::ReservedKeyword
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("reserved_field", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field_reserved_field = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_reserved_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                reserved_field: field_reserved_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+
+    impl ::std::default::Default for UnionToBeRenamed {
+        fn default() -> Self {
+            Self::UnknownField(-1)
+        }
+    }
+
+    impl ::fbthrift::GetTType for UnionToBeRenamed {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for UnionToBeRenamed
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("UnionToBeRenamed");
+            match self {
+                UnionToBeRenamed::reserved_field(inner) => {
+                    p.write_field_begin("reserved_field", ::fbthrift::TType::I32, 1);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                UnionToBeRenamed::UnknownField(_) => {}
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for UnionToBeRenamed
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("reserved_field", ::fbthrift::TType::I32, 1),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I32, 1, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(UnionToBeRenamed::reserved_field(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "UnionToBeRenamed",
+                            badty,
+                            badid,
+                        ),
+                    ))),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(alt.unwrap_or_default())
+        }
+    }
+
     mod dot_dot {
         #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct OtherFields(pub(crate) ());
@@ -471,6 +732,252 @@ pub mod dependencies {
 }
 
 pub mod services {
+    pub mod foo_service {
+
+        #[derive(Clone, Debug)]
+        pub enum SimpleRpcExn {
+            #[doc(hidden)]
+            Success(()),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SimpleRpcExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                SimpleRpcExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for SimpleRpcExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for SimpleRpcExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    SimpleRpcExn::Success(_) => ::fbthrift::ResultType::Return,
+                    SimpleRpcExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for SimpleRpcExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for SimpleRpcExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let SimpleRpcExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("SimpleRpc");
+                match self {
+                    SimpleRpcExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    SimpleRpcExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for SimpleRpcExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Void, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = SimpleRpcExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = SimpleRpcExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "SimpleRpcExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
+    }
+
+    pub mod f_b303_service {
+
+        #[derive(Clone, Debug)]
+        pub enum SimpleRpcExn {
+            #[doc(hidden)]
+            Success(crate::types::ReservedKeyword),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SimpleRpcExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                SimpleRpcExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for SimpleRpcExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    SimpleRpcExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    SimpleRpcExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for SimpleRpcExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    SimpleRpcExn::Success(_) => ::fbthrift::ResultType::Return,
+                    SimpleRpcExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for SimpleRpcExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for SimpleRpcExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let SimpleRpcExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("SimpleRpc");
+                match self {
+                    SimpleRpcExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Struct,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    SimpleRpcExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for SimpleRpcExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Struct, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Struct, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(SimpleRpcExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "SimpleRpcExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "SimpleRpcExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+    }
+
     pub mod my_service {
 
         #[derive(Clone, Debug)]
@@ -1920,6 +2427,560 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
+    pub struct FooServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
+        transport: T,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
+    }
+
+    impl<P, T, S> FooServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            Self {
+                transport,
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
+        }
+
+
+        fn _simple_rpc_impl(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "FooService";
+                METHOD_NAME = "FooService.simple_rpc";
+            }
+            let args = self::Args_FooService_simple_rpc {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("simple_rpc", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "FooService.simple_rpc"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::foo_service::SimpleRpcExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::foo_service::SimpleRpcError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("FooService.simple_rpc"))
+            .boxed()
+        }
+    }
+
+    pub trait FooService: ::std::marker::Send {
+        fn simple_rpc(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>>;
+    }
+
+    pub trait FooServiceExt<T>: FooService
+    where
+        T: ::fbthrift::Transport,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>>;
+    }
+
+    struct Args_FooService_simple_rpc<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_FooService_simple_rpc<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "FooService.simple_rpc"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P, T, S> FooService for FooServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn simple_rpc(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            let rpc_options = T::RpcOptions::default();
+            self._simple_rpc_impl(
+                rpc_options,
+            )
+        }
+    }
+
+    impl<P, T, S> FooServiceExt<T> for FooServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            self._simple_rpc_impl(
+                rpc_options,
+            )
+        }
+    }
+
+    impl<'a, S> FooService for S
+    where
+        S: ::std::convert::AsRef<dyn FooService + 'a>,
+        S: ::std::marker::Send,
+    {
+        fn simple_rpc(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().simple_rpc(
+            )
+        }
+    }
+
+    impl<'a, S, T> FooServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn FooService + 'a>,
+        S: ::std::convert::AsRef<dyn FooServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn FooServiceExt<T>>>::as_ref(self).simple_rpc_with_rpc_opts(
+                rpc_options,
+            )
+        }
+    }
+
+    #[derive(Clone)]
+    pub struct make_FooService;
+
+    /// To be called by user directly setting up a client. Avoids
+    /// needing ClientFactory trait in scope, avoids unidiomatic
+    /// make_Trait name.
+    ///
+    /// ```
+    /// # const _: &str = stringify! {
+    /// use bgs::client::BuckGraphService;
+    ///
+    /// let protocol = BinaryProtocol::new();
+    /// let transport = HttpClient::new();
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
+    /// # };
+    /// ```
+    impl dyn FooService {
+        pub fn new<P, T>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl FooService + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl FooService + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(FooServiceImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    impl<T> dyn FooServiceExt<T>
+    where
+        T: ::fbthrift::Transport,
+    {
+        pub fn new<P>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl FooServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl FooServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(FooServiceImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    pub type FooServiceDynClient = <make_FooService as ::fbthrift::ClientFactory>::Api;
+    pub type FooServiceClient = ::std::sync::Arc<FooServiceDynClient>;
+
+    /// The same thing, but to be called from generic contexts where we are
+    /// working with a type parameter `C: ClientFactory` to produce clients.
+    impl ::fbthrift::ClientFactory for make_FooService {
+        type Api = dyn FooService + ::std::marker::Send + ::std::marker::Sync + 'static;
+
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            <dyn FooService>::with_spawner(protocol, transport, spawner)
+        }
+    }
+
+
+    pub struct FB303ServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
+        transport: T,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
+    }
+
+    impl<P, T, S> FB303ServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            Self {
+                transport,
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
+        }
+
+
+        fn _simple_rpc_impl(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "FB303Service";
+                METHOD_NAME = "FB303Service.simple_rpc";
+            }
+            let args = self::Args_FB303Service_simple_rpc {
+                int_parameter: arg_int_parameter,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("simple_rpc", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "FB303Service.simple_rpc"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::f_b303_service::SimpleRpcExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::f_b303_service::SimpleRpcError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("FB303Service.simple_rpc"))
+            .boxed()
+        }
+    }
+
+    pub trait FB303Service: ::std::marker::Send {
+        fn simple_rpc(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>>;
+    }
+
+    pub trait FB303ServiceExt<T>: FB303Service
+    where
+        T: ::fbthrift::Transport,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>>;
+    }
+
+    struct Args_FB303Service_simple_rpc<'a> {
+        int_parameter: ::std::primitive::i32,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_FB303Service_simple_rpc<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "FB303Service.simple_rpc"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("int_parameter", ::fbthrift::TType::I32, 1i16);
+            ::fbthrift::Serialize::write(&self.int_parameter, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P, T, S> FB303Service for FB303ServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn simple_rpc(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            let rpc_options = T::RpcOptions::default();
+            self._simple_rpc_impl(
+                arg_int_parameter,
+                rpc_options,
+            )
+        }
+    }
+
+    impl<P, T, S> FB303ServiceExt<T> for FB303ServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            self._simple_rpc_impl(
+                arg_int_parameter,
+                rpc_options,
+            )
+        }
+    }
+
+    impl<'a, S> FB303Service for S
+    where
+        S: ::std::convert::AsRef<dyn FB303Service + 'a>,
+        S: ::std::marker::Send,
+    {
+        fn simple_rpc(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().simple_rpc(
+                arg_int_parameter,
+            )
+        }
+    }
+
+    impl<'a, S, T> FB303ServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn FB303Service + 'a>,
+        S: ::std::convert::AsRef<dyn FB303ServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn simple_rpc_with_rpc_opts(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn FB303ServiceExt<T>>>::as_ref(self).simple_rpc_with_rpc_opts(
+                arg_int_parameter,
+                rpc_options,
+            )
+        }
+    }
+
+    #[derive(Clone)]
+    pub struct make_FB303Service;
+
+    /// To be called by user directly setting up a client. Avoids
+    /// needing ClientFactory trait in scope, avoids unidiomatic
+    /// make_Trait name.
+    ///
+    /// ```
+    /// # const _: &str = stringify! {
+    /// use bgs::client::BuckGraphService;
+    ///
+    /// let protocol = BinaryProtocol::new();
+    /// let transport = HttpClient::new();
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
+    /// # };
+    /// ```
+    impl dyn FB303Service {
+        pub fn new<P, T>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl FB303Service + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl FB303Service + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(FB303ServiceImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    impl<T> dyn FB303ServiceExt<T>
+    where
+        T: ::fbthrift::Transport,
+    {
+        pub fn new<P>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl FB303ServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl FB303ServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(FB303ServiceImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    pub type FB303ServiceDynClient = <make_FB303Service as ::fbthrift::ClientFactory>::Api;
+    pub type FB303ServiceClient = ::std::sync::Arc<FB303ServiceDynClient>;
+
+    /// The same thing, but to be called from generic contexts where we are
+    /// working with a type parameter `C: ClientFactory` to produce clients.
+    impl ::fbthrift::ClientFactory for make_FB303Service {
+        type Api = dyn FB303Service + ::std::marker::Send + ::std::marker::Sync + 'static;
+
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            <dyn FB303Service>::with_spawner(protocol, transport, spawner)
+        }
+    }
+
 
     pub struct MyServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
@@ -3572,6 +4633,631 @@ pub mod client {
 
 /// Server definitions for `module`.
 pub mod server {
+    #[::async_trait::async_trait]
+    pub trait FooService: ::std::marker::Send + ::std::marker::Sync + 'static {
+        async fn simple_rpc(
+            &self,
+        ) -> ::std::result::Result<(), crate::services::foo_service::SimpleRpcExn> {
+            ::std::result::Result::Err(crate::services::foo_service::SimpleRpcExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "FooService",
+                    "simple_rpc",
+                ),
+            ))
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<T> FooService for ::std::boxed::Box<T>
+    where
+        T: FooService + Send + Sync + ?Sized,
+    {
+        async fn simple_rpc(
+            &self,
+        ) -> ::std::result::Result<(), crate::services::foo_service::SimpleRpcExn> {
+            (**self).simple_rpc(
+            ).await
+        }
+    }
+
+    /// Processor for FooService's methods.
+    #[derive(Clone, Debug)]
+    pub struct FooServiceProcessor<P, H, R> {
+        service: H,
+        supa: ::fbthrift::NullServiceProcessor<P, R>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+    }
+
+    struct Args_FooService_simple_rpc {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_FooService_simple_rpc {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "FooService.simple_rpc"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+
+    impl<P, H, R> FooServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: FooService,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Sync,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync,
+    {
+        pub fn new(service: H) -> Self {
+            Self {
+                service,
+                supa: ::fbthrift::NullServiceProcessor::new(),
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn into_inner(self) -> H {
+            self.service
+        }
+
+        #[::tracing::instrument(skip_all, fields(method = "FooService.simple_rpc"))]
+        async fn handle_simple_rpc<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::foo_service::SimpleRpcExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "FooService";
+                METHOD_NAME = "FooService.simple_rpc";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_FooService_simple_rpc = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.simple_rpc(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "FooService.simple_rpc"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "FooService.simple_rpc", "success");
+                    crate::services::foo_service::SimpleRpcExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::foo_service::SimpleRpcExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "simple_rpc",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "FooService.simple_rpc", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("FooService.simple_rpc", exn);
+                    crate::services::foo_service::SimpleRpcExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for FooServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: FooService,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        type RequestContext = R;
+
+        #[inline]
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
+            match name {
+                b"simple_rpc" => ::std::result::Result::Ok(0usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
+            }
+        }
+
+        async fn handle_method(
+            &self,
+            idx: ::std::primitive::usize,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            match idx {
+                0usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "FooService";
+                        METHOD_NAME = "FooService.simple_rpc";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_simple_rpc(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "simple_rpc",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "FooServiceProcessor",
+                    bad
+                ),
+            }
+        }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "FooServiceProcessor",
+                    bad
+                ),
+            }
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for FooServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
+        H: FooService,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        type Handler = H;
+        type RequestContext = R;
+
+        #[tracing::instrument(level="trace", skip_all, fields(service = "FooService"))]
+        async fn call(
+            &self,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
+            let mut p = P::deserializer(req);
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
+                    format!("message type {:?} not handled", mty)
+                )));
+            }
+            let idx = match idx {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
+                    let cur = P::into_buffer(p).reset();
+                    return self.supa.call(cur, req_ctxt).await;
+                }
+            };
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await?;
+            p.read_message_end()?;
+
+            Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
+        }
+    }
+
+    /// Construct a new instance of a FooService service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
+    pub fn make_FooService_server<F, H, R>(
+        proto: ::fbthrift::ProtocolID,
+        handler: H,
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
+    where
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
+        H: FooService,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = F::DecBuf> + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        match proto {
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(FooServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+            }
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(FooServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+            }
+            bad => {
+                ::tracing::error!(method = "FooService.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
+        }
+    }
+
+    #[::async_trait::async_trait]
+    pub trait FB303Service: ::std::marker::Send + ::std::marker::Sync + 'static {
+        async fn simple_rpc(
+            &self,
+            _int_parameter: ::std::primitive::i32,
+        ) -> ::std::result::Result<crate::types::ReservedKeyword, crate::services::f_b303_service::SimpleRpcExn> {
+            ::std::result::Result::Err(crate::services::f_b303_service::SimpleRpcExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "FB303Service",
+                    "simple_rpc",
+                ),
+            ))
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<T> FB303Service for ::std::boxed::Box<T>
+    where
+        T: FB303Service + Send + Sync + ?Sized,
+    {
+        async fn simple_rpc(
+            &self,
+            int_parameter: ::std::primitive::i32,
+        ) -> ::std::result::Result<crate::types::ReservedKeyword, crate::services::f_b303_service::SimpleRpcExn> {
+            (**self).simple_rpc(
+                int_parameter, 
+            ).await
+        }
+    }
+
+    /// Processor for FB303Service's methods.
+    #[derive(Clone, Debug)]
+    pub struct FB303ServiceProcessor<P, H, R> {
+        service: H,
+        supa: ::fbthrift::NullServiceProcessor<P, R>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+    }
+
+    struct Args_FB303Service_simple_rpc {
+        int_parameter: ::std::primitive::i32,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_FB303Service_simple_rpc {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "FB303Service.simple_rpc"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("int_parameter", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field_int_parameter = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_int_parameter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                int_parameter: field_int_parameter.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "FB303Service.simple_rpc", "int_parameter"))?,
+            })
+        }
+    }
+
+
+    impl<P, H, R> FB303ServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: FB303Service,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Sync,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync,
+    {
+        pub fn new(service: H) -> Self {
+            Self {
+                service,
+                supa: ::fbthrift::NullServiceProcessor::new(),
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn into_inner(self) -> H {
+            self.service
+        }
+
+        #[::tracing::instrument(skip_all, fields(method = "FB303Service.simple_rpc"))]
+        async fn handle_simple_rpc<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::f_b303_service::SimpleRpcExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "FB303Service";
+                METHOD_NAME = "FB303Service.simple_rpc";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_FB303Service_simple_rpc = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.simple_rpc(
+                    _args.int_parameter,
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "FB303Service.simple_rpc"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "FB303Service.simple_rpc", "success");
+                    crate::services::f_b303_service::SimpleRpcExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::f_b303_service::SimpleRpcExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "simple_rpc",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "FB303Service.simple_rpc", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("FB303Service.simple_rpc", exn);
+                    crate::services::f_b303_service::SimpleRpcExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for FB303ServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: FB303Service,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        type RequestContext = R;
+
+        #[inline]
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
+            match name {
+                b"simple_rpc" => ::std::result::Result::Ok(0usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
+            }
+        }
+
+        async fn handle_method(
+            &self,
+            idx: ::std::primitive::usize,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            match idx {
+                0usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "FB303Service";
+                        METHOD_NAME = "FB303Service.simple_rpc";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_simple_rpc(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "simple_rpc",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "FB303ServiceProcessor",
+                    bad
+                ),
+            }
+        }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "FB303ServiceProcessor",
+                    bad
+                ),
+            }
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for FB303ServiceProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
+        H: FB303Service,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
+            + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        type Handler = H;
+        type RequestContext = R;
+
+        #[tracing::instrument(level="trace", skip_all, fields(service = "FB303Service"))]
+        async fn call(
+            &self,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
+            let mut p = P::deserializer(req);
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
+                    format!("message type {:?} not handled", mty)
+                )));
+            }
+            let idx = match idx {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
+                    let cur = P::into_buffer(p).reset();
+                    return self.supa.call(cur, req_ctxt).await;
+                }
+            };
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await?;
+            p.read_message_end()?;
+
+            Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
+        }
+    }
+
+    /// Construct a new instance of a FB303Service service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
+    pub fn make_FB303Service_server<F, H, R>(
+        proto: ::fbthrift::ProtocolID,
+        handler: H,
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
+    where
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
+        H: FB303Service,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = F::DecBuf> + ::std::marker::Send + ::std::marker::Sync + 'static
+    {
+        match proto {
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(FB303ServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+            }
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(FB303ServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+            }
+            bad => {
+                ::tracing::error!(method = "FB303Service.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
+        }
+    }
+
     #[::async_trait::async_trait]
     pub trait MyService: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn ping(
@@ -5553,6 +7239,57 @@ pub mod server {
 /// # };
 /// ```
 pub mod mock {
+    pub struct FooService<'mock> {
+        pub simple_rpc: r#impl::foo_service::simple_rpc<'mock>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
+    }
+
+    impl dyn super::client::FooService {
+        pub fn mock<'mock>() -> FooService<'mock> {
+            FooService {
+                simple_rpc: r#impl::foo_service::simple_rpc::unimplemented(),
+                _marker: ::std::marker::PhantomData,
+            }
+        }
+    }
+
+    impl<'mock> super::client::FooService for FooService<'mock> {
+        fn simple_rpc(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.simple_rpc.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
+        }
+    }
+
+
+    pub struct FB303Service<'mock> {
+        pub simple_rpc: r#impl::f_b303_service::simple_rpc<'mock>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
+    }
+
+    impl dyn super::client::FB303Service {
+        pub fn mock<'mock>() -> FB303Service<'mock> {
+            FB303Service {
+                simple_rpc: r#impl::f_b303_service::simple_rpc::unimplemented(),
+                _marker: ::std::marker::PhantomData,
+            }
+        }
+    }
+
+    impl<'mock> super::client::FB303Service for FB303Service<'mock> {
+        fn simple_rpc(
+            &self,
+            arg_int_parameter: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.simple_rpc.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_int_parameter.clone())))
+        }
+    }
+
+
     pub struct MyService<'mock> {
         pub ping: r#impl::my_service::ping<'mock>,
         pub getRandomData: r#impl::my_service::getRandomData<'mock>,
@@ -5703,6 +7440,98 @@ pub mod mock {
     }
 
     mod r#impl {
+        pub mod foo_service {
+
+            pub struct simple_rpc<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::foo_service::SimpleRpcError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> simple_rpc<'mock> {
+                pub fn unimplemented() -> Self {
+                    simple_rpc {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "FooService",
+                            "simple_rpc",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::foo_service::SimpleRpcError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+        }
+        pub mod f_b303_service {
+
+            pub struct simple_rpc<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
+                        crate::types::ReservedKeyword,
+                        crate::errors::f_b303_service::SimpleRpcError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> simple_rpc<'mock> {
+                pub fn unimplemented() -> Self {
+                    simple_rpc {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
+                            "{}::{} is not mocked",
+                            "FB303Service",
+                            "simple_rpc",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: crate::types::ReservedKeyword) {
+                    self.mock(move |_: ::std::primitive::i32| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> crate::types::ReservedKeyword + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |int_parameter| ::std::result::Result::Ok(mock(int_parameter)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<crate::types::ReservedKeyword, crate::errors::f_b303_service::SimpleRpcError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |int_parameter| mock(int_parameter));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::f_b303_service::SimpleRpcError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i32| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+        }
         pub mod my_service {
 
             pub struct ping<'mock> {
@@ -6240,6 +8069,46 @@ pub mod mock {
 
 /// Error return types.
 pub mod errors {
+    /// Errors for FooService functions.
+    pub mod foo_service {
+
+        pub type SimpleRpcError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::foo_service::SimpleRpcExn> for
+            ::std::result::Result<(), SimpleRpcError>
+        {
+            fn from(e: crate::services::foo_service::SimpleRpcExn) -> Self {
+                match e {
+                    crate::services::foo_service::SimpleRpcExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::foo_service::SimpleRpcExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(SimpleRpcError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+    }
+
+    /// Errors for FB303Service functions.
+    pub mod f_b303_service {
+
+        pub type SimpleRpcError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::f_b303_service::SimpleRpcExn> for
+            ::std::result::Result<crate::types::ReservedKeyword, SimpleRpcError>
+        {
+            fn from(e: crate::services::f_b303_service::SimpleRpcExn) -> Self {
+                match e {
+                    crate::services::f_b303_service::SimpleRpcExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::f_b303_service::SimpleRpcExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(SimpleRpcError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+    }
+
     /// Errors for MyService functions.
     pub mod my_service {
 

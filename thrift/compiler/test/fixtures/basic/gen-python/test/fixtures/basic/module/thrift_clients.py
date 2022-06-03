@@ -21,6 +21,120 @@ import test.fixtures.basic.module.thrift_metadata
 import facebook.thrift.annotation.hack.thrift_types
 
 
+class FooService(_fbthrift_py3lite_Client["FooService.Async", "FooService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.FooService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
+
+    class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.FooService"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
+
+        async def simple_rpc(
+            self
+        ) -> None:
+            _fbthrift_resp = await self._send_request(
+                "FooService",
+                "simple_rpc",
+                test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_args(),
+                test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result,
+            )
+
+    class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.FooService"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
+
+        def simple_rpc(
+            self
+        ) -> None:
+            _fbthrift_resp = self._send_request(
+                "FooService",
+                "simple_rpc",
+                test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_args(),
+                test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result,
+            )
+
+
+class FB303Service(_fbthrift_py3lite_Client["FB303Service.Async", "FB303Service.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.FB303Service"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
+
+    class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.FB303Service"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
+
+        async def simple_rpc(
+            self,
+            int_parameter: int
+        ) -> test.fixtures.basic.module.thrift_types.ReservedKeyword:
+            _fbthrift_resp = await self._send_request(
+                "FB303Service",
+                "simple_rpc",
+                test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_args(
+                    int_parameter=int_parameter,),
+                test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_result,
+            )
+            # shortcut to success path for non-void returns
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+    class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.FB303Service"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
+
+        def simple_rpc(
+            self,
+            int_parameter: int
+        ) -> test.fixtures.basic.module.thrift_types.ReservedKeyword:
+            _fbthrift_resp = self._send_request(
+                "FB303Service",
+                "simple_rpc",
+                test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_args(
+                    int_parameter=int_parameter,),
+                test.fixtures.basic.module.thrift_types._fbthrift_FB303Service_simple_rpc_result,
+            )
+            # shortcut to success path for non-void returns
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+
 class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:

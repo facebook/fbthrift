@@ -38,3 +38,11 @@ cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public set floatSet
 
 
+cdef class ReservedKeyword_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint reserved_field
+
+
+cdef class UnionToBeRenamed_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint reserved_field
+
+

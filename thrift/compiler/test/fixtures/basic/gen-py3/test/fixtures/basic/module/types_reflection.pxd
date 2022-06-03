@@ -20,4 +20,8 @@ cdef __StructSpec get_reflection__MyDataItem()
 
 cdef __StructSpec get_reflection__MyUnion()
 
+cdef __StructSpec get_reflection__ReservedKeyword()
+
+cdef __StructSpec get_reflection__UnionToBeRenamed()
+
 cdef __SetSpec get_reflection__Set__float()

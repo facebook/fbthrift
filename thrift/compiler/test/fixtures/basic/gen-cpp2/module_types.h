@@ -28,6 +28,8 @@ struct myEnum;
 struct myStruct;
 struct myDataItem;
 struct floatSet;
+struct reserved_field;
+struct reserved_field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_MyIntField
@@ -82,6 +84,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myDataItem);
 #define APACHE_THRIFT_ACCESSOR_floatSet
 APACHE_THRIFT_DEFINE_ACCESSOR(floatSet);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_reserved_field
+#define APACHE_THRIFT_ACCESSOR_reserved_field
+APACHE_THRIFT_DEFINE_ACCESSOR(reserved_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_reserved_field
+#define APACHE_THRIFT_ACCESSOR_reserved_field
+APACHE_THRIFT_DEFINE_ACCESSOR(reserved_field);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -97,11 +107,21 @@ enum class MyEnum {
 
 
 
+enum class HackEnum {
+  Value1 = 0,
+  Value2 = 1,
+};
+
+
+
+
 }}} // test::fixtures::basic
 
 namespace std {
 template<> struct hash<::test::fixtures::basic::MyEnum> :
   ::apache::thrift::detail::enum_hash<::test::fixtures::basic::MyEnum> {};
+template<> struct hash<::test::fixtures::basic::HackEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::basic::HackEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -135,6 +155,34 @@ template <> struct TEnumTraits<::test::fixtures::basic::MyEnum> {
 };
 
 
+template <> struct TEnumDataStorage<::test::fixtures::basic::HackEnum>;
+
+template <> struct TEnumTraits<::test::fixtures::basic::HackEnum> {
+  using type = ::test::fixtures::basic::HackEnum;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::Value1; }
+  static constexpr type max() { return type::Value2; }
+};
+
+
 }} // apache::thrift
 
 namespace test { namespace fixtures { namespace basic {
@@ -146,6 +194,13 @@ extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAME
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 #endif
+using _HackEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<HackEnum>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _HackEnum_EnumMapFactory::ValuesToNamesMapType _HackEnum_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _HackEnum_EnumMapFactory::NamesToValuesMapType _HackEnum_NAMES_TO_VALUES;
+#endif
 }}} // test::fixtures::basic
 
 // END declare_enums
@@ -154,6 +209,8 @@ namespace test { namespace fixtures { namespace basic {
 class MyDataItem;
 class MyStruct;
 class MyUnion;
+class ReservedKeyword;
+class UnionToBeRenamed;
 }}} // test::fixtures::basic
 // END forward_declare
 // BEGIN hash_and_equal_to
@@ -1273,6 +1330,345 @@ unsigned long MyUnion::read(Protocol_* iprot) {
 }
 
 
+class ReservedKeyword final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const char* __fbthrift_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
+  >;
+  
+  static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return ::apache::thrift::Ordinal{1};
+    }
+    return ::apache::thrift::Ordinal{0};
+  }
+
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = ReservedKeyword;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  ReservedKeyword() :
+      __fbthrift_field_reserved_field() {
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  ReservedKeyword(apache::thrift::FragileConstructor, ::std::int32_t reserved_field__arg);
+
+  ReservedKeyword(ReservedKeyword&&) = default;
+
+  ReservedKeyword(const ReservedKeyword&) = default;
+
+
+  ReservedKeyword& operator=(ReservedKeyword&&) = default;
+
+  ReservedKeyword& operator=(const ReservedKeyword&) = default;
+ private:
+  ::std::int32_t __fbthrift_field_reserved_field;
+ private:
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const ReservedKeyword&) const;
+  bool operator<(const ReservedKeyword&) const;
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> reserved_field_ref() const& {
+    return {this->__fbthrift_field_reserved_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reserved_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_reserved_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> reserved_field_ref() & {
+    return {this->__fbthrift_field_reserved_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> reserved_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_reserved_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> reserved_field() const& {
+    return {this->__fbthrift_field_reserved_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reserved_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_reserved_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> reserved_field() & {
+    return {this->__fbthrift_field_reserved_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> reserved_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_reserved_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  ::std::int32_t get_reserved_field() const {
+    return __fbthrift_field_reserved_field;
+  }
+
+  [[deprecated("Use `FOO.reserved_field_ref() = BAR;` instead of `FOO.set_reserved_field(BAR);`")]]
+  ::std::int32_t& set_reserved_field(::std::int32_t reserved_field_) {
+    reserved_field_ref() = reserved_field_;
+    return __fbthrift_field_reserved_field;
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<ReservedKeyword>;
+  friend void swap(ReservedKeyword& a, ReservedKeyword& b);
+};
+
+template <class Protocol_>
+unsigned long ReservedKeyword::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
+class UnionToBeRenamed final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const char* __fbthrift_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
+  >;
+  
+  static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return ::apache::thrift::Ordinal{1};
+    }
+    return ::apache::thrift::Ordinal{0};
+  }
+
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = UnionToBeRenamed;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
+
+
+ public:
+  enum Type : int {
+    __EMPTY__ = 0,
+    reserved_field = 1,
+  } ;
+
+  UnionToBeRenamed()
+      : type_(Type::__EMPTY__) {}
+
+  UnionToBeRenamed(UnionToBeRenamed&& rhs) noexcept
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::reserved_field:
+      {
+        set_reserved_field(std::move(rhs.value_.reserved_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    apache::thrift::clear(rhs);
+  }
+
+  UnionToBeRenamed(const UnionToBeRenamed& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::reserved_field:
+      {
+        set_reserved_field(rhs.value_.reserved_field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  UnionToBeRenamed& operator=(UnionToBeRenamed&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    __fbthrift_clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::reserved_field:
+      {
+        set_reserved_field(std::move(rhs.value_.reserved_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
+  UnionToBeRenamed& operator=(const UnionToBeRenamed& rhs) {
+    if (this == &rhs) { return *this; }
+    __fbthrift_clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::reserved_field:
+      {
+        set_reserved_field(rhs.value_.reserved_field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+
+  ~UnionToBeRenamed() {
+    apache::thrift::clear(*this);
+  }
+
+  union storage_type {
+    ::std::int32_t reserved_field;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+
+  bool operator==(const UnionToBeRenamed&) const;
+  bool operator<(const UnionToBeRenamed&) const;
+
+  ::std::int32_t& set_reserved_field(::std::int32_t t = ::std::int32_t()) {
+    __fbthrift_clear();
+    type_ = Type::reserved_field;
+    ::new (std::addressof(value_.reserved_field)) ::std::int32_t(t);
+    return value_.reserved_field;
+  }
+
+  ::std::int32_t const& get_reserved_field() const {
+    if (type_ != Type::reserved_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.reserved_field;
+  }
+
+  ::std::int32_t& mutable_reserved_field() {
+    assert(type_ == Type::reserved_field);
+    return value_.reserved_field;
+  }
+
+  ::std::int32_t move_reserved_field() {
+    assert(type_ == Type::reserved_field);
+    return std::move(value_.reserved_field);
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> reserved_field_ref() const& {
+    return {value_.reserved_field, type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> reserved_field_ref() const&& {
+    return {std::move(value_.reserved_field), type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> reserved_field_ref() & {
+    return {value_.reserved_field, type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> reserved_field_ref() && {
+    return {std::move(value_.reserved_field), type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+  Type getType() const { return static_cast<Type>(type_); }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  storage_type value_;
+  std::underlying_type_t<Type> type_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<UnionToBeRenamed>;
+  friend void swap(UnionToBeRenamed& a, UnionToBeRenamed& b);
+};
+
+template <class Protocol_>
+unsigned long UnionToBeRenamed::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
 }}} // test::fixtures::basic
 
 namespace apache { namespace thrift {
@@ -1283,6 +1679,31 @@ template <> struct TEnumTraits<::test::fixtures::basic::MyUnion::Type> {
   using type = ::test::fixtures::basic::MyUnion::Type;
 
   static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+};
+
+template <> struct TEnumDataStorage<::test::fixtures::basic::UnionToBeRenamed::Type>;
+
+template <> struct TEnumTraits<::test::fixtures::basic::UnionToBeRenamed::Type> {
+  using type = ::test::fixtures::basic::UnionToBeRenamed::Type;
+
+  static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 

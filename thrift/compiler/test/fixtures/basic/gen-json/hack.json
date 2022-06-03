@@ -97,6 +97,53 @@
           "column" : 67
         }
       }
+    },
+    "Name" : {
+      "lineno" : 68,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 69,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 69,
+              "column" : 17
+            }
+          }
+        },
+        "reason" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 70,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 70,
+              "column" : 19
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 68,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 71,
+          "column" : 60
+        }
+      }
     }
   }
 }

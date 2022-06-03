@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'MyDataItem', 'MyUnion']
+__all__ = ['UTF8STRINGS', 'MyEnum', 'HackEnum', 'MyStruct', 'MyDataItem', 'MyUnion', 'ReservedKeyword', 'UnionToBeRenamed']
 
 class MyEnum:
   MyValue1 = 0
@@ -48,6 +48,20 @@ class MyEnum:
   _NAMES_TO_VALUES = {
     "MyValue1": 0,
     "MyValue2": 1,
+  }
+
+class HackEnum:
+  Value1 = 0
+  Value2 = 1
+
+  _VALUES_TO_NAMES = {
+    0: "Value1",
+    1: "Value2",
+  }
+
+  _NAMES_TO_VALUES = {
+    "Value1": 0,
+    "Value2": 1,
   }
 
 class MyStruct:
@@ -593,6 +607,211 @@ class MyUnion(object):
   def __ne__(self, other):
     return not (self == other)
 
+class ReservedKeyword:
+  """
+  Attributes:
+   - reserved_field
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.reserved_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('ReservedKeyword')
+    if self.reserved_field != None:
+      oprot.writeFieldBegin('reserved_field', TType.I32, 1)
+      oprot.writeI32(self.reserved_field)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'reserved_field' in json_obj and json_obj['reserved_field'] is not None:
+      self.reserved_field = json_obj['reserved_field']
+      if self.reserved_field > 0x7fffffff or self.reserved_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.reserved_field is not None:
+      value = pprint.pformat(self.reserved_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    reserved_field=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'reserved_field',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class UnionToBeRenamed(object):
+  """
+  Attributes:
+   - reserved_field
+  """
+
+  thrift_spec = None
+  __init__ = None
+
+  __EMPTY__ = 0
+  RESERVED_FIELD = 1
+  
+  @staticmethod
+  def isUnion():
+    return True
+
+  def get_reserved_field(self):
+    assert self.field == 1
+    return self.value
+
+  def set_reserved_field(self, value):
+    self.field = 1
+    self.value = value
+
+  def getType(self):
+    return self.field
+
+  def __repr__(self):
+    value = pprint.pformat(self.value)
+    member = ''
+    if self.field == 1:
+      padding = ' ' * 15
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('reserved_field', value)
+    return "%s(%s)" % (self.__class__.__name__, member)
+
+  def read(self, iprot):
+    self.field = 0
+    self.value = None
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+
+      if fid == 1:
+        if ftype == TType.I32:
+          reserved_field = iprot.readI32()
+          assert self.field == 0 and self.value is None
+          self.set_reserved_field(reserved_field)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeUnionBegin('UnionToBeRenamed')
+    if self.field == 1:
+      oprot.writeFieldBegin('reserved_field', TType.I32, 1)
+      reserved_field = self.value
+      oprot.writeI32(reserved_field)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeUnionEnd()
+  
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    self.field = 0
+    self.value = None
+    obj = json
+    if is_text:
+      obj = loads(json)
+    if not isinstance(obj, dict) or len(obj) > 1:
+      raise TProtocolException(TProtocolException.INVALID_DATA, 'Can not parse')
+    
+    if 'reserved_field' in obj:
+      reserved_field = obj['reserved_field']
+      if reserved_field > 0x7fffffff or reserved_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+      self.set_reserved_field(reserved_field)
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
@@ -684,6 +903,50 @@ def MyUnion__init__(self, myEnum=None, myStruct=None, myDataItem=None, floatSet=
     self.value = floatSet
 
 MyUnion.__init__ = MyUnion__init__
+
+all_structs.append(ReservedKeyword)
+ReservedKeyword.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'reserved_field', None, None, 2, ), # 1
+)
+
+ReservedKeyword.thrift_struct_annotations = {
+}
+ReservedKeyword.thrift_field_annotations = {
+}
+
+def ReservedKeyword__init__(self, reserved_field=None,):
+  self.reserved_field = reserved_field
+
+ReservedKeyword.__init__ = ReservedKeyword__init__
+
+def ReservedKeyword__setstate__(self, state):
+  state.setdefault('reserved_field', None)
+  self.__dict__ = state
+
+ReservedKeyword.__getstate__ = lambda self: self.__dict__.copy()
+ReservedKeyword.__setstate__ = ReservedKeyword__setstate__
+
+all_structs.append(UnionToBeRenamed)
+UnionToBeRenamed.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'reserved_field', None, None, 2, ), # 1
+)
+
+UnionToBeRenamed.thrift_struct_annotations = {
+}
+UnionToBeRenamed.thrift_field_annotations = {
+}
+
+def UnionToBeRenamed__init__(self, reserved_field=None,):
+  self.field = 0
+  self.value = None
+  if reserved_field is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 1
+    self.value = reserved_field
+
+UnionToBeRenamed.__init__ = UnionToBeRenamed__init__
 
 fix_spec(all_structs)
 del all_structs

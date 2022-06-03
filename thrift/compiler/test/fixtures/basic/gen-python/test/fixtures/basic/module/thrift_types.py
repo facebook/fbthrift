@@ -171,6 +171,58 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return _fbthrift_metadata__struct_MyUnion()
 
 
+
+class ReservedKeyword(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "reserved_field",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ReservedKeyword"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/basic/ReservedKeyword"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_ReservedKeyword()
+
+
+
+class UnionToBeRenamed(metaclass=_fbthrift_py3lite_types.UnionMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "reserved_field",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.UnionToBeRenamed"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/basic/UnionToBeRenamed"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_UnionToBeRenamed()
+
+
 # This unfortunately has to be down here to prevent circular imports
 import test.fixtures.basic.module.thrift_metadata
 
@@ -184,6 +236,16 @@ class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_enum_MyEnum()
+class HackEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    Value1 = 0
+    Value2 = 1
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.HackEnum"
+
+    @staticmethod
+    def __get_metadata__():
+        return test.fixtures.basic.module.thrift_metadata.gen_metadata_enum_HackEnum()
 
 def _fbthrift_metadata__struct_MyStruct():
     return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_MyStruct()
@@ -191,13 +253,55 @@ def _fbthrift_metadata__struct_MyDataItem():
     return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_MyDataItem()
 def _fbthrift_metadata__struct_MyUnion():
     return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_MyUnion()
+def _fbthrift_metadata__struct_ReservedKeyword():
+    return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_ReservedKeyword()
+def _fbthrift_metadata__struct_UnionToBeRenamed():
+    return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_UnionToBeRenamed()
 
 _fbthrift_all_structs = [
     MyStruct,
     MyDataItem,
     MyUnion,
+    ReservedKeyword,
+    UnionToBeRenamed,
 ]
 _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+
+
+class _fbthrift_FooService_simple_rpc_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_FooService_simple_rpc_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_FB303Service_simple_rpc_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "int_parameter",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_FB303Service_simple_rpc_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(ReservedKeyword),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
 
 
 class _fbthrift_MyService_ping_args(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -444,6 +548,10 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_result(metaclass=_fbthrift_p
 
 
 _fbthrift_py3lite_types.fill_specs(
+    _fbthrift_FooService_simple_rpc_args,
+    _fbthrift_FooService_simple_rpc_result,
+    _fbthrift_FB303Service_simple_rpc_args,
+    _fbthrift_FB303Service_simple_rpc_result,
     _fbthrift_MyService_ping_args,
     _fbthrift_MyService_ping_result,
     _fbthrift_MyService_getRandomData_args,

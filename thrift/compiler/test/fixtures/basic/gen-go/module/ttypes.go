@@ -66,6 +66,48 @@ func MyEnumFromString(s string) (MyEnum, error) {
 
 func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 
+type HackEnum int64
+const (
+  HackEnum_Value1 HackEnum = 0
+  HackEnum_Value2 HackEnum = 1
+)
+
+var HackEnumToName = map[HackEnum]string {
+  HackEnum_Value1: "Value1",
+  HackEnum_Value2: "Value2",
+}
+
+var HackEnumToValue = map[string]HackEnum {
+  "Value1": HackEnum_Value1,
+  "Value2": HackEnum_Value2,
+}
+
+var HackEnumNames = []string {
+  "Value1",
+  "Value2",
+}
+
+var HackEnumValues = []HackEnum {
+  HackEnum_Value1,
+  HackEnum_Value2,
+}
+
+func (p HackEnum) String() string {
+  if v, ok := HackEnumToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func HackEnumFromString(s string) (HackEnum, error) {
+  if v, ok := HackEnumToValue[s]; ok {
+    return v, nil
+  }
+  return HackEnum(0), fmt.Errorf("not a valid HackEnum string")
+}
+
+func HackEnumPtr(v HackEnum) *HackEnum { return &v }
+
 // Attributes:
 //  - MyIntField
 //  - MyStringField
@@ -955,5 +997,253 @@ func (p *MyUnion) String() string {
   }
   floatSetVal := fmt.Sprintf("%v", p.FloatSet)
   return fmt.Sprintf("MyUnion({MyEnum:%s MyStruct:%s MyDataItem:%s FloatSet:%s})", myEnumVal, myStructVal, myDataItemVal, floatSetVal)
+}
+
+// Attributes:
+//  - ReservedField
+type ReservedKeyword struct {
+  ReservedField int32 `thrift:"reserved_field,1" db:"reserved_field" json:"reserved_field"`
+}
+
+func NewReservedKeyword() *ReservedKeyword {
+  return &ReservedKeyword{}
+}
+
+
+func (p *ReservedKeyword) GetReservedField() int32 {
+  return p.ReservedField
+}
+type ReservedKeywordBuilder struct {
+  obj *ReservedKeyword
+}
+
+func NewReservedKeywordBuilder() *ReservedKeywordBuilder{
+  return &ReservedKeywordBuilder{
+    obj: NewReservedKeyword(),
+  }
+}
+
+func (p ReservedKeywordBuilder) Emit() *ReservedKeyword{
+  return &ReservedKeyword{
+    ReservedField: p.obj.ReservedField,
+  }
+}
+
+func (r *ReservedKeywordBuilder) ReservedField(reservedField int32) *ReservedKeywordBuilder {
+  r.obj.ReservedField = reservedField
+  return r
+}
+
+func (r *ReservedKeyword) SetReservedField(reservedField int32) *ReservedKeyword {
+  r.ReservedField = reservedField
+  return r
+}
+
+func (p *ReservedKeyword) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ReservedKeyword)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ReservedField = v
+  }
+  return nil
+}
+
+func (p *ReservedKeyword) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ReservedKeyword"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ReservedKeyword) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("reserved_field", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:reserved_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.ReservedField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.reserved_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:reserved_field: ", p), err) }
+  return err
+}
+
+func (p *ReservedKeyword) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  reservedFieldVal := fmt.Sprintf("%v", p.ReservedField)
+  return fmt.Sprintf("ReservedKeyword({ReservedField:%s})", reservedFieldVal)
+}
+
+// Attributes:
+//  - ReservedField
+type UnionToBeRenamed struct {
+  ReservedField *int32 `thrift:"reserved_field,1,optional" db:"reserved_field" json:"reserved_field,omitempty"`
+}
+
+func NewUnionToBeRenamed() *UnionToBeRenamed {
+  return &UnionToBeRenamed{}
+}
+
+var UnionToBeRenamed_ReservedField_DEFAULT int32
+func (p *UnionToBeRenamed) GetReservedField() int32 {
+  if !p.IsSetReservedField() {
+    return UnionToBeRenamed_ReservedField_DEFAULT
+  }
+return *p.ReservedField
+}
+func (p *UnionToBeRenamed) CountSetFieldsUnionToBeRenamed() int {
+  count := 0
+  if (p.IsSetReservedField()) {
+    count++
+  }
+  return count
+
+}
+
+func (p *UnionToBeRenamed) IsSetReservedField() bool {
+  return p != nil && p.ReservedField != nil
+}
+
+type UnionToBeRenamedBuilder struct {
+  obj *UnionToBeRenamed
+}
+
+func NewUnionToBeRenamedBuilder() *UnionToBeRenamedBuilder{
+  return &UnionToBeRenamedBuilder{
+    obj: NewUnionToBeRenamed(),
+  }
+}
+
+func (p UnionToBeRenamedBuilder) Emit() *UnionToBeRenamed{
+  return &UnionToBeRenamed{
+    ReservedField: p.obj.ReservedField,
+  }
+}
+
+func (u *UnionToBeRenamedBuilder) ReservedField(reservedField *int32) *UnionToBeRenamedBuilder {
+  u.obj.ReservedField = reservedField
+  return u
+}
+
+func (u *UnionToBeRenamed) SetReservedField(reservedField *int32) *UnionToBeRenamed {
+  u.ReservedField = reservedField
+  return u
+}
+
+func (p *UnionToBeRenamed) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *UnionToBeRenamed)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ReservedField = &v
+  }
+  return nil
+}
+
+func (p *UnionToBeRenamed) Write(oprot thrift.Protocol) error {
+  if c := p.CountSetFieldsUnionToBeRenamed(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
+  }
+  if err := oprot.WriteStructBegin("UnionToBeRenamed"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *UnionToBeRenamed) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetReservedField() {
+    if err := oprot.WriteFieldBegin("reserved_field", thrift.I32, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:reserved_field: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.ReservedField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.reserved_field (1) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:reserved_field: ", p), err) }
+  }
+  return err
+}
+
+func (p *UnionToBeRenamed) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  var reservedFieldVal string
+  if p.ReservedField == nil {
+    reservedFieldVal = "<nil>"
+  } else {
+    reservedFieldVal = fmt.Sprintf("%v", *p.ReservedField)
+  }
+  return fmt.Sprintf("UnionToBeRenamed({ReservedField:%s})", reservedFieldVal)
 }
 

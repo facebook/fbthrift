@@ -64,10 +64,28 @@ import sys
 import traceback
 import types as _py_types
 
+from test.fixtures.basic.module.services_wrapper cimport cFooServiceInterface
+from test.fixtures.basic.module.services_wrapper cimport cFB303ServiceInterface
 from test.fixtures.basic.module.services_wrapper cimport cMyServiceInterface
 from test.fixtures.basic.module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
+
+@cython.auto_pickle(False)
+cdef class Promise__test_fixtures_basic_module_types_cReservedKeyword:
+    cdef cFollyPromise[unique_ptr[_test_fixtures_basic_module_types.cReservedKeyword]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[unique_ptr[_test_fixtures_basic_module_types.cReservedKeyword]](cFollyPromise[unique_ptr[_test_fixtures_basic_module_types.cReservedKeyword]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[_test_fixtures_basic_module_types.cReservedKeyword]] cPromise):
+        cdef Promise__test_fixtures_basic_module_types_cReservedKeyword inst = Promise__test_fixtures_basic_module_types_cReservedKeyword.__new__(Promise__test_fixtures_basic_module_types_cReservedKeyword)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cset__float:
@@ -148,6 +166,75 @@ cdef class Promise_cFollyUnit:
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
+
+cdef object _FooService_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class FooServiceInterface(
+    ServiceInterface
+):
+    annotations = _FooService_annotations
+
+    def __cinit__(self):
+        self._cpp_obj = cFooServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    async def simple_rpc(
+            self):
+        raise NotImplementedError("async def simple_rpc is not implemented")
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__FooService(for_clients=False)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cFooServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.FooService"
+
+cdef object _FB303Service_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class FB303ServiceInterface(
+    ServiceInterface
+):
+    annotations = _FB303Service_annotations
+
+    def __cinit__(self):
+        self._cpp_obj = cFB303ServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    async def simple_rpc(
+            self,
+            int_parameter):
+        raise NotImplementedError("async def simple_rpc is not implemented")
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__FB303Service(for_clients=False)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cFB303ServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.FB303Service"
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
 })
@@ -268,6 +355,253 @@ cdef class DbMixedStackArgumentsInterface(
         return "module.DbMixedStackArguments"
 
 
+
+cdef api void call_cy_FooService_simple_rpc(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        FooService_simple_rpc_coro(
+            self,
+            __promise
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_FooService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        FooService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_FooService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        FooService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
+async def FooService_simple_rpc_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.simple_rpc()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler simple_rpc:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler simple_rpc:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def FooService_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def FooService_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_FB303Service_simple_rpc(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[_test_fixtures_basic_module_types.cReservedKeyword]] cPromise,
+    cint32_t int_parameter
+):
+    cdef Promise__test_fixtures_basic_module_types_cReservedKeyword __promise = Promise__test_fixtures_basic_module_types_cReservedKeyword._fbthrift_create(cmove(cPromise))
+    arg_int_parameter = int_parameter
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        FB303Service_simple_rpc_coro(
+            self,
+            __promise,
+            arg_int_parameter
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_FB303Service_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        FB303Service_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_FB303Service_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        FB303Service_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
+async def FB303Service_simple_rpc_coro(
+    object self,
+    Promise__test_fixtures_basic_module_types_cReservedKeyword promise,
+    int_parameter
+):
+    try:
+        result = await self.simple_rpc(
+                    int_parameter)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler simple_rpc:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler simple_rpc:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[_test_fixtures_basic_module_types.cReservedKeyword](deref((<_test_fixtures_basic_module_types.ReservedKeyword?> result)._cpp_obj)))
+
+async def FB303Service_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def FB303Service_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_ping(
     object self,

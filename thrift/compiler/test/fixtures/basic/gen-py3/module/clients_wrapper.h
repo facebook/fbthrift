@@ -6,6 +6,8 @@
  */
 
 #pragma once
+#include <src/gen-cpp2/FooService.h>
+#include <src/gen-cpp2/FB303Service.h>
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/DbMixedStackArguments.h>
 
@@ -25,6 +27,25 @@
 namespace test {
 namespace fixtures {
 namespace basic {
+
+class FooServiceClientWrapper : public ::thrift::py3::ClientWrapper {
+  public:
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
+
+    folly::Future<folly::Unit> simple_rpc(
+      apache::thrift::RpcOptions& rpcOptions);
+};
+
+
+class FB303ServiceClientWrapper : public ::thrift::py3::ClientWrapper {
+  public:
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
+
+    folly::Future<::test::fixtures::basic::ReservedKeyword> simple_rpc(
+      apache::thrift::RpcOptions& rpcOptions,
+      int32_t arg_int_parameter);
+};
+
 
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:

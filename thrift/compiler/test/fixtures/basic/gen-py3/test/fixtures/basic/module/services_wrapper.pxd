@@ -12,5 +12,7 @@ from folly cimport cFollyExecutor
 
 
 cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::test::fixtures::basic":
+    shared_ptr[cAsyncProcessorFactory] cFooServiceInterface "::test::fixtures::basic::FooServiceInterface"(PyObject *if_object, cFollyExecutor* Q) except *
+    shared_ptr[cAsyncProcessorFactory] cFB303ServiceInterface "::test::fixtures::basic::FB303ServiceInterface"(PyObject *if_object, cFollyExecutor* Q) except *
     shared_ptr[cAsyncProcessorFactory] cMyServiceInterface "::test::fixtures::basic::MyServiceInterface"(PyObject *if_object, cFollyExecutor* Q) except *
     shared_ptr[cAsyncProcessorFactory] cDbMixedStackArgumentsInterface "::test::fixtures::basic::DbMixedStackArgumentsInterface"(PyObject *if_object, cFollyExecutor* Q) except *

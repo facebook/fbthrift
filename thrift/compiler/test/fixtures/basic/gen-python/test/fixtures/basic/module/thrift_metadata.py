@@ -114,6 +114,120 @@ def _fbthrift_gen_metadata_struct_MyUnion(metadata_struct: _fbthrift_metadata.Th
 def gen_metadata_struct_MyUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MyUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
+def _fbthrift_gen_metadata_struct_ReservedKeyword(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.ReservedKeyword"
+
+    if qualified_name in metadata_struct.structs:
+        return metadata_struct
+    fields = [
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="reserved_field", is_optional=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="renamed_field"),  }),
+        ]),
+    ]
+    struct_dict = dict(metadata_struct.structs)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
+        is_union=False,
+        structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="MyRenamedStruct"),  }),
+        ])
+    new_struct = metadata_struct(structs=struct_dict)
+
+     # reserved_field
+
+    return new_struct
+def gen_metadata_struct_ReservedKeyword() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_struct_ReservedKeyword(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
+def _fbthrift_gen_metadata_struct_UnionToBeRenamed(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.UnionToBeRenamed"
+
+    if qualified_name in metadata_struct.structs:
+        return metadata_struct
+    fields = [
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="reserved_field", is_optional=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="renamed_field"),  }),
+        ]),
+    ]
+    struct_dict = dict(metadata_struct.structs)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
+        is_union=True,
+        structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="MyRenamedUnion"),  }),
+        ])
+    new_struct = metadata_struct(structs=struct_dict)
+
+     # reserved_field
+
+    return new_struct
+def gen_metadata_struct_UnionToBeRenamed() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_struct_UnionToBeRenamed(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+
+def gen_metadata_service_FooService() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_service_FooService(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+def _fbthrift_gen_metadata_service_FooService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.FooService"
+
+    if qualified_name in metadata_struct.services:
+        return metadata_struct
+
+    functions = [
+        _fbthrift_metadata.ThriftFunction(name="simple_rpc", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_VOID_TYPE), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+        ]),
+    ]
+
+    service_dict = dict(metadata_struct.services)
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
+        _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="RenamedService"),  }),
+    ])
+    new_struct = metadata_struct(services=service_dict)
+
+
+
+     # return value
+
+
+    return new_struct
+
+def gen_metadata_service_FB303Service() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_service_FB303Service(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+def _fbthrift_gen_metadata_service_FB303Service(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.FB303Service"
+
+    if qualified_name in metadata_struct.services:
+        return metadata_struct
+
+    functions = [
+        _fbthrift_metadata.ThriftFunction(name="simple_rpc", return_type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.ReservedKeyword")), arguments=[
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="int_parameter", is_optional=False, structured_annotations=[
+                _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="renamed_parameter"),  }),
+            ]),
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Name"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="renamed_rpc"),  }),
+        ]),
+    ]
+
+    service_dict = dict(metadata_struct.services)
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
+    ])
+    new_struct = metadata_struct(services=service_dict)
+
+     # int_parameter
+
+
+    new_struct = _fbthrift_gen_metadata_struct_ReservedKeyword(new_struct) # return value
+
+
+    return new_struct
 
 def gen_metadata_service_MyService() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_service_MyService(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -311,13 +425,35 @@ def _fbthrift_gen_metadata_enum_MyEnum(metadata_struct: _fbthrift_metadata.Thrif
 
 def gen_metadata_enum_MyEnum() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_enum_MyEnum(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+def _fbthrift_gen_metadata_enum_HackEnum(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.HackEnum"
+
+    if qualified_name in metadata_struct.enums:
+        return metadata_struct
+    elements = {
+        0: "Value1",
+        1: "Value2",
+    }
+    enum_dict = dict(metadata_struct.enums)
+    enum_dict[qualified_name] = _fbthrift_metadata.ThriftEnum(name=qualified_name, elements=elements, structured_annotations=[])
+    new_struct = metadata_struct(enums=enum_dict)
+
+    return new_struct
+
+def gen_metadata_enum_HackEnum() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_enum_HackEnum(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
 def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_enum_MyEnum(meta)
+    meta = _fbthrift_gen_metadata_enum_HackEnum(meta)
     meta = _fbthrift_gen_metadata_struct_MyStruct(meta)
     meta = _fbthrift_gen_metadata_struct_MyDataItem(meta)
     meta = _fbthrift_gen_metadata_struct_MyUnion(meta)
+    meta = _fbthrift_gen_metadata_struct_ReservedKeyword(meta)
+    meta = _fbthrift_gen_metadata_struct_UnionToBeRenamed(meta)
+    meta = _fbthrift_gen_metadata_service_FooService(meta)
+    meta = _fbthrift_gen_metadata_service_FB303Service(meta)
     meta = _fbthrift_gen_metadata_service_MyService(meta)
     meta = _fbthrift_gen_metadata_service_DbMixedStackArguments(meta)
     return meta
