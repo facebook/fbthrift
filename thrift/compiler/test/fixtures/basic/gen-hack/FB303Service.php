@@ -17,9 +17,9 @@ interface FB303ServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
    * ReservedKeyword
-   *   simple_rpc(1: i32 int_parameter);
+   *   renamed_rpc(1: i32 int_parameter);
    */
-  public function simple_rpc(int $int_parameter): Awaitable<\fixtures\basic\ReservedKeyword>;
+  public function renamed_rpc(int $renamed_parameter): Awaitable<\fixtures\basic\MyRenamedStruct>;
 }
 
 /**
@@ -31,9 +31,9 @@ interface FB303ServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * ReservedKeyword
-   *   simple_rpc(1: i32 int_parameter);
+   *   renamed_rpc(1: i32 int_parameter);
    */
-  public function simple_rpc(int $int_parameter): \fixtures\basic\ReservedKeyword;
+  public function renamed_rpc(int $renamed_parameter): \fixtures\basic\MyRenamedStruct;
 }
 
 /**
@@ -53,9 +53,9 @@ interface FB303ServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * ReservedKeyword
-   *   simple_rpc(1: i32 int_parameter);
+   *   renamed_rpc(1: i32 int_parameter);
    */
-  public function simple_rpc(int $int_parameter): Awaitable<\fixtures\basic\ReservedKeyword>;
+  public function renamed_rpc(int $renamed_parameter): Awaitable<\fixtures\basic\MyRenamedStruct>;
 }
 
 /**
@@ -66,14 +66,14 @@ trait FB303ServiceClientBase {
   require extends \ThriftClientBase;
 
 
-  protected function recvImpl_simple_rpc(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \fixtures\basic\ReservedKeyword {
+  protected function recvImpl_renamed_rpc(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \fixtures\basic\MyRenamedStruct {
     try {
-      $this->eventHandler_->preRecv('simple_rpc', $expectedsequenceid);
+      $this->eventHandler_->preRecv('renamed_rpc', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\FB303Service_simple_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\FB303Service_renamed_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\FB303Service_simple_rpc_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\FB303Service_renamed_rpc_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -92,37 +92,37 @@ trait FB303ServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = \fixtures\basic\FB303Service_simple_rpc_result::withDefaultValues();
+        $result = \fixtures\basic\FB303Service_renamed_rpc_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("simple_rpc failed: sequence id is out of order");
+          throw new \TProtocolException("renamed_rpc failed: sequence id is out of order");
         }
       }
     } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
         case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('simple_rpc', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvException('renamed_rpc', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('simple_rpc', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_SUCCESS:
         default:
-          $this->eventHandler_->postRecv('simple_rpc', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->postRecv('renamed_rpc', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
     } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('simple_rpc', $expectedsequenceid, $ex);
+      $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $ex);
       throw $ex;
     }
     if ($result->success !== null) {
       $success = $result->success;
-      $this->eventHandler_->postRecv('simple_rpc', $expectedsequenceid, $success);
+      $this->eventHandler_->postRecv('renamed_rpc', $expectedsequenceid, $success);
       return $success;
     }
-    $x = new \TApplicationException("simple_rpc failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('simple_rpc', $expectedsequenceid, $x);
+    $x = new \TApplicationException("renamed_rpc failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $x);
     throw $x;
   }
 
@@ -134,19 +134,19 @@ class FB303ServiceAsyncClient extends \ThriftClientBase implements FB303ServiceA
   /**
    * Original thrift definition:-
    * ReservedKeyword
-   *   simple_rpc(1: i32 int_parameter);
+   *   renamed_rpc(1: i32 int_parameter);
    */
-  public async function simple_rpc(int $int_parameter): Awaitable<\fixtures\basic\ReservedKeyword> {
+  public async function renamed_rpc(int $renamed_parameter): Awaitable<\fixtures\basic\MyRenamedStruct> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FB303Service", "simple_rpc");
-    $args = \fixtures\basic\FB303Service_simple_rpc_args::fromShape(shape(
+    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc");
+    $args = \fixtures\basic\FB303Service_renamed_rpc_args::fromShape(shape(
       'int_parameter' => $int_parameter,
     ));
-    $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
+    $currentseqid = $this->sendImplHelper($args, "renamed_rpc", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -159,7 +159,7 @@ class FB303ServiceAsyncClient extends \ThriftClientBase implements FB303ServiceA
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_simple_rpc($currentseqid);
+    $response = $this->recvImpl_renamed_rpc($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -172,19 +172,19 @@ class FB303ServiceClient extends \ThriftClientBase implements FB303ServiceClient
   /**
    * Original thrift definition:-
    * ReservedKeyword
-   *   simple_rpc(1: i32 int_parameter);
+   *   renamed_rpc(1: i32 int_parameter);
    */
-  public async function simple_rpc(int $int_parameter): Awaitable<\fixtures\basic\ReservedKeyword> {
+  public async function renamed_rpc(int $renamed_parameter): Awaitable<\fixtures\basic\MyRenamedStruct> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FB303Service", "simple_rpc");
-    $args = \fixtures\basic\FB303Service_simple_rpc_args::fromShape(shape(
+    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc");
+    $args = \fixtures\basic\FB303Service_renamed_rpc_args::fromShape(shape(
       'int_parameter' => $int_parameter,
     ));
-    $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
+    $currentseqid = $this->sendImplHelper($args, "renamed_rpc", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -197,20 +197,20 @@ class FB303ServiceClient extends \ThriftClientBase implements FB303ServiceClient
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_simple_rpc($currentseqid);
+    $response = $this->recvImpl_renamed_rpc($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
 
   /* send and recv functions */
-  public function send_simple_rpc(int $int_parameter): int {
-    $args = \fixtures\basic\FB303Service_simple_rpc_args::fromShape(shape(
+  public function send_renamed_rpc(int $renamed_parameter): int {
+    $args = \fixtures\basic\FB303Service_renamed_rpc_args::fromShape(shape(
       'int_parameter' => $int_parameter,
     ));
-    return $this->sendImplHelper($args, "simple_rpc", false);
+    return $this->sendImplHelper($args, "renamed_rpc", false);
   }
-  public function recv_simple_rpc(?int $expectedsequenceid = null): \fixtures\basic\ReservedKeyword {
-    return $this->recvImpl_simple_rpc($expectedsequenceid);
+  public function recv_renamed_rpc(?int $expectedsequenceid = null): \fixtures\basic\MyRenamedStruct {
+    return $this->recvImpl_renamed_rpc($expectedsequenceid);
   }
 }
 
@@ -218,49 +218,49 @@ abstract class FB303ServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
   abstract const type TThriftIf as FB303ServiceAsyncIf;
   const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = FB303ServiceStaticMetadata::class;
 
-  protected async function process_simple_rpc(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('simple_rpc');
+  protected async function process_renamed_rpc(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('renamed_rpc');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'simple_rpc', dict[]);
+    $this->eventHandler_->preRead($handler_ctx, 'renamed_rpc', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FB303Service_simple_rpc_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FB303Service_renamed_rpc_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FB303Service_simple_rpc_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FB303Service_renamed_rpc_args');
     } else {
-      $args = \fixtures\basic\FB303Service_simple_rpc_args::withDefaultValues();
+      $args = \fixtures\basic\FB303Service_renamed_rpc_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'simple_rpc', $args);
-    $result = \fixtures\basic\FB303Service_simple_rpc_result::withDefaultValues();
+    $this->eventHandler_->postRead($handler_ctx, 'renamed_rpc', $args);
+    $result = \fixtures\basic\FB303Service_renamed_rpc_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FB303Service', 'simple_rpc', $args);
-      $result->success = await $this->handler->simple_rpc($args->int_parameter);
-      $this->eventHandler_->postExec($handler_ctx, 'simple_rpc', $result);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FB303Service', 'renamed_rpc', $args);
+      $result->success = await $this->handler->renamed_rpc($args->int_parameter);
+      $this->eventHandler_->postExec($handler_ctx, 'renamed_rpc', $result);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'simple_rpc', $ex);
+      $this->eventHandler_->handlerError($handler_ctx, 'renamed_rpc', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
-    $this->eventHandler_->preWrite($handler_ctx, 'simple_rpc', $result);
+    $this->eventHandler_->preWrite($handler_ctx, 'renamed_rpc', $result);
     if ($output is \TBinaryProtocolAccelerated)
     {
-      \thrift_protocol_write_binary($output, 'simple_rpc', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'renamed_rpc', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output is \TCompactProtocolAccelerated)
     {
-      \thrift_protocol_write_compact($output, 'simple_rpc', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'renamed_rpc', $reply_type, $result, $seqid);
     }
     else
     {
-      $output->writeMessageBegin("simple_rpc", $reply_type, $seqid);
+      $output->writeMessageBegin("renamed_rpc", $reply_type, $seqid);
       $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
     }
-    $this->eventHandler_->postWrite($handler_ctx, 'simple_rpc', $result);
+    $this->eventHandler_->postWrite($handler_ctx, 'renamed_rpc', $result);
   }
   protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $reply_type = \TMessageType::REPLY;
@@ -306,49 +306,49 @@ abstract class FB303ServiceSyncProcessorBase extends \ThriftSyncProcessor {
   abstract const type TThriftIf as FB303ServiceIf;
   const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = FB303ServiceStaticMetadata::class;
 
-  protected function process_simple_rpc(int $seqid, \TProtocol $input, \TProtocol $output): void {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('simple_rpc');
+  protected function process_renamed_rpc(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('renamed_rpc');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'simple_rpc', dict[]);
+    $this->eventHandler_->preRead($handler_ctx, 'renamed_rpc', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FB303Service_simple_rpc_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FB303Service_renamed_rpc_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FB303Service_simple_rpc_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FB303Service_renamed_rpc_args');
     } else {
-      $args = \fixtures\basic\FB303Service_simple_rpc_args::withDefaultValues();
+      $args = \fixtures\basic\FB303Service_renamed_rpc_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'simple_rpc', $args);
-    $result = \fixtures\basic\FB303Service_simple_rpc_result::withDefaultValues();
+    $this->eventHandler_->postRead($handler_ctx, 'renamed_rpc', $args);
+    $result = \fixtures\basic\FB303Service_renamed_rpc_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FB303Service', 'simple_rpc', $args);
-      $result->success = $this->handler->simple_rpc($args->int_parameter);
-      $this->eventHandler_->postExec($handler_ctx, 'simple_rpc', $result);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FB303Service', 'renamed_rpc', $args);
+      $result->success = $this->handler->renamed_rpc($args->int_parameter);
+      $this->eventHandler_->postExec($handler_ctx, 'renamed_rpc', $result);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'simple_rpc', $ex);
+      $this->eventHandler_->handlerError($handler_ctx, 'renamed_rpc', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
-    $this->eventHandler_->preWrite($handler_ctx, 'simple_rpc', $result);
+    $this->eventHandler_->preWrite($handler_ctx, 'renamed_rpc', $result);
     if ($output is \TBinaryProtocolAccelerated)
     {
-      \thrift_protocol_write_binary($output, 'simple_rpc', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'renamed_rpc', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output is \TCompactProtocolAccelerated)
     {
-      \thrift_protocol_write_compact($output, 'simple_rpc', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'renamed_rpc', $reply_type, $result, $seqid);
     }
     else
     {
-      $output->writeMessageBegin("simple_rpc", $reply_type, $seqid);
+      $output->writeMessageBegin("renamed_rpc", $reply_type, $seqid);
       $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
     }
-    $this->eventHandler_->postWrite($handler_ctx, 'simple_rpc', $result);
+    $this->eventHandler_->postWrite($handler_ctx, 'renamed_rpc', $result);
   }
   protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $reply_type = \TMessageType::REPLY;
@@ -394,7 +394,7 @@ class FB303ServiceProcessor extends FB303ServiceSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class FB303Service_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -433,7 +433,7 @@ class FB303Service_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapis
   }
 
   public function getName()[]: string {
-    return 'FB303Service_simple_rpc_args';
+    return 'FB303Service_renamed_rpc';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
@@ -510,14 +510,14 @@ class FB303Service_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapis
 
 }
 
-class FB303Service_simple_rpc_result implements \IThriftSyncStruct {
+class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
       'type' => \TType::STRUCT,
-      'class' => \fixtures\basic\ReservedKeyword::class,
+      'class' => \fixtures\basic\MyRenamedStruct::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -525,13 +525,13 @@ class FB303Service_simple_rpc_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?\fixtures\basic\ReservedKeyword,
+    ?'success' => ?\fixtures\basic\MyRenamedStruct,
   );
 
   const int STRUCTURAL_ID = 7443966475393398575;
-  public ?\fixtures\basic\ReservedKeyword $success;
+  public ?\fixtures\basic\MyRenamedStruct $success;
 
-  public function __construct(?\fixtures\basic\ReservedKeyword $success = null  )[] {
+  public function __construct(?\fixtures\basic\MyRenamedStruct $success = null  )[] {
     $this->success = $success;
   }
 
@@ -546,13 +546,13 @@ class FB303Service_simple_rpc_result implements \IThriftSyncStruct {
   }
 
   public function getName()[]: string {
-    return 'FB303Service_simple_rpc_result';
+    return 'FB303Service_renamed_rpc_result';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "module.FB303Service_simple_rpc_result",
+        "name" => "module.FB303Service_renamed_rpc_result",
         "fields" => vec[
           \tmeta_ThriftField::fromShape(
             shape(
@@ -606,7 +606,7 @@ class FB303Service_simple_rpc_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['success']);
-      $_tmp1 = \fixtures\basic\ReservedKeyword::withDefaultValues();
+      $_tmp1 = \fixtures\basic\MyRenamedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
     }    
@@ -622,7 +622,7 @@ class FB303ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
         "functions" => vec[
           \tmeta_ThriftFunction::fromShape(
             shape(
-              "name" => "simple_rpc",
+              "name" => "renamed_rpc",
               "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -670,7 +670,7 @@ class FB303ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
             'enums' => dict[
             ],
             'structs' => dict[
-              'module.ReservedKeyword' => \fixtures\basic\ReservedKeyword::getStructMetadata(),
+              'module.ReservedKeyword' => \fixtures\basic\MyRenamedStruct::getStructMetadata(),
             ],
             'exceptions' => dict[
             ],
@@ -686,7 +686,7 @@ class FB303ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'simple_rpc' => dict[
+        'renamed_rpc' => dict[
           '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
             shape(
               "name" => "renamed_rpc",

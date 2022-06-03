@@ -45,12 +45,12 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * HackEnum
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/HackEnum'))>>
-enum HackEnum: int {
+enum RenamedEnum: int {
   Value1 = 0;
-  Value2 = 1;
+  renamedValue = 1;
 }
 
-class HackEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+class RenamedEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
     return \tmeta_ThriftEnum::fromShape(
       shape(
@@ -775,7 +775,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyUni
  * ReservedKeyword
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/ReservedKeyword'))>>
-class ReservedKeyword implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class MyRenamedStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -818,7 +818,7 @@ class ReservedKeyword implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public function getName()[]: string {
-    return 'ReservedKeyword';
+    return 'MyRenamedStruct';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
@@ -901,7 +901,7 @@ class ReservedKeyword implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
-enum UnionToBeRenamedEnum: int {
+enum MyRenamedUnionEnum: int {
   _EMPTY_ = 0;
   reserved_field = 1;
 }
@@ -911,7 +911,7 @@ enum UnionToBeRenamedEnum: int {
  * UnionToBeRenamed
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/UnionToBeRenamed'))>>
-class UnionToBeRenamed implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\UnionToBeRenamedEnum>, \IThriftShapishSyncStruct {
+class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyRenamedUnionEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -939,13 +939,13 @@ class UnionToBeRenamed implements \IThriftSyncStruct, \IThriftUnion<\fixtures\ba
    * 1: i32 reserved_field
    */
   public ?int $reserved_field;
-  protected \fixtures\basic\UnionToBeRenamedEnum $_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+  protected \fixtures\basic\MyRenamedUnionEnum $_type = \fixtures\basic\MyRenamedUnionEnum::_EMPTY_;
 
   public function __construct(?int $reserved_field = null  )[] {
-    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+    $this->_type = \fixtures\basic\MyRenamedUnionEnum::_EMPTY_;
     if ($reserved_field !== null) {
       $this->reserved_field = $reserved_field;
-      $this->_type = \fixtures\basic\UnionToBeRenamedEnum::reserved_field;
+      $this->_type = \fixtures\basic\MyRenamedUnionEnum::reserved_field;
     }
   }
 
@@ -960,7 +960,7 @@ class UnionToBeRenamed implements \IThriftSyncStruct, \IThriftUnion<\fixtures\ba
   }
 
   public function getName()[]: string {
-    return 'UnionToBeRenamed';
+    return 'MyRenamedUnion';
   }
 
   public function getType()[]: \fixtures\basic\UnionToBeRenamedEnum {

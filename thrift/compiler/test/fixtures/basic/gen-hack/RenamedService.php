@@ -13,7 +13,7 @@ namespace fixtures\basic;
  * FooService
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/FooService'))>>
-interface FooServiceAsyncIf extends \IThriftAsyncIf {
+interface RenamedServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -27,7 +27,7 @@ interface FooServiceAsyncIf extends \IThriftAsyncIf {
  * FooService
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/FooService'))>>
-interface FooServiceIf extends \IThriftSyncIf {
+interface RenamedServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -41,7 +41,7 @@ interface FooServiceIf extends \IThriftSyncIf {
  * FooService
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/FooService'))>>
-interface FooServiceAsyncClientIf extends FooServiceAsyncIf {
+interface RenamedServiceAsyncClientIf extends RenamedServiceAsyncIf {
 }
 
 /**
@@ -49,7 +49,7 @@ interface FooServiceAsyncClientIf extends FooServiceAsyncIf {
  * FooService
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/FooService'))>>
-interface FooServiceClientIf extends \IThriftSyncIf {
+interface RenamedServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -62,7 +62,7 @@ interface FooServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooService
  */
-trait FooServiceClientBase {
+trait RenamedServiceClientBase {
   require extends \ThriftClientBase;
 
 
@@ -70,10 +70,10 @@ trait FooServiceClientBase {
     try {
       $this->eventHandler_->preRecv('simple_rpc', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\FooService_simple_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\RenamedService_simple_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\FooService_simple_rpc_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\RenamedService_simple_rpc_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -92,7 +92,7 @@ trait FooServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = \fixtures\basic\FooService_simple_rpc_result::withDefaultValues();
+        $result = \fixtures\basic\RenamedService_simple_rpc_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -122,8 +122,8 @@ trait FooServiceClientBase {
 
 }
 
-class FooServiceAsyncClient extends \ThriftClientBase implements FooServiceAsyncClientIf {
-  use FooServiceClientBase;
+class RenamedServiceAsyncClient extends \ThriftClientBase implements RenamedServiceAsyncClientIf {
+  use RenamedServiceClientBase;
 
   /**
    * Original thrift definition:-
@@ -137,7 +137,7 @@ class FooServiceAsyncClient extends \ThriftClientBase implements FooServiceAsync
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
-    $args = \fixtures\basic\FooService_simple_rpc_args::withDefaultValues();
+    $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -157,8 +157,8 @@ class FooServiceAsyncClient extends \ThriftClientBase implements FooServiceAsync
 
 }
 
-class FooServiceClient extends \ThriftClientBase implements FooServiceClientIf {
-  use FooServiceClientBase;
+class RenamedServiceClient extends \ThriftClientBase implements RenamedServiceClientIf {
+  use RenamedServiceClientBase;
 
   /**
    * Original thrift definition:-
@@ -172,7 +172,7 @@ class FooServiceClient extends \ThriftClientBase implements FooServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
-    $args = \fixtures\basic\FooService_simple_rpc_args::withDefaultValues();
+    $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -192,7 +192,7 @@ class FooServiceClient extends \ThriftClientBase implements FooServiceClientIf {
 
   /* send and recv functions */
   public function send_simple_rpc(): int {
-    $args = \fixtures\basic\FooService_simple_rpc_args::withDefaultValues();
+    $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
     return $this->sendImplHelper($args, "simple_rpc", false);
   }
   public function recv_simple_rpc(?int $expectedsequenceid = null): void {
@@ -200,9 +200,9 @@ class FooServiceClient extends \ThriftClientBase implements FooServiceClientIf {
   }
 }
 
-abstract class FooServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
-  abstract const type TThriftIf as FooServiceAsyncIf;
-  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = FooServiceStaticMetadata::class;
+abstract class RenamedServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
+  abstract const type TThriftIf as RenamedServiceAsyncIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = RenamedServiceStaticMetadata::class;
 
   protected async function process_simple_rpc(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('simple_rpc');
@@ -211,18 +211,18 @@ abstract class FooServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'simple_rpc', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FooService_simple_rpc_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\RenamedService_simple_rpc_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FooService_simple_rpc_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\RenamedService_simple_rpc_args');
     } else {
-      $args = \fixtures\basic\FooService_simple_rpc_args::withDefaultValues();
+      $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'simple_rpc', $args);
-    $result = \fixtures\basic\FooService_simple_rpc_result::withDefaultValues();
+    $result = \fixtures\basic\RenamedService_simple_rpc_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FooService', 'simple_rpc', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\RenamedService', 'simple_rpc', $args);
       await $this->handler->simple_rpc();
       $this->eventHandler_->postExec($handler_ctx, 'simple_rpc', $result);
     } catch (\Exception $ex) {
@@ -262,7 +262,7 @@ abstract class FooServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $input->readMessageEnd();
     $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
     try {
-      $result->success = FooServiceStaticMetadata::getServiceMetadataResponse();
+      $result->success = RenamedServiceStaticMetadata::getServiceMetadataResponse();
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -284,13 +284,13 @@ abstract class FooServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     }
   }
 }
-class FooServiceAsyncProcessor extends FooServiceAsyncProcessorBase {
-  const type TThriftIf = FooServiceAsyncIf;
+class RenamedServiceAsyncProcessor extends RenamedServiceAsyncProcessorBase {
+  const type TThriftIf = RenamedServiceAsyncIf;
 }
 
-abstract class FooServiceSyncProcessorBase extends \ThriftSyncProcessor {
-  abstract const type TThriftIf as FooServiceIf;
-  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = FooServiceStaticMetadata::class;
+abstract class RenamedServiceSyncProcessorBase extends \ThriftSyncProcessor {
+  abstract const type TThriftIf as RenamedServiceIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = RenamedServiceStaticMetadata::class;
 
   protected function process_simple_rpc(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('simple_rpc');
@@ -299,18 +299,18 @@ abstract class FooServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'simple_rpc', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\FooService_simple_rpc_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\RenamedService_simple_rpc_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\FooService_simple_rpc_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\RenamedService_simple_rpc_args');
     } else {
-      $args = \fixtures\basic\FooService_simple_rpc_args::withDefaultValues();
+      $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'simple_rpc', $args);
-    $result = \fixtures\basic\FooService_simple_rpc_result::withDefaultValues();
+    $result = \fixtures\basic\RenamedService_simple_rpc_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\FooService', 'simple_rpc', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\RenamedService', 'simple_rpc', $args);
       $this->handler->simple_rpc();
       $this->eventHandler_->postExec($handler_ctx, 'simple_rpc', $result);
     } catch (\Exception $ex) {
@@ -350,7 +350,7 @@ abstract class FooServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $input->readMessageEnd();
     $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
     try {
-      $result->success = FooServiceStaticMetadata::getServiceMetadataResponse();
+      $result->success = RenamedServiceStaticMetadata::getServiceMetadataResponse();
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -372,11 +372,11 @@ abstract class FooServiceSyncProcessorBase extends \ThriftSyncProcessor {
     }
   }
 }
-class FooServiceSyncProcessor extends FooServiceSyncProcessorBase {
-  const type TThriftIf = FooServiceIf;
+class RenamedServiceSyncProcessor extends RenamedServiceSyncProcessorBase {
+  const type TThriftIf = RenamedServiceIf;
 }
 // For backwards compatibility
-class FooServiceProcessor extends FooServiceSyncProcessor {}
+class RenamedServiceProcessor extends RenamedServiceSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
@@ -514,7 +514,7 @@ class FooService_simple_rpc_result implements \IThriftSyncStruct {
 
 }
 
-class FooServiceStaticMetadata implements \IThriftServiceStaticMetadata {
+class RenamedServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return \tmeta_ThriftService::fromShape(
       shape(

@@ -648,6 +648,24 @@ class t_hack_generator : public t_oop_generator {
     return nullptr;
   }
 
+  const std::string& find_hack_name(const t_named* tnamed) const {
+    return find_hack_name(tnamed, tnamed->name());
+  }
+
+  const std::string& find_hack_name(
+      const t_named* tnamed, const std::string& default_name) const {
+    if (const std::string* annotation =
+            tnamed->find_annotation_or_null("hack.name")) {
+      return *annotation;
+    }
+    if (const auto annotation = tnamed->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/hack/Name")) {
+      return annotation->get_value_from_structured_annotation("name")
+          .get_string();
+    }
+    return default_name;
+  }
+
   std::string hack_namespace(const t_program* p) const {
     std::string hack_ns = p->get_namespace("hack");
     std::replace(hack_ns.begin(), hack_ns.end(), '.', '\\');
@@ -712,11 +730,7 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string hack_name(const t_type* t, bool decl = false) {
-    return hack_name(t->name(), t->program(), decl);
-  }
-
-  std::string hack_name(const t_service* s, bool decl = false) {
-    return hack_name(s->name(), s->program(), decl);
+    return hack_name(find_hack_name(t), t->program(), decl);
   }
 
   std::string php_path(const t_program* p) {
@@ -761,13 +775,15 @@ class t_hack_generator : public t_oop_generator {
       const std::string& name,
       bool extends = false) {
     auto [ns, ns_type] = get_namespace(svc);
+    const std::string& s_name =
+        !name.empty() ? find_hack_name(svc, name) : find_hack_name(svc);
     if (extends &&
         (ns_type == HackThriftNamespaceType::HACK ||
          ns_type == HackThriftNamespaceType::PACKAGE)) {
-      return hack_name(name, svc->program());
+      return hack_name(s_name, svc->program());
     }
     return (extends && has_hack_namespace ? "\\" : "") + (mangle ? ns : "") +
-        name;
+        s_name;
   }
 
   std::string php_servicename_mangle(
@@ -1384,7 +1400,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
     if (!hack_enum) {
       indent(f_types_) << "const " << typehint << " ";
     }
-    indent(f_types_) << constant->name() << " = " << value << ";\n";
+    indent(f_types_) << find_hack_name(constant) << " = " << value << ";\n";
   }
 
   indent_down();
@@ -2046,7 +2062,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
 
   tmeta_ThriftFunction->add_map(
       std::make_unique<t_const_value>("name"),
-      std::make_unique<t_const_value>(function->name()));
+      std::make_unique<t_const_value>(find_hack_name(function)));
 
   tmeta_ThriftFunction->add_map(
       std::make_unique<t_const_value>("return_type"),
@@ -3565,7 +3581,7 @@ void t_hack_generator::generate_php_struct_definition(
     const t_struct* tstruct,
     ThriftStructType type,
     const std::string& name) {
-  const std::string& real_name = name.empty() ? tstruct->name() : name;
+  const std::string& real_name = !name.empty() ? name : find_hack_name(tstruct);
   if (tstruct->is_union()) {
     // Generate enum for union before the actual class
     generate_php_union_enum(out, tstruct, real_name);
@@ -4744,7 +4760,7 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method(
 void t_hack_generator::_generate_sendImplHelper(
     std::ofstream& out, const t_function* tfunction) {
   out << "$this->sendImplHelper($args, "
-      << "\"" << tfunction->name() << "\", "
+      << "\"" << find_hack_name(tfunction) << "\", "
       << (tfunction->qualifier() == t_function_qualifier::one_way ? "true"
                                                                   : "false")
       << ");\n";
@@ -5001,7 +5017,7 @@ void t_hack_generator::generate_process_function(
   // Open function
   indent(f_service_)
       << "protected" << (async ? " async" : "") << " function process_"
-      << tfunction->name()
+      << find_hack_name(tfunction)
       << "(int $seqid, \\TProtocol $input, \\TProtocol $output): "
       << (async ? "Awaitable<void>" : "void") << " {\n";
   indent_up();
@@ -5011,7 +5027,7 @@ void t_hack_generator::generate_process_function(
       tservice, tfunction, PhpFunctionNameSuffix::ARGS);
   std::string resultname = generate_function_helper_name(
       tservice, tfunction, PhpFunctionNameSuffix::RESULT);
-  const std::string& fn_name = tfunction->name();
+  const std::string& fn_name = find_hack_name(tfunction);
 
   f_service_ << indent()
              << "$handler_ctx = $this->eventHandler_->getHandlerContext('"
@@ -5059,7 +5075,7 @@ void t_hack_generator::generate_process_function(
     f_service_ << "$result->success = ";
   }
   f_service_ << (async ? "await " : "") << "$this->handler->"
-             << tfunction->name() << "(";
+             << find_hack_name(tfunction) << "(";
   auto delim = "";
   for (const auto& param : tfunction->get_paramlist()->fields()) {
     f_service_ << delim << "$args->" << param.name();
@@ -5112,7 +5128,7 @@ void t_hack_generator::generate_process_function(
   scope_up(f_service_);
 
   f_service_ << indent() << "\\thrift_protocol_write_binary($output, '"
-             << tfunction->name()
+             << find_hack_name(tfunction)
              << "', $reply_type, $result, $seqid, $output->isStrictWrite());\n";
 
   scope_down(f_service_);
@@ -5121,15 +5137,16 @@ void t_hack_generator::generate_process_function(
   scope_up(f_service_);
 
   f_service_ << indent() << "\\thrift_protocol_write_compact($output, '"
-             << tfunction->name() << "', $reply_type, $result, $seqid);\n";
+             << find_hack_name(tfunction)
+             << "', $reply_type, $result, $seqid);\n";
 
   scope_down(f_service_);
   f_service_ << indent() << "else\n";
   scope_up(f_service_);
 
   // Serialize the request header
-  f_service_ << indent() << "$output->writeMessageBegin(\"" << tfunction->name()
-             << "\", $reply_type, $seqid);\n"
+  f_service_ << indent() << "$output->writeMessageBegin(\""
+             << find_hack_name(tfunction) << "\", $reply_type, $seqid);\n"
              << indent() << "$result->write($output);\n"
              << indent() << "$output->writeMessageEnd();\n"
              << indent() << "$output->getTransport()->flush();\n";
@@ -5222,7 +5239,7 @@ void t_hack_generator::generate_service_helpers(
     if (function->structured_annotations().empty()) {
       continue;
     }
-    annotations_out << indent() << "'" << function->name() << "' => "
+    annotations_out << indent() << "'" << find_hack_name(function) << "' => "
                     << render_structured_annotations(
                            function->structured_annotations(),
                            annotations_temp_var_initializations_out,
@@ -5348,7 +5365,7 @@ void t_hack_generator::generate_php_function_result_helpers(
     const std::string& prefix,
     const std::string& suffix,
     bool is_void) {
-  t_struct result(program_, prefix + "_" + tfunction->name() + suffix);
+  t_struct result(program_, prefix + "_" + find_hack_name(tfunction) + suffix);
   if (ttype) {
     auto success = std::make_unique<t_field>(ttype, "success", 0);
     if (!is_void) {
@@ -5366,7 +5383,8 @@ void t_hack_generator::generate_php_function_result_helpers(
 void t_hack_generator::generate_php_function_args_helpers(
     const t_function* tfunction, const std::string& prefix) {
   const t_struct* params = tfunction->get_paramlist();
-  std::string params_name = prefix + "_" + params->name();
+  std::string params_name =
+      prefix + "_" + find_hack_name(tfunction, params->name());
   generate_php_struct_definition(
       f_service_, params, ThriftStructType::ARGS, params_name);
 }
@@ -5546,10 +5564,10 @@ void t_hack_generator::generate_php_docstring(
   }
 
   // Function name.
-  indent(out) << " * " << indent(1) << tfunction->name() << "(";
+  indent(out) << " * " << indent(1) << find_hack_name(tfunction) << "(";
   // Find the position after the " * " from where the function arguments
   // should be rendered.
-  int start_pos = get_indent_size() + tfunction->name().size() + 1;
+  int start_pos = get_indent_size() + find_hack_name(tfunction).size() + 1;
 
   // Parameters.
   generate_php_docstring_args(out, start_pos, tfunction->get_paramlist());
@@ -6030,7 +6048,7 @@ void t_hack_generator::generate_service_interface(
     }
 
     if (nullable_everything_) {
-      const std::string& funname = function->name();
+      const std::string& funname = find_hack_name(function);
       indent(f_service_) << "public function " << funname << "("
                          << argument_list(
                                 function->get_paramlist(), "", true, true)
@@ -6154,7 +6172,7 @@ void t_hack_generator::_generate_recvImpl(
   } else {
     resultname = generate_function_helper_name(
         tservice, tfunction, PhpFunctionNameSuffix::RESULT);
-    recvImpl_method_name = std::string("recvImpl_") + tfunction->name();
+    recvImpl_method_name = std::string("recvImpl_") + find_hack_name(tfunction);
     return_typehint = type_to_typehint(ttype);
 
     is_void = ttype->is_void();
@@ -6234,7 +6252,8 @@ void t_hack_generator::_generate_recvImpl(
 
   out << indent()
       << "if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {\n"
-      << indent() << "  throw new \\TProtocolException(\"" << tfunction->name()
+      << indent() << "  throw new \\TProtocolException(\""
+      << find_hack_name(tfunction)
       << " failed: sequence id is out of order\");\n"
       << indent() << "}\n";
 
@@ -6299,7 +6318,7 @@ void t_hack_generator::_generate_recvImpl(
         << indent() << "return;\n";
   } else {
     out << indent() << "$x = new \\TApplicationException(\""
-        << tfunction->name() << " failed: unknown result\""
+        << find_hack_name(tfunction) << " failed: unknown result\""
         << ", \\TApplicationException::MISSING_RESULT"
         << ");\n"
         << indent() << "$this->eventHandler_->recvError('" << rpc_function_name
@@ -6320,7 +6339,7 @@ void t_hack_generator::_generate_stream_decode_recvImpl(
 
   t_function recv_function(
       tfunction->get_returntype(),
-      std::string("recvImpl_") + tfunction->name() +
+      std::string("recvImpl_") + find_hack_name(tfunction) +
           std::string("_StreamDecode"),
       std::make_unique<t_paramlist>(program_));
   const auto* tstream =
@@ -6837,7 +6856,7 @@ void t_hack_generator::_generate_service_client_children(
       if (skip_codegen(function)) {
         continue;
       }
-      const std::string& funname = function->name();
+      const std::string& funname = find_hack_name(function);
       std::string return_typehint =
           type_to_typehint(function->get_returntype());
 
@@ -6853,7 +6872,7 @@ void t_hack_generator::_generate_service_client_children(
       if (function->qualifier() != t_function_qualifier::one_way) {
         t_function recv_function(
             function->get_returntype(),
-            std::string("recv_") + function->name(),
+            std::string("recv_") + find_hack_name(function),
             std::make_unique<t_paramlist>(program_));
         // Open function
         bool is_void = function->get_returntype()->is_void();
@@ -6892,7 +6911,7 @@ void t_hack_generator::_generate_service_client_child_fn(
   }
 
   std::string funname =
-      tfunction->name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
+      find_hack_name(tfunction) + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
   const std::string& tservice_name =
       (tservice->is_interaction() ? service_name_ : tservice->name());
   std::string return_typehint = type_to_typehint(tfunction->get_returntype());
@@ -6949,7 +6968,7 @@ void t_hack_generator::_generate_service_client_child_fn(
     if (!tfunction->get_returntype()->is_void()) {
       out << "$response = ";
     }
-    out << "$this->recvImpl_" << tfunction->name() << "("
+    out << "$this->recvImpl_" << find_hack_name(tfunction) << "("
         << "$currentseqid";
     if (legacy_arrays) {
       out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
@@ -7275,7 +7294,7 @@ std::string t_hack_generator::function_signature(
     typehint = type_to_typehint(tfunction->get_returntype());
   }
 
-  return tfunction->name() + "(" +
+  return find_hack_name(tfunction) + "(" +
       argument_list(tfunction->get_paramlist(), more_tail_parameters) +
       "): " + typehint;
 }
@@ -7306,7 +7325,7 @@ std::string t_hack_generator::argument_list(
       }
       result += type_to_param_typehint(field.get_type(), nullable) + " ";
     }
-    result += "$" + field.name();
+    result += "$" + find_hack_name(&field);
   }
 
   if (more_tail_parameters.length() > 0) {
@@ -7321,9 +7340,8 @@ std::string t_hack_generator::argument_list(
  */
 std::string t_hack_generator::generate_rpc_function_name(
     const t_service* tservice, const t_function* tfunction) const {
-  const std::string& prefix =
-      tservice->is_interaction() ? tservice->name() + "." : "";
-  return prefix + tfunction->name();
+  std::string prefix = tservice->is_interaction() ? tservice->name() + "." : "";
+  return prefix + find_hack_name(tfunction);
 }
 
 /**
@@ -7340,20 +7358,20 @@ std::string t_hack_generator::generate_function_helper_name(
   } else {
     prefix = hack_name(tservice);
   }
-
+  std::string fname = find_hack_name(tfunction);
   switch (suffix) {
     case PhpFunctionNameSuffix::ARGS:
-      return prefix + "_" + tfunction->name() + "_args";
+      return prefix + "_" + fname + "_args";
     case PhpFunctionNameSuffix::RESULT:
-      return prefix + "_" + tfunction->name() + "_result";
+      return prefix + "_" + fname + "_result";
     case PhpFunctionNameSuffix::STREAM_RESPONSE:
-      return prefix + "_" + tfunction->name() + "_StreamResponse";
+      return prefix + "_" + fname + "_StreamResponse";
     case PhpFunctionNameSuffix::FIRST_RESPONSE:
-      return prefix + "_" + tfunction->name() + "_FirstResponse";
+      return prefix + "_" + fname + "_FirstResponse";
     case PhpFunctionNameSuffix::SINK_PAYLOAD:
-      return prefix + "_" + tfunction->name() + "_SinkPayload";
+      return prefix + "_" + fname + "_SinkPayload";
     case PhpFunctionNameSuffix::SINK_FINAL_RESPONSE:
-      return prefix + "_" + tfunction->name() + "_FinalResponse";
+      return prefix + "_" + fname + "_FinalResponse";
     default:
       throw std::runtime_error("Invalid php function name suffix");
   }
