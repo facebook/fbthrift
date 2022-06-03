@@ -140,6 +140,15 @@ cdef class GeneratedError(Error):
         for name in self.__iter_names():
             yield name, getattr(self, name)
 
+    def __hash__(self):
+        if not self._fbthrift_hash:
+            value_tuple = tuple(v for _, v in self)
+            self._fbthrift_hash = hash(
+                value_tuple if value_tuple
+                else type(self)  # Hash the class there are no fields
+            )
+        return self._fbthrift_hash
+
     @staticmethod
     def __get_metadata__():
         raise NotImplementedError()
