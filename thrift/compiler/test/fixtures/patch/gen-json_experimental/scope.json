@@ -67,55 +67,55 @@
         "name" : "EnumValue",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 51
+        "lineno" : 54
       },
       "Const" : {
         "name" : "Const",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 52
+        "lineno" : 55
       },
       "Schema" : {
         "name" : "Schema",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 57
+        "lineno" : 63
       },
       "FbthriftInternalEnum" : {
         "name" : "FbthriftInternalEnum",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 61
+        "lineno" : 67
       },
       "Transitive" : {
         "name" : "Transitive",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 89
+        "lineno" : 95
       },
       "Structured" : {
         "name" : "Structured",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 95
+        "lineno" : 101
       },
       "Interface" : {
         "name" : "Interface",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 100
+        "lineno" : 106
       },
       "RootDefinition" : {
         "name" : "RootDefinition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 108
+        "lineno" : 114
       },
       "Definition" : {
         "name" : "Definition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 115
+        "lineno" : 121
       }
       },
   "source_path" : "thrift/annotation/scope",

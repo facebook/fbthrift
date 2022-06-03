@@ -1160,6 +1160,7 @@ Function.thrift_spec = (
 )
 
 Function.thrift_struct_annotations = {
+  "hack.name": "TFunction",
   "thrift.uri": "facebook.com/thrift/annotation/Function",
 }
 Function.thrift_field_annotations = {
@@ -1180,6 +1181,7 @@ Const.thrift_spec = (
 )
 
 Const.thrift_struct_annotations = {
+  "hack.name": "TConst",
   "thrift.uri": "facebook.com/thrift/annotation/Const",
 }
 Const.thrift_field_annotations = {
@@ -1229,6 +1231,7 @@ Interface.thrift_spec = (
 )
 
 Interface.thrift_struct_annotations = {
+  "hack.name": "TInterface",
 }
 Interface.thrift_field_annotations = {
 }

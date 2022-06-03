@@ -348,7 +348,7 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\facebook_thrift_annotation_Function' => \facebook_thrift_annotation_Function::fromShape(
+        '\facebook_thrift_annotation_TFunction' => \facebook_thrift_annotation_TFunction::fromShape(
           shape(
           )
         ),

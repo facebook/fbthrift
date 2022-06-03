@@ -47,9 +47,15 @@ struct Service {} (thrift.uri = "facebook.com/thrift/annotation/Service")
 struct Interaction {} (
   thrift.uri = "facebook.com/thrift/annotation/Interaction",
 )
-struct Function {} (thrift.uri = "facebook.com/thrift/annotation/Function")
+struct Function {} (
+  thrift.uri = "facebook.com/thrift/annotation/Function",
+  hack.name = "TFunction",
+)
 struct EnumValue {} (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
-struct Const {} (thrift.uri = "facebook.com/thrift/annotation/Const")
+struct Const {} (
+  thrift.uri = "facebook.com/thrift/annotation/Const",
+  hack.name = "TConst",
+)
 
 // Indicates that a definition should be included in the runtime schema.
 //
@@ -97,7 +103,7 @@ struct Structured {}
 @Service
 @Interaction
 @Transitive
-struct Interface {}
+struct Interface {} (hack.name = "TInterface")
 
 @Structured
 @Interface
