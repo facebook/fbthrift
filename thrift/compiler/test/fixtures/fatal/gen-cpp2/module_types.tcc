@@ -3270,7 +3270,6 @@ _readField_fieldA:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_fieldA, _readState);
     
   }
- this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3284,7 +3283,7 @@ _readField_fieldB:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_fieldB, _readState);
     
   }
- this->__isset.set(1, true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3298,7 +3297,7 @@ _readField_fieldC:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->__fbthrift_field_fieldC, _readState);
     
   }
- this->__isset.set(2, true);
+ this->__isset.set(1, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3312,7 +3311,7 @@ _readField_fieldD:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test_cpp2::cpp_reflection::enum2>::readWithContext(*iprot, this->__fbthrift_field_fieldD, _readState);
     
   }
- this->__isset.set(3, true);
+ this->__isset.set(2, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3328,7 +3327,7 @@ _readField_fieldE:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(4, true);
+ this->__isset.set(3, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3344,7 +3343,7 @@ _readField_fieldF:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(5, true);
+ this->__isset.set(4, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3360,7 +3359,7 @@ _readField_fieldG:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(6, true);
+ this->__isset.set(5, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3376,7 +3375,7 @@ _readField_fieldH:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(7, true);
+ this->__isset.set(6, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3393,7 +3392,7 @@ _readField_fieldI:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(8, true);
+ this->__isset.set(7, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3410,7 +3409,7 @@ _readField_fieldJ:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(9, true);
+ this->__isset.set(8, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3427,7 +3426,7 @@ _readField_fieldK:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(10, true);
+ this->__isset.set(9, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3444,7 +3443,7 @@ _readField_fieldL:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(11, true);
+ this->__isset.set(10, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3461,7 +3460,7 @@ _readField_fieldM:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(12, true);
+ this->__isset.set(11, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3478,7 +3477,7 @@ _readField_fieldN:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(13, true);
+ this->__isset.set(12, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3495,7 +3494,7 @@ _readField_fieldO:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(14, true);
+ this->__isset.set(13, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3512,7 +3511,7 @@ _readField_fieldP:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(15, true);
+ this->__isset.set(14, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3529,7 +3528,7 @@ _readField_fieldQ:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(16, true);
+ this->__isset.set(15, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3546,7 +3545,7 @@ _readField_fieldR:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(17, true);
+ this->__isset.set(16, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3730,7 +3729,7 @@ template <class Protocol_>
 uint32_t struct3::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
-  {
+  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
@@ -3810,7 +3809,7 @@ template <class Protocol_>
 uint32_t struct3::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
-  {
+  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
@@ -3891,12 +3890,14 @@ uint32_t struct3::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct3");
   bool previousFieldHasValue = true;
-  {
+  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "fieldA", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_fieldA);
     xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   {
     constexpr int16_t kPrevFieldId = 1;

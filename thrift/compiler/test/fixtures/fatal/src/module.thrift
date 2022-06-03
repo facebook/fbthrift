@@ -25,6 +25,7 @@ namespace py3 test_py.cpp_reflection
 include "reflection_dep_B.thrift"
 include "reflection_dep_C.thrift"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 
 cpp_include "thrift/test/fatal_custom_types.h"
 
@@ -155,6 +156,7 @@ struct struct2 {
 }
 
 struct struct3 {
+  @thrift.TerseWrite
   1: i32 fieldA;
   2: string fieldB;
   3: enum1 fieldC;

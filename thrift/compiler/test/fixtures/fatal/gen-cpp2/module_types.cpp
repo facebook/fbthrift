@@ -2025,7 +2025,6 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
   __isset.set(folly::index_constant<14>(), true);
   __isset.set(folly::index_constant<15>(), true);
   __isset.set(folly::index_constant<16>(), true);
-  __isset.set(folly::index_constant<17>(), true);
 }
 
 

@@ -9,6 +9,7 @@
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_types.h"
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_types.h"
 #include  "thrift/annotation/gen-cpp2/cpp_fatal_types.h"
+#include  "thrift/annotation/gen-cpp2/thrift_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 
@@ -935,7 +936,7 @@ class struct3_struct_traits {
     using type = ::std::int32_t;
     using tag = ::apache::thrift::tag::fieldA;
     static constexpr ::apache::thrift::field_id_t id = 1;
-    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    static constexpr auto optional = ::apache::thrift::optionality::terse;
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::fieldA>;
     using field_ref_getter = ::apache::thrift::access_field_fn<::apache::thrift::tag::fieldA>;
     using type_class = ::apache::thrift::type_class::integral;
