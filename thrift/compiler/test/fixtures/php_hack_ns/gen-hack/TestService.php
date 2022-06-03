@@ -12,6 +12,7 @@ namespace hack_ns2;
  * Original thrift service:-
  * TestService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/TestService'))>>
 interface TestServiceAsyncIf extends \FooHackServiceAsyncIf {
   /**
    * Original thrift definition:-
@@ -25,6 +26,7 @@ interface TestServiceAsyncIf extends \FooHackServiceAsyncIf {
  * Original thrift service:-
  * TestService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/TestService'))>>
 interface TestServiceIf extends \FooHackServiceIf {
   /**
    * Original thrift definition:-
@@ -38,6 +40,7 @@ interface TestServiceIf extends \FooHackServiceIf {
  * Original thrift service:-
  * TestService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/TestService'))>>
 interface TestServiceAsyncClientIf extends TestServiceAsyncIf, \FooHackServiceAsyncClientIf {
 }
 
@@ -45,6 +48,7 @@ interface TestServiceAsyncClientIf extends TestServiceAsyncIf, \FooHackServiceAs
  * Original thrift service:-
  * TestService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/TestService'))>>
 interface TestServiceClientIf extends \FooHackServiceClientIf {
   /**
    * Original thrift definition:-

@@ -10,6 +10,7 @@
  * Original thrift enum:-
  * Status
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/Status'))>>
 enum foo_php_ns_Status: int {
   Unknown = 0;
 }
@@ -39,6 +40,7 @@ class foo_php_ns_Status_TEnumStaticMetadata implements \IThriftEnumStaticMetadat
  * Original thrift struct:-
  * TestStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/TestStruct'))>>
 class foo_php_ns_TestStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 

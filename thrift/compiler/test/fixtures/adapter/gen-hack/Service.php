@@ -361,7 +361,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'fields' => dict[
         'arg2' => shape(
           'field' => dict[
-            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
               shape(
                 "name" => "my::Adapter2",
               )

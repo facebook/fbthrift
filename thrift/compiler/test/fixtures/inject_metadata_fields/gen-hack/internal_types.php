@@ -6,14 +6,12 @@
  *  @generated
  */
 
-namespace thrift\annotation;
-
 /**
  * Original thrift struct:-
  * InjectMetadataFields
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/InjectMetadataFields'))>>
-class InjectMetadataFields implements \IThriftSyncStruct {
+class facebook_thrift_annotation_InjectMetadataFields implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -56,16 +54,16 @@ class InjectMetadataFields implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return \tmeta_ThriftStruct::fromShape(
+    return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "internal.InjectMetadataFields",
         "fields" => vec[
-          \tmeta_ThriftField::fromShape(
+          tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => \tmeta_ThriftType::fromShape(
+              "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "type",
@@ -80,11 +78,11 @@ class InjectMetadataFields implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
           shape(
           )
         ),
-        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),

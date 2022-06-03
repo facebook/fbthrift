@@ -12,6 +12,7 @@ namespace hack_ns2;
  * Original thrift enum:-
  * Status
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/Status'))>>
 enum Status: int {
   Unknown = 0;
 }
@@ -41,6 +42,7 @@ class Status_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * FBStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/hack/ns2/FBStruct'))>>
 class FBStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 

@@ -57,11 +57,11 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
+        '\facebook_thrift_annotation_Program' => \facebook_thrift_annotation_Program::fromShape(
           shape(
           )
         ),
-        '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
+        '\facebook_thrift_annotation_Structured' => \facebook_thrift_annotation_Structured::fromShape(
           shape(
           )
         ),
@@ -144,7 +144,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+        '\facebook_thrift_annotation_Struct' => \facebook_thrift_annotation_Struct::fromShape(
           shape(
           )
         ),

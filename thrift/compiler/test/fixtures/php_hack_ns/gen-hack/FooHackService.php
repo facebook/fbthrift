@@ -10,6 +10,7 @@
  * Original thrift service:-
  * FooHackService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/FooHackService'))>>
 interface FooHackServiceAsyncIf extends \IThriftAsyncIf {
 }
 
@@ -17,6 +18,7 @@ interface FooHackServiceAsyncIf extends \IThriftAsyncIf {
  * Original thrift service:-
  * FooHackService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/FooHackService'))>>
 interface FooHackServiceIf extends \IThriftSyncIf {
 }
 
@@ -24,6 +26,7 @@ interface FooHackServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooHackService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/FooHackService'))>>
 interface FooHackServiceAsyncClientIf extends FooHackServiceAsyncIf {
 }
 
@@ -31,6 +34,7 @@ interface FooHackServiceAsyncClientIf extends FooHackServiceAsyncIf {
  * Original thrift service:-
  * FooHackService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/foo/php/ns/FooHackService'))>>
 interface FooHackServiceClientIf extends \IThriftSyncIf {
 }
 

@@ -83,7 +83,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+        '\facebook_thrift_annotation_Field' => \facebook_thrift_annotation_Field::fromShape(
           shape(
           )
         ),
@@ -197,11 +197,11 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Typedef' => \thrift\annotation\Typedef::fromShape(
+        '\facebook_thrift_annotation_Typedef' => \facebook_thrift_annotation_Typedef::fromShape(
           shape(
           )
         ),
-        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+        '\facebook_thrift_annotation_Field' => \facebook_thrift_annotation_Field::fromShape(
           shape(
           )
         ),
@@ -315,11 +315,11 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+        '\facebook_thrift_annotation_Field' => \facebook_thrift_annotation_Field::fromShape(
           shape(
           )
         ),
-        '\thrift\annotation\Function' => \thrift\annotation\Function::fromShape(
+        '\facebook_thrift_annotation_Function' => \facebook_thrift_annotation_Function::fromShape(
           shape(
           )
         ),

@@ -159,7 +159,7 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(
+        'facebook_thrift_annotation_InjectMetadataFields' => facebook_thrift_annotation_InjectMetadataFields::fromShape(
           shape(
             "type" => "Fields",
           )
@@ -271,7 +271,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(
+        'facebook_thrift_annotation_InjectMetadataFields' => facebook_thrift_annotation_InjectMetadataFields::fromShape(
           shape(
             "type" => "Fields",
           )
@@ -433,7 +433,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(
+        'facebook_thrift_annotation_InjectMetadataFields' => facebook_thrift_annotation_InjectMetadataFields::fromShape(
           shape(
             "type" => "foo.Fields",
           )
@@ -442,7 +442,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
       'fields' => dict[
         'injected_structured_annotation_field' => shape(
           'field' => dict[
-            '\thrift\annotation\Box' => \thrift\annotation\Box::fromShape(
+            'facebook_thrift_annotation_Box' => facebook_thrift_annotation_Box::fromShape(
               shape(
               )
             ),

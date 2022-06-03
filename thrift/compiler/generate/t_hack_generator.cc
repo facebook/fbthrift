@@ -101,7 +101,10 @@ class t_hack_generator : public t_oop_generator {
     protected_unions_ = option_is_specified(parsed_options, "protected_unions");
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
     typedef_ = option_is_specified(parsed_options, "typedef");
-    has_hack_namespace = !hack_namespace(program).empty();
+
+    auto [_, ns_type_] = get_namespace(program);
+    has_hack_namespace = ns_type_ == HackThriftNamespaceType::HACK ||
+        ns_type_ == HackThriftNamespaceType::PACKAGE;
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -114,7 +117,8 @@ class t_hack_generator : public t_oop_generator {
       throw std::runtime_error(
           "Don't use no_use_hack_collections with arrays. Just use arrays");
     } else if (mangled_services_ && has_hack_namespace) {
-      throw std::runtime_error("Don't use mangledsvcs with hack namespaces");
+      throw std::runtime_error(
+          "Don't use mangledsvcs with hack namespaces or package.");
     }
 
     out_dir_base_ = "gen-hack";
@@ -214,6 +218,13 @@ class t_hack_generator : public t_oop_generator {
     FROM_CONSTRUCTOR_SHAPE = 1,
     FROM_MAP = 2,
     FROM_SHAPE = 3,
+  };
+
+  enum class HackThriftNamespaceType {
+    HACK,
+    PHP,
+    PACKAGE,
+    EMPTY,
   };
 
   bool is_async_struct(const t_struct* tstruct);
@@ -637,42 +648,67 @@ class t_hack_generator : public t_oop_generator {
     return nullptr;
   }
 
-  std::string hack_namespace(const t_program* p) {
-    auto ns = p->gen_namespace_or_default(
-        "hack", [&p] { return p->package().path(); });
-    return boost::algorithm::join(ns, "\\");
+  std::string hack_namespace(const t_program* p) const {
+    std::string hack_ns = p->get_namespace("hack");
+    std::replace(hack_ns.begin(), hack_ns.end(), '.', '\\');
+    return hack_ns;
   }
 
-  std::string php_namespace(const t_program* p) {
-    std::string ns = hack_namespace(p);
-    if (!ns.empty()) {
-      return ns;
+  std::string php_namespace(const t_program* p) const {
+    std::string php_ns = p->get_namespace("php");
+    if (!php_ns.empty()) {
+      std::replace(php_ns.begin(), php_ns.end(), '.', '\\');
+      php_ns.push_back('_');
     }
-    ns = gen_raw_php_namespace(*p);
-    if (!ns.empty()) {
-      ns.push_back('_');
-      return ns;
+    return php_ns;
+  }
+
+  std::string package_namespace(const t_program* p) const {
+    auto pkg_path = p->package().path();
+    if (!pkg_path.empty()) {
+      std::string pkg_ns = boost::algorithm::join(pkg_path, "\\");
+      return pkg_ns;
     }
     return "";
   }
 
-  std::string php_namespace(const t_service* s) {
-    return php_namespace(s->program());
+  std::tuple<std::string, HackThriftNamespaceType> get_namespace(
+      const t_program* p) const {
+    std::string ns = "";
+    HackThriftNamespaceType type_ = HackThriftNamespaceType::EMPTY;
+    auto hack_ns = hack_namespace(p);
+    auto php_ns = php_namespace(p);
+    auto pkg_ns = package_namespace(p);
+    if (!hack_ns.empty()) {
+      ns = hack_ns;
+      type_ = HackThriftNamespaceType::HACK;
+    } else if (!php_ns.empty()) {
+      ns = php_ns;
+      type_ = HackThriftNamespaceType::PHP;
+    } else if (!pkg_ns.empty()) {
+      ns = pkg_ns;
+      type_ = HackThriftNamespaceType::PACKAGE;
+    }
+    return {ns, type_};
+  }
+
+  std::tuple<std::string, HackThriftNamespaceType> get_namespace(
+      const t_service* s) const {
+    return get_namespace(s->program());
   }
 
   std::string hack_name(
       std::string name, const t_program* prog, bool decl = false) {
-    std::string ns;
-    ns = hack_namespace(prog);
-    if (!ns.empty()) {
+    auto [ns, ns_type] = get_namespace(prog);
+    if (ns_type == HackThriftNamespaceType::HACK ||
+        ns_type == HackThriftNamespaceType::PACKAGE) {
       if (decl) {
         return name;
       }
       return "\\" + ns + "\\" + name;
     }
-    ns = gen_raw_php_namespace(*prog);
     return (!decl && has_hack_namespace ? "\\" : "") +
-        (!ns.empty() ? ns + "_" : "") + name;
+        (ns_type == HackThriftNamespaceType::PHP ? ns : "") + name;
   }
 
   std::string hack_name(const t_type* t, bool decl = false) {
@@ -724,12 +760,16 @@ class t_hack_generator : public t_oop_generator {
       const t_service* svc,
       const std::string& name,
       bool extends = false) {
-    if (extends && !hack_namespace(svc->program()).empty()) {
+    auto [ns, ns_type] = get_namespace(svc);
+    if (extends &&
+        (ns_type == HackThriftNamespaceType::HACK ||
+         ns_type == HackThriftNamespaceType::PACKAGE)) {
       return hack_name(name, svc->program());
     }
-    return (extends && has_hack_namespace ? "\\" : "") +
-        (mangle ? php_namespace(svc) : "") + name;
+    return (extends && has_hack_namespace ? "\\" : "") + (mangle ? ns : "") +
+        name;
   }
+
   std::string php_servicename_mangle(
       bool mangle, const t_service* svc, bool extends = false) {
     return php_servicename_mangle(mangle, svc, svc->name(), extends);
@@ -795,11 +835,6 @@ class t_hack_generator : public t_oop_generator {
     return interactions;
   }
 
-  static std::string gen_raw_php_namespace(const t_program& p) {
-    return boost::algorithm::join(
-        p.gen_namespace_or_default("php", [&p] { return p.package().path(); }),
-        ".");
-  }
   /**
    * File streams
    */
@@ -1232,9 +1267,12 @@ void t_hack_generator::init_generator() {
   // Print header
   f_types_ << "<?hh\n" << autogen_comment() << "\n";
 
-  std::string hack_ns = hack_namespace(program_);
-  if (!hack_ns.empty()) {
-    f_types_ << "namespace " << hack_ns << ";\n\n";
+  auto [ns, ns_type] = get_namespace(program_);
+  bool has_hack_ns =
+      (ns_type == HackThriftNamespaceType::HACK ||
+       ns_type == HackThriftNamespaceType::PACKAGE);
+  if (has_hack_ns) {
+    f_types_ << "namespace " << ns << ";\n\n";
   }
 
   // Print header
@@ -1245,14 +1283,12 @@ void t_hack_generator::init_generator() {
     record_genfile(f_consts_name);
     f_consts_ << "<?hh\n" << autogen_comment();
     constants_values_.clear();
-    std::string const_namespace = php_namespace(program_);
-    if (!hack_ns.empty()) {
-      f_consts_ << "namespace " << hack_ns << ";\n\n";
+    if (has_hack_ns) {
+      f_consts_ << "namespace " << ns << ";\n\n";
     }
     f_consts_ << "class "
-              << (!hack_ns.empty() || const_namespace == ""
-                      ? program_name_ + "_"
-                      : const_namespace)
+              << (ns_type != HackThriftNamespaceType::PHP ? program_name_ + "_"
+                                                          : ns)
               << "CONSTANTS implements \\IThriftConstants {\n";
   }
 }
@@ -4721,7 +4757,8 @@ void t_hack_generator::_generate_sendImplHelper(
  */
 void t_hack_generator::generate_service(const t_service* tservice) {
   if (mangled_services_) {
-    if (php_namespace(tservice).empty()) {
+    auto [_, ns_type] = get_namespace(tservice);
+    if (ns_type != HackThriftNamespaceType::PHP) {
       throw std::runtime_error(
           "cannot generate mangled services for " + tservice->name() +
           "; no php namespace found");
@@ -4748,9 +4785,9 @@ void t_hack_generator::generate_service(
   record_genfile(f_service_name);
 
   f_service_ << "<?hh\n" << autogen_comment() << "\n";
-  std::string hack_ns = hack_namespace(program_);
-  if (!hack_ns.empty()) {
-    f_service_ << "namespace " << hack_ns << ";\n\n";
+  auto [ns, _] = get_namespace(program_);
+  if (has_hack_namespace) {
+    f_service_ << "namespace " << ns << ";\n\n";
   }
 
   // Generate the main parts of the service
