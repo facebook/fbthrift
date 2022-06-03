@@ -346,7 +346,7 @@ public final class RpcClientUtils {
             exceptionMetadata -> {
               PayloadExceptionMetadata payloadExceptionMetadata = exceptionMetadata.getMetadata();
               if (payloadExceptionMetadata != null) {
-                if (payloadExceptionMetadata.isSetProxyException()) {
+                if (payloadExceptionMetadata.isSetDEPRECATEDProxyException()) {
                   return new TTransportException(exceptionMetadata.getWhatUtf8());
                 } else if (!payloadExceptionMetadata.isSetDeclaredException()) {
                   // A write and read to protocol is performed to match THeader exception trace

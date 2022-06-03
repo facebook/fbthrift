@@ -50,7 +50,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
 namespace {
-const int64_t kRocketServerMaxVersion = 9;
+const int64_t kRocketServerMaxVersion = 10;
 const int64_t kRocketServerMinVersion = 8;
 } // namespace
 

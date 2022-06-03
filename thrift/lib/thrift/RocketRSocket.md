@@ -17,7 +17,7 @@ If the upgrade was successful - both server and client MUST treat the connection
 
 ## Versioning
 
-Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 8 through 9.
+Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 8 through 10.
 
 ## Connection setup (Rocket protocol version 9+)
 RSocket setup frame MUST use application/x-rocket-metadata+compact as Metadata Encoding MIME Type and application/x-rocket-payload as Data Encoding MIME Type.

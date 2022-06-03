@@ -390,7 +390,7 @@ public class RpcClientUtilsTest {
                     new PayloadExceptionMetadataBase.Builder()
                         .setWhatUtf8("Foo")
                         .setMetadata(
-                            PayloadExceptionMetadata.fromProxyException(
+                            PayloadExceptionMetadata.fromDEPRECATEDProxyException(
                                 PayloadProxyExceptionMetadata.defaultInstance()))
                         .build()))
             .build();

@@ -207,18 +207,28 @@ struct PayloadAppUnknownExceptionMetdata {
   1: optional ErrorClassification errorClassification;
 }
 
+struct PayloadAnyExceptionMetadata {}
+
 union PayloadExceptionMetadata {
   // If set response payload MUST contain serialized declared exception.
   1: PayloadDeclaredExceptionMetadata declaredException;
   // If set response payload SHOULD contain exception serialized in a format
   // defined by a proxy.
-  2: PayloadProxyExceptionMetadata proxyException;
+  // Deprecated:
+  // replaced by PayloadAnyExceptionMetadata
+  2: PayloadProxyExceptionMetadata DEPRECATED_proxyException;
   // 3: Deprecated
   // 4: Deprecated
   // 5: Deprecated
   // If set response payload SHOULD be empty.
   // Supported in Rocket protocol version 8+
   6: PayloadAppUnknownExceptionMetdata appUnknownException;
+  // If set response payload MUST contain a serialized SemiAnyStruct
+  // (see thrift/lib/thrift/any_rep.thrift) containing an exception.
+  // If SemiAnyStruct doesn't have the protocol set, the protocol MUST
+  // match the protocol used to serialize the SemiAnyStruct.
+  // Supported in Rocket protocol version 10+
+  7: PayloadAnyExceptionMetadata anyException;
 }
 
 struct PayloadExceptionMetadataBase {

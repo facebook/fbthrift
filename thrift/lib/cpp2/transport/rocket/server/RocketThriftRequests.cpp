@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
 
 namespace apache {
 namespace thrift {
@@ -132,7 +133,7 @@ void preprocessProxiedExceptionHeaders(
   }
 }
 
-template <typename ProtocolReader>
+template <typename Serializer>
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
@@ -141,7 +142,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     std::string methodNameIgnore;
     MessageType mtype;
     int32_t seqIdIgnore;
-    ProtocolReader reader;
+    typename Serializer::ProtocolReader reader;
     reader.setInput(payload.get());
     reader.readMessageBegin(methodNameIgnore, mtype, seqIdIgnore);
 
@@ -224,12 +225,34 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                 ? folly::get_ptr(
                       *otherMetadataRef, "servicerouter:sr_internal_error")
                 : nullptr) {
-          exceptionMetadataBase.name_utf8_ref() = "ProxyException";
-          PayloadExceptionMetadata exceptionMetadata;
-          exceptionMetadata.set_proxyException(PayloadProxyExceptionMetadata());
-          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+          if (version < 10) {
+            exceptionMetadataBase.name_utf8_ref() = "ProxyException";
+            PayloadExceptionMetadata exceptionMetadata;
+            exceptionMetadata.set_DEPRECATED_proxyException(
+                PayloadProxyExceptionMetadata());
+            exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
 
-          payload = protocol::base64Decode(*proxyErrorPtr);
+            payload = protocol::base64Decode(*proxyErrorPtr);
+          } else {
+            exceptionMetadataBase.name_utf8_ref() = "ServiceRouterError";
+            exceptionMetadataBase.metadata_ref()
+                .ensure()
+                .anyException_ref()
+                .ensure();
+
+            type::SemiAnyStruct anyException;
+            anyException.type_ref() = type::Type(
+                type::exception_c{},
+                "facebook.com/servicerouter/ServiceRouterError");
+            if (!std::is_same_v<Serializer, CompactSerializer>) {
+              anyException.protocol_ref() = type::StandardProtocol::Compact;
+            }
+            anyException.data_ref() =
+                std::move(*protocol::base64Decode(*proxyErrorPtr));
+            folly::IOBufQueue payloadQueue;
+            Serializer::serialize(anyException, &payloadQueue);
+            payload = payloadQueue.move();
+          }
 
           otherMetadataRef->erase("servicerouter:sr_internal_error");
           otherMetadataRef->erase("ex");
@@ -368,10 +391,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
 
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
-      return processFirstResponseHelper<BinaryProtocolReader>(
+      return processFirstResponseHelper<BinarySerializer>(
           metadata, payload, version);
     case protocol::T_COMPACT_PROTOCOL:
-      return processFirstResponseHelper<CompactProtocolReader>(
+      return processFirstResponseHelper<CompactSerializer>(
           metadata, payload, version);
     default: {
       return makeResponseRpcError(

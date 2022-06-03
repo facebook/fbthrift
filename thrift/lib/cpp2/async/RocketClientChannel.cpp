@@ -35,6 +35,7 @@
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
@@ -53,9 +54,10 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
 
 namespace {
-const int64_t kRocketClientMaxVersion = 9;
+const int64_t kRocketClientMaxVersion = 10;
 const int64_t kRocketClientMinVersion = 8;
 } // namespace
 
@@ -222,6 +224,7 @@ folly::Try<FirstResponsePayload> decodeResponseError(
 
 template <class Handler>
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
+    uint16_t protocolId,
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
     Handler& handler) {
@@ -264,7 +267,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               }
               payload = handler.handleReply(std::move(payload));
               break;
-            case PayloadExceptionMetadata::proxyException:
+            case PayloadExceptionMetadata::DEPRECATED_proxyException:
               (*otherMetadataRef)
                   [isProxiedResponse ? "servicerouter:sr_error"
                                      : "servicerouter:sr_internal_error"] =
@@ -272,6 +275,42 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
               break;
+            case PayloadExceptionMetadata::anyException: {
+              type::SemiAnyStruct anyException;
+              try {
+                if (protocolId == protocol::T_COMPACT_PROTOCOL) {
+                  CompactSerializer::deserialize(payload.get(), anyException);
+                } else {
+                  BinarySerializer::deserialize(payload.get(), anyException);
+                }
+              } catch (...) {
+                return TApplicationException(
+                    "anyException deserialization failure: " +
+                    folly::exceptionStr(std::current_exception())
+                        .toStdString());
+              }
+              if (*anyException.protocol_ref() == type::kNoProtocol) {
+                anyException.protocol_ref() =
+                    protocolId == protocol::T_COMPACT_PROTOCOL
+                    ? type::Protocol::get<type::StandardProtocol::Compact>()
+                    : type::Protocol::get<type::StandardProtocol::Binary>();
+              }
+              if (anyException.type_ref() ==
+                      type::Type(
+                          type::exception_c{},
+                          "facebook.com/servicerouter/ServiceRouterError") &&
+                  anyException.protocol_ref() ==
+                      type::Protocol::get<type::StandardProtocol::Compact>()) {
+                (*otherMetadataRef)
+                    [isProxiedResponse ? "servicerouter:sr_error"
+                                       : "servicerouter:sr_internal_error"] =
+                        protocol::base64Encode(
+                            anyException.data_ref()->coalesce());
+              }
+              payload = handler.handleException(
+                  TApplicationException(exceptionWhatRef.value_or("")));
+              break;
+            }
             default:
               switch (metaType) {
                 case PayloadExceptionMetadata::appUnknownException:
@@ -331,7 +370,10 @@ class FirstRequestProcessorStream : public StreamClientCallback,
     DCHECK_EQ(evb, evb_);
     LegacyResponseSerializationHandler handler(protocolId_, methodName_.view());
     if (auto error = processFirstResponse(
-            firstResponse.metadata, firstResponse.payload, handler)) {
+            protocolId_,
+            firstResponse.metadata,
+            firstResponse.payload,
+            handler)) {
       serverCallback->onStreamCancel();
       clientCallback_->onFirstResponseError(std::move(error));
       return false;
@@ -400,7 +442,10 @@ class FirstRequestProcessorSink : public SinkClientCallback,
     SCOPE_EXIT { delete this; };
     LegacyResponseSerializationHandler handler(protocolId_, methodName_.view());
     if (auto error = processFirstResponse(
-            firstResponse.metadata, firstResponse.payload, handler)) {
+            protocolId_,
+            firstResponse.metadata,
+            firstResponse.payload,
+            handler)) {
       serverCallback->onSinkError(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::INTERRUPTION,
@@ -543,7 +588,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
         return;
       }
       if (auto error = processFirstResponse(
-              response->metadata, response->payload, handler)) {
+              protocolId_, response->metadata, response->payload, handler)) {
         cb_.release()->onResponseError(std::move(error));
         return;
       }

@@ -141,6 +141,13 @@ add_library(
   thrifttype
 
   ${type-cpp2-SOURCES}
+
+  type/Any.cpp
+  type/BaseType.cpp
+  type/Protocol.cpp
+  type/Type.cpp
+  type/TypeRegistry.cpp
+  type/UniversalName.cpp
 )
 add_dependencies(thrifttype type-cpp2-target thriftannotation thrifttyperep)
 target_link_libraries(
@@ -316,12 +323,6 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
-  type/Any.cpp
-  type/BaseType.cpp
-  type/Protocol.cpp
-  type/Type.cpp
-  type/TypeRegistry.cpp
-  type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp
   util/EmptyAsyncProcessor.cpp
