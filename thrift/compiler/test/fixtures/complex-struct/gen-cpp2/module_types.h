@@ -668,6 +668,7 @@ typedef ::std::map<::std::int32_t, ::std::int64_t> FMap;
 class MyStructFloatFieldThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -948,6 +949,7 @@ unsigned long MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
 class MyStructMapFloatThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1116,6 +1118,7 @@ unsigned long MyStructMapFloatThrowExp::read(Protocol_* iprot) {
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1179,6 +1182,7 @@ unsigned long MyDataItem::read(Protocol_* iprot) {
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -2687,6 +2691,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
 class SimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -2862,6 +2867,7 @@ unsigned long SimpleStruct::read(Protocol_* iprot) {
 class ComplexNestedStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -3847,6 +3853,7 @@ unsigned long ComplexNestedStruct::read(Protocol_* iprot) {
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -4407,6 +4414,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
 class defaultStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -5617,6 +5625,7 @@ unsigned long defaultStruct::read(Protocol_* iprot) {
 class MyStructTypeDef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -6157,6 +6166,7 @@ unsigned long MyStructTypeDef::read(Protocol_* iprot) {
 class MyUnionFloatFieldThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -6587,6 +6597,7 @@ unsigned long MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
 class TypeRemapped final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -6863,6 +6874,7 @@ unsigned long TypeRemapped::read(Protocol_* iprot) {
 class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -6938,6 +6950,7 @@ unsigned long emptyXcep::read(Protocol_* iprot) {
 class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -7082,6 +7095,7 @@ unsigned long reqXcep::read(Protocol_* iprot) {
 class FOLLY_EXPORT optXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -7234,6 +7248,7 @@ unsigned long optXcep::read(Protocol_* iprot) {
 class FOLLY_EXPORT complexException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

@@ -326,6 +326,7 @@ typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
 class Internship final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -674,6 +675,7 @@ unsigned long Internship::read(Protocol_* iprot) {
 class Range final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -843,6 +845,7 @@ unsigned long Range::read(Protocol_* iprot) {
 class struct1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1018,6 +1021,7 @@ unsigned long struct1::read(Protocol_* iprot) {
 class struct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1294,6 +1298,7 @@ unsigned long struct2::read(Protocol_* iprot) {
 class struct3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1519,6 +1524,7 @@ unsigned long struct3::read(Protocol_* iprot) {
 class struct4 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1752,6 +1758,7 @@ unsigned long struct4::read(Protocol_* iprot) {
 class union1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -2010,6 +2017,7 @@ unsigned long union1::read(Protocol_* iprot) {
 class union2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

@@ -143,6 +143,7 @@ typedef ::std::map<::std::int16_t, ::std::string> containerTypedef;
 class ComplexUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -731,6 +732,7 @@ unsigned long ComplexUnion::read(Protocol_* iprot) {
 class ListUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1017,6 +1019,7 @@ unsigned long ListUnion::read(Protocol_* iprot) {
 class DataUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1303,6 +1306,7 @@ unsigned long DataUnion::read(Protocol_* iprot) {
 class Val final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1528,6 +1532,7 @@ unsigned long Val::read(Protocol_* iprot) {
 class ValUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1814,6 +1819,7 @@ unsigned long ValUnion::read(Protocol_* iprot) {
 class VirtualComplexUnion  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -2100,6 +2106,7 @@ unsigned long VirtualComplexUnion::read(Protocol_* iprot) {
 class NonCopyableStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -2214,6 +2221,7 @@ unsigned long NonCopyableStruct::read(Protocol_* iprot) {
 class NonCopyableUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

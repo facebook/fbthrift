@@ -193,6 +193,7 @@ typedef ::cpp2::Foo FooWithAdapter;
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -765,6 +766,7 @@ unsigned long Foo::read(Protocol_* iprot) {
 class Baz final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1260,6 +1262,7 @@ unsigned long Baz::read(Protocol_* iprot) {
 class Bar final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1599,6 +1602,7 @@ typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> Uni
 class A final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1663,6 +1667,7 @@ typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter, ::cpp2::A> Adapte
 class StructWithFieldAdapter final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -1840,6 +1845,7 @@ unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
 class B final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

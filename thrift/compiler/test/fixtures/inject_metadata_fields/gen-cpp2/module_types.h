@@ -85,6 +85,7 @@ using ::apache::thrift::detail::operator>=;
 class Fields final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -206,6 +207,7 @@ unsigned long Fields::read(Protocol_* iprot) {
 class FieldsInjectedToEmptyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -327,6 +329,7 @@ unsigned long FieldsInjectedToEmptyStruct::read(Protocol_* iprot) {
 class FieldsInjectedToStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -505,6 +508,7 @@ unsigned long FieldsInjectedToStruct::read(Protocol_* iprot) {
 class FieldsInjectedWithIncludedStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

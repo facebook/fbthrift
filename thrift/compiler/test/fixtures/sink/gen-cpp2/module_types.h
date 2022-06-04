@@ -81,6 +81,7 @@ using ::apache::thrift::detail::operator>=;
 class InitialResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -202,6 +203,7 @@ unsigned long InitialResponse::read(Protocol_* iprot) {
 class FinalResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -323,6 +325,7 @@ unsigned long FinalResponse::read(Protocol_* iprot) {
 class SinkPayload final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -444,6 +447,7 @@ unsigned long SinkPayload::read(Protocol_* iprot) {
 class CompatibleWithKeywordSink final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -565,6 +569,7 @@ unsigned long CompatibleWithKeywordSink::read(Protocol_* iprot) {
 class FOLLY_EXPORT InitialException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -679,6 +684,7 @@ unsigned long InitialException::read(Protocol_* iprot) {
 class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -793,6 +799,7 @@ unsigned long SinkException1::read(Protocol_* iprot) {
 class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

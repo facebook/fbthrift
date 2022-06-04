@@ -123,6 +123,7 @@ using ::apache::thrift::detail::operator>=;
 class TerseFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -391,6 +392,7 @@ unsigned long TerseFoo::read(Protocol_* iprot) {
 class TerseLazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -663,6 +665,7 @@ unsigned long TerseLazyFoo::read(Protocol_* iprot) {
 class TerseOptionalFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -935,6 +938,7 @@ unsigned long TerseOptionalFoo::read(Protocol_* iprot) {
 class TerseOptionalLazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;

@@ -85,6 +85,7 @@ using ::apache::thrift::detail::operator>=;
 class FOLLY_EXPORT Fiery : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -198,6 +199,7 @@ unsigned long Fiery::read(Protocol_* iprot) {
 class FOLLY_EXPORT Serious : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -314,6 +316,7 @@ unsigned long Serious::read(Protocol_* iprot) {
 class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -466,6 +469,7 @@ unsigned long ComplexFieldNames::read(Protocol_* iprot) {
 class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -618,6 +622,7 @@ unsigned long CustomFieldNames::read(Protocol_* iprot) {
 class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
@@ -765,6 +770,7 @@ unsigned long ExceptionWithPrimitiveField::read(Protocol_* iprot) {
 class FOLLY_EXPORT Banal : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
