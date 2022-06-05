@@ -37,7 +37,7 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
-#include <thrift/compiler/gen/cpp/testing.h>
+#include <thrift/compiler/gen/testing.h>
 #include <thrift/compiler/util.h>
 
 namespace apache::thrift::compiler {
@@ -341,7 +341,6 @@ TEST_F(UtilTest, get_internal_injected_field_id) {
 
 TEST_F(UtilTest, gen_adapter_dependency_graph) {
   t_program p("path/to/program.thrift");
-  auto adapter = gen::cpp::adapter_builder(&p);
   std::mt19937 gen;
   auto test = [&](std::string name, std::vector<const t_type*> expected) {
     constexpr int kIters = 42;
@@ -366,25 +365,26 @@ TEST_F(UtilTest, gen_adapter_dependency_graph) {
     }
   };
 
+  auto adapter = gen::adapter_builder(p, "cpp");
   t_struct s1(&p, "struct");
   t_typedef t1(&p, "typedef_with_adapter", s1);
-  t1.add_structured_annotation(adapter.make());
+  t1.add_structured_annotation(adapter.make("MyAdapter"));
   test("adapted typedef after struct", {&s1, &t1});
 
   t_struct f2(nullptr, "foreign_struct");
   t_typedef t2(&p, "typedef_with_adapter", f2);
-  t2.add_structured_annotation(adapter.make());
+  t2.add_structured_annotation(adapter.make("MyAdapter"));
   t_struct s2(&p, "dependent_struct");
   s2.append_field(std::make_unique<t_field>(t2, "field"));
   test("dependent struct after typedef", {&t2, &s2});
 
   t_union u3(&p, "union");
   t_typedef t3(&p, "typedef_with_adapter", u3);
-  t3.add_structured_annotation(adapter.make());
+  t3.add_structured_annotation(adapter.make("MyAdapter"));
   test("adapted typedef after union", {&u3, &t3});
 
   t_typedef t4(&p, "typedef_with_adapter", f2);
-  t4.add_structured_annotation(adapter.make());
+  t4.add_structured_annotation(adapter.make("MyAdapter"));
   t_exception e4(&p, "exception");
   e4.append_field(std::make_unique<t_field>(t4, "field"));
   test("dependent exception after typedef", {&t4, &e4});

@@ -21,7 +21,7 @@
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/diagnostic.h>
-#include <thrift/compiler/gen/cpp/testing.h>
+#include <thrift/compiler/gen/testing.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -59,7 +59,6 @@ TEST_F(StandardMutatorTest, Empty) {
 
 TEST_F(StandardMutatorTest, TerseWriteField) {
   t_program* program = root_program();
-  auto terse = gen::cpp::terse_builder(program);
   auto terse_field =
       std::make_unique<t_field>(t_base_type::t_i64(), "terse_field", 1);
   auto strct = std::make_unique<t_struct>(program, "struct");
@@ -67,7 +66,8 @@ TEST_F(StandardMutatorTest, TerseWriteField) {
   // Store pointer for testing purpose.
   const auto* terse_field_ptr = terse_field.get();
 
-  terse_field->add_structured_annotation(terse.make());
+  terse_field->add_structured_annotation(
+      gen::thrift_annotation_builder::terse(*program).make());
   strct->append_field(std::move(terse_field));
   program->add_struct(std::move(strct));
 
@@ -80,7 +80,6 @@ TEST_F(StandardMutatorTest, TerseWriteField) {
 
 TEST_F(StandardMutatorTest, TerseWriteStruct) {
   t_program* program = root_program();
-  auto terse = gen::cpp::terse_builder(program);
   auto terse_field =
       std::make_unique<t_field>(t_base_type::t_i64(), "terse_field", 1);
   auto optional_field =
@@ -97,7 +96,8 @@ TEST_F(StandardMutatorTest, TerseWriteStruct) {
   const auto* optional_field_ptr = optional_field.get();
   const auto* required_field_ptr = required_field.get();
 
-  strct->add_structured_annotation(terse.make());
+  strct->add_structured_annotation(
+      gen::thrift_annotation_builder::terse(*program).make());
   strct->append_field(std::move(terse_field));
   strct->append_field(std::move(optional_field));
   strct->append_field(std::move(required_field));
@@ -116,9 +116,6 @@ TEST_F(StandardMutatorTest, TerseWriteStruct) {
 
 TEST_F(StandardMutatorTest, InjectMetadataFields) {
   t_program* program = root_program();
-  auto terse_builder = gen::cpp::terse_builder(program);
-  auto inject_builder = gen::cpp::inject_metadata_fields_builder(program);
-  auto box_builder = gen::cpp::box_builder(program);
   auto field = std::make_unique<t_field>(t_base_type::t_i64(), "field", 1);
   auto optional_field =
       std::make_unique<t_field>(t_base_type::t_i64(), "optional_field", 2);
@@ -135,9 +132,12 @@ TEST_F(StandardMutatorTest, InjectMetadataFields) {
   box_field->set_qualifier(t_field_qualifier::optional);
 
   auto injected = std::make_unique<t_struct>(program, "Injected");
-  injected->add_structured_annotation(inject_builder.make());
-  terse_field->add_structured_annotation(terse_builder.make());
-  box_field->add_structured_annotation(box_builder.make());
+  auto box = gen::thrift_annotation_builder::box(*program);
+  injected->add_structured_annotation(
+      gen::inject_metadata_fields_builder(*program).make("MyStruct"));
+  terse_field->add_structured_annotation(
+      gen::thrift_annotation_builder::terse(*program).make());
+  box_field->add_structured_annotation(box.make());
 
   // Store pointers for testing purpose.
   const auto* injected_ptr = injected.get();
@@ -153,7 +153,6 @@ TEST_F(StandardMutatorTest, InjectMetadataFields) {
   program->add_struct(std::move(injected));
 
   const auto& injected_fields = injected_ptr->fields();
-
   EXPECT_EQ(injected_fields.size(), 0);
 
   mutate();
@@ -169,9 +168,9 @@ TEST_F(StandardMutatorTest, InjectMetadataFields) {
       injected_fields[3], -1004, "terse_field", t_field_qualifier::terse);
   check_field(
       injected_fields[4], -1005, "box_field", t_field_qualifier::optional);
-  EXPECT_TRUE(
-      injected_fields[4].find_structured_annotation_or_null(
-          box_builder.uri().data()) != nullptr);
+  EXPECT_NE(
+      injected_fields[4].find_structured_annotation_or_null(box.uri().data()),
+      nullptr);
 }
 
 } // namespace

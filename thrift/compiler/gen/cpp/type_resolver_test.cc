@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/gen/cpp/testing.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
+#include <thrift/compiler/gen/testing.h>
 
 #include <memory>
 #include <stdexcept>
@@ -296,8 +296,8 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   // Structured annotation
   t_base_type booll(t_base_type::t_bool());
   t_typedef typedef1(&program_, "MyBool", booll);
-  auto adapter = adapter_builder(&program_);
-  typedef1.add_structured_annotation(adapter.make());
+  typedef1.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("MyAdapter"));
   t_typedef typedef2(&program_, "DoubleBool", typedef1);
   ASSERT_TRUE(resolver_.find_first_adapter(typedef2));
   EXPECT_EQ(*resolver_.find_first_adapter(typedef2), "MyAdapter");
@@ -398,7 +398,6 @@ TEST_F(TypeResolverTest, StreamingSink) {
 
 TEST_F(TypeResolverTest, StorageType) {
   t_base_type ui64(t_base_type::t_i64());
-  auto box = box_builder(&program_);
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
   {
@@ -465,7 +464,8 @@ TEST_F(TypeResolverTest, StorageType) {
 
   {
     t_field ui64_field(ui64, "hash", 1);
-    ui64_field.add_structured_annotation(box.make());
+    ui64_field.add_structured_annotation(
+        thrift_annotation_builder::box(program_).make());
     EXPECT_EQ(
         get_storage_type_name(ui64_field),
         "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
@@ -599,8 +599,8 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
 TEST_F(TypeResolverTest, AdaptedFieldType) {
   auto i64 = t_base_type::t_i64();
   auto field = t_field(i64, "n", 42);
-  auto adapter = adapter_builder(&program_);
-  field.add_structured_annotation(adapter.make());
+  field.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("MyAdapter"));
   EXPECT_EQ(
       get_type_name(field),
       "::apache::thrift::adapt_detail::adapted_field_t<"
@@ -613,11 +613,10 @@ TEST_F(TypeResolverTest, AdaptedFieldType) {
 
 TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
   auto i64 = t_base_type::t_i64();
-  auto adapter = adapter_builder(&program_);
-  auto box = box_builder(&program_);
+  auto adapter = adapter_builder(program_, "cpp");
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     EXPECT_EQ(
         get_storage_type_name(field),
         "::apache::thrift::adapt_detail::adapted_field_t<"
@@ -626,7 +625,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref", "");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -635,7 +634,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
   }
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp2.ref", ""); // Works with cpp2.
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -645,7 +644,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref_type", "unique");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -655,7 +654,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref_type", "shared");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -665,7 +664,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref_type", "shared_mutable");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -675,7 +674,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref_type", "shared_const");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -685,7 +684,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("thrift.box", "");
     EXPECT_EQ(
         get_storage_type_name(field),
@@ -695,8 +694,9 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   {
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
-    field.add_structured_annotation(box.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
+    field.add_structured_annotation(
+        thrift_annotation_builder::box(program_).make());
     EXPECT_EQ(
         get_storage_type_name(field),
         "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
@@ -705,7 +705,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 
   { // Unrecognized throws an exception.
     auto field = t_field(i64, "n", 42);
-    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(adapter.make("MyAdapter"));
     field.set_annotation("cpp.ref_type", "blah");
     EXPECT_THROW(get_storage_type_name(field), std::runtime_error);
   }
@@ -714,8 +714,8 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
 TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
   auto annotation = t_struct(nullptr, "MyAnnotation");
 
-  auto adapter = adapter_builder(&program_);
-  annotation.add_structured_annotation(adapter.make());
+  annotation.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("MyAdapter"));
 
   auto transitive = t_struct(nullptr, "Transitive");
   transitive.set_uri("facebook.com/thrift/annotation/Transitive");
