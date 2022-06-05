@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-include "thrift/conformance/if/any.thrift"
-cpp_include "<folly/io/IOBuf.h>"
+// TODO(ytj): remove this file in favor of "thrift/lib/thrift/object.thrift"
+include "thrift/lib/thrift/object.thrift"
 
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
@@ -26,40 +26,5 @@ namespace java.swift org.apache.thrift.conformance
 namespace java2 org.apache.thrift.conformance
 namespace go thrift.conformance.object
 
-// A dynamic struct/union/exception (e.g. a JSON Object).
-struct Object {
-  // The type of the object, if applicable.
-  1: string type;
-
-  // The members of the object.
-  2: map<i16, Value> members;
-} (thrift.uri = "facebook.com/thrift/Object")
-
-// A dynamic value.
-union Value {
-  // Integers.
-  1: bool boolValue;
-  2: byte byteValue;
-  3: i16 i16Value;
-  4: i32 i32Value;
-  5: i64 i64Value;
-
-  // Floats.
-  6: float floatValue;
-  7: double doubleValue;
-
-  // Strings.
-  8: string stringValue;
-  9: binary (cpp.type = "folly::IOBuf") binaryValue;
-
-  // A dynamic object value.
-  11: Object objectValue;
-
-  // Containers of values.
-  14: list<Value> listValue;
-  15: set<Value> setValue;
-  16: map<Value, Value> mapValue;
-
-  // A static object value.
-  17: any.Any anyValue;
-} (thrift.uri = "facebook.com/thrift/Value")
+typedef object.ProtocolObject Object
+typedef object.ProtocolValue Value
