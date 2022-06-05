@@ -57,14 +57,13 @@ void remove_param_list_field_qualifiers(
       case t_field_qualifier::none:
         continue;
       case t_field_qualifier::required:
-        ctx.warning(node, "optional keyword is ignored in argument lists.");
+        ctx.warning("optional keyword is ignored in argument lists.");
         break;
       case t_field_qualifier::optional:
-        ctx.warning(node, "required keyword is ignored in argument lists.");
+        ctx.warning("required keyword is ignored in argument lists.");
         break;
       case t_field_qualifier::terse:
         ctx.warning(
-            node,
             "@thrift.TerseWrite annotation is ignored in argument lists.");
         break;
     }

@@ -427,7 +427,6 @@ void validate_ref_field_attributes(
   if (node.qualifier() != t_field_qualifier::optional &&
       dynamic_cast<const t_union*>(ctx.parent()) == nullptr) {
     ctx.warning(
-        node,
         "`cpp.ref` field `{}` must be optional if it is recursive.",
         node.name());
   }
@@ -514,7 +513,6 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
   if (node.explicit_id() != node.id()) {
     ctx.warning(
-        node,
         "No field id specified for `{}`, resulting protocol may have conflicts "
         "or not be backwards compatible!",
         node.name());
@@ -598,7 +596,6 @@ void validate_ref_unique_and_box_annotation(
         });
       } else {
         ctx.warning(
-            node,
             "cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box "
             "annotation instead in `{}`.",
             node.name());
@@ -613,7 +610,6 @@ void validate_ref_unique_and_box_annotation(
         });
       } else {
         ctx.warning(
-            node,
             "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
             "are deprecated. Please use @thrift.Box annotation instead in "
             "`{}`.",
@@ -629,7 +625,6 @@ void validate_ref_unique_and_box_annotation(
         });
       } else {
         ctx.warning(
-            node,
             "@cpp.Ref{{type = cpp.RefType.Unique}} is deprecated. Please use "
             "@thrift.Box annotation instead in `{}`.",
             node.name());
@@ -659,12 +654,10 @@ void validate_function_priority_annotation(
 void validate_exception_php_annotations(
     diagnostic_context& ctx, const t_exception& node) {
   constexpr const char* annotations[] = {"message", "code"};
-
   for (const auto& annotation : annotations) {
     if (node.get_field_by_name(annotation) != nullptr &&
         strcmp(annotation, node.get_annotation(annotation).c_str()) != 0) {
       ctx.warning(
-          node,
           "Some generators (e.g. PHP) will ignore annotation '{}' as it is "
           "also used as field",
           annotation);

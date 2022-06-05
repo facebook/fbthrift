@@ -109,9 +109,13 @@ class diagnostic_context : public diagnostics_engine,
   // A cache for traversal-specific metadata.
   node_metadata_cache& cache() { return cache_; }
 
-  using diagnostics_engine::report;
+  using diagnostics_engine::warning;
+  template <typename... T>
+  void warning(fmt::format_string<T...> msg, T&&... args) {
+    warning(*current(), msg, std::forward<T>(args)...);
+  }
 
-  // Helpers for adding diagnostic results.
+  using diagnostics_engine::report;
   void report(
       diagnostic_level level,
       int lineno,
