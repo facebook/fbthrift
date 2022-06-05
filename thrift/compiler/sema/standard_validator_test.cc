@@ -69,6 +69,9 @@ class StandardValidatorTest : public ::testing::Test {
   diagnostic failure(int lineno, const std::string& msg) {
     return {diagnostic_level::failure, msg, "/path/to/file.thrift", lineno};
   }
+  diagnostic failure(const std::string& msg) {
+    return {diagnostic_level::failure, msg, "", 0};
+  }
 
   diagnostic warning(int lineno, const std::string& msg) {
     return {diagnostic_level::warning, msg, "/path/to/file.thrift", lineno};
@@ -255,14 +258,13 @@ TEST_F(StandardValidatorTest, DuplicatedEnumValues) {
 
   // Add enum_value with repeated value.
   auto enum_value_3 = std::make_unique<t_enum_value>("foo", 1);
-  enum_value_3->set_lineno(1);
   tenum_ptr->append(std::move(enum_value_3));
 
   // An error will be found.
   EXPECT_THAT(
       validate(),
-      UnorderedElementsAre(failure(
-          1, "Duplicate value `foo=1` with value `bar` in enum `foo`.")));
+      UnorderedElementsAre(
+          failure("Duplicate value `foo=1` with value `bar` in enum `foo`.")));
 }
 
 TEST_F(StandardValidatorTest, RepeatedNamesInEnumValues) {
@@ -397,21 +399,18 @@ TEST_F(StandardValidatorTest, MixinFieldType) {
   }
   {
     auto field = std::make_unique<t_field>(tunion.get(), "union_field", 2);
-    field->set_lineno(2);
     field->set_annotation("cpp.mixin");
     field->set_qualifier(t_field_qualifier::required);
     foo->append(std::move(field));
   }
   {
     auto field = std::make_unique<t_field>(texception.get(), "except_field", 3);
-    field->set_lineno(3);
     field->set_annotation("cpp.mixin");
     foo->append(std::move(field));
   }
   {
     auto field =
         std::make_unique<t_field>(&t_base_type::t_i32(), "other_field", 4);
-    field->set_lineno(4);
     field->set_annotation("cpp.mixin");
     foo->append(std::move(field));
   }
@@ -426,10 +425,8 @@ TEST_F(StandardValidatorTest, MixinFieldType) {
       UnorderedElementsAre(
           failure(1, "Mixin field `struct_field` cannot be optional."),
           failure(
-              3,
               "Mixin field `except_field` type must be a struct or union. Found `Exception`."),
           failure(
-              4,
               "Mixin field `other_field` type must be a struct or union. Found `i32`.")));
 }
 

@@ -79,11 +79,11 @@ void mutate_terse_write_annotation_field(
 
   if (terse_write_annotation) {
     auto qual = node.qualifier();
-    ctx.check(qual == t_field_qualifier::none, [&](auto& o) {
-      o << "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `"
-        << (qual == t_field_qualifier::required ? "required" : "optional")
-        << "` qualifier from field `" << node.name() << "`.";
-    });
+    ctx.check(
+        qual == t_field_qualifier::none,
+        "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `{}` qualifier from field `{}`.",
+        qual == t_field_qualifier::required ? "required" : "optional",
+        node.name());
     node.set_qualifier(t_field_qualifier::terse);
   }
 }

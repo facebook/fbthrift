@@ -115,7 +115,15 @@ class diagnostic_context : public diagnostics_engine,
     warning(*current(), msg, std::forward<T>(args)...);
   }
 
+  using diagnostics_engine::check;
+  template <typename... T>
+  bool check(bool condition, fmt::format_string<T...> msg, T&&... args) {
+    return check(condition, *current(), msg, std::forward<T>(args)...);
+  }
+
   using diagnostics_engine::report;
+
+  // TODO(afuller): Remove all deprecated overloads below.
   void report(
       diagnostic_level level,
       int lineno,
@@ -198,10 +206,6 @@ class diagnostic_context : public diagnostics_engine,
       report(diagnostic_level::failure, std::forward<Args>(args)...);
     }
     return cond;
-  }
-  template <typename... Args>
-  void check(bool cond, Args&&... args) {
-    failure_if(!cond, std::forward<Args>(args)...);
   }
 
  private:

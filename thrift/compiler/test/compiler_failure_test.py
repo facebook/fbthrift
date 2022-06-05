@@ -1663,9 +1663,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:7] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "[FAILURE:foo.thrift:6] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `optional` qualifier from field `field2`.\n"
-            "[FAILURE:foo.thrift:9] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "[FAILURE:foo.thrift:8] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `required` qualifier from field `field3`.\n",
         )
 

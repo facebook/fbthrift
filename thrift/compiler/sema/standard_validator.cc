@@ -313,10 +313,10 @@ void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
   for (const auto& except : node.fields()) {
     auto except_type = except.type()->get_true_type();
     ctx.check(
-        dynamic_cast<const t_exception*>(except_type), except, [&](auto& o) {
-          o << "Non-exception type, `" << except_type->name()
-            << "`, in throws.";
-        });
+        dynamic_cast<const t_exception*>(except_type),
+        except,
+        "Non-exception type, `{}`, in throws.",
+        except_type->name());
   }
 }
 
@@ -364,10 +364,8 @@ void validate_boxed_field_attributes(
   ctx.check(
       dynamic_cast<const t_union*>(ctx.parent()) ||
           node.qualifier() == t_field_qualifier::optional,
-      [&](auto& o) {
-        o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
-          << node.name() << "` is optional.";
-      });
+      "The `cpp.box` annotation can only be used with optional fields. Make sure `{}` is optional.",
+      node.name());
 
   ctx.failure_if(
       node.has_annotation({
@@ -392,11 +390,9 @@ void validate_mixin_field_attributes(
   auto* ttype = node.type()->get_true_type();
   ctx.check(
       typeid(*ttype) == typeid(t_struct) || typeid(*ttype) == typeid(t_union),
-      [&](auto& o) {
-        o << "Mixin field `" << node.name()
-          << "` type must be a struct or union. Found `" << ttype->get_name()
-          << "`.";
-      });
+      "Mixin field `{}` type must be a struct or union. Found `{}`.",
+      node.name(),
+      ttype->get_name());
 
   if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
     ctx.failure([&](auto& o) {
@@ -442,11 +438,14 @@ void validate_enum_value_uniqueness(
   std::unordered_map<int32_t, const t_enum_value*> values;
   for (const auto& value : node.values()) {
     auto prev = values.emplace(value.get_value(), &value);
-    ctx.check(prev.second, value, [&](auto& o) {
-      o << "Duplicate value `" << value.name() << "=" << value.get_value()
-        << "` with value `" << prev.first->second->name() << "` in enum `"
-        << node.name() << "`.";
-    });
+    ctx.check(
+        prev.second,
+        value,
+        "Duplicate value `{}={}` with value `{}` in enum `{}`.",
+        value.name(),
+        value.get_value(),
+        prev.first->second->name(),
+        node.name());
   }
 }
 
@@ -693,13 +692,13 @@ void validate_oneway_function(diagnostic_context& ctx, const t_function& node) {
       node.return_type().get_type() != nullptr &&
           node.return_type().get_type()->is_void() &&
           !node.returned_interaction(),
-      [&](auto& o) {
-        o << "Oneway methods must have void return type: " << node.name();
-      });
+      "Oneway methods must have void return type: {}",
+      node.name());
 
-  ctx.check(t_throws::is_null_or_empty(node.exceptions()), [&](auto& o) {
-    o << "Oneway methods can't throw exceptions: " << node.name();
-  });
+  ctx.check(
+      t_throws::is_null_or_empty(node.exceptions()),
+      "Oneway methods can't throw exceptions: {}",
+      node.name());
 }
 
 void validate_stream_exceptions_return_type(
@@ -710,9 +709,8 @@ void validate_stream_exceptions_return_type(
 
   ctx.check(
       dynamic_cast<const t_stream_response*>(node.return_type().get_type()),
-      [&](auto& o) {
-        o << "`stream throws` only valid on stream methods: " << node.name();
-      });
+      "`stream throws` only valid on stream methods: {}",
+      node.name());
 }
 
 void validate_interaction_factories(

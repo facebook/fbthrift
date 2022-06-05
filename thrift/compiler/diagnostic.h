@@ -241,6 +241,19 @@ class diagnostics_engine {
     report(loc.loc, diagnostic_level::failure, msg, std::forward<T>(args)...);
   }
 
+  // Reports a failure and returns false, if the provided condition is false.
+  template <typename... T>
+  bool check(
+      bool condition,
+      diagnostic_location loc,
+      fmt::format_string<T...> msg,
+      T&&... args) {
+    if (!condition) {
+      failure(loc, msg, std::forward<T>(args)...);
+    }
+    return condition;
+  }
+
  private:
   void do_report(
       source_location loc,
