@@ -21,6 +21,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Indicates a definition/feature should no longer be used.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class Deprecated implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Deprecated");

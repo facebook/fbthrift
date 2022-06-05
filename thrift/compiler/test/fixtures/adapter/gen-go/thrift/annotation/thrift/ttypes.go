@@ -24,117 +24,7 @@ var _ = context.Background
 var _ = scope0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
-// Attributes:
-//  - FieldName
-type RequiresBackwardCompatibility struct {
-  FieldName bool `thrift:"field_name,1" db:"field_name" json:"field_name"`
-}
-
-func NewRequiresBackwardCompatibility() *RequiresBackwardCompatibility {
-  return &RequiresBackwardCompatibility{}
-}
-
-
-func (p *RequiresBackwardCompatibility) GetFieldName() bool {
-  return p.FieldName
-}
-type RequiresBackwardCompatibilityBuilder struct {
-  obj *RequiresBackwardCompatibility
-}
-
-func NewRequiresBackwardCompatibilityBuilder() *RequiresBackwardCompatibilityBuilder{
-  return &RequiresBackwardCompatibilityBuilder{
-    obj: NewRequiresBackwardCompatibility(),
-  }
-}
-
-func (p RequiresBackwardCompatibilityBuilder) Emit() *RequiresBackwardCompatibility{
-  return &RequiresBackwardCompatibility{
-    FieldName: p.obj.FieldName,
-  }
-}
-
-func (r *RequiresBackwardCompatibilityBuilder) FieldName(fieldName bool) *RequiresBackwardCompatibilityBuilder {
-  r.obj.FieldName = fieldName
-  return r
-}
-
-func (r *RequiresBackwardCompatibility) SetFieldName(fieldName bool) *RequiresBackwardCompatibility {
-  r.FieldName = fieldName
-  return r
-}
-
-func (p *RequiresBackwardCompatibility) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    switch fieldId {
-    case 1:
-      if err := p.ReadField1(iprot); err != nil {
-        return err
-      }
-    default:
-      if err := iprot.Skip(fieldTypeId); err != nil {
-        return err
-      }
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *RequiresBackwardCompatibility)  ReadField1(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadBool(); err != nil {
-    return thrift.PrependError("error reading field 1: ", err)
-  } else {
-    p.FieldName = v
-  }
-  return nil
-}
-
-func (p *RequiresBackwardCompatibility) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("RequiresBackwardCompatibility"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := p.writeField1(oprot); err != nil { return err }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *RequiresBackwardCompatibility) writeField1(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("field_name", thrift.BOOL, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:field_name: ", p), err) }
-  if err := oprot.WriteBool(bool(p.FieldName)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.field_name (1) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:field_name: ", p), err) }
-  return err
-}
-
-func (p *RequiresBackwardCompatibility) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  fieldNameVal := fmt.Sprintf("%v", p.FieldName)
-  return fmt.Sprintf("RequiresBackwardCompatibility({FieldName:%s})", fieldNameVal)
-}
-
+// Indicates a definition/feature may change in incompatible ways.
 type Beta struct {
 }
 
@@ -200,6 +90,8 @@ func (p *Beta) String() string {
   return fmt.Sprintf("Beta({})")
 }
 
+// Indicates a definition/feature should only be used with permission, may only
+// work in specific contexts, and may change in incompatible ways without notice.
 type Experimental struct {
 }
 
@@ -265,6 +157,8 @@ func (p *Experimental) String() string {
   return fmt.Sprintf("Experimental({})")
 }
 
+// Indicates a definition/feature should no longer be used.
+// 
 // Attributes:
 //  - Message
 type Deprecated struct {
@@ -376,6 +270,10 @@ func (p *Deprecated) String() string {
   return fmt.Sprintf("Deprecated({Message:%s})", messageVal)
 }
 
+// Indicates  a definition/feature will be removed in the next release.
+// 
+// Pleased migrate off of all @Legacy as soon as possible.
+// 
 // Attributes:
 //  - Message
 type Legacy struct {
@@ -485,6 +383,388 @@ func (p *Legacy) String() string {
 
   messageVal := fmt.Sprintf("%v", p.Message)
   return fmt.Sprintf("Legacy({Message:%s})", messageVal)
+}
+
+// Indicates additional backward compatibility restrictions, beyond the
+// standard Thrift required 'wire' compatibility.
+// 
+// Attributes:
+//  - FieldName
+type RequiresBackwardCompatibility struct {
+  FieldName bool `thrift:"field_name,1" db:"field_name" json:"field_name"`
+}
+
+func NewRequiresBackwardCompatibility() *RequiresBackwardCompatibility {
+  return &RequiresBackwardCompatibility{}
+}
+
+
+func (p *RequiresBackwardCompatibility) GetFieldName() bool {
+  return p.FieldName
+}
+type RequiresBackwardCompatibilityBuilder struct {
+  obj *RequiresBackwardCompatibility
+}
+
+func NewRequiresBackwardCompatibilityBuilder() *RequiresBackwardCompatibilityBuilder{
+  return &RequiresBackwardCompatibilityBuilder{
+    obj: NewRequiresBackwardCompatibility(),
+  }
+}
+
+func (p RequiresBackwardCompatibilityBuilder) Emit() *RequiresBackwardCompatibility{
+  return &RequiresBackwardCompatibility{
+    FieldName: p.obj.FieldName,
+  }
+}
+
+func (r *RequiresBackwardCompatibilityBuilder) FieldName(fieldName bool) *RequiresBackwardCompatibilityBuilder {
+  r.obj.FieldName = fieldName
+  return r
+}
+
+func (r *RequiresBackwardCompatibility) SetFieldName(fieldName bool) *RequiresBackwardCompatibility {
+  r.FieldName = fieldName
+  return r
+}
+
+func (p *RequiresBackwardCompatibility) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *RequiresBackwardCompatibility)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.FieldName = v
+  }
+  return nil
+}
+
+func (p *RequiresBackwardCompatibility) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("RequiresBackwardCompatibility"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *RequiresBackwardCompatibility) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("field_name", thrift.BOOL, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:field_name: ", p), err) }
+  if err := oprot.WriteBool(bool(p.FieldName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.field_name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:field_name: ", p), err) }
+  return err
+}
+
+func (p *RequiresBackwardCompatibility) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  fieldNameVal := fmt.Sprintf("%v", p.FieldName)
+  return fmt.Sprintf("RequiresBackwardCompatibility({FieldName:%s})", fieldNameVal)
+}
+
+// Best-effort disables experimental features.
+type NoExperimental struct {
+}
+
+func NewNoExperimental() *NoExperimental {
+  return &NoExperimental{}
+}
+
+type NoExperimentalBuilder struct {
+  obj *NoExperimental
+}
+
+func NewNoExperimentalBuilder() *NoExperimentalBuilder{
+  return &NoExperimentalBuilder{
+    obj: NewNoExperimental(),
+  }
+}
+
+func (p NoExperimentalBuilder) Emit() *NoExperimental{
+  return &NoExperimental{
+  }
+}
+
+func (p *NoExperimental) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoExperimental) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoExperimental"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoExperimental) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoExperimental({})")
+}
+
+// Best-effort disables @Beta features.
+type NoBeta struct {
+}
+
+func NewNoBeta() *NoBeta {
+  return &NoBeta{}
+}
+
+type NoBetaBuilder struct {
+  obj *NoBeta
+}
+
+func NewNoBetaBuilder() *NoBetaBuilder{
+  return &NoBetaBuilder{
+    obj: NewNoBeta(),
+  }
+}
+
+func (p NoBetaBuilder) Emit() *NoBeta{
+  return &NoBeta{
+  }
+}
+
+func (p *NoBeta) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoBeta) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoBeta"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoBeta) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoBeta({})")
+}
+
+// Best-effort disables @Legacy features.
+type NoLegacy struct {
+}
+
+func NewNoLegacy() *NoLegacy {
+  return &NoLegacy{}
+}
+
+type NoLegacyBuilder struct {
+  obj *NoLegacy
+}
+
+func NewNoLegacyBuilder() *NoLegacyBuilder{
+  return &NoLegacyBuilder{
+    obj: NewNoLegacy(),
+  }
+}
+
+func (p NoLegacyBuilder) Emit() *NoLegacy{
+  return &NoLegacy{
+  }
+}
+
+func (p *NoLegacy) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoLegacy) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoLegacy"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoLegacy) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoLegacy({})")
+}
+
+//  * Best-effort disables @Deprecated features.
+// *
+// * Should only be enabled in `test` versions, as deprecated implies removing
+// * the feature will break current usage (otherwise it would be @Legacy or
+// * deleted)
+type NoDeprecated struct {
+}
+
+func NewNoDeprecated() *NoDeprecated {
+  return &NoDeprecated{}
+}
+
+type NoDeprecatedBuilder struct {
+  obj *NoDeprecated
+}
+
+func NewNoDeprecatedBuilder() *NoDeprecatedBuilder{
+  return &NoDeprecatedBuilder{
+    obj: NewNoDeprecated(),
+  }
+}
+
+func (p NoDeprecatedBuilder) Emit() *NoDeprecated{
+  return &NoDeprecated{
+  }
+}
+
+func (p *NoDeprecated) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoDeprecated) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoDeprecated"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoDeprecated) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoDeprecated({})")
 }
 
 type TerseWrite struct {
@@ -682,6 +962,10 @@ func (p *Mixin) String() string {
   return fmt.Sprintf("Mixin({})")
 }
 
+// Option to serialize thrift struct in ascending field id order.
+// 
+// This can potentially make serialized data size smaller in compact protocol,
+// since compact protocol can write deltas between subsequent field ids.
 type SerializeInFieldIdOrder struct {
 }
 
@@ -747,266 +1031,7 @@ func (p *SerializeInFieldIdOrder) String() string {
   return fmt.Sprintf("SerializeInFieldIdOrder({})")
 }
 
-type NoExperimental struct {
-}
-
-func NewNoExperimental() *NoExperimental {
-  return &NoExperimental{}
-}
-
-type NoExperimentalBuilder struct {
-  obj *NoExperimental
-}
-
-func NewNoExperimentalBuilder() *NoExperimentalBuilder{
-  return &NoExperimentalBuilder{
-    obj: NewNoExperimental(),
-  }
-}
-
-func (p NoExperimentalBuilder) Emit() *NoExperimental{
-  return &NoExperimental{
-  }
-}
-
-func (p *NoExperimental) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *NoExperimental) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("NoExperimental"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *NoExperimental) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  return fmt.Sprintf("NoExperimental({})")
-}
-
-type NoBeta struct {
-}
-
-func NewNoBeta() *NoBeta {
-  return &NoBeta{}
-}
-
-type NoBetaBuilder struct {
-  obj *NoBeta
-}
-
-func NewNoBetaBuilder() *NoBetaBuilder{
-  return &NoBetaBuilder{
-    obj: NewNoBeta(),
-  }
-}
-
-func (p NoBetaBuilder) Emit() *NoBeta{
-  return &NoBeta{
-  }
-}
-
-func (p *NoBeta) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *NoBeta) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("NoBeta"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *NoBeta) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  return fmt.Sprintf("NoBeta({})")
-}
-
-type NoLegacy struct {
-}
-
-func NewNoLegacy() *NoLegacy {
-  return &NoLegacy{}
-}
-
-type NoLegacyBuilder struct {
-  obj *NoLegacy
-}
-
-func NewNoLegacyBuilder() *NoLegacyBuilder{
-  return &NoLegacyBuilder{
-    obj: NewNoLegacy(),
-  }
-}
-
-func (p NoLegacyBuilder) Emit() *NoLegacy{
-  return &NoLegacy{
-  }
-}
-
-func (p *NoLegacy) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *NoLegacy) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("NoLegacy"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *NoLegacy) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  return fmt.Sprintf("NoLegacy({})")
-}
-
-type NoDeprecated struct {
-}
-
-func NewNoDeprecated() *NoDeprecated {
-  return &NoDeprecated{}
-}
-
-type NoDeprecatedBuilder struct {
-  obj *NoDeprecated
-}
-
-func NewNoDeprecatedBuilder() *NoDeprecatedBuilder{
-  return &NoDeprecatedBuilder{
-    obj: NewNoDeprecated(),
-  }
-}
-
-func (p NoDeprecatedBuilder) Emit() *NoDeprecated{
-  return &NoDeprecated{
-  }
-}
-
-func (p *NoDeprecated) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *NoDeprecated) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("NoDeprecated"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *NoDeprecated) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  return fmt.Sprintf("NoDeprecated({})")
-}
-
+// Enables all released v1 features.
 type V1 struct {
 }
 
@@ -1072,6 +1097,11 @@ func (p *V1) String() string {
   return fmt.Sprintf("V1({})")
 }
 
+// Enables all beta v1 features.
+// 
+// Beta features are guaranteed to *not* break unrelated Thrift features
+// so they should be relatively safe to test alongside other beta or
+// released Thrift features.
 type V1beta struct {
 }
 
@@ -1137,6 +1167,11 @@ func (p *V1beta) String() string {
   return fmt.Sprintf("V1beta({})")
 }
 
+// Enables all experimental v1 features.
+// 
+// Use with *caution* and only with explicit permission. This may enable
+// features may change significantly without notice or not work correctly
+// in all contexts.
 type V1alpha struct {
 }
 
@@ -1202,6 +1237,8 @@ func (p *V1alpha) String() string {
   return fmt.Sprintf("V1alpha({})")
 }
 
+// Enables experimental features, even those that are known to break common
+// use cases.
 type V1test struct {
 }
 

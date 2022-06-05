@@ -23,6 +23,13 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ *  * Best-effort disables @Deprecated features.
+ * *
+ * * Should only be enabled in `test` versions, as deprecated implies removing
+ * * the feature will break current usage (otherwise it would be @Legacy or
+ * * deleted)
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class NoDeprecated implements TBase, java.io.Serializable, Cloneable, Comparable<NoDeprecated> {
   private static final TStruct STRUCT_DESC = new TStruct("NoDeprecated");

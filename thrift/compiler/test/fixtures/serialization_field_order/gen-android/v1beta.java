@@ -21,6 +21,13 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Enables all beta v1 features.
+ * 
+ * Beta features are guaranteed to *not* break unrelated Thrift features
+ * so they should be relatively safe to test alongside other beta or
+ * released Thrift features.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class v1beta implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("v1beta");

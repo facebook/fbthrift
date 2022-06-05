@@ -21,6 +21,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Enables all released v1 features.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class v1 implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("v1");

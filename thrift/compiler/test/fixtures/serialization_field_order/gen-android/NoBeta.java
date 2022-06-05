@@ -21,6 +21,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Best-effort disables @Beta features.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class NoBeta implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("NoBeta");

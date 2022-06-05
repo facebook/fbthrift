@@ -21,6 +21,10 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Enables experimental features, even those that are known to break common
+ * use cases.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class v1test implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("v1test");

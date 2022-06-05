@@ -23,6 +23,10 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Indicates additional backward compatibility restrictions, beyond the
+ * standard Thrift required 'wire' compatibility.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class RequiresBackwardCompatibility implements TBase, java.io.Serializable, Cloneable, Comparable<RequiresBackwardCompatibility> {
   private static final TStruct STRUCT_DESC = new TStruct("RequiresBackwardCompatibility");

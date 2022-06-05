@@ -23,6 +23,13 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Enables all experimental v1 features.
+ * 
+ * Use with *caution* and only with explicit permission. This may enable
+ * features may change significantly without notice or not work correctly
+ * in all contexts.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class v1alpha implements TBase, java.io.Serializable, Cloneable, Comparable<v1alpha> {
   private static final TStruct STRUCT_DESC = new TStruct("v1alpha");

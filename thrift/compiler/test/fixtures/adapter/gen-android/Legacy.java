@@ -21,6 +21,11 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Indicates  a definition/feature will be removed in the next release.
+ * 
+ * Pleased migrate off of all @Legacy as soon as possible.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class Legacy implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Legacy");

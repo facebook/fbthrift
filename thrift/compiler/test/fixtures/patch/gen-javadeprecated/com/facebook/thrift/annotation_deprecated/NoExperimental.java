@@ -23,6 +23,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Best-effort disables experimental features.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class NoExperimental implements TBase, java.io.Serializable, Cloneable, Comparable<NoExperimental> {
   private static final TStruct STRUCT_DESC = new TStruct("NoExperimental");

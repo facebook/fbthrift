@@ -23,6 +23,10 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Indicates a definition/feature should only be used with permission, may only
+ * work in specific contexts, and may change in incompatible ways without notice.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class Experimental implements TBase, java.io.Serializable, Cloneable, Comparable<Experimental> {
   private static final TStruct STRUCT_DESC = new TStruct("Experimental");

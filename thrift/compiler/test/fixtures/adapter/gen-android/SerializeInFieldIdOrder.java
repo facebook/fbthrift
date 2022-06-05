@@ -21,6 +21,12 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * Option to serialize thrift struct in ascending field id order.
+ * 
+ * This can potentially make serialized data size smaller in compact protocol,
+ * since compact protocol can write deltas between subsequent field ids.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class SerializeInFieldIdOrder implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("SerializeInFieldIdOrder");
