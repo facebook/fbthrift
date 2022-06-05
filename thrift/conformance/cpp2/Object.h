@@ -15,58 +15,12 @@
  */
 
 #pragma once
-
-#include <utility>
-#include <thrift/conformance/cpp2/internal/Object.h>
-#include <thrift/lib/cpp/protocol/TProtocolException.h>
-#include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/Object.h>
+// TODO: remove this file
 
 namespace apache::thrift::conformance {
-
-// Creates a Value struct for the given value.
-//
-// TT: The thrift type to use, for example
-// apache::thrift::conformance::type::binary_t.
-template <typename TT, typename T>
-Value asValueStruct(T&& value) {
-  Value result;
-  detail::ValueHelper<TT>::set(result, std::forward<T>(value));
-  return result;
-}
-
-// Schemaless deserialization of thrift serialized data
-// into conformance::Object
-// Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
-// buf: serialized payload
-// Works for binary, compact. Does not work for SimpleJson protocol as it does
-// not save fieldID and field type information in serialized data. Does not work
-// with json protocol because both binary & string is marked as T_STRING type in
-// serailized data but both are encoded differently. Binary is base64 encoded
-// and string is written as is. So during deserialization we cannot decode it
-// correctly without schema. String fields are currently saved in binaryValue.
-template <class Protocol>
-Object parseObject(const folly::IOBuf& buf) {
-  Protocol prot;
-  prot.setInput(&buf);
-  auto result = detail::parseValue(prot, protocol::T_STRUCT);
-  return *result.objectValue_ref();
-}
-
-// Schemaless serialization of conformance::Object
-// into thrift serialization protocol
-// Protocol: protocol to use eg. apache::thrift::BinaryProtocolWriter
-// obj: object to be serialized
-// Serialized output is same as schema based serialization except when struct
-// contains an empty list, set or map
-template <class Protocol>
-std::unique_ptr<folly::IOBuf> serializeObject(const Object& obj) {
-  Protocol prot;
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  prot.setOutput(&queue);
-  Value val;
-  val.objectValue_ref() = obj;
-  detail::serializeValue(prot, val);
-  return queue.move();
-}
-
+using ::apache::thrift::type::asValueStruct;
+using ::apache::thrift::type::parseObject;
+using ::apache::thrift::type::serializeObject;
 } // namespace apache::thrift::conformance

@@ -21,11 +21,11 @@
 
 #include <fatal/type/same_reference_as.h>
 #include <folly/CPortability.h>
-#include <thrift/conformance/if/gen-cpp2/object_types.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/thrift/gen-cpp2/object_types.h>
 
-namespace apache::thrift::conformance::detail {
+namespace apache::thrift::type::detail {
 
 template <typename C, typename T>
 decltype(auto) forward_elem(T& elem) {
@@ -35,7 +35,7 @@ decltype(auto) forward_elem(T& elem) {
 template <typename TT, typename = void>
 struct ValueHelper {
   template <typename T>
-  static void set(Value& result, T&& value) {
+  static void set(ProtocolValue& result, T&& value) {
     if constexpr (false) {
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Bool) {
       result.boolValue_ref() = value;
@@ -61,14 +61,14 @@ struct ValueHelper {
 
 template <>
 struct ValueHelper<type::binary_t> {
-  static void set(Value& result, folly::IOBuf value) {
+  static void set(ProtocolValue& result, folly::IOBuf value) {
     result.binaryValue_ref() = std::move(value);
   }
-  static void set(Value& result, std::string_view value) {
+  static void set(ProtocolValue& result, std::string_view value) {
     result.binaryValue_ref() =
         folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()};
   }
-  static void set(Value& result, folly::ByteRange value) {
+  static void set(ProtocolValue& result, folly::ByteRange value) {
     result.binaryValue_ref() =
         folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()};
   }
@@ -77,7 +77,7 @@ struct ValueHelper<type::binary_t> {
 template <typename V>
 struct ValueHelper<type::list<V>> {
   template <typename C>
-  static void set(Value& result, C&& value) {
+  static void set(ProtocolValue& result, C&& value) {
     auto& result_list = result.listValue_ref().ensure();
     for (auto& elem : value) {
       ValueHelper<V>::set(result_list.emplace_back(), forward_elem<C>(elem));
@@ -88,10 +88,10 @@ struct ValueHelper<type::list<V>> {
 template <typename V>
 struct ValueHelper<type::set<V>> {
   template <typename C>
-  static void set(Value& result, C&& value) {
+  static void set(ProtocolValue& result, C&& value) {
     auto& result_set = result.setValue_ref().ensure();
     for (auto& elem : value) {
-      Value elem_val;
+      ProtocolValue elem_val;
       ValueHelper<V>::set(elem_val, forward_elem<C>(elem));
       result_set.emplace(std::move(elem_val));
     }
@@ -101,10 +101,10 @@ struct ValueHelper<type::set<V>> {
 template <typename K, typename V>
 struct ValueHelper<type::map<K, V>> {
   template <typename C>
-  static void set(Value& result, C&& value) {
+  static void set(ProtocolValue& result, C&& value) {
     auto& result_map = result.mapValue_ref().ensure();
     for (auto& entry : value) {
-      Value key;
+      ProtocolValue key;
       ValueHelper<K>::set(key, entry.first);
       ValueHelper<V>::set(result_map[key], forward_elem<C>(entry.second));
     }
@@ -121,7 +121,7 @@ class BaseObjectAdapter {
 
 class ObjectWriter : public BaseObjectAdapter {
  public:
-  ObjectWriter(Value* target) {
+  ObjectWriter(ProtocolValue* target) {
     assert(target != nullptr);
     cur_.emplace(target);
   }
@@ -130,14 +130,14 @@ class ObjectWriter : public BaseObjectAdapter {
     beginValue().objectValue_ref().ensure();
     return 0;
   }
-  uint32_t writeStructEnd() { return endValue(Value::objectValue); }
+  uint32_t writeStructEnd() { return endValue(ProtocolValue::objectValue); }
 
   uint32_t writeFieldBegin(
       const char* /*name*/, TType /*fieldType*/, int16_t fieldId) {
-    auto result = cur(Value::objectValue)
+    auto result = cur(ProtocolValue::objectValue)
                       .mutable_objectValue()
                       .members()
-                      ->emplace(fieldId, Value());
+                      ->emplace(fieldId, ProtocolValue());
     assert(result.second);
     cur_.push(&result.first->second);
     return 0;
@@ -157,14 +157,15 @@ class ObjectWriter : public BaseObjectAdapter {
 
   uint32_t writeMapEnd() {
     // insert elements from buffer into mapValue
-    std::vector<Value> mapKeyAndValues = getBufferFromStack();
+    std::vector<ProtocolValue> mapKeyAndValues = getBufferFromStack();
     assert(mapKeyAndValues.size() % 2 == 0);
-    std::map<Value, Value>& mapVal = cur().mapValue_ref().ensure();
+    std::map<ProtocolValue, ProtocolValue>& mapVal =
+        cur().mapValue_ref().ensure();
     for (size_t i = 0; i < mapKeyAndValues.size(); i += 2) {
       mapVal.emplace(
           std::move(mapKeyAndValues[i]), std::move(mapKeyAndValues[i + 1]));
     }
-    return endValue(Value::mapValue);
+    return endValue(ProtocolValue::mapValue);
   }
 
   uint32_t writeListBegin(TType /*elemType*/, uint32_t size) {
@@ -172,7 +173,7 @@ class ObjectWriter : public BaseObjectAdapter {
     return 0;
   }
 
-  uint32_t writeListEnd() { return endValue(Value::listValue); }
+  uint32_t writeListEnd() { return endValue(ProtocolValue::listValue); }
 
   uint32_t writeSetBegin(TType /*elemType*/, uint32_t size) {
     // We cannot push reference to set elements on stack without first inserting
@@ -183,47 +184,47 @@ class ObjectWriter : public BaseObjectAdapter {
 
   uint32_t writeSetEnd() {
     // insert elements from buffer into setValue
-    std::vector<Value> setValues = getBufferFromStack();
-    std::set<Value>& setVal = cur().setValue_ref().ensure();
+    std::vector<ProtocolValue> setValues = getBufferFromStack();
+    std::set<ProtocolValue>& setVal = cur().setValue_ref().ensure();
     for (size_t i = 0; i < setValues.size(); i++) {
       setVal.emplace(std::move(setValues[i]));
     }
-    return endValue(Value::setValue);
+    return endValue(ProtocolValue::setValue);
   }
 
   uint32_t writeBool(bool value) {
     ValueHelper<type::bool_t>::set(beginValue(), value);
-    return endValue(Value::boolValue);
+    return endValue(ProtocolValue::boolValue);
   }
 
   uint32_t writeByte(int8_t value) {
     ValueHelper<type::byte_t>::set(beginValue(), value);
-    return endValue(Value::byteValue);
+    return endValue(ProtocolValue::byteValue);
   }
 
   uint32_t writeI16(int16_t value) {
     ValueHelper<type::i16_t>::set(beginValue(), value);
-    return endValue(Value::i16Value);
+    return endValue(ProtocolValue::i16Value);
   }
 
   uint32_t writeI32(int32_t value) {
     ValueHelper<type::i32_t>::set(beginValue(), value);
-    return endValue(Value::i32Value);
+    return endValue(ProtocolValue::i32Value);
   }
 
   uint32_t writeI64(int64_t value) {
     ValueHelper<type::i64_t>::set(beginValue(), value);
-    return endValue(Value::i64Value);
+    return endValue(ProtocolValue::i64Value);
   }
 
   uint32_t writeFloat(float value) {
     ValueHelper<type::float_t>::set(beginValue(), value);
-    return endValue(Value::floatValue);
+    return endValue(ProtocolValue::floatValue);
   }
 
   int32_t writeDouble(double value) {
     ValueHelper<type::double_t>::set(beginValue(), value);
-    return endValue(Value::doubleValue);
+    return endValue(ProtocolValue::doubleValue);
   }
 
   uint32_t writeString(folly::StringPiece value) {
@@ -233,12 +234,12 @@ class ObjectWriter : public BaseObjectAdapter {
 
   uint32_t writeBinary(folly::ByteRange value) {
     ValueHelper<type::binary_t>::set(beginValue(), value);
-    return endValue(Value::binaryValue);
+    return endValue(ProtocolValue::binaryValue);
   }
 
   uint32_t writeBinary(const folly::IOBuf& value) {
     ValueHelper<type::binary_t>::set(beginValue(), value);
-    return endValue(Value::binaryValue);
+    return endValue(ProtocolValue::binaryValue);
   }
 
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str) {
@@ -254,29 +255,29 @@ class ObjectWriter : public BaseObjectAdapter {
   }
 
  protected:
-  std::stack<Value*> cur_;
+  std::stack<ProtocolValue*> cur_;
 
-  void checkCur(Value::Type required) {
+  void checkCur(ProtocolValue::Type required) {
     (void)required;
     assert(cur().getType() == required);
   }
 
-  Value& cur(Value::Type required) {
+  ProtocolValue& cur(ProtocolValue::Type required) {
     checkCur(required);
     return *cur_.top();
   }
 
-  Value& cur() {
+  ProtocolValue& cur() {
     assert(!cur_.empty());
     return *cur_.top();
   }
 
-  Value& beginValue() {
-    checkCur(Value::__EMPTY__);
+  ProtocolValue& beginValue() {
+    checkCur(ProtocolValue::__EMPTY__);
     return cur();
   }
 
-  uint32_t endValue(Value::Type required) {
+  uint32_t endValue(ProtocolValue::Type required) {
     checkCur(required);
     cur_.pop();
     return 0;
@@ -285,7 +286,7 @@ class ObjectWriter : public BaseObjectAdapter {
   // Allocated temporary buffer in cur() and pushes buffer references on stack
   void allocBufferPushOnStack(size_t n) {
     // using listVal as temporary buffer
-    std::vector<Value>& listVal = beginValue().listValue_ref().ensure();
+    std::vector<ProtocolValue>& listVal = beginValue().listValue_ref().ensure();
     listVal.resize(n);
     for (auto itr = listVal.rbegin(); itr != listVal.rend(); ++itr) {
       cur_.push(&*itr);
@@ -293,8 +294,8 @@ class ObjectWriter : public BaseObjectAdapter {
   }
 
   // Get temporary buffer from cur()
-  std::vector<Value> getBufferFromStack() {
-    return std::move(*cur(Value::listValue).listValue_ref());
+  std::vector<ProtocolValue> getBufferFromStack() {
+    return std::move(*cur(ProtocolValue::listValue).listValue_ref());
   }
 };
 
@@ -302,7 +303,7 @@ class ObjectWriter : public BaseObjectAdapter {
 template <typename TT>
 struct ValueHelper<TT, type::if_structured<TT>> {
   template <typename T>
-  static void set(Value& result, T&& value) {
+  static void set(ProtocolValue& result, T&& value) {
     // TODO(afuller): Using the Visitor reflection API + ValueHelper instead.
     // This method loses type information (the enum or struct type for
     // example).
@@ -312,12 +313,12 @@ struct ValueHelper<TT, type::if_structured<TT>> {
 };
 
 // Schemaless deserialization of thrift serialized data of specified
-// thrift type into conformance::Value
+// thrift type into conformance::ProtocolValue
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
 // TODO: handle jsonprotocol
 template <class Protocol>
-Value parseValue(Protocol& prot, TType arg_type) {
-  Value result;
+ProtocolValue parseValue(Protocol& prot, TType arg_type) {
+  ProtocolValue result;
   switch (arg_type) {
     case protocol::T_BOOL: {
       bool boolv;
@@ -428,41 +429,41 @@ Value parseValue(Protocol& prot, TType arg_type) {
   }
 }
 
-inline TType getTType(const Value& val) {
+inline TType getTType(const ProtocolValue& val) {
   return toTType(static_cast<type::BaseType>(val.getType()));
 }
 
 template <class Protocol>
-void serializeValue(Protocol& prot, const Value& value) {
+void serializeValue(Protocol& prot, const ProtocolValue& value) {
   switch (value.getType()) {
-    case Value::Type::boolValue:
+    case ProtocolValue::Type::boolValue:
       prot.writeBool(*value.boolValue_ref());
       return;
-    case Value::Type::byteValue:
+    case ProtocolValue::Type::byteValue:
       prot.writeByte(*value.byteValue_ref());
       return;
-    case Value::Type::i16Value:
+    case ProtocolValue::Type::i16Value:
       prot.writeI16(*value.i16Value_ref());
       return;
-    case Value::Type::i32Value:
+    case ProtocolValue::Type::i32Value:
       prot.writeI32(*value.i32Value_ref());
       return;
-    case Value::Type::i64Value:
+    case ProtocolValue::Type::i64Value:
       prot.writeI64(*value.i64Value_ref());
       return;
-    case Value::Type::floatValue:
+    case ProtocolValue::Type::floatValue:
       prot.writeFloat(*value.floatValue_ref());
       return;
-    case Value::Type::doubleValue:
+    case ProtocolValue::Type::doubleValue:
       prot.writeDouble(*value.doubleValue_ref());
       return;
-    case Value::Type::stringValue:
+    case ProtocolValue::Type::stringValue:
       prot.writeString(*value.stringValue_ref());
       return;
-    case Value::Type::binaryValue:
+    case ProtocolValue::Type::binaryValue:
       prot.writeBinary(*value.binaryValue_ref());
       return;
-    case Value::Type::listValue: {
+    case ProtocolValue::Type::listValue: {
       TType elemType = protocol::T_I64;
       uint32_t size = value.listValue_ref()->size();
       if (size > 0) {
@@ -475,7 +476,7 @@ void serializeValue(Protocol& prot, const Value& value) {
       prot.writeListEnd();
       return;
     }
-    case Value::Type::mapValue: {
+    case ProtocolValue::Type::mapValue: {
       TType keyType = protocol::T_STRING;
       TType valueType = protocol::T_I64;
       uint32_t size = value.mapValue_ref()->size();
@@ -491,7 +492,7 @@ void serializeValue(Protocol& prot, const Value& value) {
       prot.writeMapEnd();
       return;
     }
-    case Value::Type::setValue: {
+    case ProtocolValue::Type::setValue: {
       TType elemType = protocol::T_I64;
       uint32_t size = value.setValue_ref()->size();
       if (size > 0) {
@@ -504,7 +505,7 @@ void serializeValue(Protocol& prot, const Value& value) {
       prot.writeSetEnd();
       return;
     }
-    case Value::Type::objectValue: {
+    case ProtocolValue::Type::objectValue: {
       prot.writeStructBegin("");
       for (auto const& [fieldID, fieldVal] :
            *value.objectValue_ref()->members()) {
@@ -523,4 +524,4 @@ void serializeValue(Protocol& prot, const Value& value) {
   }
 }
 
-} // namespace apache::thrift::conformance::detail
+} // namespace apache::thrift::type::detail
