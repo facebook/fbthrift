@@ -26,6 +26,7 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<Box>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Mixin>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SerializeInFieldIdOrder>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<GenDefaultEnumValue>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1alpha>::gen(metadata);

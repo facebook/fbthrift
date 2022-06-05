@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Deprecated', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
+__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Deprecated', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'GenDefaultEnumValue', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
 
 class Beta:
   """
@@ -1060,6 +1060,114 @@ class SerializeInFieldIdOrder:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class GenDefaultEnumValue:
+  """
+  Adds a default enum value (0), with the given name, if one is not
+  already defined.
+  
+  All v1+ enums must have an explicitly defined default value (0).
+  This annotation automatically adds such a value if not already present.
+  
+  Attributes:
+   - name: The name to use for the generated enum value.
+  
+  This intentionally does **not** use the most common 'zero' enum value name,
+  'Default', by default; as, defining a `Default = 0` enum value explicitly
+  is a useful means of self-documenting that setting an explicit value is
+  never required. In which case, it is part of the API, and should not be
+  removed in favor of an implicitly generated value.
+  
+  On the other hand, 'Unspecified' clearly indicates that the requirements
+  are not intrinsic to the enum. In which case, the relevant documentation
+  should be consulted (e.g. the doc strings on the function or field).
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.name = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('GenDefaultEnumValue')
+    if self.name != None:
+      oprot.writeFieldBegin('name', TType.STRING, 1)
+      oprot.writeString(self.name.encode('utf-8')) if UTF8STRINGS and not isinstance(self.name, bytes) else oprot.writeString(self.name)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'name' in json_obj and json_obj['name'] is not None:
+      self.name = json_obj['name']
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.name is not None:
+      value = pprint.pformat(self.name, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    name=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'name',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 class v1:
   """
   Enables all released v1 features.
@@ -1594,6 +1702,29 @@ SerializeInFieldIdOrder.thrift_struct_annotations = {
 }
 SerializeInFieldIdOrder.thrift_field_annotations = {
 }
+
+all_structs.append(GenDefaultEnumValue)
+GenDefaultEnumValue.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'name', True, "Unspecified", 2, ), # 1
+)
+
+GenDefaultEnumValue.thrift_struct_annotations = {
+}
+GenDefaultEnumValue.thrift_field_annotations = {
+}
+
+def GenDefaultEnumValue__init__(self, name=GenDefaultEnumValue.thrift_spec[1][4],):
+  self.name = name
+
+GenDefaultEnumValue.__init__ = GenDefaultEnumValue__init__
+
+def GenDefaultEnumValue__setstate__(self, state):
+  state.setdefault('name', "Unspecified")
+  self.__dict__ = state
+
+GenDefaultEnumValue.__getstate__ = lambda self: self.__dict__.copy()
+GenDefaultEnumValue.__setstate__ = GenDefaultEnumValue__setstate__
 
 all_structs.append(v1)
 v1.thrift_spec = (

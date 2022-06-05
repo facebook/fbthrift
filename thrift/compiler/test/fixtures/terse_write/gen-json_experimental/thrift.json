@@ -125,39 +125,57 @@
         "is_union" : false,
         "lineno" : 140
       },
+      "GenDefaultEnumValue" : {
+        "name" : "GenDefaultEnumValue",
+        "docstring" : "Adds a default enum value (0), with the given name, if one is not\nalready defined.\n\nAll v1+ enums must have an explicitly defined default value (0).\nThis annotation automatically adds such a value if not already present.\n",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "default_value" : "Unspecified",
+            "docstring" : "The name to use for the generated enum value.\n\nThis intentionally does **not** use the most common 'zero' enum value name,\n'Default', by default; as, defining a `Default = 0` enum value explicitly\nis a useful means of self-documenting that setting an explicit value is\nnever required. In which case, it is part of the API, and should not be\nremoved in favor of an implicitly generated value.\n\nOn the other hand, 'Unspecified' clearly indicates that the requirements\nare not intrinsic to the enum. In which case, the relevant documentation\nshould be consulted (e.g. the doc strings on the function or field).\n",
+            "key" : 1,
+            "lineno" : 170,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 156
+      },
       "v1" : {
         "name" : "v1",
         "docstring" : "Enables all released v1 features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 149
+        "lineno" : 180
       },
       "v1beta" : {
         "name" : "v1beta",
         "docstring" : "Enables all beta v1 features.\n\nBeta features are guaranteed to *not* break unrelated Thrift features\nso they should be relatively safe to test alongside other beta or\nreleased Thrift features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 161
+        "lineno" : 192
       },
       "v1alpha" : {
         "name" : "v1alpha",
         "docstring" : "Enables all experimental v1 features.\n\nUse with *caution* and only with explicit permission. This may enable\nfeatures may change significantly without notice or not work correctly\nin all contexts.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 175
+        "lineno" : 207
       },
       "v1test" : {
         "name" : "v1test",
         "docstring" : "Enables experimental features, even those that are known to break common\nuse cases.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 185
+        "lineno" : 217
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 194
+        "lineno" : 226
       }
       },
   "source_path" : "thrift/annotation/thrift",

@@ -1031,6 +1031,135 @@ func (p *SerializeInFieldIdOrder) String() string {
   return fmt.Sprintf("SerializeInFieldIdOrder({})")
 }
 
+// Adds a default enum value (0), with the given name, if one is not
+// already defined.
+// 
+// All v1+ enums must have an explicitly defined default value (0).
+// This annotation automatically adds such a value if not already present.
+// 
+// Attributes:
+//  - Name: The name to use for the generated enum value.
+// 
+// This intentionally does **not** use the most common 'zero' enum value name,
+// 'Default', by default; as, defining a `Default = 0` enum value explicitly
+// is a useful means of self-documenting that setting an explicit value is
+// never required. In which case, it is part of the API, and should not be
+// removed in favor of an implicitly generated value.
+// 
+// On the other hand, 'Unspecified' clearly indicates that the requirements
+// are not intrinsic to the enum. In which case, the relevant documentation
+// should be consulted (e.g. the doc strings on the function or field).
+type GenDefaultEnumValue struct {
+  Name string `thrift:"name,1" db:"name" json:"name"`
+}
+
+func NewGenDefaultEnumValue() *GenDefaultEnumValue {
+  return &GenDefaultEnumValue{
+    Name: "Unspecified",
+  }
+}
+
+
+func (p *GenDefaultEnumValue) GetName() string {
+  return p.Name
+}
+type GenDefaultEnumValueBuilder struct {
+  obj *GenDefaultEnumValue
+}
+
+func NewGenDefaultEnumValueBuilder() *GenDefaultEnumValueBuilder{
+  return &GenDefaultEnumValueBuilder{
+    obj: NewGenDefaultEnumValue(),
+  }
+}
+
+func (p GenDefaultEnumValueBuilder) Emit() *GenDefaultEnumValue{
+  return &GenDefaultEnumValue{
+    Name: p.obj.Name,
+  }
+}
+
+func (g *GenDefaultEnumValueBuilder) Name(name string) *GenDefaultEnumValueBuilder {
+  g.obj.Name = name
+  return g
+}
+
+func (g *GenDefaultEnumValue) SetName(name string) *GenDefaultEnumValue {
+  g.Name = name
+  return g
+}
+
+func (p *GenDefaultEnumValue) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *GenDefaultEnumValue)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
+  return nil
+}
+
+func (p *GenDefaultEnumValue) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("GenDefaultEnumValue"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *GenDefaultEnumValue) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:name: ", p), err) }
+  if err := oprot.WriteString(string(p.Name)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:name: ", p), err) }
+  return err
+}
+
+func (p *GenDefaultEnumValue) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  nameVal := fmt.Sprintf("%v", p.Name)
+  return fmt.Sprintf("GenDefaultEnumValue({Name:%s})", nameVal)
+}
+
 // Enables all released v1 features.
 type V1 struct {
 }

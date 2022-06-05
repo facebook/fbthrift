@@ -994,6 +994,120 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
 }
 
 /**
+ * Adds a default enum value (0), with the given name, if one is not
+ * already defined.
+ * 
+ * All v1+ enums must have an explicitly defined default value (0).
+ * This annotation automatically adds such a value if not already present.
+ * 
+ * Original thrift struct:-
+ * GenDefaultEnumValue
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/GenDefaultEnumValue'))>>
+class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 2593878277785201336;
+  /**
+   * The name to use for the generated enum value.
+   * 
+   * This intentionally does **not** use the most common 'zero' enum value name,
+   * 'Default', by default; as, defining a `Default = 0` enum value explicitly
+   * is a useful means of self-documenting that setting an explicit value is
+   * never required. In which case, it is part of the API, and should not be
+   * removed in favor of an implicitly generated value.
+   * 
+   * On the other hand, 'Unspecified' clearly indicates that the requirements
+   * are not intrinsic to the enum. In which case, the relevant documentation
+   * should be consulted (e.g. the doc strings on the function or field).
+   * 
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+
+  public function __construct(?string $name = null  )[] {
+    $this->name = $name ?? "Unspecified";
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'GenDefaultEnumValue';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.GenDefaultEnumValue",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        'facebook_thrift_annotation_FbthriftInternalEnum' => facebook_thrift_annotation_FbthriftInternalEnum::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
  * Enables all released v1 features.
  * 
  * Original thrift struct:-
@@ -1190,6 +1304,10 @@ class facebook_thrift_annotation_v1alpha implements \IThriftSyncStruct {
           )
         ),
         'facebook_thrift_annotation_SerializeInFieldIdOrder' => facebook_thrift_annotation_SerializeInFieldIdOrder::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_GenDefaultEnumValue' => facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
           shape(
           )
         ),

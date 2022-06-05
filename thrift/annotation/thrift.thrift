@@ -139,6 +139,37 @@ struct Mixin {}
 @Experimental // TODO(ytj): Release to Beta.
 struct SerializeInFieldIdOrder {}
 
+/**
+ * Adds a default enum value (0), with the given name, if one is not
+ * already defined.
+ *
+ * All v1+ enums must have an explicitly defined default value (0).
+ * This annotation automatically adds such a value if not already present.
+ */
+// TODO(afuller): Add validation which produces an error when a @NoLegacy enum
+// doesn't have a default value defined.
+// TODO(afuller): Consider updating code generators to use the same name
+// they use for empty/nil/null in unions, when a zero value is not specified.
+@scope.FbthriftInternalEnum
+@scope.Program
+@Experimental // TODO(afuller): Implement
+struct GenDefaultEnumValue {
+  /**
+   * The name to use for the generated enum value.
+   *
+   * This intentionally does **not** use the most common 'zero' enum value name,
+   * 'Default', by default; as, defining a `Default = 0` enum value explicitly
+   * is a useful means of self-documenting that setting an explicit value is
+   * never required. In which case, it is part of the API, and should not be
+   * removed in favor of an implicitly generated value.
+   *
+   * On the other hand, 'Unspecified' clearly indicates that the requirements
+   * are not intrinsic to the enum. In which case, the relevant documentation
+   * should be consulted (e.g. the doc strings on the function or field).
+   */
+  1: string name = "Unspecified";
+}
+
 ////
 // Thrift version annotations.
 ////
@@ -169,6 +200,7 @@ struct v1beta {}
  */
 @v1beta // All v1beta features.
 @SerializeInFieldIdOrder
+@GenDefaultEnumValue
 @NoLegacy // Disables features that will be removed.
 @Experimental // All uses of v1alpha inherit `@Experimental`.
 @scope.Transitive
