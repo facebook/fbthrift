@@ -963,24 +963,24 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
     return 'MyRenamedUnion';
   }
 
-  public function getType()[]: \fixtures\basic\UnionToBeRenamedEnum {
+  public function getType()[]: \fixtures\basic\MyRenamedUnionEnum {
     return $this->_type;
   }
 
   public function reset()[write_props]: void {
     switch ($this->_type) {
-      case \fixtures\basic\UnionToBeRenamedEnum::reserved_field:
+      case \fixtures\basic\MyRenamedUnionEnum::reserved_field:
         $this->reserved_field = null;
         break;
-      case \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_:
+      case \fixtures\basic\MyRenamedUnionEnum::_EMPTY_:
         break;
     }
-    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::_EMPTY_;
+    $this->_type = \fixtures\basic\MyRenamedUnionEnum::_EMPTY_;
   }
 
   public function set_reserved_field(int $reserved_field)[write_props]: this {
     $this->reset();
-    $this->_type = \fixtures\basic\UnionToBeRenamedEnum::reserved_field;
+    $this->_type = \fixtures\basic\MyRenamedUnionEnum::reserved_field;
     $this->reserved_field = $reserved_field;
     return $this;
   }
@@ -991,7 +991,7 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
 
   public function getx_reserved_field()[]: int {
     invariant(
-      $this->_type === \fixtures\basic\UnionToBeRenamedEnum::reserved_field,
+      $this->_type === \fixtures\basic\MyRenamedUnionEnum::reserved_field,
       'get_reserved_field called on an instance of UnionToBeRenamed whose current type is %s',
       (string)$this->_type,
     );

@@ -594,7 +594,7 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string union_enum_name(const t_struct* tstruct, bool decl = false) {
-    return union_enum_name(tstruct->name(), tstruct->program(), decl);
+    return union_enum_name(find_hack_name(tstruct), tstruct->program(), decl);
   }
 
   std::string union_field_to_enum(
