@@ -54,7 +54,10 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#if __has_include(<thrift/lib/thrift/gen-cpp2/any_rep_types.h>)
 #include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
+#define THRIFT_ANY_AVAILABLE
+#endif
 
 namespace {
 const int64_t kRocketClientMaxVersion = 10;
@@ -228,6 +231,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
     Handler& handler) {
+  (void)protocolId;
   if (auto payloadMetadataRef = metadata.payloadMetadata_ref()) {
     const auto isProxiedResponse =
         metadata.proxiedPayloadMetadata_ref().has_value();
@@ -275,6 +279,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
               break;
+#ifdef THRIFT_ANY_AVAILABLE
             case PayloadExceptionMetadata::anyException: {
               type::SemiAnyStruct anyException;
               try {
@@ -311,6 +316,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                   TApplicationException(exceptionWhatRef.value_or("")));
               break;
             }
+#endif
             default:
               switch (metaType) {
                 case PayloadExceptionMetadata::appUnknownException:

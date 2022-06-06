@@ -39,7 +39,10 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#if __has_include(<thrift/lib/thrift/gen-cpp2/any_rep_types.h>)
 #include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
+#define THRIFT_ANY_AVAILABLE
+#endif
 
 namespace apache {
 namespace thrift {
@@ -234,6 +237,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
 
             payload = protocol::base64Decode(*proxyErrorPtr);
           } else {
+#ifdef THRIFT_ANY_AVAILABLE
             exceptionMetadataBase.name_utf8_ref() = "ServiceRouterError";
             exceptionMetadataBase.metadata_ref()
                 .ensure()
@@ -252,6 +256,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
             folly::IOBufQueue payloadQueue;
             Serializer::serialize(anyException, &payloadQueue);
             payload = payloadQueue.move();
+#endif
           }
 
           otherMetadataRef->erase("servicerouter:sr_internal_error");
