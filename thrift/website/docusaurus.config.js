@@ -19,6 +19,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+const {fbContent} = require('internaldocs-fb-helpers');
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Facebook Thrift',
@@ -36,22 +38,30 @@ const config = {
 
   presets: [
     [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      require.resolve('docusaurus-plugin-internaldocs-fb/docusaurus-preset'),
+      {
         docs: {
           path: '../doc',
           sidebarPath: require.resolve('./sidebars.js'),
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/fbthrift/tree/main/docs/',
+          editUrl: fbContent({
+            internal:
+              'https://www.internalfb.com/intern/diffusion/FBS/browse/master/fbcode/thrift/website/',
+            external: 'https://github.com/facebook/fbthrift/blob/main/thrift/website',
+          }),
         },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+        staticDocsProject: 'thrift',
+        trackingFile: 'xplat/staticdocs/WATCHED_FILES',
+        'remark-code-snippets': {
+          baseDir: '..',
         },
-      }),
+        enableEditor: true,
+      },
     ],
   ],
+  customFields: {
+    fbRepoName: 'fbsource',
+    ossRepoPath: 'fbcode/thrift',
+  },
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
