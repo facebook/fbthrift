@@ -45,7 +45,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public string $b;
 
-  public function __construct(?int $a = null, ?string $b = null  )[] {
+  public function __construct(?int $a = null, ?string $b = null)[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? '';
   }

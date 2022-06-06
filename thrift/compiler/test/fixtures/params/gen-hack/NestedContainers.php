@@ -1396,7 +1396,7 @@ class NestedContainers_mapList_args implements \IThriftSyncStruct, \IThriftShapi
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Vector<int>> $foo;
 
-  public function __construct(?Map<int, Vector<int>> $foo = null  )[] {
+  public function __construct(?Map<int, Vector<int>> $foo = null)[] {
     $this->foo = $foo ?? Map {};
   }
 
@@ -1500,7 +1500,7 @@ class NestedContainers_mapList_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1577,7 +1577,7 @@ class NestedContainers_mapSet_args implements \IThriftSyncStruct, \IThriftShapis
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Set<int>> $foo;
 
-  public function __construct(?Map<int, Set<int>> $foo = null  )[] {
+  public function __construct(?Map<int, Set<int>> $foo = null)[] {
     $this->foo = $foo ?? Map {};
   }
 
@@ -1681,7 +1681,7 @@ class NestedContainers_mapSet_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1758,7 +1758,7 @@ class NestedContainers_listMap_args implements \IThriftSyncStruct, \IThriftShapi
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Map<int, int>> $foo;
 
-  public function __construct(?Vector<Map<int, int>> $foo = null  )[] {
+  public function __construct(?Vector<Map<int, int>> $foo = null)[] {
     $this->foo = $foo ?? Vector {};
   }
 
@@ -1862,7 +1862,7 @@ class NestedContainers_listMap_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1935,7 +1935,7 @@ class NestedContainers_listSet_args implements \IThriftSyncStruct, \IThriftShapi
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Set<int>> $foo;
 
-  public function __construct(?Vector<Set<int>> $foo = null  )[] {
+  public function __construct(?Vector<Set<int>> $foo = null)[] {
     $this->foo = $foo ?? Vector {};
   }
 
@@ -2034,7 +2034,7 @@ class NestedContainers_listSet_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2130,7 +2130,7 @@ class NestedContainers_turtles_args implements \IThriftSyncStruct, \IThriftShapi
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo;
 
-  public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null  )[] {
+  public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null)[] {
     $this->foo = $foo ?? Vector {};
   }
 
@@ -2278,7 +2278,7 @@ class NestedContainers_turtles_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

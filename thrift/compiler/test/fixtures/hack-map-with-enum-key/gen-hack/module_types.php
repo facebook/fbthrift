@@ -98,7 +98,7 @@ class BarStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public Set<FooEnum> $s;
 
-  public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  )[] {
+  public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null)[] {
     $this->e = $e ?? Map {};
     $this->s = $s ?? Set {};
   }

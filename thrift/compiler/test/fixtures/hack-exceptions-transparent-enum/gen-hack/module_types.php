@@ -86,7 +86,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
     return $this->code;  
   }
 
-  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
+  public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->code = $code ?? MyEnum::MyValue1;

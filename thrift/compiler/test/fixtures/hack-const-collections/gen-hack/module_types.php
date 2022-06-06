@@ -91,7 +91,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public bool $d;
 
-  public function __construct(?\ConstVector<string> $a = null, ?\ConstMap<string, \ConstVector<\ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
+  public function __construct(?\ConstVector<string> $a = null, ?\ConstMap<string, \ConstVector<\ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null)[] {
     $this->a = $a ?? Vector {};
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -251,7 +251,7 @@ class Baz extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }

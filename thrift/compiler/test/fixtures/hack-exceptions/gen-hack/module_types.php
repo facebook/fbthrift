@@ -87,7 +87,7 @@ class MyException1 extends \TException implements \IThriftSyncStruct {
     return $this->code;  
   }
 
-  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
+  public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
@@ -210,7 +210,7 @@ class MyException2 extends \TException implements \IThriftSyncStruct {
     return $this->code;  
   }
 
-  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
+  public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
@@ -332,7 +332,7 @@ class MyException3 extends \TException implements \IThriftSyncStruct {
     return $this->code;  
   }
 
-  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
+  public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
@@ -454,7 +454,7 @@ class MyException4 extends \TException implements \IThriftSyncStruct {
     return $this->code;  
   }
 
-  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
+  public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
@@ -565,7 +565,7 @@ class MyException5 extends \TException implements \IThriftSyncStruct {
    */
   public int $code;
 
-  public function __construct(?string $message = null, ?int $code = null  )[] {
+  public function __construct(?string $message = null, ?int $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->code = $code ?? 0;

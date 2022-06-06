@@ -72,7 +72,7 @@ class A implements \IThriftSyncStruct {
    */
   public int $useless_field;
 
-  public function __construct(?int $useless_field = null  )[] {
+  public function __construct(?int $useless_field = null)[] {
     $this->useless_field = $useless_field ?? 0;
   }
 
@@ -180,7 +180,7 @@ class U implements \IThriftSyncStruct, \IThriftUnion<UEnum> {
   public ?string $s;
   protected UEnum $_type = UEnum::_EMPTY_;
 
-  public function __construct(?int $i = null, ?string $s = null  )[] {
+  public function __construct(?int $i = null, ?string $s = null)[] {
     $this->_type = UEnum::_EMPTY_;
     if ($i !== null) {
       $this->i = $i;
@@ -344,7 +344,7 @@ class Bang extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }

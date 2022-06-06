@@ -396,7 +396,7 @@ class SomeService_bounce_map_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1590329293490505564;
   public Map<int, string> $m;
 
-  public function __construct(?Map<int, string> $m = null  )[] {
+  public function __construct(?Map<int, string> $m = null)[] {
     $this->m = $m ?? Map {};
   }
 
@@ -520,7 +520,7 @@ class SomeService_bounce_map_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 390979496709511735;
   public ?Map<int, string> $success;
 
-  public function __construct(?Map<int, string> $success = null  )[] {
+  public function __construct(?Map<int, string> $success = null)[] {
     $this->success = $success;
   }
 
@@ -640,7 +640,7 @@ class SomeService_binary_keyed_map_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 4817436577562933873;
   public Vector<int> $r;
 
-  public function __construct(?Vector<int> $r = null  )[] {
+  public function __construct(?Vector<int> $r = null)[] {
     $this->r = $r ?? Vector {};
   }
 
@@ -750,7 +750,7 @@ class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Map<string, int> $success;
 
-  public function __construct(?Map<string, int> $success = null  )[] {
+  public function __construct(?Map<string, int> $success = null)[] {
     $this->success = $success;
   }
 

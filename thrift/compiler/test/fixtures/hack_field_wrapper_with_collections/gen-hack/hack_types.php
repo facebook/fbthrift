@@ -40,7 +40,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? '';
   }
 
@@ -162,7 +162,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? '';
   }
 
@@ -288,7 +288,7 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $reason;
 
-  public function __construct(?string $reason = null  )[] {
+  public function __construct(?string $reason = null)[] {
     $this->reason = $reason ?? '';
   }
 
@@ -426,7 +426,7 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $reason;
 
-  public function __construct(?string $name = null, ?string $reason = null  )[] {
+  public function __construct(?string $name = null, ?string $reason = null)[] {
     $this->name = $name ?? '';
     $this->reason = $reason ?? '';
   }

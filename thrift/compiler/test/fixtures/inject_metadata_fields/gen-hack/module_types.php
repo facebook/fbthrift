@@ -34,7 +34,7 @@ class Fields implements \IThriftSyncStruct {
    */
   public string $injected_field;
 
-  public function __construct(?string $injected_field = null  )[] {
+  public function __construct(?string $injected_field = null)[] {
     $this->injected_field = $injected_field ?? '';
   }
 
@@ -116,7 +116,7 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
    */
   public string $injected_field;
 
-  public function __construct(?string $injected_field = null  )[] {
+  public function __construct(?string $injected_field = null)[] {
     $this->injected_field = $injected_field ?? '';
   }
 
@@ -215,7 +215,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
    */
   public string $injected_field;
 
-  public function __construct(?string $string_field = null, ?string $injected_field = null  )[] {
+  public function __construct(?string $string_field = null, ?string $injected_field = null)[] {
     $this->string_field = $string_field ?? '';
     $this->injected_field = $injected_field ?? '';
   }
@@ -349,7 +349,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
    */
   public ?string $injected_unstructured_annotation_field;
 
-  public function __construct(?string $string_field = null, ?string $injected_field = null, ?string $injected_structured_annotation_field = null, ?string $injected_unstructured_annotation_field = null  )[] {
+  public function __construct(?string $string_field = null, ?string $injected_field = null, ?string $injected_structured_annotation_field = null, ?string $injected_unstructured_annotation_field = null)[] {
     $this->string_field = $string_field ?? '';
     $this->injected_field = $injected_field ?? '';
     $this->injected_structured_annotation_field = $injected_structured_annotation_field;

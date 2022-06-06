@@ -417,7 +417,7 @@ class TestService_init_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
   const int STRUCTURAL_ID = 975124300794717332;
   public int $int1;
 
-  public function __construct(?int $int1 = null  )[] {
+  public function __construct(?int $int1 = null)[] {
     $this->int1 = $int1 ?? 0;
   }
 
@@ -514,7 +514,7 @@ class TestService_init_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5548670328188446575;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 

@@ -100,7 +100,7 @@ class structured_annotation_inline implements \IThriftSyncStruct {
    */
   public string $name;
 
-  public function __construct(?int $count = null, ?string $name = null  )[] {
+  public function __construct(?int $count = null, ?string $name = null)[] {
     $this->count = $count ?? 0;
     $this->name = $name ?? "abacaba";
   }
@@ -196,7 +196,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct {
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? "abacabadabacaba";
   }
 
@@ -303,7 +303,7 @@ class structured_annotation_recursive implements \IThriftSyncStruct {
    */
   public ?\fixtures\basic-structured-annotations\structured_annotation_forward $forward;
 
-  public function __construct(?string $name = null, ?\fixtures\basic-structured-annotations\structured_annotation_recursive $recurse = null, ?\fixtures\basic-structured-annotations\structured_annotation_forward $forward = null  )[] {
+  public function __construct(?string $name = null, ?\fixtures\basic-structured-annotations\structured_annotation_recursive $recurse = null, ?\fixtures\basic-structured-annotations\structured_annotation_forward $forward = null)[] {
     $this->name = $name ?? '';
     $this->recurse = $recurse;
     $this->forward = $forward;
@@ -438,7 +438,7 @@ class structured_annotation_forward implements \IThriftSyncStruct {
    */
   public int $count;
 
-  public function __construct(?int $count = null  )[] {
+  public function __construct(?int $count = null)[] {
     $this->count = $count ?? 0;
   }
 
@@ -533,7 +533,7 @@ class structured_annotation_nested implements \IThriftSyncStruct {
    */
   public ?\fixtures\basic-structured-annotations\structured_annotation_with_default $nest;
 
-  public function __construct(?string $name = null, ?\fixtures\basic-structured-annotations\structured_annotation_with_default $nest = null  )[] {
+  public function __construct(?string $name = null, ?\fixtures\basic-structured-annotations\structured_annotation_with_default $nest = null)[] {
     $this->name = $name ?? '';
     $this->nest = $nest;
   }
@@ -666,7 +666,7 @@ class MyStruct implements \IThriftSyncStruct {
    */
   public int $annotated_nested;
 
-  public function __construct(?int $annotated_field = null, ?string $annotated_type = null, ?string $annotated_recursive = null, ?int $annotated_nested = null  )[] {
+  public function __construct(?int $annotated_field = null, ?string $annotated_type = null, ?string $annotated_recursive = null, ?int $annotated_nested = null)[] {
     $this->annotated_field = $annotated_field ?? 0;
     $this->annotated_type = $annotated_type ?? '';
     $this->annotated_recursive = $annotated_recursive ?? '';
@@ -883,7 +883,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
    */
   public string $context;
 
-  public function __construct(?string $context = null  )[] {
+  public function __construct(?string $context = null)[] {
     parent::__construct();
     $this->context = $context ?? '';
   }
@@ -1001,7 +1001,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic-struc
   public ?int $second;
   protected \fixtures\basic-structured-annotations\MyUnionEnum $_type = \fixtures\basic-structured-annotations\MyUnionEnum::_EMPTY_;
 
-  public function __construct(?string $first = null, ?int $second = null  )[] {
+  public function __construct(?string $first = null, ?int $second = null)[] {
     $this->_type = \fixtures\basic-structured-annotations\MyUnionEnum::_EMPTY_;
     if ($first !== null) {
       $this->first = $first;

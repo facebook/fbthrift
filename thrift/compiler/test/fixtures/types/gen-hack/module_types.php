@@ -166,7 +166,7 @@ class decorated_struct implements \IThriftSyncStruct {
    */
   public string $field;
 
-  public function __construct(?string $field = null  )[] {
+  public function __construct(?string $field = null)[] {
     $this->field = $field ?? '';
   }
 
@@ -385,7 +385,7 @@ class ContainerStruct implements \IThriftSyncStruct {
    */
   public Map<int, string> $fieldH;
 
-  public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null  )[] {
+  public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null)[] {
     $this->fieldA = $fieldA ?? Vector {};
     $this->fieldB = $fieldB ?? Vector {};
     $this->fieldC = $fieldC ?? Vector {};
@@ -765,7 +765,7 @@ class CppTypeStruct implements \IThriftSyncStruct {
    */
   public Vector<int> $fieldA;
 
-  public function __construct(?Vector<int> $fieldA = null  )[] {
+  public function __construct(?Vector<int> $fieldA = null)[] {
     $this->fieldA = $fieldA ?? Vector {};
   }
 
@@ -879,7 +879,7 @@ class VirtualStruct implements \IThriftSyncStruct {
    */
   public int $MyIntField;
 
-  public function __construct(?int $MyIntField = null  )[] {
+  public function __construct(?int $MyIntField = null)[] {
     $this->MyIntField = $MyIntField ?? 0;
   }
 
@@ -986,7 +986,7 @@ class MyStructWithForwardRefEnum implements \IThriftSyncStruct {
    */
   public ?MyForwardRefEnum $b;
 
-  public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null  )[] {
+  public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null)[] {
     $this->a = $a ?? MyForwardRefEnum::NONZERO;
     $this->b = $b ?? MyForwardRefEnum::NONZERO;
   }
@@ -1131,7 +1131,7 @@ class TrivialNumeric implements \IThriftSyncStruct {
    */
   public bool $b;
 
-  public function __construct(?int $a = null, ?bool $b = null  )[] {
+  public function __construct(?int $a = null, ?bool $b = null)[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? false;
   }
@@ -1258,7 +1258,7 @@ class TrivialNestedWithDefault implements \IThriftSyncStruct {
    */
   public ?TrivialNumeric $n;
 
-  public function __construct(?int $z = null, ?TrivialNumeric $n = null  )[] {
+  public function __construct(?int $z = null, ?TrivialNumeric $n = null)[] {
     $this->z = $z ?? 4;
     $this->n = $n;
   }
@@ -1400,7 +1400,7 @@ class ComplexString implements \IThriftSyncStruct {
    */
   public Map<string, int> $b;
 
-  public function __construct(?string $a = null, ?Map<string, int> $b = null  )[] {
+  public function __construct(?string $a = null, ?Map<string, int> $b = null)[] {
     $this->a = $a ?? '';
     $this->b = $b ?? Map {};
   }
@@ -1547,7 +1547,7 @@ class ComplexNestedWithDefault implements \IThriftSyncStruct {
    */
   public ?ComplexString $n;
 
-  public function __construct(?string $z = null, ?ComplexString $n = null  )[] {
+  public function __construct(?string $z = null, ?ComplexString $n = null)[] {
     $this->z = $z ?? "4";
     $this->n = $n;
   }
@@ -1708,7 +1708,7 @@ class MinPadding implements \IThriftSyncStruct {
    */
   public int $tiny;
 
-  public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null  )[] {
+  public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null)[] {
     $this->small = $small ?? 0;
     $this->big = $big ?? 0;
     $this->medium = $medium ?? 0;
@@ -1930,7 +1930,7 @@ class MyStruct implements \IThriftSyncStruct {
    */
   public ?MyDataItem $data;
 
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null  )[] {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null)[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->majorVer = $majorVer ?? 0;
@@ -2077,7 +2077,7 @@ class MyDataItem implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2153,7 +2153,7 @@ class Renaming implements \IThriftSyncStruct {
    */
   public int $foo;
 
-  public function __construct(?int $foo = null  )[] {
+  public function __construct(?int $foo = null)[] {
     $this->foo = $foo ?? 0;
   }
 
@@ -2272,7 +2272,7 @@ class AnnotatedTypes implements \IThriftSyncStruct {
    */
   public Vector<Map<int, string>> $list_field;
 
-  public function __construct(?string $binary_field = null, ?Vector<Map<int, string>> $list_field = null  )[] {
+  public function __construct(?string $binary_field = null, ?Vector<Map<int, string>> $list_field = null)[] {
     $this->binary_field = $binary_field ?? '';
     $this->list_field = $list_field ?? Vector {};
   }
@@ -2475,7 +2475,7 @@ class ForwardUsageRoot implements \IThriftSyncStruct {
    */
   public ?ForwardUsageByRef $ForwardUsageByRef;
 
-  public function __construct(?ForwardUsageStruct $ForwardUsageStruct = null, ?ForwardUsageByRef $ForwardUsageByRef = null  )[] {
+  public function __construct(?ForwardUsageStruct $ForwardUsageStruct = null, ?ForwardUsageByRef $ForwardUsageByRef = null)[] {
     $this->ForwardUsageStruct = $ForwardUsageStruct;
     $this->ForwardUsageByRef = $ForwardUsageByRef;
   }
@@ -2620,7 +2620,7 @@ class ForwardUsageStruct implements \IThriftSyncStruct {
    */
   public ?ForwardUsageRoot $foo;
 
-  public function __construct(?ForwardUsageRoot $foo = null  )[] {
+  public function __construct(?ForwardUsageRoot $foo = null)[] {
     $this->foo = $foo;
   }
 
@@ -2723,7 +2723,7 @@ class ForwardUsageByRef implements \IThriftSyncStruct {
    */
   public ?ForwardUsageRoot $foo;
 
-  public function __construct(?ForwardUsageRoot $foo = null  )[] {
+  public function __construct(?ForwardUsageRoot $foo = null)[] {
     $this->foo = $foo;
   }
 
@@ -2814,7 +2814,7 @@ class NoexceptMoveEmpty implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2890,7 +2890,7 @@ class NoexceptMoveSimpleStruct implements \IThriftSyncStruct {
    */
   public int $boolField;
 
-  public function __construct(?int $boolField = null  )[] {
+  public function __construct(?int $boolField = null)[] {
     $this->boolField = $boolField ?? 0;
   }
 
@@ -3087,7 +3087,7 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
    */
   public Map<MyEnumA, string> $MyMapEnumAndInt;
 
-  public function __construct(?bool $MyBoolField = null, ?int $MyIntField = null, ?string $MyStringField = null, ?string $MyStringField2 = null, ?string $MyBinaryField = null, ?string $MyBinaryField2 = null, ?string $MyBinaryField3 = null, ?Vector<string> $MyBinaryListField4 = null, ?Map<MyEnumA, string> $MyMapEnumAndInt = null  )[] {
+  public function __construct(?bool $MyBoolField = null, ?int $MyIntField = null, ?string $MyStringField = null, ?string $MyStringField2 = null, ?string $MyBinaryField = null, ?string $MyBinaryField2 = null, ?string $MyBinaryField3 = null, ?Vector<string> $MyBinaryListField4 = null, ?Map<MyEnumA, string> $MyMapEnumAndInt = null)[] {
     $this->MyBoolField = $MyBoolField ?? false;
     $this->MyIntField = $MyIntField ?? 12;
     $this->MyStringField = $MyStringField ?? "test";
@@ -3374,7 +3374,7 @@ class NoExceptMoveUnion implements \IThriftSyncStruct, \IThriftUnion<NoExceptMov
   public ?int $i32_field;
   protected NoExceptMoveUnionEnum $_type = NoExceptMoveUnionEnum::_EMPTY_;
 
-  public function __construct(?string $string_field = null, ?int $i32_field = null  )[] {
+  public function __construct(?string $string_field = null, ?int $i32_field = null)[] {
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
     if ($string_field !== null) {
       $this->string_field = $string_field;
@@ -3642,7 +3642,7 @@ class AllocatorAware implements \IThriftSyncStruct {
    */
   public int $aa_shared;
 
-  public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null, ?int $aa_unique = null, ?int $aa_shared = null  )[] {
+  public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null, ?int $aa_unique = null, ?int $aa_shared = null)[] {
     $this->aa_list = $aa_list ?? Vector {};
     $this->aa_set = $aa_set ?? Set {};
     $this->aa_map = $aa_map ?? Map {};
@@ -3912,7 +3912,7 @@ class AllocatorAware2 implements \IThriftSyncStruct {
    */
   public int $not_a_container;
 
-  public function __construct(?int $not_a_container = null  )[] {
+  public function __construct(?int $not_a_container = null)[] {
     $this->not_a_container = $not_a_container ?? 0;
   }
 
@@ -4033,7 +4033,7 @@ class TypedefStruct implements \IThriftSyncStruct {
    */
   public int $UintTypedef_field;
 
-  public function __construct(?int $i32_field = null, ?int $IntTypedef_field = null, ?int $UintTypedef_field = null  )[] {
+  public function __construct(?int $i32_field = null, ?int $IntTypedef_field = null, ?int $UintTypedef_field = null)[] {
     $this->i32_field = $i32_field ?? 0;
     $this->IntTypedef_field = $IntTypedef_field ?? 0;
     $this->UintTypedef_field = $UintTypedef_field ?? 0;
@@ -4201,7 +4201,7 @@ class StructWithDoubleUnderscores implements \IThriftSyncStruct {
    */
   public int $__field;
 
-  public function __construct(?int $__field = null  )[] {
+  public function __construct(?int $__field = null)[] {
     $this->__field = $__field ?? 0;
   }
 

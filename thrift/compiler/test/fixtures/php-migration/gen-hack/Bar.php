@@ -585,7 +585,7 @@ class Bar_baz_args implements \IThriftSyncStruct {
   public ?Foo $d;
   public ?int $e;
 
-  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null)[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c;
@@ -767,7 +767,7 @@ class Bar_baz_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 

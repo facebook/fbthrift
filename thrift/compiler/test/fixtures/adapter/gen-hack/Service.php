@@ -267,7 +267,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   public string $arg2;
   public ?Foo $arg3;
 
-  public function __construct(?\Adapter1::THackType $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null  )[] {
+  public function __construct(?\Adapter1::THackType $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null)[] {
     $this->arg1 = $arg1 ?? \Adapter1::fromThrift('');
     $this->arg2 = $arg2 ?? '';
     $this->arg3 = $arg3;
@@ -440,7 +440,7 @@ class Service_func_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 2679926375535497837;
   public ?\Adapter1::THackType $success;
 
-  public function __construct(?\Adapter1::THackType $success = null  )[] {
+  public function __construct(?\Adapter1::THackType $success = null)[] {
     $this->success = $success;
   }
 

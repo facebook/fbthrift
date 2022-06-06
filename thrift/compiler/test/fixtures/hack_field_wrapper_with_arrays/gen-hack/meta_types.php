@@ -26,7 +26,7 @@ class facebook_thrift_annotation_deprecated_SetGenerated implements \IThriftSync
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -121,7 +121,7 @@ class facebook_thrift_annotation_deprecated_Transitive implements \IThriftSyncSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

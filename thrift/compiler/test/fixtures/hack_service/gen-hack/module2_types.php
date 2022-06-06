@@ -65,7 +65,7 @@ class FBStruct implements \IThriftSyncStruct {
    */
   public string $str_value;
 
-  public function __construct(?string $str_value = null  )[] {
+  public function __construct(?string $str_value = null)[] {
     $this->str_value = $str_value ?? '';
   }
 

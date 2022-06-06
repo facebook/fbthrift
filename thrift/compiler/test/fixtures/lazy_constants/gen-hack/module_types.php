@@ -129,7 +129,7 @@ class Internship implements \IThriftSyncStruct {
    */
   public ?\test\fixtures\lazy_constants\Company $employer;
 
-  public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null  )[] {
+  public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null)[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
@@ -253,7 +253,7 @@ class Range implements \IThriftSyncStruct {
    */
   public int $max;
 
-  public function __construct(?int $min = null, ?int $max = null  )[] {
+  public function __construct(?int $min = null, ?int $max = null)[] {
     $this->min = $min ?? 0;
     $this->max = $max ?? 0;
   }

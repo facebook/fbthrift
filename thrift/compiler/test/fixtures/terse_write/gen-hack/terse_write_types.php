@@ -57,7 +57,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -323,7 +323,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
    */
   public ?MyStruct $struct_field;
 
-  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null  )[] {
+  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null)[] {
     $this->bool_field = $bool_field ?? false;
     $this->byte_field = $byte_field ?? 0;
     $this->short_field = $short_field ?? 0;
@@ -1127,7 +1127,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
    */
   public ?MyStruct $struct_field;
 
-  public function __construct(?bool $terse_bool_field = null, ?int $terse_byte_field = null, ?int $terse_short_field = null, ?int $terse_int_field = null, ?int $terse_long_field = null, ?float $terse_float_field = null, ?float $terse_double_field = null, ?string $terse_string_field = null, ?string $terse_binary_field = null, ?MyEnum $terse_enum_field = null, ?Vector<int> $terse_list_field = null, ?Set<int> $terse_set_field = null, ?Map<int, int> $terse_map_field = null, ?MyStruct $terse_struct_field = null, ?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null  )[] {
+  public function __construct(?bool $terse_bool_field = null, ?int $terse_byte_field = null, ?int $terse_short_field = null, ?int $terse_int_field = null, ?int $terse_long_field = null, ?float $terse_float_field = null, ?float $terse_double_field = null, ?string $terse_string_field = null, ?string $terse_binary_field = null, ?MyEnum $terse_enum_field = null, ?Vector<int> $terse_list_field = null, ?Set<int> $terse_set_field = null, ?Map<int, int> $terse_map_field = null, ?MyStruct $terse_struct_field = null, ?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null)[] {
     $this->terse_bool_field = $terse_bool_field ?? false;
     $this->terse_byte_field = $terse_byte_field ?? 0;
     $this->terse_short_field = $terse_short_field ?? 0;

@@ -23,7 +23,7 @@ class FooEx extends \TException implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
     parent::__construct();
   }
 

@@ -593,7 +593,7 @@ class C_f_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -645,7 +645,7 @@ class C_f_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -723,7 +723,7 @@ class C_thing_args implements \IThriftSyncStruct {
   public string $b;
   public Set<int> $c;
 
-  public function __construct(?int $a = null, ?string $b = null, ?Set<int> $c = null  )[] {
+  public function __construct(?int $a = null, ?string $b = null, ?Set<int> $c = null)[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? '';
     $this->c = $c ?? Set {};
@@ -839,7 +839,7 @@ class C_thing_result implements \IThriftSyncStruct {
   public ?string $success;
   public ?Bang $bang;
 
-  public function __construct(?string $success = null, ?Bang $bang = null  )[] {
+  public function __construct(?string $success = null, ?Bang $bang = null)[] {
     $this->success = $success;
     $this->bang = $bang;
   }
@@ -923,7 +923,7 @@ class C_numbers_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -982,7 +982,7 @@ class C_numbers_StreamResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1815418233987567820;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -1058,7 +1058,7 @@ class C_numbers_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

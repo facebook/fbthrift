@@ -34,7 +34,7 @@ class CustomException extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }

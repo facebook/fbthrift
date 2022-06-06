@@ -94,7 +94,7 @@ class MyThriftStruct implements \IThriftSyncStruct {
    */
   public string $baz;
 
-  public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  )[] {
+  public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null)[] {
     $this->foo = $foo ?? '';
     $this->bar = $bar ?? '';
     $this->baz = $baz ?? '';
@@ -226,7 +226,7 @@ class MySecondThriftStruct implements \IThriftSyncStruct {
    */
   public int $baz;
 
-  public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  )[] {
+  public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null)[] {
     $this->foo = $foo;
     $this->bar = $bar;
     $this->baz = $baz ?? 0;
@@ -363,7 +363,7 @@ class UnionTesting implements \IThriftSyncStruct, \IThriftUnion<\test\fixtures\j
   public ?int $bar;
   protected \test\fixtures\jsenum\UnionTestingEnum $_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
 
-  public function __construct(?string $foo = null, ?int $bar = null  )[] {
+  public function __construct(?string $foo = null, ?int $bar = null)[] {
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
     if ($foo !== null) {
       $this->foo = $foo;

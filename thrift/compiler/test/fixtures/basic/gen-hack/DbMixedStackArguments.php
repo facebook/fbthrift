@@ -663,7 +663,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
   const int STRUCTURAL_ID = 4222184892931375562;
   public string $key;
 
-  public function __construct(?string $key = null  )[] {
+  public function __construct(?string $key = null)[] {
     $this->key = $key ?? '';
   }
 
@@ -760,7 +760,7 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -850,7 +850,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
   const int STRUCTURAL_ID = 4222184892931375562;
   public string $key;
 
-  public function __construct(?string $key = null  )[] {
+  public function __construct(?string $key = null)[] {
     $this->key = $key ?? '';
   }
 
@@ -947,7 +947,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 

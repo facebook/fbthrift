@@ -50,7 +50,7 @@ class facebook_thrift_annotation_python_Adapter implements \IThriftSyncStruct, \
    */
   public string $typeHint;
 
-  public function __construct(?string $name = null, ?string $typeHint = null  )[] {
+  public function __construct(?string $name = null, ?string $typeHint = null)[] {
     $this->name = $name ?? '';
     $this->typeHint = $typeHint ?? '';
   }

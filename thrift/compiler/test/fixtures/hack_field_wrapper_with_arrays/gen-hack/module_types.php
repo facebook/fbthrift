@@ -37,7 +37,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $int_field;
 
-  public function __construct(?int $int_field = null  )[] {
+  public function __construct(?int $int_field = null)[] {
     $this->int_field = $int_field ?? 0;
   }
 

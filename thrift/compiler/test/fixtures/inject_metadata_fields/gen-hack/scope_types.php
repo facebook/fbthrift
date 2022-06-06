@@ -24,7 +24,7 @@ class facebook_thrift_annotation_Program implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -81,7 +81,7 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -138,7 +138,7 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -195,7 +195,7 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -252,7 +252,7 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -309,7 +309,7 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -366,7 +366,7 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -423,7 +423,7 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -480,7 +480,7 @@ class facebook_thrift_annotation_TFunction implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -537,7 +537,7 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -594,7 +594,7 @@ class facebook_thrift_annotation_TConst implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -651,7 +651,7 @@ class facebook_thrift_annotation_Schema implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -708,7 +708,7 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -765,7 +765,7 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -822,7 +822,7 @@ class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -896,7 +896,7 @@ class facebook_thrift_annotation_TInterface implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -966,7 +966,7 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1048,7 +1048,7 @@ class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

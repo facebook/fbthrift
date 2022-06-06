@@ -89,7 +89,7 @@ class Union implements \IThriftSyncStruct, \IThriftUnion<\test\fixtures\UnionEnu
   public ?string $stringValue;
   protected \test\fixtures\UnionEnum $_type = \test\fixtures\UnionEnum::_EMPTY_;
 
-  public function __construct(?int $intValue = null, ?string $stringValue = null  )[] {
+  public function __construct(?int $intValue = null, ?string $stringValue = null)[] {
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
     if ($intValue !== null) {
       $this->intValue = $intValue;
@@ -265,7 +265,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $a;
 
-  public function __construct(?string $a = null  )[] {
+  public function __construct(?string $a = null)[] {
     $this->a = $a ?? '';
   }
 
@@ -1058,7 +1058,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value;
 
-  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  )[] {
+  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null)[] {
     $this->just_an_A = $just_an_A;
     $this->set_of_i32 = $set_of_i32 ?? Set {};
     $this->list_of_i32 = $list_of_i32 ?? Vector {};

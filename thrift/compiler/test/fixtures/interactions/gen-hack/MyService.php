@@ -2007,7 +2007,7 @@ class MyService_foo_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2059,7 +2059,7 @@ class MyService_foo_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2118,7 +2118,7 @@ class MyService_interact_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 6449802475022035959;
   public int $arg;
 
-  public function __construct(?int $arg = null  )[] {
+  public function __construct(?int $arg = null)[] {
     $this->arg = $arg ?? 0;
   }
 
@@ -2185,7 +2185,7 @@ class MyService_interact_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2237,7 +2237,7 @@ class MyService_interactFast_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2296,7 +2296,7 @@ class MyService_interactFast_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -2363,7 +2363,7 @@ class MyService_serialize_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2422,7 +2422,7 @@ class MyService_serialize_StreamResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -2496,7 +2496,7 @@ class MyService_serialize_FirstResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -2563,7 +2563,7 @@ class MyService_MyInteraction_frobnicate_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2630,7 +2630,7 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftSyncStruct {
   public ?int $success;
   public ?CustomException $ex;
 
-  public function __construct(?int $success = null, ?CustomException $ex = null  )[] {
+  public function __construct(?int $success = null, ?CustomException $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -2714,7 +2714,7 @@ class MyService_MyInteraction_ping_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2766,7 +2766,7 @@ class MyService_MyInteraction_truthify_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2825,7 +2825,7 @@ class MyService_MyInteraction_truthify_StreamResponse implements \IThriftSyncStr
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  public function __construct(?bool $success = null  )[] {
+  public function __construct(?bool $success = null)[] {
     $this->success = $success;
   }
 
@@ -2892,7 +2892,7 @@ class MyService_MyInteraction_truthify_FirstResponse implements \IThriftSyncStru
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2944,7 +2944,7 @@ class MyService_MyInteraction_encode_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3008,7 +3008,7 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftSyncStruct
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Set<int> $success;
 
-  public function __construct(?Set<int> $success = null  )[] {
+  public function __construct(?Set<int> $success = null)[] {
     $this->success = $success;
   }
 
@@ -3090,7 +3090,7 @@ class MyService_MyInteraction_encode_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -3164,7 +3164,7 @@ class MyService_MyInteraction_encode_FinalResponse implements \IThriftSyncStruct
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -3231,7 +3231,7 @@ class MyService_MyInteractionFast_frobnicate_args implements \IThriftSyncStruct 
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3290,7 +3290,7 @@ class MyService_MyInteractionFast_frobnicate_result implements \IThriftSyncStruc
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -3357,7 +3357,7 @@ class MyService_MyInteractionFast_ping_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3409,7 +3409,7 @@ class MyService_MyInteractionFast_truthify_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3468,7 +3468,7 @@ class MyService_MyInteractionFast_truthify_StreamResponse implements \IThriftSyn
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  public function __construct(?bool $success = null  )[] {
+  public function __construct(?bool $success = null)[] {
     $this->success = $success;
   }
 
@@ -3535,7 +3535,7 @@ class MyService_MyInteractionFast_truthify_FirstResponse implements \IThriftSync
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3587,7 +3587,7 @@ class MyService_MyInteractionFast_encode_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3651,7 +3651,7 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftSyncSt
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Set<int> $success;
 
-  public function __construct(?Set<int> $success = null  )[] {
+  public function __construct(?Set<int> $success = null)[] {
     $this->success = $success;
   }
 
@@ -3733,7 +3733,7 @@ class MyService_MyInteractionFast_encode_SinkPayload implements \IThriftSyncStru
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -3807,7 +3807,7 @@ class MyService_MyInteractionFast_encode_FinalResponse implements \IThriftSyncSt
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -3874,7 +3874,7 @@ class MyService_SerialInteraction_frobnicate_args implements \IThriftSyncStruct 
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3926,7 +3926,7 @@ class MyService_SerialInteraction_frobnicate_result implements \IThriftSyncStruc
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

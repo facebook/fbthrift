@@ -34,7 +34,7 @@ class Fiery extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
@@ -116,7 +116,7 @@ class Serious extends \TException implements \IThriftSyncStruct {
    */
   public ?string $sonnet;
 
-  public function __construct(?string $sonnet = null  )[] {
+  public function __construct(?string $sonnet = null)[] {
     parent::__construct();
     $this->sonnet = $sonnet;
   }
@@ -215,7 +215,7 @@ class ComplexFieldNames extends \TException implements \IThriftSyncStruct {
    */
   public string $internal_error_message;
 
-  public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null)[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
@@ -326,7 +326,7 @@ class CustomFieldNames extends \TException implements \IThriftSyncStruct {
    */
   public string $internal_error_message;
 
-  public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null)[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
@@ -437,7 +437,7 @@ class ExceptionWithPrimitiveField extends \TException implements \IThriftSyncStr
    */
   public int $error_code;
 
-  public function __construct(?string $message = null, ?int $error_code = null  )[] {
+  public function __construct(?string $message = null, ?int $error_code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->error_code = $error_code ?? 0;
@@ -521,7 +521,7 @@ class Banal extends \TException implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
     parent::__construct();
   }
 

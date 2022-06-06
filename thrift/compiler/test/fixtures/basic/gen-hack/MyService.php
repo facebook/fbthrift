@@ -1982,7 +1982,7 @@ class MyService_ping_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2052,7 +2052,7 @@ class MyService_ping_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2116,7 +2116,7 @@ class MyService_getRandomData_args implements \IThriftSyncStruct, \IThriftShapis
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2193,7 +2193,7 @@ class MyService_getRandomData_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -2283,7 +2283,7 @@ class MyService_sink_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
   const int STRUCTURAL_ID = 7104007081489563250;
   public int $sink;
 
-  public function __construct(?int $sink = null  )[] {
+  public function __construct(?int $sink = null)[] {
     $this->sink = $sink ?? 0;
   }
 
@@ -2373,7 +2373,7 @@ class MyService_sink_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2453,7 +2453,7 @@ class MyService_putDataById_args implements \IThriftSyncStruct, \IThriftShapishS
   public int $id;
   public string $data;
 
-  public function __construct(?int $id = null, ?string $data = null  )[] {
+  public function __construct(?int $id = null, ?string $data = null)[] {
     $this->id = $id ?? 0;
     $this->data = $data ?? '';
   }
@@ -2561,7 +2561,7 @@ class MyService_putDataById_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2633,7 +2633,7 @@ class MyService_hasDataById_args implements \IThriftSyncStruct, \IThriftShapishS
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
-  public function __construct(?int $id = null  )[] {
+  public function __construct(?int $id = null)[] {
     $this->id = $id ?? 0;
   }
 
@@ -2730,7 +2730,7 @@ class MyService_hasDataById_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  public function __construct(?bool $success = null  )[] {
+  public function __construct(?bool $success = null)[] {
     $this->success = $success;
   }
 
@@ -2820,7 +2820,7 @@ class MyService_getDataById_args implements \IThriftSyncStruct, \IThriftShapishS
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
-  public function __construct(?int $id = null  )[] {
+  public function __construct(?int $id = null)[] {
     $this->id = $id ?? 0;
   }
 
@@ -2917,7 +2917,7 @@ class MyService_getDataById_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -3007,7 +3007,7 @@ class MyService_deleteDataById_args implements \IThriftSyncStruct, \IThriftShapi
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
-  public function __construct(?int $id = null  )[] {
+  public function __construct(?int $id = null)[] {
     $this->id = $id ?? 0;
   }
 
@@ -3097,7 +3097,7 @@ class MyService_deleteDataById_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3177,7 +3177,7 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishS
   public int $id;
   public string $data;
 
-  public function __construct(?int $id = null, ?string $data = null  )[] {
+  public function __construct(?int $id = null, ?string $data = null)[] {
     $this->id = $id ?? 0;
     $this->data = $data ?? '';
   }

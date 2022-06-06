@@ -91,7 +91,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public ?bool $d;
 
-  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
+  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null)[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -303,7 +303,7 @@ class Baz extends \TException implements \IThriftSyncStruct {
    */
   public int $code;
 
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  )[] {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
@@ -449,7 +449,7 @@ class OptBaz extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }

@@ -34,7 +34,7 @@ class structured_annotation_included implements \IThriftSyncStruct {
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? "cacbcac";
   }
 

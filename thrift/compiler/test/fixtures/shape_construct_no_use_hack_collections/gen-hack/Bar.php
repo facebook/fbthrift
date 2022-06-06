@@ -414,7 +414,7 @@ class Bar_baz_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?Foo $d;
   public int $e;
 
-  public function __construct(?dict<int, bool> $a = null, ?varray<darray<int, dict<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
+  public function __construct(?dict<int, bool> $a = null, ?varray<darray<int, dict<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null)[] {
     $this->a = $a ?? dict[];
     $this->b = $b ?? vec[];
     $this->c = $c ?? 0;
@@ -600,7 +600,7 @@ class Bar_baz_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 

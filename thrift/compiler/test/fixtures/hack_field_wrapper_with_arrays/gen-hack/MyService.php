@@ -233,7 +233,7 @@ class MyService_second_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
   const int STRUCTURAL_ID = 6887469671700782815;
   public int $count;
 
-  public function __construct(?int $count = null  )[] {
+  public function __construct(?int $count = null)[] {
     $this->count = $count ?? 0;
   }
 
@@ -382,7 +382,7 @@ class MyService_second_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  public function __construct(?bool $success = null  )[] {
+  public function __construct(?bool $success = null)[] {
     $this->success = $success;
   }
 

@@ -219,7 +219,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $doubleAdaptedField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null, ?int $adaptedLongField = null, ?int $doubleAdaptedField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null, ?int $adaptedLongField = null, ?int $doubleAdaptedField = null)[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -982,7 +982,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
   public ?int $longField;
   protected BazEnum $_type = BazEnum::_EMPTY_;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null)[] {
     $this->_type = BazEnum::_EMPTY_;
     if ($intField !== null) {
       $this->intField = $intField;
@@ -1572,7 +1572,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?\Adapter1::THackType $optionalUnionField;
 
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null  )[] {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null)[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
@@ -2008,7 +2008,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
    */
   public ?int $opt_boxed_field;
 
-  public function __construct(?int $field = null, ?int $shared_field = null, ?int $opt_shared_field = null, ?int $opt_boxed_field = null  )[] {
+  public function __construct(?int $field = null, ?int $shared_field = null, ?int $opt_shared_field = null, ?int $opt_boxed_field = null)[] {
     $this->field = $field ?? 0;
     $this->shared_field = $shared_field ?? 0;
     $this->opt_shared_field = $opt_shared_field;
@@ -2253,7 +2253,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?A $a;
 
-  public function __construct(?A $a = null  )[] {
+  public function __construct(?A $a = null)[] {
     $this->a = $a;
   }
 
@@ -2393,7 +2393,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

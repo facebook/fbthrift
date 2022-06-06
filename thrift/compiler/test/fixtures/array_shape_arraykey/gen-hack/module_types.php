@@ -79,7 +79,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $a;
 
-  public function __construct(?Enum $just_an_enum = null, ?string $a = null  )[] {
+  public function __construct(?Enum $just_an_enum = null, ?string $a = null)[] {
     $this->just_an_enum = $just_an_enum;
     $this->a = $a ?? '';
   }
@@ -539,7 +539,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public keyset<string> $set_of_string;
 
-  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
+  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null)[] {
     $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
     $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? dict[];
     $this->map_of_string_to_A = $map_of_string_to_A ?? dict[];
@@ -1599,7 +1599,7 @@ class C implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?keyset<string> $set_of_string;
 
-  public function __construct(?A $just_an_A = null, ?Enum $just_an_enum = null, ?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<int> $list_of_i32 = null, ?dict<string, vec<string>> $map_of_string_to_list_of_string = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
+  public function __construct(?A $just_an_A = null, ?Enum $just_an_enum = null, ?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<int> $list_of_i32 = null, ?dict<string, vec<string>> $map_of_string_to_list_of_string = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null)[] {
     $this->just_an_A = $just_an_A;
     $this->just_an_enum = $just_an_enum;
     $this->map_of_string_to_string = $map_of_string_to_string;

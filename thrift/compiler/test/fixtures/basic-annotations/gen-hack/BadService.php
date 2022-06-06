@@ -544,7 +544,7 @@ class BadService_bar_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -621,7 +621,7 @@ class BadService_bar_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -708,7 +708,7 @@ class BadService_BadInteraction_foo_args implements \IThriftSyncStruct, \IThrift
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -778,7 +778,7 @@ class BadService_BadInteraction_foo_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

@@ -59,7 +59,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?Map<string, string> $map_of_string_to_string;
 
-  public function __construct(?string $a = null, ?Map<string, string> $map_of_string_to_string = null  )[] {
+  public function __construct(?string $a = null, ?Map<string, string> $map_of_string_to_string = null)[] {
     $this->a = $a;
     $this->map_of_string_to_string = $map_of_string_to_string;
   }
@@ -401,7 +401,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
 
-  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
+  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null)[] {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;
@@ -1082,7 +1082,7 @@ class C implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
 
-  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
+  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null)[] {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;

@@ -192,7 +192,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public bool $idempotent;
 
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?\fixtures\basic\MyDataItem $MyDataField = null, ?\fixtures\basic\MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  )[] {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?\fixtures\basic\MyDataItem $MyDataField = null, ?\fixtures\basic\MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null)[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
@@ -417,7 +417,7 @@ class MyDataItem implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -545,7 +545,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyUni
   public ?\fixtures\basic\MyDataItem $myDataItem;
   protected \fixtures\basic\MyUnionEnum $_type = \fixtures\basic\MyUnionEnum::_EMPTY_;
 
-  public function __construct(?\fixtures\basic\MyEnum $myEnum = null, ?\fixtures\basic\MyStruct $myStruct = null, ?\fixtures\basic\MyDataItem $myDataItem = null  )[] {
+  public function __construct(?\fixtures\basic\MyEnum $myEnum = null, ?\fixtures\basic\MyStruct $myStruct = null, ?\fixtures\basic\MyDataItem $myDataItem = null)[] {
     $this->_type = \fixtures\basic\MyUnionEnum::_EMPTY_;
     if ($myEnum !== null) {
       $this->myEnum = $myEnum;
@@ -803,7 +803,7 @@ class MyRenamedStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $reserved_field;
 
-  public function __construct(?int $reserved_field = null  )[] {
+  public function __construct(?int $reserved_field = null)[] {
     $this->reserved_field = $reserved_field ?? 0;
   }
 
@@ -941,7 +941,7 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
   public ?int $reserved_field;
   protected \fixtures\basic\MyRenamedUnionEnum $_type = \fixtures\basic\MyRenamedUnionEnum::_EMPTY_;
 
-  public function __construct(?int $reserved_field = null  )[] {
+  public function __construct(?int $reserved_field = null)[] {
     $this->_type = \fixtures\basic\MyRenamedUnionEnum::_EMPTY_;
     if ($reserved_field !== null) {
       $this->reserved_field = $reserved_field;

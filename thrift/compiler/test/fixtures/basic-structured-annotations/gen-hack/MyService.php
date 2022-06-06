@@ -380,7 +380,7 @@ class MyService_first_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -439,7 +439,7 @@ class MyService_first_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 8648204672360810467;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -537,7 +537,7 @@ class MyService_second_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 6887469671700782815;
   public int $count;
 
-  public function __construct(?int $count = null  )[] {
+  public function __construct(?int $count = null)[] {
     $this->count = $count ?? 0;
   }
 
@@ -621,7 +621,7 @@ class MyService_second_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  public function __construct(?bool $success = null  )[] {
+  public function __construct(?bool $success = null)[] {
     $this->success = $success;
   }
 

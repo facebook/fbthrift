@@ -73,7 +73,7 @@ class facebook_thrift_annotation_cpp_Ref implements \IThriftSyncStruct, \IThrift
    */
   public ?facebook_thrift_annotation_cpp_RefType $type;
 
-  public function __construct(?facebook_thrift_annotation_cpp_RefType $type = null  )[] {
+  public function __construct(?facebook_thrift_annotation_cpp_RefType $type = null)[] {
     $this->type = $type;
   }
 
@@ -190,7 +190,7 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftSyncStruct, \IThrif
    */
   public bool $ref;
 
-  public function __construct(?bool $ref = null  )[] {
+  public function __construct(?bool $ref = null)[] {
     $this->ref = $ref ?? false;
   }
 
@@ -292,7 +292,7 @@ class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftSync
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -386,7 +386,7 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? '';
   }
 
@@ -504,7 +504,7 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftSyncStruct, \I
    */
   public bool $atomic;
 
-  public function __construct(?bool $atomic = null  )[] {
+  public function __construct(?bool $atomic = null)[] {
     $this->atomic = $atomic ?? true;
   }
 
@@ -606,7 +606,7 @@ class facebook_thrift_annotation_cpp_MinimizePadding implements \IThriftSyncStru
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -688,7 +688,7 @@ class facebook_thrift_annotation_cpp_TriviallyRelocatable implements \IThriftSyn
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

@@ -232,7 +232,7 @@ class TestService_ping_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5542358918184482101;
   public string $str_arg;
 
-  public function __construct(?string $str_arg = null  )[] {
+  public function __construct(?string $str_arg = null)[] {
     $this->str_arg = $str_arg ?? '';
   }
 
@@ -306,7 +306,7 @@ class TestService_ping_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 

@@ -25,7 +25,7 @@ class AnnotationStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -133,7 +133,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
    */
   public ?MyNestedStruct $nested_struct;
 
-  public function __construct(?MyNestedStruct $nested_struct = null  )[] {
+  public function __construct(?MyNestedStruct $nested_struct = null)[] {
     $this->nested_struct = $nested_struct;
   }
 
@@ -819,7 +819,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
    */
   public vec<dict<string, MyStruct>> $list_of_map_of_string_to_MyStruct;
 
-  public function __construct(?dict<string, MyStruct> $map_of_string_to_MyStruct = null, ?dict<string, vec<MyStruct>> $map_of_string_to_list_of_MyStruct = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, MyStruct>> $map_of_string_to_map_of_string_to_MyStruct = null, ?vec<dict<string, vec<MyStruct>>> $list_of_map_of_string_to_list_of_MyStruct = null, ?vec<dict<string, MyStruct>> $list_of_map_of_string_to_MyStruct = null  )[] {
+  public function __construct(?dict<string, MyStruct> $map_of_string_to_MyStruct = null, ?dict<string, vec<MyStruct>> $map_of_string_to_list_of_MyStruct = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, MyStruct>> $map_of_string_to_map_of_string_to_MyStruct = null, ?vec<dict<string, vec<MyStruct>>> $list_of_map_of_string_to_list_of_MyStruct = null, ?vec<dict<string, MyStruct>> $list_of_map_of_string_to_MyStruct = null)[] {
     $this->map_of_string_to_MyStruct = $map_of_string_to_MyStruct ?? dict[];
     $this->map_of_string_to_list_of_MyStruct = $map_of_string_to_list_of_MyStruct ?? dict[];
     $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? dict[];

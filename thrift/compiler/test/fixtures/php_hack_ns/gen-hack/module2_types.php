@@ -91,7 +91,7 @@ class FBStruct implements \IThriftSyncStruct {
    */
   public ?\foo_php_ns_TestStruct $struct_value;
 
-  public function __construct(?string $str_value = null, ?\foo_php_ns_Status $enum_value = null, ?\foo_php_ns_TestStruct $struct_value = null  )[] {
+  public function __construct(?string $str_value = null, ?\foo_php_ns_Status $enum_value = null, ?\foo_php_ns_TestStruct $struct_value = null)[] {
     $this->str_value = $str_value ?? '';
     $this->enum_value = $enum_value;
     $this->struct_value = $struct_value;

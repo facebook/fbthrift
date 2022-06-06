@@ -40,7 +40,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $MyInt;
 
-  public function __construct(?int $MyInt = null  )[] {
+  public function __construct(?int $MyInt = null)[] {
     $this->MyInt = $MyInt ?? 0;
   }
 

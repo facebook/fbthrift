@@ -106,7 +106,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
    */
   public int $count;
 
-  public function __construct(?int $count = null  )[] {
+  public function __construct(?int $count = null)[] {
     $this->count = $count ?? 0;
   }
 
@@ -583,7 +583,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $annotated_recursive;
 
-  public function __construct(?string $annotated_recursive = null  )[] {
+  public function __construct(?string $annotated_recursive = null)[] {
     $this->annotated_recursive = $annotated_recursive ?? '';
   }
 

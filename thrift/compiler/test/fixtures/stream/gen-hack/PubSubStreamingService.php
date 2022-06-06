@@ -991,7 +991,7 @@ class PubSubStreamingService_returnstream_args implements \IThriftSyncStruct {
   public int $i32_from;
   public int $i32_to;
 
-  public function __construct(?int $i32_from = null, ?int $i32_to = null  )[] {
+  public function __construct(?int $i32_from = null, ?int $i32_to = null)[] {
     $this->i32_from = $i32_from ?? 0;
     $this->i32_to = $i32_to ?? 0;
   }
@@ -1078,7 +1078,7 @@ class PubSubStreamingService_returnstream_StreamResponse implements \IThriftSync
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -1145,7 +1145,7 @@ class PubSubStreamingService_returnstream_FirstResponse implements \IThriftSyncS
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1204,7 +1204,7 @@ class PubSubStreamingService_streamthrows_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 4302560019326481254;
   public int $foo;
 
-  public function __construct(?int $foo = null  )[] {
+  public function __construct(?int $foo = null)[] {
     $this->foo = $foo ?? 0;
   }
 
@@ -1286,7 +1286,7 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
   public ?int $success;
   public ?FooEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+  public function __construct(?int $success = null, ?FooEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1370,7 +1370,7 @@ class PubSubStreamingService_streamthrows_FirstResponse implements \IThriftSyncS
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1429,7 +1429,7 @@ class PubSubStreamingService_boththrows_args implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 4302560019326481254;
   public int $foo;
 
-  public function __construct(?int $foo = null  )[] {
+  public function __construct(?int $foo = null)[] {
     $this->foo = $foo ?? 0;
   }
 
@@ -1511,7 +1511,7 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
   public ?int $success;
   public ?FooEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+  public function __construct(?int $success = null, ?FooEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1603,7 +1603,7 @@ class PubSubStreamingService_boththrows_FirstResponse implements \IThriftSyncStr
   const int STRUCTURAL_ID = 1166333131961181261;
   public ?FooEx $e;
 
-  public function __construct(?FooEx $e = null  )[] {
+  public function __construct(?FooEx $e = null)[] {
     $this->e = $e;
   }
 
@@ -1681,7 +1681,7 @@ class PubSubStreamingService_responseandstreamthrows_args implements \IThriftSyn
   const int STRUCTURAL_ID = 4302560019326481254;
   public int $foo;
 
-  public function __construct(?int $foo = null  )[] {
+  public function __construct(?int $foo = null)[] {
     $this->foo = $foo ?? 0;
   }
 
@@ -1763,7 +1763,7 @@ class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \
   public ?int $success;
   public ?FooEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+  public function __construct(?int $success = null, ?FooEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1862,7 +1862,7 @@ class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \I
   public ?int $success;
   public ?FooEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+  public function __construct(?int $success = null, ?FooEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1960,7 +1960,7 @@ class PubSubStreamingService_returnstreamFast_args implements \IThriftSyncStruct
   public int $i32_from;
   public int $i32_to;
 
-  public function __construct(?int $i32_from = null, ?int $i32_to = null  )[] {
+  public function __construct(?int $i32_from = null, ?int $i32_to = null)[] {
     $this->i32_from = $i32_from ?? 0;
     $this->i32_to = $i32_to ?? 0;
   }
@@ -2047,7 +2047,7 @@ class PubSubStreamingService_returnstreamFast_StreamResponse implements \IThrift
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null)[] {
     $this->success = $success;
   }
 
@@ -2114,7 +2114,7 @@ class PubSubStreamingService_returnstreamFast_FirstResponse implements \IThriftS
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

@@ -28,7 +28,7 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct, \IThriftSha
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -117,7 +117,7 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct, \IT
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -217,7 +217,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct, \IThr
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     $this->message = $message ?? '';
   }
 
@@ -343,7 +343,7 @@ class facebook_thrift_annotation_Legacy implements \IThriftSyncStruct, \IThriftS
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     $this->message = $message ?? '';
   }
 
@@ -464,7 +464,7 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
    */
   public bool $field_name;
 
-  public function __construct(?bool $field_name = null  )[] {
+  public function __construct(?bool $field_name = null)[] {
     $this->field_name = $field_name ?? false;
   }
 
@@ -572,7 +572,7 @@ class facebook_thrift_annotation_NoExperimental implements \IThriftSyncStruct, \
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -660,7 +660,7 @@ class facebook_thrift_annotation_NoBeta implements \IThriftSyncStruct, \IThriftS
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -748,7 +748,7 @@ class facebook_thrift_annotation_NoLegacy implements \IThriftSyncStruct, \IThrif
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -844,7 +844,7 @@ class facebook_thrift_annotation_NoDeprecated implements \IThriftSyncStruct, \IT
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -934,7 +934,7 @@ class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct, \IThr
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1028,7 +1028,7 @@ class facebook_thrift_annotation_Box implements \IThriftSyncStruct, \IThriftShap
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1114,7 +1114,7 @@ class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct, \IThriftSh
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1205,7 +1205,7 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1321,7 +1321,7 @@ class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStru
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? "Unspecified";
   }
 
@@ -1433,7 +1433,7 @@ class facebook_thrift_annotation_v1 implements \IThriftSyncStruct, \IThriftShapi
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1521,7 +1521,7 @@ class facebook_thrift_annotation_v1beta implements \IThriftSyncStruct, \IThriftS
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1617,7 +1617,7 @@ class facebook_thrift_annotation_v1alpha implements \IThriftSyncStruct, \IThrift
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1722,7 +1722,7 @@ class facebook_thrift_annotation_v1test implements \IThriftSyncStruct, \IThriftS
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1816,7 +1816,7 @@ class facebook_thrift_annotation_NoLegacyAPIs implements \IThriftSyncStruct, \IT
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

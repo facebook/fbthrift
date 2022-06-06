@@ -36,7 +36,7 @@ class structured_annotation_with_namespace implements \IThriftSyncStruct {
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? "abacaba";
   }
 

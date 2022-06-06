@@ -53,7 +53,7 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $data2;
 
-  public function __construct(?string $data1 = null, ?int $data2 = null  )[] {
+  public function __construct(?string $data1 = null, ?int $data2 = null)[] {
     $this->data1 = $data1 ?? '';
     $this->data2 = $data2 ?? 0;
   }
@@ -207,7 +207,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
   public ?int $option2;
   protected \fixtures\patch\MyUnionEnum $_type = \fixtures\patch\MyUnionEnum::_EMPTY_;
 
-  public function __construct(?string $option1 = null, ?int $option2 = null  )[] {
+  public function __construct(?string $option1 = null, ?int $option2 = null)[] {
     $this->_type = \fixtures\patch\MyUnionEnum::_EMPTY_;
     if ($option1 !== null) {
       $this->option1 = $option1;
@@ -706,7 +706,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?\fixtures\patch\MyUnion $unionVal;
 
-  public function __construct(?bool $boolVal = null, ?int $byteVal = null, ?int $i16Val = null, ?int $i32Val = null, ?int $i64Val = null, ?float $floatVal = null, ?float $doubleVal = null, ?string $stringVal = null, ?string $binaryVal = null, ?\fixtures\patch\MyData $structVal = null, ?bool $optBoolVal = null, ?int $optByteVal = null, ?int $optI16Val = null, ?int $optI32Val = null, ?int $optI64Val = null, ?float $optFloatVal = null, ?float $optDoubleVal = null, ?string $optStringVal = null, ?string $optBinaryVal = null, ?\fixtures\patch\MyData $optStructVal = null, ?Vector<int> $optListVal = null, ?Set<string> $optSetVal = null, ?Map<string, string> $optMapVal = null, ?\fixtures\patch\MyUnion $unionVal = null  )[] {
+  public function __construct(?bool $boolVal = null, ?int $byteVal = null, ?int $i16Val = null, ?int $i32Val = null, ?int $i64Val = null, ?float $floatVal = null, ?float $doubleVal = null, ?string $stringVal = null, ?string $binaryVal = null, ?\fixtures\patch\MyData $structVal = null, ?bool $optBoolVal = null, ?int $optByteVal = null, ?int $optI16Val = null, ?int $optI32Val = null, ?int $optI64Val = null, ?float $optFloatVal = null, ?float $optDoubleVal = null, ?string $optStringVal = null, ?string $optBinaryVal = null, ?\fixtures\patch\MyData $optStructVal = null, ?Vector<int> $optListVal = null, ?Set<string> $optSetVal = null, ?Map<string, string> $optMapVal = null, ?\fixtures\patch\MyUnion $unionVal = null)[] {
     $this->boolVal = $boolVal ?? false;
     $this->byteVal = $byteVal ?? 0;
     $this->i16Val = $i16Val ?? 0;
@@ -1366,7 +1366,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?\thrift\op\I32Patch $data2;
 
-  public function __construct(?\thrift\op\StringPatch $data1 = null, ?\thrift\op\I32Patch $data2 = null  )[] {
+  public function __construct(?\thrift\op\StringPatch $data1 = null, ?\thrift\op\I32Patch $data2 = null)[] {
     $this->data1 = $data1;
     $this->data2 = $data2;
   }
@@ -1558,7 +1558,7 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?\fixtures\patch\MyDataPatch $patch;
 
-  public function __construct(?\fixtures\patch\MyData $assign = null, ?bool $clear = null, ?\fixtures\patch\MyDataPatch $patch = null  )[] {
+  public function __construct(?\fixtures\patch\MyData $assign = null, ?bool $clear = null, ?\fixtures\patch\MyDataPatch $patch = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->patch = $patch;
@@ -1766,7 +1766,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
    */
   public ?\fixtures\patch\MyDataValuePatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyDataValuePatch $patch = null, ?\fixtures\patch\MyData $ensure = null, ?\fixtures\patch\MyDataValuePatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyDataValuePatch $patch = null, ?\fixtures\patch\MyData $ensure = null, ?\fixtures\patch\MyDataValuePatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -1966,7 +1966,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?\thrift\op\I32Patch $option2;
 
-  public function __construct(?\thrift\op\StringPatch $option1 = null, ?\thrift\op\I32Patch $option2 = null  )[] {
+  public function __construct(?\thrift\op\StringPatch $option1 = null, ?\thrift\op\I32Patch $option2 = null)[] {
     $this->option1 = $option1;
     $this->option2 = $option2;
   }
@@ -2173,7 +2173,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?\fixtures\patch\MyUnionPatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyUnionPatch $patch = null, ?\fixtures\patch\MyUnion $ensure = null, ?\fixtures\patch\MyUnionPatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyUnionPatch $patch = null, ?\fixtures\patch\MyUnion $ensure = null, ?\fixtures\patch\MyUnionPatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2405,7 +2405,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
    */
   public ?\fixtures\patch\MyUnionValuePatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyUnionValuePatch $patch = null, ?\fixtures\patch\MyUnion $ensure = null, ?\fixtures\patch\MyUnionValuePatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyUnionValuePatch $patch = null, ?\fixtures\patch\MyUnion $ensure = null, ?\fixtures\patch\MyUnionValuePatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2891,7 +2891,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?\fixtures\patch\MyUnionValuePatch $unionVal;
 
-  public function __construct(?\thrift\op\BoolPatch $boolVal = null, ?\thrift\op\BytePatch $byteVal = null, ?\thrift\op\I16Patch $i16Val = null, ?\thrift\op\I32Patch $i32Val = null, ?\thrift\op\I64Patch $i64Val = null, ?\thrift\op\FloatPatch $floatVal = null, ?\thrift\op\DoublePatch $doubleVal = null, ?\thrift\op\StringPatch $stringVal = null, ?\thrift\op\BinaryPatch $binaryVal = null, ?\fixtures\patch\MyDataValuePatch $structVal = null, ?\thrift\op\OptionalBoolPatch $optBoolVal = null, ?\thrift\op\OptionalBytePatch $optByteVal = null, ?\thrift\op\OptionalI16Patch $optI16Val = null, ?\thrift\op\OptionalI32Patch $optI32Val = null, ?\thrift\op\OptionalI64Patch $optI64Val = null, ?\thrift\op\OptionalFloatPatch $optFloatVal = null, ?\thrift\op\OptionalDoublePatch $optDoubleVal = null, ?\thrift\op\OptionalStringPatch $optStringVal = null, ?\thrift\op\OptionalBinaryPatch $optBinaryVal = null, ?\fixtures\patch\OptionalMyDataValuePatch $optStructVal = null, ?\fixtures\patch\OptionalMyStructField21Patch $optListVal = null, ?\fixtures\patch\OptionalMyStructField22Patch $optSetVal = null, ?\fixtures\patch\OptionalMyStructField23Patch $optMapVal = null, ?\fixtures\patch\MyUnionValuePatch $unionVal = null  )[] {
+  public function __construct(?\thrift\op\BoolPatch $boolVal = null, ?\thrift\op\BytePatch $byteVal = null, ?\thrift\op\I16Patch $i16Val = null, ?\thrift\op\I32Patch $i32Val = null, ?\thrift\op\I64Patch $i64Val = null, ?\thrift\op\FloatPatch $floatVal = null, ?\thrift\op\DoublePatch $doubleVal = null, ?\thrift\op\StringPatch $stringVal = null, ?\thrift\op\BinaryPatch $binaryVal = null, ?\fixtures\patch\MyDataValuePatch $structVal = null, ?\thrift\op\OptionalBoolPatch $optBoolVal = null, ?\thrift\op\OptionalBytePatch $optByteVal = null, ?\thrift\op\OptionalI16Patch $optI16Val = null, ?\thrift\op\OptionalI32Patch $optI32Val = null, ?\thrift\op\OptionalI64Patch $optI64Val = null, ?\thrift\op\OptionalFloatPatch $optFloatVal = null, ?\thrift\op\OptionalDoublePatch $optDoubleVal = null, ?\thrift\op\OptionalStringPatch $optStringVal = null, ?\thrift\op\OptionalBinaryPatch $optBinaryVal = null, ?\fixtures\patch\OptionalMyDataValuePatch $optStructVal = null, ?\fixtures\patch\OptionalMyStructField21Patch $optListVal = null, ?\fixtures\patch\OptionalMyStructField22Patch $optSetVal = null, ?\fixtures\patch\OptionalMyStructField23Patch $optMapVal = null, ?\fixtures\patch\MyUnionValuePatch $unionVal = null)[] {
     $this->boolVal = $boolVal;
     $this->byteVal = $byteVal;
     $this->i16Val = $i16Val;
@@ -3723,7 +3723,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    */
   public Vector<int> $append;
 
-  public function __construct(?Vector<int> $assign = null, ?bool $clear = null, ?Vector<int> $prepend = null, ?Vector<int> $append = null  )[] {
+  public function __construct(?Vector<int> $assign = null, ?bool $clear = null, ?Vector<int> $prepend = null, ?Vector<int> $append = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->prepend = $prepend ?? Vector {};
@@ -4000,7 +4000,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
    */
   public ?\fixtures\patch\MyStructField21Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField21Patch $patch = null, ?Vector<int> $ensure = null, ?\fixtures\patch\MyStructField21Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField21Patch $patch = null, ?Vector<int> $ensure = null, ?\fixtures\patch\MyStructField21Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -4259,7 +4259,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    */
   public Set<string> $add;
 
-  public function __construct(?Set<string> $assign = null, ?bool $clear = null, ?Set<string> $remove = null, ?Set<string> $add = null  )[] {
+  public function __construct(?Set<string> $assign = null, ?bool $clear = null, ?Set<string> $remove = null, ?Set<string> $add = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->remove = $remove ?? Set {};
@@ -4521,7 +4521,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
    */
   public ?\fixtures\patch\MyStructField22Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField22Patch $patch = null, ?Set<string> $ensure = null, ?\fixtures\patch\MyStructField22Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField22Patch $patch = null, ?Set<string> $ensure = null, ?\fixtures\patch\MyStructField22Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -4764,7 +4764,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    */
   public Map<string, string> $put;
 
-  public function __construct(?Map<string, string> $assign = null, ?bool $clear = null, ?Map<string, string> $put = null  )[] {
+  public function __construct(?Map<string, string> $assign = null, ?bool $clear = null, ?Map<string, string> $put = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->put = $put ?? Map {};
@@ -5007,7 +5007,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
    */
   public ?\fixtures\patch\MyStructField23Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField23Patch $patch = null, ?Map<string, string> $ensure = null, ?\fixtures\patch\MyStructField23Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructField23Patch $patch = null, ?Map<string, string> $ensure = null, ?\fixtures\patch\MyStructField23Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -5239,7 +5239,7 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?\fixtures\patch\MyStructPatch $patch;
 
-  public function __construct(?\fixtures\patch\MyStruct $assign = null, ?bool $clear = null, ?\fixtures\patch\MyStructPatch $patch = null  )[] {
+  public function __construct(?\fixtures\patch\MyStruct $assign = null, ?bool $clear = null, ?\fixtures\patch\MyStructPatch $patch = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->patch = $patch;
@@ -5447,7 +5447,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
    */
   public ?\fixtures\patch\MyStructValuePatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructValuePatch $patch = null, ?\fixtures\patch\MyStruct $ensure = null, ?\fixtures\patch\MyStructValuePatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\fixtures\patch\MyStructValuePatch $patch = null, ?\fixtures\patch\MyStruct $ensure = null, ?\fixtures\patch\MyStructValuePatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;

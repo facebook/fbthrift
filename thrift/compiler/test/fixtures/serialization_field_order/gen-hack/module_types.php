@@ -61,7 +61,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $field3;
 
-  public function __construct(?int $field1 = null, ?int $field2 = null, ?int $field3 = null  )[] {
+  public function __construct(?int $field1 = null, ?int $field2 = null, ?int $field3 = null)[] {
     $this->field1 = $field1 ?? 0;
     $this->field2 = $field2 ?? 0;
     $this->field3 = $field3 ?? 0;
@@ -249,7 +249,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $field3;
 
-  public function __construct(?int $field1 = null, ?int $field2 = null, ?int $field3 = null  )[] {
+  public function __construct(?int $field1 = null, ?int $field2 = null, ?int $field3 = null)[] {
     $this->field1 = $field1 ?? 0;
     $this->field2 = $field2 ?? 0;
     $this->field3 = $field3 ?? 0;

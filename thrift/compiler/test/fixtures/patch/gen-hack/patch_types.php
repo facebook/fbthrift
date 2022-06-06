@@ -29,7 +29,7 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -116,7 +116,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -223,7 +223,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public bool $invert;
 
-  public function __construct(?bool $assign = null, ?bool $invert = null  )[] {
+  public function __construct(?bool $assign = null, ?bool $invert = null)[] {
     $this->assign = $assign;
     $this->invert = $invert ?? false;
   }
@@ -369,7 +369,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $add;
 
-  public function __construct(?int $assign = null, ?int $add = null  )[] {
+  public function __construct(?int $assign = null, ?int $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0;
   }
@@ -525,7 +525,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $add;
 
-  public function __construct(?int $assign = null, ?int $add = null  )[] {
+  public function __construct(?int $assign = null, ?int $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0;
   }
@@ -681,7 +681,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $add;
 
-  public function __construct(?int $assign = null, ?int $add = null  )[] {
+  public function __construct(?int $assign = null, ?int $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0;
   }
@@ -837,7 +837,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public int $add;
 
-  public function __construct(?int $assign = null, ?int $add = null  )[] {
+  public function __construct(?int $assign = null, ?int $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0;
   }
@@ -983,7 +983,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public float $add;
 
-  public function __construct(?float $assign = null, ?float $add = null  )[] {
+  public function __construct(?float $assign = null, ?float $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0.0;
   }
@@ -1129,7 +1129,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public float $add;
 
-  public function __construct(?float $assign = null, ?float $add = null  )[] {
+  public function __construct(?float $assign = null, ?float $add = null)[] {
     $this->assign = $assign;
     $this->add = $add ?? 0.0;
   }
@@ -1299,7 +1299,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $append;
 
-  public function __construct(?string $assign = null, ?bool $clear = null, ?string $prepend = null, ?string $append = null  )[] {
+  public function __construct(?string $assign = null, ?bool $clear = null, ?string $prepend = null, ?string $append = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->prepend = $prepend ?? '';
@@ -1469,7 +1469,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?string $assign;
 
-  public function __construct(?string $assign = null  )[] {
+  public function __construct(?string $assign = null)[] {
     $this->assign = $assign;
   }
 
@@ -1631,7 +1631,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?\thrift\op\BoolPatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BoolPatch $patch = null, ?bool $ensure = null, ?\thrift\op\BoolPatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BoolPatch $patch = null, ?bool $ensure = null, ?\thrift\op\BoolPatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -1874,7 +1874,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?\thrift\op\BytePatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BytePatch $patch = null, ?int $ensure = null, ?\thrift\op\BytePatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BytePatch $patch = null, ?int $ensure = null, ?\thrift\op\BytePatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2122,7 +2122,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?\thrift\op\I16Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I16Patch $patch = null, ?int $ensure = null, ?\thrift\op\I16Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I16Patch $patch = null, ?int $ensure = null, ?\thrift\op\I16Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2370,7 +2370,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?\thrift\op\I32Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I32Patch $patch = null, ?int $ensure = null, ?\thrift\op\I32Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I32Patch $patch = null, ?int $ensure = null, ?\thrift\op\I32Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2618,7 +2618,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?\thrift\op\I64Patch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I64Patch $patch = null, ?int $ensure = null, ?\thrift\op\I64Patch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I64Patch $patch = null, ?int $ensure = null, ?\thrift\op\I64Patch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -2861,7 +2861,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?\thrift\op\FloatPatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\FloatPatch $patch = null, ?float $ensure = null, ?\thrift\op\FloatPatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\FloatPatch $patch = null, ?float $ensure = null, ?\thrift\op\FloatPatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -3104,7 +3104,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?\thrift\op\DoublePatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\DoublePatch $patch = null, ?float $ensure = null, ?\thrift\op\DoublePatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\DoublePatch $patch = null, ?float $ensure = null, ?\thrift\op\DoublePatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -3347,7 +3347,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?\thrift\op\StringPatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\StringPatch $patch = null, ?string $ensure = null, ?\thrift\op\StringPatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\StringPatch $patch = null, ?string $ensure = null, ?\thrift\op\StringPatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;
@@ -3590,7 +3590,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?\thrift\op\BinaryPatch $patchAfter;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BinaryPatch $patch = null, ?string $ensure = null, ?\thrift\op\BinaryPatch $patchAfter = null  )[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BinaryPatch $patch = null, ?string $ensure = null, ?\thrift\op\BinaryPatch $patchAfter = null)[] {
     $this->clear = $clear ?? false;
     $this->patch = $patch;
     $this->ensure = $ensure;

@@ -35,7 +35,7 @@ class facebook_thrift_annotation_InjectMetadataFields implements \IThriftSyncStr
    */
   public string $type;
 
-  public function __construct(?string $type = null  )[] {
+  public function __construct(?string $type = null)[] {
     $this->type = $type ?? '';
   }
 

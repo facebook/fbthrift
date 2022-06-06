@@ -418,7 +418,7 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
   const int STRUCTURAL_ID = 3607165688153615571;
   public int $int_parameter;
 
-  public function __construct(?int $int_parameter = null  )[] {
+  public function __construct(?int $int_parameter = null)[] {
     $this->int_parameter = $int_parameter ?? 0;
   }
 
@@ -531,7 +531,7 @@ class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7443966475393398575;
   public ?\fixtures\basic\MyRenamedStruct $success;
 
-  public function __construct(?\fixtures\basic\MyRenamedStruct $success = null  )[] {
+  public function __construct(?\fixtures\basic\MyRenamedStruct $success = null)[] {
     $this->success = $success;
   }
 

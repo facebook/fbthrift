@@ -4023,7 +4023,7 @@ void t_hack_generator::generate_php_struct_constructor(
     out << delim << "?" << typehint << " $" << field.name() << " = null";
     delim = ", ";
   }
-  out << indent() << ")[] {\n";
+  out << ")[] {\n";
   indent_up();
 
   if (type == ThriftStructType::EXCEPTION) {

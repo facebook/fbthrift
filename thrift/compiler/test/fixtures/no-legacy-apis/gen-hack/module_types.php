@@ -85,7 +85,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $myStringField;
 
-  public function __construct(?int $myIntField = null, ?string $myStringField = null  )[] {
+  public function __construct(?int $myIntField = null, ?string $myStringField = null)[] {
     $this->myIntField = $myIntField ?? 0;
     $this->myStringField = $myStringField ?? '';
   }
@@ -236,7 +236,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\no-legacy-a
   public ?\fixtures\no-legacy-apis\MyStruct $myDataItem;
   protected \fixtures\no-legacy-apis\MyUnionEnum $_type = \fixtures\no-legacy-apis\MyUnionEnum::_EMPTY_;
 
-  public function __construct(?\fixtures\no-legacy-apis\MyEnum $myEnum = null, ?\fixtures\no-legacy-apis\MyStruct $myDataItem = null  )[] {
+  public function __construct(?\fixtures\no-legacy-apis\MyEnum $myEnum = null, ?\fixtures\no-legacy-apis\MyStruct $myDataItem = null)[] {
     $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::_EMPTY_;
     if ($myEnum !== null) {
       $this->myEnum = $myEnum;

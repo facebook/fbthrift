@@ -69,7 +69,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public dict<string, vec<keyset<int>>> $b;
 
-  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  )[] {
+  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null)[] {
     $this->a = $a ?? vec[];
     $this->b = $b ?? dict[];
   }

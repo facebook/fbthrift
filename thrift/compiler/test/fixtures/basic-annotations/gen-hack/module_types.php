@@ -71,7 +71,7 @@ class MyStructNestedAnnotation implements \IThriftSyncStruct, \IThriftShapishSyn
    */
   public string $name;
 
-  public function __construct(?string $name = null  )[] {
+  public function __construct(?string $name = null)[] {
     $this->name = $name ?? '';
   }
 
@@ -173,7 +173,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
   const int STRUCTURAL_ID = 957977401221134810;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
     $this->_type = MyUnionEnum::_EMPTY_;
   }
 
@@ -261,7 +261,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
     parent::__construct();
   }
 
@@ -445,7 +445,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?MyUnion $my_union;
 
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null, ?Vector<string> $cpp_type_annotation = null, ?MyUnion $my_union = null  )[] {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null, ?Vector<string> $cpp_type_annotation = null, ?MyUnion $my_union = null)[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
@@ -735,7 +735,7 @@ class SecretStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $password;
 
-  public function __construct(?int $id = null, ?string $password = null  )[] {
+  public function __construct(?int $id = null, ?string $password = null)[] {
     $this->id = $id ?? 0;
     $this->password = $password ?? '';
   }

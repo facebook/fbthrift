@@ -34,7 +34,7 @@ class InitialResponse implements \IThriftSyncStruct {
    */
   public string $content;
 
-  public function __construct(?string $content = null  )[] {
+  public function __construct(?string $content = null)[] {
     $this->content = $content ?? '';
   }
 
@@ -116,7 +116,7 @@ class FinalResponse implements \IThriftSyncStruct {
    */
   public string $content;
 
-  public function __construct(?string $content = null  )[] {
+  public function __construct(?string $content = null)[] {
     $this->content = $content ?? '';
   }
 
@@ -198,7 +198,7 @@ class SinkPayload implements \IThriftSyncStruct {
    */
   public string $content;
 
-  public function __construct(?string $content = null  )[] {
+  public function __construct(?string $content = null)[] {
     $this->content = $content ?? '';
   }
 
@@ -280,7 +280,7 @@ class CompatibleWithKeywordSink implements \IThriftSyncStruct {
    */
   public string $sink;
 
-  public function __construct(?string $sink = null  )[] {
+  public function __construct(?string $sink = null)[] {
     $this->sink = $sink ?? '';
   }
 
@@ -362,7 +362,7 @@ class InitialException extends \TException implements \IThriftSyncStruct {
    */
   public string $reason;
 
-  public function __construct(?string $reason = null  )[] {
+  public function __construct(?string $reason = null)[] {
     parent::__construct();
     $this->reason = $reason ?? '';
   }
@@ -444,7 +444,7 @@ class SinkException1 extends \TException implements \IThriftSyncStruct {
    */
   public string $reason;
 
-  public function __construct(?string $reason = null  )[] {
+  public function __construct(?string $reason = null)[] {
     parent::__construct();
     $this->reason = $reason ?? '';
   }
@@ -526,7 +526,7 @@ class SinkException2 extends \TException implements \IThriftSyncStruct {
    */
   public int $reason;
 
-  public function __construct(?int $reason = null  )[] {
+  public function __construct(?int $reason = null)[] {
     parent::__construct();
     $this->reason = $reason ?? 0;
   }

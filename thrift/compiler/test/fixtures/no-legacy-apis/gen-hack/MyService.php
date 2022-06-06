@@ -419,7 +419,7 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
   const int STRUCTURAL_ID = 806889198569760186;
   public ?\fixtures\no-legacy-apis\MyUnion $u;
 
-  public function __construct(?\fixtures\no-legacy-apis\MyUnion $u = null  )[] {
+  public function __construct(?\fixtures\no-legacy-apis\MyUnion $u = null)[] {
     $this->u = $u;
   }
 
@@ -524,7 +524,7 @@ class MyService_query_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7307096097859369800;
   public ?\fixtures\no-legacy-apis\MyStruct $success;
 
-  public function __construct(?\fixtures\no-legacy-apis\MyStruct $success = null  )[] {
+  public function __construct(?\fixtures\no-legacy-apis\MyStruct $success = null)[] {
     $this->success = $success;
   }
 

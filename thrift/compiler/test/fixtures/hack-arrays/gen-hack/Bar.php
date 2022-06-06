@@ -275,7 +275,7 @@ class Bar_baz_args implements \IThriftSyncStruct {
   public keyset<int> $a;
   public vec<dict<int, keyset<string>>> $b;
 
-  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null  )[] {
+  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null)[] {
     $this->a = $a ?? keyset[];
     $this->b = $b ?? vec[];
   }
@@ -399,7 +399,7 @@ class Bar_baz_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 

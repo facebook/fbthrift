@@ -124,7 +124,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public bool $d;
 
-  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
+  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null)[] {
     $this->a = $a ?? Vector {};
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -345,7 +345,7 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum> {
   public ?Foo $foo_struct;
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
-  public function __construct(?string $string_field = null, ?int $int_field = null, ?TestEnum $enum_field = null, ?Foo $foo_struct = null  )[] {
+  public function __construct(?string $string_field = null, ?int $int_field = null, ?TestEnum $enum_field = null, ?Foo $foo_struct = null)[] {
     $this->_type = TestUnionEnum::_EMPTY_;
     if ($string_field !== null) {
       $this->string_field = $string_field;
@@ -643,7 +643,7 @@ class Baz extends \TException implements \IThriftSyncStruct {
    */
   public int $code;
 
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  )[] {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
@@ -789,7 +789,7 @@ class OptBaz extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }

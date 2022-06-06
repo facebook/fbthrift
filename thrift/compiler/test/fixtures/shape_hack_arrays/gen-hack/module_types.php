@@ -59,7 +59,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public dict<string, string> $map_of_string_to_string;
 
-  public function __construct(?string $a = null, ?dict<string, string> $map_of_string_to_string = null  )[] {
+  public function __construct(?string $a = null, ?dict<string, string> $map_of_string_to_string = null)[] {
     $this->a = $a ?? '';
     $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
   }
@@ -400,7 +400,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A;
 
-  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
+  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null)[] {
     $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
     $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? dict[];
     $this->map_of_string_to_A = $map_of_string_to_A ?? dict[];
@@ -1108,7 +1108,7 @@ class C implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A;
 
-  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
+  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null)[] {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;

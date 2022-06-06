@@ -714,7 +714,7 @@ class Raiser_doBland_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -766,7 +766,7 @@ class Raiser_doBland_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -818,7 +818,7 @@ class Raiser_doRaise_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -894,7 +894,7 @@ class Raiser_doRaise_result implements \IThriftSyncStruct {
   public ?Fiery $f;
   public ?Serious $s;
 
-  public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  )[] {
+  public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null)[] {
     $this->b = $b;
     $this->f = $f;
     $this->s = $s;
@@ -1008,7 +1008,7 @@ class Raiser_get200_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1067,7 +1067,7 @@ class Raiser_get200_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(?string $success = null  )[] {
+  public function __construct(?string $success = null)[] {
     $this->success = $success;
   }
 
@@ -1134,7 +1134,7 @@ class Raiser_get500_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1217,7 +1217,7 @@ class Raiser_get500_result implements \IThriftSyncStruct {
   public ?Banal $b;
   public ?Serious $s;
 
-  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  )[] {
+  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null)[] {
     $this->success = $success;
     $this->f = $f;
     $this->b = $b;

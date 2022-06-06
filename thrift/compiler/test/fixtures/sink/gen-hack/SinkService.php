@@ -1713,7 +1713,7 @@ class SinkService_method_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1765,7 +1765,7 @@ class SinkService_method_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1825,7 +1825,7 @@ class SinkService_method_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5047864711357047518;
   public ?SinkPayload $success;
 
-  public function __construct(?SinkPayload $success = null  )[] {
+  public function __construct(?SinkPayload $success = null)[] {
     $this->success = $success;
   }
 
@@ -1904,7 +1904,7 @@ class SinkService_method_FinalResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7640464975912492398;
   public ?FinalResponse $success;
 
-  public function __construct(?FinalResponse $success = null  )[] {
+  public function __construct(?FinalResponse $success = null)[] {
     $this->success = $success;
   }
 
@@ -1975,7 +1975,7 @@ class SinkService_methodAndReponse_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2035,7 +2035,7 @@ class SinkService_methodAndReponse_FirstResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 1156060868779247352;
   public ?InitialResponse $success;
 
-  public function __construct(?InitialResponse $success = null  )[] {
+  public function __construct(?InitialResponse $success = null)[] {
     $this->success = $success;
   }
 
@@ -2114,7 +2114,7 @@ class SinkService_methodAndReponse_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5047864711357047518;
   public ?SinkPayload $success;
 
-  public function __construct(?SinkPayload $success = null  )[] {
+  public function __construct(?SinkPayload $success = null)[] {
     $this->success = $success;
   }
 
@@ -2193,7 +2193,7 @@ class SinkService_methodAndReponse_FinalResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7640464975912492398;
   public ?FinalResponse $success;
 
-  public function __construct(?FinalResponse $success = null  )[] {
+  public function __construct(?FinalResponse $success = null)[] {
     $this->success = $success;
   }
 
@@ -2264,7 +2264,7 @@ class SinkService_methodThrow_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2324,7 +2324,7 @@ class SinkService_methodThrow_FirstResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5881917388606205109;
   public ?InitialException $ex;
 
-  public function __construct(?InitialException $ex = null  )[] {
+  public function __construct(?InitialException $ex = null)[] {
     $this->ex = $ex;
   }
 
@@ -2403,7 +2403,7 @@ class SinkService_methodThrow_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5047864711357047518;
   public ?SinkPayload $success;
 
-  public function __construct(?SinkPayload $success = null  )[] {
+  public function __construct(?SinkPayload $success = null)[] {
     $this->success = $success;
   }
 
@@ -2482,7 +2482,7 @@ class SinkService_methodThrow_FinalResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7640464975912492398;
   public ?FinalResponse $success;
 
-  public function __construct(?FinalResponse $success = null  )[] {
+  public function __construct(?FinalResponse $success = null)[] {
     $this->success = $success;
   }
 
@@ -2553,7 +2553,7 @@ class SinkService_methodSinkThrow_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2605,7 +2605,7 @@ class SinkService_methodSinkThrow_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2673,7 +2673,7 @@ class SinkService_methodSinkThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
   public ?SinkException1 $ex;
 
-  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -2769,7 +2769,7 @@ class SinkService_methodSinkThrow_FinalResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7640464975912492398;
   public ?FinalResponse $success;
 
-  public function __construct(?FinalResponse $success = null  )[] {
+  public function __construct(?FinalResponse $success = null)[] {
     $this->success = $success;
   }
 
@@ -2840,7 +2840,7 @@ class SinkService_methodFinalThrow_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2892,7 +2892,7 @@ class SinkService_methodFinalThrow_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2952,7 +2952,7 @@ class SinkService_methodFinalThrow_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5047864711357047518;
   public ?SinkPayload $success;
 
-  public function __construct(?SinkPayload $success = null  )[] {
+  public function __construct(?SinkPayload $success = null)[] {
     $this->success = $success;
   }
 
@@ -3039,7 +3039,7 @@ class SinkService_methodFinalThrow_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
   public ?SinkException2 $ex;
 
-  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -3127,7 +3127,7 @@ class SinkService_methodBothThrow_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3179,7 +3179,7 @@ class SinkService_methodBothThrow_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3247,7 +3247,7 @@ class SinkService_methodBothThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
   public ?SinkException1 $ex;
 
-  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -3351,7 +3351,7 @@ class SinkService_methodBothThrow_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
   public ?SinkException2 $ex;
 
-  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -3439,7 +3439,7 @@ class SinkService_methodFast_args implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3491,7 +3491,7 @@ class SinkService_methodFast_FirstResponse implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -3551,7 +3551,7 @@ class SinkService_methodFast_SinkPayload implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 5047864711357047518;
   public ?SinkPayload $success;
 
-  public function __construct(?SinkPayload $success = null  )[] {
+  public function __construct(?SinkPayload $success = null)[] {
     $this->success = $success;
   }
 
@@ -3630,7 +3630,7 @@ class SinkService_methodFast_FinalResponse implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7640464975912492398;
   public ?FinalResponse $success;
 
-  public function __construct(?FinalResponse $success = null  )[] {
+  public function __construct(?FinalResponse $success = null)[] {
     $this->success = $success;
   }
 

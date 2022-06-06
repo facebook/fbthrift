@@ -178,7 +178,7 @@ class Internship implements \IThriftSyncStruct {
    */
   public ?string $school;
 
-  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null, ?float $compensation = null, ?string $school = null  )[] {
+  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null, ?float $compensation = null, ?string $school = null)[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
@@ -330,7 +330,7 @@ class Range implements \IThriftSyncStruct {
    */
   public int $max;
 
-  public function __construct(?int $min = null, ?int $max = null  )[] {
+  public function __construct(?int $min = null, ?int $max = null)[] {
     $this->min = $min ?? 0;
     $this->max = $max ?? 0;
   }
@@ -436,7 +436,7 @@ class struct1 implements \IThriftSyncStruct {
    */
   public string $b;
 
-  public function __construct(?int $a = null, ?string $b = null  )[] {
+  public function __construct(?int $a = null, ?string $b = null)[] {
     $this->a = $a ?? 1234567;
     $this->b = $b ?? "<uninitialized>";
   }
@@ -570,7 +570,7 @@ class struct2 implements \IThriftSyncStruct {
    */
   public Vector<int> $d;
 
-  public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null  )[] {
+  public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null)[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? '';
     $this->c = $c;
@@ -726,7 +726,7 @@ class struct3 implements \IThriftSyncStruct {
    */
   public ?struct2 $c;
 
-  public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null  )[] {
+  public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null)[] {
     $this->a = $a ?? '';
     $this->b = $b ?? 0;
     $this->c = $c;
@@ -860,7 +860,7 @@ class struct4 implements \IThriftSyncStruct {
    */
   public ?int $c;
 
-  public function __construct(?int $a = null, ?float $b = null, ?int $c = null  )[] {
+  public function __construct(?int $a = null, ?float $b = null, ?int $c = null)[] {
     $this->a = $a ?? 0;
     $this->b = $b;
     $this->c = $c;
@@ -990,7 +990,7 @@ class union1 implements \IThriftSyncStruct, \IThriftUnion<union1Enum> {
   public ?float $d;
   protected union1Enum $_type = union1Enum::_EMPTY_;
 
-  public function __construct(?int $i = null, ?float $d = null  )[] {
+  public function __construct(?int $i = null, ?float $d = null)[] {
     $this->_type = union1Enum::_EMPTY_;
     if ($i !== null) {
       $this->i = $i;
@@ -1198,7 +1198,7 @@ class union2 implements \IThriftSyncStruct, \IThriftUnion<union2Enum> {
   public ?union1 $u;
   protected union2Enum $_type = union2Enum::_EMPTY_;
 
-  public function __construct(?int $i = null, ?float $d = null, ?struct1 $s = null, ?union1 $u = null  )[] {
+  public function __construct(?int $i = null, ?float $d = null, ?struct1 $s = null, ?union1 $u = null)[] {
     $this->_type = union2Enum::_EMPTY_;
     if ($i !== null) {
       $this->i = $i;

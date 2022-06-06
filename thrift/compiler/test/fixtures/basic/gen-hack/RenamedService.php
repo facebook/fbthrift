@@ -396,7 +396,7 @@ class FooService_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapishS
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -466,7 +466,7 @@ class FooService_simple_rpc_result implements \IThriftSyncStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  public function __construct(  )[] {
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {

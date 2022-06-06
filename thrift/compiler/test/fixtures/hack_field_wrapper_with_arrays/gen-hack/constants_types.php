@@ -405,7 +405,7 @@ class SWE implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?float $compensation;
 
-  public function __construct(?Company $employer = null, ?float $compensation = null  )[] {
+  public function __construct(?Company $employer = null, ?float $compensation = null)[] {
     $this->employer = $employer;
     $this->compensation = $compensation;
   }

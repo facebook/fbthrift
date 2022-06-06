@@ -415,7 +415,7 @@ class MyService_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
   public string $arg1;
   public ?MyStruct $arg2;
 
-  public function __construct(?string $arg1 = null, ?MyStruct $arg2 = null  )[] {
+  public function __construct(?string $arg1 = null, ?MyStruct $arg2 = null)[] {
     $this->arg1 = $arg1 ?? '';
     $this->arg2 = $arg2;
   }
@@ -554,7 +554,7 @@ class MyService_func_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7307096097859369800;
   public ?MyStruct $success;
 
-  public function __construct(?MyStruct $success = null  )[] {
+  public function __construct(?MyStruct $success = null)[] {
     $this->success = $success;
   }
 
@@ -659,7 +659,7 @@ class MyService_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncSt
   public string $arg1;
   public ?MyStruct $arg2;
 
-  public function __construct(?string $arg1 = null, ?MyStruct $arg2 = null  )[] {
+  public function __construct(?string $arg1 = null, ?MyStruct $arg2 = null)[] {
     $this->arg1 = $arg1 ?? '';
     $this->arg2 = $arg2;
   }
@@ -798,7 +798,7 @@ class MyService_func1_result implements \IThriftSyncStruct {
   const int STRUCTURAL_ID = 7307096097859369800;
   public ?MyStruct $success;
 
-  public function __construct(?MyStruct $success = null  )[] {
+  public function __construct(?MyStruct $success = null)[] {
     $this->success = $success;
   }
 

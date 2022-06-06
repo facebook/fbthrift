@@ -160,7 +160,7 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum>, \IT
   public ?Foo $struct_foo;
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
-  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?varray<string> $list_of_strings = null, ?darray<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null  )[] {
+  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?varray<string> $list_of_strings = null, ?darray<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null)[] {
     $this->_type = TestUnionEnum::_EMPTY_;
     if ($int_value !== null) {
       $this->int_value = $int_value;
@@ -606,7 +606,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $str_value;
 
-  public function __construct(?varray<string> $a = null, ?darray<string, varray<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  )[] {
+  public function __construct(?varray<string> $a = null, ?darray<string, varray<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null)[] {
     $this->a = $a ?? vec[];
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -855,7 +855,7 @@ class TestStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public darray<string, Foo> $map_of_string_to_struct_foo;
 
-  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?varray<Foo> $list_of_struct_foo = null, ?darray<string, Foo> $map_of_string_to_struct_foo = null  )[] {
+  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?varray<Foo> $list_of_struct_foo = null, ?darray<string, Foo> $map_of_string_to_struct_foo = null)[] {
     $this->foo_struct = $foo_struct;
     $this->union_value = $union_value;
     $this->list_of_struct_foo = $list_of_struct_foo ?? vec[];
@@ -1091,7 +1091,7 @@ class Baz extends \TException implements \IThriftSyncStruct {
    */
   public int $code;
 
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?dict<string, bool> $some_container = null, ?int $code = null  )[] {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?dict<string, bool> $some_container = null, ?int $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
@@ -1224,7 +1224,7 @@ class OptBaz extends \TException implements \IThriftSyncStruct {
    */
   public string $message;
 
-  public function __construct(?string $message = null  )[] {
+  public function __construct(?string $message = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
