@@ -56,11 +56,10 @@ TEST_F(ValidatorTest, run_validator) {
 TEST_F(ValidatorTest, DuplicatedStructNames) {
   t_program program("/path/to/file.thrift");
 
-  program.add_struct(std::make_unique<t_struct>(&program, "Foo"));
-  program.add_struct(std::make_unique<t_struct>(&program, "Bar"));
-  auto ex = std::make_unique<t_exception>(&program, "Foo");
-  ex->set_lineno(42);
-  program.add_xception(std::move(ex));
+  program.add_def(std::make_unique<t_struct>(&program, "Foo"));
+  program.add_def(std::make_unique<t_struct>(&program, "Bar"));
+  program.add_def(std::make_unique<t_exception>(&program, "Foo"))
+      .set_lineno(42);
 
   auto errors = run_validator<struct_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());

@@ -441,14 +441,12 @@ t_type_ref patch_generator::find_patch_type(
 t_struct& patch_generator::gen_struct(
     const t_node& annot, std::string name, std::string uri) {
   auto generated = std::make_unique<t_struct>(&program_, std::move(name));
-  t_struct* ptr = generated.get();
   generated->set_generated();
   generated->set_uri(std::move(uri));
   // Attribute the new struct to the anntation.
   generated->set_lineno(annot.lineno());
   program_.scope()->add_type(program_.scope_name(*generated), generated.get());
-  program_.add_definition(std::move(generated));
-  return *ptr;
+  return program_.add_def(std::move(generated));
 }
 
 t_struct& patch_generator::gen_suffix_struct(

@@ -440,26 +440,25 @@ TEST(ObserverTest, OrderOfCalls) {
       basic_ast_visitor<false, MockObserver&, int, MockObserver&>;
 
   t_program program("path/to/program.thrift");
-  auto* tunion = new t_union(&program, "Union");
+  auto& tunion = program.add_def(std::make_unique<t_union>(&program, "Union"));
   auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
-  tunion->append(std::unique_ptr<t_field>(field));
-  program.add_struct(std::unique_ptr<t_union>(tunion));
+  tunion.append(std::unique_ptr<t_field>(field));
 
   MockObserver m1, m2;
   {
     ::testing::InSequence ins;
     EXPECT_CALL(m1, begin_visit(::testing::Ref(program)));
     EXPECT_CALL(m2, begin_visit(::testing::Ref(program)));
-    EXPECT_CALL(m1, begin_visit(::testing::Ref(*tunion)));
-    EXPECT_CALL(m2, begin_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(tunion)));
     EXPECT_CALL(m1, begin_visit(::testing::Ref(*field)));
     EXPECT_CALL(m2, begin_visit(::testing::Ref(*field)));
 
     // End is called in reverse order.
     EXPECT_CALL(m2, end_visit(::testing::Ref(*field)));
     EXPECT_CALL(m1, end_visit(::testing::Ref(*field)));
-    EXPECT_CALL(m2, end_visit(::testing::Ref(*tunion)));
-    EXPECT_CALL(m1, end_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m2, end_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(tunion)));
     EXPECT_CALL(m2, end_visit(::testing::Ref(program)));
     EXPECT_CALL(m1, end_visit(::testing::Ref(program)));
   }
@@ -472,10 +471,9 @@ TEST(ObserverTest, VisitContext) {
   using ctx_ast_visitor = basic_ast_visitor<false, visitor_context&>;
 
   t_program program("path/to/program.thrift");
-  auto* tunion = new t_union(&program, "Union");
+  auto& tunion = program.add_def(std::make_unique<t_union>(&program, "Union"));
   auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
-  tunion->append(std::unique_ptr<t_field>(field));
-  program.add_struct(std::unique_ptr<t_union>(tunion));
+  tunion.append(std::unique_ptr<t_field>(field));
 
   int calls = 0;
   ctx_ast_visitor visitor;
@@ -485,13 +483,13 @@ TEST(ObserverTest, VisitContext) {
     ++calls;
   });
   visitor.add_union_visitor([&](visitor_context& ctx, t_union& node) {
-    EXPECT_EQ(&node, tunion);
+    EXPECT_EQ(&node, &tunion);
     EXPECT_EQ(ctx.parent(), &program);
     ++calls;
   });
   visitor.add_field_visitor([&](visitor_context& ctx, t_field& node) {
     EXPECT_EQ(&node, field);
-    EXPECT_EQ(ctx.parent(), tunion);
+    EXPECT_EQ(ctx.parent(), &tunion);
     ++calls;
   });
 
@@ -503,8 +501,8 @@ TEST(ObserverTest, VisitContext) {
 
 TEST(AstVisitorTest, Modifications) {
   t_program program("path/to/program.thrift");
-  program.add_struct(std::make_unique<t_union>(&program, "Union1"));
-  program.add_struct(std::make_unique<t_union>(&program, "Union2"));
+  program.add_def(std::make_unique<t_union>(&program, "Union1"));
+  program.add_def(std::make_unique<t_union>(&program, "Union2"));
   std::vector<std::string> seen;
 
   ast_visitor visitor;
@@ -513,10 +511,8 @@ TEST(AstVisitorTest, Modifications) {
     // Add some more nodes, which will actually show up in the current
     // traversal.
     if (std::isdigit(node.name().back())) { // Don't recurse indefinitely.
-      program.add_struct(
-          std::make_unique<t_union>(&program, node.name() + "a"));
-      program.add_struct(
-          std::make_unique<t_union>(&program, node.name() + "b"));
+      program.add_def(std::make_unique<t_union>(&program, node.name() + "a"));
+      program.add_def(std::make_unique<t_union>(&program, node.name() + "b"));
     }
   });
   visitor(program);

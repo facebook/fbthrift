@@ -38,24 +38,15 @@ struct base_annotation_builder {
     return name;
   }
 
-  // TODO(afuller): Consider changing to *find or* add.
-  static t_struct* add_annotation_type(
-      t_program& p, std::string name, std::string uri) {
-    auto type = std::make_unique<t_struct>(&p, std::move(name));
-    type->set_uri(std::move(uri));
-    auto* ptr = type.get();
-    p.add_struct(std::move(type));
-    return ptr;
-  }
-
   const std::string& uri() { return type.uri(); }
 
  protected:
   // Abstract base class
   ~base_annotation_builder() = default;
-  base_annotation_builder(t_program& p, std::string name, std::string uri)
+  base_annotation_builder(t_program& p, std::string name, fmt::string_view uri)
       : program(p),
-        type(*add_annotation_type(p, std::move(name), std::move(uri))) {}
+        // TODO(afuller): Consider upgrading to *find or* add.
+        type(p.add_def(std::make_unique<t_struct>(&p, std::move(name)), uri)) {}
 
   std::unique_ptr<t_const> make_inst(
       std::unique_ptr<t_const_value> value, std::string name = {}) {

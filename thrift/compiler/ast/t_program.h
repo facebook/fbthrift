@@ -84,6 +84,22 @@ class t_program : public t_named {
   node_list_view<const t_named> definitions() const { return definitions_; }
   void add_definition(std::unique_ptr<t_named> definition);
 
+  // A convience function that:
+  //  - optionally sets the uri (overriding any set value or
+  // inheritted default),
+  //  - adds the definition to the program, and
+  //  - returns a mutable reference to the stored value, so it can be
+  //  additionally configured.
+  template <typename T>
+  T& add_def(std::unique_ptr<T> definition, fmt::string_view uri = {}) {
+    auto* ptr = definition.get();
+    if (uri.data() != nullptr) {
+      definition->set_uri(std::string(uri.data(), uri.size()));
+    }
+    add_definition(std::move(definition));
+    return *ptr;
+  }
+
   // Concrete instantiation of a templated type.
   node_list_view<t_templated_type> type_instantiations() { return type_insts_; }
   node_list_view<const t_templated_type> type_instantiations() const {

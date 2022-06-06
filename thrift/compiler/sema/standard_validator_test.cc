@@ -445,9 +445,9 @@ TEST_F(StandardValidatorTest, RepeatedStructuredAnnotation) {
   bar->add_structured_annotation(inst(foo.get(), 2));
   bar->add_structured_annotation(inst(foo.get(), 3));
 
-  program_.add_struct(std::move(foo));
-  program_.add_typedef(std::move(bar));
-  other_program.add_struct(std::move(other_foo));
+  program_.add_def(std::move(foo));
+  program_.add_def(std::move(bar));
+  other_program.add_def(std::move(other_foo));
 
   // Only the third annotation is a duplicate.
   EXPECT_THAT(
