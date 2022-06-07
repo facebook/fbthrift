@@ -345,18 +345,19 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
       }
     } else {
       throw new \TProtocolException("Required field weeks cannot be found.");
-    }    
+    }
     if (idx($parsed, 'title') !== null) {
       $this->title = /* HH_FIXME[4110] */ $parsed['title'];
-    }    
+    }
     if (idx($parsed, 'employer') !== null) {
-      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);    }    
+      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);
+    }
     if (idx($parsed, 'compensation') !== null) {
       $this->compensation = /* HH_FIXME[4110] */ $parsed['compensation'];
-    }    
+    }
     if (idx($parsed, 'school') !== null) {
       $this->school = /* HH_FIXME[4110] */ $parsed['school'];
-    }    
+    }
   }
 
 }
@@ -510,10 +511,11 @@ class SWE implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'employer') !== null) {
-      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);    }    
+      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);
+    }
     if (idx($parsed, 'compensation') !== null) {
       $this->compensation = /* HH_FIXME[4110] */ $parsed['compensation'];
-    }    
+    }
   }
 
 }

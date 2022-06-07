@@ -498,7 +498,7 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
       $_tmp1 = \fixtures\no-legacy-apis\MyUnion::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->u = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -592,7 +592,7 @@ class MyService_query_result implements \IThriftSyncStruct {
       $_tmp1 = \fixtures\no-legacy-apis\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
-    }    
+    }
   }
 
 }

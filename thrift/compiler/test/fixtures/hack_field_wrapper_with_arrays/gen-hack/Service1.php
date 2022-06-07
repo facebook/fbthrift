@@ -527,13 +527,13 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
 
     if (idx($parsed, 'arg1') !== null) {
       $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
-    }    
+    }
     if (idx($parsed, 'arg2') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg2']);
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg2 = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -634,7 +634,7 @@ class Service1_func_result implements \IThriftSyncStruct {
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -783,13 +783,13 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
 
     if (idx($parsed, 'arg1') !== null) {
       $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
-    }    
+    }
     if (idx($parsed, 'arg2') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg2']);
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg2 = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -890,7 +890,7 @@ class Service1_func1_result implements \IThriftSyncStruct {
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
-    }    
+    }
   }
 
 }

@@ -79,12 +79,12 @@ class MyException1 extends \TException implements \IThriftSyncStruct {
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;  
+    $this->code = $code;
   }
 
   public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;  
+    return $this->code;
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
@@ -202,12 +202,12 @@ class MyException2 extends \TException implements \IThriftSyncStruct {
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;  
+    $this->code = $code;
   }
 
   public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;  
+    return $this->code;
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
@@ -324,12 +324,12 @@ class MyException3 extends \TException implements \IThriftSyncStruct {
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;  
+    $this->code = $code;
   }
 
   public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;  
+    return $this->code;
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
@@ -446,12 +446,12 @@ class MyException4 extends \TException implements \IThriftSyncStruct {
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;  
+    $this->code = $code;
   }
 
   public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;  
+    return $this->code;
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {

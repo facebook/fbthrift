@@ -735,7 +735,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
 
     if (idx($parsed, 'key') !== null) {
       $this->key = /* HH_FIXME[4110] */ $parsed['key'];
-    }    
+    }
   }
 
 }
@@ -821,7 +821,7 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }
@@ -922,7 +922,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
 
     if (idx($parsed, 'key') !== null) {
       $this->key = /* HH_FIXME[4110] */ $parsed['key'];
-    }    
+    }
   }
 
 }
@@ -1008,7 +1008,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }

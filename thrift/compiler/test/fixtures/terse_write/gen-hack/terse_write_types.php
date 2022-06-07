@@ -741,7 +741,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
 
     if (idx($parsed, 'bool_field') !== null) {
       $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
-    }    
+    }
     if (idx($parsed, 'byte_field') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
       if ($_tmp0 > 0x7f) {
@@ -749,7 +749,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->byte_field = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'short_field') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
       if ($_tmp1 > 0x7fff) {
@@ -757,7 +757,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->short_field = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'int_field') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
       if ($_tmp2 > 0x7fffffff) {
@@ -765,24 +765,25 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->int_field = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'long_field') !== null) {
       $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
-    }    
+    }
     if (idx($parsed, 'float_field') !== null) {
       $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
-    }    
+    }
     if (idx($parsed, 'double_field') !== null) {
       $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
-    }    
+    }
     if (idx($parsed, 'string_field') !== null) {
       $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
-    }    
+    }
     if (idx($parsed, 'binary_field') !== null) {
       $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
-    }    
+    }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);    }    
+      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+    }
     if (idx($parsed, 'list_field') !== null) {
       $_json6 = /* HH_FIXME[4110] */ $parsed['list_field'];
       $_container7 = Vector {};
@@ -797,7 +798,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
         $_container7 []= $_elem8;
       }
       $this->list_field = $_container7;
-    }    
+    }
     if (idx($parsed, 'set_field') !== null) {
       $_json13 = /* HH_FIXME[4110] */ $parsed['set_field'];
       $_container14 = Set {};
@@ -812,7 +813,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
         $_container14->add($_elem15);
       }
       $this->set_field = $_container14;
-    }    
+    }
     if (idx($parsed, 'map_field') !== null) {
       $_json20 = /* HH_FIXME[4110] */ $parsed['map_field'];
       $_container21 = Map {};
@@ -827,13 +828,13 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
         $_container21[$_key18] = $_value22;
       }
       $this->map_field = $_container21;
-    }    
+    }
     if (idx($parsed, 'struct_field') !== null) {
       $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
       $_tmp25 = MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
-    }    
+    }
   }
 
 }
@@ -1913,7 +1914,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
 
     if (idx($parsed, 'terse_bool_field') !== null) {
       $this->terse_bool_field = /* HH_FIXME[4110] */ $parsed['terse_bool_field'];
-    }    
+    }
     if (idx($parsed, 'terse_byte_field') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['terse_byte_field'];
       if ($_tmp0 > 0x7f) {
@@ -1921,7 +1922,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->terse_byte_field = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'terse_short_field') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['terse_short_field'];
       if ($_tmp1 > 0x7fff) {
@@ -1929,7 +1930,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->terse_short_field = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'terse_int_field') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['terse_int_field'];
       if ($_tmp2 > 0x7fffffff) {
@@ -1937,24 +1938,25 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->terse_int_field = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'terse_long_field') !== null) {
       $this->terse_long_field = /* HH_FIXME[4110] */ $parsed['terse_long_field'];
-    }    
+    }
     if (idx($parsed, 'terse_float_field') !== null) {
       $this->terse_float_field = /* HH_FIXME[4110] */ $parsed['terse_float_field'];
-    }    
+    }
     if (idx($parsed, 'terse_double_field') !== null) {
       $this->terse_double_field = /* HH_FIXME[4110] */ $parsed['terse_double_field'];
-    }    
+    }
     if (idx($parsed, 'terse_string_field') !== null) {
       $this->terse_string_field = /* HH_FIXME[4110] */ $parsed['terse_string_field'];
-    }    
+    }
     if (idx($parsed, 'terse_binary_field') !== null) {
       $this->terse_binary_field = /* HH_FIXME[4110] */ $parsed['terse_binary_field'];
-    }    
+    }
     if (idx($parsed, 'terse_enum_field') !== null) {
-      $this->terse_enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['terse_enum_field']);    }    
+      $this->terse_enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['terse_enum_field']);
+    }
     if (idx($parsed, 'terse_list_field') !== null) {
       $_json6 = /* HH_FIXME[4110] */ $parsed['terse_list_field'];
       $_container7 = Vector {};
@@ -1969,7 +1971,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container7 []= $_elem8;
       }
       $this->terse_list_field = $_container7;
-    }    
+    }
     if (idx($parsed, 'terse_set_field') !== null) {
       $_json13 = /* HH_FIXME[4110] */ $parsed['terse_set_field'];
       $_container14 = Set {};
@@ -1984,7 +1986,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container14->add($_elem15);
       }
       $this->terse_set_field = $_container14;
-    }    
+    }
     if (idx($parsed, 'terse_map_field') !== null) {
       $_json20 = /* HH_FIXME[4110] */ $parsed['terse_map_field'];
       $_container21 = Map {};
@@ -1999,16 +2001,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container21[$_key18] = $_value22;
       }
       $this->terse_map_field = $_container21;
-    }    
+    }
     if (idx($parsed, 'terse_struct_field') !== null) {
       $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['terse_struct_field']);
       $_tmp25 = MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->terse_struct_field = $_tmp25;
-    }    
+    }
     if (idx($parsed, 'bool_field') !== null) {
       $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
-    }    
+    }
     if (idx($parsed, 'byte_field') !== null) {
       $_tmp26 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
       if ($_tmp26 > 0x7f) {
@@ -2016,7 +2018,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->byte_field = (int)$_tmp26;
       }
-    }    
+    }
     if (idx($parsed, 'short_field') !== null) {
       $_tmp27 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
       if ($_tmp27 > 0x7fff) {
@@ -2024,7 +2026,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->short_field = (int)$_tmp27;
       }
-    }    
+    }
     if (idx($parsed, 'int_field') !== null) {
       $_tmp28 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
       if ($_tmp28 > 0x7fffffff) {
@@ -2032,24 +2034,25 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       } else {
         $this->int_field = (int)$_tmp28;
       }
-    }    
+    }
     if (idx($parsed, 'long_field') !== null) {
       $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
-    }    
+    }
     if (idx($parsed, 'float_field') !== null) {
       $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
-    }    
+    }
     if (idx($parsed, 'double_field') !== null) {
       $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
-    }    
+    }
     if (idx($parsed, 'string_field') !== null) {
       $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
-    }    
+    }
     if (idx($parsed, 'binary_field') !== null) {
       $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
-    }    
+    }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);    }    
+      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+    }
     if (idx($parsed, 'list_field') !== null) {
       $_json32 = /* HH_FIXME[4110] */ $parsed['list_field'];
       $_container33 = Vector {};
@@ -2064,7 +2067,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container33 []= $_elem34;
       }
       $this->list_field = $_container33;
-    }    
+    }
     if (idx($parsed, 'set_field') !== null) {
       $_json39 = /* HH_FIXME[4110] */ $parsed['set_field'];
       $_container40 = Set {};
@@ -2079,7 +2082,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container40->add($_elem41);
       }
       $this->set_field = $_container40;
-    }    
+    }
     if (idx($parsed, 'map_field') !== null) {
       $_json46 = /* HH_FIXME[4110] */ $parsed['map_field'];
       $_container47 = Map {};
@@ -2094,13 +2097,13 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         $_container47[$_key44] = $_value48;
       }
       $this->map_field = $_container47;
-    }    
+    }
     if (idx($parsed, 'struct_field') !== null) {
       $_tmp50 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
       $_tmp51 = MyStruct::withDefaultValues();
       $_tmp51->readFromJson($_tmp50);
       $this->struct_field = $_tmp51;
-    }    
+    }
   }
 
 }

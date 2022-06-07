@@ -42,7 +42,7 @@ class B_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
 
 /**
  * DefinitionList doctext.
- * 
+ *
  * Original thrift struct:-
  * A
  */
@@ -134,7 +134,7 @@ enum UEnum: int {
 
 /**
  * Union U
- * 
+ *
  * Original thrift struct:-
  * U
  */
@@ -314,7 +314,7 @@ class U implements \IThriftSyncStruct, \IThriftUnion<UEnum> {
 
 /**
  * Something amiss
- * 
+ *
  * Original thrift exception:-
  * Bang
  */

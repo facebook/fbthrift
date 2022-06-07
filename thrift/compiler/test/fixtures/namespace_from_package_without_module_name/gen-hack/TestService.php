@@ -489,7 +489,7 @@ class TestService_init_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
 
     if (idx($parsed, 'int1') !== null) {
       $this->int1 = /* HH_FIXME[4110] */ $parsed['int1'];
-    }    
+    }
   }
 
 }
@@ -575,7 +575,7 @@ class TestService_init_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }

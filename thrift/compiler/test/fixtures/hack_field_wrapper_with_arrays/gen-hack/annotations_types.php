@@ -194,7 +194,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
       } else {
         $this->count = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }
@@ -522,19 +522,19 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
 
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
+    }
     if (idx($parsed, 'recurse') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['recurse']);
       $_tmp1 = structured_annotation_recursive::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->recurse = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'default') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['default']);
       $_tmp3 = structured_annotation_with_default::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->default = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'recurse_map') !== null) {
       $_json7 = /* HH_FIXME[4110] */ $parsed['recurse_map'];
       $_container8 = dict[];
@@ -547,7 +547,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
         $_container8[$_key5] = $_value9;
       }
       $this->recurse_map = $_container8;
-    }    
+    }
   }
 
 }
@@ -744,7 +744,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'annotated_recursive') !== null) {
       $this->annotated_recursive = /* HH_FIXME[4110] */ $parsed['annotated_recursive'];
-    }    
+    }
   }
 
 }

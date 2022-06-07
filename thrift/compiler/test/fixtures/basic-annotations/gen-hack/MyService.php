@@ -1895,7 +1895,7 @@ class MyService_ping_result implements \IThriftSyncStruct {
       $_tmp1 = MyException::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myExcept = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -2054,7 +2054,7 @@ class MyService_getRandomData_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }
@@ -2155,7 +2155,7 @@ class MyService_hasDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = /* HH_FIXME[4110] */ $parsed['id'];
-    }    
+    }
   }
 
 }
@@ -2241,7 +2241,7 @@ class MyService_hasDataById_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }
@@ -2342,7 +2342,7 @@ class MyService_getDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = /* HH_FIXME[4110] */ $parsed['id'];
-    }    
+    }
   }
 
 }
@@ -2428,7 +2428,7 @@ class MyService_getDataById_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
-    }    
+    }
   }
 
 }
@@ -2562,10 +2562,10 @@ class MyService_putDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = /* HH_FIXME[4110] */ $parsed['id'];
-    }    
+    }
     if (idx($parsed, 'data') !== null) {
       $this->data = /* HH_FIXME[4110] */ $parsed['data'];
-    }    
+    }
   }
 
 }
@@ -2750,10 +2750,10 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = /* HH_FIXME[4110] */ $parsed['id'];
-    }    
+    }
     if (idx($parsed, 'data') !== null) {
       $this->data = /* HH_FIXME[4110] */ $parsed['data'];
-    }    
+    }
   }
 
 }

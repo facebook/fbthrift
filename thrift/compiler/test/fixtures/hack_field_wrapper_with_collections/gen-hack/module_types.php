@@ -236,7 +236,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
       $_tmp1 = MyNestedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->nested_struct = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -459,13 +459,13 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
 
     if (idx($parsed, 'wrapped_field') !== null) {
       $this->wrapped_field = /* HH_FIXME[4110] */ $parsed['wrapped_field'];
-    }    
+    }
     if (idx($parsed, 'annotated_field') !== null) {
       $this->annotated_field = /* HH_FIXME[4110] */ $parsed['annotated_field'];
-    }    
+    }
     if (idx($parsed, 'adapted_type') !== null) {
       $this->adapted_type = /* HH_FIXME[4110] */ $parsed['adapted_type'];
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -1123,7 +1123,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container4[$_key1] = $_value5;
       }
       $this->map_of_string_to_MyStruct = $_container4;
-    }    
+    }
     if (idx($parsed, 'map_of_string_to_list_of_MyStruct') !== null) {
       $_json11 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_list_of_MyStruct'];
       $_container12 = Map {};
@@ -1143,7 +1143,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container12[$_key9] = $_value13;
       }
       $this->map_of_string_to_list_of_MyStruct = $_container12;
-    }    
+    }
     if (idx($parsed, 'map_of_string_to_map_of_string_to_i32') !== null) {
       $_json25 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_map_of_string_to_i32'];
       $_container26 = Map {};
@@ -1165,7 +1165,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container26[$_key23] = $_value27;
       }
       $this->map_of_string_to_map_of_string_to_i32 = $_container26;
-    }    
+    }
     if (idx($parsed, 'map_of_string_to_map_of_string_to_MyStruct') !== null) {
       $_json38 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_map_of_string_to_MyStruct'];
       $_container39 = Map {};
@@ -1185,7 +1185,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container39[$_key36] = $_value40;
       }
       $this->map_of_string_to_map_of_string_to_MyStruct = $_container39;
-    }    
+    }
     if (idx($parsed, 'list_of_map_of_string_to_list_of_MyStruct') !== null) {
       $_json52 = /* HH_FIXME[4110] */ $parsed['list_of_map_of_string_to_list_of_MyStruct'];
       $_container53 = Vector {};
@@ -1212,7 +1212,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container53 []= $_elem54;
       }
       $this->list_of_map_of_string_to_list_of_MyStruct = $_container53;
-    }    
+    }
     if (idx($parsed, 'list_of_map_of_string_to_MyStruct') !== null) {
       $_json72 = /* HH_FIXME[4110] */ $parsed['list_of_map_of_string_to_MyStruct'];
       $_container73 = Vector {};
@@ -1232,7 +1232,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
         $_container73 []= $_elem74;
       }
       $this->list_of_map_of_string_to_MyStruct = $_container73;
-    }    
+    }
   }
 
 }

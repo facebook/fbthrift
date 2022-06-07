@@ -227,7 +227,7 @@ class decorated_struct implements \IThriftSyncStruct {
 
     if (idx($parsed, 'field') !== null) {
       $this->field = /* HH_FIXME[4110] */ $parsed['field'];
-    }    
+    }
   }
 
 }
@@ -632,7 +632,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->fieldA = $_container4;
-    }    
+    }
     if (idx($parsed, 'fieldB') !== null) {
       $_json10 = /* HH_FIXME[4110] */ $parsed['fieldB'];
       $_container11 = Vector {};
@@ -647,7 +647,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container11 []= $_elem12;
       }
       $this->fieldB = $_container11;
-    }    
+    }
     if (idx($parsed, 'fieldC') !== null) {
       $_json17 = /* HH_FIXME[4110] */ $parsed['fieldC'];
       $_container18 = Vector {};
@@ -662,7 +662,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container18 []= $_elem19;
       }
       $this->fieldC = $_container18;
-    }    
+    }
     if (idx($parsed, 'fieldD') !== null) {
       $_json24 = /* HH_FIXME[4110] */ $parsed['fieldD'];
       $_container25 = Vector {};
@@ -677,7 +677,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container25 []= $_elem26;
       }
       $this->fieldD = $_container25;
-    }    
+    }
     if (idx($parsed, 'fieldE') !== null) {
       $_json31 = /* HH_FIXME[4110] */ $parsed['fieldE'];
       $_container32 = Vector {};
@@ -692,7 +692,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container32 []= $_elem33;
       }
       $this->fieldE = $_container32;
-    }    
+    }
     if (idx($parsed, 'fieldF') !== null) {
       $_json38 = /* HH_FIXME[4110] */ $parsed['fieldF'];
       $_container39 = Set {};
@@ -707,7 +707,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container39->add($_elem40);
       }
       $this->fieldF = $_container39;
-    }    
+    }
     if (idx($parsed, 'fieldG') !== null) {
       $_json45 = /* HH_FIXME[4110] */ $parsed['fieldG'];
       $_container46 = Map {};
@@ -717,7 +717,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container46[$_key43] = $_value47;
       }
       $this->fieldG = $_container46;
-    }    
+    }
     if (idx($parsed, 'fieldH') !== null) {
       $_json51 = /* HH_FIXME[4110] */ $parsed['fieldH'];
       $_container52 = Map {};
@@ -727,7 +727,7 @@ class ContainerStruct implements \IThriftSyncStruct {
         $_container52[$_key49] = $_value53;
       }
       $this->fieldH = $_container52;
-    }    
+    }
   }
 
 }
@@ -846,7 +846,7 @@ class CppTypeStruct implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->fieldA = $_container4;
-    }    
+    }
   }
 
 }
@@ -940,7 +940,7 @@ class VirtualStruct implements \IThriftSyncStruct {
 
     if (idx($parsed, 'MyIntField') !== null) {
       $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
-    }    
+    }
   }
 
 }
@@ -1085,9 +1085,11 @@ class MyStructWithForwardRefEnum implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['a']);    }    
+      $this->a = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['a']);
+    }
     if (idx($parsed, 'b') !== null) {
-      $this->b = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['b']);    }    
+      $this->b = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['b']);
+    }
   }
 
 }
@@ -1210,10 +1212,10 @@ class TrivialNumeric implements \IThriftSyncStruct {
       } else {
         $this->a = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'b') !== null) {
       $this->b = /* HH_FIXME[4110] */ $parsed['b'];
-    }    
+    }
   }
 
 }
@@ -1341,13 +1343,13 @@ class TrivialNestedWithDefault implements \IThriftSyncStruct {
       } else {
         $this->z = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'n') !== null) {
       $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
       $_tmp2 = TrivialNumeric::withDefaultValues();
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
-    }    
+    }
   }
 
 }
@@ -1487,7 +1489,7 @@ class ComplexString implements \IThriftSyncStruct {
 
     if (idx($parsed, 'a') !== null) {
       $this->a = /* HH_FIXME[4110] */ $parsed['a'];
-    }    
+    }
     if (idx($parsed, 'b') !== null) {
       $_json3 = /* HH_FIXME[4110] */ $parsed['b'];
       $_container4 = Map {};
@@ -1502,7 +1504,7 @@ class ComplexString implements \IThriftSyncStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->b = $_container4;
-    }    
+    }
   }
 
 }
@@ -1625,13 +1627,13 @@ class ComplexNestedWithDefault implements \IThriftSyncStruct {
 
     if (idx($parsed, 'z') !== null) {
       $this->z = /* HH_FIXME[4110] */ $parsed['z'];
-    }    
+    }
     if (idx($parsed, 'n') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
       $_tmp1 = ComplexString::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -1828,12 +1830,12 @@ class MinPadding implements \IThriftSyncStruct {
       }
     } else {
       throw new \TProtocolException("Required field small cannot be found.");
-    }    
+    }
     if (idx($parsed, 'big') !== null) {
       $this->big = /* HH_FIXME[4110] */ $parsed['big'];
     } else {
       throw new \TProtocolException("Required field big cannot be found.");
-    }    
+    }
     if (idx($parsed, 'medium') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['medium'];
       if ($_tmp1 > 0x7fff) {
@@ -1843,7 +1845,7 @@ class MinPadding implements \IThriftSyncStruct {
       }
     } else {
       throw new \TProtocolException("Required field medium cannot be found.");
-    }    
+    }
     if (idx($parsed, 'biggish') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['biggish'];
       if ($_tmp2 > 0x7fffffff) {
@@ -1853,7 +1855,7 @@ class MinPadding implements \IThriftSyncStruct {
       }
     } else {
       throw new \TProtocolException("Required field biggish cannot be found.");
-    }    
+    }
     if (idx($parsed, 'tiny') !== null) {
       $_tmp3 = (int)/* HH_FIXME[4110] */ $parsed['tiny'];
       if ($_tmp3 > 0x7f) {
@@ -1863,7 +1865,7 @@ class MinPadding implements \IThriftSyncStruct {
       }
     } else {
       throw new \TProtocolException("Required field tiny cannot be found.");
-    }    
+    }
   }
 
 }
@@ -2043,19 +2045,19 @@ class MyStruct implements \IThriftSyncStruct {
 
     if (idx($parsed, 'MyIntField') !== null) {
       $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
-    }    
+    }
     if (idx($parsed, 'MyStringField') !== null) {
       $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
-    }    
+    }
     if (idx($parsed, 'majorVer') !== null) {
       $this->majorVer = /* HH_FIXME[4110] */ $parsed['majorVer'];
-    }    
+    }
     if (idx($parsed, 'data') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['data']);
       $_tmp1 = MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -2214,7 +2216,7 @@ class Renaming implements \IThriftSyncStruct {
 
     if (idx($parsed, 'foo') !== null) {
       $this->foo = /* HH_FIXME[4110] */ $parsed['foo'];
-    }    
+    }
   }
 
 }
@@ -2412,7 +2414,7 @@ class AnnotatedTypes implements \IThriftSyncStruct {
 
     if (idx($parsed, 'binary_field') !== null) {
       $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
-    }    
+    }
     if (idx($parsed, 'list_field') !== null) {
       $_json3 = /* HH_FIXME[4110] */ $parsed['list_field'];
       $_container4 = Vector {};
@@ -2429,7 +2431,7 @@ class AnnotatedTypes implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->list_field = $_container4;
-    }    
+    }
   }
 
 }
@@ -2580,13 +2582,13 @@ class ForwardUsageRoot implements \IThriftSyncStruct {
       $_tmp1 = ForwardUsageStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageByRef']);
       $_tmp3 = ForwardUsageByRef::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -2689,7 +2691,7 @@ class ForwardUsageStruct implements \IThriftSyncStruct {
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -2792,7 +2794,7 @@ class ForwardUsageByRef implements \IThriftSyncStruct {
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
-    }    
+    }
   }
 
 }
@@ -2951,7 +2953,7 @@ class NoexceptMoveSimpleStruct implements \IThriftSyncStruct {
 
     if (idx($parsed, 'boolField') !== null) {
       $this->boolField = /* HH_FIXME[4110] */ $parsed['boolField'];
-    }    
+    }
   }
 
 }
@@ -3281,27 +3283,27 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
 
     if (idx($parsed, 'MyBoolField') !== null) {
       $this->MyBoolField = /* HH_FIXME[4110] */ $parsed['MyBoolField'];
-    }    
+    }
     if (idx($parsed, 'MyIntField') !== null) {
       $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
-    }    
+    }
     if (idx($parsed, 'MyStringField') !== null) {
       $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
-    }    
+    }
     if (idx($parsed, 'MyStringField2') !== null) {
       $this->MyStringField2 = /* HH_FIXME[4110] */ $parsed['MyStringField2'];
-    }    
+    }
     if (idx($parsed, 'MyBinaryField') !== null) {
       $this->MyBinaryField = /* HH_FIXME[4110] */ $parsed['MyBinaryField'];
-    }    
+    }
     if (idx($parsed, 'MyBinaryField2') !== null) {
       $this->MyBinaryField2 = /* HH_FIXME[4110] */ $parsed['MyBinaryField2'];
-    }    
+    }
     if (idx($parsed, 'MyBinaryField3') !== null) {
       $this->MyBinaryField3 = /* HH_FIXME[4110] */ $parsed['MyBinaryField3'];
     } else {
       throw new \TProtocolException("Required field MyBinaryField3 cannot be found.");
-    }    
+    }
     if (idx($parsed, 'MyBinaryListField4') !== null) {
       $_json3 = /* HH_FIXME[4110] */ $parsed['MyBinaryListField4'];
       $_container4 = Vector {};
@@ -3311,7 +3313,7 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->MyBinaryListField4 = $_container4;
-    }    
+    }
     if (idx($parsed, 'MyMapEnumAndInt') !== null) {
       $_json9 = /* HH_FIXME[4110] */ $parsed['MyMapEnumAndInt'];
       $_container10 = Map {};
@@ -3321,7 +3323,7 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
         $_container10[$_key7] = $_value11;
       }
       $this->MyMapEnumAndInt = $_container10;
-    }    
+    }
   }
 
 }
@@ -3515,7 +3517,7 @@ class NoExceptMoveUnion implements \IThriftSyncStruct, \IThriftUnion<NoExceptMov
     if (idx($parsed, 'string_field') !== null) {
       $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
       $this->_type = NoExceptMoveUnionEnum::string_field;
-    }    
+    }
     if (idx($parsed, 'i32_field') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['i32_field'];
       if ($_tmp0 > 0x7fffffff) {
@@ -3524,7 +3526,7 @@ class NoExceptMoveUnion implements \IThriftSyncStruct, \IThriftUnion<NoExceptMov
         $this->i32_field = (int)$_tmp0;
       }
       $this->_type = NoExceptMoveUnionEnum::i32_field;
-    }    
+    }
   }
 
 }
@@ -3822,7 +3824,7 @@ class AllocatorAware implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->aa_list = $_container4;
-    }    
+    }
     if (idx($parsed, 'aa_set') !== null) {
       $_json10 = /* HH_FIXME[4110] */ $parsed['aa_set'];
       $_container11 = Set {};
@@ -3837,7 +3839,7 @@ class AllocatorAware implements \IThriftSyncStruct {
         $_container11->add($_elem12);
       }
       $this->aa_set = $_container11;
-    }    
+    }
     if (idx($parsed, 'aa_map') !== null) {
       $_json17 = /* HH_FIXME[4110] */ $parsed['aa_map'];
       $_container18 = Map {};
@@ -3852,10 +3854,10 @@ class AllocatorAware implements \IThriftSyncStruct {
         $_container18[$_key15] = $_value19;
       }
       $this->aa_map = $_container18;
-    }    
+    }
     if (idx($parsed, 'aa_string') !== null) {
       $this->aa_string = /* HH_FIXME[4110] */ $parsed['aa_string'];
-    }    
+    }
     if (idx($parsed, 'not_a_container') !== null) {
       $_tmp21 = (int)/* HH_FIXME[4110] */ $parsed['not_a_container'];
       if ($_tmp21 > 0x7fffffff) {
@@ -3863,7 +3865,7 @@ class AllocatorAware implements \IThriftSyncStruct {
       } else {
         $this->not_a_container = (int)$_tmp21;
       }
-    }    
+    }
     if (idx($parsed, 'aa_unique') !== null) {
       $_tmp22 = (int)/* HH_FIXME[4110] */ $parsed['aa_unique'];
       if ($_tmp22 > 0x7fffffff) {
@@ -3871,7 +3873,7 @@ class AllocatorAware implements \IThriftSyncStruct {
       } else {
         $this->aa_unique = (int)$_tmp22;
       }
-    }    
+    }
     if (idx($parsed, 'aa_shared') !== null) {
       $_tmp23 = (int)/* HH_FIXME[4110] */ $parsed['aa_shared'];
       if ($_tmp23 > 0x7fffffff) {
@@ -3879,7 +3881,7 @@ class AllocatorAware implements \IThriftSyncStruct {
       } else {
         $this->aa_shared = (int)$_tmp23;
       }
-    }    
+    }
   }
 
 }
@@ -3978,7 +3980,7 @@ class AllocatorAware2 implements \IThriftSyncStruct {
       } else {
         $this->not_a_container = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }
@@ -4152,7 +4154,7 @@ class TypedefStruct implements \IThriftSyncStruct {
       } else {
         $this->i32_field = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'IntTypedef_field') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['IntTypedef_field'];
       if ($_tmp1 > 0x7fffffff) {
@@ -4160,7 +4162,7 @@ class TypedefStruct implements \IThriftSyncStruct {
       } else {
         $this->IntTypedef_field = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'UintTypedef_field') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['UintTypedef_field'];
       if ($_tmp2 > 0x7fffffff) {
@@ -4168,7 +4170,7 @@ class TypedefStruct implements \IThriftSyncStruct {
       } else {
         $this->UintTypedef_field = (int)$_tmp2;
       }
-    }    
+    }
   }
 
 }
@@ -4267,7 +4269,7 @@ class StructWithDoubleUnderscores implements \IThriftSyncStruct {
       } else {
         $this->__field = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }

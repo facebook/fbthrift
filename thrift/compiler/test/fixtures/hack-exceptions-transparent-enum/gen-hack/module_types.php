@@ -78,12 +78,12 @@ class MyException extends \TException implements \IThriftSyncStruct {
   public /* Originally defined as MyEnum */ int $code;
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
-    $this->code = $code;  
+    $this->code = $code;
   }
 
   public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;  
+    return $this->code;
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {

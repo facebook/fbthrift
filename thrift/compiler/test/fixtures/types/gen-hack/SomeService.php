@@ -486,7 +486,7 @@ class SomeService_bounce_map_args implements \IThriftSyncStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->m = $_container4;
-    }    
+    }
   }
 
 }
@@ -610,7 +610,7 @@ class SomeService_bounce_map_result implements \IThriftSyncStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->success = $_container4;
-    }    
+    }
   }
 
 }
@@ -716,7 +716,7 @@ class SomeService_binary_keyed_map_args implements \IThriftSyncStruct {
         $_container4 []= $_elem5;
       }
       $this->r = $_container4;
-    }    
+    }
   }
 
 }
@@ -840,7 +840,7 @@ class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->success = $_container4;
-    }    
+    }
   }
 
 }

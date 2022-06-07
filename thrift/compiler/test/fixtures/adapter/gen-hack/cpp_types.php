@@ -153,7 +153,8 @@ class facebook_thrift_annotation_cpp_Ref implements \IThriftSyncStruct, \IThrift
     }
 
     if (idx($parsed, 'type') !== null) {
-      $this->type = facebook_thrift_annotation_cpp_RefType::coerce(/* HH_FIXME[4110] */ $parsed['type']);    }    
+      $this->type = facebook_thrift_annotation_cpp_RefType::coerce(/* HH_FIXME[4110] */ $parsed['type']);
+    }
   }
 
 }
@@ -267,7 +268,7 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftSyncStruct, \IThrif
 
     if (idx($parsed, 'ref') !== null) {
       $this->ref = /* HH_FIXME[4110] */ $parsed['ref'];
-    }    
+    }
   }
 
 }
@@ -467,7 +468,7 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
 
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
+    }
   }
 
 }
@@ -581,7 +582,7 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftSyncStruct, \I
 
     if (idx($parsed, 'atomic') !== null) {
       $this->atomic = /* HH_FIXME[4110] */ $parsed['atomic'];
-    }    
+    }
   }
 
 }

@@ -768,7 +768,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->intField = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'optionalIntField') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['optionalIntField'];
       if ($_tmp1 > 0x7fffffff) {
@@ -776,7 +776,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->optionalIntField = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'intFieldWithDefault') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['intFieldWithDefault'];
       if ($_tmp2 > 0x7fffffff) {
@@ -784,7 +784,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->intFieldWithDefault = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'setField') !== null) {
       $_json6 = /* HH_FIXME[4110] */ $parsed['setField'];
       $_container7 = Set {};
@@ -794,7 +794,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container7->add($_elem8);
       }
       $this->setField = $_container7;
-    }    
+    }
     if (idx($parsed, 'optionalSetField') !== null) {
       $_json12 = /* HH_FIXME[4110] */ $parsed['optionalSetField'];
       $_container13 = Set {};
@@ -804,7 +804,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container13->add($_elem14);
       }
       $this->optionalSetField = $_container13;
-    }    
+    }
     if (idx($parsed, 'mapField') !== null) {
       $_json18 = /* HH_FIXME[4110] */ $parsed['mapField'];
       $_container19 = Map {};
@@ -821,7 +821,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container19[$_key16] = $_value20;
       }
       $this->mapField = $_container19;
-    }    
+    }
     if (idx($parsed, 'optionalMapField') !== null) {
       $_json30 = /* HH_FIXME[4110] */ $parsed['optionalMapField'];
       $_container31 = Map {};
@@ -838,19 +838,19 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container31[$_key28] = $_value32;
       }
       $this->optionalMapField = $_container31;
-    }    
+    }
     if (idx($parsed, 'binaryField') !== null) {
       $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
-    }    
+    }
     if (idx($parsed, 'longField') !== null) {
       $this->longField = /* HH_FIXME[4110] */ $parsed['longField'];
-    }    
+    }
     if (idx($parsed, 'adaptedLongField') !== null) {
       $this->adaptedLongField = /* HH_FIXME[4110] */ $parsed['adaptedLongField'];
-    }    
+    }
     if (idx($parsed, 'doubleAdaptedField') !== null) {
       $this->doubleAdaptedField = /* HH_FIXME[4110] */ $parsed['doubleAdaptedField'];
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -1409,7 +1409,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         $this->intField = (int)$_tmp0;
       }
       $this->_type = BazEnum::intField;
-    }    
+    }
     if (idx($parsed, 'setField') !== null) {
       $_json4 = /* HH_FIXME[4110] */ $parsed['setField'];
       $_container5 = Set {};
@@ -1420,7 +1420,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       }
       $this->setField = $_container5;
       $this->_type = BazEnum::setField;
-    }    
+    }
     if (idx($parsed, 'mapField') !== null) {
       $_json10 = /* HH_FIXME[4110] */ $parsed['mapField'];
       $_container11 = Map {};
@@ -1438,15 +1438,15 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       }
       $this->mapField = $_container11;
       $this->_type = BazEnum::mapField;
-    }    
+    }
     if (idx($parsed, 'binaryField') !== null) {
       $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
       $this->_type = BazEnum::binaryField;
-    }    
+    }
     if (idx($parsed, 'longField') !== null) {
       $this->longField = /* HH_FIXME[4110] */ $parsed['longField'];
       $this->_type = BazEnum::longField;
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -1887,13 +1887,13 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp1 = Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->structField = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'optionalStructField') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['optionalStructField']);
       $_tmp3 = Foo::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->optionalStructField = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'structListField') !== null) {
       $_json7 = /* HH_FIXME[4110] */ $parsed['structListField'];
       $_container8 = Vector {};
@@ -1906,7 +1906,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container8 []= $_elem9;
       }
       $this->structListField = $_container8;
-    }    
+    }
     if (idx($parsed, 'optionalStructListField') !== null) {
       $_json15 = /* HH_FIXME[4110] */ $parsed['optionalStructListField'];
       $_container16 = Vector {};
@@ -1919,19 +1919,19 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container16 []= $_elem17;
       }
       $this->optionalStructListField = $_container16;
-    }    
+    }
     if (idx($parsed, 'unionField') !== null) {
       $_tmp20 = json_encode(/* HH_FIXME[4110] */ $parsed['unionField']);
       $_tmp21 = Baz::withDefaultValues();
       $_tmp21->readFromJson($_tmp20);
       $this->unionField = $_tmp21;
-    }    
+    }
     if (idx($parsed, 'optionalUnionField') !== null) {
       $_tmp22 = json_encode(/* HH_FIXME[4110] */ $parsed['optionalUnionField']);
       $_tmp23 = Baz::withDefaultValues();
       $_tmp23->readFromJson($_tmp22);
       $this->optionalUnionField = $_tmp23;
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -2192,7 +2192,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->field = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'shared_field') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['shared_field'];
       if ($_tmp1 > 0x7fffffff) {
@@ -2200,7 +2200,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->shared_field = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'opt_shared_field') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['opt_shared_field'];
       if ($_tmp2 > 0x7fffffff) {
@@ -2208,7 +2208,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->opt_shared_field = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'opt_boxed_field') !== null) {
       $_tmp3 = (int)/* HH_FIXME[4110] */ $parsed['opt_boxed_field'];
       if ($_tmp3 > 0x7fffffff) {
@@ -2216,7 +2216,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
       } else {
         $this->opt_boxed_field = (int)$_tmp3;
       }
-    }    
+    }
   }
 
 }
@@ -2369,7 +2369,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp1 = A::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->a = $_tmp1;
-    }    
+    }
   }
 
 }

@@ -173,7 +173,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field1 = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'field2') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['field2'];
       if ($_tmp1 > 0x7fffffff) {
@@ -181,7 +181,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field2 = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'field3') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['field3'];
       if ($_tmp2 > 0x7fffffff) {
@@ -189,7 +189,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field3 = (int)$_tmp2;
       }
-    }    
+    }
   }
 
 }
@@ -356,7 +356,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field1 = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'field2') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['field2'];
       if ($_tmp1 > 0x7fffffff) {
@@ -364,7 +364,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field2 = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'field3') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['field3'];
       if ($_tmp2 > 0x7fffffff) {
@@ -372,7 +372,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->field3 = (int)$_tmp2;
       }
-    }    
+    }
   }
 
 }

@@ -988,7 +988,7 @@ void t_hack_generator::generate_json_enum(
     const std::string& prefix_thrift,
     const std::string& prefix_json) {
   indent(out) << prefix_thrift << " = " << hack_name(tenum) << "::coerce("
-              << prefix_json << ");";
+              << prefix_json << ");\n";
 }
 
 void t_hack_generator::generate_json_struct(
@@ -1251,7 +1251,7 @@ void t_hack_generator::generate_json_reader(
       indent_down();
       indent(out) << "}";
     }
-    indent(out) << "\n";
+    out << "\n";
   }
   indent_down();
   indent(out) << "}\n\n";
@@ -3819,13 +3819,12 @@ void t_hack_generator::generate_php_struct_field_methods(
     if (!enum_transparenttype_) {
       out << indent() << "  /* HH_FIXME[4110] nontransparent enum */\n";
     }
-    out << indent() << "  $this->code = $code;" << indent() << "\n"
-        << indent() << "}\n\n";
+    out << indent() << "  $this->code = $code;\n" << indent() << "}\n\n";
     out << indent() << "public function getCodeAsEnum()[]: " << enum_type
         << " {\n"
         << indent()
         << "  /* HH_FIXME[4110] retain HHVM enforcement semantics */\n"
-        << indent() << "  return $this->code;" << indent() << "\n"
+        << indent() << "  return $this->code;\n"
         << indent() << "}\n";
   }
 }
@@ -5638,7 +5637,7 @@ void t_hack_generator::generate_php_docstring(
         " * ", // line_prefix
         tstruct->get_doc(), // contents
         ""); // comment_end
-    indent(out) << " * \n";
+    indent(out) << " *\n";
   }
   indent(out) << " * "
               << "Original thrift " << (is_exception ? "exception" : "struct")

@@ -687,7 +687,7 @@ class BadService_bar_result implements \IThriftSyncStruct {
       } else {
         $this->success = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }

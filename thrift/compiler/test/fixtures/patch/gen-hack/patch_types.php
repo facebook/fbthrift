@@ -316,10 +316,10 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
     if (idx($parsed, 'invert') !== null) {
       $this->invert = /* HH_FIXME[4110] */ $parsed['invert'];
-    }    
+    }
   }
 
 }
@@ -467,7 +467,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->assign = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['add'];
       if ($_tmp1 > 0x7f) {
@@ -475,7 +475,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->add = (int)$_tmp1;
       }
-    }    
+    }
   }
 
 }
@@ -623,7 +623,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->assign = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['add'];
       if ($_tmp1 > 0x7fff) {
@@ -631,7 +631,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->add = (int)$_tmp1;
       }
-    }    
+    }
   }
 
 }
@@ -779,7 +779,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->assign = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['add'];
       if ($_tmp1 > 0x7fffffff) {
@@ -787,7 +787,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->add = (int)$_tmp1;
       }
-    }    
+    }
   }
 
 }
@@ -930,10 +930,10 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $this->add = /* HH_FIXME[4110] */ $parsed['add'];
-    }    
+    }
   }
 
 }
@@ -1076,10 +1076,10 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $this->add = /* HH_FIXME[4110] */ $parsed['add'];
-    }    
+    }
   }
 
 }
@@ -1222,10 +1222,10 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $this->add = /* HH_FIXME[4110] */ $parsed['add'];
-    }    
+    }
   }
 
 }
@@ -1422,16 +1422,16 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'prepend') !== null) {
       $this->prepend = /* HH_FIXME[4110] */ $parsed['prepend'];
-    }    
+    }
     if (idx($parsed, 'append') !== null) {
       $this->append = /* HH_FIXME[4110] */ $parsed['append'];
-    }    
+    }
   }
 
 }
@@ -1547,7 +1547,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'assign') !== null) {
       $this->assign = /* HH_FIXME[4110] */ $parsed['assign'];
-    }    
+    }
   }
 
 }
@@ -1775,22 +1775,22 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -2018,13 +2018,13 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['ensure'];
       if ($_tmp2 > 0x7f) {
@@ -2032,13 +2032,13 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       } else {
         $this->ensure = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp3 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp4 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
-    }    
+    }
   }
 
 }
@@ -2266,13 +2266,13 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['ensure'];
       if ($_tmp2 > 0x7fff) {
@@ -2280,13 +2280,13 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       } else {
         $this->ensure = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp3 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp4 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
-    }    
+    }
   }
 
 }
@@ -2514,13 +2514,13 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['ensure'];
       if ($_tmp2 > 0x7fffffff) {
@@ -2528,13 +2528,13 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       } else {
         $this->ensure = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp3 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp4 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
-    }    
+    }
   }
 
 }
@@ -2762,22 +2762,22 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -3005,22 +3005,22 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -3248,22 +3248,22 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -3491,22 +3491,22 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -3734,22 +3734,22 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp3 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
-    }    
+    }
   }
 
 }

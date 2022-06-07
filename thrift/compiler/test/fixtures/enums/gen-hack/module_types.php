@@ -292,11 +292,14 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'reasonable') !== null) {
-      $this->reasonable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['reasonable']);    }    
+      $this->reasonable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['reasonable']);
+    }
     if (idx($parsed, 'fine') !== null) {
-      $this->fine = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['fine']);    }    
+      $this->fine = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['fine']);
+    }
     if (idx($parsed, 'questionable') !== null) {
-      $this->questionable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['questionable']);    }    
+      $this->questionable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['questionable']);
+    }
     if (idx($parsed, 'tags') !== null) {
       $_json3 = /* HH_FIXME[4110] */ $parsed['tags'];
       $_container4 = Set {};
@@ -311,7 +314,7 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container4->add($_elem5);
       }
       $this->tags = $_container4;
-    }    
+    }
   }
 
 }

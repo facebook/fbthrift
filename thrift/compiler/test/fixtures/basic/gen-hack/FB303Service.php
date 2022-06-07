@@ -505,7 +505,7 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
       } else {
         $this->int_parameter = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }
@@ -609,7 +609,7 @@ class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
       $_tmp1 = \fixtures\basic\MyRenamedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
-    }    
+    }
   }
 
 }

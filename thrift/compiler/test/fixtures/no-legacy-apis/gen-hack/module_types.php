@@ -172,10 +172,10 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'myIntField') !== null) {
       $this->myIntField = /* HH_FIXME[4110] */ $parsed['myIntField'];
-    }    
+    }
     if (idx($parsed, 'myStringField') !== null) {
       $this->myStringField = /* HH_FIXME[4110] */ $parsed['myStringField'];
-    }    
+    }
   }
 
 }
@@ -396,15 +396,16 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\no-legacy-a
     }
 
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = \fixtures\no-legacy-apis\MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);      $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::myEnum;
-    }    
+      $this->myEnum = \fixtures\no-legacy-apis\MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);
+      $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::myEnum;
+    }
     if (idx($parsed, 'myDataItem') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
       $_tmp1 = \fixtures\no-legacy-apis\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myDataItem = $_tmp1;
       $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::myDataItem;
-    }    
+    }
   }
 
 }

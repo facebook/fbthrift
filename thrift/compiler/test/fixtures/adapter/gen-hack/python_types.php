@@ -146,10 +146,10 @@ class facebook_thrift_annotation_python_Adapter implements \IThriftSyncStruct, \
 
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
+    }
     if (idx($parsed, 'typeHint') !== null) {
       $this->typeHint = /* HH_FIXME[4110] */ $parsed['typeHint'];
-    }    
+    }
   }
 
 }

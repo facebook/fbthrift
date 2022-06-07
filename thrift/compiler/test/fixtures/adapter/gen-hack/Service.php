@@ -401,16 +401,16 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
     if (idx($parsed, 'arg1') !== null) {
       $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
-    }    
+    }
     if (idx($parsed, 'arg2') !== null) {
       $this->arg2 = /* HH_FIXME[4110] */ $parsed['arg2'];
-    }    
+    }
     if (idx($parsed, 'arg3') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg3']);
       $_tmp1 = Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg3 = $_tmp1;
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -524,7 +524,7 @@ class Service_func_result implements \IThriftSyncStruct {
       } else {
         $this->success = (int)$_tmp0;
       }
-    }    
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {

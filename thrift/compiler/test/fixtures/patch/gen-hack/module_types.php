@@ -140,7 +140,7 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'data1') !== null) {
       $this->data1 = /* HH_FIXME[4110] */ $parsed['data1'];
-    }    
+    }
     if (idx($parsed, 'data2') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['data2'];
       if ($_tmp0 > 0x7fffffff) {
@@ -148,7 +148,7 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->data2 = (int)$_tmp0;
       }
-    }    
+    }
   }
 
 }
@@ -361,7 +361,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     if (idx($parsed, 'option1') !== null) {
       $this->option1 = /* HH_FIXME[4110] */ $parsed['option1'];
       $this->_type = \fixtures\patch\MyUnionEnum::option1;
-    }    
+    }
     if (idx($parsed, 'option2') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['option2'];
       if ($_tmp0 > 0x7fffffff) {
@@ -370,7 +370,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
         $this->option2 = (int)$_tmp0;
       }
       $this->_type = \fixtures\patch\MyUnionEnum::option2;
-    }    
+    }
   }
 
 }
@@ -1180,7 +1180,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'boolVal') !== null) {
       $this->boolVal = /* HH_FIXME[4110] */ $parsed['boolVal'];
-    }    
+    }
     if (idx($parsed, 'byteVal') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['byteVal'];
       if ($_tmp0 > 0x7f) {
@@ -1188,7 +1188,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->byteVal = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'i16Val') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['i16Val'];
       if ($_tmp1 > 0x7fff) {
@@ -1196,7 +1196,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->i16Val = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'i32Val') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['i32Val'];
       if ($_tmp2 > 0x7fffffff) {
@@ -1204,31 +1204,31 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->i32Val = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'i64Val') !== null) {
       $this->i64Val = /* HH_FIXME[4110] */ $parsed['i64Val'];
-    }    
+    }
     if (idx($parsed, 'floatVal') !== null) {
       $this->floatVal = /* HH_FIXME[4110] */ $parsed['floatVal'];
-    }    
+    }
     if (idx($parsed, 'doubleVal') !== null) {
       $this->doubleVal = /* HH_FIXME[4110] */ $parsed['doubleVal'];
-    }    
+    }
     if (idx($parsed, 'stringVal') !== null) {
       $this->stringVal = /* HH_FIXME[4110] */ $parsed['stringVal'];
-    }    
+    }
     if (idx($parsed, 'binaryVal') !== null) {
       $this->binaryVal = /* HH_FIXME[4110] */ $parsed['binaryVal'];
-    }    
+    }
     if (idx($parsed, 'structVal') !== null) {
       $_tmp3 = json_encode(/* HH_FIXME[4110] */ $parsed['structVal']);
       $_tmp4 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->structVal = $_tmp4;
-    }    
+    }
     if (idx($parsed, 'optBoolVal') !== null) {
       $this->optBoolVal = /* HH_FIXME[4110] */ $parsed['optBoolVal'];
-    }    
+    }
     if (idx($parsed, 'optByteVal') !== null) {
       $_tmp5 = (int)/* HH_FIXME[4110] */ $parsed['optByteVal'];
       if ($_tmp5 > 0x7f) {
@@ -1236,7 +1236,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->optByteVal = (int)$_tmp5;
       }
-    }    
+    }
     if (idx($parsed, 'optI16Val') !== null) {
       $_tmp6 = (int)/* HH_FIXME[4110] */ $parsed['optI16Val'];
       if ($_tmp6 > 0x7fff) {
@@ -1244,7 +1244,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->optI16Val = (int)$_tmp6;
       }
-    }    
+    }
     if (idx($parsed, 'optI32Val') !== null) {
       $_tmp7 = (int)/* HH_FIXME[4110] */ $parsed['optI32Val'];
       if ($_tmp7 > 0x7fffffff) {
@@ -1252,28 +1252,28 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       } else {
         $this->optI32Val = (int)$_tmp7;
       }
-    }    
+    }
     if (idx($parsed, 'optI64Val') !== null) {
       $this->optI64Val = /* HH_FIXME[4110] */ $parsed['optI64Val'];
-    }    
+    }
     if (idx($parsed, 'optFloatVal') !== null) {
       $this->optFloatVal = /* HH_FIXME[4110] */ $parsed['optFloatVal'];
-    }    
+    }
     if (idx($parsed, 'optDoubleVal') !== null) {
       $this->optDoubleVal = /* HH_FIXME[4110] */ $parsed['optDoubleVal'];
-    }    
+    }
     if (idx($parsed, 'optStringVal') !== null) {
       $this->optStringVal = /* HH_FIXME[4110] */ $parsed['optStringVal'];
-    }    
+    }
     if (idx($parsed, 'optBinaryVal') !== null) {
       $this->optBinaryVal = /* HH_FIXME[4110] */ $parsed['optBinaryVal'];
-    }    
+    }
     if (idx($parsed, 'optStructVal') !== null) {
       $_tmp8 = json_encode(/* HH_FIXME[4110] */ $parsed['optStructVal']);
       $_tmp9 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->optStructVal = $_tmp9;
-    }    
+    }
     if (idx($parsed, 'optListVal') !== null) {
       $_json13 = /* HH_FIXME[4110] */ $parsed['optListVal'];
       $_container14 = Vector {};
@@ -1288,7 +1288,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container14 []= $_elem15;
       }
       $this->optListVal = $_container14;
-    }    
+    }
     if (idx($parsed, 'optSetVal') !== null) {
       $_json20 = /* HH_FIXME[4110] */ $parsed['optSetVal'];
       $_container21 = Set {};
@@ -1298,7 +1298,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container21->add($_elem22);
       }
       $this->optSetVal = $_container21;
-    }    
+    }
     if (idx($parsed, 'optMapVal') !== null) {
       $_json26 = /* HH_FIXME[4110] */ $parsed['optMapVal'];
       $_container27 = Map {};
@@ -1308,13 +1308,13 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $_container27[$_key24] = $_value28;
       }
       $this->optMapVal = $_container27;
-    }    
+    }
     if (idx($parsed, 'unionVal') !== null) {
       $_tmp29 = json_encode(/* HH_FIXME[4110] */ $parsed['unionVal']);
       $_tmp30 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp30->readFromJson($_tmp29);
       $this->unionVal = $_tmp30;
-    }    
+    }
   }
 
 }
@@ -1482,13 +1482,13 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->data1 = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'data2') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['data2']);
       $_tmp3 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->data2 = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -1672,16 +1672,16 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $_tmp1 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->assign = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp3 = \fixtures\patch\MyDataPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patch = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -1896,25 +1896,25 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyDataValuePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
       $_tmp3 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp5 = \fixtures\patch\MyDataValuePatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
-    }    
+    }
   }
 
 }
@@ -2082,13 +2082,13 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->option1 = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'option2') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['option2']);
       $_tmp3 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->option2 = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -2302,25 +2302,25 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyUnionPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
       $_tmp3 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp5 = \fixtures\patch\MyUnionPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
-    }    
+    }
   }
 
 }
@@ -2535,25 +2535,25 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyUnionValuePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
       $_tmp3 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp5 = \fixtures\patch\MyUnionValuePatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
-    }    
+    }
   }
 
 }
@@ -3488,145 +3488,145 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp1 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->boolVal = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'byteVal') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['byteVal']);
       $_tmp3 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->byteVal = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'i16Val') !== null) {
       $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['i16Val']);
       $_tmp5 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->i16Val = $_tmp5;
-    }    
+    }
     if (idx($parsed, 'i32Val') !== null) {
       $_tmp6 = json_encode(/* HH_FIXME[4110] */ $parsed['i32Val']);
       $_tmp7 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp7->readFromJson($_tmp6);
       $this->i32Val = $_tmp7;
-    }    
+    }
     if (idx($parsed, 'i64Val') !== null) {
       $_tmp8 = json_encode(/* HH_FIXME[4110] */ $parsed['i64Val']);
       $_tmp9 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->i64Val = $_tmp9;
-    }    
+    }
     if (idx($parsed, 'floatVal') !== null) {
       $_tmp10 = json_encode(/* HH_FIXME[4110] */ $parsed['floatVal']);
       $_tmp11 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp11->readFromJson($_tmp10);
       $this->floatVal = $_tmp11;
-    }    
+    }
     if (idx($parsed, 'doubleVal') !== null) {
       $_tmp12 = json_encode(/* HH_FIXME[4110] */ $parsed['doubleVal']);
       $_tmp13 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp13->readFromJson($_tmp12);
       $this->doubleVal = $_tmp13;
-    }    
+    }
     if (idx($parsed, 'stringVal') !== null) {
       $_tmp14 = json_encode(/* HH_FIXME[4110] */ $parsed['stringVal']);
       $_tmp15 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp15->readFromJson($_tmp14);
       $this->stringVal = $_tmp15;
-    }    
+    }
     if (idx($parsed, 'binaryVal') !== null) {
       $_tmp16 = json_encode(/* HH_FIXME[4110] */ $parsed['binaryVal']);
       $_tmp17 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp17->readFromJson($_tmp16);
       $this->binaryVal = $_tmp17;
-    }    
+    }
     if (idx($parsed, 'structVal') !== null) {
       $_tmp18 = json_encode(/* HH_FIXME[4110] */ $parsed['structVal']);
       $_tmp19 = \fixtures\patch\MyDataValuePatch::withDefaultValues();
       $_tmp19->readFromJson($_tmp18);
       $this->structVal = $_tmp19;
-    }    
+    }
     if (idx($parsed, 'optBoolVal') !== null) {
       $_tmp20 = json_encode(/* HH_FIXME[4110] */ $parsed['optBoolVal']);
       $_tmp21 = \thrift\op\OptionalBoolPatch::withDefaultValues();
       $_tmp21->readFromJson($_tmp20);
       $this->optBoolVal = $_tmp21;
-    }    
+    }
     if (idx($parsed, 'optByteVal') !== null) {
       $_tmp22 = json_encode(/* HH_FIXME[4110] */ $parsed['optByteVal']);
       $_tmp23 = \thrift\op\OptionalBytePatch::withDefaultValues();
       $_tmp23->readFromJson($_tmp22);
       $this->optByteVal = $_tmp23;
-    }    
+    }
     if (idx($parsed, 'optI16Val') !== null) {
       $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['optI16Val']);
       $_tmp25 = \thrift\op\OptionalI16Patch::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->optI16Val = $_tmp25;
-    }    
+    }
     if (idx($parsed, 'optI32Val') !== null) {
       $_tmp26 = json_encode(/* HH_FIXME[4110] */ $parsed['optI32Val']);
       $_tmp27 = \thrift\op\OptionalI32Patch::withDefaultValues();
       $_tmp27->readFromJson($_tmp26);
       $this->optI32Val = $_tmp27;
-    }    
+    }
     if (idx($parsed, 'optI64Val') !== null) {
       $_tmp28 = json_encode(/* HH_FIXME[4110] */ $parsed['optI64Val']);
       $_tmp29 = \thrift\op\OptionalI64Patch::withDefaultValues();
       $_tmp29->readFromJson($_tmp28);
       $this->optI64Val = $_tmp29;
-    }    
+    }
     if (idx($parsed, 'optFloatVal') !== null) {
       $_tmp30 = json_encode(/* HH_FIXME[4110] */ $parsed['optFloatVal']);
       $_tmp31 = \thrift\op\OptionalFloatPatch::withDefaultValues();
       $_tmp31->readFromJson($_tmp30);
       $this->optFloatVal = $_tmp31;
-    }    
+    }
     if (idx($parsed, 'optDoubleVal') !== null) {
       $_tmp32 = json_encode(/* HH_FIXME[4110] */ $parsed['optDoubleVal']);
       $_tmp33 = \thrift\op\OptionalDoublePatch::withDefaultValues();
       $_tmp33->readFromJson($_tmp32);
       $this->optDoubleVal = $_tmp33;
-    }    
+    }
     if (idx($parsed, 'optStringVal') !== null) {
       $_tmp34 = json_encode(/* HH_FIXME[4110] */ $parsed['optStringVal']);
       $_tmp35 = \thrift\op\OptionalStringPatch::withDefaultValues();
       $_tmp35->readFromJson($_tmp34);
       $this->optStringVal = $_tmp35;
-    }    
+    }
     if (idx($parsed, 'optBinaryVal') !== null) {
       $_tmp36 = json_encode(/* HH_FIXME[4110] */ $parsed['optBinaryVal']);
       $_tmp37 = \thrift\op\OptionalBinaryPatch::withDefaultValues();
       $_tmp37->readFromJson($_tmp36);
       $this->optBinaryVal = $_tmp37;
-    }    
+    }
     if (idx($parsed, 'optStructVal') !== null) {
       $_tmp38 = json_encode(/* HH_FIXME[4110] */ $parsed['optStructVal']);
       $_tmp39 = \fixtures\patch\OptionalMyDataValuePatch::withDefaultValues();
       $_tmp39->readFromJson($_tmp38);
       $this->optStructVal = $_tmp39;
-    }    
+    }
     if (idx($parsed, 'optListVal') !== null) {
       $_tmp40 = json_encode(/* HH_FIXME[4110] */ $parsed['optListVal']);
       $_tmp41 = \fixtures\patch\OptionalMyStructField21Patch::withDefaultValues();
       $_tmp41->readFromJson($_tmp40);
       $this->optListVal = $_tmp41;
-    }    
+    }
     if (idx($parsed, 'optSetVal') !== null) {
       $_tmp42 = json_encode(/* HH_FIXME[4110] */ $parsed['optSetVal']);
       $_tmp43 = \fixtures\patch\OptionalMyStructField22Patch::withDefaultValues();
       $_tmp43->readFromJson($_tmp42);
       $this->optSetVal = $_tmp43;
-    }    
+    }
     if (idx($parsed, 'optMapVal') !== null) {
       $_tmp44 = json_encode(/* HH_FIXME[4110] */ $parsed['optMapVal']);
       $_tmp45 = \fixtures\patch\OptionalMyStructField23Patch::withDefaultValues();
       $_tmp45->readFromJson($_tmp44);
       $this->optMapVal = $_tmp45;
-    }    
+    }
     if (idx($parsed, 'unionVal') !== null) {
       $_tmp46 = json_encode(/* HH_FIXME[4110] */ $parsed['unionVal']);
       $_tmp47 = \fixtures\patch\MyUnionValuePatch::withDefaultValues();
       $_tmp47->readFromJson($_tmp46);
       $this->unionVal = $_tmp47;
-    }    
+    }
   }
 
 }
@@ -3878,10 +3878,10 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container4 []= $_elem5;
       }
       $this->assign = $_container4;
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'prepend') !== null) {
       $_json10 = /* HH_FIXME[4110] */ $parsed['prepend'];
       $_container11 = Vector {};
@@ -3896,7 +3896,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container11 []= $_elem12;
       }
       $this->prepend = $_container11;
-    }    
+    }
     if (idx($parsed, 'append') !== null) {
       $_json17 = /* HH_FIXME[4110] */ $parsed['append'];
       $_container18 = Vector {};
@@ -3911,7 +3911,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container18 []= $_elem19;
       }
       $this->append = $_container18;
-    }    
+    }
   }
 
 }
@@ -4135,13 +4135,13 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyStructField21Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_json5 = /* HH_FIXME[4110] */ $parsed['ensure'];
       $_container6 = Vector {};
@@ -4156,13 +4156,13 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
         $_container6 []= $_elem7;
       }
       $this->ensure = $_container6;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp9 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp10 = \fixtures\patch\MyStructField21Patch::withDefaultValues();
       $_tmp10->readFromJson($_tmp9);
       $this->patchAfter = $_tmp10;
-    }    
+    }
   }
 
 }
@@ -4409,10 +4409,10 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container4->add($_elem5);
       }
       $this->assign = $_container4;
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'remove') !== null) {
       $_json9 = /* HH_FIXME[4110] */ $parsed['remove'];
       $_container10 = Set {};
@@ -4422,7 +4422,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container10->add($_elem11);
       }
       $this->remove = $_container10;
-    }    
+    }
     if (idx($parsed, 'add') !== null) {
       $_json15 = /* HH_FIXME[4110] */ $parsed['add'];
       $_container16 = Set {};
@@ -4432,7 +4432,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container16->add($_elem17);
       }
       $this->add = $_container16;
-    }    
+    }
   }
 
 }
@@ -4656,13 +4656,13 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyStructField22Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_json5 = /* HH_FIXME[4110] */ $parsed['ensure'];
       $_container6 = Set {};
@@ -4672,13 +4672,13 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
         $_container6->add($_elem7);
       }
       $this->ensure = $_container6;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp8 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp9 = \fixtures\patch\MyStructField22Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->patchAfter = $_tmp9;
-    }    
+    }
   }
 
 }
@@ -4901,10 +4901,10 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container4[$_key1] = $_value5;
       }
       $this->assign = $_container4;
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'put') !== null) {
       $_json9 = /* HH_FIXME[4110] */ $parsed['put'];
       $_container10 = Map {};
@@ -4914,7 +4914,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container10[$_key7] = $_value11;
       }
       $this->put = $_container10;
-    }    
+    }
   }
 
 }
@@ -5147,13 +5147,13 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyStructField23Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_json5 = /* HH_FIXME[4110] */ $parsed['ensure'];
       $_container6 = Map {};
@@ -5163,13 +5163,13 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
         $_container6[$_key3] = $_value7;
       }
       $this->ensure = $_container6;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp8 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp9 = \fixtures\patch\MyStructField23Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->patchAfter = $_tmp9;
-    }    
+    }
   }
 
 }
@@ -5353,16 +5353,16 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       $_tmp1 = \fixtures\patch\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->assign = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp3 = \fixtures\patch\MyStructPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patch = $_tmp3;
-    }    
+    }
   }
 
 }
@@ -5577,25 +5577,25 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
 
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
+    }
     if (idx($parsed, 'patch') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
       $_tmp1 = \fixtures\patch\MyStructValuePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
-    }    
+    }
     if (idx($parsed, 'ensure') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
       $_tmp3 = \fixtures\patch\MyStruct::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
-    }    
+    }
     if (idx($parsed, 'patchAfter') !== null) {
       $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
       $_tmp5 = \fixtures\patch\MyStructValuePatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
-    }    
+    }
   }
 
 }

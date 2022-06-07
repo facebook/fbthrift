@@ -8,7 +8,7 @@
 
 /**
  * Indicates a definition/feature may change in incompatible ways.
- * 
+ *
  * Original thrift struct:-
  * Beta
  */
@@ -77,7 +77,7 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct {
 /**
  * Indicates a definition/feature should only be used with permission, may only
  * work in specific contexts, and may change in incompatible ways without notice.
- * 
+ *
  * Original thrift struct:-
  * Experimental
  */
@@ -145,7 +145,7 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct {
 
 /**
  * Indicates a definition/feature should no longer be used.
- * 
+ *
  * Original thrift struct:-
  * Deprecated
  */
@@ -245,7 +245,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct {
  * Indicates  a definition/feature will be removed in the next release.
  * 
  * Pleased migrate off of all @Legacy as soon as possible.
- * 
+ *
  * Original thrift struct:-
  * Legacy
  */
@@ -340,7 +340,7 @@ class facebook_thrift_annotation_Legacy implements \IThriftSyncStruct {
 /**
  * Indicates additional backward compatibility restrictions, beyond the
  * standard Thrift required 'wire' compatibility.
- * 
+ *
  * Original thrift struct:-
  * RequiresBackwardCompatibility
  */
@@ -434,7 +434,7 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
 
 /**
  * Best-effort disables experimental features.
- * 
+ *
  * Original thrift struct:-
  * NoExperimental
  */
@@ -502,7 +502,7 @@ class facebook_thrift_annotation_NoExperimental implements \IThriftSyncStruct {
 
 /**
  * Best-effort disables @Beta features.
- * 
+ *
  * Original thrift struct:-
  * NoBeta
  */
@@ -570,7 +570,7 @@ class facebook_thrift_annotation_NoBeta implements \IThriftSyncStruct {
 
 /**
  * Best-effort disables @Legacy features.
- * 
+ *
  * Original thrift struct:-
  * NoLegacy
  */
@@ -646,7 +646,7 @@ class facebook_thrift_annotation_NoLegacy implements \IThriftSyncStruct {
  * * Should only be enabled in `test` versions, as deprecated implies removing
  * * the feature will break current usage (otherwise it would be @Legacy or
  * * deleted)
- * 
+ *
  * Original thrift struct:-
  * NoDeprecated
  */
@@ -927,7 +927,7 @@ class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct {
  * 
  * This can potentially make serialized data size smaller in compact protocol,
  * since compact protocol can write deltas between subsequent field ids.
- * 
+ *
  * Original thrift struct:-
  * SerializeInFieldIdOrder
  */
@@ -999,7 +999,7 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
  * 
  * All v1+ enums must have an explicitly defined default value (0).
  * This annotation automatically adds such a value if not already present.
- * 
+ *
  * Original thrift struct:-
  * GenDefaultEnumValue
  */
@@ -1109,7 +1109,7 @@ class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStru
 
 /**
  * Enables all released v1 features.
- * 
+ *
  * Original thrift struct:-
  * v1
  */
@@ -1177,7 +1177,7 @@ class facebook_thrift_annotation_v1 implements \IThriftSyncStruct {
  * Beta features are guaranteed to *not* break unrelated Thrift features
  * so they should be relatively safe to test alongside other beta or
  * released Thrift features.
- * 
+ *
  * Original thrift struct:-
  * v1beta
  */
@@ -1257,7 +1257,7 @@ class facebook_thrift_annotation_v1beta implements \IThriftSyncStruct {
  * Use with *caution* and only with explicit permission. This may enable
  * features may change significantly without notice or not work correctly
  * in all contexts.
- * 
+ *
  * Original thrift struct:-
  * v1alpha
  */
@@ -1338,7 +1338,7 @@ class facebook_thrift_annotation_v1alpha implements \IThriftSyncStruct {
 /**
  * Enables experimental features, even those that are known to break common
  * use cases.
- * 
+ *
  * Original thrift struct:-
  * v1test
  */
