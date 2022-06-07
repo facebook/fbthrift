@@ -118,14 +118,12 @@ TEST_F(StandardValidatorTest, InterfaceNamesUniqueNoError) {
 TEST_F(StandardValidatorTest, BadPriority) {
   {
     auto service = std::make_unique<t_service>(&program_, "Service");
-    service->set_lineno(1);
     service->set_annotation("priority", "bad1");
     auto fn = std::make_unique<t_function>(
         &t_base_type::t_void(),
         "foo",
         std::make_unique<t_paramlist>(&program_));
     fn->set_annotation("priority", "bad2");
-    fn->set_lineno(2);
     service->add_function(std::move(fn));
     program_.add_service(std::move(service));
   }
@@ -133,14 +131,12 @@ TEST_F(StandardValidatorTest, BadPriority) {
   {
     auto interaction =
         std::make_unique<t_interaction>(&program_, "Interaction");
-    interaction->set_lineno(3);
     interaction->set_annotation("priority", "bad3");
     auto fn = std::make_unique<t_function>(
         &t_base_type::t_void(),
         "foo",
         std::make_unique<t_paramlist>(&program_));
     fn->set_annotation("priority", "bad4");
-    fn->set_lineno(4);
     interaction->add_function(std::move(fn));
     program_.add_interaction(std::move(interaction));
   }
@@ -149,17 +145,13 @@ TEST_F(StandardValidatorTest, BadPriority) {
       validate(),
       ::testing::UnorderedElementsAre(
           failure(
-              1,
-              "Bad priority 'bad1'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+              "Bad priority 'bad1'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
           failure(
-              2,
-              "Bad priority 'bad2'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+              "Bad priority 'bad2'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
           failure(
-              3,
-              "Bad priority 'bad3'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+              "Bad priority 'bad3'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
           failure(
-              4,
-              "Bad priority 'bad4'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'.")));
+              "Bad priority 'bad4'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"].")));
 }
 
 TEST_F(StandardValidatorTest, ReapeatedNamesInService) {
@@ -378,7 +370,7 @@ TEST_F(StandardValidatorTest, FieldId) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure(-1, "Zero value (0) not allowed as a field id for `zero_id`"),
+          failure("Zero value (0) not allowed as a field id for `zero_id`"),
           warning(
               1,
               "No field id specified for `implicit_id`, resulting protocol may have conflicts or not be backwards compatible!")));

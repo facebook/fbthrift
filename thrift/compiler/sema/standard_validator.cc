@@ -20,6 +20,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <fmt/ranges.h>
+
 #include <thrift/compiler/ast/name_index.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
@@ -367,17 +369,15 @@ void validate_boxed_field_attributes(
       "The `cpp.box` annotation can only be used with optional fields. Make sure `{}` is optional.",
       node.name());
 
-  ctx.failure_if(
-      node.has_annotation({
+  ctx.check(
+      !node.has_annotation({
           "cpp.ref",
           "cpp2.ref",
           "cpp.ref_type",
           "cpp2.ref_type",
       }),
-      [&](auto& o) {
-        o << "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
-          << node.name() << "`.";
-      });
+      "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `{}`.",
+      node.name());
 }
 
 // Checks the attributes of a mixin field.
@@ -517,19 +517,17 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
         node.name());
   }
 
-  ctx.failure_if(
-      node.id() == 0 &&
-          !node.has_annotation("cpp.deprecated_allow_zero_as_field_id"),
-      [&](auto& o) {
-        o << "Zero value (0) not allowed as a field id for `" << node.get_name()
-          << "`";
-      });
+  ctx.check(
+      node.id() != 0 ||
+          node.has_annotation("cpp.deprecated_allow_zero_as_field_id"),
+      "Zero value (0) not allowed as a field id for `{}`",
+      node.get_name());
 
-  ctx.failure_if(
-      !node.is_injected() && node.id() < t_field::min_id, [&](auto& o) {
-        o << "Reserved field id (" << node.id() << ") cannot be used for `"
-          << node.name() << "`.";
-      });
+  ctx.check(
+      node.id() >= t_field::min_id || node.is_injected(),
+      "Reserved field id ({}) cannot be used for `{}`.",
+      node.id(),
+      node.name());
 }
 
 void validate_compatibility_with_lazy_field(
@@ -635,18 +633,14 @@ void validate_ref_unique_and_box_annotation(
 void validate_function_priority_annotation(
     diagnostic_context& ctx, const t_node& node) {
   if (auto* priority = node.find_annotation_or_null("priority")) {
-    std::string choices[] = {
+    const std::string choices[] = {
         "HIGH_IMPORTANT", "HIGH", "IMPORTANT", "NORMAL", "BEST_EFFORT"};
     auto* end = choices + sizeof(choices) / sizeof(choices[0]);
-    ctx.failure_if(std::find(choices, end, *priority) == end, [&](auto& o) {
-      o << "Bad priority '" << *priority << "'. Choose one of '";
-      auto delim = "";
-      for (const auto& choice : choices) {
-        o << delim << choice;
-        delim = "','";
-      }
-      o << "'.";
-    });
+    ctx.check(
+        std::find(choices, end, *priority) != end,
+        "Bad priority '{}'. Choose one of {}.",
+        *priority,
+        choices);
   }
 }
 
