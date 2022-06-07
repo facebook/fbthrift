@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.thrift.ttypes
 
 
-from .ttypes import UTF8STRINGS, MyEnum, MyStruct, StructLevelTerseStruct, FieldLevelTerseStruct
+from .ttypes import UTF8STRINGS, MyEnum, MyStruct, MyStructWithCustomDefault, StructLevelTerseStruct, FieldLevelTerseStruct, TerseStructWithCustomDefault
 

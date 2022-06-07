@@ -19,6 +19,10 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     pass
 
 
+cdef class MyStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint field1
+
+
 cdef class StructLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool bool_field
     cdef public pint byte_field
@@ -51,6 +55,23 @@ cdef class FieldLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public set terse_set_field
     cdef public dict terse_map_field
     cdef public object terse_struct_field
+    cdef public pbool bool_field
+    cdef public pint byte_field
+    cdef public pint short_field
+    cdef public pint int_field
+    cdef public pint long_field
+    cdef public pfloat float_field
+    cdef public pfloat double_field
+    cdef public str string_field
+    cdef public bytes binary_field
+    cdef public _terse_write_types.MyEnum enum_field
+    cdef public list list_field
+    cdef public set set_field
+    cdef public dict map_field
+    cdef public object struct_field
+
+
+cdef class TerseStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool bool_field
     cdef public pint byte_field
     cdef public pint short_field

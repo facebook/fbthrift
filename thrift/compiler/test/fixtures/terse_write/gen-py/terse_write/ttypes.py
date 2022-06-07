@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'StructLevelTerseStruct', 'FieldLevelTerseStruct']
+__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'MyStructWithCustomDefault', 'StructLevelTerseStruct', 'FieldLevelTerseStruct', 'TerseStructWithCustomDefault']
 
 class MyEnum:
   ME0 = 0
@@ -116,6 +116,98 @@ class MyStruct:
 
   def __dir__(self):
     return (
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class MyStructWithCustomDefault:
+  """
+  Attributes:
+   - field1
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I64:
+          self.field1 = iprot.readI64()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyStructWithCustomDefault')
+    if self.field1 != None:
+      oprot.writeFieldBegin('field1', TType.I64, 1)
+      oprot.writeI64(self.field1)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'field1' in json_obj and json_obj['field1'] is not None:
+      self.field1 = long(json_obj['field1'])
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.field1 is not None:
+      value = pprint.pformat(self.field1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    field1=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'field1',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -1198,6 +1290,390 @@ class FieldLevelTerseStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class TerseStructWithCustomDefault:
+  """
+  Attributes:
+   - bool_field
+   - byte_field
+   - short_field
+   - int_field
+   - long_field
+   - float_field
+   - double_field
+   - string_field
+   - binary_field
+   - enum_field
+   - list_field
+   - set_field
+   - map_field
+   - struct_field
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.BOOL:
+          self.bool_field = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.BYTE:
+          self.byte_field = iprot.readByte()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.I16:
+          self.short_field = iprot.readI16()
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.I32:
+          self.int_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.I64:
+          self.long_field = iprot.readI64()
+        else:
+          iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.FLOAT:
+          self.float_field = iprot.readFloat()
+        else:
+          iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.DOUBLE:
+          self.double_field = iprot.readDouble()
+        else:
+          iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.STRING:
+          self.string_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRING:
+          self.binary_field = iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.I32:
+          self.enum_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.LIST:
+          self.list_field = []
+          (_etype99, _size96) = iprot.readListBegin()
+          if _size96 >= 0:
+            for _i100 in range(_size96):
+              _elem101 = iprot.readI16()
+              self.list_field.append(_elem101)
+          else: 
+            while iprot.peekList():
+              _elem102 = iprot.readI16()
+              self.list_field.append(_elem102)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 12:
+        if ftype == TType.SET:
+          self.set_field = set()
+          (_etype106, _size103) = iprot.readSetBegin()
+          if _size103 >= 0:
+            for _i107 in range(_size103):
+              _elem108 = iprot.readI16()
+              self.set_field.add(_elem108)
+          else: 
+            while iprot.peekSet():
+              _elem109 = iprot.readI16()
+              self.set_field.add(_elem109)
+          iprot.readSetEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 13:
+        if ftype == TType.MAP:
+          self.map_field = {}
+          (_ktype111, _vtype112, _size110 ) = iprot.readMapBegin() 
+          if _size110 >= 0:
+            for _i114 in range(_size110):
+              _key115 = iprot.readI16()
+              _val116 = iprot.readI16()
+              self.map_field[_key115] = _val116
+          else: 
+            while iprot.peekMap():
+              _key117 = iprot.readI16()
+              _val118 = iprot.readI16()
+              self.map_field[_key117] = _val118
+          iprot.readMapEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 14:
+        if ftype == TType.STRUCT:
+          self.struct_field = MyStructWithCustomDefault()
+          self.struct_field.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('TerseStructWithCustomDefault')
+    if self.bool_field != None:
+      oprot.writeFieldBegin('bool_field', TType.BOOL, 1)
+      oprot.writeBool(self.bool_field)
+      oprot.writeFieldEnd()
+    if self.byte_field != None:
+      oprot.writeFieldBegin('byte_field', TType.BYTE, 2)
+      oprot.writeByte(self.byte_field)
+      oprot.writeFieldEnd()
+    if self.short_field != None:
+      oprot.writeFieldBegin('short_field', TType.I16, 3)
+      oprot.writeI16(self.short_field)
+      oprot.writeFieldEnd()
+    if self.int_field != None:
+      oprot.writeFieldBegin('int_field', TType.I32, 4)
+      oprot.writeI32(self.int_field)
+      oprot.writeFieldEnd()
+    if self.long_field != None:
+      oprot.writeFieldBegin('long_field', TType.I64, 5)
+      oprot.writeI64(self.long_field)
+      oprot.writeFieldEnd()
+    if self.float_field != None:
+      oprot.writeFieldBegin('float_field', TType.FLOAT, 6)
+      oprot.writeFloat(self.float_field)
+      oprot.writeFieldEnd()
+    if self.double_field != None:
+      oprot.writeFieldBegin('double_field', TType.DOUBLE, 7)
+      oprot.writeDouble(self.double_field)
+      oprot.writeFieldEnd()
+    if self.string_field != None:
+      oprot.writeFieldBegin('string_field', TType.STRING, 8)
+      oprot.writeString(self.string_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.string_field, bytes) else oprot.writeString(self.string_field)
+      oprot.writeFieldEnd()
+    if self.binary_field != None:
+      oprot.writeFieldBegin('binary_field', TType.STRING, 9)
+      oprot.writeString(self.binary_field)
+      oprot.writeFieldEnd()
+    if self.enum_field != None:
+      oprot.writeFieldBegin('enum_field', TType.I32, 10)
+      oprot.writeI32(self.enum_field)
+      oprot.writeFieldEnd()
+    if self.list_field != None:
+      oprot.writeFieldBegin('list_field', TType.LIST, 11)
+      oprot.writeListBegin(TType.I16, len(self.list_field))
+      for iter119 in self.list_field:
+        oprot.writeI16(iter119)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.set_field != None:
+      oprot.writeFieldBegin('set_field', TType.SET, 12)
+      oprot.writeSetBegin(TType.I16, len(self.set_field))
+      for iter120 in self.set_field:
+        oprot.writeI16(iter120)
+      oprot.writeSetEnd()
+      oprot.writeFieldEnd()
+    if self.map_field != None:
+      oprot.writeFieldBegin('map_field', TType.MAP, 13)
+      oprot.writeMapBegin(TType.I16, TType.I16, len(self.map_field))
+      for kiter121,viter122 in self.map_field.items():
+        oprot.writeI16(kiter121)
+        oprot.writeI16(viter122)
+      oprot.writeMapEnd()
+      oprot.writeFieldEnd()
+    if self.struct_field != None:
+      oprot.writeFieldBegin('struct_field', TType.STRUCT, 14)
+      self.struct_field.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'bool_field' in json_obj and json_obj['bool_field'] is not None:
+      self.bool_field = json_obj['bool_field']
+    if 'byte_field' in json_obj and json_obj['byte_field'] is not None:
+      self.byte_field = json_obj['byte_field']
+      if self.byte_field > 0x7f or self.byte_field < -0x80:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'short_field' in json_obj and json_obj['short_field'] is not None:
+      self.short_field = json_obj['short_field']
+      if self.short_field > 0x7fff or self.short_field < -0x8000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'int_field' in json_obj and json_obj['int_field'] is not None:
+      self.int_field = json_obj['int_field']
+      if self.int_field > 0x7fffffff or self.int_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'long_field' in json_obj and json_obj['long_field'] is not None:
+      self.long_field = long(json_obj['long_field'])
+    if 'float_field' in json_obj and json_obj['float_field'] is not None:
+      self.float_field = float(json_obj['float_field'])
+    if 'double_field' in json_obj and json_obj['double_field'] is not None:
+      self.double_field = float(json_obj['double_field'])
+    if 'string_field' in json_obj and json_obj['string_field'] is not None:
+      self.string_field = json_obj['string_field']
+    if 'binary_field' in json_obj and json_obj['binary_field'] is not None:
+      self.binary_field = json_obj['binary_field']
+    if 'enum_field' in json_obj and json_obj['enum_field'] is not None:
+      self.enum_field = json_obj['enum_field']
+      if not self.enum_field in MyEnum._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.enum_field
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'list_field' in json_obj and json_obj['list_field'] is not None:
+      self.list_field = []
+      for _tmp_e123 in json_obj['list_field']:
+        if _tmp_e123 > 0x7fff or _tmp_e123 < -0x8000:
+          raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+        self.list_field.append(_tmp_e123)
+    if 'set_field' in json_obj and json_obj['set_field'] is not None:
+      self.set_field = set_cls()
+      for _tmp_e124 in json_obj['set_field']:
+        if _tmp_e124 > 0x7fff or _tmp_e124 < -0x8000:
+          raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+        self.set_field.add(_tmp_e124)
+    if 'map_field' in json_obj and json_obj['map_field'] is not None:
+      self.map_field = dict_cls()
+      for _tmp_k125, _tmp_v126 in json_obj['map_field'].items():
+        _tmp_kp127 = int(_tmp_k125)
+        if _tmp_kp127 > 0x7fff or _tmp_kp127 < -0x8000:
+          raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds the limit in key ' + _tmp_k125)
+        if _tmp_v126 > 0x7fff or _tmp_v126 < -0x8000:
+          raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+        self.map_field[_tmp_kp127] = _tmp_v126
+    if 'struct_field' in json_obj and json_obj['struct_field'] is not None:
+      self.struct_field = MyStructWithCustomDefault()
+      self.struct_field.readFromJson(json_obj['struct_field'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.bool_field is not None:
+      value = pprint.pformat(self.bool_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    bool_field=%s' % (value))
+    if self.byte_field is not None:
+      value = pprint.pformat(self.byte_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    byte_field=%s' % (value))
+    if self.short_field is not None:
+      value = pprint.pformat(self.short_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    short_field=%s' % (value))
+    if self.int_field is not None:
+      value = pprint.pformat(self.int_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int_field=%s' % (value))
+    if self.long_field is not None:
+      value = pprint.pformat(self.long_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    long_field=%s' % (value))
+    if self.float_field is not None:
+      value = pprint.pformat(self.float_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    float_field=%s' % (value))
+    if self.double_field is not None:
+      value = pprint.pformat(self.double_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    double_field=%s' % (value))
+    if self.string_field is not None:
+      value = pprint.pformat(self.string_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    string_field=%s' % (value))
+    if self.binary_field is not None:
+      value = pprint.pformat(self.binary_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    binary_field=%s' % (value))
+    if self.enum_field is not None:
+      value = pprint.pformat(self.enum_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    enum_field=%s' % (value))
+    if self.list_field is not None:
+      value = pprint.pformat(self.list_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    list_field=%s' % (value))
+    if self.set_field is not None:
+      value = pprint.pformat(self.set_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    set_field=%s' % (value))
+    if self.map_field is not None:
+      value = pprint.pformat(self.map_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    map_field=%s' % (value))
+    if self.struct_field is not None:
+      value = pprint.pformat(self.struct_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    struct_field=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'bool_field',
+      'byte_field',
+      'short_field',
+      'int_field',
+      'long_field',
+      'float_field',
+      'double_field',
+      'string_field',
+      'binary_field',
+      'enum_field',
+      'list_field',
+      'set_field',
+      'map_field',
+      'struct_field',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
 )
@@ -1206,6 +1682,29 @@ MyStruct.thrift_struct_annotations = {
 }
 MyStruct.thrift_field_annotations = {
 }
+
+all_structs.append(MyStructWithCustomDefault)
+MyStructWithCustomDefault.thrift_spec = (
+  None, # 0
+  (1, TType.I64, 'field1', None, 1, 2, ), # 1
+)
+
+MyStructWithCustomDefault.thrift_struct_annotations = {
+}
+MyStructWithCustomDefault.thrift_field_annotations = {
+}
+
+def MyStructWithCustomDefault__init__(self, field1=MyStructWithCustomDefault.thrift_spec[1][4],):
+  self.field1 = field1
+
+MyStructWithCustomDefault.__init__ = MyStructWithCustomDefault__init__
+
+def MyStructWithCustomDefault__setstate__(self, state):
+  state.setdefault('field1', 1)
+  self.__dict__ = state
+
+MyStructWithCustomDefault.__getstate__ = lambda self: self.__dict__.copy()
+MyStructWithCustomDefault.__setstate__ = MyStructWithCustomDefault__setstate__
 
 all_structs.append(StructLevelTerseStruct)
 StructLevelTerseStruct.thrift_spec = (
@@ -1372,6 +1871,92 @@ def FieldLevelTerseStruct__setstate__(self, state):
 
 FieldLevelTerseStruct.__getstate__ = lambda self: self.__dict__.copy()
 FieldLevelTerseStruct.__setstate__ = FieldLevelTerseStruct__setstate__
+
+all_structs.append(TerseStructWithCustomDefault)
+TerseStructWithCustomDefault.thrift_spec = (
+  None, # 0
+  (1, TType.BOOL, 'bool_field', None, True, 3, ), # 1
+  (2, TType.BYTE, 'byte_field', None, 1, 3, ), # 2
+  (3, TType.I16, 'short_field', None, 2, 3, ), # 3
+  (4, TType.I32, 'int_field', None, 3, 3, ), # 4
+  (5, TType.I64, 'long_field', None, 4, 3, ), # 5
+  (6, TType.FLOAT, 'float_field', None, 5.00000, 3, ), # 6
+  (7, TType.DOUBLE, 'double_field', None, 6.00000, 3, ), # 7
+  (8, TType.STRING, 'string_field', True, "7", 3, ), # 8
+  (9, TType.STRING, 'binary_field', False, "8", 3, ), # 9
+  (10, TType.I32, 'enum_field', MyEnum,   1, 3, ), # 10
+  (11, TType.LIST, 'list_field', (TType.I16,None), [
+    1,
+  ], 3, ), # 11
+  (12, TType.SET, 'set_field', (TType.I16,None), set([
+    1,
+  ]), 3, ), # 12
+  (13, TType.MAP, 'map_field', (TType.I16,None,TType.I16,None), {
+    1 : 1,
+  }, 3, ), # 13
+  (14, TType.STRUCT, 'struct_field', [MyStructWithCustomDefault, MyStructWithCustomDefault.thrift_spec, False], None, 3, ), # 14
+)
+
+TerseStructWithCustomDefault.thrift_struct_annotations = {
+}
+TerseStructWithCustomDefault.thrift_field_annotations = {
+}
+
+def TerseStructWithCustomDefault__init__(self, bool_field=TerseStructWithCustomDefault.thrift_spec[1][4], byte_field=TerseStructWithCustomDefault.thrift_spec[2][4], short_field=TerseStructWithCustomDefault.thrift_spec[3][4], int_field=TerseStructWithCustomDefault.thrift_spec[4][4], long_field=TerseStructWithCustomDefault.thrift_spec[5][4], float_field=TerseStructWithCustomDefault.thrift_spec[6][4], double_field=TerseStructWithCustomDefault.thrift_spec[7][4], string_field=TerseStructWithCustomDefault.thrift_spec[8][4], binary_field=TerseStructWithCustomDefault.thrift_spec[9][4], enum_field=TerseStructWithCustomDefault.thrift_spec[10][4], list_field=TerseStructWithCustomDefault.thrift_spec[11][4], set_field=TerseStructWithCustomDefault.thrift_spec[12][4], map_field=TerseStructWithCustomDefault.thrift_spec[13][4], struct_field=None,):
+  self.bool_field = bool_field
+  self.byte_field = byte_field
+  self.short_field = short_field
+  self.int_field = int_field
+  self.long_field = long_field
+  self.float_field = float_field
+  self.double_field = double_field
+  self.string_field = string_field
+  self.binary_field = binary_field
+  self.enum_field = enum_field
+  if list_field is self.thrift_spec[11][4]:
+    list_field = [
+    1,
+  ]
+  self.list_field = list_field
+  if set_field is self.thrift_spec[12][4]:
+    set_field = set([
+    1,
+  ])
+  self.set_field = set_field
+  if map_field is self.thrift_spec[13][4]:
+    map_field = {
+    1 : 1,
+  }
+  self.map_field = map_field
+  self.struct_field = struct_field
+
+TerseStructWithCustomDefault.__init__ = TerseStructWithCustomDefault__init__
+
+def TerseStructWithCustomDefault__setstate__(self, state):
+  state.setdefault('bool_field', True)
+  state.setdefault('byte_field', 1)
+  state.setdefault('short_field', 2)
+  state.setdefault('int_field', 3)
+  state.setdefault('long_field', 4)
+  state.setdefault('float_field', 5.00000)
+  state.setdefault('double_field', 6.00000)
+  state.setdefault('string_field', "7")
+  state.setdefault('binary_field', "8")
+  state.setdefault('enum_field',   1)
+  state.setdefault('list_field', [
+    1,
+  ])
+  state.setdefault('set_field', set([
+    1,
+  ]))
+  state.setdefault('map_field', {
+    1 : 1,
+  })
+  state.setdefault('struct_field', None)
+  self.__dict__ = state
+
+TerseStructWithCustomDefault.__getstate__ = lambda self: self.__dict__.copy()
+TerseStructWithCustomDefault.__setstate__ = TerseStructWithCustomDefault__setstate__
 
 fix_spec(all_structs)
 del all_structs

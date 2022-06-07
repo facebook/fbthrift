@@ -32,6 +32,32 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
+class MyStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "field1",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            1,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "terse_write.MyStructWithCustomDefault"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructWithCustomDefault()
+
+
+
 class StructLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -403,6 +429,136 @@ class FieldLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_FieldLevelTerseStruct()
 
 
+
+class TerseStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "bool_field",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            True,  # default value
+            None,  # adapter class
+        ),
+        (
+            2,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "byte_field",  # name
+            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            1,  # default value
+            None,  # adapter class
+        ),
+        (
+            3,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "short_field",  # name
+            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            2,  # default value
+            None,  # adapter class
+        ),
+        (
+            4,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "int_field",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            3,  # default value
+            None,  # adapter class
+        ),
+        (
+            5,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "long_field",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            4,  # default value
+            None,  # adapter class
+        ),
+        (
+            6,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "float_field",  # name
+            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            float(5),  # default value
+            None,  # adapter class
+        ),
+        (
+            7,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "double_field",  # name
+            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            float(6),  # default value
+            None,  # adapter class
+        ),
+        (
+            8,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "string_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            "7",  # default value
+            None,  # adapter class
+        ),
+        (
+            9,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "binary_field",  # name
+            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            b"8",  # default value
+            None,  # adapter class
+        ),
+        (
+            10,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "enum_field",  # name
+            lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
+            lambda: MyEnum.ME1,  # default value
+            None,  # adapter class
+        ),
+        (
+            11,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "list_field",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i16, (1, )),  # default value
+            None,  # adapter class
+        ),
+        (
+            12,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "set_field",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i16, (1, )),  # default value
+            None,  # adapter class
+        ),
+        (
+            13,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "map_field",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16, {1: 1}),  # default value
+            None,  # adapter class
+        ),
+        (
+            14,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            "struct_field",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructWithCustomDefault),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "terse_write.TerseStructWithCustomDefault"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_TerseStructWithCustomDefault()
+
+
 # This unfortunately has to be down here to prevent circular imports
 import terse_write.thrift_metadata
 
@@ -419,14 +575,20 @@ class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
 
 def _fbthrift_metadata__struct_MyStruct():
     return terse_write.thrift_metadata.gen_metadata_struct_MyStruct()
+def _fbthrift_metadata__struct_MyStructWithCustomDefault():
+    return terse_write.thrift_metadata.gen_metadata_struct_MyStructWithCustomDefault()
 def _fbthrift_metadata__struct_StructLevelTerseStruct():
     return terse_write.thrift_metadata.gen_metadata_struct_StructLevelTerseStruct()
 def _fbthrift_metadata__struct_FieldLevelTerseStruct():
     return terse_write.thrift_metadata.gen_metadata_struct_FieldLevelTerseStruct()
+def _fbthrift_metadata__struct_TerseStructWithCustomDefault():
+    return terse_write.thrift_metadata.gen_metadata_struct_TerseStructWithCustomDefault()
 
 _fbthrift_all_structs = [
     MyStruct,
+    MyStructWithCustomDefault,
     StructLevelTerseStruct,
     FieldLevelTerseStruct,
+    TerseStructWithCustomDefault,
 ]
 _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)

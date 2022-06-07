@@ -10,6 +10,12 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         pass
 
+cdef class MyStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _terse_write_types.MyStructWithCustomDefault
+
+    def __iter__(self):
+        yield "field1", self.field1
+
 cdef class StructLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _terse_write_types.StructLevelTerseStruct
 
@@ -47,6 +53,25 @@ cdef class FieldLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "terse_set_field", self.terse_set_field
         yield "terse_map_field", self.terse_map_field
         yield "terse_struct_field", self.terse_struct_field
+        yield "bool_field", self.bool_field
+        yield "byte_field", self.byte_field
+        yield "short_field", self.short_field
+        yield "int_field", self.int_field
+        yield "long_field", self.long_field
+        yield "float_field", self.float_field
+        yield "double_field", self.double_field
+        yield "string_field", self.string_field
+        yield "binary_field", self.binary_field
+        yield "enum_field", self.enum_field
+        yield "list_field", self.list_field
+        yield "set_field", self.set_field
+        yield "map_field", self.map_field
+        yield "struct_field", self.struct_field
+
+cdef class TerseStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _terse_write_types.TerseStructWithCustomDefault
+
+    def __iter__(self):
         yield "bool_field", self.bool_field
         yield "byte_field", self.byte_field
         yield "short_field", self.short_field

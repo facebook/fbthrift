@@ -15,8 +15,10 @@ namespace test {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<MyEnum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyStructWithCustomDefault>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructLevelTerseStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FieldLevelTerseStruct>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<TerseStructWithCustomDefault>::gen(metadata);
   return metadata;
 }
 } // namespace apache

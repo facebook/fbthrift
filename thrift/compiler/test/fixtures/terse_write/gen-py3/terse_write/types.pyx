@@ -185,6 +185,104 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
+cdef class MyStructWithCustomDefault(thrift.py3.types.Struct):
+    def __init__(MyStructWithCustomDefault self, **kwargs):
+        self._cpp_obj = make_shared[cMyStructWithCustomDefault]()
+        self._fields_setter = _fbthrift_types_fields.__MyStructWithCustomDefault_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyStructWithCustomDefault self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyStructWithCustomDefault __fbthrift_inst = MyStructWithCustomDefault.__new__(MyStructWithCustomDefault)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStructWithCustomDefault](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStructWithCustomDefault_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyStructWithCustomDefault", {
+          "field1": deref(self._cpp_obj).field1_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyStructWithCustomDefault] cpp_obj):
+        __fbthrift_inst = <MyStructWithCustomDefault>MyStructWithCustomDefault.__new__(MyStructWithCustomDefault)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline field1_impl(self):
+
+        return deref(self._cpp_obj).field1_ref().value()
+
+    @property
+    def field1(self):
+        return self.field1_impl()
+
+
+    def __hash__(MyStructWithCustomDefault self):
+        return super().__hash__()
+
+    def __repr__(MyStructWithCustomDefault self):
+        return super().__repr__()
+
+    def __str__(MyStructWithCustomDefault self):
+        return super().__str__()
+
+
+    def __copy__(MyStructWithCustomDefault self):
+        cdef shared_ptr[cMyStructWithCustomDefault] cpp_obj = make_shared[cMyStructWithCustomDefault](
+            deref(self._cpp_obj)
+        )
+        return MyStructWithCustomDefault._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyStructWithCustomDefault](
+            self._cpp_obj,
+            (<MyStructWithCustomDefault>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyStructWithCustomDefault()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStructWithCustomDefault].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "terse_write.MyStructWithCustomDefault"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStructWithCustomDefault](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructWithCustomDefault self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyStructWithCustomDefault](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyStructWithCustomDefault self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyStructWithCustomDefault]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyStructWithCustomDefault](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
 cdef class StructLevelTerseStruct(thrift.py3.types.Struct):
     def __init__(StructLevelTerseStruct self, **kwargs):
         self._cpp_obj = make_shared[cStructLevelTerseStruct]()
@@ -739,6 +837,217 @@ cdef class FieldLevelTerseStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cFieldLevelTerseStruct]()
         with nogil:
             needed = serializer.cdeserialize[cFieldLevelTerseStruct](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class TerseStructWithCustomDefault(thrift.py3.types.Struct):
+    def __init__(TerseStructWithCustomDefault self, **kwargs):
+        self._cpp_obj = make_shared[cTerseStructWithCustomDefault]()
+        self._fields_setter = _fbthrift_types_fields.__TerseStructWithCustomDefault_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(TerseStructWithCustomDefault self, **kwargs):
+        if not kwargs:
+            return self
+        cdef TerseStructWithCustomDefault __fbthrift_inst = TerseStructWithCustomDefault.__new__(TerseStructWithCustomDefault)
+        __fbthrift_inst._cpp_obj = make_shared[cTerseStructWithCustomDefault](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__TerseStructWithCustomDefault_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("TerseStructWithCustomDefault", {
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cTerseStructWithCustomDefault] cpp_obj):
+        __fbthrift_inst = <TerseStructWithCustomDefault>TerseStructWithCustomDefault.__new__(TerseStructWithCustomDefault)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline bool_field_impl(self):
+
+        return <pbool> deref(self._cpp_obj).bool_field_ref().value()
+
+    @property
+    def bool_field(self):
+        return self.bool_field_impl()
+
+    cdef inline byte_field_impl(self):
+
+        return deref(self._cpp_obj).byte_field_ref().value()
+
+    @property
+    def byte_field(self):
+        return self.byte_field_impl()
+
+    cdef inline short_field_impl(self):
+
+        return deref(self._cpp_obj).short_field_ref().value()
+
+    @property
+    def short_field(self):
+        return self.short_field_impl()
+
+    cdef inline int_field_impl(self):
+
+        return deref(self._cpp_obj).int_field_ref().value()
+
+    @property
+    def int_field(self):
+        return self.int_field_impl()
+
+    cdef inline long_field_impl(self):
+
+        return deref(self._cpp_obj).long_field_ref().value()
+
+    @property
+    def long_field(self):
+        return self.long_field_impl()
+
+    cdef inline float_field_impl(self):
+
+        return deref(self._cpp_obj).float_field_ref().value()
+
+    @property
+    def float_field(self):
+        return self.float_field_impl()
+
+    cdef inline double_field_impl(self):
+
+        return deref(self._cpp_obj).double_field_ref().value()
+
+    @property
+    def double_field(self):
+        return self.double_field_impl()
+
+    cdef inline string_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).string_field_ref().value()).decode('UTF-8')
+
+    @property
+    def string_field(self):
+        return self.string_field_impl()
+
+    cdef inline binary_field_impl(self):
+
+        return deref(self._cpp_obj).binary_field_ref().value()
+
+    @property
+    def binary_field(self):
+        return self.binary_field_impl()
+
+    cdef inline enum_field_impl(self):
+
+        if self.__fbthrift_cached_enum_field is None:
+            self.__fbthrift_cached_enum_field = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).enum_field_ref().value()))
+        return self.__fbthrift_cached_enum_field
+
+    @property
+    def enum_field(self):
+        return self.enum_field_impl()
+
+    cdef inline list_field_impl(self):
+
+        if self.__fbthrift_cached_list_field is None:
+            self.__fbthrift_cached_list_field = List__i16._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).list_field_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_list_field
+
+    @property
+    def list_field(self):
+        return self.list_field_impl()
+
+    cdef inline set_field_impl(self):
+
+        if self.__fbthrift_cached_set_field is None:
+            self.__fbthrift_cached_set_field = Set__i16._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).set_field_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_set_field
+
+    @property
+    def set_field(self):
+        return self.set_field_impl()
+
+    cdef inline map_field_impl(self):
+
+        if self.__fbthrift_cached_map_field is None:
+            self.__fbthrift_cached_map_field = Map__i16_i16._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).map_field_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_field
+
+    @property
+    def map_field(self):
+        return self.map_field_impl()
+
+    cdef inline struct_field_impl(self):
+
+        if self.__fbthrift_cached_struct_field is None:
+            self.__fbthrift_cached_struct_field = MyStructWithCustomDefault._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).struct_field_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_struct_field
+
+    @property
+    def struct_field(self):
+        return self.struct_field_impl()
+
+
+    def __hash__(TerseStructWithCustomDefault self):
+        return super().__hash__()
+
+    def __repr__(TerseStructWithCustomDefault self):
+        return super().__repr__()
+
+    def __str__(TerseStructWithCustomDefault self):
+        return super().__str__()
+
+
+    def __copy__(TerseStructWithCustomDefault self):
+        cdef shared_ptr[cTerseStructWithCustomDefault] cpp_obj = make_shared[cTerseStructWithCustomDefault](
+            deref(self._cpp_obj)
+        )
+        return TerseStructWithCustomDefault._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cTerseStructWithCustomDefault](
+            self._cpp_obj,
+            (<TerseStructWithCustomDefault>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__TerseStructWithCustomDefault()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cTerseStructWithCustomDefault].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "terse_write.TerseStructWithCustomDefault"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cTerseStructWithCustomDefault](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 14
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(TerseStructWithCustomDefault self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cTerseStructWithCustomDefault](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(TerseStructWithCustomDefault self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cTerseStructWithCustomDefault]()
+        with nogil:
+            needed = serializer.cdeserialize[cTerseStructWithCustomDefault](buf, self._cpp_obj.get(), proto)
         return needed
 
 

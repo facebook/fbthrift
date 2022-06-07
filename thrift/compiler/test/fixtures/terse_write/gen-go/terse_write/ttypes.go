@@ -132,6 +132,119 @@ func (p *MyStruct) String() string {
 }
 
 // Attributes:
+//  - Field1
+type MyStructWithCustomDefault struct {
+  Field1 int64 `thrift:"field1,1" db:"field1" json:"field1"`
+}
+
+func NewMyStructWithCustomDefault() *MyStructWithCustomDefault {
+  return &MyStructWithCustomDefault{
+    Field1: 1,
+  }
+}
+
+
+func (p *MyStructWithCustomDefault) GetField1() int64 {
+  return p.Field1
+}
+type MyStructWithCustomDefaultBuilder struct {
+  obj *MyStructWithCustomDefault
+}
+
+func NewMyStructWithCustomDefaultBuilder() *MyStructWithCustomDefaultBuilder{
+  return &MyStructWithCustomDefaultBuilder{
+    obj: NewMyStructWithCustomDefault(),
+  }
+}
+
+func (p MyStructWithCustomDefaultBuilder) Emit() *MyStructWithCustomDefault{
+  return &MyStructWithCustomDefault{
+    Field1: p.obj.Field1,
+  }
+}
+
+func (m *MyStructWithCustomDefaultBuilder) Field1(field1 int64) *MyStructWithCustomDefaultBuilder {
+  m.obj.Field1 = field1
+  return m
+}
+
+func (m *MyStructWithCustomDefault) SetField1(field1 int64) *MyStructWithCustomDefault {
+  m.Field1 = field1
+  return m
+}
+
+func (p *MyStructWithCustomDefault) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyStructWithCustomDefault)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Field1 = v
+  }
+  return nil
+}
+
+func (p *MyStructWithCustomDefault) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MyStructWithCustomDefault"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyStructWithCustomDefault) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("field1", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:field1: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Field1)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.field1 (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:field1: ", p), err) }
+  return err
+}
+
+func (p *MyStructWithCustomDefault) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  field1Val := fmt.Sprintf("%v", p.Field1)
+  return fmt.Sprintf("MyStructWithCustomDefault({Field1:%s})", field1Val)
+}
+
+// Attributes:
 //  - BoolField
 //  - ByteField
 //  - ShortField
@@ -2312,5 +2425,774 @@ func (p *FieldLevelTerseStruct) String() string {
     structFieldVal = fmt.Sprintf("%v", p.StructField)
   }
   return fmt.Sprintf("FieldLevelTerseStruct({TerseBoolField:%s TerseByteField:%s TerseShortField:%s TerseIntField:%s TerseLongField:%s TerseFloatField:%s TerseDoubleField:%s TerseStringField:%s TerseBinaryField:%s TerseEnumField:%s TerseListField:%s TerseSetField:%s TerseMapField:%s TerseStructField:%s BoolField:%s ByteField:%s ShortField:%s IntField:%s LongField:%s FloatField:%s DoubleField:%s StringField:%s BinaryField:%s EnumField:%s ListField:%s SetField:%s MapField:%s StructField:%s})", terseBoolFieldVal, terseByteFieldVal, terseShortFieldVal, terseIntFieldVal, terseLongFieldVal, terseFloatFieldVal, terseDoubleFieldVal, terseStringFieldVal, terseBinaryFieldVal, terseEnumFieldVal, terseListFieldVal, terseSetFieldVal, terseMapFieldVal, terseStructFieldVal, boolFieldVal, byteFieldVal, shortFieldVal, intFieldVal, longFieldVal, floatFieldVal, doubleFieldVal, stringFieldVal, binaryFieldVal, enumFieldVal, listFieldVal, setFieldVal, mapFieldVal, structFieldVal)
+}
+
+// Attributes:
+//  - BoolField
+//  - ByteField
+//  - ShortField
+//  - IntField
+//  - LongField
+//  - FloatField
+//  - DoubleField
+//  - StringField
+//  - BinaryField
+//  - EnumField
+//  - ListField
+//  - SetField
+//  - MapField
+//  - StructField
+type TerseStructWithCustomDefault struct {
+  BoolField bool `thrift:"bool_field,1" db:"bool_field" json:"bool_field"`
+  ByteField int8 `thrift:"byte_field,2" db:"byte_field" json:"byte_field"`
+  ShortField int16 `thrift:"short_field,3" db:"short_field" json:"short_field"`
+  IntField int32 `thrift:"int_field,4" db:"int_field" json:"int_field"`
+  LongField int64 `thrift:"long_field,5" db:"long_field" json:"long_field"`
+  FloatField float32 `thrift:"float_field,6" db:"float_field" json:"float_field"`
+  DoubleField float64 `thrift:"double_field,7" db:"double_field" json:"double_field"`
+  StringField string `thrift:"string_field,8" db:"string_field" json:"string_field"`
+  BinaryField []byte `thrift:"binary_field,9" db:"binary_field" json:"binary_field"`
+  EnumField MyEnum `thrift:"enum_field,10" db:"enum_field" json:"enum_field"`
+  ListField []int16 `thrift:"list_field,11" db:"list_field" json:"list_field"`
+  SetField []int16 `thrift:"set_field,12" db:"set_field" json:"set_field"`
+  MapField map[int16]int16 `thrift:"map_field,13" db:"map_field" json:"map_field"`
+  StructField *MyStructWithCustomDefault `thrift:"struct_field,14" db:"struct_field" json:"struct_field"`
+}
+
+func NewTerseStructWithCustomDefault() *TerseStructWithCustomDefault {
+  return &TerseStructWithCustomDefault{
+    BoolField: true,
+    ByteField: 1,
+    ShortField: 2,
+    IntField: 3,
+    LongField: 4,
+    FloatField: 5,
+    DoubleField: 6,
+    StringField: "7",
+    BinaryField: []byte("8"),
+    EnumField: 1,
+    ListField: []int16{
+      1,
+    },
+    SetField: []int16{
+      1,     },
+    MapField: map[int16]int16{
+      1: 1,
+    },
+    StructField: NewMyStructWithCustomDefault(),
+  }
+}
+
+
+func (p *TerseStructWithCustomDefault) GetBoolField() bool {
+  return p.BoolField
+}
+
+func (p *TerseStructWithCustomDefault) GetByteField() int8 {
+  return p.ByteField
+}
+
+func (p *TerseStructWithCustomDefault) GetShortField() int16 {
+  return p.ShortField
+}
+
+func (p *TerseStructWithCustomDefault) GetIntField() int32 {
+  return p.IntField
+}
+
+func (p *TerseStructWithCustomDefault) GetLongField() int64 {
+  return p.LongField
+}
+
+func (p *TerseStructWithCustomDefault) GetFloatField() float32 {
+  return p.FloatField
+}
+
+func (p *TerseStructWithCustomDefault) GetDoubleField() float64 {
+  return p.DoubleField
+}
+
+func (p *TerseStructWithCustomDefault) GetStringField() string {
+  return p.StringField
+}
+
+func (p *TerseStructWithCustomDefault) GetBinaryField() []byte {
+  return p.BinaryField
+}
+
+func (p *TerseStructWithCustomDefault) GetEnumField() MyEnum {
+  return p.EnumField
+}
+
+func (p *TerseStructWithCustomDefault) GetListField() []int16 {
+  return p.ListField
+}
+
+func (p *TerseStructWithCustomDefault) GetSetField() []int16 {
+  return p.SetField
+}
+
+func (p *TerseStructWithCustomDefault) GetMapField() map[int16]int16 {
+  return p.MapField
+}
+var TerseStructWithCustomDefault_StructField_DEFAULT *MyStructWithCustomDefault
+func (p *TerseStructWithCustomDefault) GetStructField() *MyStructWithCustomDefault {
+  if !p.IsSetStructField() {
+    return TerseStructWithCustomDefault_StructField_DEFAULT
+  }
+return p.StructField
+}
+func (p *TerseStructWithCustomDefault) IsSetStructField() bool {
+  return p != nil && p.StructField != nil
+}
+
+type TerseStructWithCustomDefaultBuilder struct {
+  obj *TerseStructWithCustomDefault
+}
+
+func NewTerseStructWithCustomDefaultBuilder() *TerseStructWithCustomDefaultBuilder{
+  return &TerseStructWithCustomDefaultBuilder{
+    obj: NewTerseStructWithCustomDefault(),
+  }
+}
+
+func (p TerseStructWithCustomDefaultBuilder) Emit() *TerseStructWithCustomDefault{
+  return &TerseStructWithCustomDefault{
+    BoolField: p.obj.BoolField,
+    ByteField: p.obj.ByteField,
+    ShortField: p.obj.ShortField,
+    IntField: p.obj.IntField,
+    LongField: p.obj.LongField,
+    FloatField: p.obj.FloatField,
+    DoubleField: p.obj.DoubleField,
+    StringField: p.obj.StringField,
+    BinaryField: p.obj.BinaryField,
+    EnumField: p.obj.EnumField,
+    ListField: p.obj.ListField,
+    SetField: p.obj.SetField,
+    MapField: p.obj.MapField,
+    StructField: p.obj.StructField,
+  }
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) BoolField(boolField bool) *TerseStructWithCustomDefaultBuilder {
+  t.obj.BoolField = boolField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) ByteField(byteField int8) *TerseStructWithCustomDefaultBuilder {
+  t.obj.ByteField = byteField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) ShortField(shortField int16) *TerseStructWithCustomDefaultBuilder {
+  t.obj.ShortField = shortField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) IntField(intField int32) *TerseStructWithCustomDefaultBuilder {
+  t.obj.IntField = intField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) LongField(longField int64) *TerseStructWithCustomDefaultBuilder {
+  t.obj.LongField = longField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) FloatField(floatField float32) *TerseStructWithCustomDefaultBuilder {
+  t.obj.FloatField = floatField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) DoubleField(doubleField float64) *TerseStructWithCustomDefaultBuilder {
+  t.obj.DoubleField = doubleField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) StringField(stringField string) *TerseStructWithCustomDefaultBuilder {
+  t.obj.StringField = stringField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) BinaryField(binaryField []byte) *TerseStructWithCustomDefaultBuilder {
+  t.obj.BinaryField = binaryField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) EnumField(enumField MyEnum) *TerseStructWithCustomDefaultBuilder {
+  t.obj.EnumField = enumField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) ListField(listField []int16) *TerseStructWithCustomDefaultBuilder {
+  t.obj.ListField = listField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) SetField(setField []int16) *TerseStructWithCustomDefaultBuilder {
+  t.obj.SetField = setField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) MapField(mapField map[int16]int16) *TerseStructWithCustomDefaultBuilder {
+  t.obj.MapField = mapField
+  return t
+}
+
+func (t *TerseStructWithCustomDefaultBuilder) StructField(structField *MyStructWithCustomDefault) *TerseStructWithCustomDefaultBuilder {
+  t.obj.StructField = structField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetBoolField(boolField bool) *TerseStructWithCustomDefault {
+  t.BoolField = boolField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetByteField(byteField int8) *TerseStructWithCustomDefault {
+  t.ByteField = byteField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetShortField(shortField int16) *TerseStructWithCustomDefault {
+  t.ShortField = shortField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetIntField(intField int32) *TerseStructWithCustomDefault {
+  t.IntField = intField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetLongField(longField int64) *TerseStructWithCustomDefault {
+  t.LongField = longField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetFloatField(floatField float32) *TerseStructWithCustomDefault {
+  t.FloatField = floatField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetDoubleField(doubleField float64) *TerseStructWithCustomDefault {
+  t.DoubleField = doubleField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetStringField(stringField string) *TerseStructWithCustomDefault {
+  t.StringField = stringField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetBinaryField(binaryField []byte) *TerseStructWithCustomDefault {
+  t.BinaryField = binaryField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetEnumField(enumField MyEnum) *TerseStructWithCustomDefault {
+  t.EnumField = enumField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetListField(listField []int16) *TerseStructWithCustomDefault {
+  t.ListField = listField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetSetField(setField []int16) *TerseStructWithCustomDefault {
+  t.SetField = setField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetMapField(mapField map[int16]int16) *TerseStructWithCustomDefault {
+  t.MapField = mapField
+  return t
+}
+
+func (t *TerseStructWithCustomDefault) SetStructField(structField *MyStructWithCustomDefault) *TerseStructWithCustomDefault {
+  t.StructField = structField
+  return t
+}
+
+func (p *TerseStructWithCustomDefault) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
+        return err
+      }
+    case 10:
+      if err := p.ReadField10(iprot); err != nil {
+        return err
+      }
+    case 11:
+      if err := p.ReadField11(iprot); err != nil {
+        return err
+      }
+    case 12:
+      if err := p.ReadField12(iprot); err != nil {
+        return err
+      }
+    case 13:
+      if err := p.ReadField13(iprot); err != nil {
+        return err
+      }
+    case 14:
+      if err := p.ReadField14(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.BoolField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadByte(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    temp := int8(v)
+    p.ByteField = temp
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI16(); err != nil {
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.ShortField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.IntField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.LongField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField6(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadFloat(); err != nil {
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    p.FloatField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField7(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadDouble(); err != nil {
+    return thrift.PrependError("error reading field 7: ", err)
+  } else {
+    p.DoubleField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField8(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 8: ", err)
+  } else {
+    p.StringField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField9(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+    return thrift.PrependError("error reading field 9: ", err)
+  } else {
+    p.BinaryField = v
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField10(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 10: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.EnumField = temp
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField11(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]int16, 0, size)
+  p.ListField =  tSlice
+  for i := 0; i < size; i ++ {
+    var _elem13 int16
+    if v, err := iprot.ReadI16(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem13 = v
+    }
+    p.ListField = append(p.ListField, _elem13)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField12(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]int16, 0, size)
+  p.SetField =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem14 int16
+    if v, err := iprot.ReadI16(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem14 = v
+    }
+    p.SetField = append(p.SetField, _elem14)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField13(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[int16]int16, size)
+  p.MapField =  tMap
+  for i := 0; i < size; i ++ {
+    var _key15 int16
+    if v, err := iprot.ReadI16(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key15 = v
+    }
+    var _val16 int16
+    if v, err := iprot.ReadI16(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val16 = v
+    }
+    p.MapField[_key15] = _val16
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault)  ReadField14(iprot thrift.Protocol) error {
+  p.StructField = NewMyStructWithCustomDefault()
+  if err := p.StructField.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.StructField), err)
+  }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TerseStructWithCustomDefault"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
+  if err := p.writeField10(oprot); err != nil { return err }
+  if err := p.writeField11(oprot); err != nil { return err }
+  if err := p.writeField12(oprot); err != nil { return err }
+  if err := p.writeField13(oprot); err != nil { return err }
+  if err := p.writeField14(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TerseStructWithCustomDefault) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("bool_field", thrift.BOOL, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:bool_field: ", p), err) }
+  if err := oprot.WriteBool(bool(p.BoolField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.bool_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:bool_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("byte_field", thrift.BYTE, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:byte_field: ", p), err) }
+  if err := oprot.WriteByte(byte(p.ByteField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.byte_field (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:byte_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("short_field", thrift.I16, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:short_field: ", p), err) }
+  if err := oprot.WriteI16(int16(p.ShortField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.short_field (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:short_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("int_field", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:int_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.IntField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.int_field (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:int_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("long_field", thrift.I64, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:long_field: ", p), err) }
+  if err := oprot.WriteI64(int64(p.LongField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.long_field (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:long_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField6(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("float_field", thrift.FLOAT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:float_field: ", p), err) }
+  if err := oprot.WriteFloat(float32(p.FloatField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.float_field (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:float_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("double_field", thrift.DOUBLE, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:double_field: ", p), err) }
+  if err := oprot.WriteDouble(float64(p.DoubleField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.double_field (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:double_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("string_field", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:string_field: ", p), err) }
+  if err := oprot.WriteString(string(p.StringField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.string_field (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:string_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("binary_field", thrift.STRING, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:binary_field: ", p), err) }
+  if err := oprot.WriteBinary(p.BinaryField); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.binary_field (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:binary_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField10(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("enum_field", thrift.I32, 10); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:enum_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.EnumField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.enum_field (10) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:enum_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField11(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("list_field", thrift.LIST, 11); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 11:list_field: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.I16, len(p.ListField)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.ListField {
+    if err := oprot.WriteI16(int16(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 11:list_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField12(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("set_field", thrift.SET, 12); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 12:set_field: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.I16, len(p.SetField)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[int16]bool, len(p.SetField))
+  for _, v := range p.SetField {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.SetField {
+    if err := oprot.WriteI16(int16(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 12:set_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField13(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("map_field", thrift.MAP, 13); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 13:map_field: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.I16, thrift.I16, len(p.MapField)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.MapField {
+    if err := oprot.WriteI16(int16(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteI16(int16(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 13:map_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) writeField14(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("struct_field", thrift.STRUCT, 14); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 14:struct_field: ", p), err) }
+  if err := p.StructField.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.StructField), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 14:struct_field: ", p), err) }
+  return err
+}
+
+func (p *TerseStructWithCustomDefault) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  boolFieldVal := fmt.Sprintf("%v", p.BoolField)
+  byteFieldVal := fmt.Sprintf("%v", p.ByteField)
+  shortFieldVal := fmt.Sprintf("%v", p.ShortField)
+  intFieldVal := fmt.Sprintf("%v", p.IntField)
+  longFieldVal := fmt.Sprintf("%v", p.LongField)
+  floatFieldVal := fmt.Sprintf("%v", p.FloatField)
+  doubleFieldVal := fmt.Sprintf("%v", p.DoubleField)
+  stringFieldVal := fmt.Sprintf("%v", p.StringField)
+  binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
+  enumFieldVal := fmt.Sprintf("%v", p.EnumField)
+  listFieldVal := fmt.Sprintf("%v", p.ListField)
+  setFieldVal := fmt.Sprintf("%v", p.SetField)
+  mapFieldVal := fmt.Sprintf("%v", p.MapField)
+  var structFieldVal string
+  if p.StructField == nil {
+    structFieldVal = "<nil>"
+  } else {
+    structFieldVal = fmt.Sprintf("%v", p.StructField)
+  }
+  return fmt.Sprintf("TerseStructWithCustomDefault({BoolField:%s ByteField:%s ShortField:%s IntField:%s LongField:%s FloatField:%s DoubleField:%s StringField:%s BinaryField:%s EnumField:%s ListField:%s SetField:%s MapField:%s StructField:%s})", boolFieldVal, byteFieldVal, shortFieldVal, intFieldVal, longFieldVal, floatFieldVal, doubleFieldVal, stringFieldVal, binaryFieldVal, enumFieldVal, listFieldVal, setFieldVal, mapFieldVal, structFieldVal)
 }
 

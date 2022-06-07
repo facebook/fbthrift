@@ -16,9 +16,13 @@ from thrift.py3.reflection cimport (
 
 cdef __StructSpec get_reflection__MyStruct()
 
+cdef __StructSpec get_reflection__MyStructWithCustomDefault()
+
 cdef __StructSpec get_reflection__StructLevelTerseStruct()
 
 cdef __StructSpec get_reflection__FieldLevelTerseStruct()
+
+cdef __StructSpec get_reflection__TerseStructWithCustomDefault()
 
 cdef __ListSpec get_reflection__List__i16()
 

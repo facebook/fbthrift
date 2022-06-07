@@ -21,6 +21,12 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class MyStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
+    field1: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class StructLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
     bool_field: _typing.Optional[bool]
     byte_field: _typing.Optional[int]
@@ -55,6 +61,25 @@ class FieldLevelTerseStruct_Builder(thrift.py3.builder.StructBuilder):
     terse_set_field: _typing.Optional[set]
     terse_map_field: _typing.Optional[dict]
     terse_struct_field: _typing.Any
+    bool_field: _typing.Optional[bool]
+    byte_field: _typing.Optional[int]
+    short_field: _typing.Optional[int]
+    int_field: _typing.Optional[int]
+    long_field: _typing.Optional[int]
+    float_field: _typing.Optional[float]
+    double_field: _typing.Optional[float]
+    string_field: _typing.Optional[str]
+    binary_field: _typing.Optional[bytes]
+    enum_field: _typing.Optional[_terse_write_types.MyEnum]
+    list_field: _typing.Optional[list]
+    set_field: _typing.Optional[set]
+    map_field: _typing.Optional[dict]
+    struct_field: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class TerseStructWithCustomDefault_Builder(thrift.py3.builder.StructBuilder):
     bool_field: _typing.Optional[bool]
     byte_field: _typing.Optional[int]
     short_field: _typing.Optional[int]
