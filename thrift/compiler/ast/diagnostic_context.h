@@ -200,13 +200,6 @@ class diagnostic_context : public diagnostics_engine,
   void failure(Args&&... args) {
     report(diagnostic_level::failure, std::forward<Args>(args)...);
   }
-  template <typename... Args>
-  bool failure_if(bool cond, Args&&... args) {
-    if (cond) {
-      report(diagnostic_level::failure, std::forward<Args>(args)...);
-    }
-    return cond;
-  }
 
  private:
   node_metadata_cache cache_;
