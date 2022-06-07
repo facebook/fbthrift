@@ -16,14 +16,14 @@
 
 #include <thrift/compiler/generate/t_java_deprecated_generator.h>
 
+#include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
-
-#include <stdexcept>
 
 #include <boost/filesystem.hpp>
 
@@ -32,6 +32,12 @@ using namespace std;
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace {
+std::string upcase_string(std::string original) {
+  std::transform(original.begin(), original.end(), original.begin(), ::toupper);
+  return original;
+}
+} // namespace
 
 /**
  * Prepares for file generation by opening up the necessary file output

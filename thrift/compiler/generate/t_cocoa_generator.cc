@@ -25,7 +25,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 
 namespace apache {
 namespace thrift {
@@ -45,14 +45,14 @@ static const std::string kFromStringPostfix = "FromString";
  *
  * mostly copy/pasting/tweaking from mcslee's work.
  */
-class t_cocoa_generator : public t_oop_generator {
+class t_cocoa_generator : public t_concat_generator {
  public:
   t_cocoa_generator(
       t_program* program,
       t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
-      : t_oop_generator(program, std::move(context)) {
+      : t_concat_generator(program, std::move(context)) {
     (void)option_string;
     std::map<std::string, std::string>::const_iterator iter;
 

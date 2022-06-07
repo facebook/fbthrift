@@ -34,7 +34,7 @@
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/common.h>
-#include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 
 namespace apache {
 namespace thrift {
@@ -66,14 +66,14 @@ class t_name_generator {
  * Hack code generator.
  *
  */
-class t_hack_generator : public t_oop_generator {
+class t_hack_generator : public t_concat_generator {
  public:
   t_hack_generator(
       t_program* program,
       t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/)
-      : t_oop_generator(program, std::move(context)) {
+      : t_concat_generator(program, std::move(context)) {
     json_ = option_is_specified(parsed_options, "json");
     phps_ = option_is_specified(parsed_options, "server");
     strict_types_ = option_is_specified(parsed_options, "stricttypes");

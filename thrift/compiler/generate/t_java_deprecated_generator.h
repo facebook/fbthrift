@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 
 namespace apache {
 namespace thrift {
@@ -42,14 +42,14 @@ struct StructGenParams {
 /**
  * Java code generator.
  */
-class t_java_deprecated_generator : public t_oop_generator {
+class t_java_deprecated_generator : public t_concat_generator {
  public:
   t_java_deprecated_generator(
       t_program* program,
       t_generation_context context,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-      : t_oop_generator(program, std::move(context)) {
+      : t_concat_generator(program, std::move(context)) {
     std::map<std::string, std::string>::const_iterator iter;
     out_dir_base_ = "gen-javadeprecated";
   }
