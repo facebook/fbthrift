@@ -93,16 +93,18 @@ struct ast_mutators {
   //
   // Any failures are reported to ctx.
   bool resolve_all_types(diagnostic_context& ctx, t_program_bundle& bundle) {
-    bool failure = false;
+    bool success = true;
     ctx.begin_visit(*bundle.root_program());
     for (auto& td : bundle.root_program()->scope()->placeholder_typedefs()) {
-      failure |= ctx.failure_if(!td.resolve(), td, [&](auto& o) {
-        o << (td.generated() ? "Expected generated type" : "Type");
-        o << " `" << td.name() << "` not defined.";
-      });
+      success |= ctx.check(
+          td.resolve(),
+          td,
+          "{} `{}` not defined.",
+          td.generated() ? "Expected generated type" : "Type",
+          td.name());
     }
     ctx.end_visit(*bundle.root_program());
-    return !failure;
+    return success;
   }
 };
 
