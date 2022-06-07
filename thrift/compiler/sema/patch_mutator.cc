@@ -450,8 +450,7 @@ t_struct& patch_generator::gen_struct(
 
 t_struct& patch_generator::gen_suffix_struct(
     const t_node& annot, const t_named& orig, const char* suffix) {
-  ctx_.failure_if(
-      orig.uri().empty(), annot, "URI required to support patching.");
+  ctx_.check(!orig.uri().empty(), annot, "URI required to support patching.");
   t_struct& generated =
       gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
   if (const auto* cpp_name = orig.find_annotation_or_null("cpp.name")) {
