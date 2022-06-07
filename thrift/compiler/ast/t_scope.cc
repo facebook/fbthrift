@@ -58,7 +58,9 @@ std::vector<std::string> split_string_by_periods(const std::string& str) {
 } // namespace
 
 t_type_ref t_scope::ref_type(
-    const t_program& program, const std::string& name) {
+    const t_program& program,
+    const std::string& name,
+    const source_range& range) {
   // Try to resolve the type.
   const t_type* type = find_type(name);
   if (type == nullptr) {
@@ -89,6 +91,7 @@ t_type_ref t_scope::ref_type(
   // cast.
   auto ph = std::make_unique<t_placeholder_typedef>(
       const_cast<t_program*>(&program), name);
+  ph->set_src_range(range);
   return add_placeholder_typedef(std::move(ph));
 }
 

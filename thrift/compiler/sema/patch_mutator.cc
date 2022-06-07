@@ -384,11 +384,10 @@ t_type_ref patch_generator::find_patch_type(
       name = "Optional" + std::move(name);
     }
     // It should be in the same program as the type itself.
-    t_type_ref result =
-        program_.scope()->ref_type(*structured->program(), name);
+    t_type_ref result = program_.scope()->ref_type(
+        *structured->program(), name, field.src_range());
     if (auto* ph = result.get_unresolved_type()) {
       // Set the location info, in case the type can't be resolved later.
-      ph->set_src_range(field.src_range());
       ph->set_lineno(field.lineno());
       ph->set_generated();
     }

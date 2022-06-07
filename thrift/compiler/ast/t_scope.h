@@ -24,6 +24,7 @@
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/source_location.h>
 
 namespace apache {
 namespace thrift {
@@ -41,9 +42,12 @@ class t_service;
  */
 class t_scope {
  public:
-  // Get a (poteinally unresolve) reference to given type, declared in the given
-  // program.
-  t_type_ref ref_type(const t_program& program, const std::string& name);
+  // Get a (poetically unresolved) reference to given type, declared in the
+  // given program.
+  t_type_ref ref_type(
+      const t_program& program,
+      const std::string& name,
+      const source_range& range);
 
   void add_type(std::string name, const t_type* type) {
     types_[std::move(name)] = type;

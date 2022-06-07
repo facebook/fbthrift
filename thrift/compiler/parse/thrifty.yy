@@ -722,7 +722,7 @@ ConstStructType:
   Identifier
     {
       driver.debug("ConstStructType -> Identifier");
-      $$ = driver.new_type_ref(std::move($1), nullptr, /*is_const=*/true);
+      $$ = driver.new_type_ref(std::move($1), nullptr, {@1.begin, @1.end}, /*is_const=*/true);
     }
 
 ConstStructContents:
@@ -1008,7 +1008,7 @@ FieldType:
   FieldTypeIdentifier Annotations
     {
       driver.debug("FieldType => Identifier Annotations");
-      $$ = driver.new_type_ref(std::move($1), own($2));
+      $$ = driver.new_type_ref(std::move($1), own($2), {@1.begin, @1.end});
     }
 | BaseType Annotations
     {

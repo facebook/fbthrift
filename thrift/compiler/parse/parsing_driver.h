@@ -321,6 +321,7 @@ class parsing_driver {
   t_type_ref new_type_ref(
       std::string name,
       std::unique_ptr<t_annotations> annotations,
+      const source_range& range,
       bool is_const = false);
 
   // Tries to set the given fields, reporting a failure on a collsion.

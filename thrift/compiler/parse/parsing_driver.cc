@@ -561,12 +561,13 @@ t_type_ref parsing_driver::new_type_ref(
 t_type_ref parsing_driver::new_type_ref(
     std::string name,
     std::unique_ptr<t_annotations> annotations,
+    const source_range& range,
     bool is_const) {
   if (mode != parsing_mode::PROGRAM) {
     return {};
   }
 
-  t_type_ref result = scope_cache->ref_type(*program, name);
+  t_type_ref result = scope_cache->ref_type(*program, name, range);
 
   // TODO(afuller): Remove this special case for const, which requires a
   // specific declaration order.
