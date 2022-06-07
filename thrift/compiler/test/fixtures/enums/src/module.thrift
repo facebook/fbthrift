@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
+package "test.dev/fixtures/enums"
+
+namespace android test.fixtures.enums
+namespace java test.fixtures.enums
 namespace java2 test.fixtures.enums
 namespace java.swift test.fixtures.enums
 
+@thrift.GenDefaultEnumValue
 enum Metasyntactic {
   FOO = 1,
   BAR = 2,

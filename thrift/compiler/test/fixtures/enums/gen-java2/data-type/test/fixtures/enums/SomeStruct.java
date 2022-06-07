@@ -133,6 +133,9 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
       NAMES_TO_IDS.put("tags", 4);
       THRIFT_NAMES_TO_IDS.put("tags", 4);
       FIELD_METADATA.put(4, TAGS_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/enums/SomeStruct"), 
+        SomeStruct.class, SomeStruct::read0));
     }
     
     @Nullable

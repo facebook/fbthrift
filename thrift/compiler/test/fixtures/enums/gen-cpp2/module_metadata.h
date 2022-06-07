@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/enums/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 
 namespace apache {
@@ -18,12 +19,12 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::cpp2::Metasyntactic> {
+class EnumMetadata<::test::fixtures::enums::Metasyntactic> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::SomeStruct> {
+class StructMetadata<::test::fixtures::enums::SomeStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

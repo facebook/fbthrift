@@ -1,0 +1,101 @@
+{
+  "__fbthrift": "@generated",
+  "thrift_module" : "module",
+  "namespaces": {
+    "android": "test.fixtures.enums",
+    "java": "test.fixtures.enums",
+    "java.swift": "test.fixtures.enums",
+    "java2": "test.fixtures.enums"
+  },
+  "enumerations" :
+  {
+      "Metasyntactic" : {
+        "name" : "Metasyntactic",
+        "constants" : {
+          "FOO" : {
+            "name" : "FOO",
+            "lineno" : 28,
+            "value" : 1
+          },
+          "BAR" : {
+            "name" : "BAR",
+            "lineno" : 29,
+            "value" : 2
+          },
+          "BAZ" : {
+            "name" : "BAZ",
+            "lineno" : 30,
+            "value" : 3
+          },
+          "BAX" : {
+            "name" : "BAX",
+            "lineno" : 31,
+            "value" : 4
+          },
+          "Unspecified" : {
+            "name" : "Unspecified",
+            "lineno" : -1,
+            "value" : 0
+          }
+        },
+        "lineno" : 27
+      }
+      },
+  "structs" :
+  {
+      "SomeStruct" : {
+        "name" : "SomeStruct",
+        "fields" : {
+          "reasonable" : {
+            "name" : "reasonable",
+            "default_value" : 1,
+            "key" : 1,
+            "lineno" : 35,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "enum",
+  "name" : "Metasyntactic"
+}
+          },
+          "fine" : {
+            "name" : "fine",
+            "default_value" : 2,
+            "key" : 2,
+            "lineno" : 36,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "enum",
+  "name" : "Metasyntactic"
+}
+          },
+          "questionable" : {
+            "name" : "questionable",
+            "default_value" : -1,
+            "key" : 3,
+            "lineno" : 37,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "enum",
+  "name" : "Metasyntactic"
+}
+          },
+          "tags" : {
+            "name" : "tags",
+            "default_value" : [],
+            "key" : 4,
+            "lineno" : 38,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "i32"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 34
+      }
+      },
+  "source_path" : "src/module",
+  "py_namespace" : ""
+}

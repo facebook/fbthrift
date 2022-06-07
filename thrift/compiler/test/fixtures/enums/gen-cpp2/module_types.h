@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
+#include "thrift/annotation/gen-cpp2/thrift_types.h"
 
 namespace apache {
 namespace thrift {
@@ -41,34 +42,35 @@ APACHE_THRIFT_DEFINE_ACCESSOR(tags);
 } // namespace apache
 
 // BEGIN declare_enums
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
 
 enum class Metasyntactic {
   FOO = 1,
   BAR = 2,
   BAZ = 3,
   BAX = 4,
+  Unspecified = 0,
 };
 
 
 
 
-} // cpp2
+}}} // test::fixtures::enums
 
 namespace std {
-template<> struct hash<::cpp2::Metasyntactic> :
-  ::apache::thrift::detail::enum_hash<::cpp2::Metasyntactic> {};
+template<> struct hash<::test::fixtures::enums::Metasyntactic> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::Metasyntactic> {};
 } // std
 
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage<::cpp2::Metasyntactic>;
+template <> struct TEnumDataStorage<::test::fixtures::enums::Metasyntactic>;
 
-template <> struct TEnumTraits<::cpp2::Metasyntactic> {
-  using type = ::cpp2::Metasyntactic;
+template <> struct TEnumTraits<::test::fixtures::enums::Metasyntactic> {
+  using type = ::test::fixtures::enums::Metasyntactic;
 
-  static constexpr std::size_t const size = 4;
+  static constexpr std::size_t const size = 5;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
@@ -86,14 +88,14 @@ template <> struct TEnumTraits<::cpp2::Metasyntactic> {
     (void)findName(value, &ret);
     return ret.data();
   }
-  static constexpr type min() { return type::FOO; }
+  static constexpr type min() { return type::Unspecified; }
   static constexpr type max() { return type::BAX; }
 };
 
 
 }} // apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
 
 using _Metasyntactic_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Metasyntactic>;
 #ifndef ANDROID
@@ -102,17 +104,17 @@ extern const _Metasyntactic_EnumMapFactory::ValuesToNamesMapType _Metasyntactic_
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_NAMES_TO_VALUES;
 #endif
-} // cpp2
+}}} // test::fixtures::enums
 
 // END declare_enums
 // BEGIN forward_declare
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
 class SomeStruct;
-} // cpp2
+}}} // test::fixtures::enums
 // END forward_declare
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
@@ -126,6 +128,29 @@ class SomeStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const char* __fbthrift_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>
+  >;
+  
+  static ::apache::thrift::tag::reasonable __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::fine __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::questionable __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::tags __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
+      case 3: return ::apache::thrift::Ordinal{3};
+      case 4: return ::apache::thrift::Ordinal{4};
+    }
+    return ::apache::thrift::Ordinal{0};
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -139,13 +164,13 @@ class SomeStruct final  {
  public:
 
   SomeStruct() :
-      __fbthrift_field_reasonable( ::cpp2::Metasyntactic::FOO),
-      __fbthrift_field_fine( ::cpp2::Metasyntactic::BAR),
-      __fbthrift_field_questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {
+      __fbthrift_field_reasonable( ::test::fixtures::enums::Metasyntactic::FOO),
+      __fbthrift_field_fine( ::test::fixtures::enums::Metasyntactic::BAR),
+      __fbthrift_field_questionable(static_cast< ::test::fixtures::enums::Metasyntactic>(-1)) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);
+  SomeStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::Metasyntactic reasonable__arg, ::test::fixtures::enums::Metasyntactic fine__arg, ::test::fixtures::enums::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);
 
   SomeStruct(SomeStruct&&) noexcept;
 
@@ -155,11 +180,11 @@ class SomeStruct final  {
   SomeStruct& operator=(SomeStruct&&) noexcept;
   SomeStruct& operator=(const SomeStruct& src);
  private:
-  ::cpp2::Metasyntactic __fbthrift_field_reasonable;
+  ::test::fixtures::enums::Metasyntactic __fbthrift_field_reasonable;
  private:
-  ::cpp2::Metasyntactic __fbthrift_field_fine;
+  ::test::fixtures::enums::Metasyntactic __fbthrift_field_fine;
  private:
-  ::cpp2::Metasyntactic __fbthrift_field_questionable;
+  ::test::fixtures::enums::Metasyntactic __fbthrift_field_questionable;
  private:
   ::std::set<::std::int32_t> __fbthrift_field_tags;
  private:
@@ -170,122 +195,122 @@ class SomeStruct final  {
   bool operator==(const SomeStruct&) const;
   bool operator<(const SomeStruct&) const;
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {
     return {this->__fbthrift_field_reasonable, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_reasonable), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reasonable_ref() & {
     return {this->__fbthrift_field_reasonable, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_reasonable), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable() const& {
     return {this->__fbthrift_field_reasonable, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_reasonable), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reasonable() & {
     return {this->__fbthrift_field_reasonable, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable() && {
     return {static_cast<T&&>(this->__fbthrift_field_reasonable), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine_ref() const& {
     return {this->__fbthrift_field_fine, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_fine), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fine_ref() & {
     return {this->__fbthrift_field_fine, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_fine), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine() const& {
     return {this->__fbthrift_field_fine, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_fine), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fine() & {
     return {this->__fbthrift_field_fine, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine() && {
     return {static_cast<T&&>(this->__fbthrift_field_fine), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
     return {this->__fbthrift_field_questionable, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_questionable), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable_ref() & {
     return {this->__fbthrift_field_questionable, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_questionable), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable() const& {
     return {this->__fbthrift_field_questionable, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_questionable), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable() & {
     return {this->__fbthrift_field_questionable, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::test::fixtures::enums::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable() && {
     return {static_cast<T&&>(this->__fbthrift_field_questionable), __isset.at(2), __isset.bit(2)};
   }
@@ -330,32 +355,32 @@ class SomeStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_tags), __isset.at(3), __isset.bit(3)};
   }
 
-  ::cpp2::Metasyntactic get_reasonable() const {
+  ::test::fixtures::enums::Metasyntactic get_reasonable() const {
     return __fbthrift_field_reasonable;
   }
 
   [[deprecated("Use `FOO.reasonable_ref() = BAR;` instead of `FOO.set_reasonable(BAR);`")]]
-  ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
+  ::test::fixtures::enums::Metasyntactic& set_reasonable(::test::fixtures::enums::Metasyntactic reasonable_) {
     reasonable_ref() = reasonable_;
     return __fbthrift_field_reasonable;
   }
 
-  ::cpp2::Metasyntactic get_fine() const {
+  ::test::fixtures::enums::Metasyntactic get_fine() const {
     return __fbthrift_field_fine;
   }
 
   [[deprecated("Use `FOO.fine_ref() = BAR;` instead of `FOO.set_fine(BAR);`")]]
-  ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
+  ::test::fixtures::enums::Metasyntactic& set_fine(::test::fixtures::enums::Metasyntactic fine_) {
     fine_ref() = fine_;
     return __fbthrift_field_fine;
   }
 
-  ::cpp2::Metasyntactic get_questionable() const {
+  ::test::fixtures::enums::Metasyntactic get_questionable() const {
     return __fbthrift_field_questionable;
   }
 
   [[deprecated("Use `FOO.questionable_ref() = BAR;` instead of `FOO.set_questionable(BAR);`")]]
-  ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
+  ::test::fixtures::enums::Metasyntactic& set_questionable(::test::fixtures::enums::Metasyntactic questionable_) {
     questionable_ref() = questionable_;
     return __fbthrift_field_questionable;
   }
@@ -394,4 +419,4 @@ unsigned long SomeStruct::read(Protocol_* iprot) {
 }
 
 
-} // cpp2
+}}} // test::fixtures::enums

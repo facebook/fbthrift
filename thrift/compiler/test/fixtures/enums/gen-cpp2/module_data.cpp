@@ -12,32 +12,34 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::cpp2::Metasyntactic, 4> TEnumDataStorage<::cpp2::Metasyntactic>::values = {{
+const std::array<::test::fixtures::enums::Metasyntactic, 5> TEnumDataStorage<::test::fixtures::enums::Metasyntactic>::values = {{
   type::FOO,
   type::BAR,
   type::BAZ,
   type::BAX,
+  type::Unspecified,
 }};
-const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Metasyntactic>::names = {{
+const std::array<folly::StringPiece, 5> TEnumDataStorage<::test::fixtures::enums::Metasyntactic>::names = {{
   "FOO",
   "BAR",
   "BAZ",
   "BAX",
+  "Unspecified",
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::fields_names = {{
   "reasonable",
   "fine",
   "questionable",
   "tags",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,

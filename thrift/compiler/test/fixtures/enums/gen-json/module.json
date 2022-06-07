@@ -1,0 +1,109 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "module",
+  "enumerations" : {
+    "Metasyntactic" : {
+      "lineno" : 27,
+      "constants" : {
+        "FOO" : 1,
+        "BAR" : 2,
+        "BAZ" : 3,
+        "BAX" : 4,
+        "Unspecified" : 0
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 26,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 32,
+          "column" : 2
+        }
+      }
+    }
+  },
+  "structs" : {
+    "SomeStruct" : {
+      "lineno" : 34,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "reasonable" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "Metasyntactic",
+          "required" : true,
+          "default_value" : 1,
+          "source_range" : {
+            "begin" : {
+              "line" : 35,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 35,
+              "column" : 36
+            }
+          }
+        },
+        "fine" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "Metasyntactic",
+          "required" : true,
+          "default_value" : 2,
+          "source_range" : {
+            "begin" : {
+              "line" : 36,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 36,
+              "column" : 28
+            }
+          }
+        },
+        "questionable" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "Metasyntactic",
+          "required" : true,
+          "default_value" : -1,
+          "source_range" : {
+            "begin" : {
+              "line" : 37,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 37,
+              "column" : 37
+            }
+          }
+        },
+        "tags" : {
+          "type_enum" : "SET",
+          "spec_args" : { "type_enum" : "I32", "spec_args" : null} ,
+          "required" : true,
+          "default_value" : [  ],
+          "source_range" : {
+            "begin" : {
+              "line" : 38,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 38,
+              "column" : 24
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 34,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 39,
+          "column" : 2
+        }
+      }
+    }
+  }
+}

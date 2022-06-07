@@ -14,7 +14,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByFieldId<::cpp2::SomeStruct> {
+struct VisitByFieldId<::test::fixtures::enums::SomeStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -27,7 +27,7 @@ struct VisitByFieldId<::cpp2::SomeStruct> {
     case 4:
       return f(3, static_cast<T&&>(t).tags_ref());
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::SomeStruct");
+      throwInvalidThriftId(fieldId, "::test::fixtures::enums::SomeStruct");
     }
   }
 };

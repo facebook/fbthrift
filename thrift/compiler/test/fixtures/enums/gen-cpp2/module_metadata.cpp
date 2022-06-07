@@ -25,21 +25,22 @@ using ThriftService = ::apache::thrift::metadata::ThriftService;
 using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
-void EnumMetadata<::cpp2::Metasyntactic>::gen(ThriftMetadata& metadata) {
+void EnumMetadata<::test::fixtures::enums::Metasyntactic>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums()->emplace("module.Metasyntactic", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name() = "module.Metasyntactic";
-  using EnumTraits = TEnumTraits<::cpp2::Metasyntactic>;
+  using EnumTraits = TEnumTraits<::test::fixtures::enums::Metasyntactic>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
+  enum_metadata.structured_annotations()->push_back(*cvStruct("thrift.GenDefaultEnumValue", {}).cv_struct_ref());
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
+StructMetadata<::test::fixtures::enums::SomeStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -49,9 +50,9 @@ StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   module_SomeStruct.is_union() = false;
   static const EncodedThriftField
   module_SomeStruct_fields[] = {
-    {1, "reasonable", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
-    {2, "fine", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
-    {3, "questionable", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {1, "reasonable", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {2, "fine", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {3, "questionable", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
     {4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SomeStruct_fields) {

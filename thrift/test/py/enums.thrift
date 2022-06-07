@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 namespace py thrift.test.py.enums
 
+@thrift.GenDefaultEnumValue{name = "ME1_0"}
 enum MyEnum1 {
-  ME1_0 = 0,
   ME1_1 = 1,
   ME1_2 = 2,
   ME1_3 = 3,

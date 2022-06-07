@@ -12,14 +12,14 @@
 
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage<::cpp2::Metasyntactic> {
-  using type = ::cpp2::Metasyntactic;
-  static constexpr const std::size_t size = 4;
+template <> struct TEnumDataStorage<::test::fixtures::enums::Metasyntactic> {
+  using type = ::test::fixtures::enums::Metasyntactic;
+  static constexpr const std::size_t size = 5;
   static const std::array<type, size> values;
   static const std::array<folly::StringPiece, size> names;
 };
 
-template <> struct TStructDataStorage<::cpp2::SomeStruct> {
+template <> struct TStructDataStorage<::test::fixtures::enums::SomeStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

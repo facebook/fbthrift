@@ -14,21 +14,21 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::Metasyntactic>::size;
-folly::Range<::cpp2::Metasyntactic const*> const TEnumTraits<::cpp2::Metasyntactic>::values = folly::range(TEnumDataStorage<::cpp2::Metasyntactic>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Metasyntactic>::names = folly::range(TEnumDataStorage<::cpp2::Metasyntactic>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::Metasyntactic>::size;
+folly::Range<::test::fixtures::enums::Metasyntactic const*> const TEnumTraits<::test::fixtures::enums::Metasyntactic>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::Metasyntactic>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::Metasyntactic>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::Metasyntactic>::names);
 
-bool TEnumTraits<::cpp2::Metasyntactic>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::enums::Metasyntactic>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::Metasyntactic>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::enums::Metasyntactic>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
 #ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
@@ -36,17 +36,17 @@ const _Metasyntactic_EnumMapFactory::ValuesToNamesMapType _Metasyntactic_VALUES_
 const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_NAMES_TO_VALUES = _Metasyntactic_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 #endif
-} // cpp2
+}}} // test::fixtures::enums
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::enums::SomeStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::SomeStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::enums::SomeStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -59,7 +59,11 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace enums {
+
+const char* SomeStruct::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/enums/SomeStruct";
+}
 
 SomeStruct::SomeStruct(const SomeStruct&) = default;
 SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
@@ -81,7 +85,7 @@ SomeStruct& SomeStruct::operator=(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcep
 }
 
 
-SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg) :
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::Metasyntactic reasonable__arg, ::test::fixtures::enums::Metasyntactic fine__arg, ::test::fixtures::enums::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg) :
     __fbthrift_field_reasonable(std::move(reasonable__arg)),
     __fbthrift_field_fine(std::move(fine__arg)),
     __fbthrift_field_questionable(std::move(questionable__arg)),
@@ -95,9 +99,9 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
 
 void SomeStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_reasonable = ::cpp2::Metasyntactic();
-  this->__fbthrift_field_fine = ::cpp2::Metasyntactic();
-  this->__fbthrift_field_questionable = ::cpp2::Metasyntactic();
+  this->__fbthrift_field_reasonable = ::test::fixtures::enums::Metasyntactic();
+  this->__fbthrift_field_fine = ::test::fixtures::enums::Metasyntactic();
+  this->__fbthrift_field_questionable = ::test::fixtures::enums::Metasyntactic();
   this->__fbthrift_field_tags.clear();
   __isset = {};
 }
@@ -172,9 +176,9 @@ template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::enums
 
-namespace cpp2 { namespace {
+namespace test { namespace fixtures { namespace enums { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}} // cpp2
+}}}} // test::fixtures::enums

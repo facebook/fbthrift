@@ -14,7 +14,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::cpp2::SomeStruct> {
+struct ForEachField<::test::fixtures::enums::SomeStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).reasonable_ref()...);
