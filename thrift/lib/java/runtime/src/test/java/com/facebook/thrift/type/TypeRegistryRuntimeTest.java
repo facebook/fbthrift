@@ -17,11 +17,11 @@
 package com.facebook.thrift.type;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import com.facebook.thrift.payload.Reader;
 import com.facebook.thrift.test.universalname.TestException;
 import com.facebook.thrift.test.universalname.TestRequest;
-import com.facebook.thrift.test.universalname.TestResponse;
 import com.facebook.thrift.test.universalname.TestUnion;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +30,10 @@ public class TypeRegistryRuntimeTest {
 
   @Before
   public void init() throws Exception {
+    // Static binding
     new TestRequest.Builder().build();
-    new TestResponse.Builder().build();
-    new TestException.Builder().build();
-    new TestUnion();
+    // The rest of the classes, TestResponse, TestException and TestUnion will be
+    // registered dynamically during runtime.
   }
 
   @Test
@@ -82,5 +82,11 @@ public class TypeRegistryRuntimeTest {
     assertEquals("test.dev/thrift/lib/java/my_request", type.getUniversalName().getUri());
     assertEquals(TestRequest.class, type.getClazz());
     assertEquals(true, type.getReader() instanceof Reader);
+  }
+
+  @Test
+  public void testUnknownUri() {
+    Type type = TypeRegistry.findByHashPrefix("ffffffff");
+    assertNull(type);
   }
 }

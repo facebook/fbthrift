@@ -27,11 +27,6 @@ import org.apache.thrift.conformance.ConformanceService;
 public class ConformanceServer {
 
   public static void main(String[] args) {
-    // Register all Thrift objects to the type registry
-    // We need to find a better/efficient way
-    TypeRegistryLoader.initialize(
-        new String[] {"org.apache.thrift.test", "org.apache.thrift.conformance"});
-
     RpcServerHandler handler =
         ConformanceService.serverHandlerBuilder(new ConformanceServiceImpl()).build();
 

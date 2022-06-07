@@ -17,6 +17,7 @@
 package com.facebook.thrift.type;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.reflect.ClassPath;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -39,7 +40,76 @@ public final class TypeRegistry {
   /** Hash map for class name to Type */
   private static final Map<Class, Type> classMap = new ConcurrentHashMap<>();
 
+  /** Sorted map for pre registered universal name hash to class name */
+  private static final ConcurrentSkipListMap<ByteBuf, String> hashList =
+      new ConcurrentSkipListMap<>();
+
+  private static final String TYPE_LIST_PREFIX = "__fbthrift_TypeList_";
+
   private TypeRegistry() {}
+
+  static {
+    initialize();
+  }
+
+  /**
+   * Check if the prefix is already in the pre-loaded hash list. If it is in the list, mapped
+   * classname is loaded. This will register the type to the TypeRegistry.
+   *
+   * @param prefix prefix as byte array
+   * @return True if prefix is already in pre-loaded hash list, false if otherwise.
+   * @throws AmbiguousUniversalNameException if the prefix return more than one entry.
+   */
+  private static boolean registered(ByteBuf prefix) {
+    ByteBuf key = hashList.ceilingKey(prefix);
+    if (key == null || !startsWith(key, prefix)) {
+      return false;
+    }
+
+    ByteBuf nextKey = hashList.higherKey(key);
+    if (nextKey == null || !startsWith(nextKey, prefix)) {
+      String className = hashList.get(key);
+      if (className != null) {
+        try {
+          Class.forName(className);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+      return true;
+    }
+
+    throw new AmbiguousUniversalNameException(ByteBufUtil.hexDump(prefix));
+  }
+
+  /**
+   * Find all _TypeList_<hash-code> classes from classpath and pre-load all type mapping into
+   * hashList - TreeMap
+   */
+  private static void initialize() {
+    try {
+      ClassPath.from(ClassLoader.getSystemClassLoader()).getAllClasses().stream()
+          .filter(c -> c.getName().contains(TYPE_LIST_PREFIX))
+          .forEach(
+              c -> {
+                try {
+                  Class clazz = Class.forName(c.getName());
+                  Object o = clazz.getDeclaredConstructor().newInstance();
+                  if (o instanceof TypeList) {
+                    TypeList typeList = (TypeList) o;
+                    for (TypeList.TypeMapping m : typeList.getTypes()) {
+                      UniversalName un = new UniversalName(m.getUri());
+                      hashList.put(un.getHashBytes(), m.getClassName());
+                    }
+                  }
+                } catch (Exception e) {
+                  LOGGER.warn("Can not load class: " + c.getName(), e);
+                }
+              });
+    } catch (Exception e) {
+      throw new RuntimeException("Can not read classes", e);
+    }
+  }
 
   /**
    * Validate given universal name and the class. They should not be associated with another object.
@@ -131,6 +201,9 @@ public final class TypeRegistry {
 
     ByteBuf key = hashMap.ceilingKey(prefix);
     if (key == null || !startsWith(key, prefix)) {
+      if (registered(prefix)) {
+        return findByHashPrefix(prefix);
+      }
       return null;
     }
 

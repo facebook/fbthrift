@@ -74,7 +74,7 @@ public class TypeRegistryTest {
       };
 
   @Before
-  public void init() throws Exception {
+  public void init() {
     for (int i = 0; i < 20; i++) {
       TypeRegistry.add(
           new Type(
@@ -242,5 +242,12 @@ public class TypeRegistryTest {
     } catch (AmbiguousUniversalNameException a) {
       // expected.
     }
+  }
+
+  @Test
+  public void testTypeListAmbiguousPrefix() throws Exception {
+    expectedException.expect(AmbiguousUniversalNameException.class);
+    expectedException.expectMessage("0577");
+    Type t = TypeRegistry.findByHashPrefix("0577");
   }
 }

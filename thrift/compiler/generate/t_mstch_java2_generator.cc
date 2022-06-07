@@ -22,10 +22,11 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/lib/java/util.h>
 
+#include <openssl/evp.h>
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 
 using namespace std;
 
@@ -79,6 +80,61 @@ std::string get_java2_swift_name(const Node* node) {
   return node->get_annotation(
       "java.swift.name", java::mangle_java_name(node->get_name(), false));
 }
+
+struct MdCtxDeleter {
+  void operator()(EVP_MD_CTX* ctx) const { EVP_MD_CTX_free(ctx); }
+};
+using ctx_ptr = std::unique_ptr<EVP_MD_CTX, MdCtxDeleter>;
+
+ctx_ptr newMdContext() {
+  auto* ctx = EVP_MD_CTX_new();
+  return ctx_ptr(ctx);
+}
+
+std::string hash(std::string st) {
+  // Save an initalized context.
+  static EVP_MD_CTX* kBase = []() {
+    auto ctx = newMdContext();
+    EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr);
+    return ctx.release(); // Leaky singleton.
+  }();
+
+  // Copy the base context.
+  auto ctx = newMdContext();
+  EVP_MD_CTX_copy_ex(ctx.get(), kBase);
+  // Digest the st.
+  EVP_DigestUpdate(ctx.get(), st.data(), st.size());
+
+  // Get the result.
+  std::string result(EVP_MD_CTX_size(ctx.get()), 0);
+  uint32_t size;
+  EVP_DigestFinal_ex(
+      ctx.get(), reinterpret_cast<uint8_t*>(result.data()), &size);
+  assert(size == result.size()); // Should already be the correct size.
+  result.resize(size);
+  return result;
+}
+
+string toHex(const string& s) {
+  ostringstream ret;
+
+  unsigned int c;
+  for (string::size_type i = 0; i < s.length(); ++i) {
+    c = (unsigned int)(unsigned char)s[i];
+    ret << hex << setfill('0') << setw(2) << c;
+  }
+  return ret.str().substr(0, 8);
+}
+
+std::string str_type_list = "";
+std::string type_list_hash = "";
+
+struct type_mapping {
+  std::string uri;
+  std::string className;
+};
+
+std::vector<type_mapping> type_list;
 
 } // namespace
 
@@ -143,8 +199,11 @@ class t_mstch_java2_generator : public t_mstch_generator {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
 
+    std::string package_name = get_namespace_or_default(*program_);
+
     for (const T* item : items) {
-      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
+      auto classname = java::mangle_java_name(item->get_name(), true);
+      auto filename = classname + ".java";
       const auto& item_id = id + item->get_name();
       if (!c.count(item_id)) {
         c[item_id] = generator->generate(item, generators_, cache_);
@@ -152,6 +211,12 @@ class t_mstch_java2_generator : public t_mstch_generator {
 
       render_to_file(
           c[item_id], tpl_path, "data-type" / package_dir / filename);
+
+      auto uri = item->uri();
+      if (!uri.empty()) {
+        type_list.push_back(type_mapping{uri, package_name + "." + classname});
+        str_type_list += uri;
+      }
     }
   }
 
@@ -289,6 +354,22 @@ class t_mstch_java2_generator : public t_mstch_generator {
     write_output("data-type" / package_dir / placeholder_file_name, "");
     write_output("services" / package_dir / placeholder_file_name, "");
   }
+
+  void generate_type_list(const t_program* program) {
+    if (type_list.size() == 0) {
+      return;
+    }
+
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+
+    type_list_hash = toHex(hash(str_type_list));
+
+    std::string file_name = "__fbthrift_TypeList_" + type_list_hash + ".java";
+
+    const auto& prog = cached_program(program);
+    render_to_file(prog, "TypeList", "data-type" / package_dir / file_name);
+  }
 };
 
 class mstch_java2_program : public mstch_program {
@@ -305,11 +386,24 @@ class mstch_java2_program : public mstch_program {
             {"program:javaPackage", &mstch_java2_program::java_package},
             {"program:constantClassName",
              &mstch_java2_program::constant_class_name},
+            {"program:typeList", &mstch_java2_program::list},
+            {"program:typeListHash", &mstch_java2_program::list_hash},
         });
   }
   mstch::node java_package() { return get_namespace_or_default(*program_); }
   mstch::node constant_class_name() {
     return get_constants_class_name(*program_);
+  }
+  mstch::node list_hash() { return type_list_hash; }
+  mstch::node list() {
+    mstch::array a;
+    for (const auto& m : type_list) {
+      a.push_back(mstch::map{
+          {"uri", m.uri},
+          {"className", m.className},
+      });
+    }
+    return a;
   }
 };
 
@@ -1144,6 +1238,8 @@ void t_mstch_java2_generator::generate_program() {
         get_program(), generators_, cache_);
   }
 
+  str_type_list = "";
+  type_list_hash = "";
   generate_items(
       generators_->struct_generator_.get(),
       cache_->structs_,
@@ -1168,6 +1264,7 @@ void t_mstch_java2_generator::generate_program() {
       "Enum");
   generate_constants(get_program());
   generate_placeholder(get_program());
+  generate_type_list(get_program());
 }
 
 void t_mstch_java2_generator::set_mstch_generators() {
