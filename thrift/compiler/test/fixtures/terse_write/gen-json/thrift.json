@@ -331,7 +331,7 @@
       }
     },
     "v1beta" : {
-      "lineno" : 192,
+      "lineno" : 193,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -343,7 +343,7 @@
           "column" : 1
         },
         "end" : {
-          "line" : 192,
+          "line" : 193,
           "column" : 17
         }
       }
@@ -357,7 +357,7 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 201,
+          "line" : 202,
           "column" : 1
         },
         "end" : {

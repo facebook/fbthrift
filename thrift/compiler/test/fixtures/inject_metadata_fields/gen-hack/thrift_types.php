@@ -1091,7 +1091,7 @@ class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStru
           shape(
           )
         ),
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
           shape(
           )
         ),
@@ -1227,6 +1227,10 @@ class facebook_thrift_annotation_v1beta implements \IThriftSyncStruct {
           shape(
           )
         ),
+        'facebook_thrift_annotation_GenDefaultEnumValue' => facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
           shape(
           )
@@ -1304,10 +1308,6 @@ class facebook_thrift_annotation_v1alpha implements \IThriftSyncStruct {
           )
         ),
         'facebook_thrift_annotation_SerializeInFieldIdOrder' => facebook_thrift_annotation_SerializeInFieldIdOrder::fromShape(
-          shape(
-          )
-        ),
-        'facebook_thrift_annotation_GenDefaultEnumValue' => facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
           shape(
           )
         ),

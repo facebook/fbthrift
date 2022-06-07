@@ -152,7 +152,7 @@ struct SerializeInFieldIdOrder {}
 // they use for empty/nil/null in unions, when a zero value is not specified.
 @scope.FbthriftInternalEnum
 @scope.Program
-@Experimental // TODO(afuller): Implement
+@Beta
 struct GenDefaultEnumValue {
   /**
    * The name to use for the generated enum value.
@@ -187,6 +187,7 @@ struct v1 {}
  * released Thrift features.
  */
 @v1 // All v1 features.
+@GenDefaultEnumValue
 @Beta // All uses of v1beta inherit `@Beta`.
 @scope.Transitive
 struct v1beta {}
@@ -200,7 +201,6 @@ struct v1beta {}
  */
 @v1beta // All v1beta features.
 @SerializeInFieldIdOrder
-@GenDefaultEnumValue
 @NoLegacy // Disables features that will be removed.
 @Experimental // All uses of v1alpha inherit `@Experimental`.
 @scope.Transitive
