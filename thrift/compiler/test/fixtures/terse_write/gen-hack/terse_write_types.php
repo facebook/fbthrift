@@ -146,7 +146,7 @@ class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSy
    */
   public int $field1;
 
-  public function __construct(?int $field1 = null  )[] {
+  public function __construct(?int $field1 = null)[] {
     $this->field1 = $field1 ?? 1;
   }
 
@@ -2314,7 +2314,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
    */
   public ?MyStructWithCustomDefault $struct_field;
 
-  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStructWithCustomDefault $struct_field = null  )[] {
+  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStructWithCustomDefault $struct_field = null)[] {
     $this->bool_field = $bool_field ?? true;
     $this->byte_field = $byte_field ?? 1;
     $this->short_field = $short_field ?? 2;
