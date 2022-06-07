@@ -36,14 +36,14 @@ void propagate_process_in_event_base_annotation(
     diagnostic_context& ctx, mutator_context&, t_interaction& node) {
   for (auto* func : node.get_functions()) {
     func->set_is_interaction_member();
-    ctx.failure_if(
-        func->has_annotation("thread"),
+    ctx.check(
+        !func->has_annotation("thread"),
         "Interaction methods cannot be individually annotated with "
         "thread='eb'. Use process_in_event_base on the interaction instead.");
   }
   if (node.has_annotation("process_in_event_base")) {
-    ctx.failure_if(
-        node.has_annotation("serial"), "EB interactions are already serial");
+    ctx.check(
+        !node.has_annotation("serial"), "EB interactions are already serial");
     for (auto* func : node.get_functions()) {
       func->set_annotation("thread", "eb");
     }
@@ -159,11 +159,11 @@ void mutate_inject_metadata_fields(
     }
     std::unique_ptr<t_field> cloned_field = field.clone_DO_NOT_USE();
     cloned_field->set_injected_id(injected_id);
-    ctx.failure_if(
-        !node.try_append_field(std::move(cloned_field)), [&](auto& o) {
-          o << "Field id `" << field.id() << "` is already used in `"
-            << node.name() << "`.";
-        });
+    ctx.check(
+        node.try_append_field(std::move(cloned_field)),
+        "Field id `{}` is already used in `{}`.",
+        field.id(),
+        node.name());
   }
 }
 
