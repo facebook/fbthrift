@@ -280,6 +280,7 @@ public class MyServiceReactiveClient
 
     MyInteractionImpl(long interactionId) {
       this.interactionId = interactionId;
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("MyInteraction");
     }
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = new HashMap<>();
@@ -474,6 +475,7 @@ public class MyServiceReactiveClient
 
     @java.lang.Override
     public void dispose() {
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("MyInteraction");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
@@ -494,6 +496,7 @@ public class MyServiceReactiveClient
 
     MyInteractionFastImpl(long interactionId) {
       this.interactionId = interactionId;
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("MyInteractionFast");
     }
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -686,6 +689,7 @@ public class MyServiceReactiveClient
 
     @java.lang.Override
     public void dispose() {
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("MyInteractionFast");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
@@ -706,6 +710,7 @@ public class MyServiceReactiveClient
 
     SerialInteractionImpl(long interactionId) {
       this.interactionId = interactionId;
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("SerialInteraction");
     }
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -772,6 +777,7 @@ public class MyServiceReactiveClient
 
     @java.lang.Override
     public void dispose() {
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("SerialInteraction");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))

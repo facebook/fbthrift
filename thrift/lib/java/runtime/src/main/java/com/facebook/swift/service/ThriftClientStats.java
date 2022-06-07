@@ -41,6 +41,11 @@ public class ThriftClientStats {
   private static final String ONE_MINUTE = ".60";
   private static final String ONE_HOUR = ".3600";
 
+  private static final String INTERACTION = "interaction.";
+
+  private static final String CREATED = ".created";
+
+  private static final String DISPOSED = ".diposed";
   private final Map<String, AtomicLong> counters = new ConcurrentHashMap<>();
   private final Map<String, DecayCounter> decayCounters = new ConcurrentHashMap<>();
   private final Map<String, Distribution> distributions = new ConcurrentHashMap<>();
@@ -48,6 +53,14 @@ public class ThriftClientStats {
   private final Map<String, Distribution> oneHourDistributions = new ConcurrentHashMap<>();
 
   public ThriftClientStats() {}
+
+  public void interactionCreated(String interactionName) {
+    incrementCounterValues(INTERACTION + interactionName + CREATED);
+  }
+
+  public void interactionDisposed(String interactionName) {
+    incrementCounterValues(INTERACTION + interactionName + DISPOSED);
+  }
 
   public void publishWrite(String methodName, long writeDuration) {
     incrementCounterValues(methodName + WRITES_KEY);

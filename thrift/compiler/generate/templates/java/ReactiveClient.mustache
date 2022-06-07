@@ -407,6 +407,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
     {{service:name}}Impl(long interactionId) {
       this.interactionId = interactionId;
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("{{service:name}}");
     }
 
     {{#service:singleRequestFunctions}}
@@ -594,6 +595,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
     {{/service:streamingFunctions}}
     @java.lang.Override
     public void dispose() {
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("{{service:name}}");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))

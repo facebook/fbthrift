@@ -113,6 +113,7 @@ public class BadServiceReactiveClient
 
     BadInteractionImpl(long interactionId) {
       this.interactionId = interactionId;
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("BadInteraction");
     }
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -179,6 +180,7 @@ public class BadServiceReactiveClient
 
     @java.lang.Override
     public void dispose() {
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("BadInteraction");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
