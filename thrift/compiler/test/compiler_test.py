@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import unittest
 
 FIXTURE_ROOT = "."
 THRIFT_REL = "thrift/compiler/thrift"
+THRIFT_REL2 = "thrift/compiler/__thrift__/thrift"
 
 
 def ascend_find_exe(path, target):
@@ -42,7 +43,8 @@ def ascend_find_exe(path, target):
 
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift = ascend_find_exe(exe, THRIFT_REL)
+thrift = ascend_find_exe(exe, THRIFT_REL) or ascend_find_exe(exe, THRIFT_REL2)
+assert thrift
 fixtures_root_dir = os.path.join(FIXTURE_ROOT, "thrift/compiler/test/fixtures")
 
 
