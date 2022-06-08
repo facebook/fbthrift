@@ -21,7 +21,7 @@ import convertible.types as types
 from thrift.util.converter import to_py_struct
 
 
-class Py3ToPyConverterTest(unittest.TestCase):
+class Py3ToPyLegacyConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py_struct(
             ttypes.Simple,
@@ -119,7 +119,7 @@ class Py3ToPyConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.get_simpleField().name, "renamed")
 
 
-class Py3liteToPyConverterTest(unittest.TestCase):
+class PythonToPyLegacyConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py_struct(
             ttypes.Simple,

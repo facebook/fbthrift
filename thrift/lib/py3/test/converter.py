@@ -22,7 +22,7 @@ from thrift.py3.converter import to_py3_struct
 from thrift.py3.types import Struct
 
 
-class PyToPy3ConverterTest(unittest.TestCase):
+class PyLegacyToPy3ConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py3_struct(
             types.Simple,

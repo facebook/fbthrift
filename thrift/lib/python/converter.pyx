@@ -26,12 +26,9 @@ from thrift.python.types cimport (
 )
 cimport thrift.py3.types as py3_types
 
+
 def to_python_struct(cls, obj):
     return _to_python_struct(cls, obj)
-
-
-def to_py3lite_struct(cls, obj):
-    return to_python_struct(cls, obj)
 
 
 cdef object _to_python_struct(object cls, object obj):

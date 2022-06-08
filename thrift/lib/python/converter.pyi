@@ -20,6 +20,3 @@ T = typing.TypeVar("T", bound=StructOrUnion)
 
 # pyre-ignore[2]: it can be anything
 def to_python_struct(cls: typing.Type[T], obj: typing.Any) -> T: ...
-
-# pyre-ignore[2]: it can be anything
-def to_py3lite_struct(cls: typing.Type[T], obj: typing.Any) -> T: ...

@@ -131,7 +131,7 @@ class Py3toPythonConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.simple_.intField, 42)
 
 
-class PytoPy3liteConverterTest(unittest.TestCase):
+class PyLegacytoPythonConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_python_struct(
             thrift_types.Simple,
