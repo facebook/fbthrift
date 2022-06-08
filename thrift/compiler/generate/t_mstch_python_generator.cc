@@ -1276,11 +1276,6 @@ THRIFT_REGISTER_GENERATOR(
     "Python",
     "    include_prefix:  Use full include paths in generated files.\n");
 
-static t_generator_factory_impl<t_mstch_python_generator> alias(
-    "mstch_py3lite",
-    "Py3 Lite",
-    "    include_prefix:  Use full include paths in generated files.\n");
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
