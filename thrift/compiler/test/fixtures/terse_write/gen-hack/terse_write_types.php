@@ -218,7 +218,7 @@ class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSy
 
     if (idx($parsed, 'field1') !== null) {
       $this->field1 = /* HH_FIXME[4110] */ $parsed['field1'];
-    }    
+    }
   }
 
 }
@@ -2632,7 +2632,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
 
     if (idx($parsed, 'bool_field') !== null) {
       $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
-    }    
+    }
     if (idx($parsed, 'byte_field') !== null) {
       $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
       if ($_tmp0 > 0x7f) {
@@ -2640,7 +2640,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       } else {
         $this->byte_field = (int)$_tmp0;
       }
-    }    
+    }
     if (idx($parsed, 'short_field') !== null) {
       $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
       if ($_tmp1 > 0x7fff) {
@@ -2648,7 +2648,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       } else {
         $this->short_field = (int)$_tmp1;
       }
-    }    
+    }
     if (idx($parsed, 'int_field') !== null) {
       $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
       if ($_tmp2 > 0x7fffffff) {
@@ -2656,24 +2656,25 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       } else {
         $this->int_field = (int)$_tmp2;
       }
-    }    
+    }
     if (idx($parsed, 'long_field') !== null) {
       $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
-    }    
+    }
     if (idx($parsed, 'float_field') !== null) {
       $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
-    }    
+    }
     if (idx($parsed, 'double_field') !== null) {
       $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
-    }    
+    }
     if (idx($parsed, 'string_field') !== null) {
       $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
-    }    
+    }
     if (idx($parsed, 'binary_field') !== null) {
       $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
-    }    
+    }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);    }    
+      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+    }
     if (idx($parsed, 'list_field') !== null) {
       $_json6 = /* HH_FIXME[4110] */ $parsed['list_field'];
       $_container7 = Vector {};
@@ -2688,7 +2689,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
         $_container7 []= $_elem8;
       }
       $this->list_field = $_container7;
-    }    
+    }
     if (idx($parsed, 'set_field') !== null) {
       $_json13 = /* HH_FIXME[4110] */ $parsed['set_field'];
       $_container14 = Set {};
@@ -2703,7 +2704,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
         $_container14->add($_elem15);
       }
       $this->set_field = $_container14;
-    }    
+    }
     if (idx($parsed, 'map_field') !== null) {
       $_json20 = /* HH_FIXME[4110] */ $parsed['map_field'];
       $_container21 = Map {};
@@ -2718,13 +2719,13 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
         $_container21[$_key18] = $_value22;
       }
       $this->map_field = $_container21;
-    }    
+    }
     if (idx($parsed, 'struct_field') !== null) {
       $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
       $_tmp25 = MyStructWithCustomDefault::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
-    }    
+    }
   }
 
 }
