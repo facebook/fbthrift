@@ -119,7 +119,7 @@ typedef string Path
 /**
  * Parsed path segments.
  *
- * Considered 'valid' if no segment contains a slash('/').
+ * Considered 'simple' if no segment contains a slash('/').
  */
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef list<string> PathSegments
@@ -135,7 +135,7 @@ typedef string Domain
 /**
  * Parsed domain labels.
  *
- * Considered 'valid' if no label contains a dot('.').
+ * Considered 'simple' if no label contains a dot('.').
  */
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef list<string> DomainLabels
@@ -153,7 +153,7 @@ typedef string QueryString
 /**
  * A parsed QueryString.
  *
- * Considered 'valid' if no key or value contains a equal('=') or
+ * Considered 'simple' if no key or value contains a equal('=') or
  * ampersand('&').
  */
 @thrift.Experimental // TODO(afuller): Adapt.
@@ -167,6 +167,7 @@ typedef map<string, string> QueryArgs
  *
  * See rfc3986
  */
+ // TODO(afuller): Add definition for 'normal' based on unicode + uri specs.
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef string Uri (thrift.uri = "")
 
