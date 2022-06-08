@@ -53,9 +53,8 @@ target_link_libraries(
 add_library(
   compiler_base
 
+  detail/system.cc
   diagnostic.cc
-  filesystem.cc
-  platform.cc
   source_location.cc
   util.cc
 

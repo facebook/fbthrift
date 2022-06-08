@@ -41,11 +41,11 @@
 
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
+#include <thrift/compiler/detail/system.h>
 #include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
-#include <thrift/compiler/platform.h>
 #include <thrift/compiler/sema/standard_mutator.h>
 #include <thrift/compiler/sema/standard_validator.h>
 #include <thrift/compiler/validator/validator.h>
@@ -247,7 +247,7 @@ std::string parseArgs(
       bool out_path_is_absolute = (flag == "out");
 
       // Strip out trailing \ on a Windows path
-      if (platform_is_windows()) {
+      if (detail::platform_is_windows()) {
         int last = out_path.length() - 1;
         if (out_path[last] == '\\') {
           out_path.erase(last);

@@ -33,7 +33,7 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include <thrift/compiler/ast/t_typedef.h>
-#include <thrift/compiler/filesystem.h>
+#include <thrift/compiler/detail/system.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -763,7 +763,7 @@ void t_py_generator::init_generator() {
   string module = get_real_py_module(program_);
   package_dir_ = context_.is_out_path_absolute()
       ? get_out_path()
-      : format_abs_path(get_out_dir());
+      : detail::format_abs_path(get_out_dir());
   boost::filesystem::create_directory(package_dir_);
   while (true) {
     boost::filesystem::create_directory(package_dir_);

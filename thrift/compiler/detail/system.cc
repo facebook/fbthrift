@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/filesystem.h>
+#include <thrift/compiler/detail/system.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <thrift/compiler/platform.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace detail {
 
 boost::filesystem::path make_abs_path(
     const boost::filesystem::path& base_path,
@@ -52,6 +51,7 @@ boost::filesystem::path format_abs_path(const std::string& path) {
   return abs_path;
 }
 
+} // namespace detail
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

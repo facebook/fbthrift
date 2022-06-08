@@ -23,6 +23,16 @@
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace detail {
+
+// Returns true on a Windows platform, false elsewhere.
+constexpr bool platform_is_windows() {
+#ifdef _WIN32
+  return true;
+#else
+  return false;
+#endif
+}
 
 /**
  * Appends `path` to `base_path` to create an absolute path.
@@ -44,6 +54,7 @@ boost::filesystem::path make_abs_path(
  */
 boost::filesystem::path format_abs_path(const std::string& path);
 
+} // namespace detail
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

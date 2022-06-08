@@ -20,8 +20,7 @@
 
 #include <folly/portability/GTest.h>
 
-#include <thrift/compiler/filesystem.h>
-#include <thrift/compiler/platform.h>
+#include <thrift/compiler/detail/system.h>
 
 namespace apache {
 namespace thrift {
@@ -38,7 +37,7 @@ struct TestCase {
   boost::filesystem::path expected_path;
 };
 
-TEST(FilesystemTest, MakeAbsPath) {
+TEST(SystemTest, MakeAbsPath) {
   const std::vector<TestCase> kCasesForWindows{
       {"C:/i/am/base/path",
        "C:/i/am\\\\absolute/path",
@@ -64,9 +63,9 @@ TEST(FilesystemTest, MakeAbsPath) {
   };
 
   const auto& kCases =
-      platform_is_windows() ? kCasesForWindows : kCasesForOther;
+      detail::platform_is_windows() ? kCasesForWindows : kCasesForOther;
   for (const auto& testCase : kCases) {
-    auto actual_path = make_abs_path(testCase.base_path, testCase.path);
+    auto actual_path = detail::make_abs_path(testCase.base_path, testCase.path);
 
     EXPECT_EQ(testCase.expected_path, actual_path);
     EXPECT_EQ(true, actual_path.is_absolute());
