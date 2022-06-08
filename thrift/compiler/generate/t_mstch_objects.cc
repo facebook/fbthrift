@@ -419,7 +419,8 @@ mstch::node mstch_const_value::enum_name() {
 }
 
 mstch::node mstch_const_value::enum_value_name() {
-  if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
+  if (type_ == cv::CV_INTEGER && const_value_->is_enum() &&
+      const_value_->get_enum_value() != nullptr) {
     return const_value_->get_enum_value()->get_name();
   }
   return mstch::node();
