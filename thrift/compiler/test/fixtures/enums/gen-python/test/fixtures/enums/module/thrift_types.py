@@ -37,7 +37,7 @@ class SomeStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "questionable",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(Metasyntactic),  # typeinfo
-            lambda: Metasyntactic.,  # default value
+            lambda: _fbthrift_py3lite_types.BadEnum(Metasyntactic, -1),  # default value
             None,  # adapter class
         ),
         (
