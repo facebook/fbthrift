@@ -21,6 +21,7 @@ from thrift.python.serializer import Protocol
 usT = typing.TypeVar("usT", bound=StructOrUnion)
 sT = typing.TypeVar("sT", bound=Struct)
 eT = typing.TypeVar("eT", bound=Enum)
+TChunk = typing.TypeVar("TChunk")
 
 class TypeInfo:
     pass
@@ -117,3 +118,6 @@ def isset(struct: StructOrError) -> typing.Mapping[str, bool]: ...
 def update_nested_field(
     obj: sT, path_to_values: typing.Mapping[str, typing.Any]
 ) -> sT: ...
+
+class _fbthrift_ResponseStreamResult(Struct, typing.Generic[TChunk]):
+    success: typing.Final[TChunk]

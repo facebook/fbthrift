@@ -17,10 +17,10 @@ import types
 import typing
 
 from thrift.python.client.omni_client import RpcKind
-from thrift.python.types import StructOrUnion
+from thrift.python.types import _fbthrift_ResponseStreamResult, StructOrUnion, TChunk
 
 TAsyncClient = typing.TypeVar("TAsyncClient", bound="AsyncClient")
-StructOrUnionVar = typing.TypeVar("StructOrUnionVar", bound=StructOrUnion)
+TResponse = typing.TypeVar("TResponse", bound=StructOrUnion)
 
 class AsyncClient:
     def __init__(self, service_name: str) -> None: ...
@@ -31,12 +31,34 @@ class AsyncClient:
         exc_value: typing.Optional[BaseException],
         traceback: typing.Optional[types.TracebackType],
     ) -> None: ...
+    @typing.overload
     async def _send_request(
         self,
         service_name: str,
         function_name: str,
         args: StructOrUnion,
-        response_cls: typing.Optional[typing.Type[StructOrUnionVar]],
+        response_cls: None,
         rpc_kind: RpcKind = ...,
-    ) -> StructOrUnionVar: ...
+    ) -> None: ...
+    @typing.overload
+    async def _send_request(
+        self,
+        service_name: str,
+        function_name: str,
+        args: StructOrUnion,
+        response_cls: typing.Type[TResponse],
+        rpc_kind: RpcKind = ...,
+    ) -> TResponse: ...
+    @typing.overload
+    async def _send_request(
+        self,
+        service_name: str,
+        function_name: str,
+        args: StructOrUnion,
+        response_cls: typing.Tuple[
+            typing.Type[TResponse],
+            typing.Type[_fbthrift_ResponseStreamResult[TChunk]],
+        ],
+        rpc_kind: RpcKind = ...,
+    ) -> typing.Tuple[TResponse, typing.AsyncGenerator[TChunk, None]]: ...
     def set_persistent_header(self, key: str, value: str) -> None: ...

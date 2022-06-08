@@ -87,7 +87,7 @@ class PubSubStreamingService(_fbthrift_py3lite_Client["PubSubStreamingService.As
         async def responseandstreamthrows(
             self,
             foo: int
-        ) -> (int, _typing.AsyncGenerator[int, None]):
+        ) -> _typing.Tuple[int, _typing.AsyncGenerator[int, None]]:
             _fbthrift_resp = await self._send_request(
                 "PubSubStreamingService",
                 "responseandstreamthrows",

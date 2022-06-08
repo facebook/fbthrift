@@ -165,8 +165,7 @@ class _fbthrift_{{service:name}}_{{function:name}}_result(_fbthrift_py3lite_type
 {{#function:returns_stream?}}
 
 
-class _fbthrift_{{service:name}}_{{function:name}}_result_stream(_fbthrift_py3lite_types.Struct):
-    success: _typing.Final[{{#function:return_stream_elem_type}}{{ >types/pep484_type }}{{/function:return_stream_elem_type}}]
+class _fbthrift_{{service:name}}_{{function:name}}_result_stream(_fbthrift_py3lite_types._fbthrift_ResponseStreamResult[{{#function:return_stream_elem_type}}{{ >types/pep484_type }}{{/function:return_stream_elem_type}}]):
     {{#function:stream_exceptions}}
     {{field:py_name}}: _typing.Final[{{#field:type}}{{> types/pep484_type}}{{/field:type}}]
     {{/function:stream_exceptions}}
