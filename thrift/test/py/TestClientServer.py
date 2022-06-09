@@ -334,26 +334,6 @@ class HeaderFramedBinaryTest(HeaderBase):
         self.client2 = None
 
 
-class HeaderUnframedCompactTest(HeaderBase):
-    def setUp(self):
-        self.socket = TSocket.TSocket("localhost", self._port)
-        self.transport = TTransport.TBufferedTransport(self.socket)
-        self.protocol = TCompactProtocol.TCompactProtocol(self.transport)
-        self.transport.open()
-        self.client = ThriftTest.Client(self.protocol)
-        self.client2 = None
-
-
-class HeaderUnframedBinaryTest(HeaderBase):
-    def setUp(self):
-        self.socket = TSocket.TSocket("localhost", self._port)
-        self.transport = TTransport.TBufferedTransport(self.socket)
-        self.protocol = TBinaryProtocol.TBinaryProtocol(self.transport)
-        self.transport.open()
-        self.client = ThriftTest.Client(self.protocol)
-        self.client2 = None
-
-
 def camelcase(s):
     if not s[0].isupper():
         if sys.version_info[0] >= 3:
@@ -411,8 +391,6 @@ def add_test_classes(module):
     for header in (
         HeaderFramedCompactTest,
         HeaderFramedBinaryTest,
-        HeaderUnframedCompactTest,
-        HeaderUnframedBinaryTest,
     ):
         classes.append(new_test_class(header, config2))
 
