@@ -92,6 +92,30 @@ TEST(ServerAttributeDynamic, StringOverrideFirst) {
   EXPECT_EQ(a.get(), "a");
 }
 
+TEST(ServerAttributeDynamic, setDefault) {
+  ServerAttributeDynamic<int> a{0};
+  EXPECT_EQ(a.get(), 0);
+
+  a.set(1, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  EXPECT_EQ(a.get(), 1);
+  a.set(2, AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), 2);
+
+  // update the default to 3 instead of 0
+  a.setDefault(folly::observer::makeStaticObserver<int>(3));
+
+  // still gets override value
+  EXPECT_EQ(a.get(), 2);
+
+  a.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), 1);
+  a.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  // should return the new set default value
+  EXPECT_EQ(a.get(), 3);
+}
+
 TEST(ServerAttributeDynamic, Observable) {
   folly::observer::SimpleObservable<std::string> defaultObservable{"default"};
   folly::observer::SimpleObservable<std::string> baselineObservable{"baseline"};

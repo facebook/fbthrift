@@ -33,9 +33,9 @@ namespace thrift {
  * precedence depending on who set it. The resolved value (`.get()`)
  * prioritizes the value in the following order, falling back to the next one
  * if the value is unset:
- *   1. explicit application override
+ *   1. explicit application override through legacy BaseThriftServer setters
  *   2. baseline from configuration mechanism
- *   3. default provided in constructor
+ *   3. default provided in constructor, or through ThriftServerInitialConfig
  */
 
 // source of a server's attribute, precedence takes place in descending order
@@ -112,7 +112,9 @@ struct ServerAttributeObservable {
             folly::observer::makeStaticObserver<T>(std::move(defaultValue))) {}
   explicit ServerAttributeObservable(folly::observer::Observer<T> defaultValue)
       : default_(std::move(defaultValue)) {}
-
+  void setDefault(folly::observer::Observer<T> defaultValue) {
+    default_.setValue(std::move(defaultValue));
+  }
   T get() const { return **getObserver(); }
 
   const folly::observer::Observer<T>& getObserver() const {
@@ -121,7 +123,7 @@ struct ServerAttributeObservable {
           [overrideObserver = rawValues_.override_.getObserver(),
            baselineObserver = rawValues_.baseline_.getObserver(),
            defaultObserver =
-               std::move(default_)]() mutable -> std::shared_ptr<T> {
+               default_.getObserver()]() mutable -> std::shared_ptr<T> {
             folly::Optional<folly::observer::Observer<T>> override =
                 **overrideObserver;
             folly::Optional<folly::observer::Observer<T>> baseline =
@@ -160,7 +162,7 @@ struct ServerAttributeObservable {
   ServerAttributeRawValues<folly::observer::SimpleObservable<
       folly::Optional<folly::observer::Observer<T>>>>
       rawValues_{folly::none, folly::none};
-  folly::observer::Observer<T> default_;
+  folly::observer::SimpleObservable<folly::observer::Observer<T>> default_;
   mutable folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
 };
 
@@ -174,6 +176,7 @@ struct ServerAttributeAtomic
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
   using apache::thrift::detail::ServerAttributeObservable<T>::unset;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
+  using apache::thrift::detail::ServerAttributeObservable<T>::setDefault;
 
   T get() const { return *getAtomicObserver(); }
 
@@ -194,6 +197,7 @@ struct ServerAttributeThreadLocal
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
   using apache::thrift::detail::ServerAttributeObservable<T>::unset;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
+  using apache::thrift::detail::ServerAttributeObservable<T>::setDefault;
 
   const T& get() const { return **getTLObserver(); }
 
