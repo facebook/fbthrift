@@ -53,6 +53,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Mixin1::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -171,6 +173,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Mixin2::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -330,6 +334,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Mixin3Base::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -448,6 +454,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

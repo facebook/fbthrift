@@ -74,6 +74,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void InitialResponse::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -192,6 +194,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void FinalResponse::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -310,6 +314,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void SinkPayload::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -428,6 +434,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void CompatibleWithKeywordSink::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -546,6 +554,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void InitialException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -664,6 +674,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void SinkException1::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -782,6 +794,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void SinkException2::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

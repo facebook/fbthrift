@@ -158,6 +158,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void Empty::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -241,6 +243,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ASimpleStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -365,6 +369,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ASimpleStructNoexcept::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -489,6 +495,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2180,6 +2188,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2950,6 +2960,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnotherException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3149,6 +3161,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void containerStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5084,6 +5098,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void MyIncludedStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5343,6 +5359,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnnotatedStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7258,6 +7276,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ComplexContainerStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7427,6 +7447,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void FloatStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7732,6 +7754,8 @@ namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

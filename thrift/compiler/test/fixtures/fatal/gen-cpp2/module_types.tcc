@@ -793,6 +793,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structA::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1181,6 +1183,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structB::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1336,6 +1340,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structC::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2596,6 +2602,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct1::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2905,6 +2913,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct2::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3251,6 +3261,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct3::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4037,6 +4049,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct4::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4286,6 +4300,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct5::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4557,6 +4573,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_binary::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4675,6 +4693,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void dep_A_struct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4871,6 +4891,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void dep_B_struct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5067,6 +5089,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void annotated::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6129,6 +6153,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_with_special_names::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7246,6 +7272,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_with_indirections::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7512,6 +7540,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void StructWithFieldAdapter::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

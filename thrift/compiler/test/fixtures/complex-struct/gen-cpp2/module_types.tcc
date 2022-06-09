@@ -137,6 +137,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void MyStructFloatFieldThrowExp::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -366,6 +368,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void MyStructMapFloatThrowExp::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -524,6 +528,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void MyDataItem::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -603,6 +609,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1779,6 +1787,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void SimpleStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1934,6 +1944,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void ComplexNestedStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3003,6 +3015,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void defaultStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3929,6 +3943,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void MyStructTypeDef::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4565,6 +4581,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void TypeRemapped::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4800,6 +4818,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void emptyXcep::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4879,6 +4899,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void reqXcep::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5032,6 +5054,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void optXcep::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5191,6 +5215,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void complexException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

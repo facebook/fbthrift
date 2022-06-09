@@ -298,13 +298,67 @@ TYPED_TEST_P(TerseWriteSerializerTests, EmptiableStructField) {
   EXPECT_EQ(emptys, objs);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, TerseStructWithCustomDefault) {
+  terse_write::TerseStructWithCustomDefault obj;
+  terse_write::EmptyStruct empty;
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+
+  EXPECT_NE(emptys, objs);
+
+  apache::thrift::clear(obj);
+
+  objs = TypeParam::template serialize<std::string>(obj);
+
+  EXPECT_EQ(emptys, objs);
+}
+
+// A terse field needs to be cleared before deserialization for the consistent
+// behavior when it is missing during deserialization. There are two reasons why
+// a terse field might be missing:
+//   1. Serialization is skipped for a terse field since it is equal to the
+//   intrinsic default.
+//   2. IDL version mismatch.
+// Since we sent empty serialized binary, all terse fields in deserialized
+// object should equal to cleared object.
+TYPED_TEST_P(
+    TerseWriteSerializerTests, TerseStructWithCustomDefaultDeserialization) {
+  terse_write::TerseStructWithCustomDefault obj;
+
+  apache::thrift::clear(obj);
+
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::TerseStructWithCustomDefault objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+}
+
+// Since empty serializd binary is deserialized, all terse fields should equal
+// to the intrinsic default.
+TYPED_TEST_P(
+    TerseWriteSerializerTests, TerseStructWithCustomDefaultClearTerseFields) {
+  terse_write::EmptyStruct empty;
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+
+  terse_write::TerseStructWithCustomDefault objd;
+  TypeParam::template deserialize(emptys, objd);
+
+  expect_intrinsic_default(objd);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     MixedFieldsStruct,
     CppRefTerseStruct,
     CppRefTerseStruct_Empty,
     CustomStringFields,
-    EmptiableStructField);
+    EmptiableStructField,
+    TerseStructWithCustomDefault,
+    TerseStructWithCustomDefaultDeserialization,
+    TerseStructWithCustomDefaultClearTerseFields);
 
 using Serializers = ::testing::Types<
     BinarySerializer,

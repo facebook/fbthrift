@@ -151,6 +151,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyData::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -446,6 +448,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1467,6 +1471,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyDataPatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1630,6 +1636,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1831,6 +1839,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2073,6 +2083,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyUnionPatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2236,6 +2248,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2475,6 +2489,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2717,6 +2733,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2957,6 +2975,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3199,6 +3219,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3439,6 +3461,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3681,6 +3705,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3881,6 +3907,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4123,6 +4151,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructPatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5188,6 +5218,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5389,6 +5421,8 @@ namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

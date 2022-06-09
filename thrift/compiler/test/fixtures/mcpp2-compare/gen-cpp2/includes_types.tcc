@@ -46,6 +46,8 @@ namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
 void AStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -168,6 +170,8 @@ namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
 void AStructB::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

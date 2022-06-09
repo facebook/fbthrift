@@ -67,6 +67,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -146,6 +148,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void MyStructWithCustomDefault::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -264,6 +268,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void StructLevelTerseStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -888,6 +894,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void FieldLevelTerseStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2041,6 +2049,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseStructWithCustomDefault::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

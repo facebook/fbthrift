@@ -228,6 +228,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void decorated_struct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -346,6 +348,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ContainerStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -747,6 +751,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void CppTypeStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -868,6 +874,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void VirtualStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -986,6 +994,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyStructWithForwardRefEnum::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1141,6 +1151,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TrivialNumeric::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1296,6 +1308,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TrivialNestedWithDefault::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1453,6 +1467,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ComplexString::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1611,6 +1627,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ComplexNestedWithDefault::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1768,6 +1786,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MinPadding::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2029,6 +2049,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyDataItem::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2108,6 +2130,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2339,6 +2363,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void Renaming::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2457,6 +2483,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AnnotatedTypes::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2615,6 +2643,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2737,6 +2767,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageRoot::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2901,6 +2933,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageByRef::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3023,6 +3057,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveEmpty::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3102,6 +3138,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveSimpleStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3220,6 +3258,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveComplexStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3779,6 +3819,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AllocatorAware::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4142,6 +4184,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AllocatorAware2::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4260,6 +4304,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TypedefStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4452,6 +4498,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void StructWithDoubleUnderscores::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

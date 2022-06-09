@@ -53,6 +53,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Default::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -290,6 +292,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void NonAtomic::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -527,6 +531,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Atomic::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -764,6 +770,8 @@ namespace cpp2 {
 
 template <class Protocol_>
 void AtomicFoo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

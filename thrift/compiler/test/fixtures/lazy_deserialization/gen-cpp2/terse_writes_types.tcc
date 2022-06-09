@@ -53,6 +53,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseFoo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -302,6 +304,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseLazyFoo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -632,6 +636,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseOptionalFoo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -881,6 +887,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseOptionalLazyFoo::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

@@ -88,6 +88,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_inline::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -243,6 +245,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_with_default::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -361,6 +365,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_forward::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -479,6 +485,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_recursive::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -675,6 +683,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_nested::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -832,6 +842,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1061,6 +1073,8 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void MyException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

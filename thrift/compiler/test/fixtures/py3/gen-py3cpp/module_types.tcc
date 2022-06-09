@@ -81,6 +81,8 @@ namespace py3 { namespace simple {
 
 template <class Protocol_>
 void SimpleException::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -199,6 +201,8 @@ namespace py3 { namespace simple {
 
 template <class Protocol_>
 void OptionalRefStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -319,6 +323,8 @@ namespace py3 { namespace simple {
 
 template <class Protocol_>
 void SimpleStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -696,6 +702,8 @@ namespace py3 { namespace simple {
 
 template <class Protocol_>
 void ComplexStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1221,6 +1229,8 @@ namespace py3 { namespace simple {
 
 template <class Protocol_>
 void BinaryUnionStruct::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
