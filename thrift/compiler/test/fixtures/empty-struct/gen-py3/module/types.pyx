@@ -154,11 +154,13 @@ cdef class Empty(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Empty"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cEmpty](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cEmpty](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 0
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 0
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Empty self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -249,11 +251,13 @@ cdef class Nada(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.Nada"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cNada](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cNada](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 0
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 0
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Nada self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

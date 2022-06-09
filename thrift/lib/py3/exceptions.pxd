@@ -142,10 +142,8 @@ cdef class TransportError(LibraryError):
 cdef class GeneratedError(Error):
     cdef object __weakref__
     cdef object _fbthrift_hash
-    cdef size_t _fbthrift_struct_size
     cdef IOBuf _fbthrift_serialize(self, Protocol proto)
     cdef uint32_t _fbthrift_deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object _fbthrift_isset(self)
     cdef object _fbthrift_cmp_sametype(self, other, int op)
     cdef void _fbthrift_set_field(self, str name, object value) except *
-    cdef string_view _fbthrift_get_field_name_by_index(self, size_t idx)
