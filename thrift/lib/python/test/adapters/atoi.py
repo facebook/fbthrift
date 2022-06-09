@@ -14,7 +14,7 @@
 
 import typing
 
-from thrift.python.adapters.base import Adapter
+from thrift.python.adapter import Adapter
 
 
 class AtoiAdapter(Adapter[str, int]):

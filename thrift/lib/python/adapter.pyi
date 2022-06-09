@@ -12,40 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import abc
 import typing
 
-from thrift.python.types import StructOrUnion
+TAdaptFrom = typing.TypeVar("TAdaptFrom")
+TAdaptTo = typing.TypeVar("TAdaptTo")
 
-OT = typing.TypeVar("Original")
-AT = typing.TypeVar("Adapted")
-
-
-class Adapter(typing.Generic[OT, AT], abc.ABC):
+class Adapter(typing.Generic[TAdaptFrom, TAdaptTo]):
     """
     Base class of Python adapter.
-    """
 
-    """
     For Type Adapter, override (from|to)_thrift.
     """
 
     @classmethod
-    def from_thrift(cls, original: OT) -> AT:
-        raise NotImplementedError()
-
+    def from_thrift(cls, original: TAdaptFrom) -> TAdaptTo: ...
     @classmethod
-    def to_thrift(cls, adapted: AT) -> OT:
-        raise NotImplementedError()
+    def to_thrift(cls, adapted: TAdaptTo) -> TAdaptFrom: ...
 
     """
     For Field Adapter, override (from|to)_thrift_field.
     """
 
     @classmethod
-    def from_thrift_field(cls, ori: OT, field_id: int, strct: StructOrUnion) -> AT:
-        return cls.from_thrift(ori)
-
+    def from_thrift_field(
+        cls,
+        original: TAdaptFrom,
+        field_id: int,
+        strct: "thrift.python.types.StructOrUnion",
+    ) -> TAdaptTo: ...
     @classmethod
-    def to_thrift_field(cls, adapted: AT, field_id: int, strct: StructOrUnion) -> OT:
-        return cls.to_thrift(adapted)
+    def to_thrift_field(
+        cls,
+        adapted: TAdaptTo,
+        field_id: int,
+        strct: "thrift.python.types.StructOrUnion",
+    ) -> TAdaptFrom: ...

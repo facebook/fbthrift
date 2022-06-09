@@ -15,6 +15,7 @@
 import typing
 from enum import Enum
 
+from thrift.python.adapter import Adapter
 from thrift.python.exceptions import GeneratedError
 from thrift.python.serializer import Protocol
 
@@ -63,9 +64,7 @@ class StructTypeInfo:
 class EnumTypeInfo:
     def __init__(self, klass: typing.Type[eT]) -> None: ...
 
-TAdapter = typing.TypeVar(
-    "TAdapter", bound="thrift.python.adapters.base.Adapter[object, object]"
-)
+TAdapter = typing.TypeVar("TAdapter", bound=Adapter[object, object])
 
 class AdaptedTypeInfo:
     def __init__(

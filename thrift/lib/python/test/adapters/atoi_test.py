@@ -12,14 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
 import unittest
 
-from thrift.python.test.adapters.datetime import DatetimeAdapter
+from thrift.python.test.adapters.atoi import AtoiAdapter, ItoaListAdapter
 
 
-class DatetimeAdapterTest(unittest.TestCase):
-    def test_round_trip(self):
-        ts = int(time.time())
-        dt = DatetimeAdapter.from_thrift(ts)
-        self.assertEqual(ts, DatetimeAdapter.to_thrift(dt))
+class AtoiAdapterTest(unittest.TestCase):
+    def test_round_trip(self) -> None:
+        a = "42"
+        i = AtoiAdapter.from_thrift(a)
+        self.assertEqual(a, AtoiAdapter.to_thrift(i))
+
+
+class ItoaListAdapterTest(unittest.TestCase):
+    def test_round_trip(self) -> None:
+        ints = [1, 10, 100, 1000]
+        strs = ItoaListAdapter.from_thrift(ints)
+        self.assertEqual(ints, ItoaListAdapter.to_thrift(strs))
