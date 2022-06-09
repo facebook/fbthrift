@@ -75,6 +75,13 @@ template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::union_with_spec
   static const std::array<folly::StringPiece, size> names;
 };
 
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type> {
+  using type = ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type;
+  static constexpr const std::size_t size = 1;
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
+};
+
 template <> struct TStructDataStorage<::test_cpp2::cpp_reflection::union1> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
@@ -209,6 +216,13 @@ template <> struct TStructDataStorage<::test_cpp2::cpp_reflection::struct_with_i
 };
 
 template <> struct TStructDataStorage<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
+  static constexpr const std::size_t fields_size = 1;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

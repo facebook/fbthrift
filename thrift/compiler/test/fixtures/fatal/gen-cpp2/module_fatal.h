@@ -20,6 +20,7 @@ namespace __fbthrift_refl {
 struct __fbthrift_strings_module {
   using StructWithFieldAdapter = ::fatal::sequence<char, 'S', 't', 'r', 'u', 'c', 't', 'W', 'i', 't', 'h', 'F', 'i', 'e', 'l', 'd', 'A', 'd', 'a', 'p', 't', 'e', 'r'>;
   using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
+  using UnionWithTypedefFieldAdapter = ::fatal::sequence<char, 'U', 'n', 'i', 'o', 'n', 'W', 'i', 't', 'h', 'T', 'y', 'p', 'e', 'd', 'e', 'f', 'F', 'i', 'e', 'l', 'd', 'A', 'd', 'a', 'p', 't', 'e', 'r'>;
   using __fbthrift_hash_015f7e6bc5aeaf483724089e9252cc13b50951a6b69412522765cff4d780306e = ::fatal::sequence<char, 'k', '2'>;
   using __fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89 = ::fatal::sequence<char, 's'>;
   using __fbthrift_hash_0480a93d2e9b094b89e08e01976089ac18193af802c66b631cc8d2dc1bae8c88 = ::fatal::sequence<char, 'n', '2'>;
@@ -61,6 +62,7 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d = ::fatal::sequence<char, 'b'>;
   using __fbthrift_hash_3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea = ::fatal::sequence<char, 'e'>;
   using __fbthrift_hash_4464387ab75f475736f593bef52d209f79d14984f38a95111fffa7933a0aa652 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '2'>;
+  using __fbthrift_hash_478f684d093fcf2921427c15946ee81c7ca19e9398eb84b4e897d20077392460 = ::fatal::sequence<char, 'U', 'n', 'i', 'o', 'n', 'W', 'i', 't', 'h', 'T', 'y', 'p', 'e', 'd', 'e', 'f', 'F', 'i', 'e', 'l', 'd', 'A', 'd', 'a', 'p', 't', 'e', 'r'>;
   using __fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923 = ::fatal::sequence<char, 'k', 'e', 'y', 's'>;
   using __fbthrift_hash_497628310b36454ee3c06bb4744bfbf5c3cebf94d600e9a1620d67fd4b61d850 = ::fatal::sequence<char, 'u', 'i', '_', '2'>;
   using __fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020 = ::fatal::sequence<char, 'l', 'i', 's', 't', 's'>;
@@ -379,7 +381,8 @@ struct module_module_traits {
       ::fatal::pair<::test_cpp2::cpp_reflection::union2, strings::union2>,
       ::fatal::pair<::test_cpp2::cpp_reflection::union3, strings::union3>,
       ::fatal::pair<::test_cpp2::cpp_reflection::unionA, strings::unionA>,
-      ::fatal::pair<::test_cpp2::cpp_reflection::union_with_special_names, strings::union_with_special_names>
+      ::fatal::pair<::test_cpp2::cpp_reflection::union_with_special_names, strings::union_with_special_names>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter, strings::UnionWithTypedefFieldAdapter>
   >;
   using structs = ::fatal::list<
       ::fatal::pair<::test_cpp2::cpp_reflection::structA, strings::structA>,
@@ -438,6 +441,7 @@ class module_tags {
     using union3 = __fbthrift_strings::union3;
     using unionA = __fbthrift_strings::unionA;
     using union_with_special_names = __fbthrift_strings::union_with_special_names;
+    using UnionWithTypedefFieldAdapter = __fbthrift_strings::UnionWithTypedefFieldAdapter;
   };
   struct __fbthrift_structs {
     using structA = __fbthrift_strings::structA;

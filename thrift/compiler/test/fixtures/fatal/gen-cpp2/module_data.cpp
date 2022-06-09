@@ -219,6 +219,13 @@ const std::array<folly::StringPiece, 28> TEnumDataStorage<::test_cpp2::cpp_refle
   "fields",
 }};
 
+const std::array<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type, 1> TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::values = {{
+  type::field,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::names = {{
+  "field",
+}};
+
 const std::array<folly::StringPiece, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union1>::fields_names = {{
   "ui",
   "ud",
@@ -839,6 +846,16 @@ const std::array<int16_t, 1> TStructDataStorage<::test_cpp2::cpp_reflection::Str
   1,
 }};
 const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::fields_types = {{
+  TType::T_I32,
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::fields_types = {{
   TType::T_I32,
 }};
 

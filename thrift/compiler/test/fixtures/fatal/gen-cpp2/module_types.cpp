@@ -4044,8 +4044,107 @@ template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::Com
 
 }} // test_cpp2::cpp_reflection
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::names);
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+void UnionWithTypedefFieldAdapter::__fbthrift_clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::field:
+      destruct(value_.field);
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool UnionWithTypedefFieldAdapter::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
+bool UnionWithTypedefFieldAdapter::operator==(const UnionWithTypedefFieldAdapter& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::field:
+      return value_.field == rhs.value_.field;
+    default:
+      return true;
+  }
+}
+
+bool UnionWithTypedefFieldAdapter::operator<(const UnionWithTypedefFieldAdapter& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::field:
+      return lhs.value_.field < rhs.value_.field;
+    default:
+      return false;
+  }
+}
+
+void swap(UnionWithTypedefFieldAdapter& a, UnionWithTypedefFieldAdapter& b) {
+  UnionWithTypedefFieldAdapter temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void UnionWithTypedefFieldAdapter::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t UnionWithTypedefFieldAdapter::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnionWithTypedefFieldAdapter::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void UnionWithTypedefFieldAdapter::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t UnionWithTypedefFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t UnionWithTypedefFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}} // test_cpp2::cpp_reflection
+
 namespace test_cpp2 { namespace cpp_reflection { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::test_cpp2::cpp_reflection::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>();
 }
 }}} // test_cpp2::cpp_reflection

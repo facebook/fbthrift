@@ -153,6 +153,18 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union_with_special_names> {
     }
   }
 };
+template <>
+struct VisitUnion<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+    using Union = std::remove_reference_t<T>;
+    switch (t.getType()) {
+    case Union::Type::field:
+      return f(0, *static_cast<T&&>(t).field_ref());
+    case Union::Type::__EMPTY__: ;
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

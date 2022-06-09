@@ -313,6 +313,14 @@ struct ForEachField<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
     f(0, static_cast<T&&>(t).field_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -696,6 +696,30 @@ StructMetadata<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::gen(ThriftM
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.UnionWithTypedefFieldAdapter", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_UnionWithTypedefFieldAdapter = res.first->second;
+  module_UnionWithTypedefFieldAdapter.name() = "module.UnionWithTypedefFieldAdapter";
+  module_UnionWithTypedefFieldAdapter.is_union() = true;
+  static const EncodedThriftField
+  module_UnionWithTypedefFieldAdapter_fields[] = {
+    {1, "field", false, std::make_unique<Typedef>("module.I32", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}},
+  };
+  for (const auto& f : module_UnionWithTypedefFieldAdapter_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_UnionWithTypedefFieldAdapter.fields()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
 void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method1(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

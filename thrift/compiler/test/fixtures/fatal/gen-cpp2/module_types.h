@@ -180,6 +180,7 @@ struct number;
 struct result;
 struct phrase;
 struct field;
+struct field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_ui
@@ -826,6 +827,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(phrase);
 #define APACHE_THRIFT_ACCESSOR_field
 APACHE_THRIFT_DEFINE_ACCESSOR(field);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_field
+#define APACHE_THRIFT_ACCESSOR_field
+APACHE_THRIFT_DEFINE_ACCESSOR(field);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -1078,6 +1083,7 @@ class union_with_special_names;
 class struct_with_special_names;
 class struct_with_indirections;
 class StructWithFieldAdapter;
+class UnionWithTypedefFieldAdapter;
 }} // test_cpp2::cpp_reflection
 // END forward_declare
 // BEGIN hash_and_equal_to
@@ -1093,6 +1099,7 @@ typedef CppFakeI32 FakeI32;
 typedef CppHasANumber HasANumber;
 typedef CppHasAResult HasAResult;
 typedef CppHasAPhrase HasAPhrase;
+typedef ::test_cpp2::cpp_reflection::I32 I32;
 
 class union1 final  {
  private:
@@ -11773,6 +11780,200 @@ unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
 }
 
 
+class UnionWithTypedefFieldAdapter final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = UnionWithTypedefFieldAdapter;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
+
+
+ public:
+  enum Type : int {
+    __EMPTY__ = 0,
+    field = 1,
+  } ;
+
+  UnionWithTypedefFieldAdapter()
+      : type_(Type::__EMPTY__) {}
+
+  UnionWithTypedefFieldAdapter(UnionWithTypedefFieldAdapter&& rhs) noexcept
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::field:
+      {
+        set_field(std::move(rhs.value_.field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    apache::thrift::clear(rhs);
+  }
+
+  UnionWithTypedefFieldAdapter(const UnionWithTypedefFieldAdapter& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::field:
+      {
+        set_field(rhs.value_.field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  UnionWithTypedefFieldAdapter& operator=(UnionWithTypedefFieldAdapter&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    __fbthrift_clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::field:
+      {
+        set_field(std::move(rhs.value_.field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
+  UnionWithTypedefFieldAdapter& operator=(const UnionWithTypedefFieldAdapter& rhs) {
+    if (this == &rhs) { return *this; }
+    __fbthrift_clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::field:
+      {
+        set_field(rhs.value_.field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+
+  ~UnionWithTypedefFieldAdapter() {
+    apache::thrift::clear(*this);
+  }
+
+  union storage_type {
+    ::test_cpp2::cpp_reflection::I32 field;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+
+  bool operator==(const UnionWithTypedefFieldAdapter&) const;
+  bool operator<(const UnionWithTypedefFieldAdapter&) const;
+
+  ::test_cpp2::cpp_reflection::I32& set_field(::test_cpp2::cpp_reflection::I32 t = ::test_cpp2::cpp_reflection::I32()) {
+    __fbthrift_clear();
+    type_ = Type::field;
+    ::new (std::addressof(value_.field)) ::test_cpp2::cpp_reflection::I32(t);
+    return value_.field;
+  }
+
+  ::test_cpp2::cpp_reflection::I32 const& get_field() const {
+    if (type_ != Type::field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.field;
+  }
+
+  ::test_cpp2::cpp_reflection::I32& mutable_field() {
+    assert(type_ == Type::field);
+    return value_.field;
+  }
+
+  ::test_cpp2::cpp_reflection::I32 move_field() {
+    assert(type_ == Type::field);
+    return std::move(value_.field);
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::I32>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> field_ref() const& {
+    return {value_.field, type_, field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::I32>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> field_ref() const&& {
+    return {std::move(value_.field), type_, field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::I32>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> field_ref() & {
+    return {value_.field, type_, field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::I32>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> field_ref() && {
+    return {std::move(value_.field), type_, field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+  Type getType() const { return static_cast<Type>(type_); }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  storage_type value_;
+  std::underlying_type_t<Type> type_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<UnionWithTypedefFieldAdapter>;
+  friend void swap(UnionWithTypedefFieldAdapter& a, UnionWithTypedefFieldAdapter& b);
+};
+
+template <class Protocol_>
+unsigned long UnionWithTypedefFieldAdapter::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
 }} // test_cpp2::cpp_reflection
 
 namespace apache { namespace thrift {
@@ -11883,6 +12084,31 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_n
   using type = ::test_cpp2::cpp_reflection::union_with_special_names::Type;
 
   static constexpr std::size_t const size = 28;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+};
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type> {
+  using type = ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type;
+
+  static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 

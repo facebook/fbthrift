@@ -158,6 +158,11 @@ class StructMetadata<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);

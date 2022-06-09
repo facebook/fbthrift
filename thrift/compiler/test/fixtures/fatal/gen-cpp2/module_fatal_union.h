@@ -2051,6 +2051,96 @@ class union_with_special_names_variant_traits {
     return apache::thrift::clear(variant);
   }
 };
+class UnionWithTypedefFieldAdapter_tenum_traits {
+ public:
+  using type = ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type;
+
+ private:
+  struct __fbthrift_value_field {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
+    using value = std::integral_constant<type, type::field>;
+    using annotations = __fbthrift_refl_impl::no_annotations;
+  };
+
+  struct __fbthrift_member {
+    using field = __fbthrift_value_field;
+  };
+
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
+  using fields = ::fatal::list<
+      member::field
+  >;
+
+  using annotations = __fbthrift_refl_impl::no_annotations;
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::field: return "field";
+      default: return fallback;
+    }
+  }
+};
+
+class UnionWithTypedefFieldAdapter_variant_traits {
+ private:
+  struct __fbthrift_ids {
+    using field = std::integral_constant<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type, ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type::field>;
+  };
+
+  struct __fbthrift_member_field {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
+    using tag = ::apache::thrift::tag::field;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter &variant, Args &&...args) const {
+        return variant.set_field(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter const &variant) const {
+        return variant.get_field();
+      }
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter &variant) const {
+        return variant.mutable_field();
+      }
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter &&variant) const {
+        return std::move(variant).move_field();
+      }
+    };
+  };
+
+ public:
+  using type = ::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter;
+  using name = __fbthrift_strings_module::UnionWithTypedefFieldAdapter;
+  using id = type::Type;
+  using ids = __fbthrift_ids;
+  using descriptors = ::fatal::list<
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::I32,
+           __fbthrift_ids::field,
+          __fbthrift_member_field::getter,
+          __fbthrift_member_field::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_field>>
+  >;
+
+  using annotations = __fbthrift_refl_impl::no_annotations;
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
+
+  static void clear(type &variant) {
+    return apache::thrift::clear(variant);
+  }
+};
 } // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
@@ -2131,6 +2221,22 @@ FATAL_REGISTER_VARIANT_TRAITS(
       module_tags::module,
       ::apache::thrift::reflected_annotations<__fbthrift_refl::union_with_special_names_variant_traits::annotations>,
       static_cast<::apache::thrift::legacy_type_id_t>(7581402120603624460ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::UnionWithTypedefFieldAdapter_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::UnionWithTypedefFieldAdapter_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  __fbthrift_refl::UnionWithTypedefFieldAdapter_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::UnionWithTypedefFieldAdapter_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(15377912496481232844ull)
   >
 );
 }} // test_cpp2::cpp_reflection

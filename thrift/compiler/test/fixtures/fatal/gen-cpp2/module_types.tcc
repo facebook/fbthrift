@@ -184,6 +184,13 @@ struct TccStructTraits<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
+template <>
+struct TccStructTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
 
 } // namespace detail
 } // namespace thrift
@@ -7656,5 +7663,114 @@ extern template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::Compac
 extern template uint32_t StructWithFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace test_cpp2 { namespace cpp_reflection {
+
+template <class Protocol_>
+void UnionWithTypedefFieldAdapter::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.atStop()) {
+    apache::thrift::clear(*this);
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<UnionWithTypedefFieldAdapter>>();
+    }
+    switch (_readState.fieldId) {
+      case 1:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
+          this->set_field();
+          ::std::int32_t tvalue;
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
+          value_.field = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 1>(::std::move(tvalue), *this);
+          
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(!_readState.atStop())) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t UnionWithTypedefFieldAdapter::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnionWithTypedefFieldAdapter");
+  switch(this->getType()) {
+    case UnionWithTypedefFieldAdapter::Type::field:
+    {
+      xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));
+      break;
+    }
+    case UnionWithTypedefFieldAdapter::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnionWithTypedefFieldAdapter");
+  switch(this->getType()) {
+    case UnionWithTypedefFieldAdapter::Type::field:
+    {
+      xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));
+      break;
+    }
+    case UnionWithTypedefFieldAdapter::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnionWithTypedefFieldAdapter::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("UnionWithTypedefFieldAdapter");
+  switch(this->getType()) {
+    case UnionWithTypedefFieldAdapter::Type::field:
+    {
+      constexpr int16_t kPrevFieldId = 0;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "field", false);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, my::Adapter1::toThrift(value_.field));
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case UnionWithTypedefFieldAdapter::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void UnionWithTypedefFieldAdapter::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t UnionWithTypedefFieldAdapter::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t UnionWithTypedefFieldAdapter::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void UnionWithTypedefFieldAdapter::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t UnionWithTypedefFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t UnionWithTypedefFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
