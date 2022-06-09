@@ -10,18 +10,18 @@ import typing as _typing
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from thrift.python.client import (
-    AsyncClient as _fbthrift_py3lite_AsyncClient,
-    SyncClient as _fbthrift_py3lite_SyncClient,
-    Client as _fbthrift_py3lite_Client,
+    AsyncClient as _fbthrift_python_AsyncClient,
+    SyncClient as _fbthrift_python_SyncClient,
+    Client as _fbthrift_python_Client,
 )
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
-import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
+import thrift.python.types as _fbthrift_python_types
 import test.fixtures.basic.module.thrift_types
 import test.fixtures.basic.module.thrift_metadata
 import facebook.thrift.annotation.hack.thrift_types
 
 
-class FooService(_fbthrift_py3lite_Client["FooService.Async", "FooService.Sync"]):
+class FooService(_fbthrift_python_Client["FooService.Async", "FooService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.FooService"
@@ -30,7 +30,7 @@ class FooService(_fbthrift_py3lite_Client["FooService.Async", "FooService.Sync"]
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FooService"
@@ -49,7 +49,7 @@ class FooService(_fbthrift_py3lite_Client["FooService.Async", "FooService.Sync"]
                 test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result,
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FooService"
@@ -69,7 +69,7 @@ class FooService(_fbthrift_py3lite_Client["FooService.Async", "FooService.Sync"]
             )
 
 
-class FB303Service(_fbthrift_py3lite_Client["FB303Service.Async", "FB303Service.Sync"]):
+class FB303Service(_fbthrift_python_Client["FB303Service.Async", "FB303Service.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.FB303Service"
@@ -78,7 +78,7 @@ class FB303Service(_fbthrift_py3lite_Client["FB303Service.Async", "FB303Service.
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FB303Service"
@@ -101,12 +101,12 @@ class FB303Service(_fbthrift_py3lite_Client["FB303Service.Async", "FB303Service.
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FB303Service"
@@ -129,13 +129,13 @@ class FB303Service(_fbthrift_py3lite_Client["FB303Service.Async", "FB303Service.
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
 
-class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
+class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
@@ -144,7 +144,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
@@ -175,8 +175,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -220,8 +220,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -239,8 +239,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -282,8 +282,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -297,7 +297,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_rpc_skipped_codegen_result,
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
@@ -328,8 +328,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -373,8 +373,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -392,8 +392,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -435,8 +435,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -451,7 +451,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             )
 
 
-class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
+class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.DbMixedStackArguments"
@@ -460,7 +460,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_DbMixedStackArguments()
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DbMixedStackArguments"
@@ -483,8 +483,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -502,12 +502,12 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DbMixedStackArguments"
@@ -530,8 +530,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
 
@@ -549,7 +549,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )

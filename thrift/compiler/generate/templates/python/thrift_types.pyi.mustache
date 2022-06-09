@@ -29,8 +29,8 @@ import enum
 
 {{/program:unions?}}{{/program:enums?}}
 import folly.iobuf as _fbthrift_iobuf
-import {{program:base_library_package}}.types as _fbthrift_py3lite_types
-import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
+import {{program:base_library_package}}.types as _fbthrift_python_types
+import {{program:base_library_package}}.exceptions as _fbthrift_python_exceptions
 {{#program:include_namespaces}}
 {{#has_types?}}
 
@@ -43,7 +43,7 @@ import {{module_path}}
 {{#program:enums}}
 
 
-class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
+class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
         }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
         }}{{^enum:flags?}}Enum{{/enum:flags?}}):
     {{#enum:values}}
@@ -57,10 +57,10 @@ class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
 
 
 class {{struct:name}}({{!
-        }}{{#struct:union?}}_fbthrift_py3lite_types.Union{{/struct:union?}}{{!
+        }}{{#struct:union?}}_fbthrift_python_types.Union{{/struct:union?}}{{!
         }}{{^struct:union?}}{{!
-        }}{{#struct:exception?}}_fbthrift_py3lite_exceptions.GeneratedError{{/struct:exception?}}{{!
-        }}{{^struct:exception?}}_fbthrift_py3lite_types.Struct{{/struct:exception?}}{{!
+        }}{{#struct:exception?}}_fbthrift_python_exceptions.GeneratedError{{/struct:exception?}}{{!
+        }}{{^struct:exception?}}_fbthrift_python_types.Struct{{/struct:exception?}}{{!
         }}{{/struct:union?}}{{!
         }}):
     {{#struct:fields_and_mixin_fields}}
@@ -120,7 +120,7 @@ class {{struct:name}}({{!
 {{#service:supported_functions}}
 
 
-class {{> types/function_args_type}}(_fbthrift_py3lite_types.Struct):
+class {{> types/function_args_type}}(_fbthrift_python_types.Struct):
     {{#function:args}}
     {{field:py_name}}: _typing.Final[{{#field:type}}{{> types/pep484_type}}{{/field:type}}] = ...
     {{/function:args}}
@@ -138,7 +138,7 @@ class {{> types/function_args_type}}(_fbthrift_py3lite_types.Struct):
 {{^function:oneway?}}
 
 
-class _fbthrift_{{service:name}}_{{function:name}}_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_{{service:name}}_{{function:name}}_result(_fbthrift_python_types.Struct):
    {{#function:regular_response_type}}
     success: _typing.Final[{{ >types/pep484_type }}]
    {{/function:regular_response_type}}
@@ -165,7 +165,7 @@ class _fbthrift_{{service:name}}_{{function:name}}_result(_fbthrift_py3lite_type
 {{#function:returns_stream?}}
 
 
-class _fbthrift_{{service:name}}_{{function:name}}_result_stream(_fbthrift_py3lite_types._fbthrift_ResponseStreamResult[{{#function:return_stream_elem_type}}{{ >types/pep484_type }}{{/function:return_stream_elem_type}}]):
+class _fbthrift_{{service:name}}_{{function:name}}_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[{{#function:return_stream_elem_type}}{{ >types/pep484_type }}{{/function:return_stream_elem_type}}]):
     {{#function:stream_exceptions}}
     {{field:py_name}}: _typing.Final[{{#field:type}}{{> types/pep484_type}}{{/field:type}}]
     {{/function:stream_exceptions}}

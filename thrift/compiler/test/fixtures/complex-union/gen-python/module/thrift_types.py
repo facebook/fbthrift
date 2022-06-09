@@ -5,58 +5,58 @@
 #  @generated
 #
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 
-class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class ComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "intValue",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringValue",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "intListValue",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i64),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringListValue",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "typedefValue",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             14,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringRef",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -76,21 +76,21 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class ListUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class ListUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "intListValue",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i64),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringListValue",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -110,21 +110,21 @@ class ListUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class DataUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class DataUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "binaryData",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringData",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -144,29 +144,29 @@ class DataUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
+class Val(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "strVal",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "intVal",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "typedefValue",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -186,21 +186,21 @@ class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class ValUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class ValUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "v1",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Val),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Val),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "v2",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Val),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Val),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -220,21 +220,21 @@ class ValUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class VirtualComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class VirtualComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "thingOne",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "thingTwo",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -254,13 +254,13 @@ class VirtualComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class NonCopyableStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class NonCopyableStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "num",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -280,13 +280,13 @@ class NonCopyableStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class NonCopyableUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class NonCopyableUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "s",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(NonCopyableStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(NonCopyableStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -336,6 +336,6 @@ _fbthrift_all_structs = [
     NonCopyableStruct,
     NonCopyableUnion,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
-containerTypedef = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string)
+containerTypedef = _fbthrift_python_types.MapTypeFactory(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_string)

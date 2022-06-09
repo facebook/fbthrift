@@ -5,18 +5,18 @@
 #  @generated
 #
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 
-class HsFoo(metaclass=_fbthrift_py3lite_types.StructMeta):
+class HsFoo(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "MyInt",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -45,36 +45,36 @@ def _fbthrift_metadata__struct_HsFoo():
 _fbthrift_all_structs = [
     HsFoo,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
-class _fbthrift_HsTestService_init_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_HsTestService_init_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "int1",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_HsTestService_init_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_HsTestService_init_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_python_types.fill_specs(
     _fbthrift_HsTestService_init_args,
     _fbthrift_HsTestService_init_result,
 )

@@ -46,7 +46,7 @@ file.
     }}{{/value:const_struct}}){{!
 }}{{/value:const_struct?}}{{!
 }}{{^value:const_struct?}}{{!
-}}{{#value:map?}}_fbthrift_py3lite_types.Map({{!
+}}{{#value:map?}}_fbthrift_python_types.Map({{!
     }}{{#value:map_key_type}}{{ >types/typeinfo }}{{/value:map_key_type}}, {{!
     }}{{#value:map_val_type}}{{ >types/typeinfo }}{{/value:map_val_type}}, {{=<% %>=}}{<%={{ }}=%>{{!
         }}{{#value:map_elements}}{{!
@@ -54,7 +54,7 @@ file.
             }}{{#element:value}}{{ > types/constant_value}}{{/element:value}}{{^last?}}, {{/last?}}{{!
         }}{{/value:map_elements}}{{!
 }}}){{/value:map?}}{{!
-}}{{#value:list?}}_fbthrift_py3lite_types.{{!
+}}{{#value:list?}}_fbthrift_python_types.{{!
     }}{{#value:value_for_set?}}Set{{/value:value_for_set?}}{{!
     }}{{^value:value_for_set?}}List{{/value:value_for_set?}}({{!
         }}{{#value:list_elem_type}}{{ >types/typeinfo }}{{/value:list_elem_type}}, {{!

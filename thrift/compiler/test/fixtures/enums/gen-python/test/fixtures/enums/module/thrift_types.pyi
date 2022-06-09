@@ -10,13 +10,13 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.thrift.thrift_types
 
 
-class Metasyntactic(_fbthrift_py3lite_types.Enum, enum.Enum):
+class Metasyntactic(_fbthrift_python_types.Enum, enum.Enum):
     FOO: Metasyntactic = ...
     BAR: Metasyntactic = ...
     BAZ: Metasyntactic = ...
@@ -24,7 +24,7 @@ class Metasyntactic(_fbthrift_py3lite_types.Enum, enum.Enum):
     Unspecified: Metasyntactic = ...
 
 
-class SomeStruct(_fbthrift_py3lite_types.Struct):
+class SomeStruct(_fbthrift_python_types.Struct):
     reasonable: _typing.Final[Metasyntactic] = ...
     fine: _typing.Final[Metasyntactic] = ...
     questionable: _typing.Final[Metasyntactic] = ...

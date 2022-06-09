@@ -7,18 +7,18 @@
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import fbcode.thrift.python.types as _fbthrift_py3lite_types
-import fbcode.thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import fbcode.thrift.python.types as _fbthrift_python_types
+import fbcode.thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 
-class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class SimpleException(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "err_code",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -38,13 +38,13 @@ class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta)
 
 
 
-class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class OptionalRefStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "optional_blob",  # name
-            _fbthrift_py3lite_types.typeinfo_iobuf,  # typeinfo
+            _fbthrift_python_types.typeinfo_iobuf,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -64,69 +64,69 @@ class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class SimpleStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "is_on",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "tiny_int",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "small_int",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "nice_sized_int",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "big_int",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             6,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "real",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             7,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "smaller_real",  # name
-            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            _fbthrift_python_types.typeinfo_float,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             8,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "hidden_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -146,77 +146,77 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class ComplexStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "structOne",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(SimpleStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "structTwo",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(SimpleStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "an_integer",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "name",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "an_enum",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(AnEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(AnEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             6,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "some_bytes",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             7,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "sender",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             8,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "cdef_",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "bytes_with_cpp_type",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -236,13 +236,13 @@ class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class BinaryUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "iobuf_val",  # name
-            _fbthrift_py3lite_types.typeinfo_iobuf,  # typeinfo
+            _fbthrift_python_types.typeinfo_iobuf,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -262,13 +262,13 @@ class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class BinaryUnionStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "u",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryUnion),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(BinaryUnion),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -290,7 +290,7 @@ class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata
 
-class AnEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class AnEnum(_fbthrift_python_types.Enum, enum.Enum):
     NOTSET = 0
     ONE = 1
     TWO = 2
@@ -303,7 +303,7 @@ class AnEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_AnEnum()
-class Flags(_fbthrift_py3lite_types.Enum, enum.Flag):
+class Flags(_fbthrift_python_types.Enum, enum.Flag):
     flag_A = 1
     flag_B = 2
     flag_C = 4
@@ -337,7 +337,7 @@ _fbthrift_all_structs = [
     BinaryUnion,
     BinaryUnionStruct,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
 A_BOOL = True
@@ -360,1106 +360,1106 @@ SOME_BYTES = b"bytes"
 
 A_STRUCT = SimpleStruct(is_on=True, tiny_int=5, small_int=6, nice_sized_int=7, big_int=8, real=float(9.9))
 
-WORD_LIST = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ("the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", ))
+WORD_LIST = _fbthrift_python_types.List(_fbthrift_python_types.typeinfo_string, ("the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", ))
 
-SOME_MAP = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double), (_fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double, {1: float(1.1), 2: float(2.2)}), _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double, {3: float(3.3)}), ))
+SOME_MAP = _fbthrift_python_types.List(_fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i32, _fbthrift_python_types.typeinfo_double), (_fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_i32, _fbthrift_python_types.typeinfo_double, {1: float(1.1), 2: float(2.2)}), _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_i32, _fbthrift_python_types.typeinfo_double, {3: float(3.3)}), ))
 
-DIGITS = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, 4, 5, ))
+DIGITS = _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo_i32, (1, 2, 3, 4, 5, ))
 
-A_CONST_MAP = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))})
+A_CONST_MAP = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.StructTypeInfo(SimpleStruct), {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))})
 
 IOBufPtr = _fbthrift_iobuf.IOBuf
 IOBuf = _fbthrift_iobuf.IOBuf
 foo_bar = bytes
 
 
-class _fbthrift_SimpleService_get_five_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_five_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_get_five_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_five_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_add_five_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_add_five_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "num",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_add_five_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_add_five_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_do_nothing_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_do_nothing_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_do_nothing_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_do_nothing_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_concat_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_concat_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "first",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "second",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_concat_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_concat_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_value_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_value_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "simple_struct",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(SimpleStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_value_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_value_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_negate_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_negate_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "input",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_negate_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_negate_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_tiny_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_tiny_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "input",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_tiny_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_tiny_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_small_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_small_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "input",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_small_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_small_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_big_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_big_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "input",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_big_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_big_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_two_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_two_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "input",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_two_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_two_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_expected_exception_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_expected_exception_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_expected_exception_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_expected_exception_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "se",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleException),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(SimpleException),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_unexpected_exception_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_unexpected_exception_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_unexpected_exception_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_unexpected_exception_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i16_list_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i16_list_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "numbers",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i16_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i16_list_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i32_list_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i32_list_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "numbers",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i32),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i32_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i32_list_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i64_list_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i64_list_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "numbers",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i64),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_i64_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_i64_list_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_concat_many_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_concat_many_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "words",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_concat_many_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_concat_many_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_count_structs_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_count_structs_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "items",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.StructTypeInfo(SimpleStruct)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_count_structs_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_count_structs_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_set_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_set_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "numbers",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i32),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_set_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_set_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contains_word_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contains_word_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "words",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "word",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contains_word_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contains_word_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_map_value_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_map_value_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "words",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "key",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_map_value_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_map_value_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_map_length_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_map_length_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "items",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.StructTypeInfo(SimpleStruct)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_map_length_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_map_length_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_map_values_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_map_values_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "items",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_sum_map_values_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_sum_map_values_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_complex_sum_i32_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_complex_sum_i32_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "counter",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(ComplexStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_complex_sum_i32_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_complex_sum_i32_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_repeat_name_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_repeat_name_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "counter",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(ComplexStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_repeat_name_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_repeat_name_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_struct_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_struct_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_SimpleService_get_struct_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_struct_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(SimpleStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_fib_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_fib_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "n",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_fib_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_fib_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i32),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_unique_words_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_unique_words_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "words",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_unique_words_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_unique_words_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_words_count_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_words_count_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "words",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_words_count_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_words_count_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_set_enum_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_set_enum_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "in_enum",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(AnEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(AnEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_set_enum_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_set_enum_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(AnEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(AnEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_list_of_lists_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_list_of_lists_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "num_lists",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "num_items",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_list_of_lists_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_list_of_lists_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i32)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_word_character_frequency_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_word_character_frequency_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "sentence",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_word_character_frequency_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_word_character_frequency_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_list_of_sets_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_list_of_sets_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "some_words",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_list_of_sets_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_list_of_sets_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_string)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_nested_map_argument_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_nested_map_argument_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "struct_map",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct))),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.StructTypeInfo(SimpleStruct))),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_nested_map_argument_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_nested_map_argument_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_make_sentence_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_make_sentence_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "word_chars",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_make_sentence_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_make_sentence_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_union_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_union_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "sets",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i32)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_union_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_union_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i32),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_keys_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_keys_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "string_map",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_keys_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_keys_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_lookup_double_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_lookup_double_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "key",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_lookup_double_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_lookup_double_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_retrieve_binary_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_retrieve_binary_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "something",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_retrieve_binary_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_retrieve_binary_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contain_binary_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contain_binary_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "binaries",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_binary),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_binary),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contain_binary_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contain_binary_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_binary),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_binary),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contain_enum_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contain_enum_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "the_enum",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(AnEnum)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.EnumTypeInfo(AnEnum)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_contain_enum_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_contain_enum_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(AnEnum)),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.EnumTypeInfo(AnEnum)),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_binary_union_struct_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_binary_union_struct_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "u",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryUnion),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(BinaryUnion),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_SimpleService_get_binary_union_struct_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_SimpleService_get_binary_union_struct_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryUnionStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(BinaryUnionStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_DerivedService_get_six_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_DerivedService_get_six_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_DerivedService_get_six_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_DerivedService_get_six_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_RederivedService_get_seven_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_RederivedService_get_seven_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_RederivedService_get_seven_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_RederivedService_get_seven_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_python_types.fill_specs(
     _fbthrift_SimpleService_get_five_args,
     _fbthrift_SimpleService_get_five_result,
     _fbthrift_SimpleService_add_five_args,

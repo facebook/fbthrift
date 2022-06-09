@@ -10,8 +10,8 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.cpp.thrift_types
 
@@ -24,7 +24,7 @@ import my.another.module
 import my
 
 
-class Foo(_fbthrift_py3lite_types.Struct):
+class Foo(_fbthrift_python_types.Struct):
     intField: _typing.Final[int] = ...
     optionalIntField: _typing.Final[_typing.Optional[int]] = ...
     intFieldWithDefault: _typing.Final[int] = ...
@@ -68,7 +68,7 @@ class Foo(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int, int, _typing.AbstractSet[str], _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], _typing.Mapping[str, _typing.Sequence[str]], bytes, my.another.module.AdaptedType2, my.AdaptedType3, int]]]: ...
 
 
-class Baz(_fbthrift_py3lite_types.Union):
+class Baz(_fbthrift_python_types.Union):
     intField: _typing.Final[int] = ...
     setField: _typing.Final[_typing.AbstractSet[str]] = ...
     mapField: _typing.Final[_typing.Mapping[str, _typing.Sequence[str]]] = ...
@@ -99,7 +99,7 @@ class Baz(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class Bar(_fbthrift_py3lite_types.Struct):
+class Bar(_fbthrift_python_types.Struct):
     structField: _typing.Final[Foo] = ...
     optionalStructField: _typing.Final[_typing.Optional[Foo]] = ...
     structListField: _typing.Final[_typing.Sequence[Foo]] = ...
@@ -128,7 +128,7 @@ class Bar(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[Foo, Foo, _typing.Sequence[Foo], _typing.Sequence[Foo], Baz, Baz]]]: ...
 
 
-class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
+class StructWithFieldAdapter(_fbthrift_python_types.Struct):
     field: _typing.Final[my.AdaptedType1] = ...
     shared_field: _typing.Final[int] = ...
     opt_shared_field: _typing.Final[_typing.Optional[int]] = ...
@@ -151,7 +151,7 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[my.AdaptedType1, int, int, int]]]: ...
 
 
-class B(_fbthrift_py3lite_types.Struct):
+class B(_fbthrift_python_types.Struct):
     a: _typing.Final[A] = ...
     def __init__(
         self, *,
@@ -165,7 +165,7 @@ class B(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[A]]]: ...
 
 
-class A(_fbthrift_py3lite_types.Struct):
+class A(_fbthrift_python_types.Struct):
     def __init__(
         self,
     ) -> None: ...
@@ -188,7 +188,7 @@ UnionWithAdapter = Baz
 AdaptedA = A
 
 
-class _fbthrift_Service_func_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Service_func_args(_fbthrift_python_types.Struct):
     arg1: _typing.Final[str] = ...
     arg2: _typing.Final[str] = ...
     arg3: _typing.Final[Foo] = ...
@@ -205,7 +205,7 @@ class _fbthrift_Service_func_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, str, str, Foo]]]: ...
 
 
-class _fbthrift_Service_func_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Service_func_result(_fbthrift_python_types.Struct):
     success: _typing.Final[int]
 
     def __init__(

@@ -10,18 +10,18 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.thrift.thrift_types
 
 
-class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class MyEnum(_fbthrift_python_types.Enum, enum.Enum):
     ME0: MyEnum = ...
     ME1: MyEnum = ...
 
 
-class MyStruct(_fbthrift_py3lite_types.Struct):
+class MyStruct(_fbthrift_python_types.Struct):
     def __init__(
         self,
     ) -> None: ...
@@ -32,7 +32,7 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
 
 
-class MyStructWithCustomDefault(_fbthrift_py3lite_types.Struct):
+class MyStructWithCustomDefault(_fbthrift_python_types.Struct):
     field1: _typing.Final[int] = ...
     def __init__(
         self, *,
@@ -46,7 +46,7 @@ class MyStructWithCustomDefault(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
 
-class StructLevelTerseStruct(_fbthrift_py3lite_types.Struct):
+class StructLevelTerseStruct(_fbthrift_python_types.Struct):
     bool_field: _typing.Final[bool] = ...
     byte_field: _typing.Final[int] = ...
     short_field: _typing.Final[int] = ...
@@ -99,7 +99,7 @@ class StructLevelTerseStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, int, int, int, int, float, float, str, bytes, MyEnum, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[int, int], MyStruct]]]: ...
 
 
-class FieldLevelTerseStruct(_fbthrift_py3lite_types.Struct):
+class FieldLevelTerseStruct(_fbthrift_python_types.Struct):
     terse_bool_field: _typing.Final[bool] = ...
     terse_byte_field: _typing.Final[int] = ...
     terse_short_field: _typing.Final[int] = ...
@@ -194,7 +194,7 @@ class FieldLevelTerseStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, int, int, int, int, float, float, str, bytes, MyEnum, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[int, int], MyStruct, bool, int, int, int, int, float, float, str, bytes, MyEnum, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[int, int], MyStruct]]]: ...
 
 
-class TerseStructWithCustomDefault(_fbthrift_py3lite_types.Struct):
+class TerseStructWithCustomDefault(_fbthrift_python_types.Struct):
     bool_field: _typing.Final[bool] = ...
     byte_field: _typing.Final[int] = ...
     short_field: _typing.Final[int] = ...

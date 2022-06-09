@@ -8,11 +8,11 @@
 import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
-class Fiery(_fbthrift_py3lite_exceptions.GeneratedError):
+class Fiery(_fbthrift_python_exceptions.GeneratedError):
     message: _typing.Final[str] = ...
     def __init__(
         self, *,
@@ -22,7 +22,7 @@ class Fiery(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
 
 
-class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
+class Serious(_fbthrift_python_exceptions.GeneratedError):
     sonnet: _typing.Final[_typing.Optional[str]] = ...
     def __init__(
         self, *,
@@ -32,7 +32,7 @@ class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
 
 
-class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
+class ComplexFieldNames(_fbthrift_python_exceptions.GeneratedError):
     error_message: _typing.Final[str] = ...
     internal_error_message: _typing.Final[str] = ...
     def __init__(
@@ -44,7 +44,7 @@ class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str]]]: ...
 
 
-class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
+class CustomFieldNames(_fbthrift_python_exceptions.GeneratedError):
     error_message: _typing.Final[str] = ...
     internal_error_message: _typing.Final[str] = ...
     def __init__(
@@ -56,7 +56,7 @@ class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str]]]: ...
 
 
-class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
+class ExceptionWithPrimitiveField(_fbthrift_python_exceptions.GeneratedError):
     message: _typing.Final[str] = ...
     error_code: _typing.Final[int] = ...
     def __init__(
@@ -68,7 +68,7 @@ class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
 
 
-class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
+class Banal(_fbthrift_python_exceptions.GeneratedError):
     def __init__(
         self,
     ) -> None: ...
@@ -76,7 +76,7 @@ class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
 
 
-class _fbthrift_Raiser_doBland_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_doBland_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -87,7 +87,7 @@ class _fbthrift_Raiser_doBland_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_Raiser_doBland_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_doBland_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -101,7 +101,7 @@ class _fbthrift_Raiser_doBland_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_Raiser_doRaise_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_doRaise_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -112,7 +112,7 @@ class _fbthrift_Raiser_doRaise_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_Raiser_doRaise_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_doRaise_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
     b: _typing.Final[Banal]
     f: _typing.Final[Fiery]
@@ -132,7 +132,7 @@ class _fbthrift_Raiser_doRaise_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_Raiser_get200_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_get200_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -143,7 +143,7 @@ class _fbthrift_Raiser_get200_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_Raiser_get200_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_get200_result(_fbthrift_python_types.Struct):
     success: _typing.Final[str]
 
     def __init__(
@@ -157,7 +157,7 @@ class _fbthrift_Raiser_get200_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_Raiser_get500_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_get500_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -168,7 +168,7 @@ class _fbthrift_Raiser_get500_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_Raiser_get500_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_Raiser_get500_result(_fbthrift_python_types.Struct):
     success: _typing.Final[str]
     f: _typing.Final[Fiery]
     b: _typing.Final[Banal]

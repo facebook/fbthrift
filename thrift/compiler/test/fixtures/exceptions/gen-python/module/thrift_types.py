@@ -5,18 +5,18 @@
 #  @generated
 #
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 
-class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class Fiery(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -43,13 +43,13 @@ class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
 
 
 
-class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class Serious(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "sonnet",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -76,21 +76,21 @@ class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
 
 
 
-class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class ComplexFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "error_message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "internal_error_message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -117,21 +117,21 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
 
 
 
-class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class CustomFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "error_message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "internal_error_message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -158,21 +158,21 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
 
 
 
-class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class ExceptionWithPrimitiveField(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "message",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "error_code",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -199,7 +199,7 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
 
 
 
-class Banal(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+class Banal(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
     )
 
@@ -241,114 +241,114 @@ _fbthrift_all_structs = [
     ExceptionWithPrimitiveField,
     Banal,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
-class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_Raiser_doBland_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_doBland_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_Raiser_doRaise_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_doRaise_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "b",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Banal),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "f",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Fiery),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "s",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Serious),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_Raiser_get200_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_get200_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-class _fbthrift_Raiser_get500_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_get500_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
 
-class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "f",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Fiery),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "b",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Banal),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "s",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(Serious),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
     )
 
 
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_python_types.fill_specs(
     _fbthrift_Raiser_doBland_args,
     _fbthrift_Raiser_doBland_result,
     _fbthrift_Raiser_doRaise_args,

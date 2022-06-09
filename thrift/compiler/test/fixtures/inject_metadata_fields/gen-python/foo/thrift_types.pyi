@@ -8,13 +8,13 @@
 import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.thrift.thrift_types
 
 
-class Fields(_fbthrift_py3lite_types.Struct):
+class Fields(_fbthrift_python_types.Struct):
     injected_field: _typing.Final[str] = ...
     injected_structured_annotation_field: _typing.Final[_typing.Optional[str]] = ...
     injected_unstructured_annotation_field: _typing.Final[_typing.Optional[str]] = ...

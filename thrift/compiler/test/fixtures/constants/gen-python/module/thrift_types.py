@@ -7,50 +7,50 @@
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 
-class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
+class Internship(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "weeks",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "title",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "employer",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(Company),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(Company),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "compensation",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "school",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -70,21 +70,21 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
+class Range(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "min",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "max",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -104,21 +104,21 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
+class struct1(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             1234567,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             "<uninitialized>",  # default value
             None,  # adapter class
         ),
@@ -138,37 +138,37 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
+class struct2(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "c",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i32),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -188,29 +188,29 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
+class struct3(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "c",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(struct2),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(struct2),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -230,29 +230,29 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
+class struct4(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "b",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "c",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -272,21 +272,21 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class union1(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "i",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -306,37 +306,37 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
 
 
 
-class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
+class union2(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "i",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "s",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "u",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(union1),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(union1),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -358,7 +358,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata
 
-class EmptyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class EmptyEnum(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.EmptyEnum"
@@ -366,7 +366,7 @@ class EmptyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_EmptyEnum()
-class City(_fbthrift_py3lite_types.Enum, enum.Enum):
+class City(_fbthrift_python_types.Enum, enum.Enum):
     NYC = 0
     MPK = 1
     SEA = 2
@@ -378,7 +378,7 @@ class City(_fbthrift_py3lite_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_City()
-class Company(_fbthrift_py3lite_types.Enum, enum.Enum):
+class Company(_fbthrift_python_types.Enum, enum.Enum):
     FACEBOOK = 0
     WHATSAPP = 1
     OCULUS = 2
@@ -418,7 +418,7 @@ _fbthrift_all_structs = [
     union1,
     union2,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
 myInt = 1337
@@ -430,7 +430,7 @@ is a
 multi line string.
 """
 
-states = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32), (_fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400}), _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"New York": 8406000, "Albany": 98400}), ))
+states = _fbthrift_python_types.List(_fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32), (_fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400}), _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, {"New York": 8406000, "Albany": 98400}), ))
 
 x = float(1)
 
@@ -448,15 +448,15 @@ foo = "foo"
 
 bar = 42
 
-mymap = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string, {"keys": "values"})
+mymap = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string, {"keys": "values"})
 
 instagram = Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University")
 
 partial_const = Internship(weeks=8, title="Some Job")
 
-kRanges = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(Range), (Range(min=1, max=2), Range(min=5, max=6), ))
+kRanges = _fbthrift_python_types.List(_fbthrift_python_types.StructTypeInfo(Range), (Range(min=1, max=2), Range(min=5, max=6), ))
 
-internList = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(Internship), (Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University"), Internship(weeks=10, title="Sales Intern", employer=Company.FACEBOOK, compensation=float(1000)), ))
+internList = _fbthrift_python_types.List(_fbthrift_python_types.StructTypeInfo(Internship), (Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University"), Internship(weeks=10, title="Sales Intern", employer=Company.FACEBOOK, compensation=float(1000)), ))
 
 pod_0 = struct1()
 
@@ -466,15 +466,15 @@ pod_1 = struct1(a=10, b="foo")
 
 pod_s_1 = struct1(a=10, b="foo")
 
-pod_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
+pod_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_trailing_commas = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
+pod_trailing_commas = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_s_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
+pod_s_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, ))))
+pod_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, (1, 2, 3, ))))
 
-pod_s_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, ))))
+pod_s_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, (1, 2, 3, ))))
 
 pod_4 = struct4(a=1234, b=float(0.333), c=25)
 
@@ -506,9 +506,9 @@ backslash = "\\"
 
 escaped_a = "\x61"
 
-char2ascii = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"'": 39, '"': 34, "\\": 92, "\x61": 97})
+char2ascii = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, {"'": 39, '"': 34, "\\": 92, "\x61": 97})
 
-escaped_strings = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ("\x61", "\xab", "\x6a", "\xa6", "\x61yyy", "\xabyyy", "\x6ayyy", "\xa6yyy", "zzz\x61", "zzz\xab", "zzz\x6a", "zzz\xa6", "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy", ))
+escaped_strings = _fbthrift_python_types.List(_fbthrift_python_types.typeinfo_string, ("\x61", "\xab", "\x6a", "\xa6", "\x61yyy", "\xabyyy", "\x6ayyy", "\xa6yyy", "zzz\x61", "zzz\xab", "zzz\x6a", "zzz\xa6", "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy", ))
 
 false_c = False
 
@@ -526,21 +526,21 @@ zero_dot_zero = float(0)
 
 empty_string = ""
 
-empty_int_list = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, ())
+empty_int_list = _fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i32, ())
 
-empty_string_list = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ())
+empty_string_list = _fbthrift_python_types.List(_fbthrift_python_types.typeinfo_string, ())
 
-empty_int_set = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i32, ())
+empty_int_set = _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo_i32, ())
 
-empty_string_set = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_string, ())
+empty_string_set = _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo_string, ())
 
-empty_int_int_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32, {})
+empty_int_int_map = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_i32, _fbthrift_python_types.typeinfo_i32, {})
 
-empty_int_string_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string, {})
+empty_int_string_map = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_i32, _fbthrift_python_types.typeinfo_string, {})
 
-empty_string_int_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {})
+empty_string_int_map = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, {})
 
-empty_string_string_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string, {})
+empty_string_string_map = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string, {})
 
 maxIntDec = 9223372036854775807
 
@@ -587,4 +587,4 @@ minNSDub = float(-4.94065645841247e-324)
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int
-MyMapIdentifier = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string)
+MyMapIdentifier = _fbthrift_python_types.MapTypeFactory(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string)

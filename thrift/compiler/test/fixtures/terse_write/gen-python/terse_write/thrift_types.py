@@ -7,14 +7,14 @@
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
 import facebook.thrift.annotation.thrift.thrift_types
 
 
-class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
@@ -32,13 +32,13 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class MyStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta):
+class MyStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "field1",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             1,  # default value
             None,  # adapter class
         ),
@@ -58,117 +58,117 @@ class MyStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class StructLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class StructLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "bool_field",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "byte_field",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "short_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "int_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "long_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             6,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "float_field",  # name
-            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            _fbthrift_python_types.typeinfo_float,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             7,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "double_field",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             8,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "string_field",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "binary_field",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             10,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "enum_field",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             11,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "list_field",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             12,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "set_field",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             13,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "map_field",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             14,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "struct_field",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -188,229 +188,229 @@ class StructLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class FieldLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
+class FieldLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_bool_field",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_byte_field",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_short_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_int_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_long_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             6,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_float_field",  # name
-            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            _fbthrift_python_types.typeinfo_float,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             7,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_double_field",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             8,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_string_field",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_binary_field",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             10,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_enum_field",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             11,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_list_field",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             12,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_set_field",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             13,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_map_field",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             14,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "terse_struct_field",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             15,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "bool_field",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             16,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "byte_field",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             17,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "short_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             18,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "int_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             19,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "long_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             20,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "float_field",  # name
-            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            _fbthrift_python_types.typeinfo_float,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             21,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "double_field",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             22,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "string_field",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             23,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "binary_field",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             24,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "enum_field",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             25,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "list_field",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             26,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "set_field",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             27,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "map_field",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
             28,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "struct_field",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -430,117 +430,117 @@ class FieldLevelTerseStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
-class TerseStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta):
+class TerseStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "bool_field",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
             True,  # default value
             None,  # adapter class
         ),
         (
             2,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "byte_field",  # name
-            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            _fbthrift_python_types.typeinfo_byte,  # typeinfo
             1,  # default value
             None,  # adapter class
         ),
         (
             3,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "short_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            _fbthrift_python_types.typeinfo_i16,  # typeinfo
             2,  # default value
             None,  # adapter class
         ),
         (
             4,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "int_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
             3,  # default value
             None,  # adapter class
         ),
         (
             5,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "long_field",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_python_types.typeinfo_i64,  # typeinfo
             4,  # default value
             None,  # adapter class
         ),
         (
             6,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "float_field",  # name
-            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            _fbthrift_python_types.typeinfo_float,  # typeinfo
             float(5),  # default value
             None,  # adapter class
         ),
         (
             7,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "double_field",  # name
-            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            _fbthrift_python_types.typeinfo_double,  # typeinfo
             float(6),  # default value
             None,  # adapter class
         ),
         (
             8,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "string_field",  # name
-            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             "7",  # default value
             None,  # adapter class
         ),
         (
             9,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "binary_field",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
             b"8",  # default value
             None,  # adapter class
         ),
         (
             10,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "enum_field",  # name
-            lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
+            lambda: _fbthrift_python_types.EnumTypeInfo(MyEnum),  # typeinfo
             lambda: MyEnum.ME1,  # default value
             None,  # adapter class
         ),
         (
             11,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "list_field",  # name
-            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
-            lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i16, (1, )),  # default value
+            lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.List(_fbthrift_python_types.typeinfo_i16, (1, )),  # default value
             None,  # adapter class
         ),
         (
             12,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "set_field",  # name
-            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
-            lambda: _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i16, (1, )),  # default value
+            lambda: _fbthrift_python_types.SetTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo_i16, (1, )),  # default value
             None,  # adapter class
         ),
         (
             13,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "map_field",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
-            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_i16, {1: 1}),  # default value
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_i16),  # typeinfo
+            lambda: _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_i16, {1: 1}),  # default value
             None,  # adapter class
         ),
         (
             14,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Terse, # qualifier
+            _fbthrift_python_types.FieldQualifier.Terse, # qualifier
             "struct_field",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructWithCustomDefault),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStructWithCustomDefault),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -562,7 +562,7 @@ class TerseStructWithCustomDefault(metaclass=_fbthrift_py3lite_types.StructMeta)
 # This unfortunately has to be down here to prevent circular imports
 import terse_write.thrift_metadata
 
-class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class MyEnum(_fbthrift_python_types.Enum, enum.Enum):
     ME0 = 0
     ME1 = 1
     @staticmethod
@@ -591,4 +591,4 @@ _fbthrift_all_structs = [
     FieldLevelTerseStruct,
     TerseStructWithCustomDefault,
 ]
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)

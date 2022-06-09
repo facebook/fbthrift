@@ -8,11 +8,11 @@
 import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
-class Foo(_fbthrift_py3lite_types.Struct):
+class Foo(_fbthrift_python_types.Struct):
     MyInt: _typing.Final[int] = ...
     def __init__(
         self, *,
@@ -26,7 +26,7 @@ class Foo(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
 
-class _fbthrift_TestService_init_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_TestService_init_args(_fbthrift_python_types.Struct):
     int1: _typing.Final[int] = ...
 
     def __init__(
@@ -39,7 +39,7 @@ class _fbthrift_TestService_init_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_TestService_init_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_TestService_init_result(_fbthrift_python_types.Struct):
     success: _typing.Final[int]
 
     def __init__(

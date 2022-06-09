@@ -31,17 +31,17 @@ in a different thrift file, or defined in the same thrift file.
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}{{!
-  }}_fbthrift_py3lite_types.ListTypeFactory({{!
+  }}_fbthrift_python_types.ListTypeFactory({{!
     }}{{#type:list_elem_type}}{{ >types/typeinfo }}{{/type:list_elem_type}}{{!
   }}){{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
-  }}_fbthrift_py3lite_types.SetTypeFactory({{!
+  }}_fbthrift_python_types.SetTypeFactory({{!
     }}{{#type:set_elem_type}}{{ >types/typeinfo }}{{/type:set_elem_type}}{{!
   }}){{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
-  }}_fbthrift_py3lite_types.MapTypeFactory({{!
+  }}_fbthrift_python_types.MapTypeFactory({{!
     }}{{#type:key_type}}{{ >types/typeinfo }}{{/type:key_type}}, {{!
     }}{{#type:value_type}}{{ >types/typeinfo }}{{/type:value_type}}){{!
 }}{{/type:map?}}{{!

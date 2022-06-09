@@ -23,8 +23,8 @@ import enum
 
 {{/program:enums?}}
 import folly.iobuf as _fbthrift_iobuf
-import {{program:base_library_package}}.types as _fbthrift_py3lite_types
-import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
+import {{program:base_library_package}}.types as _fbthrift_python_types
+import {{program:base_library_package}}.exceptions as _fbthrift_python_exceptions
 
 {{#program:include_namespaces}}
 {{#has_types?}}
@@ -39,17 +39,17 @@ import {{module_path}}
 
 
 class {{struct:name}}(metaclass={{!
-        }}{{#struct:union?}}_fbthrift_py3lite_types.UnionMeta{{/struct:union?}}{{!
+        }}{{#struct:union?}}_fbthrift_python_types.UnionMeta{{/struct:union?}}{{!
         }}{{^struct:union?}}{{!
-        }}{{#struct:exception?}}_fbthrift_py3lite_exceptions.GeneratedErrorMeta{{/struct:exception?}}{{!
-        }}{{^struct:exception?}}_fbthrift_py3lite_types.StructMeta{{/struct:exception?}}{{!
+        }}{{#struct:exception?}}_fbthrift_python_exceptions.GeneratedErrorMeta{{/struct:exception?}}{{!
+        }}{{^struct:exception?}}_fbthrift_python_types.StructMeta{{/struct:exception?}}{{!
         }}{{/struct:union?}}{{!
         }}):
     _fbthrift_SPEC = (
         {{#struct:fields_and_mixin_fields}}
         (
             {{field:key}},  # id
-            _fbthrift_py3lite_types.{{field:tablebased_qualifier}}, # qualifier
+            _fbthrift_python_types.{{field:tablebased_qualifier}}, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
@@ -90,7 +90,7 @@ class {{struct:name}}(metaclass={{!
 import {{program:module_path}}.thrift_metadata
 
 {{#program:enums}}
-class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
+class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
         }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
         }}{{^enum:flags?}}Enum{{/enum:flags?}}):
     {{#enum:values}}
@@ -116,7 +116,7 @@ _fbthrift_all_structs = [
     {{/program:structs}}
 ]
 {{#program:structs?}}
-_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+_fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 {{/program:structs?}}
 {{#program:constants?}}
 
@@ -137,12 +137,12 @@ _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 {{#service:supported_functions}}
 
 
-class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+class {{> types/function_args_type}}(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:args}}
         (
             {{field:key}},  # id
-            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
@@ -153,13 +153,13 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
 {{^function:oneway?}}
 
 
-class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:regular_response_type}}
         {{^type:void?}}
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
             None,  # default value
@@ -170,7 +170,7 @@ class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_py
         {{#function:exceptions}}
         (
             {{field:key}},  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
@@ -182,12 +182,12 @@ class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_py
 {{#function:returns_stream?}}
 
 
-class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:return_stream_elem_type}}
         (
             0,  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
             None,  # default value
@@ -197,7 +197,7 @@ class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbth
         {{#function:stream_exceptions}}
         (
             {{field:key}},  # id
-            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
@@ -210,7 +210,7 @@ class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbth
 {{/program:services}}
 
 
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_python_types.fill_specs(
     {{#program:services}}
     {{#service:supported_functions}}
     {{> types/function_args_type}},

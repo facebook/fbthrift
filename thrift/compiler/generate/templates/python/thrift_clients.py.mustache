@@ -24,12 +24,12 @@ import typing as _typing
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from {{program:base_library_package}}.client import (
-    AsyncClient as _fbthrift_py3lite_AsyncClient,
-    SyncClient as _fbthrift_py3lite_SyncClient,
-    Client as _fbthrift_py3lite_Client,
+    AsyncClient as _fbthrift_python_AsyncClient,
+    SyncClient as _fbthrift_python_SyncClient,
+    Client as _fbthrift_python_Client,
 )
-import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
-import {{program:base_library_package}}.types as _fbthrift_py3lite_types
+import {{program:base_library_package}}.exceptions as _fbthrift_python_exceptions
+import {{program:base_library_package}}.types as _fbthrift_python_types
 import {{program:module_path}}.thrift_types
 import {{program:module_path}}.thrift_metadata
 {{#program:include_namespaces}}
@@ -44,7 +44,7 @@ import {{included_module_path}}.thrift_clients
 {{#program:services}}
 
 
-class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
+class {{service:name}}(_fbthrift_python_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "{{program:name}}.{{service:name}}"
@@ -56,7 +56,7 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
     class Async({{#service:extends}}{{!
         }}{{> services/client_module_path}}.Async{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
-        }}_fbthrift_py3lite_AsyncClient{{!
+        }}_fbthrift_python_AsyncClient{{!
     }}{{/service:extends?}}):
         @staticmethod
         def __get_thrift_name__() -> str:
@@ -104,8 +104,8 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             {{/type:stream_has_first_response?}}
             {{/type:streamresponse?}}
             {{#type:with_regular_response?}}
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
             {{/type:with_regular_response?}}
@@ -115,7 +115,7 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
     class Sync({{#service:extends}}{{!
         }}{{> services/client_module_path}}.Sync{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
-        }}_fbthrift_py3lite_SyncClient{{!
+        }}_fbthrift_python_SyncClient{{!
     }}{{/service:extends?}}):
         @staticmethod
         def __get_thrift_name__() -> str:
@@ -148,8 +148,8 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
                 raise _fbthrift_resp.{{field:py_name}}
             {{/function:exceptions}}
             {{#function:return_type}}{{^type:void?}}
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+            raise _fbthrift_python_exceptions.ApplicationError(
+                _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
             {{/type:void?}}{{/function:return_type}}

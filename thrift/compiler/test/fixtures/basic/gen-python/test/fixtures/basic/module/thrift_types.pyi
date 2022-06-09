@@ -10,23 +10,23 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.hack.thrift_types
 
 
-class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class MyEnum(_fbthrift_python_types.Enum, enum.Enum):
     MyValue1: MyEnum = ...
     MyValue2: MyEnum = ...
 
 
-class HackEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+class HackEnum(_fbthrift_python_types.Enum, enum.Enum):
     Value1: HackEnum = ...
     Value2: HackEnum = ...
 
 
-class MyStruct(_fbthrift_py3lite_types.Struct):
+class MyStruct(_fbthrift_python_types.Struct):
     MyIntField: _typing.Final[int] = ...
     MyStringField: _typing.Final[str] = ...
     MyDataField: _typing.Final[MyDataItem] = ...
@@ -64,7 +64,7 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, bool, bool, _typing.AbstractSet[float], str]]]: ...
 
 
-class MyDataItem(_fbthrift_py3lite_types.Struct):
+class MyDataItem(_fbthrift_python_types.Struct):
     def __init__(
         self,
     ) -> None: ...
@@ -75,7 +75,7 @@ class MyDataItem(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
 
 
-class MyUnion(_fbthrift_py3lite_types.Union):
+class MyUnion(_fbthrift_python_types.Union):
     myEnum: _typing.Final[MyEnum] = ...
     myStruct: _typing.Final[MyStruct] = ...
     myDataItem: _typing.Final[MyDataItem] = ...
@@ -103,7 +103,7 @@ class MyUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class ReservedKeyword(_fbthrift_py3lite_types.Struct):
+class ReservedKeyword(_fbthrift_python_types.Struct):
     reserved_field: _typing.Final[int] = ...
     def __init__(
         self, *,
@@ -117,7 +117,7 @@ class ReservedKeyword(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
 
-class UnionToBeRenamed(_fbthrift_py3lite_types.Union):
+class UnionToBeRenamed(_fbthrift_python_types.Union):
     reserved_field: _typing.Final[int] = ...
     def __init__(
         self, *,
@@ -136,7 +136,7 @@ class UnionToBeRenamed(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class _fbthrift_FooService_simple_rpc_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_FooService_simple_rpc_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -147,7 +147,7 @@ class _fbthrift_FooService_simple_rpc_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_FooService_simple_rpc_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_FooService_simple_rpc_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -161,7 +161,7 @@ class _fbthrift_FooService_simple_rpc_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_FB303Service_simple_rpc_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_FB303Service_simple_rpc_args(_fbthrift_python_types.Struct):
     int_parameter: _typing.Final[int] = ...
 
     def __init__(
@@ -174,7 +174,7 @@ class _fbthrift_FB303Service_simple_rpc_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_FB303Service_simple_rpc_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_FB303Service_simple_rpc_result(_fbthrift_python_types.Struct):
     success: _typing.Final[ReservedKeyword]
 
     def __init__(
@@ -188,7 +188,7 @@ class _fbthrift_FB303Service_simple_rpc_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_ping_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -199,7 +199,7 @@ class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_MyService_ping_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_ping_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -213,7 +213,7 @@ class _fbthrift_MyService_ping_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_getRandomData_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_getRandomData_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -224,7 +224,7 @@ class _fbthrift_MyService_getRandomData_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_MyService_getRandomData_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_getRandomData_result(_fbthrift_python_types.Struct):
     success: _typing.Final[str]
 
     def __init__(
@@ -238,7 +238,7 @@ class _fbthrift_MyService_getRandomData_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_sink_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_sink_args(_fbthrift_python_types.Struct):
     sink: _typing.Final[int] = ...
 
     def __init__(
@@ -251,7 +251,7 @@ class _fbthrift_MyService_sink_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_MyService_sink_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_sink_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -265,7 +265,7 @@ class _fbthrift_MyService_sink_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_putDataById_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_putDataById_args(_fbthrift_python_types.Struct):
     id: _typing.Final[int] = ...
     data: _typing.Final[str] = ...
 
@@ -280,7 +280,7 @@ class _fbthrift_MyService_putDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int, str]]]: ...
 
 
-class _fbthrift_MyService_putDataById_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_putDataById_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -294,7 +294,7 @@ class _fbthrift_MyService_putDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_hasDataById_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_hasDataById_args(_fbthrift_python_types.Struct):
     id: _typing.Final[int] = ...
 
     def __init__(
@@ -307,7 +307,7 @@ class _fbthrift_MyService_hasDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_MyService_hasDataById_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_hasDataById_result(_fbthrift_python_types.Struct):
     success: _typing.Final[bool]
 
     def __init__(
@@ -321,7 +321,7 @@ class _fbthrift_MyService_hasDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_getDataById_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_getDataById_args(_fbthrift_python_types.Struct):
     id: _typing.Final[int] = ...
 
     def __init__(
@@ -334,7 +334,7 @@ class _fbthrift_MyService_getDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_MyService_getDataById_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_getDataById_result(_fbthrift_python_types.Struct):
     success: _typing.Final[str]
 
     def __init__(
@@ -348,7 +348,7 @@ class _fbthrift_MyService_getDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_deleteDataById_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_deleteDataById_args(_fbthrift_python_types.Struct):
     id: _typing.Final[int] = ...
 
     def __init__(
@@ -361,7 +361,7 @@ class _fbthrift_MyService_deleteDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_MyService_deleteDataById_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_deleteDataById_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -375,7 +375,7 @@ class _fbthrift_MyService_deleteDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-class _fbthrift_MyService_lobDataById_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_lobDataById_args(_fbthrift_python_types.Struct):
     id: _typing.Final[int] = ...
     data: _typing.Final[str] = ...
 
@@ -390,7 +390,7 @@ class _fbthrift_MyService_lobDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int, str]]]: ...
 
 
-class _fbthrift_MyService_invalid_return_for_hack_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_invalid_return_for_hack_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -401,7 +401,7 @@ class _fbthrift_MyService_invalid_return_for_hack_args(_fbthrift_py3lite_types.S
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_python_types.Struct):
     success: _typing.Final[_typing.AbstractSet[float]]
 
     def __init__(
@@ -415,7 +415,7 @@ class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_py3lite_types
         ]]]: ...
 
 
-class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self,
@@ -426,7 +426,7 @@ class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_py3lite_types.Struc
         _typing.Union[None]]]: ...
 
 
-class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_python_types.Struct):
     success: _typing.Final[None]
 
     def __init__(
@@ -440,7 +440,7 @@ class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_py3lite_types.Str
         ]]]: ...
 
 
-class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_python_types.Struct):
     key: _typing.Final[str] = ...
 
     def __init__(
@@ -453,7 +453,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_py3lite_types
         _typing.Union[None, str]]]: ...
 
 
-class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_python_types.Struct):
     success: _typing.Final[bytes]
 
     def __init__(
@@ -467,7 +467,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_py3lite_typ
         ]]]: ...
 
 
-class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_py3lite_types.Struct):
+class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_python_types.Struct):
     key: _typing.Final[str] = ...
 
     def __init__(
@@ -480,7 +480,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_py3lite_types
         _typing.Union[None, str]]]: ...
 
 
-class _fbthrift_DbMixedStackArguments_getDataByKey1_result(_fbthrift_py3lite_types.Struct):
+class _fbthrift_DbMixedStackArguments_getDataByKey1_result(_fbthrift_python_types.Struct):
     success: _typing.Final[bytes]
 
     def __init__(

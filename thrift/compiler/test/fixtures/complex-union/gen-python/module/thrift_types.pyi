@@ -10,11 +10,11 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
-class ComplexUnion(_fbthrift_py3lite_types.Union):
+class ComplexUnion(_fbthrift_python_types.Union):
     intValue: _typing.Final[int] = ...
     stringValue: _typing.Final[str] = ...
     intListValue: _typing.Final[_typing.Sequence[int]] = ...
@@ -48,7 +48,7 @@ class ComplexUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class ListUnion(_fbthrift_py3lite_types.Union):
+class ListUnion(_fbthrift_python_types.Union):
     intListValue: _typing.Final[_typing.Sequence[int]] = ...
     stringListValue: _typing.Final[_typing.Sequence[str]] = ...
     def __init__(
@@ -70,7 +70,7 @@ class ListUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class DataUnion(_fbthrift_py3lite_types.Union):
+class DataUnion(_fbthrift_python_types.Union):
     binaryData: _typing.Final[bytes] = ...
     stringData: _typing.Final[str] = ...
     def __init__(
@@ -92,7 +92,7 @@ class DataUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class Val(_fbthrift_py3lite_types.Struct):
+class Val(_fbthrift_python_types.Struct):
     strVal: _typing.Final[str] = ...
     intVal: _typing.Final[int] = ...
     typedefValue: _typing.Final[_typing.Mapping[int, str]] = ...
@@ -112,7 +112,7 @@ class Val(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int, _typing.Mapping[int, str]]]]: ...
 
 
-class ValUnion(_fbthrift_py3lite_types.Union):
+class ValUnion(_fbthrift_python_types.Union):
     v1: _typing.Final[Val] = ...
     v2: _typing.Final[Val] = ...
     def __init__(
@@ -134,7 +134,7 @@ class ValUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class VirtualComplexUnion(_fbthrift_py3lite_types.Union):
+class VirtualComplexUnion(_fbthrift_python_types.Union):
     thingOne: _typing.Final[str] = ...
     thingTwo: _typing.Final[str] = ...
     def __init__(
@@ -156,7 +156,7 @@ class VirtualComplexUnion(_fbthrift_py3lite_types.Union):
     def get_type(self) -> Type:...
 
 
-class NonCopyableStruct(_fbthrift_py3lite_types.Struct):
+class NonCopyableStruct(_fbthrift_python_types.Struct):
     num: _typing.Final[int] = ...
     def __init__(
         self, *,
@@ -170,7 +170,7 @@ class NonCopyableStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
 
-class NonCopyableUnion(_fbthrift_py3lite_types.Union):
+class NonCopyableUnion(_fbthrift_python_types.Union):
     s: _typing.Final[NonCopyableStruct] = ...
     def __init__(
         self, *,

@@ -8,15 +8,15 @@
 import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.python.types as _fbthrift_py3lite_types
-import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_python_types
+import thrift.python.exceptions as _fbthrift_python_exceptions
 
 import facebook.thrift.annotation.internal.thrift_types
 
 import foo.thrift_types
 
 
-class Fields(_fbthrift_py3lite_types.Struct):
+class Fields(_fbthrift_python_types.Struct):
     injected_field: _typing.Final[str] = ...
     def __init__(
         self, *,
@@ -30,7 +30,7 @@ class Fields(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
 
 
-class FieldsInjectedToEmptyStruct(_fbthrift_py3lite_types.Struct):
+class FieldsInjectedToEmptyStruct(_fbthrift_python_types.Struct):
     injected_field: _typing.Final[str] = ...
     def __init__(
         self, *,
@@ -44,7 +44,7 @@ class FieldsInjectedToEmptyStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
 
 
-class FieldsInjectedToStruct(_fbthrift_py3lite_types.Struct):
+class FieldsInjectedToStruct(_fbthrift_python_types.Struct):
     string_field: _typing.Final[str] = ...
     injected_field: _typing.Final[str] = ...
     def __init__(
@@ -61,7 +61,7 @@ class FieldsInjectedToStruct(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str]]]: ...
 
 
-class FieldsInjectedWithIncludedStruct(_fbthrift_py3lite_types.Struct):
+class FieldsInjectedWithIncludedStruct(_fbthrift_python_types.Struct):
     string_field: _typing.Final[str] = ...
     injected_field: _typing.Final[str] = ...
     injected_structured_annotation_field: _typing.Final[_typing.Optional[str]] = ...
