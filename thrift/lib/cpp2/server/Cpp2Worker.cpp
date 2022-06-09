@@ -385,7 +385,7 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
       DCHECK(m->get());
       return MetadataFound{**m};
     }
-    return MetadataFound{AsyncProcessorFactory::kWildcardMethodMetadata};
+    return MetadataFound{*wildcard->wildcardMetadata};
   }
   if (std::holds_alternative<AsyncProcessorFactory::MetadataNotImplemented>(
           methods_)) {

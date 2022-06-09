@@ -110,7 +110,7 @@ MultiplexAsyncProcessorFactory::CompositionMetadata computeCompositionMetadata(
         addToKnownMethods(wildcardMetadataMap->knownMethods, sourceIndex);
         compositionMetadata.firstWildcardLike =
             MultiplexAsyncProcessorFactory::CompositionMetadata::Wildcard{
-                sourceIndex};
+                sourceIndex, wildcardMetadataMap->wildcardMetadata};
       } else {
         DCHECK(std::holds_alternative<
                AsyncProcessorFactory::MetadataNotImplemented>(metadataResult));
@@ -125,8 +125,17 @@ MultiplexAsyncProcessorFactory::CompositionMetadata computeCompositionMetadata(
   compositionMetadata.cachedMethodMetadataResult =
       [&]() -> AsyncProcessorFactory::CreateMethodMetadataResult {
     if (compositionMetadata.wildcardIndex().has_value()) {
-      return AsyncProcessorFactory::WildcardMethodMetadataMap{
-          std::move(knownMethods)};
+      if (auto wildcard = std::get_if<
+              MultiplexAsyncProcessorFactory::CompositionMetadata::Wildcard>(
+              &compositionMetadata.firstWildcardLike)) {
+        return AsyncProcessorFactory::WildcardMethodMetadataMap{
+            wildcard->metadata, std::move(knownMethods)};
+      } else {
+        return AsyncProcessorFactory::WildcardMethodMetadataMap{
+            std::make_shared<
+                const AsyncProcessorFactory::WildcardMethodMetadata>(),
+            std::move(knownMethods)};
+      }
     }
     return std::move(knownMethods);
   }();
@@ -177,10 +186,7 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
       }
     };
 
-    const bool isWildcard =
-        AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata);
-
-    if (!isWildcard) {
+    if (!untypedMethodMetadata.isWildcard) {
       const auto& methodMetadata =
           AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
               untypedMethodMetadata);
@@ -339,7 +345,7 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
 
   std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
   derefProcessor(const MethodMetadata& methodMetadata) const {
-    if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+    if (methodMetadata.isWildcard) {
       return std::make_pair(
           processors_[compositionMetadata_.wildcardIndex().value()].get(),
           &methodMetadata);
@@ -412,10 +418,7 @@ MultiplexAsyncProcessorFactory::createMethodMetadata() {
 std::shared_ptr<folly::RequestContext>
 MultiplexAsyncProcessorFactory::getBaseContextForRequest(
     const MethodMetadata& untypedMethodMetadata) {
-  const bool isWildcard =
-      AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata);
-
-  if (!isWildcard) {
+  if (!untypedMethodMetadata.isWildcard) {
     const auto& methodMetadata =
         AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
             untypedMethodMetadata);

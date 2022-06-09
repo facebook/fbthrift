@@ -1119,10 +1119,8 @@ void execute(
     AsyncProcessor::MethodMetadata const& metadata) {
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
-  const bool isWildcard =
-      AsyncProcessorHelper::isWildcardMethodMetadata(metadata);
 
-  if (!isWildcard) {
+  if (!metadata.isWildcard) {
     const auto& methodMetadata =
         AsyncProcessorHelper::expectMetadataOfType<Metadata>(metadata);
     switch (protType) {

@@ -248,7 +248,9 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
         // swap out for another method to make sure we are using this map
         knownMethods.emplace(
             "parentMethod1", std::move(defaultMap["parentMethod3"]));
-        return WildcardMethodMetadataMap{std::move(knownMethods)};
+        return WildcardMethodMetadataMap{
+            std::make_shared<const WildcardMethodMetadata>(),
+            std::move(knownMethods)};
       }
 
       std::unique_ptr<AsyncProcessor> getProcessor() override {
@@ -433,7 +435,9 @@ TEST_P(
     ChildHandlerWithWildcard()
         : ChildHandlerWithMetadata([](auto defaultResult) {
             auto& defaultMap = expectMethodMetadataMap(defaultResult);
-            return WildcardMethodMetadataMap{std::move(defaultMap)};
+            return WildcardMethodMetadataMap{
+                std::make_shared<const WildcardMethodMetadata>(),
+                std::move(defaultMap)};
           }) {}
     std::unique_ptr<AsyncProcessor> getProcessor() override {
       // Instead of crashing on WildcardMethodMetadata, we send back an unknown
@@ -457,8 +461,7 @@ TEST_P(
             Cpp2RequestContext* context,
             folly::EventBase* eb,
             concurrency::ThreadManager* tm) override {
-          if (AsyncProcessorHelper::isWildcardMethodMetadata(
-                  untypedMethodMetadata)) {
+          if (untypedMethodMetadata.isWildcard) {
             AsyncProcessorHelper::sendUnknownMethodError(
                 std::move(req), "someUnknownMethod");
             return;
@@ -477,7 +480,7 @@ TEST_P(
             ServerRequest&& request,
             const AsyncProcessorFactory::MethodMetadata& methodMetadata)
             override {
-          if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+          if (methodMetadata.isWildcard) {
             auto eb = detail::ServerRequestHelper::eventBase(request);
             eb->runInEventBaseThread([request = std::move(request)]() mutable {
               AsyncProcessorHelper::sendUnknownMethodError(

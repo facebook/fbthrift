@@ -30,6 +30,7 @@
 #include <folly/experimental/PrimaryPtr.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/lang/Badge.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/TProcessor.h>
@@ -127,21 +128,45 @@ class AsyncProcessorFactory {
    */
   virtual std::vector<ServiceHandlerBase*> getServiceHandlers() = 0;
 
+  struct WildcardMethodMetadata;
+
   struct MethodMetadata {
     enum class ExecutorType { UNKNOWN, EVB, ANY };
 
     enum class InteractionType { UNKNOWN, NONE, INTERACTION_V1 };
 
     MethodMetadata() = default;
+
+   private:
+    MethodMetadata(
+        ExecutorType executor,
+        InteractionType interaction,
+        RpcKind kind,
+        concurrency::PRIORITY prio,
+        bool isWild)
+        : executorType(executor),
+          interactionType(interaction),
+          rpcKind(kind),
+          priority(prio),
+          isWildcard(isWild) {}
+
+   public:
     MethodMetadata(
         ExecutorType executor,
         InteractionType interaction,
         RpcKind kind,
         concurrency::PRIORITY prio)
-        : executorType(executor),
-          interactionType(interaction),
-          rpcKind(kind),
-          priority(prio) {}
+        : MethodMetadata(
+              executor, interaction, kind, prio, false /* isWildcard */) {}
+
+    MethodMetadata(
+        folly::badge<WildcardMethodMetadata>,
+        ExecutorType executor,
+        InteractionType interaction,
+        RpcKind kind,
+        concurrency::PRIORITY prio)
+        : MethodMetadata(
+              executor, interaction, kind, prio, true /* isWildcard */) {}
 
     virtual ~MethodMetadata() = default;
 
@@ -149,7 +174,28 @@ class AsyncProcessorFactory {
     const InteractionType interactionType{InteractionType::UNKNOWN};
     const std::optional<RpcKind> rpcKind{};
     const std::optional<concurrency::PRIORITY> priority{};
+    const bool isWildcard{false};
   };
+
+  /**
+   * The concrete metadata type that will be passed if createMethodMetadata
+   * returns WildcardMethodMetadataMap and the current method is not in its
+   * knownMethods. This will carry all the information shared by wildcard
+   * methods.
+   */
+  struct WildcardMethodMetadata final : public MethodMetadata {
+    explicit WildcardMethodMetadata(ExecutorType executorType)
+        : MethodMetadata(
+              folly::badge<WildcardMethodMetadata>(),
+              executorType,
+              InteractionType::UNKNOWN,
+              RpcKind(),
+              concurrency::PRIORITY()) {}
+    WildcardMethodMetadata() : WildcardMethodMetadata(ExecutorType::UNKNOWN) {}
+    WildcardMethodMetadata(const WildcardMethodMetadata&) = delete;
+    WildcardMethodMetadata& operator=(const WildcardMethodMetadata&) = delete;
+  };
+
   /**
    * A map of method names to some loosely typed metadata that will be
    * passed to AsyncProcessor::processSerializedRequest. The concrete type of
@@ -165,28 +211,13 @@ class AsyncProcessorFactory {
    * The implementation may optionally enumerate a subset of known methods.
    */
   struct WildcardMethodMetadataMap {
+    /**
+     * Shared metadata that will be used for all methods
+     * not present in knownMethods.
+     */
+    std::shared_ptr<const WildcardMethodMetadata> wildcardMetadata{};
     MethodMetadataMap knownMethods;
   };
-  /**
-   * The concrete metadata type that will be passed if createMethodMetadata
-   * returns WildcardMethodMetadataMap and the current method is not in its
-   * knownMethods. There should only be a single instance of this type that all
-   * services refer to.
-   */
-  struct WildcardMethodMetadata final : public MethodMetadata {
-   private:
-    WildcardMethodMetadata() = default;
-    friend class AsyncProcessorFactory;
-
-   public:
-    WildcardMethodMetadata(const WildcardMethodMetadata&) = delete;
-    WildcardMethodMetadata& operator=(const WildcardMethodMetadata&) = delete;
-  };
-  /**
-   * Single instance of WildcardMethodMetadata so that AsyncProcessor can just
-   * rely on comparing the address instead of using dynamic_cast.
-   */
-  static const WildcardMethodMetadata kWildcardMethodMetadata;
 
   /**
    * The API is not implemented (legacy).

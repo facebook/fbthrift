@@ -85,6 +85,7 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
     // createMethodMetadata() returned WildcardMethodMetadata
     struct Wildcard {
       std::size_t index;
+      std::shared_ptr<const WildcardMethodMetadata> metadata;
     };
     // createMethodMetadata() is not implemented
     struct WildcardNoMetadata {

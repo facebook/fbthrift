@@ -333,7 +333,10 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           return WildcardMethodMetadataMap{};
         },
         [](MethodMetadataMap& knownMethods) -> WildcardMethodMetadataMap {
-          return WildcardMethodMetadataMap{std::move(knownMethods)};
+          return WildcardMethodMetadataMap{
+              std::make_shared<
+                  const AsyncProcessorFactory::WildcardMethodMetadata>(),
+              std::move(knownMethods)};
         },
         [](WildcardMethodMetadataMap& map) -> WildcardMethodMetadataMap {
           return std::move(map);
@@ -361,8 +364,7 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           Cpp2RequestContext* context,
           folly::EventBase* eb,
           concurrency::ThreadManager* tm) override {
-        if (AsyncProcessorHelper::isWildcardMethodMetadata(
-                untypedMethodMetadata)) {
+        if (untypedMethodMetadata.isWildcard) {
           std::string message = folly::variant_match(
               message_,
               [](const std::string& m) { return m; },
@@ -389,7 +391,7 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           ServerRequest&& request,
           const AsyncProcessorFactory::MethodMetadata& methodMetadata)
           override {
-        if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+        if (methodMetadata.isWildcard) {
           std::string message = folly::variant_match(
               message_,
               [](const std::string& m) { return m; },
