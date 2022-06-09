@@ -61,73 +61,7 @@
 
 void <%struct:cpp_name%>::__fbthrift_clear() {
   // clear all fields
-<%#struct:fields%><%#field:type%><%!
-%><%#type:resolves_to_base_or_enum?%><%!
-  %><%^field:cpp_ref?%><%!
-    %><%#field:cpp_first_adapter%><%!
-      %>  ::apache::thrift::adapt_detail::clear<<%field:cpp_first_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);<%!
-    %><%/field:cpp_first_adapter%><%!
-    %><%^field:cpp_first_adapter%><%!
-      TODO(dokwon): Replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
-      %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
-      %><%#field:deprecated_clear?%><% > field/default%>;<%/field:deprecated_clear?%><%!
-      %><%^field:deprecated_clear?%><% > field/intrinsic_default%>;<%/field:deprecated_clear?%><%!
-    %><%/field:cpp_first_adapter%><%!
-  %><%/field:cpp_ref?%><%!
-  %><%#field:cpp_ref?%><%!
-    %><%^field:optional?%><%!
-      %>  <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);<%!
-    %><%/field:optional?%><%!
-    %><%#field:optional?%><%!
-      %>  <% > field/member%>.reset();<%!
-    %><%/field:optional?%><%!
-  %><%/field:cpp_ref?%>
-<%/type:resolves_to_base_or_enum?%>
-<%#type:resolves_to_container?%>
-<%#field:cpp_first_adapter%>
-  ::apache::thrift::adapt_detail::clear<<%field:cpp_first_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
-<%/field:cpp_first_adapter%>
-<%^field:cpp_first_adapter%>
-<%#field:cpp_ref?%>
-<%^field:optional?%>
-  <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
-<%/field:optional?%>
-<%#field:optional?%>
-  <% > field/member%>.reset();
-<%/field:optional?%>
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
-  <% > field/member%>.clear();
-<%/field:cpp_ref?%>
-<%/field:cpp_first_adapter%>
-<%/type:resolves_to_container?%>
-<%#type:non_empty_struct?%>
-<%^field:cpp_ref?%><%!
-  %>  <%#field:cpp_first_adapter%>::apache::thrift::adapt_detail::clear<<%field:cpp_first_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);<%/field:cpp_first_adapter%><%!
-  %>  <%^field:cpp_first_adapter%>apache::thrift::clear(<% > field/member%>);<%/field:cpp_first_adapter%><%!
-%><%/field:cpp_ref?%>
-<%#field:cpp_ref_unique?%>
-<%^field:optional?%>
-  if (<% > field/member%>) apache::thrift::clear(*<% > field/member%>);
-<%/field:optional?%>
-<%/field:cpp_ref_unique?%>
-<%#field:cpp_ref_shared?%>
-<%^field:optional?%>
-  if (<% > field/member%>) apache::thrift::clear(*<% > field/member%>);
-<%/field:optional?%>
-<%/field:cpp_ref_shared?%>
-<%#field:cpp_ref_shared_const?%>
-<%^field:optional?%>
-  if (<% > field/member%>) <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
-<%/field:optional?%>
-<%/field:cpp_ref_shared_const?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>
-  <% > field/member%>.reset();
-<%/field:optional?%>
-<%/field:cpp_ref?%>
-<%/type:non_empty_struct?%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%><% > module_types_cpp/clear_fields%><%/struct:fields%>
 <%#struct:lazy_fields?%>
   __fbthrift_serializedData_ = {};
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
@@ -136,6 +70,10 @@ void <%struct:cpp_name%>::__fbthrift_clear() {
 <%#struct:isset_fields?%>
   __isset = {};
 <%/struct:isset_fields?%>
+}
+
+void <%struct:cpp_name%>::__fbthrift_clear_terse_fields() {
+<%#struct:fields%><%#field:terse?%><% > module_types_cpp/clear_fields%><%/field:terse?%><%/struct:fields%>
 }
 
 bool <%struct:cpp_name%>::__fbthrift_is_empty() const {

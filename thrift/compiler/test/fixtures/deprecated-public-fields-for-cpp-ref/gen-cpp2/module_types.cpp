@@ -73,6 +73,9 @@ void Foo::__fbthrift_clear() {
   this->__fbthrift_field_bar.reset();
 }
 
+void Foo::__fbthrift_clear_terse_fields() {
+}
+
 bool Foo::__fbthrift_is_empty() const {
   return !(this->__fbthrift_field_foo) &&
  !(this->__fbthrift_field_bar);

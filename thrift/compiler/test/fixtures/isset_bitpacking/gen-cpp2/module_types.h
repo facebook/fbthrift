@@ -130,6 +130,7 @@ class Default final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -427,6 +428,7 @@ class NonAtomic final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -724,6 +726,7 @@ class Atomic final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1021,6 +1024,7 @@ class AtomicFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

@@ -69,6 +69,9 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
+void MyDataItem::__fbthrift_clear_terse_fields() {
+}
+
 bool MyDataItem::__fbthrift_is_empty() const {
   return true;
 }
@@ -167,6 +170,9 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_myEnum = ::cpp2::MyEnum();
   __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {

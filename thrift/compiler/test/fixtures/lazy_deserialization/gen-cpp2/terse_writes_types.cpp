@@ -76,6 +76,9 @@ void TerseFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+void TerseFoo::__fbthrift_clear_terse_fields() {
+}
+
 bool TerseFoo::__fbthrift_is_empty() const {
   return !(!this->__fbthrift_field_field1.empty()) &&
  !(!this->__fbthrift_field_field2.empty()) &&
@@ -370,6 +373,9 @@ void TerseLazyFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+void TerseLazyFoo::__fbthrift_clear_terse_fields() {
+}
+
 bool TerseLazyFoo::__fbthrift_is_empty() const {
   return !(!this->__fbthrift_field_field1.empty()) &&
  !(!this->__fbthrift_field_field2.empty()) &&
@@ -523,6 +529,9 @@ void TerseOptionalFoo::__fbthrift_clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_field4.clear();
   __isset = {};
+}
+
+void TerseOptionalFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool TerseOptionalFoo::__fbthrift_is_empty() const {
@@ -817,6 +826,9 @@ void TerseOptionalLazyFoo::__fbthrift_clear() {
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
   __isset = {};
+}
+
+void TerseOptionalLazyFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool TerseOptionalLazyFoo::__fbthrift_is_empty() const {

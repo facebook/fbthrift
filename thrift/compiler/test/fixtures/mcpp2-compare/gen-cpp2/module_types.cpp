@@ -147,6 +147,9 @@ void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
+void Empty::__fbthrift_clear_terse_fields() {
+}
+
 bool Empty::__fbthrift_is_empty() const {
   return true;
 }
@@ -224,6 +227,9 @@ void ASimpleStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void ASimpleStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool ASimpleStruct::__fbthrift_is_empty() const {
   return !(this->__fbthrift_field_boolField != ::std::int64_t());
 }
@@ -295,6 +301,9 @@ void ASimpleStructNoexcept::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
+}
+
+void ASimpleStructNoexcept::__fbthrift_clear_terse_fields() {
 }
 
 bool ASimpleStructNoexcept::__fbthrift_is_empty() const {
@@ -488,6 +497,9 @@ void MyStruct::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
   ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
   __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -1293,6 +1305,9 @@ void AnException::__fbthrift_clear() {
   __isset = {};
 }
 
+void AnException::__fbthrift_clear_terse_fields() {
+}
+
 bool AnException::__fbthrift_is_empty() const {
   return false;
 }
@@ -1622,6 +1637,9 @@ void AnotherException::__fbthrift_clear() {
   __isset = {};
 }
 
+void AnotherException::__fbthrift_clear_terse_fields() {
+}
+
 bool AnotherException::__fbthrift_is_empty() const {
   return false;
 }
@@ -1899,6 +1917,9 @@ void containerStruct::__fbthrift_clear() {
   this->fieldAE.clear();
   ::apache::thrift::apply_indirection(this->fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
   __isset = {};
+}
+
+void containerStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool containerStruct::__fbthrift_is_empty() const {
@@ -2632,6 +2653,9 @@ void MyIncludedStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyIncludedStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyIncludedStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2902,6 +2926,9 @@ void AnnotatedStruct::__fbthrift_clear() {
   this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
     apache::thrift::clear(this->struct_struct);
   __isset = {};
+}
+
+void AnnotatedStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool AnnotatedStruct::__fbthrift_is_empty() const {
@@ -3381,6 +3408,9 @@ void ComplexContainerStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void ComplexContainerStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool ComplexContainerStruct::__fbthrift_is_empty() const {
   return !(!this->__fbthrift_field_map_of_iobufs.empty()) &&
  !(!this->__fbthrift_field_map_of_iobuf_ptrs.empty());
@@ -3489,6 +3519,9 @@ void FloatStruct::__fbthrift_clear() {
   this->__fbthrift_field_floatField = float();
   this->__fbthrift_field_doubleField = double();
   __isset = {};
+}
+
+void FloatStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool FloatStruct::__fbthrift_is_empty() const {
@@ -3687,6 +3720,9 @@ AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrif
 void AllRequiredNoExceptMoveCtrStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_intField = ::std::int64_t();
+}
+
+void AllRequiredNoExceptMoveCtrStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::__fbthrift_is_empty() const {

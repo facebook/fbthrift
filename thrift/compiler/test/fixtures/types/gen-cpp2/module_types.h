@@ -618,6 +618,7 @@ class decorated_struct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -740,6 +741,7 @@ class ContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1216,6 +1218,7 @@ class CppTypeStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1332,6 +1335,7 @@ class VirtualStruct  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1453,6 +1457,7 @@ class MyStructWithForwardRefEnum final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1624,6 +1629,7 @@ class TrivialNumeric final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1796,6 +1802,7 @@ class TrivialNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1967,6 +1974,7 @@ class ComplexString final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2140,6 +2148,7 @@ class ComplexNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2315,6 +2324,7 @@ class MinPadding final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2643,6 +2653,7 @@ class MyDataItem final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2704,6 +2715,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2980,6 +2992,7 @@ class Renaming final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3099,6 +3112,7 @@ class AnnotatedTypes final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3272,6 +3286,7 @@ class ForwardUsageStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3389,6 +3404,7 @@ class ForwardUsageRoot final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3518,6 +3534,7 @@ class ForwardUsageByRef final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3635,6 +3652,7 @@ class NoexceptMoveEmpty final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3699,6 +3717,7 @@ class NoexceptMoveSimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3818,6 +3837,7 @@ class NoexceptMoveComplexStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4378,6 +4398,7 @@ class NoExceptMoveUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4651,6 +4672,7 @@ class AllocatorAware final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5044,6 +5066,7 @@ class AllocatorAware2 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5182,6 +5205,7 @@ class TypedefStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5406,6 +5430,7 @@ class StructWithDoubleUnderscores final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

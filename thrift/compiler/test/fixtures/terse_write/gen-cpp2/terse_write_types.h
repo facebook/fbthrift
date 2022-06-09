@@ -396,6 +396,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -460,6 +461,7 @@ class MyStructWithCustomDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -579,6 +581,7 @@ class StructLevelTerseStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1379,6 +1382,7 @@ class FieldLevelTerseStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2915,6 +2919,7 @@ class TerseStructWithCustomDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

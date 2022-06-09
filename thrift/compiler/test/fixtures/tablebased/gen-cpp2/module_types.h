@@ -184,6 +184,7 @@ class TrivialTypesStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -516,6 +517,7 @@ class ContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -994,6 +996,7 @@ class ExampleUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

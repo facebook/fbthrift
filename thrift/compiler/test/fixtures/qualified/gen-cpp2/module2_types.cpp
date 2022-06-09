@@ -66,6 +66,9 @@ void Struct::__fbthrift_clear() {
   __isset = {};
 }
 
+void Struct::__fbthrift_clear_terse_fields() {
+}
+
 bool Struct::__fbthrift_is_empty() const {
   return false;
 }
@@ -196,6 +199,9 @@ void BigStruct::__fbthrift_clear() {
     apache::thrift::clear(this->__fbthrift_field_s);
   this->__fbthrift_field_id = ::std::int32_t();
   __isset = {};
+}
+
+void BigStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool BigStruct::__fbthrift_is_empty() const {

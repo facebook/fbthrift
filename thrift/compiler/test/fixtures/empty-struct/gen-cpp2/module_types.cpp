@@ -43,6 +43,9 @@ void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
+void Empty::__fbthrift_clear_terse_fields() {
+}
+
 bool Empty::__fbthrift_is_empty() const {
   return true;
 }

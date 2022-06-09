@@ -332,6 +332,7 @@ class Internship final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -681,6 +682,7 @@ class Range final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -851,6 +853,7 @@ class struct1 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1027,6 +1030,7 @@ class struct2 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1304,6 +1308,7 @@ class struct3 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1530,6 +1535,7 @@ class struct4 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1764,6 +1770,7 @@ class union1 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2023,6 +2030,7 @@ class union2 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

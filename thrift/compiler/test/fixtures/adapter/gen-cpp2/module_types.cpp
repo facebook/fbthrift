@@ -200,6 +200,9 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
+void Foo::__fbthrift_clear_terse_fields() {
+}
+
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }
@@ -491,6 +494,9 @@ void Bar::__fbthrift_clear() {
   __isset = {};
 }
 
+void Bar::__fbthrift_clear_terse_fields() {
+}
+
 bool Bar::__fbthrift_is_empty() const {
   return false;
 }
@@ -669,6 +675,9 @@ void StructWithFieldAdapter::__fbthrift_clear() {
   __isset = {};
 }
 
+void StructWithFieldAdapter::__fbthrift_clear_terse_fields() {
+}
+
 bool StructWithFieldAdapter::__fbthrift_is_empty() const {
   return false;
 }
@@ -762,6 +771,9 @@ A::A(apache::thrift::FragileConstructor) {}
 
 void A::__fbthrift_clear() {
   // clear all fields
+}
+
+void A::__fbthrift_clear_terse_fields() {
 }
 
 bool A::__fbthrift_is_empty() const {
@@ -859,6 +871,9 @@ B::B(apache::thrift::FragileConstructor, ::cpp2::AdaptedA a__arg) :
 void B::__fbthrift_clear() {
   // clear all fields
   __isset = {};
+}
+
+void B::__fbthrift_clear_terse_fields() {
 }
 
 bool B::__fbthrift_is_empty() const {

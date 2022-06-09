@@ -99,6 +99,9 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
+void MyDataItem::__fbthrift_clear_terse_fields() {
+}
+
 bool MyDataItem::__fbthrift_is_empty() const {
   return true;
 }
@@ -237,6 +240,9 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_floatSet.clear();
   this->__fbthrift_field_no_hack_codegen_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -533,6 +539,9 @@ void ReservedKeyword::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_reserved_field = ::std::int32_t();
   __isset = {};
+}
+
+void ReservedKeyword::__fbthrift_clear_terse_fields() {
 }
 
 bool ReservedKeyword::__fbthrift_is_empty() const {

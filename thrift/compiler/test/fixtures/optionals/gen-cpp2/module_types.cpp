@@ -83,6 +83,9 @@ void Color::__fbthrift_clear() {
   __isset = {};
 }
 
+void Color::__fbthrift_clear_terse_fields() {
+}
+
 bool Color::__fbthrift_is_empty() const {
   return false;
 }
@@ -221,6 +224,9 @@ void Vehicle::__fbthrift_clear() {
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_hasAC = bool();
   __isset = {};
+}
+
+void Vehicle::__fbthrift_clear_terse_fields() {
 }
 
 bool Vehicle::__fbthrift_is_empty() const {
@@ -410,6 +416,9 @@ void Person::__fbthrift_clear() {
   this->__fbthrift_field_afraidOfAnimal = ::cpp2::Animal();
   this->__fbthrift_field_vehicles.clear();
   __isset = {};
+}
+
+void Person::__fbthrift_clear_terse_fields() {
 }
 
 bool Person::__fbthrift_is_empty() const {

@@ -86,6 +86,7 @@ class Mixin1 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -208,6 +209,7 @@ class Mixin2 final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -390,6 +392,7 @@ class Mixin3Base final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -512,6 +515,7 @@ class Foo final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

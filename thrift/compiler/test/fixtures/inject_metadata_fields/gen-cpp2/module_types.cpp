@@ -61,6 +61,9 @@ void Fields::__fbthrift_clear() {
   __isset = {};
 }
 
+void Fields::__fbthrift_clear_terse_fields() {
+}
+
 bool Fields::__fbthrift_is_empty() const {
   return false;
 }
@@ -151,6 +154,9 @@ void FieldsInjectedToEmptyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void FieldsInjectedToEmptyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool FieldsInjectedToEmptyStruct::__fbthrift_is_empty() const {
@@ -248,6 +254,9 @@ void FieldsInjectedToStruct::__fbthrift_clear() {
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void FieldsInjectedToStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool FieldsInjectedToStruct::__fbthrift_is_empty() const {
@@ -360,6 +369,9 @@ void FieldsInjectedWithIncludedStruct::__fbthrift_clear() {
   this->__fbthrift_field_injected_structured_annotation_field.reset();
   this->__fbthrift_field_injected_unstructured_annotation_field.reset();
   __isset = {};
+}
+
+void FieldsInjectedWithIncludedStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool FieldsInjectedWithIncludedStruct::__fbthrift_is_empty() const {

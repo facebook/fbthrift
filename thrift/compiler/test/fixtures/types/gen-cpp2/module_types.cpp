@@ -165,6 +165,9 @@ void decorated_struct::__fbthrift_clear() {
   __isset = {};
 }
 
+void decorated_struct::__fbthrift_clear_terse_fields() {
+}
+
 bool decorated_struct::__fbthrift_is_empty() const {
   return false;
 }
@@ -296,6 +299,9 @@ void ContainerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldG.clear();
   this->__fbthrift_field_fieldH.clear();
   __isset = {};
+}
+
+void ContainerStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ContainerStruct::__fbthrift_is_empty() const {
@@ -472,6 +478,9 @@ void CppTypeStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void CppTypeStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool CppTypeStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -572,6 +581,9 @@ void VirtualStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void VirtualStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool VirtualStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -669,6 +681,9 @@ void MyStructWithForwardRefEnum::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructWithForwardRefEnum::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructWithForwardRefEnum::__fbthrift_is_empty() const {
   return false;
 }
@@ -758,6 +773,9 @@ void TrivialNumeric::__fbthrift_clear() {
   __isset = {};
 }
 
+void TrivialNumeric::__fbthrift_clear_terse_fields() {
+}
+
 bool TrivialNumeric::__fbthrift_is_empty() const {
   return false;
 }
@@ -845,6 +863,9 @@ void TrivialNestedWithDefault::__fbthrift_clear() {
   this->__fbthrift_field_z = ::std::int32_t();
     apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
+}
+
+void TrivialNestedWithDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool TrivialNestedWithDefault::__fbthrift_is_empty() const {
@@ -965,6 +986,9 @@ void ComplexString::__fbthrift_clear() {
   __isset = {};
 }
 
+void ComplexString::__fbthrift_clear_terse_fields() {
+}
+
 bool ComplexString::__fbthrift_is_empty() const {
   return false;
 }
@@ -1075,6 +1099,9 @@ void ComplexNestedWithDefault::__fbthrift_clear() {
   this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
     apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
+}
+
+void ComplexNestedWithDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool ComplexNestedWithDefault::__fbthrift_is_empty() const {
@@ -1202,6 +1229,9 @@ void MinPadding::__fbthrift_clear() {
   this->__fbthrift_field_tiny = ::std::int8_t();
 }
 
+void MinPadding::__fbthrift_clear_terse_fields() {
+}
+
 bool MinPadding::__fbthrift_is_empty() const {
   return false;
 }
@@ -1303,6 +1333,9 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
+void MyDataItem::__fbthrift_clear_terse_fields() {
+}
+
 bool MyDataItem::__fbthrift_is_empty() const {
   return true;
 }
@@ -1391,6 +1424,9 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1467,6 +1503,9 @@ void Renaming::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_bar = ::std::int64_t();
   __isset = {};
+}
+
+void Renaming::__fbthrift_clear_terse_fields() {
 }
 
 bool Renaming::__fbthrift_is_empty() const {
@@ -1566,6 +1605,9 @@ void AnnotatedTypes::__fbthrift_clear() {
   __isset = {};
 }
 
+void AnnotatedTypes::__fbthrift_clear_terse_fields() {
+}
+
 bool AnnotatedTypes::__fbthrift_is_empty() const {
   return false;
 }
@@ -1658,6 +1700,9 @@ void ForwardUsageStruct::__fbthrift_clear() {
   // clear all fields
     apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
+}
+
+void ForwardUsageStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ForwardUsageStruct::__fbthrift_is_empty() const {
@@ -1782,6 +1827,9 @@ void ForwardUsageRoot::__fbthrift_clear() {
   __isset = {};
 }
 
+void ForwardUsageRoot::__fbthrift_clear_terse_fields() {
+}
+
 bool ForwardUsageRoot::__fbthrift_is_empty() const {
   return !(this->__isset.get(0)) &&
  !(this->ForwardUsageByRef);
@@ -1902,6 +1950,9 @@ void ForwardUsageByRef::__fbthrift_clear() {
   __isset = {};
 }
 
+void ForwardUsageByRef::__fbthrift_clear_terse_fields() {
+}
+
 bool ForwardUsageByRef::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
@@ -1990,6 +2041,9 @@ void NoexceptMoveEmpty::__fbthrift_clear() {
   // clear all fields
 }
 
+void NoexceptMoveEmpty::__fbthrift_clear_terse_fields() {
+}
+
 bool NoexceptMoveEmpty::__fbthrift_is_empty() const {
   return true;
 }
@@ -2061,6 +2115,9 @@ void NoexceptMoveSimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
+}
+
+void NoexceptMoveSimpleStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool NoexceptMoveSimpleStruct::__fbthrift_is_empty() const {
@@ -2203,6 +2260,9 @@ void NoexceptMoveComplexStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyBinaryListField4.clear();
   this->__fbthrift_field_MyMapEnumAndInt.clear();
   __isset = {};
+}
+
+void NoexceptMoveComplexStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool NoexceptMoveComplexStruct::__fbthrift_is_empty() const {
@@ -2531,6 +2591,9 @@ void AllocatorAware::__fbthrift_clear() {
   __isset = {};
 }
 
+void AllocatorAware::__fbthrift_clear_terse_fields() {
+}
+
 bool AllocatorAware::__fbthrift_is_empty() const {
   return false;
 }
@@ -2689,6 +2752,9 @@ void AllocatorAware2::__fbthrift_clear() {
   __isset = {};
 }
 
+void AllocatorAware2::__fbthrift_clear_terse_fields() {
+}
+
 bool AllocatorAware2::__fbthrift_is_empty() const {
   return false;
 }
@@ -2791,6 +2857,9 @@ void TypedefStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void TypedefStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool TypedefStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2882,6 +2951,9 @@ void StructWithDoubleUnderscores::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field___field = ::std::int32_t();
   __isset = {};
+}
+
+void StructWithDoubleUnderscores::__fbthrift_clear_terse_fields() {
 }
 
 bool StructWithDoubleUnderscores::__fbthrift_is_empty() const {

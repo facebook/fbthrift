@@ -1162,6 +1162,7 @@ class Empty final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1226,6 +1227,7 @@ class ASimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1345,6 +1347,7 @@ class ASimpleStructNoexcept final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1464,6 +1467,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2107,6 +2111,7 @@ class SimpleUnion  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2380,6 +2385,7 @@ class ComplexUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4603,6 +4609,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
@@ -5205,6 +5212,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
@@ -5384,6 +5392,7 @@ class containerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6934,6 +6943,7 @@ class MyIncludedStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7167,6 +7177,7 @@ class AnnotatedStruct  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8176,6 +8187,7 @@ class ComplexContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8342,6 +8354,7 @@ class FloatStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8514,6 +8527,7 @@ class FloatUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8773,6 +8787,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

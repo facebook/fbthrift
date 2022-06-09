@@ -87,6 +87,9 @@ void MyStructNestedAnnotation::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructNestedAnnotation::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructNestedAnnotation::__fbthrift_is_empty() const {
   return false;
 }
@@ -265,6 +268,9 @@ void YourException::__fbthrift_clear() {
   // clear all fields
 }
 
+void YourException::__fbthrift_clear_terse_fields() {
+}
+
 bool YourException::__fbthrift_is_empty() const {
   return true;
 }
@@ -435,6 +441,9 @@ void YourStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void YourStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool YourStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -600,6 +609,9 @@ void SecretStruct::__fbthrift_clear() {
   this->__fbthrift_field_id = ::std::int64_t();
   this->__fbthrift_field_password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void SecretStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool SecretStruct::__fbthrift_is_empty() const {

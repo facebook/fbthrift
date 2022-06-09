@@ -102,6 +102,9 @@ void MyStructFloatFieldThrowExp::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructFloatFieldThrowExp::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructFloatFieldThrowExp::__fbthrift_is_empty() const {
   return false;
 }
@@ -220,6 +223,9 @@ void MyStructMapFloatThrowExp::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructMapFloatThrowExp::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructMapFloatThrowExp::__fbthrift_is_empty() const {
   return false;
 }
@@ -307,6 +313,9 @@ MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 void MyDataItem::__fbthrift_clear() {
   // clear all fields
+}
+
+void MyDataItem::__fbthrift_clear_terse_fields() {
 }
 
 bool MyDataItem::__fbthrift_is_empty() const {
@@ -540,6 +549,9 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_sByte.clear();
   this->__fbthrift_field_mListList.clear();
   __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -994,6 +1006,9 @@ void SimpleStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void SimpleStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool SimpleStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1182,6 +1197,9 @@ void ComplexNestedStruct::__fbthrift_clear() {
   this->__fbthrift_field_mapKeySetValInt.clear();
   this->__fbthrift_field_mapKeyListValSet.clear();
   __isset = {};
+}
+
+void ComplexNestedStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ComplexNestedStruct::__fbthrift_is_empty() const {
@@ -1870,6 +1888,9 @@ void defaultStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void defaultStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool defaultStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2269,6 +2290,9 @@ void MyStructTypeDef::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructTypeDef::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructTypeDef::__fbthrift_is_empty() const {
   return false;
 }
@@ -2603,6 +2627,9 @@ void TypeRemapped::__fbthrift_clear() {
   __isset = {};
 }
 
+void TypeRemapped::__fbthrift_clear_terse_fields() {
+}
+
 bool TypeRemapped::__fbthrift_is_empty() const {
   return false;
 }
@@ -2727,6 +2754,9 @@ void emptyXcep::__fbthrift_clear() {
   // clear all fields
 }
 
+void emptyXcep::__fbthrift_clear_terse_fields() {
+}
+
 bool emptyXcep::__fbthrift_is_empty() const {
   return true;
 }
@@ -2818,6 +2848,9 @@ void reqXcep::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
+}
+
+void reqXcep::__fbthrift_clear_terse_fields() {
 }
 
 bool reqXcep::__fbthrift_is_empty() const {
@@ -2928,6 +2961,9 @@ void optXcep::__fbthrift_clear() {
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
   __isset = {};
+}
+
+void optXcep::__fbthrift_clear_terse_fields() {
 }
 
 bool optXcep::__fbthrift_is_empty() const {
@@ -3060,6 +3096,9 @@ void complexException::__fbthrift_clear() {
     apache::thrift::clear(this->structError);
   this->lsMap.clear();
   __isset = {};
+}
+
+void complexException::__fbthrift_clear_terse_fields() {
 }
 
 bool complexException::__fbthrift_is_empty() const {

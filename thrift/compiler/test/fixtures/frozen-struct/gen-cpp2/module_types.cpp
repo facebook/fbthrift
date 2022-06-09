@@ -119,6 +119,9 @@ void ModuleA::__fbthrift_clear() {
   __isset = {};
 }
 
+void ModuleA::__fbthrift_clear_terse_fields() {
+}
+
 bool ModuleA::__fbthrift_is_empty() const {
   return false;
 }
@@ -278,6 +281,9 @@ void ModuleB::__fbthrift_clear() {
   this->__fbthrift_field_i32Field = ::std::int32_t();
   this->__fbthrift_field_inclEnumB = ::some::ns::EnumB();
   __isset = {};
+}
+
+void ModuleB::__fbthrift_clear_terse_fields() {
 }
 
 bool ModuleB::__fbthrift_is_empty() const {

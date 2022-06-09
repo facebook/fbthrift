@@ -417,6 +417,9 @@ void Val::__fbthrift_clear() {
   __isset = {};
 }
 
+void Val::__fbthrift_clear_terse_fields() {
+}
+
 bool Val::__fbthrift_is_empty() const {
   return false;
 }
@@ -738,6 +741,9 @@ void NonCopyableStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_num = ::std::int64_t();
   __isset = {};
+}
+
+void NonCopyableStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool NonCopyableStruct::__fbthrift_is_empty() const {

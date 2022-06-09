@@ -56,6 +56,9 @@ void FooEx::__fbthrift_clear() {
   // clear all fields
 }
 
+void FooEx::__fbthrift_clear_terse_fields() {
+}
+
 bool FooEx::__fbthrift_is_empty() const {
   return true;
 }

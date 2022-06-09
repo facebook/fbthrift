@@ -46,6 +46,9 @@ void Foo::__fbthrift_clear() {
   this->__fbthrift_field_bar = ::std::int32_t();
 }
 
+void Foo::__fbthrift_clear_terse_fields() {
+}
+
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }

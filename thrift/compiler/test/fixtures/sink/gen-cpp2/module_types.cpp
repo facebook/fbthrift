@@ -61,6 +61,9 @@ void InitialResponse::__fbthrift_clear() {
   __isset = {};
 }
 
+void InitialResponse::__fbthrift_clear_terse_fields() {
+}
+
 bool InitialResponse::__fbthrift_is_empty() const {
   return false;
 }
@@ -151,6 +154,9 @@ void FinalResponse::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void FinalResponse::__fbthrift_clear_terse_fields() {
 }
 
 bool FinalResponse::__fbthrift_is_empty() const {
@@ -245,6 +251,9 @@ void SinkPayload::__fbthrift_clear() {
   __isset = {};
 }
 
+void SinkPayload::__fbthrift_clear_terse_fields() {
+}
+
 bool SinkPayload::__fbthrift_is_empty() const {
   return false;
 }
@@ -335,6 +344,9 @@ void CompatibleWithKeywordSink::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void CompatibleWithKeywordSink::__fbthrift_clear_terse_fields() {
 }
 
 bool CompatibleWithKeywordSink::__fbthrift_is_empty() const {
@@ -435,6 +447,9 @@ void InitialException::__fbthrift_clear() {
   __isset = {};
 }
 
+void InitialException::__fbthrift_clear_terse_fields() {
+}
+
 bool InitialException::__fbthrift_is_empty() const {
   return false;
 }
@@ -531,6 +546,9 @@ void SinkException1::__fbthrift_clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void SinkException1::__fbthrift_clear_terse_fields() {
 }
 
 bool SinkException1::__fbthrift_is_empty() const {
@@ -630,6 +648,9 @@ void SinkException2::__fbthrift_clear() {
   // clear all fields
   this->reason = ::std::int64_t();
   __isset = {};
+}
+
+void SinkException2::__fbthrift_clear_terse_fields() {
 }
 
 bool SinkException2::__fbthrift_is_empty() const {

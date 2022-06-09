@@ -54,6 +54,9 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
+void Foo::__fbthrift_clear_terse_fields() {
+}
+
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }
@@ -151,6 +154,9 @@ void Foo2::__fbthrift_clear() {
   this->__fbthrift_field_field2 = ::std::int32_t();
   this->__fbthrift_field_field3 = ::std::int32_t();
   __isset = {};
+}
+
+void Foo2::__fbthrift_clear_terse_fields() {
 }
 
 bool Foo2::__fbthrift_is_empty() const {

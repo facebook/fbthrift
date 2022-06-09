@@ -77,6 +77,9 @@ void SmallStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void SmallStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool SmallStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -354,6 +357,9 @@ void containerStruct::__fbthrift_clear() {
 
   if (this->fieldX) apache::thrift::clear(*this->fieldX);
   __isset = {};
+}
+
+void containerStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool containerStruct::__fbthrift_is_empty() const {

@@ -67,6 +67,9 @@ void Fiery::__fbthrift_clear() {
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
 
+void Fiery::__fbthrift_clear_terse_fields() {
+}
+
 bool Fiery::__fbthrift_is_empty() const {
   return false;
 }
@@ -166,6 +169,9 @@ void Serious::__fbthrift_clear() {
   // clear all fields
   this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void Serious::__fbthrift_clear_terse_fields() {
 }
 
 bool Serious::__fbthrift_is_empty() const {
@@ -273,6 +279,9 @@ void ComplexFieldNames::__fbthrift_clear() {
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void ComplexFieldNames::__fbthrift_clear_terse_fields() {
 }
 
 bool ComplexFieldNames::__fbthrift_is_empty() const {
@@ -387,6 +396,9 @@ void CustomFieldNames::__fbthrift_clear() {
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void CustomFieldNames::__fbthrift_clear_terse_fields() {
 }
 
 bool CustomFieldNames::__fbthrift_is_empty() const {
@@ -504,6 +516,9 @@ void ExceptionWithPrimitiveField::__fbthrift_clear() {
   __isset = {};
 }
 
+void ExceptionWithPrimitiveField::__fbthrift_clear_terse_fields() {
+}
+
 bool ExceptionWithPrimitiveField::__fbthrift_is_empty() const {
   return false;
 }
@@ -596,6 +611,9 @@ Banal::Banal(apache::thrift::FragileConstructor) {}
 
 void Banal::__fbthrift_clear() {
   // clear all fields
+}
+
+void Banal::__fbthrift_clear_terse_fields() {
 }
 
 bool Banal::__fbthrift_is_empty() const {

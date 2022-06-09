@@ -69,6 +69,9 @@ void MyStruct::__fbthrift_clear() {
   // clear all fields
 }
 
+void MyStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStruct::__fbthrift_is_empty() const {
   return true;
 }
@@ -140,6 +143,9 @@ void MyStructWithCustomDefault::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1 = ::std::int64_t();
   __isset = {};
+}
+
+void MyStructWithCustomDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStructWithCustomDefault::__fbthrift_is_empty() const {
@@ -280,6 +286,22 @@ StructLevelTerseStruct::StructLevelTerseStruct(apache::thrift::FragileConstructo
 
 void StructLevelTerseStruct::__fbthrift_clear() {
   // clear all fields
+  this->__fbthrift_field_bool_field = bool();
+  this->__fbthrift_field_byte_field = ::std::int8_t();
+  this->__fbthrift_field_short_field = ::std::int16_t();
+  this->__fbthrift_field_int_field = ::std::int32_t();
+  this->__fbthrift_field_long_field = ::std::int64_t();
+  this->__fbthrift_field_float_field = float();
+  this->__fbthrift_field_double_field = double();
+  this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_list_field.clear();
+  this->__fbthrift_field_set_field.clear();
+  this->__fbthrift_field_map_field.clear();
+}
+
+void StructLevelTerseStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_bool_field = bool();
   this->__fbthrift_field_byte_field = ::std::int8_t();
   this->__fbthrift_field_short_field = ::std::int16_t();
@@ -667,6 +689,22 @@ void FieldLevelTerseStruct::__fbthrift_clear() {
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
   __isset = {};
+}
+
+void FieldLevelTerseStruct::__fbthrift_clear_terse_fields() {
+  this->__fbthrift_field_terse_bool_field = bool();
+  this->__fbthrift_field_terse_byte_field = ::std::int8_t();
+  this->__fbthrift_field_terse_short_field = ::std::int16_t();
+  this->__fbthrift_field_terse_int_field = ::std::int32_t();
+  this->__fbthrift_field_terse_long_field = ::std::int64_t();
+  this->__fbthrift_field_terse_float_field = float();
+  this->__fbthrift_field_terse_double_field = double();
+  this->__fbthrift_field_terse_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_terse_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_terse_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_terse_list_field.clear();
+  this->__fbthrift_field_terse_set_field.clear();
+  this->__fbthrift_field_terse_map_field.clear();
 }
 
 bool FieldLevelTerseStruct::__fbthrift_is_empty() const {
@@ -1077,6 +1115,23 @@ TerseStructWithCustomDefault::TerseStructWithCustomDefault(apache::thrift::Fragi
 
 void TerseStructWithCustomDefault::__fbthrift_clear() {
   // clear all fields
+  this->__fbthrift_field_bool_field = bool();
+  this->__fbthrift_field_byte_field = ::std::int8_t();
+  this->__fbthrift_field_short_field = ::std::int16_t();
+  this->__fbthrift_field_int_field = ::std::int32_t();
+  this->__fbthrift_field_long_field = ::std::int64_t();
+  this->__fbthrift_field_float_field = float();
+  this->__fbthrift_field_double_field = double();
+  this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_list_field.clear();
+  this->__fbthrift_field_set_field.clear();
+  this->__fbthrift_field_map_field.clear();
+    apache::thrift::clear(this->__fbthrift_field_struct_field);
+}
+
+void TerseStructWithCustomDefault::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_bool_field = bool();
   this->__fbthrift_field_byte_field = ::std::int8_t();
   this->__fbthrift_field_short_field = ::std::int16_t();

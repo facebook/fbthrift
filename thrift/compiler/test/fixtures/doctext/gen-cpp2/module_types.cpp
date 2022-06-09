@@ -74,6 +74,9 @@ void A::__fbthrift_clear() {
   __isset = {};
 }
 
+void A::__fbthrift_clear_terse_fields() {
+}
+
 bool A::__fbthrift_is_empty() const {
   return false;
 }
@@ -275,6 +278,9 @@ void Bang::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+void Bang::__fbthrift_clear_terse_fields() {
 }
 
 bool Bang::__fbthrift_is_empty() const {

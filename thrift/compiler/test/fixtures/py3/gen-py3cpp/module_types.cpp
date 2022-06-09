@@ -120,6 +120,9 @@ void SimpleException::__fbthrift_clear() {
   __isset = {};
 }
 
+void SimpleException::__fbthrift_clear_terse_fields() {
+}
+
 bool SimpleException::__fbthrift_is_empty() const {
   return false;
 }
@@ -220,6 +223,9 @@ void OptionalRefStruct::__fbthrift_clear() {
   // clear all fields
   this->optional_blob = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   __isset = {};
+}
+
+void OptionalRefStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool OptionalRefStruct::__fbthrift_is_empty() const {
@@ -347,6 +353,9 @@ void SimpleStruct::__fbthrift_clear() {
   this->__fbthrift_field_smaller_real = float();
   this->__fbthrift_field_hidden_field = ::std::int16_t();
   __isset = {};
+}
+
+void SimpleStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool SimpleStruct::__fbthrift_is_empty() const {
@@ -536,6 +545,9 @@ void ComplexStruct::__fbthrift_clear() {
   this->__fbthrift_field_cdef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_bytes_with_cpp_type = apache::thrift::StringTraits<foo::Bar>::fromStringLiteral("");
   __isset = {};
+}
+
+void ComplexStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ComplexStruct::__fbthrift_is_empty() const {
@@ -786,6 +798,9 @@ void BinaryUnionStruct::__fbthrift_clear() {
   // clear all fields
     apache::thrift::clear(this->__fbthrift_field_u);
   __isset = {};
+}
+
+void BinaryUnionStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool BinaryUnionStruct::__fbthrift_is_empty() const {

@@ -65,6 +65,11 @@ void MyData::__fbthrift_clear() {
   this->__fbthrift_field_data2 = ::std::int32_t();
 }
 
+void MyData::__fbthrift_clear_terse_fields() {
+  this->__fbthrift_field_data1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_data2 = ::std::int32_t();
+}
+
 bool MyData::__fbthrift_is_empty() const {
   return !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_data1)) &&
  !(this->__fbthrift_field_data2 != ::std::int32_t());
@@ -399,6 +404,20 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_optMapVal.clear();
     apache::thrift::clear(this->__fbthrift_field_unionVal);
   __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
+  this->__fbthrift_field_boolVal = bool();
+  this->__fbthrift_field_byteVal = ::std::int8_t();
+  this->__fbthrift_field_i16Val = ::std::int16_t();
+  this->__fbthrift_field_i32Val = ::std::int32_t();
+  this->__fbthrift_field_i64Val = ::std::int64_t();
+  this->__fbthrift_field_floatVal = float();
+  this->__fbthrift_field_doubleVal = double();
+  this->__fbthrift_field_stringVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_binaryVal = apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral("");
+    apache::thrift::clear(this->__fbthrift_field_structVal);
+    apache::thrift::clear(this->__fbthrift_field_unionVal);
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -769,6 +788,9 @@ void MyDataPatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyDataPatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyDataPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -907,6 +929,9 @@ void MyDataValuePatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_clear = bool();
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);  
   __isset = {};
+}
+
+void MyDataValuePatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyDataValuePatchStruct::__fbthrift_is_empty() const {
@@ -1066,6 +1091,9 @@ void OptionalMyDataValuePatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void OptionalMyDataValuePatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool OptionalMyDataValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1223,6 +1251,9 @@ void MyUnionPatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyUnionPatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyUnionPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1372,6 +1403,9 @@ void MyUnionValuePatchStruct::__fbthrift_clear() {
     apache::thrift::clear(this->__fbthrift_field_ensure);
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
   __isset = {};
+}
+
+void MyUnionValuePatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyUnionValuePatchStruct::__fbthrift_is_empty() const {
@@ -1552,6 +1586,9 @@ void OptionalMyUnionValuePatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void OptionalMyUnionValuePatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool OptionalMyUnionValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1700,6 +1737,9 @@ void MyStructField21PatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_prepend.clear();
   this->__fbthrift_field_append.clear();
   __isset = {};
+}
+
+void MyStructField21PatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStructField21PatchStruct::__fbthrift_is_empty() const {
@@ -1879,6 +1919,9 @@ void OptionalMyStructField21PatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void OptionalMyStructField21PatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool OptionalMyStructField21PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2029,6 +2072,9 @@ void MyStructField22PatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_remove.clear();
   this->__fbthrift_field_add.clear();
   __isset = {};
+}
+
+void MyStructField22PatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStructField22PatchStruct::__fbthrift_is_empty() const {
@@ -2208,6 +2254,9 @@ void OptionalMyStructField22PatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void OptionalMyStructField22PatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool OptionalMyStructField22PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2353,6 +2402,9 @@ void MyStructField23PatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_clear = bool();
   this->__fbthrift_field_put.clear();
   __isset = {};
+}
+
+void MyStructField23PatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStructField23PatchStruct::__fbthrift_is_empty() const {
@@ -2515,6 +2567,9 @@ void OptionalMyStructField23PatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_ensure.clear();
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::MapPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
   __isset = {};
+}
+
+void OptionalMyStructField23PatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool OptionalMyStructField23PatchStruct::__fbthrift_is_empty() const {
@@ -2894,6 +2949,9 @@ void MyStructPatchStruct::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 23>(__fbthrift_field_optMapVal, *this);  
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 30>(__fbthrift_field_unionVal, *this);  
   __isset = {};
+}
+
+void MyStructPatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStructPatchStruct::__fbthrift_is_empty() const {
@@ -3322,6 +3380,9 @@ void MyStructValuePatchStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void MyStructValuePatchStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool MyStructValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -3477,6 +3538,9 @@ void OptionalMyStructValuePatchStruct::__fbthrift_clear() {
   this->__fbthrift_field_ensure.reset();
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
   __isset = {};
+}
+
+void OptionalMyStructValuePatchStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool OptionalMyStructValuePatchStruct::__fbthrift_is_empty() const {

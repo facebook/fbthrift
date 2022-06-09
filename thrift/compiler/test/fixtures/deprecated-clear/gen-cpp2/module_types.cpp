@@ -166,6 +166,9 @@ void StructWithDefaultStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+void StructWithDefaultStruct::__fbthrift_clear_terse_fields() {
+}
+
 bool StructWithDefaultStruct::__fbthrift_is_empty() const {
   return false;
 }

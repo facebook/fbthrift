@@ -602,6 +602,7 @@ class MyData final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -792,6 +793,7 @@ class MyUnion final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1148,6 +1150,7 @@ class MyStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2536,6 +2539,7 @@ class MyDataPatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2706,6 +2710,7 @@ class MyDataValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2931,6 +2936,7 @@ class OptionalMyDataValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3193,6 +3199,7 @@ class MyUnionPatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3366,6 +3373,7 @@ class MyUnionValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3643,6 +3651,7 @@ class OptionalMyUnionValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3911,6 +3920,7 @@ class MyStructField21PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4206,6 +4216,7 @@ class OptionalMyStructField21PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4484,6 +4495,7 @@ class MyStructField22PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4779,6 +4791,7 @@ class OptionalMyStructField22PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5054,6 +5067,7 @@ class MyStructField23PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5298,6 +5312,7 @@ class OptionalMyStructField23PatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5636,6 +5651,7 @@ class MyStructPatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6752,6 +6768,7 @@ class MyStructValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6977,6 +6994,7 @@ class OptionalMyStructValuePatchStruct final  {
 
 
   void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
