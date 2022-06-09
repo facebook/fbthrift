@@ -188,7 +188,9 @@ void ThriftRequestCore::sendReply(
     }
     auto* observer = serverConfigs_.getObserver();
     if (!isOneway()) {
-      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      auto metadata = makeResponseRpcMetadata(
+          header_.extractAllWriteHeaders(),
+          header_.extractProxiedPayloadMetadata());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
@@ -222,7 +224,9 @@ void ThriftRequestCore::sendException(
     }
     auto* observer = serverConfigs_.getObserver();
     if (!isOneway()) {
-      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      auto metadata = makeResponseRpcMetadata(
+          header_.extractAllWriteHeaders(),
+          header_.extractProxiedPayloadMetadata());
       if (checkResponseSize(*response.buffer())) {
         sendThriftException(
             std::move(metadata),
@@ -242,8 +246,11 @@ void ThriftRequestCore::sendException(
 }
 
 ResponseRpcMetadata ThriftRequestCore::makeResponseRpcMetadata(
-    transport::THeader::StringToStringMap&& writeHeaders) {
+    transport::THeader::StringToStringMap&& writeHeaders,
+    std::optional<ProxiedPayloadMetadata> proxiedPayloadMetadata) {
   ResponseRpcMetadata metadata;
+
+  metadata.proxiedPayloadMetadata_ref().from_optional(proxiedPayloadMetadata);
 
   if (loadMetric_) {
     metadata.load_ref() = serverConfigs_.getLoad(*loadMetric_);

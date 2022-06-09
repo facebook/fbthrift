@@ -307,6 +307,15 @@ class THeader final {
     return compressionConfig_;
   }
 
+  void setProxiedPayloadMetadata(
+      ProxiedPayloadMetadata proxiedPayloadMetadata) {
+    proxiedPayloadMetadata_ = proxiedPayloadMetadata;
+  }
+
+  std::optional<ProxiedPayloadMetadata> extractProxiedPayloadMetadata() {
+    return std::exchange(proxiedPayloadMetadata_, {});
+  }
+
   void setCrc32c(folly::Optional<uint32_t> crc32c) { crc32c_ = crc32c; }
 
   folly::Optional<uint32_t> getCrc32c() const { return crc32c_; }
@@ -472,6 +481,8 @@ class THeader final {
   // CRC32C of message payload for checksum.
   folly::Optional<uint32_t> crc32c_;
   folly::Optional<int64_t> serverLoad_;
+
+  std::optional<ProxiedPayloadMetadata> proxiedPayloadMetadata_;
 };
 
 } // namespace transport

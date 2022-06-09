@@ -99,48 +99,12 @@ RocketException makeResponseRpcError(
   return RocketException(rocketCategory, packCompact(responseRpcError));
 }
 
-void preprocessProxiedExceptionHeaders(
-    ResponseRpcMetadata& metadata, int32_t version) {
-  DCHECK_GE(version, 8);
-  auto otherMetadataRef = metadata.otherMetadata_ref();
-  if (!otherMetadataRef) {
-    return;
-  }
-  auto& otherMetadata = *otherMetadataRef;
-
-  if (auto puexPtr = folly::get_ptr(otherMetadata, "puex")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
-
-    otherMetadata.insert({"uex", std::move(*puexPtr)});
-    otherMetadata.erase("puex");
-    if (auto puexwPtr = folly::get_ptr(otherMetadata, "puexw")) {
-      otherMetadata.insert({"uexw", std::move(*puexwPtr)});
-      otherMetadata.erase("puexw");
-    }
-  }
-
-  if (auto pexPtr = folly::get_ptr(otherMetadata, "pex")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
-
-    otherMetadata.insert({"ex", std::move(*pexPtr)});
-    otherMetadata.erase("pex");
-  }
-
-  if (auto proxiedErrorPtr =
-          folly::get_ptr(otherMetadata, "servicerouter:sr_error")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
-
-    otherMetadata.insert(
-        {"servicerouter:sr_internal_error", std::move(*proxiedErrorPtr)});
-    otherMetadata.erase("servicerouter:sr_error");
-  }
-}
-
 template <typename Serializer>
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
     int32_t version) noexcept {
+  DCHECK_GE(version, 8);
   try {
     std::string methodNameIgnore;
     MessageType mtype;
@@ -168,8 +132,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         if (fid == 0) {
           payloadMetadata.set_responseMetadata(PayloadResponseMetadata());
         } else {
-          preprocessProxiedExceptionHeaders(metadata, version);
-
           PayloadExceptionMetadataBase exceptionMetadataBase;
           PayloadDeclaredExceptionMetadata declaredExceptionMetadata;
           if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
@@ -212,8 +174,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       case MessageType::T_EXCEPTION: {
-        preprocessProxiedExceptionHeaders(metadata, version);
-
         TApplicationException ex;
         ::apache::thrift::detail::deserializeExceptionBody(&reader, &ex);
 

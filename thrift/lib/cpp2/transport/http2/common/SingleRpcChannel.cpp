@@ -83,11 +83,52 @@ SingleRpcChannel::~SingleRpcChannel() {
   }
 }
 
+namespace {
+void preprocessProxiedExceptionHeaders(ResponseRpcMetadata& metadata) {
+  if (!metadata.proxiedPayloadMetadata_ref()) {
+    return;
+  }
+  auto otherMetadataRef = metadata.otherMetadata_ref();
+  if (!otherMetadataRef) {
+    return;
+  }
+  auto& otherMetadata = *otherMetadataRef;
+
+  if (auto puexPtr = folly::get_ptr(otherMetadata, "uex")) {
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
+
+    otherMetadata.insert({"puex", std::move(*puexPtr)});
+    otherMetadata.erase("uex");
+    if (auto puexwPtr = folly::get_ptr(otherMetadata, "uexw")) {
+      otherMetadata.insert({"puexw", std::move(*puexwPtr)});
+      otherMetadata.erase("uexw");
+    }
+  }
+
+  if (auto pexPtr = folly::get_ptr(otherMetadata, "ex")) {
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
+
+    otherMetadata.insert({"pex", std::move(*pexPtr)});
+    otherMetadata.erase("ex");
+  }
+
+  if (auto proxiedErrorPtr =
+          folly::get_ptr(otherMetadata, "servicerouter:sr_internal_error")) {
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
+
+    otherMetadata.insert(
+        {"servicerouter:sr_error", std::move(*proxiedErrorPtr)});
+    otherMetadata.erase("servicerouter:sr_internal_error");
+  }
+}
+} // namespace
+
 void SingleRpcChannel::sendThriftResponse(
     ResponseRpcMetadata&& metadata, std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(evb_->isInEventBaseThread());
   VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
+  preprocessProxiedExceptionHeaders(metadata);
   if (httpTransaction_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
