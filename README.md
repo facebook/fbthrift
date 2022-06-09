@@ -3,11 +3,11 @@ Facebook Thrift
 
 [![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine)
 [![Linux Build Status](https://github.com/facebook/fbthrift/workflows/linux/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/linux.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/getdeps_linux.yml)
 [![macOS Build Status](https://github.com/facebook/fbthrift/workflows/mac/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/mac.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/getdeps_mac.yml)
 [![Windows Build Status](https://github.com/facebook/fbthrift/workflows/windows/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/windows.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/getdeps_windows.yml)
 <img src="thrift/website/static/img/logo.svg"
      alt="Facebook Thrift Logo" align="right" width="20%"/>
 
