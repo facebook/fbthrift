@@ -45,8 +45,12 @@ namespace compiler {
 namespace cpp2 {
 namespace {
 
-const std::string& value_or_empty(const std::string* value) {
-  return value ? *value : empty_instance<std::string>();
+bool contains(fmt::string_view s, fmt::string_view what) {
+  return std::search(s.begin(), s.end(), what.begin(), what.end()) != s.end();
+}
+
+fmt::string_view value_or_empty(const std::string* value) {
+  return value ? *value : std::string_view("");
 }
 
 int checked_stoi(const std::string& s, std::string msg) {
@@ -254,15 +258,15 @@ bool is_orderable(t_type const& type) {
   return is_orderable(seen, memo, type);
 }
 
-std::string const& get_type(const t_type* type) {
+fmt::string_view get_type(const t_type* type) {
   return value_or_empty(gen::cpp::type_resolver::find_type(*type));
 }
 
 bool is_implicit_ref(const t_type* type) {
   auto const* resolved_typedef = type->get_true_type();
   return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
-      get_type(resolved_typedef).find("std::unique_ptr") != std::string::npos &&
-      get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
+      contains(get_type(resolved_typedef), "std::unique_ptr") &&
+      contains(get_type(resolved_typedef), "folly::IOBuf");
 }
 
 bool field_transitively_refers_to_unique(const t_field* field) {

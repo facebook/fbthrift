@@ -28,29 +28,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-#if defined(__cpp_lib_exchange_function) || _LIBCPP_STD_VER > 11 || _MSC_VER
-
-/* using override */ using std::exchange;
-
-#else
-
-//  mimic: std::exchange, C++14
-//  from: http://en.cppreference.com/w/cpp/utility/exchange, CC-BY-SA
-template <class T, class U = T>
-T exchange(T& obj, U&& new_value) {
-  T old_value = std::move(obj);
-  obj = std::forward<U>(new_value);
-  return old_value;
-}
-
-#endif
-
-template <typename T>
-T const& empty_instance() {
-  static T const& instance = *new T();
-  return instance;
-}
-
 //  strip_left_margin
 //
 //  Looks for the least indented non-whitespace-only line and removes its amount
