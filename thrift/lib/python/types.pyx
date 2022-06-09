@@ -472,6 +472,10 @@ cdef class Struct(StructOrUnion):
     def __dir__(self):
         return dir(type(self))
 
+    def __repr__(self):
+        fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
+        return f"{type(self).__name__}({fields})"
+
     cdef folly.iobuf.IOBuf _serialize(self, Protocol proto):
         cdef StructInfo info = self._fbthrift_struct_info
         return folly.iobuf.from_unique_ptr(
