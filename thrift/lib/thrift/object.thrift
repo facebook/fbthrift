@@ -16,7 +16,7 @@
 
 // TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
 
-cpp_include "<folly/io/IOBuf.h>"
+include "thrift/lib/thrift/standard.thrift"
 
 package "facebook.com/thrift/type"
 
@@ -35,8 +35,7 @@ namespace java2 org.apache.thrift.conformance
 // A dynamic struct/union/exception
 struct ProtocolObject {
   // The type of the object, if applicable.
-  // TODO(ytj): change type to standard.Uri
-  1: string type;
+  1: standard.Uri type;
 
   // The members of the object.
   // TODO(ytj): use schema.FieldId as key
@@ -59,8 +58,7 @@ union ProtocolValue {
   // Strings.
   8: string stringValue;
 
-  // TODO(ytj): change type to standard.BinaryBuffer
-  9: binary (cpp.type = "folly::IOBuf") binaryValue;
+  9: standard.ByteBuffer binaryValue;
 
   // A dynamic object value.
   11: ProtocolObject objectValue;
