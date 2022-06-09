@@ -36,10 +36,10 @@ java2/RoundTripTest/testset.double/NaN.Compact
 #
 #
 # Java: These compatibility tests are failing in Java.
-# When a new field is added to StringStruct or BinaryStruct
-# client is sending an empty struct. Java is initializing String and binary
-# fields with intrinsic defaults (null) and send back null to the client.
-# Client is expecting empty value. This issue should be fixed on client side.
+# Client has an empty struct (v0) for StringStruct and BinaryStruct, server
+# has one additional field (v1). Client is expecting an empty value for the
+# additional field, as the field is defined as non optional (unqualified).
+# Server is sending a null, missing the field.
 #
 java2/CompatibilityTest/testset.binary/AddField.Binary
 java2/CompatibilityTest/testset.binary/AddField.Compact
