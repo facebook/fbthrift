@@ -861,7 +861,7 @@ TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstr
 void TrivialNestedWithDefault::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_z = ::std::int32_t();
-    apache::thrift::clear(this->__fbthrift_field_n);
+  ::apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
 
@@ -1097,7 +1097,7 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
 void ComplexNestedWithDefault::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-    apache::thrift::clear(this->__fbthrift_field_n);
+  ::apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
 
@@ -1698,7 +1698,7 @@ ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apa
 
 void ForwardUsageStruct::__fbthrift_clear() {
   // clear all fields
-    apache::thrift::clear(this->__fbthrift_field_foo);
+  ::apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
 }
 
@@ -1821,8 +1821,7 @@ ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache:
 
 void ForwardUsageRoot::__fbthrift_clear() {
   // clear all fields
-    apache::thrift::clear(this->__fbthrift_field_ForwardUsageStruct);
-
+  ::apache::thrift::clear(this->__fbthrift_field_ForwardUsageStruct);
   this->ForwardUsageByRef.reset();
   __isset = {};
 }
@@ -1946,7 +1945,7 @@ ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apach
 
 void ForwardUsageByRef::__fbthrift_clear() {
   // clear all fields
-    apache::thrift::clear(this->__fbthrift_field_foo);
+  ::apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
 }
 

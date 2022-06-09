@@ -1295,7 +1295,7 @@ void AnException::__fbthrift_clear() {
   this->req_exception_map.clear();
   this->enum_field = ::some::valid::ns::MyEnumA();
   this->enum_container.clear();
-    apache::thrift::clear(this->a_struct);
+  ::apache::thrift::clear(this->a_struct);
   this->a_set_struct.clear();
   this->a_union_list.clear();
   this->union_typedef.clear();
@@ -1901,13 +1901,13 @@ void containerStruct::__fbthrift_clear() {
   this->fieldS = ::some::valid::ns::MyEnumA();
   this->fieldT.clear();
   this->fieldU.clear();
-    apache::thrift::clear(this->fieldV);
-    apache::thrift::clear(this->req_fieldV);
-    apache::thrift::clear(this->opt_fieldV);
+  ::apache::thrift::clear(this->fieldV);
+  ::apache::thrift::clear(this->req_fieldV);
+  ::apache::thrift::clear(this->opt_fieldV);
   this->fieldW.clear();
-    apache::thrift::clear(this->fieldX);
-    apache::thrift::clear(this->req_fieldX);
-    apache::thrift::clear(this->opt_fieldX);
+  ::apache::thrift::clear(this->fieldX);
+  ::apache::thrift::clear(this->req_fieldX);
+  ::apache::thrift::clear(this->opt_fieldX);
   this->fieldY.clear();
   this->fieldZ.clear();
   this->fieldAA.clear();
@@ -2646,10 +2646,9 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
 void MyIncludedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIncludedInt = ::a::different::ns::IncludedInt64();
-    apache::thrift::clear(this->__fbthrift_field_MyIncludedStruct);
-
-  if (this->ARefField) apache::thrift::clear(*this->ARefField);
-    apache::thrift::clear(this->__fbthrift_field_ARequiredField);
+  ::apache::thrift::clear(this->__fbthrift_field_MyIncludedStruct);
+  if (this->ARefField) ::apache::thrift::clear(*this->ARefField);
+  ::apache::thrift::clear(this->__fbthrift_field_ARequiredField);
   __isset = {};
 }
 
@@ -2873,35 +2872,23 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::val
 
 void AnnotatedStruct::__fbthrift_clear() {
   // clear all fields
-    apache::thrift::clear(this->no_annotation);
-
-  if (this->cpp_unique_ref) apache::thrift::clear(*this->cpp_unique_ref);
-
-  if (this->cpp2_unique_ref) apache::thrift::clear(*this->cpp2_unique_ref);
+  ::apache::thrift::clear(this->no_annotation);
+  if (this->cpp_unique_ref) ::apache::thrift::clear(*this->cpp_unique_ref);
+  if (this->cpp2_unique_ref) ::apache::thrift::clear(*this->cpp2_unique_ref);
   this->container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
-
-  if (this->req_cpp_unique_ref) apache::thrift::clear(*this->req_cpp_unique_ref);
-
-  if (this->req_cpp2_unique_ref) apache::thrift::clear(*this->req_cpp2_unique_ref);
+  if (this->req_cpp_unique_ref) ::apache::thrift::clear(*this->req_cpp_unique_ref);
+  if (this->req_cpp2_unique_ref) ::apache::thrift::clear(*this->req_cpp2_unique_ref);
   this->req_container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
-
   this->opt_cpp_unique_ref.reset();
-
   this->opt_cpp2_unique_ref.reset();
   this->opt_container_with_ref.reset();
-
-  if (this->ref_type_unique) apache::thrift::clear(*this->ref_type_unique);
-
-  if (this->ref_type_shared) apache::thrift::clear(*this->ref_type_shared);
+  if (this->ref_type_unique) ::apache::thrift::clear(*this->ref_type_unique);
+  if (this->ref_type_shared) ::apache::thrift::clear(*this->ref_type_shared);
   this->ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
-
-  if (this->req_ref_type_shared) apache::thrift::clear(*this->req_ref_type_shared);
-
+  if (this->req_ref_type_shared) ::apache::thrift::clear(*this->req_ref_type_shared);
   if (this->req_ref_type_const) this->req_ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::some::valid::ns::containerStruct>>();
   this->req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
-
   this->opt_ref_type_const.reset();
-
   this->opt_ref_type_unique.reset();
   this->opt_ref_type_shared.reset();
   this->base_type = ::some::valid::ns::CppFakeI32();
@@ -2924,7 +2911,7 @@ void AnnotatedStruct::__fbthrift_clear() {
   this->indirection_c.clear();
   this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("");
   this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-    apache::thrift::clear(this->struct_struct);
+  ::apache::thrift::clear(this->struct_struct);
   __isset = {};
 }
 

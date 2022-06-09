@@ -485,12 +485,12 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 
 void Bar::__fbthrift_clear() {
   // clear all fields
-  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_structField, *this);  
-  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);  
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_structField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   this->__fbthrift_field_structListField.clear();
   this->__fbthrift_field_optionalStructListField.clear();
-  ::apache::thrift::adapt_detail::clear<my::Adapter1, 5>(__fbthrift_field_unionField, *this);  
-  ::apache::thrift::adapt_detail::clear<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);  
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
   __isset = {};
 }
 

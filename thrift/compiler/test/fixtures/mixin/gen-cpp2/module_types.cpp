@@ -156,7 +156,7 @@ Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std
 
 void Mixin2::__fbthrift_clear() {
   // clear all fields
-    apache::thrift::clear(this->__fbthrift_field_m1);
+  ::apache::thrift::clear(this->__fbthrift_field_m1);
   this->__fbthrift_field_field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
@@ -377,8 +377,8 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::
 void Foo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field4 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-    apache::thrift::clear(this->__fbthrift_field_m2);
-    apache::thrift::clear(this->__fbthrift_field_m3);
+  ::apache::thrift::clear(this->__fbthrift_field_m2);
+  ::apache::thrift::clear(this->__fbthrift_field_m3);
   __isset = {};
 }
 

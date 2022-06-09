@@ -445,12 +445,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2:
 
 void MyStruct::__fbthrift_clear() {
   // clear all fields
-
   this->opt_ref.reset();
-
-  if (this->ref) apache::thrift::clear(*this->ref);
-
-  if (this->req_ref) apache::thrift::clear(*this->req_ref);
+  if (this->ref) ::apache::thrift::clear(*this->ref);
+  if (this->req_ref) ::apache::thrift::clear(*this->req_ref);
 }
 
 void MyStruct::__fbthrift_clear_terse_fields() {
@@ -594,10 +591,9 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
 
 void StructWithUnion::__fbthrift_clear() {
   // clear all fields
-
-  if (this->u) apache::thrift::clear(*this->u);
+  if (this->u) ::apache::thrift::clear(*this->u);
   this->aDouble = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<double>>();
-    apache::thrift::clear(this->__fbthrift_field_f);
+  ::apache::thrift::clear(this->__fbthrift_field_f);
   __isset = {};
 }
 
@@ -1006,11 +1002,8 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 
 void StructWithSharedConst::__fbthrift_clear() {
   // clear all fields
-
   this->opt_shared_const.reset();
-
   if (this->shared_const) this->shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::MyField>>();
-
   if (this->req_shared_const) this->req_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::MyField>>();
 }
 
@@ -1352,7 +1345,6 @@ void StructWithBox::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a.reset();
   this->__fbthrift_field_b.reset();
-
   this->__fbthrift_field_c.reset();
 }
 

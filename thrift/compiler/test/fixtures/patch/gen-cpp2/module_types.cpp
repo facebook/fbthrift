@@ -388,7 +388,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_doubleVal = double();
   this->__fbthrift_field_stringVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binaryVal = apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral("");
-    apache::thrift::clear(this->__fbthrift_field_structVal);
+  ::apache::thrift::clear(this->__fbthrift_field_structVal);
   this->__fbthrift_field_optBoolVal = bool();
   this->__fbthrift_field_optByteVal = ::std::int8_t();
   this->__fbthrift_field_optI16Val = ::std::int16_t();
@@ -398,11 +398,11 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_optDoubleVal = double();
   this->__fbthrift_field_optStringVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_optBinaryVal = apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral("");
-    apache::thrift::clear(this->__fbthrift_field_optStructVal);
+  ::apache::thrift::clear(this->__fbthrift_field_optStructVal);
   this->__fbthrift_field_optListVal.clear();
   this->__fbthrift_field_optSetVal.clear();
   this->__fbthrift_field_optMapVal.clear();
-    apache::thrift::clear(this->__fbthrift_field_unionVal);
+  ::apache::thrift::clear(this->__fbthrift_field_unionVal);
   __isset = {};
 }
 
@@ -416,8 +416,8 @@ void MyStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_doubleVal = double();
   this->__fbthrift_field_stringVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binaryVal = apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral("");
-    apache::thrift::clear(this->__fbthrift_field_structVal);
-    apache::thrift::clear(this->__fbthrift_field_unionVal);
+  ::apache::thrift::clear(this->__fbthrift_field_structVal);
+  ::apache::thrift::clear(this->__fbthrift_field_unionVal);
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -783,8 +783,8 @@ MyDataPatchStruct::MyDataPatchStruct(apache::thrift::FragileConstructor, ::apach
 
 void MyDataPatchStruct::__fbthrift_clear() {
   // clear all fields
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_data1, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_data2, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_data1, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_data2, *this);
   __isset = {};
 }
 
@@ -924,10 +924,9 @@ MyDataValuePatchStruct::MyDataValuePatchStruct(apache::thrift::FragileConstructo
 
 void MyDataValuePatchStruct::__fbthrift_clear() {
   // clear all fields
-
   this->__fbthrift_field_assign.reset();
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
   __isset = {};
 }
 
@@ -1084,10 +1083,9 @@ OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(apache::thrift::F
 void OptionalMyDataValuePatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);  
-
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.reset();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -1246,8 +1244,8 @@ MyUnionPatchStruct::MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apa
 
 void MyUnionPatchStruct::__fbthrift_clear() {
   // clear all fields
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
   __isset = {};
 }
 
@@ -1399,9 +1397,9 @@ MyUnionValuePatchStruct::MyUnionValuePatchStruct(apache::thrift::FragileConstruc
 void MyUnionValuePatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);  
-    apache::thrift::clear(this->__fbthrift_field_ensure);
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::clear(this->__fbthrift_field_ensure);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -1579,10 +1577,9 @@ OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(apache::thrift:
 void OptionalMyUnionValuePatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);  
-
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.reset();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -1913,9 +1910,9 @@ OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(apache::t
 void OptionalMyStructField21PatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::ListPatchAdapter, 3>(__fbthrift_field_patch, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::ListPatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.clear();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::ListPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::ListPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -2248,9 +2245,9 @@ OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(apache::t
 void OptionalMyStructField22PatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::SetPatchAdapter, 3>(__fbthrift_field_patch, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::SetPatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.clear();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::SetPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::SetPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -2563,9 +2560,9 @@ OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(apache::t
 void OptionalMyStructField23PatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::MapPatchAdapter, 3>(__fbthrift_field_patch, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::MapPatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.clear();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::MapPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::MapPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
@@ -2924,30 +2921,30 @@ MyStructPatchStruct::MyStructPatchStruct(apache::thrift::FragileConstructor, ::a
 
 void MyStructPatchStruct::__fbthrift_clear() {
   // clear all fields
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::BoolPatchAdapter, 1>(__fbthrift_field_boolVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_byteVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 3>(__fbthrift_field_i16Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 4>(__fbthrift_field_i32Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 5>(__fbthrift_field_i64Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 6>(__fbthrift_field_floatVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 7>(__fbthrift_field_doubleVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 8>(__fbthrift_field_stringVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::AssignPatchAdapter, 9>(__fbthrift_field_binaryVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 10>(__fbthrift_field_structVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 11>(__fbthrift_field_optBoolVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 12>(__fbthrift_field_optByteVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 13>(__fbthrift_field_optI16Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 14>(__fbthrift_field_optI32Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 15>(__fbthrift_field_optI64Val, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 16>(__fbthrift_field_optFloatVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 17>(__fbthrift_field_optDoubleVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 18>(__fbthrift_field_optStringVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 19>(__fbthrift_field_optBinaryVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 20>(__fbthrift_field_optStructVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 21>(__fbthrift_field_optListVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 22>(__fbthrift_field_optSetVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 23>(__fbthrift_field_optMapVal, *this);  
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 30>(__fbthrift_field_unionVal, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::BoolPatchAdapter, 1>(__fbthrift_field_boolVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_byteVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 3>(__fbthrift_field_i16Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 4>(__fbthrift_field_i32Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 5>(__fbthrift_field_i64Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 6>(__fbthrift_field_floatVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 7>(__fbthrift_field_doubleVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 8>(__fbthrift_field_stringVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::AssignPatchAdapter, 9>(__fbthrift_field_binaryVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 10>(__fbthrift_field_structVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 11>(__fbthrift_field_optBoolVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 12>(__fbthrift_field_optByteVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 13>(__fbthrift_field_optI16Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 14>(__fbthrift_field_optI32Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 15>(__fbthrift_field_optI64Val, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 16>(__fbthrift_field_optFloatVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 17>(__fbthrift_field_optDoubleVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 18>(__fbthrift_field_optStringVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 19>(__fbthrift_field_optBinaryVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 20>(__fbthrift_field_optStructVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 21>(__fbthrift_field_optListVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 22>(__fbthrift_field_optSetVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::OptionalPatchAdapter, 23>(__fbthrift_field_optMapVal, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 30>(__fbthrift_field_unionVal, *this);
   __isset = {};
 }
 
@@ -3373,10 +3370,9 @@ MyStructValuePatchStruct::MyStructValuePatchStruct(apache::thrift::FragileConstr
 
 void MyStructValuePatchStruct::__fbthrift_clear() {
   // clear all fields
-
   this->__fbthrift_field_assign.reset();
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
   __isset = {};
 }
 
@@ -3533,10 +3529,9 @@ OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(apache::thrif
 void OptionalMyStructValuePatchStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_clear = bool();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);  
-
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   this->__fbthrift_field_ensure.reset();
-  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);  
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   __isset = {};
 }
 
