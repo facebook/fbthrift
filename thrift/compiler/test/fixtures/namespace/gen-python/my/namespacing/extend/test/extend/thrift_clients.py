@@ -16,10 +16,10 @@ from thrift.python.client import (
 )
 import thrift.python.exceptions as _fbthrift_python_exceptions
 import thrift.python.types as _fbthrift_python_types
-import py3lite_module_root.my.namespacing.extend.test.extend.thrift_types
-import py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_types
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_clients
+import python_module_root.my.namespacing.extend.test.extend.thrift_types
+import python_module_root.my.namespacing.extend.test.extend.thrift_metadata
+import python_module_root.my.namespacing.test.hsmodule.thrift_types
+import python_module_root.my.namespacing.test.hsmodule.thrift_clients
 
 
 class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "ExtendTestService.Sync"]):
@@ -29,27 +29,27 @@ class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "Exte
 
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-        return py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
+        return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
 
-    class Async(py3lite_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Async):
+    class Async(python_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "extend.ExtendTestService"
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
+            return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
 
         async def check(
             self,
-            struct1: py3lite_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
+            struct1: python_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
         ) -> bool:
             _fbthrift_resp = await self._send_request(
                 "ExtendTestService",
                 "check",
-                py3lite_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_args(
+                python_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                py3lite_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_result,
+                python_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
@@ -59,25 +59,25 @@ class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "Exte
                 "Empty Response",
             )
 
-    class Sync(py3lite_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Sync):
+    class Sync(python_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "extend.ExtendTestService"
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
+            return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
 
         def check(
             self,
-            struct1: py3lite_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
+            struct1: python_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
         ) -> bool:
             _fbthrift_resp = self._send_request(
                 "ExtendTestService",
                 "check",
-                py3lite_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_args(
+                python_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                py3lite_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_result,
+                python_module_root.my.namespacing.extend.test.extend.thrift_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:

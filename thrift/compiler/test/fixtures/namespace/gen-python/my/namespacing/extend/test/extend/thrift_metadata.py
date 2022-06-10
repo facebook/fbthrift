@@ -7,7 +7,7 @@
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 
 
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata
+import python_module_root.my.namespacing.test.hsmodule.thrift_metadata
 
 
 def gen_metadata_service_ExtendTestService() -> _fbthrift_metadata.ThriftMetadata:
@@ -32,9 +32,9 @@ def _fbthrift_gen_metadata_service_ExtendTestService(metadata_struct: _fbthrift_
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="hsmodule.HsTestService", structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    new_struct = py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata._fbthrift_gen_metadata_service_HsTestService(new_struct)
+    new_struct = python_module_root.my.namespacing.test.hsmodule.thrift_metadata._fbthrift_gen_metadata_service_HsTestService(new_struct)
 
-    new_struct = py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata._fbthrift_gen_metadata_struct_HsFoo(new_struct) # struct1
+    new_struct = python_module_root.my.namespacing.test.hsmodule.thrift_metadata._fbthrift_gen_metadata_struct_HsFoo(new_struct) # struct1
 
 
      # return value

@@ -16,8 +16,8 @@ from thrift.python.client import (
 )
 import thrift.python.exceptions as _fbthrift_python_exceptions
 import thrift.python.types as _fbthrift_python_types
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_types
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata
+import python_module_root.my.namespacing.test.hsmodule.thrift_types
+import python_module_root.my.namespacing.test.hsmodule.thrift_metadata
 
 
 class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestService.Sync"]):
@@ -27,7 +27,7 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
 
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-        return py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
+        return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
 
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
@@ -36,7 +36,7 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
+            return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
 
         async def init(
             self,
@@ -45,9 +45,9 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
             _fbthrift_resp = await self._send_request(
                 "HsTestService",
                 "init",
-                py3lite_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_args(
+                python_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                py3lite_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_result,
+                python_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
@@ -64,7 +64,7 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
+            return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
 
         def init(
             self,
@@ -73,9 +73,9 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
             _fbthrift_resp = self._send_request(
                 "HsTestService",
                 "init",
-                py3lite_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_args(
+                python_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                py3lite_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_result,
+                python_module_root.my.namespacing.test.hsmodule.thrift_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:

@@ -9,10 +9,10 @@ import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_types
+import python_module_root.my.namespacing.test.hsmodule.thrift_types
 
 # This unfortunately has to be down here to prevent circular imports
-import py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata
+import python_module_root.my.namespacing.extend.test.extend.thrift_metadata
 
 
 
@@ -26,7 +26,7 @@ class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_python_types.St
             1,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "struct1",  # name
-            lambda: _fbthrift_python_types.StructTypeInfo(py3lite_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo),  # typeinfo
+            lambda: _fbthrift_python_types.StructTypeInfo(python_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),

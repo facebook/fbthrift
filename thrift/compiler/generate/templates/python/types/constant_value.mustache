@@ -62,7 +62,7 @@ file.
 }}){{/value:list?}}{{!
 }}{{/value:const_struct?}}{{!
 }}{{#value:enum?}}{{!
-    }}{{^value:enum_value?}}_fbthrift_py3lite_types.BadEnum({{/value:enum_value?}}{{!
+    }}{{^value:enum_value?}}_fbthrift_python_types.BadEnum({{/value:enum_value?}}{{!
     }}{{#value:const_enum_type}}{{#type:need_module_path?}}{{type:module_path}}.{{!
     }}{{/type:need_module_path?}}{{/value:const_enum_type}}{{!
     }}{{value:enum_name}}{{#value:enum_value?}}.{{value:enum_value_name}}{{/value:enum_value?}}{{!

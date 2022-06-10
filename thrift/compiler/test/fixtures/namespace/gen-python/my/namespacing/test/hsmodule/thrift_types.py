@@ -36,11 +36,11 @@ class HsFoo(metaclass=_fbthrift_python_types.StructMeta):
 
 
 # This unfortunately has to be down here to prevent circular imports
-import py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata
+import python_module_root.my.namespacing.test.hsmodule.thrift_metadata
 
 
 def _fbthrift_metadata__struct_HsFoo():
-    return py3lite_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_struct_HsFoo()
+    return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_struct_HsFoo()
 
 _fbthrift_all_structs = [
     HsFoo,
