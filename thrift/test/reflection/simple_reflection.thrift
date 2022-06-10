@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/cpp.thrift"
+cpp_include "thrift/test/AdapterTest.h"
 
 namespace cpp2 test_cpp2.simple_cpp_reflection
 
@@ -60,8 +61,11 @@ struct struct2 {
   3: string def_string;
 }
 
+@cpp.Adapter{name = "::apache::thrift::test::IdentityAdapter<std::int64_t>"}
+typedef i64 AdaptedLong
+
 union union1 {
-  1: i64 field_i64;
+  1: AdaptedLong field_i64;
   2: string field_string;
   66: list<i64> field_list_i64;
   99: list<string> field_list_string;

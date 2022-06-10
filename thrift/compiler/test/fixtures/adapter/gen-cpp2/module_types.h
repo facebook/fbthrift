@@ -186,7 +186,7 @@ typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> S
 typedef ::std::vector<::cpp2::StringWithAdapter> ListWithElemAdapter;
 typedef ::cpp2::ListWithElemAdapter ListWithElemAdapter_withAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> MyI64;
-typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> DoubleTypedefI64;
+typedef ::cpp2::MyI64 DoubleTypedefI64;
 typedef ::std::int32_t MyI32;
 typedef ::cpp2::Foo FooWithAdapter;
 
@@ -1039,10 +1039,10 @@ class Baz final  {
     return value_.binaryField;
   }
 
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>& set_longField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> t = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>()) {
+  ::cpp2::MyI64& set_longField(::cpp2::MyI64 t = ::cpp2::MyI64()) {
     __fbthrift_clear();
     type_ = Type::longField;
-    ::new (std::addressof(value_.longField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>(t);
+    ::new (std::addressof(value_.longField)) ::cpp2::MyI64(t);
     return value_.longField;
   }
 

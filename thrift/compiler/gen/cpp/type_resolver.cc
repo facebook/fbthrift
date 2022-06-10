@@ -65,7 +65,7 @@ const std::string& type_resolver::get_type_name(const t_typedef& node) {
   }
   if (const std::string* adapter = find_structured_adapter_annotation(node)) {
     return detail::get_or_gen(
-        type_cache_, &node, [&]() { return gen_type(*type, adapter); });
+        typedef_cache_, &node, [&]() { return gen_type(*type, adapter); });
   }
   return get_type_name(*type);
 }

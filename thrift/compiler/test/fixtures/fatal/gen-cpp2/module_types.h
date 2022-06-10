@@ -1099,7 +1099,7 @@ typedef CppFakeI32 FakeI32;
 typedef CppHasANumber HasANumber;
 typedef CppHasAResult HasAResult;
 typedef CppHasAPhrase HasAPhrase;
-typedef ::test_cpp2::cpp_reflection::I32 I32;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> I32;
 
 class union1 final  {
  private:

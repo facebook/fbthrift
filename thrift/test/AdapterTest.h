@@ -204,4 +204,10 @@ struct AdapterWithContextAndClear {
   }
 };
 
+template <class T>
+struct IdentityAdapter {
+  static T fromThrift(T i) { return std::move(i); }
+  static const T& toThrift(const T& i) { return i; }
+};
+
 } // namespace apache::thrift::test

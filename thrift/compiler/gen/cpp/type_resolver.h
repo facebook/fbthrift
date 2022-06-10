@@ -141,6 +141,7 @@ class type_resolver {
 
   namespace_resolver namespaces_;
   std::unordered_map<const t_type*, std::string> type_cache_;
+  std::unordered_map<const t_type*, std::string> typedef_cache_;
   std::unordered_map<const t_field*, std::string> field_type_cache_;
   std::unordered_map<const t_type*, std::string> standard_type_cache_;
   // TODO(afuller): Use a custom key type with a std::unordered_map (std::tuple
