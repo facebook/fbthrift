@@ -29,9 +29,6 @@ namespace py.asyncio apache_thrift_asyncio.object
 namespace go thrift.lib.thrift.object
 namespace py thrift.lib.thrift.object
 
-// FIXME(ytj): java2 namespace should be com.facebook.thrift.type
-namespace java2 org.apache.thrift.conformance
-
 // A dynamic struct/union/exception
 struct ProtocolObject {
   // The type of the object, if applicable.
