@@ -550,7 +550,7 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_string_or_binary() && !is_adapted();
   }
   mstch::node resolved_cpp_type() {
-    return std::string(cpp2::get_type(resolved_type_));
+    return fmt::to_string(cpp2::get_type(resolved_type_));
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string_or_binary();

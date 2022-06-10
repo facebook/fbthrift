@@ -45,12 +45,12 @@ namespace compiler {
 namespace cpp2 {
 namespace {
 
-bool contains(boost::string_view s, boost::string_view what) {
+bool contains(fmt::string_view s, fmt::string_view what) {
   return std::search(s.begin(), s.end(), what.begin(), what.end()) != s.end();
 }
 
-boost::string_view value_or_empty(const std::string* value) {
-  return value ? *value : boost::string_view("");
+fmt::string_view value_or_empty(const std::string* value) {
+  return value ? *value : std::string_view("");
 }
 
 int checked_stoi(const std::string& s, std::string msg) {
@@ -258,7 +258,7 @@ bool is_orderable(t_type const& type) {
   return is_orderable(seen, memo, type);
 }
 
-boost::string_view get_type(const t_type* type) {
+fmt::string_view get_type(const t_type* type) {
   return value_or_empty(gen::cpp::type_resolver::find_type(*type));
 }
 
