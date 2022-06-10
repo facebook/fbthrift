@@ -31,12 +31,22 @@ namespace compiler {
 void t_program::add_definition(std::unique_ptr<t_named> definition) {
   assert(definition != nullptr);
 
-  // Resolve Thrift URI if need be.
-  if (definition->uri().empty()) { // Inherit from package.
-    definition->set_uri(package_.get_uri(definition->name()));
+  if (!definition->explicit_uri()) {
+    // Resolve Thrift URI.
     if (auto* uri = definition->find_annotation_or_null("thrift.uri")) {
-      definition->set_uri(*uri); // Manual override.
+      definition->set_uri(*uri); // Explicit from annotation.
+    } else { // Inherit from package.
+      definition->set_uri(
+          package_.get_uri(definition->name()), /*is_explicit=*/false);
     }
+  }
+
+  // Add to scope
+  if (const t_named* existing = scope_->add_def(*definition)) {
+    // TODO(afuller): Propagate the existing diff up, and
+    // report a diagnostic immediately, instead of doing it after
+    // in `validate_uri_uniqueness`.
+    // return existing; // Confliciting definition!.
   }
 
   // Index the node.

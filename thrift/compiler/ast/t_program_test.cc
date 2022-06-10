@@ -22,6 +22,9 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_union.h>
 #include <thrift/conformance/data/Constants.h>
 
 namespace apache::thrift::compiler {
@@ -131,6 +134,35 @@ TEST(TProgram, ComputeNameFromFilePath) {
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_1));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_2));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_3));
+}
+
+TEST(TProgram, AddDefinitionUri) {
+  t_program program("path/to/program.thrift");
+  program.set_package(t_package{"test.dev/foo/bar"});
+
+  EXPECT_EQ(program.name(), "program");
+  EXPECT_THAT(
+      program.package().domain(), ::testing::ElementsAre("test", "dev"));
+  EXPECT_THAT(program.package().path(), ::testing::ElementsAre("foo", "bar"));
+
+  { // Inherits uri and is accessible.
+    auto& def = program.add_def(std::make_unique<t_struct>(&program, "Struct"));
+    EXPECT_FALSE(def.explicit_uri());
+    EXPECT_EQ(def.uri(), "test.dev/foo/bar/Struct");
+    EXPECT_EQ(&def, program.scope()->find_def("test.dev/foo/bar/Struct"));
+  }
+  { // Explicit override.
+    auto& def = program.add_def(std::make_unique<t_enum>(&program, "Enum"), "");
+    EXPECT_TRUE(def.explicit_uri());
+    EXPECT_EQ(def.uri(), "");
+  }
+  { // Explicit annotation override.
+    auto node = std::make_unique<t_union>(&program, "Union");
+    node->set_annotation("thrift.uri");
+    auto& def = program.add_def(std::move(node));
+    EXPECT_TRUE(def.explicit_uri());
+    EXPECT_EQ(def.uri(), "");
+  }
 }
 
 } // namespace

@@ -53,7 +53,13 @@ class t_named : public t_node {
   const t_const* find_structured_annotation_or_null(const char* uri) const;
 
   const std::string& uri() const { return uri_; }
-  void set_uri(std::string uri) { uri_ = std::move(uri); }
+
+  void set_uri(std::string uri, bool is_explicit = true) {
+    uri_ = std::move(uri);
+    explicit_uri_ = is_explicit;
+  }
+  // If the uri was assigned explicitly, rather than implied by context.
+  bool explicit_uri() const { return explicit_uri_; }
 
   // If this struct was generated rather than defined directly in the IDL.
   bool generated() const noexcept { return generated_; }
@@ -70,6 +76,7 @@ class t_named : public t_node {
  private:
   bool generated_ = false;
   std::string uri_;
+  bool explicit_uri_ = false;
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
 
   // TODO(ytj): use thrift.uri --> t_const map for structured annotation

@@ -95,6 +95,17 @@ t_type_ref t_scope::ref_type(
   return add_placeholder_typedef(std::move(ph));
 }
 
+const t_named* t_scope::add_def(const t_named& node) {
+  if (!node.uri().empty()) {
+    auto result = defs_.emplace(node.uri(), &node);
+    if (!result.second) {
+      return result.first->second;
+    }
+  }
+  // TODO(afuller): Also index the defs by name, and scoped name.
+  return nullptr; // Success.
+}
+
 void t_scope::add_constant(std::string name, const t_const* constant) {
   if (constant && constant->get_value()->is_enum()) {
     const std::string& enum_value_name =

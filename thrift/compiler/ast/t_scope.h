@@ -49,6 +49,16 @@ class t_scope {
       const std::string& name,
       const source_range& range);
 
+  // Returns an existing def, if one is already registered with the same uri, or
+  // nullptr.
+  const t_named* add_def(const t_named& node);
+
+  // Return the t_named associated with the given Thrift URI, or nullptr.
+  const t_named* find_def(const std::string& uri) {
+    auto itr = defs_.find(uri);
+    return itr != defs_.end() ? itr->second : nullptr;
+  }
+
   void add_type(std::string name, const t_type* type) {
     types_[std::move(name)] = type;
   }
@@ -132,6 +142,9 @@ class t_scope {
 
   // Map of enum value names to their definition full names.
   std::unordered_map<std::string, std::unordered_set<std::string>> enum_values_;
+
+  // Definitions by uri.
+  std::unordered_map<std::string, const t_named*> defs_;
 };
 
 } // namespace compiler
