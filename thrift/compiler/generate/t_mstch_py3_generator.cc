@@ -1377,7 +1377,7 @@ std::shared_ptr<mstch_base> type_py3_generator<ForContainers>::generate(
         trueType,
         mstch_py3_type::CachedProperties{
             get_cpp_template(*trueType),
-            fmt::to_string(cpp2::get_type(trueType)),
+            std::string(cpp2::get_type(trueType)),
             {}});
   }
   return std::make_shared<T>(
