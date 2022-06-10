@@ -56,7 +56,7 @@ async def ThriftAsyncServerFactory(
     backlog=100,
     ssl=None,
     event_handler=None,
-    protocol_factory=None
+    protocol_factory=None,
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server

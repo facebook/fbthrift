@@ -85,7 +85,7 @@ if _is_legacy_ssl:
         ca_certs=None,
         keyfile=None,
         certfile=None,
-        **kwargs
+        **kwargs,
     ):
         return ssl.SSLSocket(
             socket,
