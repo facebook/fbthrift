@@ -349,7 +349,7 @@ void containerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldQ = ::cpp2::MyEnumA();
   this->fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
   if (this->fieldS) ::apache::thrift::clear(*this->fieldS);
-  if (this->fieldT) ::apache::thrift::clear(*this->fieldT);
+  if (this->fieldT) this->fieldT = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::cpp2::SmallStruct>>();
   if (this->fieldU) this->fieldU = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::SmallStruct>>();
   if (this->fieldX) ::apache::thrift::clear(*this->fieldX);
   __isset = {};

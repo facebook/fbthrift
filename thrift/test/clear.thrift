@@ -48,6 +48,8 @@ struct StructWithNoDefaultStruct {
   12: set<i16> set_field;
   13: map<i16, i16> map_field;
   14: MyStruct struct_field;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  15: MyStruct ref_field;
 }
 
 struct StructWithDefaultStruct {

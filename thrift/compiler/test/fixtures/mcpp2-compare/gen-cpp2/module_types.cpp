@@ -2883,9 +2883,9 @@ void AnnotatedStruct::__fbthrift_clear() {
   this->opt_cpp2_unique_ref.reset();
   this->opt_container_with_ref.reset();
   if (this->ref_type_unique) ::apache::thrift::clear(*this->ref_type_unique);
-  if (this->ref_type_shared) ::apache::thrift::clear(*this->ref_type_shared);
+  if (this->ref_type_shared) this->ref_type_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::some::valid::ns::containerStruct>>();
   this->ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
-  if (this->req_ref_type_shared) ::apache::thrift::clear(*this->req_ref_type_shared);
+  if (this->req_ref_type_shared) this->req_ref_type_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::some::valid::ns::containerStruct>>();
   if (this->req_ref_type_const) this->req_ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::some::valid::ns::containerStruct>>();
   this->req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
   this->opt_ref_type_const.reset();

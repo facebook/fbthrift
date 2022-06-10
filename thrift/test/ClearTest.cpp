@@ -49,6 +49,19 @@ TEST(ClearTest, StructWithDefaultStruct) {
   checkIsDefault(obj);
 }
 
+TEST(ClearTest, RefFields) {
+  StructWithNoDefaultStruct obj;
+  obj.ref_field_ref()->int_field() = 42;
+
+  auto obj2 = obj;
+  EXPECT_EQ(*obj.ref_field_ref()->int_field(), 42);
+  EXPECT_EQ(*obj2.ref_field_ref()->int_field(), 42);
+
+  apache::thrift::clear(obj);
+  EXPECT_EQ(*obj.ref_field_ref()->int_field(), 0);
+  EXPECT_EQ(*obj2.ref_field_ref()->int_field(), 42);
+}
+
 TEST(AdaptTest, ThriftClearTestStruct) {
   static_assert(!folly::is_detected_v<
                 adapt_detail::ClearType,

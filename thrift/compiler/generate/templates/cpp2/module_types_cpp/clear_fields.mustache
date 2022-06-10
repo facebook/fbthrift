@@ -62,22 +62,15 @@
   ::apache::thrift::clear(<% > field/member%>);
 <%/field:cpp_first_adapter%>
 <%/field:cpp_ref?%>
-<%#field:cpp_ref_unique?%>
-<%^field:optional?%>
-  if (<% > field/member%>) ::apache::thrift::clear(*<% > field/member%>);
-<%/field:optional?%>
-<%/field:cpp_ref_unique?%>
-<%#field:cpp_ref_shared?%>
-<%^field:optional?%>
-  if (<% > field/member%>) ::apache::thrift::clear(*<% > field/member%>);
-<%/field:optional?%>
-<%/field:cpp_ref_shared?%>
-<%#field:cpp_ref_shared_const?%>
-<%^field:optional?%>
-  if (<% > field/member%>) <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
-<%/field:optional?%>
-<%/field:cpp_ref_shared_const?%>
 <%#field:cpp_ref?%>
+<%^field:optional?%>
+<%#field:cpp_ref_unique?%>
+  if (<% > field/member%>) ::apache::thrift::clear(*<% > field/member%>);
+<%/field:cpp_ref_unique?%>
+<%^field:cpp_ref_unique?%>
+  if (<% > field/member%>) <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
+<%/field:cpp_ref_unique?%>
+<%/field:optional?%>
 <%#field:optional?%>
   <% > field/member%>.reset();
 <%/field:optional?%>
