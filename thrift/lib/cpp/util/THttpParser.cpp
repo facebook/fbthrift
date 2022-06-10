@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <fmt/core.h>
 #include <folly/Conv.h>
 #include <folly/String.h>
+#include <folly/container/F14Map.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -381,15 +382,15 @@ bool THttpClientParser::isConnectClosedByServer() {
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
-  std::map<std::string, std::string> empty;
+  folly::F14NodeMap<std::string, std::string> empty;
   return constructHeader(std::move(buf), empty, empty, &empty);
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(
     unique_ptr<IOBuf> buf,
-    const std::map<std::string, std::string>& persistentWriteHeaders,
-    const std::map<std::string, std::string>& writeHeaders,
-    const std::map<std::string, std::string>* extraWriteHeaders) {
+    const folly::F14NodeMap<std::string, std::string>& persistentWriteHeaders,
+    const folly::F14NodeMap<std::string, std::string>& writeHeaders,
+    const folly::F14NodeMap<std::string, std::string>* extraWriteHeaders) {
   IOBufQueue queue;
   queue.append("POST ");
   queue.append(path_);
@@ -425,7 +426,7 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
 
 void THttpClientParser::appendHeadersToQueue(
     folly::IOBufQueue& queue,
-    const std::map<std::string, std::string>& headersToAppend) {
+    const folly::F14NodeMap<std::string, std::string>& headersToAppend) {
   for (const auto& headerToAppend : headersToAppend) {
     queue.append(headerToAppend.first);
     queue.append(": ");

@@ -15,7 +15,6 @@
 from libc.stdint cimport uint16_t, int32_t, uint32_t, int64_t
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
-from libcpp.map cimport map
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport cIOBuf
 from folly.range cimport StringPiece
@@ -160,10 +159,14 @@ cdef extern from "folly/io/async/AsyncTransport.h" namespace "folly":
     cdef cppclass AsyncTransport:
         const AsyncTransportCertificate* getPeerCertificate()
 
+cdef extern from "folly/container/F14Map.h" namespace "folly":
+  cdef cppclass F14NodeMap[K, T]:
+    pass
+
 cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift":
     cdef cppclass THeader:
-        const map[string, string]& getWriteHeaders()
-        const map[string, string]& getHeaders()
+        const F14NodeMap[string, string]& getWriteHeaders()
+        const F14NodeMap[string, string]& getHeaders()
         void setHeader(string& key, string& value)
 
 cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \

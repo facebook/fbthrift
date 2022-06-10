@@ -31,6 +31,7 @@ namespace go thrift.lib.thrift.RpcMetadata
 
 cpp_include "thrift/lib/cpp2/util/ManagedStringView.h"
 cpp_include "thrift/lib/thrift/RpcMetadata_extra.h"
+cpp_include "folly/container/F14Map.h"
 
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
@@ -155,7 +156,9 @@ struct RequestRpcMetadata {
   7: optional RpcPriority priority;
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  8: optional map<string, string> otherMetadata;
+  8: optional map<string, string> (
+    cpp.template = "folly::F14NodeMap",
+  ) otherMetadata;
   // 9: Deprecated
   // 10: Deprecated
   // The CRC32C of the uncompressed request payload. MAY be set. SHOULD be
@@ -260,7 +263,9 @@ struct ResponseRpcMetadata {
   // 2: Deprecated
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  3: optional map<string, string> otherMetadata;
+  3: optional map<string, string> (
+    cpp.template = "folly::F14NodeMap",
+  ) otherMetadata;
   // Server load. SHOULD be set iff loadMetric was set in RequestRpcMetadata
   4: optional i64 load;
   // The CRC32C of the uncompressed response payload. MAY be set. SHOULD be
@@ -374,7 +379,9 @@ struct StreamPayloadMetadata {
   1: optional CompressionAlgorithm compression;
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  2: optional map<string, string (java.swift.binary_string)> otherMetadata;
+  2: optional map<string, string (java.swift.binary_string)> (
+    cpp.template = "folly::F14NodeMap",
+  ) otherMetadata;
   // Metadata describing the type of stream payload. MUST be set for protocol
   // version 8+.
   3: optional PayloadMetadata payloadMetadata;
@@ -396,7 +403,9 @@ const i64 kRocketProtocolKey = 0xf09f9a80;
 struct ClientMetadata {
   1: optional string agent;
   2: optional string hostname;
-  3: optional map<string, string> otherMetadata;
+  3: optional map<string, string> (
+    cpp.template = "folly::F14NodeMap",
+  ) otherMetadata;
 }
 
 struct RequestSetupMetadata {
@@ -471,7 +480,9 @@ union ClientPushMetadata {
 struct HeadersPayloadContent {
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  1: optional map<string, string (java.swift.binary_string)> otherMetadata;
+  1: optional map<string, string (java.swift.binary_string)> (
+    cpp.template = "folly::F14NodeMap",
+  ) otherMetadata;
 }
 
 struct HeadersPayloadMetadata {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 #ifndef THRIFT_TRANSPORT_THTTPPARSER_H_
 #define THRIFT_TRANSPORT_THTTPPARSER_H_ 1
 
+#include <folly/container/F14Map.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
@@ -59,19 +60,19 @@ class THttpParser {
     return (state_ == HTTP_PARSE_START) && (httpBufLen_ > httpPos_);
   }
   bool hasPartialMessage() { return partialMessageSize_ > 0; }
-  const std::map<std::string, std::string>& getReadHeaders() {
+  const folly::F14NodeMap<std::string, std::string>& getReadHeaders() {
     return readHeaders_;
   }
-  std::map<std::string, std::string> moveReadHeaders() {
+  folly::F14NodeMap<std::string, std::string> moveReadHeaders() {
     return std::move(readHeaders_);
   }
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
       std::unique_ptr<folly::IOBuf> buf) = 0;
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
       std::unique_ptr<folly::IOBuf> buf,
-      const std::map<std::string, std::string>& persistentWriteHeaders,
-      const std::map<std::string, std::string>& writeHeaders,
-      const std::map<std::string, std::string>* extraWriteHeaders) = 0;
+      const folly::F14NodeMap<std::string, std::string>& persistentWriteHeaders,
+      const folly::F14NodeMap<std::string, std::string>& writeHeaders,
+      const folly::F14NodeMap<std::string, std::string>* extraWriteHeaders) = 0;
 
  protected:
   HttpParseResult parseStart();
@@ -99,7 +100,7 @@ class THttpParser {
   bool statusLine_;
   bool finished_;
   bool chunked_;
-  std::map<std::string, std::string> readHeaders_;
+  folly::F14NodeMap<std::string, std::string> readHeaders_;
 
   size_t contentLength_;
 
@@ -130,9 +131,10 @@ class THttpClientParser : public THttpParser {
       std::unique_ptr<folly::IOBuf> buf) override;
   std::unique_ptr<folly::IOBuf> constructHeader(
       std::unique_ptr<folly::IOBuf> buf,
-      const std::map<std::string, std::string>& persistentWriteHeaders,
-      const std::map<std::string, std::string>& writeHeaders,
-      const std::map<std::string, std::string>* extraWriteHeaders) override;
+      const folly::F14NodeMap<std::string, std::string>& persistentWriteHeaders,
+      const folly::F14NodeMap<std::string, std::string>& writeHeaders,
+      const folly::F14NodeMap<std::string, std::string>* extraWriteHeaders)
+      override;
 
  protected:
   void parseHeaderLine(folly::StringPiece) override;
@@ -141,7 +143,7 @@ class THttpClientParser : public THttpParser {
  private:
   static void appendHeadersToQueue(
       folly::IOBufQueue& queue,
-      const std::map<std::string, std::string>& headersToAppend);
+      const folly::F14NodeMap<std::string, std::string>& headersToAppend);
 
   bool connectionClosedByServer_;
   std::string host_;

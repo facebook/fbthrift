@@ -85,7 +85,8 @@ cdef class SyncClient:
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
                 response = response_cls()
                 deserialize(protocol_factory, b"".join(response_iobuf), response)
-                self._last_resp_headers = resp.headers
+                for p in resp.headers:
+                    self._last_resp_headers[p.first] = p.second
                 return response
             elif resp.buf.hasError():
                 raise create_py_exception(resp.buf.error())

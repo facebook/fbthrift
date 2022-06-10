@@ -343,7 +343,7 @@ cdef class ReadHeaders(Headers):
         inst._parent = ctx
         return inst
 
-    cdef const map[string, string]* _getMap(self):
+    cdef const F14NodeMap[string, string]* _getMap(self):
         return &self._parent._ctx.getHeader().getHeaders()
 
 
@@ -354,7 +354,7 @@ cdef class WriteHeaders(Headers):
         inst._parent = ctx
         return inst
 
-    cdef const map[string, string]* _getMap(self):
+    cdef const F14NodeMap[string, string]* _getMap(self):
         return &self._parent._ctx.getHeader().getWriteHeaders()
 
 

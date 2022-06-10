@@ -163,7 +163,9 @@ class THeader final {
   void setFlags(uint16_t flags) { flags_ = flags; }
 
   // Info headers
-  typedef std::map<std::string, std::string> StringToStringMap;
+  // NB: we're using F14NodeMap here because it's a very≥ general map, which
+  // sometimes requires reference stability guarantees.
+  typedef folly::F14NodeMap<std::string, std::string> StringToStringMap;
 
   /**
    * We know we got a packet in header format here, try to parse the header

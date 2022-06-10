@@ -35,7 +35,7 @@ cdef class Headers:
     def __init__(self):
         raise TypeError('This class is for wrapping maps originating in C++')
 
-    cdef const cmap[string, string]* _getMap(self):
+    cdef const F14NodeMap[string, string]* _getMap(self):
         """ This method should be overloaded """
         pass
 
@@ -44,8 +44,8 @@ cdef class Headers:
         if not self or key is None:
             raise err
         cdef string ckey = key.encode('utf-8')
-        it = deref(self._getMap()).const_find(ckey)
-        if it == deref(self._getMap()).const_end():
+        it = deref(self._getMap()).find(ckey)
+        if it == deref(self._getMap()).end():
             raise err
         return (<bytes>deref(it).second).decode('utf-8')
 
@@ -57,8 +57,8 @@ cdef class Headers:
             return
 
         cdef string ckey
-        it = deref(self._getMap()).const_begin()
-        while it != deref(self._getMap()).const_end():
+        it = deref(self._getMap()).begin()
+        while it != deref(self._getMap()).end():
             ckey = deref(it).first
             yield (<bytes>ckey).decode('utf-8')
             inc(it)
@@ -109,8 +109,8 @@ cdef class Headers:
             return
 
         cdef string cvalue
-        it = deref(self._getMap()).const_begin()
-        while it != deref(self._getMap()).const_end():
+        it = deref(self._getMap()).begin()
+        while it != deref(self._getMap()).end():
             cvalue = deref(it).second
             yield (<bytes>cvalue).decode('utf-8')
             inc(it)
@@ -121,8 +121,8 @@ cdef class Headers:
 
         cdef string ckey
         cdef string cvalue
-        item = deref(self._getMap()).const_begin()
-        while item != deref(self._getMap()).const_end():
+        item = deref(self._getMap()).begin()
+        while item != deref(self._getMap()).end():
             ckey = deref(item).first
             cvalue = deref(item).second
 
@@ -140,7 +140,7 @@ cdef class ReadHeaders(Headers):
         inst._parent = rpc_options
         return inst
 
-    cdef const cmap[string, string]* _getMap(self):
+    cdef const F14NodeMap[string, string]* _getMap(self):
         return &self._parent._cpp_obj.getReadHeaders()
 
 
@@ -151,7 +151,7 @@ cdef class WriteHeaders(Headers):
         inst._parent = rpc_options
         return inst
 
-    cdef const cmap[string, string]* _getMap(self):
+    cdef const F14NodeMap[string, string]* _getMap(self):
         return &self._parent._cpp_obj.getWriteHeaders()
 
 

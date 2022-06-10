@@ -16,7 +16,6 @@
 
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
-from libcpp.map cimport map
 from libc.stdint cimport uint32_t, uint16_t
 from folly.iobuf cimport cIOBuf, cIOBufQueue
 from thrift.py3.common cimport Protocol as cProtocol
@@ -26,6 +25,9 @@ cdef extern from "thrift/lib/py3/serializer.h" namespace "::thrift::py3" nogil:
     unique_ptr[cIOBuf] cserialize "::thrift::py3::serialize"[T](const T* obj, cProtocol protocol) except +
     uint32_t cdeserialize"::thrift::py3::deserialize"[T](const cIOBuf* buf, T* obj, cProtocol protocol) except +
 
+cdef extern from "folly/container/F14Map.h" namespace "folly":
+  cdef cppclass F14NodeMap[K, T]:
+    pass
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift::transport::THeader":
     cpdef enum Transform "apache::thrift::transport::THeader::TRANSFORMS":
@@ -38,5 +40,5 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift:
         void setProtocolId(cProtocol)
         uint16_t getProtocolId()
         void setTransform(Transform)
-        unique_ptr[cIOBuf] addHeader(unique_ptr[cIOBuf], map[string, string])
-        unique_ptr[cIOBuf] removeHeader(cIOBufQueue*, size_t&, map[string, string]) except +
+        unique_ptr[cIOBuf] addHeader(unique_ptr[cIOBuf], F14NodeMap[string, string])
+        unique_ptr[cIOBuf] removeHeader(cIOBufQueue*, size_t&, F14NodeMap[string, string]) except +

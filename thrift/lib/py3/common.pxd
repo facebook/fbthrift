@@ -14,11 +14,12 @@
 
 # distutils: language=c++
 
-from libcpp.map cimport map as cmap
 from libcpp.memory cimport shared_ptr
+from libcpp.utility cimport pair
 from libc.stdint cimport int32_t, int64_t
 from libcpp.string cimport string
 from thrift.py3.std_libcpp cimport milliseconds
+from libcpp cimport bool as cpp_bool
 
 
 cdef extern from "thrift/lib/cpp/protocol/TProtocolTypes.h" namespace "apache::thrift::protocol":
@@ -48,10 +49,23 @@ cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift":
     cdef cppclass cFieldRef "apache::thrift::field_ref"[T]:
         T& operator*()
 
+cdef extern from "folly/container/F14Map.h" namespace "folly":
+  cdef cppclass F14NodeMap[K, T]:
+    cppclass const_iterator:
+        pair[K, T]& operator*()
+        const_iterator operator++()
+        const_iterator operator--()
+        cpp_bool operator==(const_iterator)
+        cpp_bool operator!=(const_iterator)
+    int64_t size()
+    const_iterator begin()
+    const_iterator end()
+    const_iterator find(const K&)
+    int count(const K&)
 
 cdef class Headers:
     cdef object __weakref__
-    cdef const cmap[string, string]* _getMap(self)
+    cdef const F14NodeMap[string, string]* _getMap(self)
 
 
 cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thrift":
@@ -68,8 +82,8 @@ cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thr
         cRpcOptions& setChunkBufferSize(int32_t chunkBufferSize)
         int32_t getChunkBufferSize()
         void setWriteHeader(const string& key, const string value)
-        const cmap[string, string]& getReadHeaders()
-        const cmap[string, string]& getWriteHeaders()
+        const F14NodeMap[string, string]& getReadHeaders()
+        const F14NodeMap[string, string]& getWriteHeaders()
 
 
 cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "::apache::thrift::metadata":

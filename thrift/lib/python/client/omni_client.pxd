@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from libcpp cimport bool
 from folly cimport cFollyExceptionWrapper, cFollySemiFuture
 from folly.expected cimport cExpected
 from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
-from libcpp.map cimport map as cmap
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
+from libcpp.pair cimport pair
 from thrift.python.client.request_channel cimport cRequestChannel_ptr
 
 
@@ -31,15 +32,27 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::a
         SINK = 6
 
 
+cdef extern from "folly/container/F14Map.h" namespace "folly":
+  cdef cppclass F14NodeMap[K, T]:
+    cppclass iterator:
+        bool operator!=(iterator)
+        bool operator==(iterator)
+        iterator operator++()
+        iterator operator--()
+        pair[K, T]& operator*()
+    F14NodeMap()
+    iterator begin()
+    iterator end()
+    T& operator[](const K&)
+
 cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::python::client":
     cdef cppclass cIOBufClientBufferedStream "::thrift::python::client::IOBufClientBufferedStream":
         pass
 
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::python::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
-        cmap[string, string] headers
+        F14NodeMap[string, string] headers
         unique_ptr[cIOBufClientBufferedStream] stream
-
 
     cdef cppclass cOmniClient "::thrift::python::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)

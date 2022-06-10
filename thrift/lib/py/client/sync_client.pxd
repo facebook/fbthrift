@@ -18,7 +18,6 @@ from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
 from thrift.python.client.omni_client cimport cOmniClient
 
-
 cdef class SyncClient:
     cdef unique_ptr[cOmniClient] _omni_client
     cdef unordered_map[string, string] _persistent_headers

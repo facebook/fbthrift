@@ -59,7 +59,7 @@ def serialize_with_header(tstruct, protocol=Protocol.COMPACT, transform=Transfor
 
 def serialize_with_header_iobuf(StructOrError tstruct, protocol=Protocol.COMPACT, Transform transform=Transform.NONE):
     cdef cTHeader header
-    cdef map[string, string] pheaders
+    cdef F14NodeMap[string, string] pheaders
     cdef IOBuf buf = <IOBuf>serialize_iobuf(tstruct, protocol)
     header.setProtocolId(protocol)
     if transform is not Transform.NONE:
@@ -73,7 +73,7 @@ def deserialize_from_header(structKlass, buf not None):
     cdef _fbthrift_iobuf.cIOBufQueue queue = _fbthrift_iobuf.cIOBufQueue(_fbthrift_iobuf.cacheChainLength())
     queue.append(_fbthrift_iobuf.move(iobuf._ours))
     cdef cTHeader header
-    cdef map[string, string] pheaders
+    cdef F14NodeMap[string, string] pheaders
     cdef size_t needed = 0
     cdef unique_ptr[cIOBuf] cbuf
     try:
