@@ -172,6 +172,10 @@ std::string mangle_field_name(const std::string& name) {
   return "__fbthrift_field_" + name;
 }
 
+bool should_mangle_field_storage_name_in_struct(const t_struct& s) {
+  // We don't mangle field name if cpp.methods exist
+  return !s.has_annotation({"cpp.methods", "cpp2.methods"});
+}
 } // namespace
 
 class cpp2_generator_context {
@@ -902,11 +906,11 @@ class mstch_cpp2_field : public mstch_field {
   bool is_eligible_for_storage_name_mangling() const {
     const auto* strct = field_context_->strct;
 
-    if (strct->is_union() || strct->is_exception()) {
+    if (strct->is_union()) {
       return false;
     }
 
-    if (strct->has_annotation({"cpp.methods", "cpp2.methods"})) {
+    if (!should_mangle_field_storage_name_in_struct(*strct)) {
       return false;
     }
 
@@ -1115,8 +1119,21 @@ class mstch_cpp2_struct : public mstch_struct {
     return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
   }
   mstch::node message() {
-    return strct_->is_exception() ? strct_->get_annotation("message")
-                                  : mstch::node();
+    if (!strct_->is_exception()) {
+      return mstch::node();
+    }
+
+    const auto& message = strct_->get_annotation("message");
+
+    if (message == "") {
+      return message;
+    }
+
+    if (!should_mangle_field_storage_name_in_struct(*strct_)) {
+      return message;
+    }
+
+    return mangle_field_name(message);
   }
   mstch::node cpp_allocator() {
     return strct_->get_annotation("cpp.allocator");

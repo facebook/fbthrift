@@ -781,26 +781,26 @@ MyException::MyException() {
 MyException::~MyException() {}
 
 MyException::MyException(MyException&& other) noexcept  :
-    context(std::move(other.context)),
+    __fbthrift_field_context(std::move(other.__fbthrift_field_context)),
     __isset(other.__isset) {
 }
 
 MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noexcept {
-    this->context = std::move(other.context);
+    this->__fbthrift_field_context = std::move(other.__fbthrift_field_context);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string context__arg) :
-    context(std::move(context__arg)) {
+    __fbthrift_field_context(std::move(context__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void MyException::__fbthrift_clear() {
   // clear all fields
-  this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

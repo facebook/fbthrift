@@ -44,26 +44,26 @@ CustomException::CustomException() {
 CustomException::~CustomException() {}
 
 CustomException::CustomException(CustomException&& other) noexcept  :
-    message(std::move(other.message)),
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }
 
 CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept {
-    this->message = std::move(other.message);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
     __isset = other.__isset;
     return *this;
 }
 
 
 CustomException::CustomException(apache::thrift::FragileConstructor, ::std::string message__arg) :
-    message(std::move(message__arg)) {
+    __fbthrift_field_message(std::move(message__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void CustomException::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

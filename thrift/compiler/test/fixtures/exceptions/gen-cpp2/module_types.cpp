@@ -41,30 +41,30 @@ Fiery::Fiery() {
 }
 
 Fiery::Fiery(std::string __message) : Fiery() {
-  message = std::move(__message);
+  __fbthrift_field_message = std::move(__message);
 }
 
 
 Fiery::~Fiery() {}
 
 Fiery::Fiery(Fiery&& other) noexcept  :
-    message(std::move(other.message)) {
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)) {
 }
 
 Fiery& Fiery::operator=(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept {
-    this->message = std::move(other.message);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
     return *this;
 }
 
 
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
-    message(std::move(message__arg)) {
+    __fbthrift_field_message(std::move(message__arg)) {
 }
 
 
 void Fiery::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
 
 void Fiery::__fbthrift_clear_terse_fields() {
@@ -141,33 +141,33 @@ Serious::Serious() {
 }
 
 Serious::Serious(std::string __message) : Serious() {
-  sonnet = std::move(__message);
+  __fbthrift_field_sonnet = std::move(__message);
 }
 
 
 Serious::~Serious() {}
 
 Serious::Serious(Serious&& other) noexcept  :
-    sonnet(std::move(other.sonnet)),
+    __fbthrift_field_sonnet(std::move(other.__fbthrift_field_sonnet)),
     __isset(other.__isset) {
 }
 
 Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
-    this->sonnet = std::move(other.sonnet);
+    this->__fbthrift_field_sonnet = std::move(other.__fbthrift_field_sonnet);
     __isset = other.__isset;
     return *this;
 }
 
 
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
-    sonnet(std::move(sonnet__arg)) {
+    __fbthrift_field_sonnet(std::move(sonnet__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void Serious::__fbthrift_clear() {
   // clear all fields
-  this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -246,29 +246,29 @@ ComplexFieldNames::ComplexFieldNames() {
 }
 
 ComplexFieldNames::ComplexFieldNames(std::string __message) : ComplexFieldNames() {
-  internal_error_message = std::move(__message);
+  __fbthrift_field_internal_error_message = std::move(__message);
 }
 
 
 ComplexFieldNames::~ComplexFieldNames() {}
 
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
-    error_message(std::move(other.error_message)),
-    internal_error_message(std::move(other.internal_error_message)),
+    __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
+    __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
 }
 
 ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept {
-    this->error_message = std::move(other.error_message);
-    this->internal_error_message = std::move(other.internal_error_message);
+    this->__fbthrift_field_error_message = std::move(other.__fbthrift_field_error_message);
+    this->__fbthrift_field_internal_error_message = std::move(other.__fbthrift_field_internal_error_message);
     __isset = other.__isset;
     return *this;
 }
 
 
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
-    error_message(std::move(error_message__arg)),
-    internal_error_message(std::move(internal_error_message__arg)) {
+    __fbthrift_field_error_message(std::move(error_message__arg)),
+    __fbthrift_field_internal_error_message(std::move(internal_error_message__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -276,8 +276,8 @@ ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::
 
 void ComplexFieldNames::__fbthrift_clear() {
   // clear all fields
-  this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -363,29 +363,29 @@ CustomFieldNames::CustomFieldNames() {
 }
 
 CustomFieldNames::CustomFieldNames(std::string __message) : CustomFieldNames() {
-  internal_error_message = std::move(__message);
+  __fbthrift_field_internal_error_message = std::move(__message);
 }
 
 
 CustomFieldNames::~CustomFieldNames() {}
 
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
-    error_message(std::move(other.error_message)),
-    internal_error_message(std::move(other.internal_error_message)),
+    __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
+    __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
 }
 
 CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept {
-    this->error_message = std::move(other.error_message);
-    this->internal_error_message = std::move(other.internal_error_message);
+    this->__fbthrift_field_error_message = std::move(other.__fbthrift_field_error_message);
+    this->__fbthrift_field_internal_error_message = std::move(other.__fbthrift_field_internal_error_message);
     __isset = other.__isset;
     return *this;
 }
 
 
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
-    error_message(std::move(error_message__arg)),
-    internal_error_message(std::move(internal_error_message__arg)) {
+    __fbthrift_field_error_message(std::move(error_message__arg)),
+    __fbthrift_field_internal_error_message(std::move(internal_error_message__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -393,8 +393,8 @@ CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::st
 
 void CustomFieldNames::__fbthrift_clear() {
   // clear all fields
-  this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -477,33 +477,33 @@ namespace cpp2 {
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField&) = default;
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField() :
-      error_code() {
+      __fbthrift_field_error_code() {
 }
 
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) : ExceptionWithPrimitiveField() {
-  message = std::move(__message);
+  __fbthrift_field_message = std::move(__message);
 }
 
 
 ExceptionWithPrimitiveField::~ExceptionWithPrimitiveField() {}
 
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
-    message(std::move(other.message)),
-    error_code(std::move(other.error_code)),
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
+    __fbthrift_field_error_code(std::move(other.__fbthrift_field_error_code)),
     __isset(other.__isset) {
 }
 
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept {
-    this->message = std::move(other.message);
-    this->error_code = std::move(other.error_code);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
+    this->__fbthrift_field_error_code = std::move(other.__fbthrift_field_error_code);
     __isset = other.__isset;
     return *this;
 }
 
 
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg) :
-    message(std::move(message__arg)),
-    error_code(std::move(error_code__arg)) {
+    __fbthrift_field_message(std::move(message__arg)),
+    __fbthrift_field_error_code(std::move(error_code__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -511,8 +511,8 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::Fragile
 
 void ExceptionWithPrimitiveField::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->error_code = ::std::int32_t();
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_error_code = ::std::int32_t();
   __isset = {};
 }
 

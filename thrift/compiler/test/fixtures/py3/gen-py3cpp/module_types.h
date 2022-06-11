@@ -303,7 +303,7 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
   ~SimpleException() override;
 
  private:
-  ::std::int16_t err_code;
+  ::std::int16_t __fbthrift_field_err_code;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -314,32 +314,52 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> err_code_ref() const& {
-    return {this->err_code, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_err_code, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> err_code_ref() const&& {
-    return {static_cast<const T&&>(this->err_code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_err_code), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> err_code_ref() & {
-    return {this->err_code, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_err_code, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> err_code_ref() && {
-    return {static_cast<T&&>(this->err_code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_err_code), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> err_code() const& {
+    return {this->__fbthrift_field_err_code, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> err_code() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_err_code), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> err_code() & {
+    return {this->__fbthrift_field_err_code, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> err_code() && {
+    return {static_cast<T&&>(this->__fbthrift_field_err_code), __isset.at(0), __isset.bit(0)};
   }
 
   ::std::int16_t get_err_code() const {
-    return err_code;
+    return __fbthrift_field_err_code;
   }
 
   [[deprecated("Use `FOO.err_code_ref() = BAR;` instead of `FOO.set_err_code(BAR);`")]]
   ::std::int16_t& set_err_code(::std::int16_t err_code_) {
     err_code_ref() = err_code_;
-    return err_code;
+    return __fbthrift_field_err_code;
   }
 
   template <class Protocol_>

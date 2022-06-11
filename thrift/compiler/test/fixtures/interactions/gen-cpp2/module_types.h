@@ -85,7 +85,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
   ~CustomException() override;
 
  private:
-  ::std::string message;
+  ::std::string __fbthrift_field_message;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -96,37 +96,57 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {
-    return {this->message, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
-    return {static_cast<const T&&>(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> message_ref() & {
-    return {this->message, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
-    return {static_cast<T&&>(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_message), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> message() const& {
+    return {this->__fbthrift_field_message, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_message), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> message() & {
+    return {this->__fbthrift_field_message, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> message() && {
+    return {static_cast<T&&>(this->__fbthrift_field_message), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string& get_message() const& {
-    return message;
+    return __fbthrift_field_message;
   }
 
   ::std::string get_message() && {
-    return std::move(message);
+    return std::move(__fbthrift_field_message);
   }
 
   template <typename T_CustomException_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_CustomException_message_struct_setter&& message_) {
     message_ref() = std::forward<T_CustomException_message_struct_setter>(message_);
-    return message;
+    return __fbthrift_field_message;
   }
 
   template <class Protocol_>

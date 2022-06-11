@@ -2820,34 +2820,34 @@ namespace cpp2 {
 reqXcep::reqXcep(const reqXcep&) = default;
 reqXcep& reqXcep::operator=(const reqXcep&) = default;
 reqXcep::reqXcep() :
-      errorCode() {
+      __fbthrift_field_errorCode() {
 }
 
 
 reqXcep::~reqXcep() {}
 
 reqXcep::reqXcep(reqXcep&& other) noexcept  :
-    message(std::move(other.message)),
-    errorCode(std::move(other.errorCode)) {
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
+    __fbthrift_field_errorCode(std::move(other.__fbthrift_field_errorCode)) {
 }
 
 reqXcep& reqXcep::operator=(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept {
-    this->message = std::move(other.message);
-    this->errorCode = std::move(other.errorCode);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
+    this->__fbthrift_field_errorCode = std::move(other.__fbthrift_field_errorCode);
     return *this;
 }
 
 
 reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
-    message(std::move(message__arg)),
-    errorCode(std::move(errorCode__arg)) {
+    __fbthrift_field_message(std::move(message__arg)),
+    __fbthrift_field_errorCode(std::move(errorCode__arg)) {
 }
 
 
 void reqXcep::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->errorCode = ::std::int32_t();
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_errorCode = ::std::int32_t();
 }
 
 void reqXcep::__fbthrift_clear_terse_fields() {
@@ -2928,29 +2928,29 @@ namespace cpp2 {
 optXcep::optXcep(const optXcep&) = default;
 optXcep& optXcep::operator=(const optXcep&) = default;
 optXcep::optXcep() :
-      errorCode() {
+      __fbthrift_field_errorCode() {
 }
 
 
 optXcep::~optXcep() {}
 
 optXcep::optXcep(optXcep&& other) noexcept  :
-    message(std::move(other.message)),
-    errorCode(std::move(other.errorCode)),
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
+    __fbthrift_field_errorCode(std::move(other.__fbthrift_field_errorCode)),
     __isset(other.__isset) {
 }
 
 optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
-    this->message = std::move(other.message);
-    this->errorCode = std::move(other.errorCode);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
+    this->__fbthrift_field_errorCode = std::move(other.__fbthrift_field_errorCode);
     __isset = other.__isset;
     return *this;
 }
 
 
 optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
-    message(std::move(message__arg)),
-    errorCode(std::move(errorCode__arg)) {
+    __fbthrift_field_message(std::move(message__arg)),
+    __fbthrift_field_errorCode(std::move(errorCode__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -2958,8 +2958,8 @@ optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 
 void optXcep::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->errorCode = ::std::int32_t();
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_errorCode = ::std::int32_t();
   __isset = {};
 }
 
@@ -3043,41 +3043,41 @@ namespace cpp2 {
 complexException::complexException(const complexException&) = default;
 complexException& complexException::operator=(const complexException&) = default;
 complexException::complexException() :
-      errorEnum() {
+      __fbthrift_field_errorEnum() {
 }
 
 
 complexException::~complexException() {}
 
 complexException::complexException(complexException&& other) noexcept  :
-    message(std::move(other.message)),
-    listStrings(std::move(other.listStrings)),
-    errorEnum(std::move(other.errorEnum)),
-    unionError(std::move(other.unionError)),
-    structError(std::move(other.structError)),
-    lsMap(std::move(other.lsMap)),
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
+    __fbthrift_field_listStrings(std::move(other.__fbthrift_field_listStrings)),
+    __fbthrift_field_errorEnum(std::move(other.__fbthrift_field_errorEnum)),
+    __fbthrift_field_unionError(std::move(other.__fbthrift_field_unionError)),
+    __fbthrift_field_structError(std::move(other.__fbthrift_field_structError)),
+    __fbthrift_field_lsMap(std::move(other.__fbthrift_field_lsMap)),
     __isset(other.__isset) {
 }
 
 complexException& complexException::operator=(FOLLY_MAYBE_UNUSED complexException&& other) noexcept {
-    this->message = std::move(other.message);
-    this->listStrings = std::move(other.listStrings);
-    this->errorEnum = std::move(other.errorEnum);
-    this->unionError = std::move(other.unionError);
-    this->structError = std::move(other.structError);
-    this->lsMap = std::move(other.lsMap);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
+    this->__fbthrift_field_listStrings = std::move(other.__fbthrift_field_listStrings);
+    this->__fbthrift_field_errorEnum = std::move(other.__fbthrift_field_errorEnum);
+    this->__fbthrift_field_unionError = std::move(other.__fbthrift_field_unionError);
+    this->__fbthrift_field_structError = std::move(other.__fbthrift_field_structError);
+    this->__fbthrift_field_lsMap = std::move(other.__fbthrift_field_lsMap);
     __isset = other.__isset;
     return *this;
 }
 
 
 complexException::complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg, ::cpp2::MyEnum errorEnum__arg, ::cpp2::MyUnion unionError__arg, ::cpp2::MyStruct structError__arg, ::std::map<::std::int64_t, ::std::string> lsMap__arg) :
-    message(std::move(message__arg)),
-    listStrings(std::move(listStrings__arg)),
-    errorEnum(std::move(errorEnum__arg)),
-    unionError(std::move(unionError__arg)),
-    structError(std::move(structError__arg)),
-    lsMap(std::move(lsMap__arg)) {
+    __fbthrift_field_message(std::move(message__arg)),
+    __fbthrift_field_listStrings(std::move(listStrings__arg)),
+    __fbthrift_field_errorEnum(std::move(errorEnum__arg)),
+    __fbthrift_field_unionError(std::move(unionError__arg)),
+    __fbthrift_field_structError(std::move(structError__arg)),
+    __fbthrift_field_lsMap(std::move(lsMap__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -3089,12 +3089,12 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
 
 void complexException::__fbthrift_clear() {
   // clear all fields
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->listStrings.clear();
-  this->errorEnum = ::cpp2::MyEnum();
-  ::apache::thrift::clear(this->unionError);
-  ::apache::thrift::clear(this->structError);
-  this->lsMap.clear();
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_listStrings.clear();
+  this->__fbthrift_field_errorEnum = ::cpp2::MyEnum();
+  ::apache::thrift::clear(this->__fbthrift_field_unionError);
+  ::apache::thrift::clear(this->__fbthrift_field_structError);
+  this->__fbthrift_field_lsMap.clear();
   __isset = {};
 }
 
@@ -3156,35 +3156,35 @@ bool complexException::operator<(const complexException& rhs) const {
 }
 
 const ::std::vector<::std::string>& complexException::get_listStrings() const& {
-  return listStrings;
+  return __fbthrift_field_listStrings;
 }
 
 ::std::vector<::std::string> complexException::get_listStrings() && {
-  return std::move(listStrings);
+  return std::move(__fbthrift_field_listStrings);
 }
 
 const ::cpp2::MyUnion* complexException::get_unionError() const& {
-  return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
+  return unionError_ref().has_value() ? std::addressof(__fbthrift_field_unionError) : nullptr;
 }
 
 ::cpp2::MyUnion* complexException::get_unionError() & {
-  return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
+  return unionError_ref().has_value() ? std::addressof(__fbthrift_field_unionError) : nullptr;
 }
 
 const ::cpp2::MyStruct& complexException::get_structError() const& {
-  return structError;
+  return __fbthrift_field_structError;
 }
 
 ::cpp2::MyStruct complexException::get_structError() && {
-  return std::move(structError);
+  return std::move(__fbthrift_field_structError);
 }
 
 const ::std::map<::std::int64_t, ::std::string>& complexException::get_lsMap() const& {
-  return lsMap;
+  return __fbthrift_field_lsMap;
 }
 
 ::std::map<::std::int64_t, ::std::string> complexException::get_lsMap() && {
-  return std::move(lsMap);
+  return std::move(__fbthrift_field_lsMap);
 }
 
 

@@ -1141,39 +1141,39 @@ void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 AnException::AnException(const AnException& srcObj) {
-  code = srcObj.code;
+  __fbthrift_field_code = srcObj.__fbthrift_field_code;
   __isset.set(0,srcObj.__isset.get(0));
-  req_code = srcObj.req_code;
-  message2 = srcObj.message2;
+  __fbthrift_field_req_code = srcObj.__fbthrift_field_req_code;
+  __fbthrift_field_message2 = srcObj.__fbthrift_field_message2;
   __isset.set(1,srcObj.__isset.get(1));
-  req_message = srcObj.req_message;
-  exception_list = srcObj.exception_list;
+  __fbthrift_field_req_message = srcObj.__fbthrift_field_req_message;
+  __fbthrift_field_exception_list = srcObj.__fbthrift_field_exception_list;
   __isset.set(2,srcObj.__isset.get(2));
-  exception_set = srcObj.exception_set;
+  __fbthrift_field_exception_set = srcObj.__fbthrift_field_exception_set;
   __isset.set(3,srcObj.__isset.get(3));
-  exception_map = srcObj.exception_map;
+  __fbthrift_field_exception_map = srcObj.__fbthrift_field_exception_map;
   __isset.set(4,srcObj.__isset.get(4));
-  req_exception_map = srcObj.req_exception_map;
-  enum_field = srcObj.enum_field;
+  __fbthrift_field_req_exception_map = srcObj.__fbthrift_field_req_exception_map;
+  __fbthrift_field_enum_field = srcObj.__fbthrift_field_enum_field;
   __isset.set(5,srcObj.__isset.get(5));
-  enum_container = srcObj.enum_container;
+  __fbthrift_field_enum_container = srcObj.__fbthrift_field_enum_container;
   __isset.set(6,srcObj.__isset.get(6));
-  a_struct = srcObj.a_struct;
+  __fbthrift_field_a_struct = srcObj.__fbthrift_field_a_struct;
   __isset.set(7,srcObj.__isset.get(7));
-  a_set_struct = srcObj.a_set_struct;
+  __fbthrift_field_a_set_struct = srcObj.__fbthrift_field_a_set_struct;
   __isset.set(8,srcObj.__isset.get(8));
-  a_union_list = srcObj.a_union_list;
+  __fbthrift_field_a_union_list = srcObj.__fbthrift_field_a_union_list;
   __isset.set(9,srcObj.__isset.get(9));
-  union_typedef = srcObj.union_typedef;
+  __fbthrift_field_union_typedef = srcObj.__fbthrift_field_union_typedef;
   __isset.set(10,srcObj.__isset.get(10));
-  a_union_typedef_list = srcObj.a_union_typedef_list;
+  __fbthrift_field_a_union_typedef_list = srcObj.__fbthrift_field_a_union_typedef_list;
   __isset.set(11,srcObj.__isset.get(11));
-  MyCustomField = srcObj.MyCustomField;
+  __fbthrift_field_MyCustomField = srcObj.__fbthrift_field_MyCustomField;
   __isset.set(12,srcObj.__isset.get(12));
-  MyOptCustomField = srcObj.MyOptCustomField;
+  __fbthrift_field_MyOptCustomField = srcObj.__fbthrift_field_MyOptCustomField;
   __isset.set(13,srcObj.__isset.get(13));
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 AnException& AnException::operator=(const AnException& src) {
@@ -1183,89 +1183,89 @@ AnException& AnException::operator=(const AnException& src) {
 }
 
 AnException::AnException() :
-      code(),
-      req_code(),
-      exception_list(static_cast<::std::vector<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
+      __fbthrift_field_code(),
+      __fbthrift_field_req_code(),
+      __fbthrift_field_exception_list(static_cast<::std::vector<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3})),
-      enum_field() {
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
+      __fbthrift_field_enum_field() {
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 AnException::AnException(std::string __message) : AnException() {
-  message2 = std::move(__message);
+  __fbthrift_field_message2 = std::move(__message);
 }
 
 
 AnException::~AnException() {}
 
 AnException::AnException(AnException&& other) noexcept  :
-    code(std::move(other.code)),
-    req_code(std::move(other.req_code)),
-    message2(std::move(other.message2)),
-    req_message(std::move(other.req_message)),
-    exception_list(std::move(other.exception_list)),
-    exception_set(std::move(other.exception_set)),
-    exception_map(std::move(other.exception_map)),
-    req_exception_map(std::move(other.req_exception_map)),
-    enum_field(std::move(other.enum_field)),
-    enum_container(std::move(other.enum_container)),
-    a_struct(std::move(other.a_struct)),
-    a_set_struct(std::move(other.a_set_struct)),
-    a_union_list(std::move(other.a_union_list)),
-    union_typedef(std::move(other.union_typedef)),
-    a_union_typedef_list(std::move(other.a_union_typedef_list)),
-    MyCustomField(std::move(other.MyCustomField)),
-    MyOptCustomField(std::move(other.MyOptCustomField)),
+    __fbthrift_field_code(std::move(other.__fbthrift_field_code)),
+    __fbthrift_field_req_code(std::move(other.__fbthrift_field_req_code)),
+    __fbthrift_field_message2(std::move(other.__fbthrift_field_message2)),
+    __fbthrift_field_req_message(std::move(other.__fbthrift_field_req_message)),
+    __fbthrift_field_exception_list(std::move(other.__fbthrift_field_exception_list)),
+    __fbthrift_field_exception_set(std::move(other.__fbthrift_field_exception_set)),
+    __fbthrift_field_exception_map(std::move(other.__fbthrift_field_exception_map)),
+    __fbthrift_field_req_exception_map(std::move(other.__fbthrift_field_req_exception_map)),
+    __fbthrift_field_enum_field(std::move(other.__fbthrift_field_enum_field)),
+    __fbthrift_field_enum_container(std::move(other.__fbthrift_field_enum_container)),
+    __fbthrift_field_a_struct(std::move(other.__fbthrift_field_a_struct)),
+    __fbthrift_field_a_set_struct(std::move(other.__fbthrift_field_a_set_struct)),
+    __fbthrift_field_a_union_list(std::move(other.__fbthrift_field_a_union_list)),
+    __fbthrift_field_union_typedef(std::move(other.__fbthrift_field_union_typedef)),
+    __fbthrift_field_a_union_typedef_list(std::move(other.__fbthrift_field_a_union_typedef_list)),
+    __fbthrift_field_MyCustomField(std::move(other.__fbthrift_field_MyCustomField)),
+    __fbthrift_field_MyOptCustomField(std::move(other.__fbthrift_field_MyOptCustomField)),
     __isset(other.__isset) {
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noexcept {
-    this->code = std::move(other.code);
-    this->req_code = std::move(other.req_code);
-    this->message2 = std::move(other.message2);
-    this->req_message = std::move(other.req_message);
-    this->exception_list = std::move(other.exception_list);
-    this->exception_set = std::move(other.exception_set);
-    this->exception_map = std::move(other.exception_map);
-    this->req_exception_map = std::move(other.req_exception_map);
-    this->enum_field = std::move(other.enum_field);
-    this->enum_container = std::move(other.enum_container);
-    this->a_struct = std::move(other.a_struct);
-    this->a_set_struct = std::move(other.a_set_struct);
-    this->a_union_list = std::move(other.a_union_list);
-    this->union_typedef = std::move(other.union_typedef);
-    this->a_union_typedef_list = std::move(other.a_union_typedef_list);
-    this->MyCustomField = std::move(other.MyCustomField);
-    this->MyOptCustomField = std::move(other.MyOptCustomField);
+    this->__fbthrift_field_code = std::move(other.__fbthrift_field_code);
+    this->__fbthrift_field_req_code = std::move(other.__fbthrift_field_req_code);
+    this->__fbthrift_field_message2 = std::move(other.__fbthrift_field_message2);
+    this->__fbthrift_field_req_message = std::move(other.__fbthrift_field_req_message);
+    this->__fbthrift_field_exception_list = std::move(other.__fbthrift_field_exception_list);
+    this->__fbthrift_field_exception_set = std::move(other.__fbthrift_field_exception_set);
+    this->__fbthrift_field_exception_map = std::move(other.__fbthrift_field_exception_map);
+    this->__fbthrift_field_req_exception_map = std::move(other.__fbthrift_field_req_exception_map);
+    this->__fbthrift_field_enum_field = std::move(other.__fbthrift_field_enum_field);
+    this->__fbthrift_field_enum_container = std::move(other.__fbthrift_field_enum_container);
+    this->__fbthrift_field_a_struct = std::move(other.__fbthrift_field_a_struct);
+    this->__fbthrift_field_a_set_struct = std::move(other.__fbthrift_field_a_set_struct);
+    this->__fbthrift_field_a_union_list = std::move(other.__fbthrift_field_a_union_list);
+    this->__fbthrift_field_union_typedef = std::move(other.__fbthrift_field_union_typedef);
+    this->__fbthrift_field_a_union_typedef_list = std::move(other.__fbthrift_field_a_union_typedef_list);
+    this->__fbthrift_field_MyCustomField = std::move(other.__fbthrift_field_MyCustomField);
+    this->__fbthrift_field_MyOptCustomField = std::move(other.__fbthrift_field_MyOptCustomField);
     __isset = other.__isset;
     return *this;
 }
 
 
 AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg, ::some::valid::ns::CustomProtocolType MyCustomField__arg, ::some::valid::ns::CustomProtocolType MyOptCustomField__arg) :
-    code(std::move(code__arg)),
-    req_code(std::move(req_code__arg)),
-    message2(std::move(message2__arg)),
-    req_message(std::move(req_message__arg)),
-    exception_list(std::move(exception_list__arg)),
-    exception_set(std::move(exception_set__arg)),
-    exception_map(std::move(exception_map__arg)),
-    req_exception_map(std::move(req_exception_map__arg)),
-    enum_field(std::move(enum_field__arg)),
-    enum_container(std::move(enum_container__arg)),
-    a_struct(std::move(a_struct__arg)),
-    a_set_struct(std::move(a_set_struct__arg)),
-    a_union_list(std::move(a_union_list__arg)),
-    union_typedef(std::move(union_typedef__arg)),
-    a_union_typedef_list(std::move(a_union_typedef_list__arg)),
-    MyCustomField(std::move(MyCustomField__arg)),
-    MyOptCustomField(std::move(MyOptCustomField__arg)) {
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
+    __fbthrift_field_code(std::move(code__arg)),
+    __fbthrift_field_req_code(std::move(req_code__arg)),
+    __fbthrift_field_message2(std::move(message2__arg)),
+    __fbthrift_field_req_message(std::move(req_message__arg)),
+    __fbthrift_field_exception_list(std::move(exception_list__arg)),
+    __fbthrift_field_exception_set(std::move(exception_set__arg)),
+    __fbthrift_field_exception_map(std::move(exception_map__arg)),
+    __fbthrift_field_req_exception_map(std::move(req_exception_map__arg)),
+    __fbthrift_field_enum_field(std::move(enum_field__arg)),
+    __fbthrift_field_enum_container(std::move(enum_container__arg)),
+    __fbthrift_field_a_struct(std::move(a_struct__arg)),
+    __fbthrift_field_a_set_struct(std::move(a_set_struct__arg)),
+    __fbthrift_field_a_union_list(std::move(a_union_list__arg)),
+    __fbthrift_field_union_typedef(std::move(union_typedef__arg)),
+    __fbthrift_field_a_union_typedef_list(std::move(a_union_typedef_list__arg)),
+    __fbthrift_field_MyCustomField(std::move(MyCustomField__arg)),
+    __fbthrift_field_MyOptCustomField(std::move(MyOptCustomField__arg)) {
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -1285,23 +1285,23 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
 
 void AnException::__fbthrift_clear() {
   // clear all fields
-  this->code = ::std::int32_t();
-  this->req_code = ::std::int32_t();
-  this->message2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->req_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->exception_list.clear();
-  this->exception_set.clear();
-  this->exception_map.clear();
-  this->req_exception_map.clear();
-  this->enum_field = ::some::valid::ns::MyEnumA();
-  this->enum_container.clear();
-  ::apache::thrift::clear(this->a_struct);
-  this->a_set_struct.clear();
-  this->a_union_list.clear();
-  this->union_typedef.clear();
-  this->a_union_typedef_list.clear();
-  ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 20>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
+  this->__fbthrift_field_code = ::std::int32_t();
+  this->__fbthrift_field_req_code = ::std::int32_t();
+  this->__fbthrift_field_message2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_req_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_exception_list.clear();
+  this->__fbthrift_field_exception_set.clear();
+  this->__fbthrift_field_exception_map.clear();
+  this->__fbthrift_field_req_exception_map.clear();
+  this->__fbthrift_field_enum_field = ::some::valid::ns::MyEnumA();
+  this->__fbthrift_field_enum_container.clear();
+  ::apache::thrift::clear(this->__fbthrift_field_a_struct);
+  this->__fbthrift_field_a_set_struct.clear();
+  this->__fbthrift_field_a_union_list.clear();
+  this->__fbthrift_field_union_typedef.clear();
+  this->__fbthrift_field_a_union_typedef_list.clear();
+  ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
   __isset = {};
 }
 
@@ -1361,7 +1361,7 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return false;
   }
-  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField)) {
     return false;
   }
   if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
@@ -1419,8 +1419,8 @@ bool AnException::operator<(const AnException& rhs) const {
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return lhs.a_union_typedef_list_ref() < rhs.a_union_typedef_list_ref();
   }
-  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
-    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField);
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField)) {
+    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField);
   }
   if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
     return ::apache::thrift::adapt_detail::neq_less_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref());
@@ -1429,83 +1429,83 @@ bool AnException::operator<(const AnException& rhs) const {
 }
 
 const ::std::vector<::std::int32_t>& AnException::get_exception_list() const& {
-  return exception_list;
+  return __fbthrift_field_exception_list;
 }
 
 ::std::vector<::std::int32_t> AnException::get_exception_list() && {
-  return std::move(exception_list);
+  return std::move(__fbthrift_field_exception_list);
 }
 
 const ::std::set<::std::int64_t>& AnException::get_exception_set() const& {
-  return exception_set;
+  return __fbthrift_field_exception_set;
 }
 
 ::std::set<::std::int64_t> AnException::get_exception_set() && {
-  return std::move(exception_set);
+  return std::move(__fbthrift_field_exception_set);
 }
 
 const ::std::map<::std::string, ::std::int32_t>& AnException::get_exception_map() const& {
-  return exception_map;
+  return __fbthrift_field_exception_map;
 }
 
 ::std::map<::std::string, ::std::int32_t> AnException::get_exception_map() && {
-  return std::move(exception_map);
+  return std::move(__fbthrift_field_exception_map);
 }
 
 const ::std::map<::std::string, ::std::int32_t>& AnException::get_req_exception_map() const& {
-  return req_exception_map;
+  return __fbthrift_field_req_exception_map;
 }
 
 ::std::map<::std::string, ::std::int32_t> AnException::get_req_exception_map() && {
-  return std::move(req_exception_map);
+  return std::move(__fbthrift_field_req_exception_map);
 }
 
 const ::std::vector<::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
-  return enum_container;
+  return __fbthrift_field_enum_container;
 }
 
 ::std::vector<::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
-  return std::move(enum_container);
+  return std::move(__fbthrift_field_enum_container);
 }
 
 const ::some::valid::ns::MyStruct& AnException::get_a_struct() const& {
-  return a_struct;
+  return __fbthrift_field_a_struct;
 }
 
 ::some::valid::ns::MyStruct AnException::get_a_struct() && {
-  return std::move(a_struct);
+  return std::move(__fbthrift_field_a_struct);
 }
 
 const ::std::set<::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
-  return a_set_struct;
+  return __fbthrift_field_a_set_struct;
 }
 
 ::std::set<::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
-  return std::move(a_set_struct);
+  return std::move(__fbthrift_field_a_set_struct);
 }
 
 const ::std::vector<::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
-  return a_union_list;
+  return __fbthrift_field_a_union_list;
 }
 
 ::std::vector<::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
-  return std::move(a_union_list);
+  return std::move(__fbthrift_field_a_union_list);
 }
 
 const ::some::valid::ns::unionTypeDef& AnException::get_union_typedef() const& {
-  return union_typedef;
+  return __fbthrift_field_union_typedef;
 }
 
 ::some::valid::ns::unionTypeDef AnException::get_union_typedef() && {
-  return std::move(union_typedef);
+  return std::move(__fbthrift_field_union_typedef);
 }
 
 const ::std::vector<::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
-  return a_union_typedef_list;
+  return __fbthrift_field_a_union_typedef_list;
 }
 
 ::std::vector<::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
-  return std::move(a_union_typedef_list);
+  return std::move(__fbthrift_field_a_union_typedef_list);
 }
 
 
@@ -1597,33 +1597,33 @@ namespace some { namespace valid { namespace ns {
 AnotherException::AnotherException(const AnotherException&) = default;
 AnotherException& AnotherException::operator=(const AnotherException&) = default;
 AnotherException::AnotherException() :
-      code(),
-      req_code() {
+      __fbthrift_field_code(),
+      __fbthrift_field_req_code() {
 }
 
 
 AnotherException::~AnotherException() {}
 
 AnotherException::AnotherException(AnotherException&& other) noexcept  :
-    code(std::move(other.code)),
-    req_code(std::move(other.req_code)),
-    message(std::move(other.message)),
+    __fbthrift_field_code(std::move(other.__fbthrift_field_code)),
+    __fbthrift_field_req_code(std::move(other.__fbthrift_field_req_code)),
+    __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }
 
 AnotherException& AnotherException::operator=(FOLLY_MAYBE_UNUSED AnotherException&& other) noexcept {
-    this->code = std::move(other.code);
-    this->req_code = std::move(other.req_code);
-    this->message = std::move(other.message);
+    this->__fbthrift_field_code = std::move(other.__fbthrift_field_code);
+    this->__fbthrift_field_req_code = std::move(other.__fbthrift_field_req_code);
+    this->__fbthrift_field_message = std::move(other.__fbthrift_field_message);
     __isset = other.__isset;
     return *this;
 }
 
 
 AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg) :
-    code(std::move(code__arg)),
-    req_code(std::move(req_code__arg)),
-    message(std::move(message__arg)) {
+    __fbthrift_field_code(std::move(code__arg)),
+    __fbthrift_field_req_code(std::move(req_code__arg)),
+    __fbthrift_field_message(std::move(message__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -1631,9 +1631,9 @@ AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::in
 
 void AnotherException::__fbthrift_clear() {
   // clear all fields
-  this->code = ::std::int32_t();
-  this->req_code = ::std::int32_t();
-  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_code = ::std::int32_t();
+  this->__fbthrift_field_req_code = ::std::int32_t();
+  this->__fbthrift_field_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

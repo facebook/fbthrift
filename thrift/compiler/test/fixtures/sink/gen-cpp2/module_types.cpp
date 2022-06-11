@@ -424,26 +424,26 @@ InitialException::InitialException() {
 InitialException::~InitialException() {}
 
 InitialException::InitialException(InitialException&& other) noexcept  :
-    reason(std::move(other.reason)),
+    __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
 
 InitialException& InitialException::operator=(FOLLY_MAYBE_UNUSED InitialException&& other) noexcept {
-    this->reason = std::move(other.reason);
+    this->__fbthrift_field_reason = std::move(other.__fbthrift_field_reason);
     __isset = other.__isset;
     return *this;
 }
 
 
 InitialException::InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
-    reason(std::move(reason__arg)) {
+    __fbthrift_field_reason(std::move(reason__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void InitialException::__fbthrift_clear() {
   // clear all fields
-  this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -525,26 +525,26 @@ SinkException1::SinkException1() {
 SinkException1::~SinkException1() {}
 
 SinkException1::SinkException1(SinkException1&& other) noexcept  :
-    reason(std::move(other.reason)),
+    __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
 
 SinkException1& SinkException1::operator=(FOLLY_MAYBE_UNUSED SinkException1&& other) noexcept {
-    this->reason = std::move(other.reason);
+    this->__fbthrift_field_reason = std::move(other.__fbthrift_field_reason);
     __isset = other.__isset;
     return *this;
 }
 
 
 SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg) :
-    reason(std::move(reason__arg)) {
+    __fbthrift_field_reason(std::move(reason__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void SinkException1::__fbthrift_clear() {
   // clear all fields
-  this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -620,33 +620,33 @@ namespace cpp2 {
 SinkException2::SinkException2(const SinkException2&) = default;
 SinkException2& SinkException2::operator=(const SinkException2&) = default;
 SinkException2::SinkException2() :
-      reason() {
+      __fbthrift_field_reason() {
 }
 
 
 SinkException2::~SinkException2() {}
 
 SinkException2::SinkException2(SinkException2&& other) noexcept  :
-    reason(std::move(other.reason)),
+    __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
 
 SinkException2& SinkException2::operator=(FOLLY_MAYBE_UNUSED SinkException2&& other) noexcept {
-    this->reason = std::move(other.reason);
+    this->__fbthrift_field_reason = std::move(other.__fbthrift_field_reason);
     __isset = other.__isset;
     return *this;
 }
 
 
 SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg) :
-    reason(std::move(reason__arg)) {
+    __fbthrift_field_reason(std::move(reason__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void SinkException2::__fbthrift_clear() {
   // clear all fields
-  this->reason = ::std::int64_t();
+  this->__fbthrift_field_reason = ::std::int64_t();
   __isset = {};
 }
 

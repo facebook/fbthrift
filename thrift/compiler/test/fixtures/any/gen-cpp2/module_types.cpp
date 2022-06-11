@@ -274,26 +274,26 @@ MyException::MyException() {
 MyException::~MyException() {}
 
 MyException::MyException(MyException&& other) noexcept  :
-    myString(std::move(other.myString)),
+    __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }
 
 MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noexcept {
-    this->myString = std::move(other.myString);
+    this->__fbthrift_field_myString = std::move(other.__fbthrift_field_myString);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :
-    myString(std::move(myString__arg)) {
+    __fbthrift_field_myString(std::move(myString__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void MyException::__fbthrift_clear() {
   // clear all fields
-  this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

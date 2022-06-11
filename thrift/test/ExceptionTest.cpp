@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,4 +41,9 @@ TEST(ExceptionTest, test_constructor_with_param) {
   } catch (const std::exception& ex) {
     EXPECT_EQ(ex.what(), std::string{"what!!!"});
   }
+}
+
+TEST(ExceptionTest, no_ref) {
+  MyException e;
+  EXPECT_EQ(e.msg(), "");
 }

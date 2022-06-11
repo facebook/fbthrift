@@ -613,7 +613,7 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
   ~InitialException() override;
 
  private:
-  ::std::string reason;
+  ::std::string __fbthrift_field_reason;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -624,37 +624,57 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason_ref() const&& {
-    return {static_cast<const T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reason_ref() & {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
-    return {static_cast<T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason() const& {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> reason() & {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason() && {
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string& get_reason() const& {
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   ::std::string get_reason() && {
-    return std::move(reason);
+    return std::move(__fbthrift_field_reason);
   }
 
   template <typename T_InitialException_reason_struct_setter = ::std::string>
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
     reason_ref() = std::forward<T_InitialException_reason_struct_setter>(reason_);
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   template <class Protocol_>
@@ -729,7 +749,7 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
   ~SinkException1() override;
 
  private:
-  ::std::string reason;
+  ::std::string __fbthrift_field_reason;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -740,37 +760,57 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason_ref() const&& {
-    return {static_cast<const T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reason_ref() & {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
-    return {static_cast<T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason() const& {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> reason() & {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason() && {
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string& get_reason() const& {
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   ::std::string get_reason() && {
-    return std::move(reason);
+    return std::move(__fbthrift_field_reason);
   }
 
   template <typename T_SinkException1_reason_struct_setter = ::std::string>
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
     reason_ref() = std::forward<T_SinkException1_reason_struct_setter>(reason_);
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   template <class Protocol_>
@@ -845,7 +885,7 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
   ~SinkException2() override;
 
  private:
-  ::std::int64_t reason;
+  ::std::int64_t __fbthrift_field_reason;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -856,32 +896,52 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason_ref() const&& {
-    return {static_cast<const T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reason_ref() & {
-    return {this->reason, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
-    return {static_cast<T&&>(this->reason), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason() const& {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> reason() & {
+    return {this->__fbthrift_field_reason, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason() && {
+    return {static_cast<T&&>(this->__fbthrift_field_reason), __isset.at(0), __isset.bit(0)};
   }
 
   ::std::int64_t get_reason() const {
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::int64_t& set_reason(::std::int64_t reason_) {
     reason_ref() = reason_;
-    return reason;
+    return __fbthrift_field_reason;
   }
 
   template <class Protocol_>

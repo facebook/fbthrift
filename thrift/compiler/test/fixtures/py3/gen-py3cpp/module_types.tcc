@@ -99,7 +99,7 @@ void SimpleException::readNoXfer(Protocol_* iprot) {
   }
 _readField_err_code:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::readWithContext(*iprot, this->err_code, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::readWithContext(*iprot, this->__fbthrift_field_err_code, _readState);
     
   }
  this->__isset.set(0, true);
@@ -152,7 +152,7 @@ uint32_t SimpleException::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("SimpleException");
   {
     xfer += prot_->serializedFieldSize("err_code", apache::thrift::protocol::T_I16, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->err_code);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_err_code);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -164,7 +164,7 @@ uint32_t SimpleException::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("SimpleException");
   {
     xfer += prot_->serializedFieldSize("err_code", apache::thrift::protocol::T_I16, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->err_code);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_err_code);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -179,7 +179,7 @@ uint32_t SimpleException::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I16, 1, kPrevFieldId>(*prot_, "err_code", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::write(*prot_, this->err_code);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::write(*prot_, this->__fbthrift_field_err_code);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

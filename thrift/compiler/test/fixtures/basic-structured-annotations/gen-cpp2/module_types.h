@@ -1457,7 +1457,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   ~MyException() override;
 
  private:
-  ::std::string context;
+  ::std::string __fbthrift_field_context;
  private:
   apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -1468,37 +1468,57 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> context_ref() const& {
-    return {this->context, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_context, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> context_ref() const&& {
-    return {static_cast<const T&&>(this->context), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_context), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> context_ref() & {
-    return {this->context, __isset.at(0), __isset.bit(0)};
+    return {this->__fbthrift_field_context, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> context_ref() && {
-    return {static_cast<T&&>(this->context), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_context), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> context() const& {
+    return {this->__fbthrift_field_context, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> context() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_context), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> context() & {
+    return {this->__fbthrift_field_context, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> context() && {
+    return {static_cast<T&&>(this->__fbthrift_field_context), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string& get_context() const& {
-    return context;
+    return __fbthrift_field_context;
   }
 
   ::std::string get_context() && {
-    return std::move(context);
+    return std::move(__fbthrift_field_context);
   }
 
   template <typename T_MyException_context_struct_setter = ::std::string>
   [[deprecated("Use `FOO.context_ref() = BAR;` instead of `FOO.set_context(BAR);`")]]
   ::std::string& set_context(T_MyException_context_struct_setter&& context_) {
     context_ref() = std::forward<T_MyException_context_struct_setter>(context_);
-    return context;
+    return __fbthrift_field_context;
   }
 
   template <class Protocol_>

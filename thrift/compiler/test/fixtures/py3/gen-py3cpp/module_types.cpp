@@ -90,33 +90,33 @@ namespace py3 { namespace simple {
 SimpleException::SimpleException(const SimpleException&) = default;
 SimpleException& SimpleException::operator=(const SimpleException&) = default;
 SimpleException::SimpleException() :
-      err_code() {
+      __fbthrift_field_err_code() {
 }
 
 
 SimpleException::~SimpleException() {}
 
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
-    err_code(std::move(other.err_code)),
+    __fbthrift_field_err_code(std::move(other.__fbthrift_field_err_code)),
     __isset(other.__isset) {
 }
 
 SimpleException& SimpleException::operator=(FOLLY_MAYBE_UNUSED SimpleException&& other) noexcept {
-    this->err_code = std::move(other.err_code);
+    this->__fbthrift_field_err_code = std::move(other.__fbthrift_field_err_code);
     __isset = other.__isset;
     return *this;
 }
 
 
 SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg) :
-    err_code(std::move(err_code__arg)) {
+    __fbthrift_field_err_code(std::move(err_code__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void SimpleException::__fbthrift_clear() {
   // clear all fields
-  this->err_code = ::std::int16_t();
+  this->__fbthrift_field_err_code = ::std::int16_t();
   __isset = {};
 }
 
