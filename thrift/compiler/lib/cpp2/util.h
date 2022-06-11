@@ -18,6 +18,7 @@
 
 #include <initializer_list>
 #include <map>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -257,8 +258,57 @@ bool is_cpp_ref_unique_either(const t_field* f);
 
 bool deprecated_terse_writes(const t_field* field);
 
-// an implementation of the LPT scheduling
-// Greedy Multiway Partitioning algorithm
+//  topological_sort
+//
+//  Given a container of objects and a function to obtain dependencies,
+//  produces a vector of those nodes in a topologicaly sorted order.
+template <typename T, typename ForwardIt, typename Edges>
+std::vector<T> topological_sort(
+    ForwardIt begin, ForwardIt end, const Edges& edges) {
+  struct iter_state {
+    T node;
+    std::vector<T> edges;
+    typename std::vector<T>::const_iterator pos;
+
+    iter_state(T n, std::vector<T> e)
+        : node(std::move(n)), edges(std::move(e)), pos(edges.begin()) {}
+
+    // Prevent an accidental move/copy, because the iterator needs to be
+    // properly updated.
+    iter_state(const iter_state&) = delete;
+    iter_state& operator=(const iter_state&) = delete;
+  };
+
+  std::unordered_set<T> visited;
+  std::vector<T> output;
+
+  for (auto it = begin; it != end; ++it) {
+    if (visited.count(*it) != 0) {
+      continue;
+    }
+    std::stack<iter_state> st;
+    st.emplace(*it, edges.at(*it));
+    visited.insert(*it);
+    while (!st.empty()) {
+      iter_state& s = st.top();
+      if (s.pos == s.edges.end()) {
+        output.emplace_back(s.node);
+        st.pop();
+        continue;
+      }
+
+      if (visited.find(*s.pos) == visited.end()) {
+        st.emplace(*s.pos, edges.at(*s.pos));
+        visited.insert(*s.pos);
+      }
+      ++s.pos;
+    }
+  }
+  return output;
+}
+
+// An implementation of the LPT scheduling Greedy Multiway Partitioning
+// algorithm.
 template <class T, class F>
 auto lpt_split(std::vector<T> vec, size_t k, F size) {
   std::vector<std::vector<T>> ret(k);

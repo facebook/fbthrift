@@ -260,21 +260,3 @@ TEST_F(UtilTest, scope_guard_throws_death) {
   EXPECT_NO_THROW(make_scope_guard(func).dismiss()) << "sanity check";
   EXPECT_DEATH(make_scope_guard(func), msg);
 }
-
-TEST_F(UtilTest, topological_sort_example) {
-  std::map<std::string, std::vector<std::string>> graph{
-      {"e", {"c", "a"}},
-      {"d", {"b", "c"}},
-      {"c", {"d", "b", "a"}},
-      {"b", {}},
-      {"a", {"b"}},
-  };
-  std::vector<std::string> vertices;
-  vertices.reserve(graph.size());
-  for (const auto& kvp : graph) {
-    vertices.push_back(kvp.first);
-  }
-  auto result =
-      topological_sort<std::string>(vertices.begin(), vertices.end(), graph);
-  EXPECT_EQ(std::vector<std::string>({"b", "a", "d", "c", "e"}), result);
-}

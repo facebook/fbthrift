@@ -31,7 +31,6 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
-#include <thrift/compiler/util.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {
@@ -1948,7 +1947,7 @@ class mstch_cpp2_program : public mstch_program {
       deps[k].insert(deps[k].end(), v.begin(), v.end());
     }
     auto sorted =
-        topological_sort<const t_type*>(nodes.begin(), nodes.end(), deps);
+        cpp2::topological_sort<const t_type*>(nodes.begin(), nodes.end(), deps);
 
     // Generate the sorted nodes
     mstch::array ret;
@@ -1993,7 +1992,7 @@ class mstch_cpp2_program : public mstch_program {
 
     if (!split_id_) {
       auto edges = cpp2::gen_struct_dependency_graph(program_, prog_objects);
-      objects_ = topological_sort<t_struct*>(
+      objects_ = cpp2::topological_sort<t_struct*>(
           prog_objects.begin(), prog_objects.end(), edges);
       enums_ = prog_enums;
       return;

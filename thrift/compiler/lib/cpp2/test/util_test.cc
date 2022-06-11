@@ -304,6 +304,24 @@ TEST_F(UtilTest, is_custom_type) {
   }
 }
 
+TEST_F(UtilTest, topological_sort) {
+  std::map<std::string, std::vector<std::string>> graph{
+      {"e", {"c", "a"}},
+      {"d", {"b", "c"}},
+      {"c", {"d", "b", "a"}},
+      {"b", {}},
+      {"a", {"b"}},
+  };
+  std::vector<std::string> vertices;
+  vertices.reserve(graph.size());
+  for (const auto& kvp : graph) {
+    vertices.push_back(kvp.first);
+  }
+  auto result = cpp2::topological_sort<std::string>(
+      vertices.begin(), vertices.end(), graph);
+  EXPECT_EQ(std::vector<std::string>({"b", "a", "d", "c", "e"}), result);
+}
+
 TEST_F(UtilTest, lpt_slit) {
   const std::vector<size_t> in{1, 4, 8, 7, 2, 2, 9, 5, 6, 10, 20, 1, 8};
 
@@ -354,8 +372,8 @@ TEST_F(UtilTest, gen_adapter_dependency_graph) {
       }
       std::shuffle(objects.begin(), objects.end(), gen);
       auto deps = cpp2::gen_adapter_dependency_graph(&p, objects, typedefs);
-      auto sorted_objects =
-          topological_sort<const t_type*>(objects.begin(), objects.end(), deps);
+      auto sorted_objects = cpp2::topological_sort<const t_type*>(
+          objects.begin(), objects.end(), deps);
       ASSERT_EQ(sorted_objects.size(), expected.size()) << name;
       for (size_t i = 0; i < expected.size(); ++i) {
         EXPECT_EQ(sorted_objects[i], expected[i])
