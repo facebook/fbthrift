@@ -755,6 +755,15 @@ cdef class BadEnum:
         return not(self == other)
 
 
+cdef class Container:
+    """
+    Base class for immutable container types
+    """
+    def __len__(Container self):
+        return len(self._fbthrift_data)
+
+
+
 cdef list_compare(object first, object second, int op):
     """ Take either Py_EQ or Py_LT, everything else is derived """
     if not (isinstance(first, Iterable) and isinstance(second, Iterable)):
@@ -790,7 +799,7 @@ cdef class ListTypeFactory:
         return List(self.val_info, values)
 
 
-cdef class List:
+cdef class List(Container):
     """
     A immutable container used to prepresent a Thrift list. It has compatible
     API with a Python list but has additional API to interact with other Python
@@ -863,9 +872,6 @@ cdef class List:
         for v in reversed(self._fbthrift_data):
             yield self._fbthrift_val_info.to_python_value(v)
 
-    def __len__(self):
-        return len(self._fbthrift_data)
-
     def index(self, item, start=0, stop=None):
         try:
             item_value = self._fbthrift_val_info.to_internal_data(item)
@@ -896,7 +902,7 @@ cdef class SetTypeFactory:
         return Set(self.val_info, values)
 
 
-cdef class Set:
+cdef class Set(Container):
     """
     A immutable set used to prepresent a Thrift set. It has compatible
     API with a Python set but has additional API to interact with other Python
@@ -977,9 +983,6 @@ cdef class Set:
         for v in reversed(self._fbthrift_data):
             yield self._fbthrift_val_info.to_python_value(v)
 
-    def __len__(self):
-        return len(self._fbthrift_data)
-
     def isdisjoint(self, other):
         return len(self & other) == 0
 
@@ -1017,7 +1020,7 @@ cdef class MapTypeFactory:
         return Map(self.key_info, self.val_info, values)
 
 
-cdef class Map:
+cdef class Map(Container):
     """
     A immutable container used to prepresent a Thrift map. It has compatible
     API with a Python map but has additional API to interact with other Python
@@ -1071,9 +1074,6 @@ cdef class Map:
     def __iter__(Map self):
         for k in self._fbthrift_data:
             yield self._fbthrift_key_info.to_python_value(k)
-
-    def __len__(Map self):
-        return len(self._fbthrift_data)
 
     def keys(Map self):
         return self.__iter__()

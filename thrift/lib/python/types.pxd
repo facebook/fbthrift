@@ -158,17 +158,17 @@ cdef class BadEnum:
     cdef readonly int value
     cdef readonly str name
 
-cdef class List:
+cdef class Container:
     cdef object _fbthrift_val_info
-    cdef tuple _fbthrift_data
+    cdef object _fbthrift_data
 
-cdef class Set:
-    cdef object _fbthrift_val_info
-    cdef frozenset _fbthrift_data
+cdef class List(Container):
+    pass
 
-cdef class Map:
+cdef class Set(Container):
+    pass
+
+cdef class Map(Container):
     cdef object _fbthrift_key_info
-    cdef object _fbthrift_val_info
-    cdef dict _fbthrift_data
 
 cdef void set_struct_field(tuple struct_tuple, int16_t index, value) except *
