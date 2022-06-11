@@ -121,7 +121,7 @@ class BaseObjectAdapter {
 
 class ObjectWriter : public BaseObjectAdapter {
  public:
-  ObjectWriter(ProtocolValue* target) {
+  explicit ObjectWriter(ProtocolValue* target) {
     assert(target != nullptr);
     cur_.emplace(target);
   }
