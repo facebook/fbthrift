@@ -18,29 +18,29 @@
 
 include "thrift/lib/thrift/standard.thrift"
 
-package "facebook.com/thrift/type"
+package "facebook.com/thrift/protocol"
 
-namespace cpp2 apache.thrift.type
-namespace py3 apache.thrift.type
-namespace php apache_thrift_type
-namespace java com.facebook.thrift.type
-namespace java.swift com.facebook.thrift.type_swift
-namespace py.asyncio apache_thrift_asyncio.object
-namespace go thrift.lib.thrift.object
-namespace py thrift.lib.thrift.object
+namespace cpp2 apache.thrift.protocol
+namespace py3 apache.thrift.protocol
+namespace php apache_thrift_protocol
+namespace java com.facebook.thrift.protocol
+namespace java.swift com.facebook.thrift.protocol_swift
+namespace py.asyncio apache_thrift_asyncio.protocol
+namespace go thrift.lib.thrift.protocol
+namespace py thrift.lib.thrift.protocol
 
 // A dynamic struct/union/exception
-struct ProtocolObject {
+struct Object {
   // The type of the object, if applicable.
   1: standard.Uri type;
 
   // The members of the object.
   // TODO(ytj): use schema.FieldId as key
-  2: map<i16, ProtocolValue> members;
+  2: map<i16, Value> members;
 }
 
 // A dynamic value.
-union ProtocolValue {
+union Value {
   // Integers.
   1: bool boolValue;
   2: byte byteValue;
@@ -58,10 +58,10 @@ union ProtocolValue {
   9: standard.ByteBuffer binaryValue;
 
   // A dynamic object value.
-  11: ProtocolObject objectValue;
+  11: Object objectValue;
 
   // Containers of values.
-  14: list<ProtocolValue> listValue;
-  15: set<ProtocolValue> setValue;
-  16: map<ProtocolValue, ProtocolValue> mapValue;
+  14: list<Value> listValue;
+  15: set<Value> setValue;
+  16: map<Value, Value> mapValue;
 }

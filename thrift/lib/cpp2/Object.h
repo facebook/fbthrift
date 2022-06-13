@@ -21,21 +21,21 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/detail/Object.h>
 
-namespace apache::thrift::type {
+namespace apache::thrift::protocol {
 
-// Creates a ProtocolValue struct for the given value.
+// Creates a Value struct for the given value.
 //
 // TT: The thrift type to use, for example
 // apache::thrift::type::binary_t.
 template <typename TT, typename T>
-ProtocolValue asValueStruct(T&& value) {
-  ProtocolValue result;
+Value asValueStruct(T&& value) {
+  Value result;
   detail::ValueHelper<TT>::set(result, std::forward<T>(value));
   return result;
 }
 
 // Schemaless deserialization of thrift serialized data
-// into type::ProtocolObject
+// into protocol::Object
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
 // buf: serialized payload
 // Works for binary, compact. Does not work for SimpleJson protocol as it does
@@ -45,28 +45,28 @@ ProtocolValue asValueStruct(T&& value) {
 // and string is written as is. So during deserialization we cannot decode it
 // correctly without schema. String fields are currently saved in binaryValue.
 template <class Protocol>
-ProtocolObject parseObject(const folly::IOBuf& buf) {
+Object parseObject(const folly::IOBuf& buf) {
   Protocol prot;
   prot.setInput(&buf);
   auto result = detail::parseValue(prot, protocol::T_STRUCT);
   return *result.objectValue_ref();
 }
 
-// Schemaless serialization of type::ProtocolObject
+// Schemaless serialization of protocol::Object
 // into thrift serialization protocol
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolWriter
 // obj: object to be serialized
 // Serialized output is same as schema based serialization except when struct
 // contains an empty list, set or map
 template <class Protocol>
-std::unique_ptr<folly::IOBuf> serializeObject(const ProtocolObject& obj) {
+std::unique_ptr<folly::IOBuf> serializeObject(const Object& obj) {
   Protocol prot;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   prot.setOutput(&queue);
-  ProtocolValue val;
+  Value val;
   val.objectValue_ref() = obj;
   detail::serializeValue(prot, val);
   return queue.move();
 }
 
-} // namespace apache::thrift::type
+} // namespace apache::thrift::protocol

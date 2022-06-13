@@ -15,7 +15,7 @@
  */
 
 // TODO(ytj): remove this file in favor of "thrift/lib/thrift/object.thrift"
-include "thrift/lib/thrift/object.thrift"
+include "thrift/lib/thrift/protocol.thrift"
 
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
@@ -26,5 +26,5 @@ namespace java.swift org.apache.thrift.conformance
 namespace java2 org.apache.thrift.conformance
 namespace go thrift.conformance.object
 
-typedef object.ProtocolObject Object
-typedef object.ProtocolValue Value
+typedef protocol.Object Object
+typedef protocol.Value Value

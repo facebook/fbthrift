@@ -41,7 +41,7 @@ using namespace ::apache::thrift::conformance;
 using detail::protocol_reader_t;
 using detail::protocol_writer_t;
 
-namespace apache::thrift::type {
+namespace apache::thrift::protocol {
 namespace {
 
 namespace testset = apache::thrift::test::testset;
@@ -56,88 +56,88 @@ decltype(auto) at(C& container, size_t i) {
 TEST(ObjectTest, TypeEnforced) {
   // Always a bool when bool_t is used, without ambiguity.
   // Pointers implicitly converts to bools.
-  ProtocolValue value = asValueStruct<type::bool_t>("");
-  ASSERT_EQ(value.getType(), ProtocolValue::boolValue);
+  Value value = asValueStruct<type::bool_t>("");
+  ASSERT_EQ(value.getType(), Value::boolValue);
   EXPECT_TRUE(value.get_boolValue());
 }
 
 TEST(ObjectTest, Bool) {
-  ProtocolValue value = asValueStruct<type::bool_t>(20);
-  ASSERT_EQ(value.getType(), ProtocolValue::boolValue);
+  Value value = asValueStruct<type::bool_t>(20);
+  ASSERT_EQ(value.getType(), Value::boolValue);
   EXPECT_TRUE(value.get_boolValue());
 
   value = asValueStruct<type::bool_t>(0);
-  ASSERT_EQ(value.getType(), ProtocolValue::boolValue);
+  ASSERT_EQ(value.getType(), Value::boolValue);
   EXPECT_FALSE(value.get_boolValue());
 }
 
 TEST(ObjectTest, Byte) {
-  ProtocolValue value = asValueStruct<type::byte_t>(7u);
-  ASSERT_EQ(value.getType(), ProtocolValue::byteValue);
+  Value value = asValueStruct<type::byte_t>(7u);
+  ASSERT_EQ(value.getType(), Value::byteValue);
   EXPECT_EQ(value.get_byteValue(), 7);
 }
 
 TEST(ObjectTest, I16) {
-  ProtocolValue value = asValueStruct<type::i16_t>(7u);
-  ASSERT_EQ(value.getType(), ProtocolValue::i16Value);
+  Value value = asValueStruct<type::i16_t>(7u);
+  ASSERT_EQ(value.getType(), Value::i16Value);
   EXPECT_EQ(value.get_i16Value(), 7);
 }
 
 TEST(ObjectTest, I32) {
-  ProtocolValue value = asValueStruct<type::i32_t>(7u);
-  ASSERT_EQ(value.getType(), ProtocolValue::i32Value);
+  Value value = asValueStruct<type::i32_t>(7u);
+  ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 7);
 }
 
 TEST(ObjectTest, I64) {
-  ProtocolValue value = asValueStruct<type::i64_t>(7u);
-  ASSERT_EQ(value.getType(), ProtocolValue::i64Value);
+  Value value = asValueStruct<type::i64_t>(7u);
+  ASSERT_EQ(value.getType(), Value::i64Value);
   EXPECT_EQ(value.get_i64Value(), 7);
 }
 
 TEST(ObjectTest, Enum) {
   enum class MyEnum { kValue = 7 };
-  ProtocolValue value = asValueStruct<type::enum_c>(MyEnum::kValue);
-  ASSERT_EQ(value.getType(), ProtocolValue::i32Value);
+  Value value = asValueStruct<type::enum_c>(MyEnum::kValue);
+  ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 7);
 
   value = asValueStruct<type::enum_c>(static_cast<MyEnum>(2));
-  ASSERT_EQ(value.getType(), ProtocolValue::i32Value);
+  ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 2);
 
   value = asValueStruct<type::enum_c>(21u);
-  ASSERT_EQ(value.getType(), ProtocolValue::i32Value);
+  ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 21);
 }
 
 TEST(ObjectTest, Float) {
-  ProtocolValue value = asValueStruct<type::float_t>(1.5);
-  ASSERT_EQ(value.getType(), ProtocolValue::floatValue);
+  Value value = asValueStruct<type::float_t>(1.5);
+  ASSERT_EQ(value.getType(), Value::floatValue);
   EXPECT_EQ(value.get_floatValue(), 1.5f);
 }
 
 TEST(ObjectTest, Double) {
-  ProtocolValue value = asValueStruct<type::double_t>(1.5f);
-  ASSERT_EQ(value.getType(), ProtocolValue::doubleValue);
+  Value value = asValueStruct<type::double_t>(1.5f);
+  ASSERT_EQ(value.getType(), Value::doubleValue);
   EXPECT_EQ(value.get_doubleValue(), 1.5);
 }
 
 TEST(ObjectTest, String) {
-  ProtocolValue value = asValueStruct<type::string_t>("hi");
-  ASSERT_EQ(value.getType(), ProtocolValue::stringValue);
+  Value value = asValueStruct<type::string_t>("hi");
+  ASSERT_EQ(value.getType(), Value::stringValue);
   EXPECT_EQ(value.get_stringValue(), "hi");
 }
 
 TEST(ObjectTest, Binary) {
-  ProtocolValue value = asValueStruct<type::binary_t>("hi");
-  ASSERT_EQ(value.getType(), ProtocolValue::binaryValue);
+  Value value = asValueStruct<type::binary_t>("hi");
+  ASSERT_EQ(value.getType(), Value::binaryValue);
   EXPECT_EQ(toString(value.get_binaryValue()), "hi");
 }
 
 TEST(ObjectTest, List) {
   std::vector<int> data = {1, 4, 2};
-  ProtocolValue value = asValueStruct<type::list<type::i16_t>>(data);
-  ASSERT_EQ(value.getType(), ProtocolValue::listValue);
+  Value value = asValueStruct<type::list<type::i16_t>>(data);
+  ASSERT_EQ(value.getType(), Value::listValue);
   ASSERT_EQ(value.get_listValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
@@ -147,7 +147,7 @@ TEST(ObjectTest, List) {
   value = asValueStruct<type::list<type::i16_t>>(
       std::set<int>(data.begin(), data.end()));
   std::sort(data.begin(), data.end());
-  ASSERT_EQ(value.getType(), ProtocolValue::listValue);
+  ASSERT_EQ(value.getType(), Value::listValue);
   ASSERT_EQ(value.get_listValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
@@ -165,10 +165,10 @@ TEST(ObjectTest, List_Move) {
   data.emplace_back("hi");
   data.emplace_back("bye");
 
-  ProtocolValue value = asValueStruct<type::list<type::string_t>>(data);
+  Value value = asValueStruct<type::list<type::string_t>>(data);
   // The strings are unchanged
   EXPECT_THAT(data, ::testing::ElementsAre("hi", "bye"));
-  ASSERT_EQ(value.getType(), ProtocolValue::listValue);
+  ASSERT_EQ(value.getType(), Value::listValue);
   ASSERT_EQ(value.get_listValue().size(), 2);
   EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
   EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
@@ -177,7 +177,7 @@ TEST(ObjectTest, List_Move) {
 
   // The strings have been moved.
   EXPECT_THAT(data, ::testing::ElementsAre("", ""));
-  ASSERT_EQ(value.getType(), ProtocolValue::listValue);
+  ASSERT_EQ(value.getType(), Value::listValue);
   ASSERT_EQ(value.get_listValue().size(), 2);
   EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
   EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
@@ -185,8 +185,8 @@ TEST(ObjectTest, List_Move) {
 
 TEST(ObjectTest, Set) {
   std::set<int> data = {1, 4, 2};
-  ProtocolValue value = asValueStruct<type::set<type::i16_t>>(data);
-  ASSERT_EQ(value.getType(), ProtocolValue::setValue);
+  Value value = asValueStruct<type::set<type::i16_t>>(data);
+  ASSERT_EQ(value.getType(), Value::setValue);
   ASSERT_EQ(value.get_setValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(
@@ -196,7 +196,7 @@ TEST(ObjectTest, Set) {
   // Works with other containers
   value = asValueStruct<type::set<type::i16_t>>(
       std::vector<int>(data.begin(), data.end()));
-  ASSERT_EQ(value.getType(), ProtocolValue::setValue);
+  ASSERT_EQ(value.getType(), Value::setValue);
   ASSERT_EQ(value.get_setValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(
@@ -206,9 +206,8 @@ TEST(ObjectTest, Set) {
 
 TEST(ObjectTest, Map) {
   std::map<std::string, int> data = {{"one", 1}, {"four", 4}, {"two", 2}};
-  ProtocolValue value =
-      asValueStruct<type::map<type::string_t, type::byte_t>>(data);
-  ASSERT_EQ(value.getType(), ProtocolValue::mapValue);
+  Value value = asValueStruct<type::map<type::string_t, type::byte_t>>(data);
+  ASSERT_EQ(value.getType(), Value::mapValue);
   ASSERT_EQ(value.get_mapValue().size(), data.size());
   for (const auto& entry : data) {
     auto itr =
@@ -220,7 +219,7 @@ TEST(ObjectTest, Map) {
   // Works with other containers.
   std::vector<std::pair<std::string, int>> otherData(data.begin(), data.end());
   value = asValueStruct<type::map<type::string_t, type::byte_t>>(otherData);
-  ASSERT_EQ(value.getType(), ProtocolValue::mapValue);
+  ASSERT_EQ(value.getType(), Value::mapValue);
   ASSERT_EQ(value.get_mapValue().size(), data.size());
   for (const auto& entry : data) {
     auto itr =
@@ -233,9 +232,9 @@ TEST(ObjectTest, Map) {
 TEST(ObjectTest, Struct) {
   // TODO(afuller): Use a struct that covers more cases.
   auto protocol = ::apache::thrift::conformance::Protocol("hi").asStruct();
-  ProtocolValue value = asValueStruct<type::union_c>(protocol);
-  ASSERT_EQ(value.getType(), ProtocolValue::objectValue);
-  const ProtocolObject& object = value.get_objectValue();
+  Value value = asValueStruct<type::union_c>(protocol);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 2);
   EXPECT_EQ(
       object.members_ref()->at(1),
@@ -248,9 +247,9 @@ TEST(ObjectTest, StructWithList) {
   testset::struct_with<type::list<type::i32_t>> s;
   std::vector<int> listValues = {1, 2, 3};
   s.field_1_ref() = listValues;
-  ProtocolValue value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), ProtocolValue::objectValue);
-  const ProtocolObject& object = value.get_objectValue();
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   EXPECT_EQ(
       object.members_ref()->at(1),
@@ -261,9 +260,9 @@ TEST(ObjectTest, StructWithMap) {
   testset::struct_with<type::map<type::string_t, type::i32_t>> s;
   std::map<std::string, int> mapValues = {{"one", 1}, {"four", 4}, {"two", 2}};
   s.field_1_ref() = mapValues;
-  ProtocolValue value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), ProtocolValue::objectValue);
-  const ProtocolObject& object = value.get_objectValue();
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   auto val = asValueStruct<type::map<type::binary_t, type::i32_t>>(mapValues);
   EXPECT_EQ(object.members_ref()->at(1), val);
@@ -273,9 +272,9 @@ TEST(ObjectTest, StructWithSet) {
   testset::struct_with<type::set<type::i64_t>> s;
   std::set<long> setValues = {1, 2, 3};
   s.field_1_ref() = setValues;
-  ProtocolValue value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), ProtocolValue::objectValue);
-  const ProtocolObject& object = value.get_objectValue();
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   EXPECT_EQ(
       object.members_ref()->at(1),
@@ -310,43 +309,38 @@ TEST(ObjectTest, serializeObject) {
 
 TEST(ObjectTest, ValueUnionTypeMatch) {
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::boolValue),
+      static_cast<type::BaseType>(Value::Type::boolValue),
       type::BaseType::Bool);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::byteValue),
+      static_cast<type::BaseType>(Value::Type::byteValue),
       type::BaseType::Byte);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::i16Value),
-      type::BaseType::I16);
+      static_cast<type::BaseType>(Value::Type::i16Value), type::BaseType::I16);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::i32Value),
-      type::BaseType::I32);
+      static_cast<type::BaseType>(Value::Type::i32Value), type::BaseType::I32);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::i64Value),
-      type::BaseType::I64);
+      static_cast<type::BaseType>(Value::Type::i64Value), type::BaseType::I64);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::floatValue),
+      static_cast<type::BaseType>(Value::Type::floatValue),
       type::BaseType::Float);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::doubleValue),
+      static_cast<type::BaseType>(Value::Type::doubleValue),
       type::BaseType::Double);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::stringValue),
+      static_cast<type::BaseType>(Value::Type::stringValue),
       type::BaseType::String);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::binaryValue),
+      static_cast<type::BaseType>(Value::Type::binaryValue),
       type::BaseType::Binary);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::listValue),
+      static_cast<type::BaseType>(Value::Type::listValue),
       type::BaseType::List);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::setValue),
-      type::BaseType::Set);
+      static_cast<type::BaseType>(Value::Type::setValue), type::BaseType::Set);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::mapValue),
-      type::BaseType::Map);
+      static_cast<type::BaseType>(Value::Type::mapValue), type::BaseType::Map);
   EXPECT_EQ(
-      static_cast<type::BaseType>(ProtocolValue::Type::objectValue),
+      static_cast<type::BaseType>(Value::Type::objectValue),
       type::BaseType::Struct);
 }
 
@@ -373,7 +367,7 @@ void testParseObject() {
     SCOPED_TRACE(val.name);
     testsetValue.field_1_ref() = val.value;
     auto valueStruct = asValueStruct<type::struct_c>(testsetValue);
-    const ProtocolObject& object = valueStruct.get_objectValue();
+    const Object& object = valueStruct.get_objectValue();
 
     auto iobuf = serialize<Protocol, T>(testsetValue);
     auto objFromParseObject = parseObject<protocol_reader_t<Protocol>>(*iobuf);
@@ -408,7 +402,7 @@ void testSerializeObject() {
     SCOPED_TRACE(val.name);
     testsetValue.field_1_ref() = val.value;
     auto valueStruct = asValueStruct<type::struct_c>(testsetValue);
-    const ProtocolObject& object = valueStruct.get_objectValue();
+    const Object& object = valueStruct.get_objectValue();
     auto schemalessSerializedData =
         serializeObject<protocol_writer_t<Protocol>>(object);
 
@@ -530,4 +524,4 @@ TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerializationAny) {
 }
 
 } // namespace
-} // namespace apache::thrift::type
+} // namespace apache::thrift::protocol

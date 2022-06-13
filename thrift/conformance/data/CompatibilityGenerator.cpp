@@ -80,7 +80,7 @@ TestCase addFieldTestCase(const Protocol& protocol) {
 template <class T>
 Object toObject(const T& t) {
   Value v;
-  ::apache::thrift::type::detail::ObjectWriter writer{&v};
+  ::apache::thrift::protocol::detail::ObjectWriter writer{&v};
   t.write(&writer);
   return std::move(*v.objectValue_ref());
 }

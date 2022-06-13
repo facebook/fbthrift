@@ -20,7 +20,7 @@
 // TODO: remove this file
 
 namespace apache::thrift::conformance {
-using ::apache::thrift::type::asValueStruct;
-using ::apache::thrift::type::parseObject;
-using ::apache::thrift::type::serializeObject;
+using ::apache::thrift::protocol::asValueStruct;
+using ::apache::thrift::protocol::parseObject;
+using ::apache::thrift::protocol::serializeObject;
 } // namespace apache::thrift::conformance
