@@ -118,6 +118,8 @@ struct struct_private_access {
   }
 
   FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
+  FOLLY_CREATE_MEMBER_INVOKER(
+      clear_terse_fields_fn, __fbthrift_clear_terse_fields);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
   FOLLY_CREATE_STATIC_MEMBER_INVOKER(ordinal_fn, __fbthrift_ordinal);
 
@@ -140,6 +142,13 @@ struct IsThriftUnion : std::false_type {};
 template <typename T>
 struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
     : folly::bool_constant<T::__fbthrift_cpp2_is_union> {};
+
+// __fbthrift_clear_terse_fields should be called for a terse struct field
+// before deserialization so that it only clears out terse fields in a terse
+// struct.
+using clear_terse_fields_fn = struct_private_access::clear_terse_fields_fn;
+FOLLY_INLINE_VARIABLE static constexpr clear_terse_fields_fn
+    clear_terse_fields{};
 
 } // namespace st
 } // namespace detail

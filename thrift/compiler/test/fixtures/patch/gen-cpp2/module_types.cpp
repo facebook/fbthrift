@@ -416,8 +416,8 @@ void MyStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_doubleVal = double();
   this->__fbthrift_field_stringVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binaryVal = apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral("");
-  ::apache::thrift::clear(this->__fbthrift_field_structVal);
-  ::apache::thrift::clear(this->__fbthrift_field_unionVal);
+  ::apache::thrift::detail::st::clear_terse_fields(this->__fbthrift_field_structVal);
+  ::apache::thrift::detail::st::clear_terse_fields(this->__fbthrift_field_unionVal);
 }
 
 bool MyStruct::__fbthrift_is_empty() const {

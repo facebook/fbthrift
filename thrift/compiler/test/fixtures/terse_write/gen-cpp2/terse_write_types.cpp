@@ -1145,7 +1145,7 @@ void TerseStructWithCustomDefault::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
-  ::apache::thrift::clear(this->__fbthrift_field_struct_field);
+  ::apache::thrift::detail::st::clear_terse_fields(this->__fbthrift_field_struct_field);
 }
 
 bool TerseStructWithCustomDefault::__fbthrift_is_empty() const {

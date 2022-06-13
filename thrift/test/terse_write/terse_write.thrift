@@ -98,6 +98,19 @@ struct MixedFieldsStruct {
   3: optional i32 opt_int_field;
 }
 
+struct MixedFieldsStructWithCustomDefault {
+  @thrift.TerseWrite
+  1: i32 terse_int_field = 1;
+  2: i32 def_int_field = 2;
+  3: optional i32 opt_int_field = 3;
+}
+
+@thrift.TerseWrite
+struct NestedMixedStruct {
+  1: MixedFieldsStruct mixed_field;
+  2: MixedFieldsStructWithCustomDefault mixed_field_with_custom_default;
+}
+
 struct EmptyStruct {}
 
 @thrift.TerseWrite

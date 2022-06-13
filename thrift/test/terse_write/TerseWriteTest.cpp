@@ -215,6 +215,56 @@ TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStruct) {
   EXPECT_EQ(obj, objd);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStructWithCustomDefault) {
+  terse_write::MixedFieldsStructWithCustomDefault obj;
+
+  apache::thrift::clear(obj);
+
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::MixedFieldsStructWithCustomDefault objd;
+  EXPECT_EQ(objd.terse_int_field(), 1);
+  EXPECT_EQ(objd.def_int_field(), 2);
+  EXPECT_EQ(objd.opt_int_field().value_unchecked(), 3);
+
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(objd.terse_int_field(), 0);
+  EXPECT_EQ(objd.def_int_field(), 0);
+  // Note, since `opt_int_field` is default constructed and the serialization is
+  // skipped, the deserializer will not set the field. Therefore, it will have
+  // custom default value with isset is false.
+  EXPECT_EQ(objd.opt_int_field().value_unchecked(), 3);
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
+  terse_write::NestedMixedStruct obj;
+
+  apache::thrift::clear(obj);
+
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::NestedMixedStruct objd;
+
+  EXPECT_EQ(objd.mixed_field()->terse_int_field(), 0);
+  EXPECT_EQ(objd.mixed_field()->def_int_field(), 0);
+  EXPECT_EQ(objd.mixed_field()->opt_int_field().value_unchecked(), 0);
+  EXPECT_EQ(objd.mixed_field_with_custom_default()->terse_int_field(), 1);
+  EXPECT_EQ(objd.mixed_field_with_custom_default()->def_int_field(), 2);
+  EXPECT_EQ(
+      objd.mixed_field_with_custom_default()->opt_int_field().value_unchecked(),
+      3);
+
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(objd.mixed_field()->terse_int_field(), 0);
+  EXPECT_EQ(objd.mixed_field()->def_int_field(), 0);
+  EXPECT_EQ(objd.mixed_field()->opt_int_field().value_unchecked(), 0);
+  EXPECT_EQ(objd.mixed_field_with_custom_default()->terse_int_field(), 0);
+  EXPECT_EQ(objd.mixed_field_with_custom_default()->def_int_field(), 0);
+  EXPECT_EQ(
+      objd.mixed_field_with_custom_default()->opt_int_field().value_unchecked(),
+      3);
+}
+
 TYPED_TEST_P(TerseWriteSerializerTests, CppRefTerseStruct) {
   terse_write::CppRefTerseStruct obj;
 
@@ -352,6 +402,8 @@ TYPED_TEST_P(
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     MixedFieldsStruct,
+    MixedFieldsStructWithCustomDefault,
+    NestedMixedStruct,
     CppRefTerseStruct,
     CppRefTerseStruct_Empty,
     CustomStringFields,
