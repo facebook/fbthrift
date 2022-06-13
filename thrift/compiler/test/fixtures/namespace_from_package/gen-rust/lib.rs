@@ -23,6 +23,7 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Foo {
         fn default() -> Self {
             Self {
@@ -692,6 +693,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -729,6 +731,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -736,6 +739,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -973,6 +977,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> init<'mock> {
                 pub fn unimplemented() -> Self {
                     init {

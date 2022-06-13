@@ -558,6 +558,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyField {
         fn default() -> Self {
             Self {
@@ -703,6 +704,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -790,6 +792,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithUnion {
         fn default() -> Self {
             Self {
@@ -875,6 +878,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::RecursiveStruct {
         fn default() -> Self {
             Self {
@@ -944,6 +948,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithContainers {
         fn default() -> Self {
             Self {
@@ -1056,6 +1061,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithSharedConst {
         fn default() -> Self {
             Self {
@@ -1143,6 +1149,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Empty {
         fn default() -> Self {
             Self {
@@ -1201,6 +1208,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithRef {
         fn default() -> Self {
             Self {
@@ -1288,6 +1296,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithBox {
         fn default() -> Self {
             Self {
@@ -1379,6 +1388,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithRefTypeUnique {
         fn default() -> Self {
             Self {
@@ -1466,6 +1476,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithRefTypeShared {
         fn default() -> Self {
             Self {
@@ -1553,6 +1564,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithRefTypeSharedConst {
         fn default() -> Self {
             Self {
@@ -1640,6 +1652,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
         fn default() -> Self {
             Self {
@@ -1707,6 +1720,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithString {
         fn default() -> Self {
             Self {

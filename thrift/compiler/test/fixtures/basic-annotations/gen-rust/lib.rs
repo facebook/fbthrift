@@ -219,6 +219,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructNestedAnnotation {
         fn default() -> Self {
             Self {
@@ -343,6 +344,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyException {
         fn default() -> Self {
             Self {
@@ -401,6 +403,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -540,6 +543,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::SecretStruct {
         fn default() -> Self {
             Self {
@@ -5066,6 +5070,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -5229,6 +5234,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -5236,6 +5242,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -5597,6 +5604,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -5655,6 +5663,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -5662,6 +5671,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -5931,6 +5941,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -5968,6 +5979,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -5975,6 +5987,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -6246,6 +6259,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -6283,6 +6297,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -6290,6 +6305,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -6544,6 +6560,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -6581,6 +6598,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -6589,6 +6607,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -6990,6 +7009,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> ping<'mock> {
                 pub fn unimplemented() -> Self {
                     ping {
@@ -7034,6 +7054,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getRandomData<'mock> {
                 pub fn unimplemented() -> Self {
                     getRandomData {
@@ -7078,6 +7099,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> hasDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     hasDataById {
@@ -7122,6 +7144,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     getDataById {
@@ -7166,6 +7189,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> putDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     putDataById {
@@ -7210,6 +7234,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> lobDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     lobDataById {
@@ -7254,6 +7279,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> doNothing<'mock> {
                 pub fn unimplemented() -> Self {
                     doNothing {
@@ -7300,6 +7326,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> ping<'mock> {
                 pub fn unimplemented() -> Self {
                     ping {
@@ -7344,6 +7371,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> pong<'mock> {
                 pub fn unimplemented() -> Self {
                     pong {
@@ -7390,6 +7418,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> pang<'mock> {
                 pub fn unimplemented() -> Self {
                     pang {
@@ -7437,6 +7466,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> bar<'mock> {
                 pub fn unimplemented() -> Self {
                     bar {

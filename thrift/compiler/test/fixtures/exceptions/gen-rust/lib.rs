@@ -182,6 +182,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Fiery {
         fn default() -> Self {
             Self {
@@ -249,6 +250,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Serious {
         fn default() -> Self {
             Self {
@@ -318,6 +320,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ComplexFieldNames {
         fn default() -> Self {
             Self {
@@ -394,6 +397,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::CustomFieldNames {
         fn default() -> Self {
             Self {
@@ -470,6 +474,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ExceptionWithPrimitiveField {
         fn default() -> Self {
             Self {
@@ -546,6 +551,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Banal {
         fn default() -> Self {
             Self {
@@ -2264,6 +2270,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -2364,6 +2371,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -2371,6 +2379,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -2634,6 +2643,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> doBland<'mock> {
                 pub fn unimplemented() -> Self {
                     doBland {
@@ -2678,6 +2688,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> doRaise<'mock> {
                 pub fn unimplemented() -> Self {
                     doRaise {
@@ -2722,6 +2733,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> get200<'mock> {
                 pub fn unimplemented() -> Self {
                     get200 {
@@ -2766,6 +2778,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> get500<'mock> {
                 pub fn unimplemented() -> Self {
                     get500 {

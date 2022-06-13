@@ -307,6 +307,7 @@
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -346,6 +347,7 @@
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {{>lib/block}}{{!
@@ -356,6 +358,7 @@
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,

@@ -1437,6 +1437,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -1474,6 +1475,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -1481,6 +1483,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -1750,6 +1753,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -1787,6 +1791,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -1794,6 +1799,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -2070,6 +2076,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -2107,6 +2114,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -2114,6 +2122,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -2435,6 +2444,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> do_root<'mock> {
                 pub fn unimplemented() -> Self {
                     do_root {
@@ -2481,6 +2491,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> do_mid<'mock> {
                 pub fn unimplemented() -> Self {
                     do_mid {
@@ -2527,6 +2538,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> do_leaf<'mock> {
                 pub fn unimplemented() -> Self {
                     do_leaf {

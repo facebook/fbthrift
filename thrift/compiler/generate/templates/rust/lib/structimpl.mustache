@@ -17,6 +17,7 @@
 }}
 
 {{^struct:union?}}
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::{{struct:rust_name}} {
         fn default() -> Self {
             Self {{>lib/block}}{{!

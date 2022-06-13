@@ -60,6 +60,7 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Fields {
         fn default() -> Self {
             Self {
@@ -127,6 +128,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::FieldsInjectedToEmptyStruct {
         fn default() -> Self {
             Self {
@@ -194,6 +196,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::FieldsInjectedToStruct {
         fn default() -> Self {
             Self {
@@ -270,6 +273,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::FieldsInjectedWithIncludedStruct {
         fn default() -> Self {
             Self {

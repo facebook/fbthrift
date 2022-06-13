@@ -26,6 +26,7 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {

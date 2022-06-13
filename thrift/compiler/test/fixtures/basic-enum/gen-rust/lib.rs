@@ -463,6 +463,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {

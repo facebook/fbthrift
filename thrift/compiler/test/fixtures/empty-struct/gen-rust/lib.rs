@@ -27,6 +27,7 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Empty {
         fn default() -> Self {
             Self {

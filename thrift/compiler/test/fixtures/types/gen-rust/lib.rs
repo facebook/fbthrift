@@ -791,6 +791,7 @@ pub mod types {
 
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::decorated_struct {
         fn default() -> Self {
             Self {
@@ -858,6 +859,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ContainerStruct {
         fn default() -> Self {
             Self {
@@ -988,6 +990,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::CppTypeStruct {
         fn default() -> Self {
             Self {
@@ -1055,6 +1058,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::VirtualStruct {
         fn default() -> Self {
             Self {
@@ -1122,6 +1126,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructWithForwardRefEnum {
         fn default() -> Self {
             Self {
@@ -1198,6 +1203,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::TrivialNumeric {
         fn default() -> Self {
             Self {
@@ -1274,6 +1280,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::TrivialNestedWithDefault {
         fn default() -> Self {
             Self {
@@ -1358,6 +1365,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ComplexString {
         fn default() -> Self {
             Self {
@@ -1434,6 +1442,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ComplexNestedWithDefault {
         fn default() -> Self {
             Self {
@@ -1526,6 +1535,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MinPadding {
         fn default() -> Self {
             Self {
@@ -1629,6 +1639,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -1723,6 +1734,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyDataItem {
         fn default() -> Self {
             Self {
@@ -1781,6 +1793,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Renaming {
         fn default() -> Self {
             Self {
@@ -1848,6 +1861,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::AnnotatedTypes {
         fn default() -> Self {
             Self {
@@ -1924,6 +1938,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ForwardUsageRoot {
         fn default() -> Self {
             Self {
@@ -2004,6 +2019,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ForwardUsageStruct {
         fn default() -> Self {
             Self {
@@ -2073,6 +2089,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ForwardUsageByRef {
         fn default() -> Self {
             Self {
@@ -2142,6 +2159,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::NoexceptMoveEmpty {
         fn default() -> Self {
             Self {
@@ -2200,6 +2218,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::NoexceptMoveSimpleStruct {
         fn default() -> Self {
             Self {
@@ -2267,6 +2286,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::NoexceptMoveComplexStruct {
         fn default() -> Self {
             Self {
@@ -2495,6 +2515,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::AllocatorAware {
         fn default() -> Self {
             Self {
@@ -2616,6 +2637,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::AllocatorAware2 {
         fn default() -> Self {
             Self {
@@ -2683,6 +2705,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::TypedefStruct {
         fn default() -> Self {
             Self {
@@ -2768,6 +2791,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructWithDoubleUnderscores {
         fn default() -> Self {
             Self {
@@ -3778,6 +3802,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -3836,6 +3861,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -3843,6 +3869,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -4090,6 +4117,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> bounce_map<'mock> {
                 pub fn unimplemented() -> Self {
                     bounce_map {
@@ -4134,6 +4162,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> binary_keyed_map<'mock> {
                 pub fn unimplemented() -> Self {
                     binary_keyed_map {

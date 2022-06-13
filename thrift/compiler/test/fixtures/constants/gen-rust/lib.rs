@@ -814,6 +814,7 @@ pub mod types {
 
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Internship {
         fn default() -> Self {
             Self {
@@ -923,6 +924,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Range {
         fn default() -> Self {
             Self {
@@ -999,6 +1001,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::struct1 {
         fn default() -> Self {
             Self {
@@ -1075,6 +1078,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::struct2 {
         fn default() -> Self {
             Self {
@@ -1169,6 +1173,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::struct3 {
         fn default() -> Self {
             Self {
@@ -1254,6 +1259,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::struct4 {
         fn default() -> Self {
             Self {

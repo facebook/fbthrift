@@ -154,6 +154,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -248,6 +249,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyDataItem {
         fn default() -> Self {
             Self {
@@ -2159,6 +2161,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> ping<'mock> {
                 pub fn unimplemented() -> Self {
                     ping {
@@ -2203,6 +2206,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getRandomData<'mock> {
                 pub fn unimplemented() -> Self {
                     getRandomData {
@@ -2247,6 +2251,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> hasDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     hasDataById {
@@ -2291,6 +2296,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     getDataById {
@@ -2335,6 +2341,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> putDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     putDataById {
@@ -2379,6 +2386,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> lobDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     lobDataById {

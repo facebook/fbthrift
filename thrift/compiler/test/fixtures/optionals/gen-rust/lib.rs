@@ -180,6 +180,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Color {
         fn default() -> Self {
             Self {
@@ -274,6 +275,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Vehicle {
         fn default() -> Self {
             Self {
@@ -385,6 +387,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Person {
         fn default() -> Self {
             Self {

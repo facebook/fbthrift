@@ -38,6 +38,7 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Foo {
         fn default() -> Self {
             Self {
@@ -123,6 +124,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Foo2 {
         fn default() -> Self {
             Self {

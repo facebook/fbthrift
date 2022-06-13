@@ -333,6 +333,7 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyData {
         fn default() -> Self {
             Self {
@@ -486,6 +487,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -786,6 +788,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyDataPatch {
         fn default() -> Self {
             Self {
@@ -862,6 +865,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyDataValuePatch {
         fn default() -> Self {
             Self {
@@ -949,6 +953,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyDataValuePatch {
         fn default() -> Self {
             Self {
@@ -1045,6 +1050,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyUnionPatch {
         fn default() -> Self {
             Self {
@@ -1121,6 +1127,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyUnionValuePatch {
         fn default() -> Self {
             Self {
@@ -1215,6 +1222,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyUnionValuePatch {
         fn default() -> Self {
             Self {
@@ -1311,6 +1319,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructPatch {
         fn default() -> Self {
             Self {
@@ -1585,6 +1594,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructField21Patch {
         fn default() -> Self {
             Self {
@@ -1681,6 +1691,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyStructField21Patch {
         fn default() -> Self {
             Self {
@@ -1777,6 +1788,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructField22Patch {
         fn default() -> Self {
             Self {
@@ -1873,6 +1885,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyStructField22Patch {
         fn default() -> Self {
             Self {
@@ -1969,6 +1982,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructField23Patch {
         fn default() -> Self {
             Self {
@@ -2056,6 +2070,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyStructField23Patch {
         fn default() -> Self {
             Self {
@@ -2152,6 +2167,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructValuePatch {
         fn default() -> Self {
             Self {
@@ -2239,6 +2255,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::OptionalMyStructValuePatch {
         fn default() -> Self {
             Self {

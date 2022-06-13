@@ -229,6 +229,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -287,6 +288,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStructWithCustomDefault {
         fn default() -> Self {
             Self {
@@ -354,6 +356,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::StructLevelTerseStruct {
         fn default() -> Self {
             Self {
@@ -538,6 +541,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::FieldLevelTerseStruct {
         fn default() -> Self {
             Self {
@@ -848,6 +852,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::TerseStructWithCustomDefault {
         fn default() -> Self {
             Self {

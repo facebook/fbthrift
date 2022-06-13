@@ -355,6 +355,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::Val {
         fn default() -> Self {
             Self {
@@ -594,6 +595,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::NonCopyableStruct {
         fn default() -> Self {
             Self {

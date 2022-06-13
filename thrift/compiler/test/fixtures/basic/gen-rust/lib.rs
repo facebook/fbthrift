@@ -287,6 +287,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -426,6 +427,7 @@ pub mod types {
     }
 
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::MyDataItem {
         fn default() -> Self {
             Self {
@@ -581,6 +583,7 @@ pub mod types {
         }
     }
 
+    #[allow(clippy::derivable_impls)]
     impl ::std::default::Default for self::ReservedKeyword {
         fn default() -> Self {
             Self {
@@ -4792,6 +4795,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -4829,6 +4833,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -4836,6 +4841,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -5109,6 +5115,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -5146,6 +5153,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -5153,6 +5161,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -6362,6 +6371,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -6588,6 +6598,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -6595,6 +6606,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -6974,6 +6986,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
@@ -7032,6 +7045,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
             match name {
@@ -7039,6 +7053,7 @@ pub mod server {
             }
         }
 
+        #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
             idx: ::std::primitive::usize,
@@ -7451,6 +7466,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> simple_rpc<'mock> {
                 pub fn unimplemented() -> Self {
                     simple_rpc {
@@ -7497,6 +7513,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> simple_rpc<'mock> {
                 pub fn unimplemented() -> Self {
                     simple_rpc {
@@ -7543,6 +7560,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> ping<'mock> {
                 pub fn unimplemented() -> Self {
                     ping {
@@ -7587,6 +7605,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getRandomData<'mock> {
                 pub fn unimplemented() -> Self {
                     getRandomData {
@@ -7631,6 +7650,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> sink<'mock> {
                 pub fn unimplemented() -> Self {
                     sink {
@@ -7675,6 +7695,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> putDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     putDataById {
@@ -7719,6 +7740,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> hasDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     hasDataById {
@@ -7763,6 +7785,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     getDataById {
@@ -7807,6 +7830,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> deleteDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     deleteDataById {
@@ -7851,6 +7875,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> lobDataById<'mock> {
                 pub fn unimplemented() -> Self {
                     lobDataById {
@@ -7895,6 +7920,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> invalid_return_for_hack<'mock> {
                 pub fn unimplemented() -> Self {
                     invalid_return_for_hack {
@@ -7939,6 +7965,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> rpc_skipped_codegen<'mock> {
                 pub fn unimplemented() -> Self {
                     rpc_skipped_codegen {
@@ -7985,6 +8012,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getDataByKey0<'mock> {
                 pub fn unimplemented() -> Self {
                     getDataByKey0 {
@@ -8029,6 +8057,7 @@ pub mod mock {
                 >>,
             }
 
+            #[allow(clippy::redundant_closure)]
             impl<'mock> getDataByKey1<'mock> {
                 pub fn unimplemented() -> Self {
                     getDataByKey1 {
