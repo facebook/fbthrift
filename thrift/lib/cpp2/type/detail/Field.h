@@ -16,20 +16,12 @@
 
 #pragma once
 
-#include <tuple>
-
+#include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-
-// TODO(afuller): Migrate to a folly version once available.
-#if defined(__has_builtin)
-#if __has_builtin(__type_pack_element)
-#define FBTHRIFT_HAS_TYPE_PACK_ELEMENT
-#endif
-#endif
 
 namespace apache {
 namespace thrift {
@@ -48,11 +40,7 @@ struct field_at {
 };
 template <typename... Fs, std::size_t I>
 struct field_at<fields<Fs...>, I, true> {
-#ifdef FBTHRIFT_HAS_TYPE_PACK_ELEMENT
-  using type = __type_pack_element<I, Fs...>;
-#else
-  using type = std::tuple_element_t<I, std::tuple<Fs...>>;
-#endif
+  using type = folly::type_pack_element_t<I, Fs...>;
 };
 template <typename Ts, std::size_t I>
 using field_at_t = typename field_at<Ts, I, (I < fields_size<Ts>::value)>::type;
