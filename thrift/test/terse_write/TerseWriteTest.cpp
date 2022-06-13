@@ -201,32 +201,34 @@ template <class T>
 struct TerseWriteSerializerTests : ::testing::Test {};
 TYPED_TEST_CASE_P(TerseWriteSerializerTests);
 
-TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStruct) {
-  terse_write::MixedFieldsStruct obj;
+template <typename T, typename Serializer>
+void test_mixed_fields_struct() {
+  T obj;
 
   obj.terse_int_field() = 1;
   obj.def_int_field() = 2;
   obj.opt_int_field() = 3;
 
-  auto objs = TypeParam::template serialize<std::string>(obj);
-  terse_write::MixedFieldsStruct objd;
-  TypeParam::template deserialize(objs, objd);
+  auto objs = Serializer::template serialize<std::string>(obj);
+  T objd;
+  Serializer::template deserialize(objs, objd);
 
   EXPECT_EQ(obj, objd);
 }
 
-TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStructWithCustomDefault) {
-  terse_write::MixedFieldsStructWithCustomDefault obj;
+template <typename T, typename Serializer>
+void test_mixed_fields_struct_with_custom_default() {
+  T obj;
 
   apache::thrift::clear(obj);
 
-  auto objs = TypeParam::template serialize<std::string>(obj);
-  terse_write::MixedFieldsStructWithCustomDefault objd;
+  auto objs = Serializer::template serialize<std::string>(obj);
+  T objd;
   EXPECT_EQ(objd.terse_int_field(), 1);
   EXPECT_EQ(objd.def_int_field(), 2);
   EXPECT_EQ(objd.opt_int_field().value_unchecked(), 3);
 
-  TypeParam::template deserialize(objs, objd);
+  Serializer::template deserialize(objs, objd);
 
   EXPECT_EQ(objd.terse_int_field(), 0);
   EXPECT_EQ(objd.def_int_field(), 0);
@@ -236,13 +238,14 @@ TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStructWithCustomDefault) {
   EXPECT_EQ(objd.opt_int_field().value_unchecked(), 3);
 }
 
-TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
-  terse_write::NestedMixedStruct obj;
+template <typename T, typename Serializer>
+void test_nested_mixed_struct() {
+  T obj;
 
   apache::thrift::clear(obj);
 
-  auto objs = TypeParam::template serialize<std::string>(obj);
-  terse_write::NestedMixedStruct objd;
+  auto objs = Serializer::template serialize<std::string>(obj);
+  T objd;
 
   EXPECT_EQ(objd.mixed_field()->terse_int_field(), 0);
   EXPECT_EQ(objd.mixed_field()->def_int_field(), 0);
@@ -253,7 +256,7 @@ TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
       objd.mixed_field_with_custom_default()->opt_int_field().value_unchecked(),
       3);
 
-  TypeParam::template deserialize(objs, objd);
+  Serializer::template deserialize(objs, objd);
 
   EXPECT_EQ(objd.mixed_field()->terse_int_field(), 0);
   EXPECT_EQ(objd.mixed_field()->def_int_field(), 0);
@@ -263,6 +266,20 @@ TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
   EXPECT_EQ(
       objd.mixed_field_with_custom_default()->opt_int_field().value_unchecked(),
       3);
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStruct) {
+  test_mixed_fields_struct<terse_write::MixedFieldsStruct, TypeParam>();
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStructWithCustomDefault) {
+  test_mixed_fields_struct_with_custom_default<
+      terse_write::MixedFieldsStructWithCustomDefault,
+      TypeParam>();
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
+  test_nested_mixed_struct<terse_write::NestedMixedStruct, TypeParam>();
 }
 
 TYPED_TEST_P(TerseWriteSerializerTests, CppRefTerseStruct) {
