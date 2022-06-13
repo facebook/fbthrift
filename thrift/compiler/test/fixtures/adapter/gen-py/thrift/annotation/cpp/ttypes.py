@@ -318,6 +318,7 @@ class Adapter:
   """
   Attributes:
    - name
+   - adaptedType
   """
 
   thrift_spec = None
@@ -345,6 +346,11 @@ class Adapter:
           self.name = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRING:
+          self.adaptedType = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -361,6 +367,10 @@ class Adapter:
     if self.name != None:
       oprot.writeFieldBegin('name', TType.STRING, 1)
       oprot.writeString(self.name.encode('utf-8')) if UTF8STRINGS and not isinstance(self.name, bytes) else oprot.writeString(self.name)
+      oprot.writeFieldEnd()
+    if self.adaptedType != None:
+      oprot.writeFieldBegin('adaptedType', TType.STRING, 2)
+      oprot.writeString(self.adaptedType.encode('utf-8')) if UTF8STRINGS and not isinstance(self.adaptedType, bytes) else oprot.writeString(self.adaptedType)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -379,6 +389,8 @@ class Adapter:
       json_obj = loads(json)
     if 'name' in json_obj and json_obj['name'] is not None:
       self.name = json_obj['name']
+    if 'adaptedType' in json_obj and json_obj['adaptedType'] is not None:
+      self.adaptedType = json_obj['adaptedType']
 
   def __repr__(self):
     L = []
@@ -387,6 +399,10 @@ class Adapter:
       value = pprint.pformat(self.name, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    name=%s' % (value))
+    if self.adaptedType is not None:
+      value = pprint.pformat(self.adaptedType, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    adaptedType=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -401,6 +417,7 @@ class Adapter:
   def __dir__(self):
     return (
       'name',
+      'adaptedType',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -702,6 +719,7 @@ all_structs.append(Adapter)
 Adapter.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'name', True, None, 2, ), # 1
+  (2, TType.STRING, 'adaptedType', True, None, 2, ), # 2
 )
 
 Adapter.thrift_struct_annotations = {
@@ -710,13 +728,15 @@ Adapter.thrift_struct_annotations = {
 Adapter.thrift_field_annotations = {
 }
 
-def Adapter__init__(self, name=None,):
+def Adapter__init__(self, name=None, adaptedType=None,):
   self.name = name
+  self.adaptedType = adaptedType
 
 Adapter.__init__ = Adapter__init__
 
 def Adapter__setstate__(self, state):
   state.setdefault('name', None)
+  state.setdefault('adaptedType', None)
   self.__dict__ = state
 
 Adapter.__getstate__ = lambda self: self.__dict__.copy()

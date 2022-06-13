@@ -129,6 +129,7 @@ def _fbthrift_gen_metadata_struct_Bar(metadata_struct: _fbthrift_metadata.Thrift
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.Foo")), name="structField", is_optional=False, structured_annotations=[
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="\Adapter1"),  }),
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="my::Adapter1"), "adaptedType": _fbthrift_metadata.ThriftConstValue(cv_string="my::Cpp::Type1"),  }),
         ]),
         _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.Foo")), name="optionalStructField", is_optional=False, structured_annotations=[
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="\Adapter1"),  }),

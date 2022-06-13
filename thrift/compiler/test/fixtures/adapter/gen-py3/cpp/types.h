@@ -64,6 +64,9 @@ void reset_field<::facebook::thrift::annotation::cpp::Adapter>(
     case 0:
       obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::Adapter>().name_ref());
       return;
+    case 1:
+      obj.adaptedType_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::Adapter>().adaptedType_ref());
+      return;
   }
 }
 

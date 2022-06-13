@@ -163,9 +163,18 @@ gen_adapter_dependency_graph(
     if (auto* typedf = dynamic_cast<t_typedef const*>(obj)) {
       // The adjacency list of a typedef is the list of structs and typedefs
       // named in its underlying type, but we only care about structs if the
-      // typedef has an adapter annotation.
+      // typedef has an adapter annotation without adaptedType specified.
       const auto* type = &*typedf->type();
       bool has_adapter = gen::cpp::type_resolver::find_first_adapter(*typedf);
+      if (has_adapter) {
+        if (auto* annotation = typedf->find_structured_annotation_or_null(
+                "facebook.com/thrift/annotation/cpp/Adapter")) {
+          if (annotation->get_value_from_structured_annotation_or_null(
+                  "adaptedType")) {
+            has_adapter = false;
+          }
+        }
+      }
       if (dynamic_cast<t_typedef const*>(type) ||
           (dynamic_cast<t_struct const*>(type) && has_adapter)) {
         add_dependency(type, has_adapter);

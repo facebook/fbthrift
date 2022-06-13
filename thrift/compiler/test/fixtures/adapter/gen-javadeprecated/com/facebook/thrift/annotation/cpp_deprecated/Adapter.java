@@ -27,9 +27,12 @@ import com.facebook.thrift.protocol.*;
 public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparable<Adapter> {
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
+  private static final TField ADAPTED_TYPE_FIELD_DESC = new TField("adaptedType", TType.STRING, (short)2);
 
   public String name;
+  public String adaptedType;
   public static final int NAME = 1;
+  public static final int ADAPTEDTYPE = 2;
 
   // isset id assignments
 
@@ -38,6 +41,8 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(NAME, new FieldMetaData("name", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(ADAPTEDTYPE, new FieldMetaData("adaptedType", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
@@ -50,13 +55,16 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public Adapter(
-      String name) {
+      String name,
+      String adaptedType) {
     this();
     this.name = name;
+    this.adaptedType = adaptedType;
   }
 
   public static class Builder {
     private String name;
+    private String adaptedType;
 
     public Builder() {
     }
@@ -66,9 +74,15 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       return this;
     }
 
+    public Builder setAdaptedType(final String adaptedType) {
+      this.adaptedType = adaptedType;
+      return this;
+    }
+
     public Adapter build() {
       Adapter result = new Adapter();
       result.setName(this.name);
+      result.setAdaptedType(this.adaptedType);
       return result;
     }
   }
@@ -83,6 +97,9 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   public Adapter(Adapter other) {
     if (other.isSetName()) {
       this.name = TBaseHelper.deepCopy(other.name);
+    }
+    if (other.isSetAdaptedType()) {
+      this.adaptedType = TBaseHelper.deepCopy(other.adaptedType);
     }
   }
 
@@ -114,6 +131,30 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  public String getAdaptedType() {
+    return this.adaptedType;
+  }
+
+  public Adapter setAdaptedType(String adaptedType) {
+    this.adaptedType = adaptedType;
+    return this;
+  }
+
+  public void unsetAdaptedType() {
+    this.adaptedType = null;
+  }
+
+  // Returns true if field adaptedType is set (has been assigned a value) and false otherwise
+  public boolean isSetAdaptedType() {
+    return this.adaptedType != null;
+  }
+
+  public void setAdaptedTypeIsSet(boolean __value) {
+    if (!__value) {
+      this.adaptedType = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case NAME:
@@ -121,6 +162,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
         unsetName();
       } else {
         setName((String)__value);
+      }
+      break;
+
+    case ADAPTEDTYPE:
+      if (__value == null) {
+        unsetAdaptedType();
+      } else {
+        setAdaptedType((String)__value);
       }
       break;
 
@@ -133,6 +182,9 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     switch (fieldID) {
     case NAME:
       return getName();
+
+    case ADAPTEDTYPE:
+      return getAdaptedType();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -151,12 +203,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAdaptedType(), that.isSetAdaptedType(), this.adaptedType, that.adaptedType)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name});
+    return Arrays.deepHashCode(new Object[] {name, adaptedType});
   }
 
   @Override
@@ -176,6 +230,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(name, other.name);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetAdaptedType()).compareTo(other.isSetAdaptedType());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(adaptedType, other.adaptedType);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -200,6 +262,13 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ADAPTEDTYPE:
+          if (__field.type == TType.STRING) {
+            this.adaptedType = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -220,6 +289,11 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
+      oprot.writeFieldEnd();
+    }
+    if (this.adaptedType != null) {
+      oprot.writeFieldBegin(ADAPTED_TYPE_FIELD_DESC);
+      oprot.writeString(this.adaptedType);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -250,6 +324,17 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getName(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("adaptedType");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getAdaptedType() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getAdaptedType(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

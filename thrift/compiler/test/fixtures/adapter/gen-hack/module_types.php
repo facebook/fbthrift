@@ -1803,6 +1803,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 "name" => "\Adapter1",
               )
             ),
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+                "adaptedType" => "my::Cpp::Type1",
+              )
+            ),
           ],
           'type' => dict[],
         ),

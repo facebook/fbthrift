@@ -37,10 +37,17 @@ const std::string& type_resolver::get_type_name(
   const t_type& type = *field.type();
 
   // TODO (dokwon): Support composing adapters.
-  if (const std::string* adapter_on_field =
-          find_structured_adapter_annotation(field)) {
+  if (auto* annotation = field.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Adapter")) {
+    if (auto* adaptedType =
+            annotation->get_value_from_structured_annotation_or_null(
+                "adaptedType")) {
+      return adaptedType->get_string();
+    }
+    const auto& adapter_on_field =
+        annotation->get_value_from_structured_annotation("name").get_string();
     return detail::get_or_gen(field_type_cache_, &field, [&]() {
-      return gen_field_type(field.id(), type, parent, adapter_on_field);
+      return gen_field_type(field.id(), type, parent, &adapter_on_field);
     });
   }
 
@@ -63,9 +70,17 @@ const std::string& type_resolver::get_type_name(const t_typedef& node) {
   if (type == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
-  if (const std::string* adapter = find_structured_adapter_annotation(node)) {
+  if (auto* annotation = node.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Adapter")) {
+    if (auto* adaptedType =
+            annotation->get_value_from_structured_annotation_or_null(
+                "adaptedType")) {
+      return adaptedType->get_string();
+    }
+    const auto& adapter =
+        annotation->get_value_from_structured_annotation("name").get_string();
     return detail::get_or_gen(
-        typedef_cache_, &node, [&]() { return gen_type(*type, adapter); });
+        typedef_cache_, &node, [&]() { return gen_type(*type, &adapter); });
   }
   return get_type_name(*type);
 }

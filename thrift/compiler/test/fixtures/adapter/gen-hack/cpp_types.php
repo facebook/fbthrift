@@ -368,27 +368,40 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
       'var' => 'name',
       'type' => \TType::STRING,
     ),
+    2 => shape(
+      'var' => 'adaptedType',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
+    'adaptedType' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'name' => ?string,
+    ?'adaptedType' => ?string,
   );
 
   const type TShape = shape(
     'name' => string,
+    'adaptedType' => string,
   );
-  const int STRUCTURAL_ID = 2593878277785201336;
+  const int STRUCTURAL_ID = 6566741530336999163;
   /**
    * Original thrift field:-
    * 1: string name
    */
   public string $name;
+  /**
+   * Original thrift field:-
+   * 2: string adaptedType
+   */
+  public string $adaptedType;
 
-  public function __construct(?string $name = null)[] {
+  public function __construct(?string $name = null, ?string $adaptedType = null)[] {
     $this->name = $name ?? '';
+    $this->adaptedType = $adaptedType ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -398,6 +411,7 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'adaptedType'),
     );
   }
 
@@ -419,6 +433,17 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
                 )
               ),
               "name" => "name",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "adaptedType",
             )
           ),
         ],
@@ -447,12 +472,14 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
+      $shape['adaptedType'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
+      'adaptedType' => $this->adaptedType,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -468,6 +495,9 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
 
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+    }
+    if (idx($parsed, 'adaptedType') !== null) {
+      $this->adaptedType = /* HH_FIXME[4110] */ $parsed['adaptedType'];
     }
   }
 

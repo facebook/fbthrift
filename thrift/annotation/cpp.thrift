@@ -83,6 +83,9 @@ struct Adapter {
   //    static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
   //  };
   1: string name;
+  // It is sometimes necessary to specify AdaptedType here (in case the codegen would
+  // have a circular depdenceny, which will cause the C++ build to fail).
+  2: string adaptedType;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
 
 @scope.Struct

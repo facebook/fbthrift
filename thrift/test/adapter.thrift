@@ -136,3 +136,16 @@ struct StructFieldAdaptedStruct {
   1: AdaptedStruct adaptedStruct;
   2: AdaptedTypedef adaptedTypedef;
 }
+
+struct CircularAdaptee {
+  1: CircularStruct field;
+}
+struct CircularStruct {
+  @cpp.Ref{type = cpp.RefType.Unique}
+  1: optional AdaptedCircularAdaptee field;
+}
+@cpp.Adapter{
+  name = "::apache::thrift::test::MemberAccessAdapter",
+  adaptedType = "::apache::thrift::test::TaggedWrapper<CircularAdaptee, CircularStruct>",
+}
+typedef CircularAdaptee AdaptedCircularAdaptee

@@ -210,4 +210,30 @@ struct IdentityAdapter {
   static const T& toThrift(const T& i) { return i; }
 };
 
+template <
+    class T,
+    class U = std::remove_reference_t<decltype(*std::declval<T>().field())>>
+struct TaggedWrapper;
+
+struct MemberAccessAdapter {
+  template <class T>
+  static TaggedWrapper<T> fromThrift(const T& t) {
+    return {*t.field()};
+  }
+  template <class T>
+  static T toThrift(const TaggedWrapper<T>& w) {
+    T ret;
+    ret.field() = w.val;
+    return ret;
+  }
+};
+
+template <class T, class U>
+struct TaggedWrapper {
+  U val;
+
+  bool operator==(const TaggedWrapper& other) const { return val == other.val; }
+  bool operator<(const TaggedWrapper& other) const { return val < other.val; }
+};
+
 } // namespace apache::thrift::test

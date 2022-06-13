@@ -120,7 +120,8 @@ typedef Foo FooWithAdapter
 
 struct Bar {
   @hack.Adapter{name = '\Adapter1'}
-  1: Foo (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1') structField;
+  @cpp.Adapter{name = 'my::Adapter1', adaptedType = 'my::Cpp::Type1'}
+  1: Foo (py.adapter = 'my.Adapter1') structField;
   @hack.Adapter{name = '\Adapter1'}
   2: optional Foo (
     cpp.adapter = 'my::Adapter1',

@@ -361,8 +361,10 @@ func (p *DisableLazyChecksum) String() string {
 
 // Attributes:
 //  - Name
+//  - AdaptedType
 type Adapter struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
+  AdaptedType string `thrift:"adaptedType,2" db:"adaptedType" json:"adaptedType"`
 }
 
 func NewAdapter() *Adapter {
@@ -372,6 +374,10 @@ func NewAdapter() *Adapter {
 
 func (p *Adapter) GetName() string {
   return p.Name
+}
+
+func (p *Adapter) GetAdaptedType() string {
+  return p.AdaptedType
 }
 type AdapterBuilder struct {
   obj *Adapter
@@ -386,6 +392,7 @@ func NewAdapterBuilder() *AdapterBuilder{
 func (p AdapterBuilder) Emit() *Adapter{
   return &Adapter{
     Name: p.obj.Name,
+    AdaptedType: p.obj.AdaptedType,
   }
 }
 
@@ -394,8 +401,18 @@ func (a *AdapterBuilder) Name(name string) *AdapterBuilder {
   return a
 }
 
+func (a *AdapterBuilder) AdaptedType(adaptedType string) *AdapterBuilder {
+  a.obj.AdaptedType = adaptedType
+  return a
+}
+
 func (a *Adapter) SetName(name string) *Adapter {
   a.Name = name
+  return a
+}
+
+func (a *Adapter) SetAdaptedType(adaptedType string) *Adapter {
+  a.AdaptedType = adaptedType
   return a
 }
 
@@ -414,6 +431,10 @@ func (p *Adapter) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
         return err
       }
     default:
@@ -440,10 +461,20 @@ func (p *Adapter)  ReadField1(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Adapter)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.AdaptedType = v
+  }
+  return nil
+}
+
 func (p *Adapter) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Adapter"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -461,13 +492,24 @@ func (p *Adapter) writeField1(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Adapter) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("adaptedType", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:adaptedType: ", p), err) }
+  if err := oprot.WriteString(string(p.AdaptedType)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.adaptedType (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:adaptedType: ", p), err) }
+  return err
+}
+
 func (p *Adapter) String() string {
   if p == nil {
     return "<nil>"
   }
 
   nameVal := fmt.Sprintf("%v", p.Name)
-  return fmt.Sprintf("Adapter({Name:%s})", nameVal)
+  adaptedTypeVal := fmt.Sprintf("%v", p.AdaptedType)
+  return fmt.Sprintf("Adapter({Name:%s AdaptedType:%s})", nameVal, adaptedTypeVal)
 }
 
 // Attributes:

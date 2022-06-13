@@ -1285,7 +1285,7 @@ class Bar final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> optionalStructListField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> unionField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> optionalUnionField__arg);
+  Bar(apache::thrift::FragileConstructor, my::Cpp::Type1 structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> optionalStructListField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> unionField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> optionalUnionField__arg);
 
   Bar(Bar&&) noexcept;
   Bar(const Bar& src);
@@ -1297,7 +1297,7 @@ class Bar final  {
   ~Bar();
 
  private:
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> __fbthrift_field_structField;
+  my::Cpp::Type1 __fbthrift_field_structField;
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> __fbthrift_field_optionalStructField;
  private:
@@ -1316,42 +1316,42 @@ class Bar final  {
   bool operator==(const Bar&) const;
   bool operator<(const Bar&) const;
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structField_ref() const& {
     return {this->__fbthrift_field_structField, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structField_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_structField), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structField_ref() & {
     return {this->__fbthrift_field_structField, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_structField), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structField() const& {
     return {this->__fbthrift_field_structField, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structField() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_structField), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structField() & {
     return {this->__fbthrift_field_structField, __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  template <typename..., typename T = my::Cpp::Type1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structField() && {
     return {static_cast<T&&>(this->__fbthrift_field_structField), __isset.at(0), __isset.bit(0)};
   }
