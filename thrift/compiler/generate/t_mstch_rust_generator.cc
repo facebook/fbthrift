@@ -1790,6 +1790,7 @@ void t_mstch_rust_generator::generate_program() {
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "lib.rs", "lib.rs");
+  render_to_file(prog, "types.rs", "types.rs");
 }
 
 void t_mstch_rust_generator::set_mstch_generators() {

@@ -48,8 +48,7 @@ pub mod consts {{>lib/block}}{{>lib/mod.consts}}}{{!
 }}{{/program:constants?}}{{!
 }}{{#program:types?}}
 
-/// Thrift type definitions for `{{program:name}}`.
-pub mod types {{>lib/block}}{{>lib/mod.types}}}{{!
+pub mod types;{{!
 }}{{/program:types?}}{{!
 }}{{#program:services?}}
 
