@@ -28,7 +28,6 @@ import java.util.Map;
 import org.apache.thrift.ClientPushMetadata;
 import org.apache.thrift.RequestRpcMetadata;
 import org.apache.thrift.client.ClientRequestContext;
-import org.apache.thrift.protocol.TProtocol;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -197,18 +196,6 @@ public class EventHandlerRpcClient implements RpcClient {
     @Override
     public Map<String, String> getPersistentHeaders() {
       return delegate.getPersistentHeaders();
-    }
-
-    @Override
-    public TProtocol getOutputProtocol() {
-      throw new UnsupportedOperationException(
-          "Protocol access not allowed in netty 4 client context");
-    }
-
-    @Override
-    public TProtocol getInputProtocol() {
-      throw new UnsupportedOperationException(
-          "Protocol access not allowed in netty 4 client context");
     }
 
     @Override

@@ -17,16 +17,8 @@
 package org.apache.thrift.client;
 
 import java.util.Map;
-import org.apache.thrift.protocol.TProtocol;
 
 public interface ClientRequestContext {
-
-  @Deprecated
-  TProtocol getOutputProtocol();
-
-  @Deprecated
-  TProtocol getInputProtocol();
-
   void setRequestHeader(String key, String value);
 
   Map<String, String> getResponseHeaders();
