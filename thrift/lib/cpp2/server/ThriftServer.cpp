@@ -1305,8 +1305,10 @@ folly::Optional<std::string> ThriftServer::checkOverload(
     return kAppOverloadedErrorCode;
   }
 
-  // only check for request limit if active request tracking is enabled
-  if (!isActiveRequestsTrackingDisabled()) {
+  // If active request tracking is disabled or we are using resource pools,
+  // skip max requests enforcement here. Resource pools has its own separate
+  // concurrency limiting mechanism.
+  if (!isActiveRequestsTrackingDisabled() && !useResourcePools()) {
     if (auto maxRequests = getMaxRequests(); maxRequests > 0 &&
         (method == nullptr ||
          !getMethodsBypassMaxRequestsLimit().contains(*method)) &&
