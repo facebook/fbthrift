@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <thrift/lib/cpp2/protocol/TableBasedSerializer.h>
 
 #include <glog/logging.h>
 #include <folly/CppAttributes.h>
 #include <folly/Range.h>
+#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 
@@ -139,6 +141,137 @@ inline bool hasFieldValue(
     }
   }
   return false;
+}
+
+// A helper function to set a field to its intrinsic default value.
+inline void setToIntrinsicDefault(void* value, const FieldInfo& info) {
+  const TypeInfo& typeInfo = *info.typeInfo;
+  const void* typeInfoExt = typeInfo.typeExt;
+  switch (typeInfo.type) {
+    case protocol::TType::T_STRUCT: {
+      void* structField =
+          typeInfo.set ? invokeStructSet(typeInfo, value) : value;
+      const auto& structInfo = *static_cast<const StructInfo*>(typeInfoExt);
+      for (std::int16_t index = 0; index < structInfo.numFields; index++) {
+        const auto& fieldInfo = structInfo.fieldInfos[index];
+        setToIntrinsicDefault(getMember(fieldInfo, structField), fieldInfo);
+      }
+      break;
+    }
+    case protocol::TType::T_I64:
+      reinterpret_cast<void (*)(void*, std::int64_t)>(typeInfo.set)(value, 0);
+      break;
+    case protocol::TType::T_I32:
+      reinterpret_cast<void (*)(void*, std::int32_t)>(typeInfo.set)(value, 0);
+      break;
+    case protocol::TType::T_I16:
+      reinterpret_cast<void (*)(void*, std::int16_t)>(typeInfo.set)(value, 0);
+      break;
+    case protocol::TType::T_BYTE:
+      reinterpret_cast<void (*)(void*, std::int8_t)>(typeInfo.set)(value, 0);
+      break;
+    case protocol::TType::T_BOOL:
+      reinterpret_cast<void (*)(void*, bool)>(typeInfo.set)(value, false);
+      break;
+    case protocol::TType::T_DOUBLE:
+      reinterpret_cast<void (*)(void*, double)>(typeInfo.set)(value, 0.0);
+      break;
+    case protocol::TType::T_FLOAT:
+      reinterpret_cast<void (*)(void*, float)>(typeInfo.set)(value, 0.0);
+      break;
+    case protocol::TType::T_STRING: {
+      switch (*static_cast<const StringFieldType*>(typeInfoExt)) {
+        case StringFieldType::String:
+          static_cast<std::string*>(value)->clear();
+          break;
+        case StringFieldType::StringView:
+          reinterpret_cast<void (*)(void*, const std::string&)>(typeInfo.set)(
+              value, "");
+          break;
+        case StringFieldType::Binary:
+          static_cast<std::string*>(value)->clear();
+          break;
+        case StringFieldType::IOBufObj: {
+          static_cast<folly::IOBuf*>(value)->clear();
+          break;
+        }
+        case StringFieldType::IOBuf:
+          static_cast<folly::IOBuf*>(value)->clear();
+          break;
+        case StringFieldType::IOBufPtr: {
+          // Default constructed IOBufPtr does not own IOBuf. CLear only if
+          // IOBufPtr owns IOBuf.
+          auto&& iobuf_ptr =
+              *static_cast<std::unique_ptr<folly::IOBuf>*>(value);
+          if (iobuf_ptr) {
+            iobuf_ptr->clear();
+          }
+          break;
+        }
+      };
+      break;
+    }
+    case protocol::TType::T_MAP: {
+      static_cast<const MapFieldExt*>(typeInfoExt)->clear(value);
+      break;
+    }
+    case protocol::TType::T_SET: {
+      static_cast<const SetFieldExt*>(typeInfoExt)->clear(value);
+      break;
+    }
+    case protocol::TType::T_LIST: {
+      static_cast<const ListFieldExt*>(typeInfoExt)->clear(value);
+      break;
+    }
+    case protocol::TType::T_STOP:
+    case protocol::TType::T_VOID:
+    case protocol::TType::T_STREAM:
+    case protocol::TType::T_UTF8:
+    case protocol::TType::T_U64:
+    case protocol::TType::T_UTF16:
+      DCHECK(false);
+      break;
+  }
+}
+
+inline void clearTerseField(void* value, const FieldInfo& info) {
+  if (info.qualifier != FieldQualifier::Terse) {
+    return;
+  }
+  const TypeInfo& typeInfo = *info.typeInfo;
+  const void* typeInfoExt = typeInfo.typeExt;
+  switch (typeInfo.type) {
+    case protocol::TType::T_STRUCT: {
+      // We only clear terse fields in a terse struct field.
+      void* structField =
+          typeInfo.set ? invokeStructSet(typeInfo, value) : value;
+      const auto& structInfo = *static_cast<const StructInfo*>(typeInfoExt);
+      for (std::int16_t index = 0; index < structInfo.numFields; index++) {
+        const auto& fieldInfo = structInfo.fieldInfos[index];
+        clearTerseField(getMember(fieldInfo, structField), fieldInfo);
+      }
+      break;
+    }
+    case protocol::TType::T_I64:
+    case protocol::TType::T_I32:
+    case protocol::TType::T_I16:
+    case protocol::TType::T_BYTE:
+    case protocol::TType::T_BOOL:
+    case protocol::TType::T_DOUBLE:
+    case protocol::TType::T_FLOAT:
+    case protocol::TType::T_STRING:
+    case protocol::TType::T_MAP:
+    case protocol::TType::T_SET:
+    case protocol::TType::T_LIST:
+    case protocol::TType::T_STOP:
+    case protocol::TType::T_VOID:
+    case protocol::TType::T_STREAM:
+    case protocol::TType::T_UTF8:
+    case protocol::TType::T_U64:
+    case protocol::TType::T_UTF16:
+      setToIntrinsicDefault(value, info);
+      break;
+  }
 }
 
 // For an unqualified and optional field, the semantic is identical to
@@ -703,6 +836,12 @@ void read(Protocol_* iprot, const StructInfo& structInfo, void* object) {
     }
     readState.readStructEnd(iprot);
     return;
+  }
+
+  // Clear terse fields to intrinsic default values before deserialization.
+  for (std::int16_t i = 0; i < structInfo.numFields; i++) {
+    const auto& fieldInfo = structInfo.fieldInfos[i];
+    clearTerseField(getMember(fieldInfo, object), fieldInfo);
   }
 
   // Define out of loop to call advanceToNextField after the loop ends.

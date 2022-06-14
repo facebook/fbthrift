@@ -270,16 +270,25 @@ void test_nested_mixed_struct() {
 
 TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStruct) {
   test_mixed_fields_struct<terse_write::MixedFieldsStruct, TypeParam>();
+  test_mixed_fields_struct<
+      tablebased_terse_write::MixedFieldsStruct,
+      TypeParam>();
 }
 
 TYPED_TEST_P(TerseWriteSerializerTests, MixedFieldsStructWithCustomDefault) {
   test_mixed_fields_struct_with_custom_default<
       terse_write::MixedFieldsStructWithCustomDefault,
       TypeParam>();
+  test_mixed_fields_struct_with_custom_default<
+      tablebased_terse_write::MixedFieldsStructWithCustomDefault,
+      TypeParam>();
 }
 
 TYPED_TEST_P(TerseWriteSerializerTests, NestedMixedStruct) {
   test_nested_mixed_struct<terse_write::NestedMixedStruct, TypeParam>();
+  test_nested_mixed_struct<
+      tablebased_terse_write::NestedMixedStruct,
+      TypeParam>();
 }
 
 TYPED_TEST_P(TerseWriteSerializerTests, CppRefTerseStruct) {
@@ -336,10 +345,26 @@ TYPED_TEST_P(TerseWriteSerializerTests, CustomStringFields) {
 
   obj.iobuf_field()->clear();
   (*obj.iobuf_ptr_field())->clear();
+  obj.iobuf_field_with_custom_default()->clear();
+  (*obj.iobuf_ptr_field_with_custom_default())->clear();
 
   objs = TypeParam::template serialize<std::string>(obj);
 
   EXPECT_EQ(emptys, objs);
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, CustomStringFieldsDeserialization) {
+  terse_write::EmptyStruct empty;
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+
+  tablebased_terse_write::CustomStringFields objd;
+  TypeParam::template deserialize(emptys, objd);
+
+  EXPECT_TRUE(objd.iobuf_field()->empty());
+  EXPECT_FALSE((*objd.iobuf_ptr_field()));
+  EXPECT_TRUE(objd.iobuf_field_with_custom_default()->empty());
+  EXPECT_TRUE((*objd.iobuf_ptr_field_with_custom_default())->empty());
 }
 
 TYPED_TEST_P(TerseWriteSerializerTests, EmptiableStructField) {
@@ -416,6 +441,20 @@ TYPED_TEST_P(
   expect_intrinsic_default(objd);
 }
 
+TYPED_TEST_P(
+    TerseWriteSerializerTests,
+    TableBasedTerseStructWithCustomDefaultDeserialization) {
+  tablebased_terse_write::TerseStructWithCustomDefault obj;
+
+  apache::thrift::clear(obj);
+
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  tablebased_terse_write::TerseStructWithCustomDefault objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     MixedFieldsStruct,
@@ -424,10 +463,12 @@ REGISTER_TYPED_TEST_CASE_P(
     CppRefTerseStruct,
     CppRefTerseStruct_Empty,
     CustomStringFields,
+    CustomStringFieldsDeserialization,
     EmptiableStructField,
     TerseStructWithCustomDefault,
     TerseStructWithCustomDefaultDeserialization,
-    TerseStructWithCustomDefaultClearTerseFields);
+    TerseStructWithCustomDefaultClearTerseFields,
+    TableBasedTerseStructWithCustomDefaultDeserialization);
 
 using Serializers = ::testing::Types<
     BinarySerializer,

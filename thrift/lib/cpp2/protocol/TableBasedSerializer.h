@@ -163,6 +163,7 @@ FOLLY_ERASE const StructInfo& toStructInfo(
 struct ListFieldExt {
   const TypeInfo* valInfo;
   std::uint32_t (*size)(const void* object);
+  void (*clear)(void* object);
   void (*consumeElem)(
       const void* context,
       void* object,
@@ -181,6 +182,7 @@ struct ListFieldExt {
 struct SetFieldExt {
   const TypeInfo* valInfo;
   std::uint32_t (*size)(const void* object);
+  void (*clear)(void* object);
   void (*consumeElem)(
       const void* context,
       void* object,
@@ -201,6 +203,7 @@ struct MapFieldExt {
   const TypeInfo* keyInfo;
   const TypeInfo* valInfo;
   std::uint32_t (*size)(const void* object);
+  void (*clear)(void* object);
   void (*consumeElem)(
       const void* context,
       void* object,
@@ -425,6 +428,11 @@ std::uint32_t containerSize(const void* object) {
       folly::to_unsigned(static_cast<const Container*>(object)->size()));
 }
 
+template <typename Container>
+void containerClear(void* object) {
+  static_cast<Container*>(object)->clear();
+}
+
 template <typename Map>
 void consumeMapElem(
     const void* context,
@@ -575,6 +583,7 @@ const SetFieldExt TypeToInfo<type_class::set<ElemTypeClass>, T>::ext = {
     /* .valInfo */ &TypeToInfo<ElemTypeClass, typename set_type::value_type>::
         typeInfo,
     /* .size */ containerSize<set_type>,
+    /* .clear */ containerClear<set_type>,
     /* .consumeElem */ consumeSetElem<set_type>,
     /* .readSet */ readKnownLengthSet<set_type>,
     /* .writeSet */ writeSet<set_type>,
@@ -601,6 +610,7 @@ const ListFieldExt TypeToInfo<type_class::list<ElemTypeClass>, T>::ext = {
     /* .valInfo */ &TypeToInfo<ElemTypeClass, typename list_type::value_type>::
         typeInfo,
     /* .size */ containerSize<list_type>,
+    /* .clear */ containerClear<list_type>,
     /* .consumeElem */ consumeListElem<list_type>,
     /* .readList */ readList<list_type>,
     /* .writeList */ writeList<list_type>,
@@ -628,6 +638,7 @@ const MapFieldExt
         /* .valInfo */
         &TypeToInfo<ValTypeClass, typename map_type::mapped_type>::typeInfo,
         /* .size */ containerSize<map_type>,
+        /* .clear */ containerClear<map_type>,
         /* .consumeElem */ consumeMapElem<map_type>,
         /* .readMap */ readMap<map_type>,
         /* .writeMap */ writeMap<map_type>,

@@ -242,6 +242,8 @@ class ListTypeInfo {
     return PyTuple_GET_SIZE(toPyObject(object));
   }
 
+  static void clear(void* object) { setContainer(object); }
+
   static void read(
       const void* context,
       void* object,
@@ -261,6 +263,7 @@ class ListTypeInfo {
       : ext_{
             /* .valInfo */ valInfo,
             /* .size */ size,
+            /* .clear */ clear,
             /* .consumeElem */ consumeElem,
             /* .readList */ read,
             /* .writeList */ write,
@@ -283,6 +286,9 @@ class SetTypeInfo {
   static std::uint32_t size(const void* object) {
     return PySet_GET_SIZE(toPyObject(object));
   }
+
+  static void clear(void* object) { setFrozenSet(object); }
+
   static void read(
       const void* context,
       void* object,
@@ -304,6 +310,7 @@ class SetTypeInfo {
       : ext_{
             /* .valInfo */ valInfo,
             /* .size */ size,
+            /* .clear */ clear,
             /* .consumeElem */ consumeElem,
             /* .readSet */ read,
             /* .writeSet */ write,
@@ -326,6 +333,9 @@ class MapTypeInfo {
   static std::uint32_t size(const void* object) {
     return PyTuple_GET_SIZE(toPyObject(object));
   }
+
+  static void clear(void* object) { setContainer(object); }
+
   static void read(
       const void* context,
       void* object,
@@ -352,6 +362,7 @@ class MapTypeInfo {
             /* .keyInfo */ keyInfo,
             /* .valInfo */ valInfo,
             /* .size */ size,
+            /* .clear */ clear,
             /* .consumeElem */ consumeElem,
             /* .readSet */ read,
             /* .writeSet */ write,
