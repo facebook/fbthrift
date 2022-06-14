@@ -1120,26 +1120,25 @@ void execute(
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
 
-  if (!metadata.isWildcard) {
-    const auto& methodMetadata =
-        AsyncProcessorHelper::expectMetadataOfType<Metadata>(metadata);
-    switch (protType) {
-      case protocol::T_BINARY_PROTOCOL: {
-        auto pfn = getExecuteFuncFromProtocol(
-            folly::tag<BinaryProtocolReader>, methodMetadata.processFuncs);
-        (processor->*pfn)(std::move(request));
-      } break;
-      case protocol::T_COMPACT_PROTOCOL: {
-        auto pfn = getExecuteFuncFromProtocol(
-            folly::tag<CompactProtocolReader>, methodMetadata.processFuncs);
-        (processor->*pfn)(std::move(request));
-      } break;
-      default:
-        LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
-        return;
-    }
-  } else {
-    LOG(FATAL) << "Wildcard method metadata not yet supported here";
+  DCHECK(!metadata.isWildcard())
+      << "Generated processor must not have wildcard method metadata";
+
+  const auto& methodMetadata =
+      AsyncProcessorHelper::expectMetadataOfType<Metadata>(metadata);
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      auto pfn = getExecuteFuncFromProtocol(
+          folly::tag<BinaryProtocolReader>, methodMetadata.processFuncs);
+      (processor->*pfn)(std::move(request));
+    } break;
+    case protocol::T_COMPACT_PROTOCOL: {
+      auto pfn = getExecuteFuncFromProtocol(
+          folly::tag<CompactProtocolReader>, methodMetadata.processFuncs);
+      (processor->*pfn)(std::move(request));
+    } break;
+    default:
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+      return;
   }
 }
 struct MessageBegin : folly::MoveOnly {

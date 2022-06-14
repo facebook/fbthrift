@@ -138,17 +138,9 @@ class AsyncProcessorFactory {
     MethodMetadata() = default;
 
    private:
-    MethodMetadata(
-        ExecutorType executor,
-        InteractionType interaction,
-        RpcKind kind,
-        concurrency::PRIORITY prio,
-        bool isWild)
-        : executorType(executor),
-          interactionType(interaction),
-          rpcKind(kind),
-          priority(prio),
-          isWildcard(isWild) {}
+    explicit MethodMetadata(ExecutorType executor) : executorType(executor) {}
+
+    friend struct WildcardMethodMetadata;
 
    public:
     MethodMetadata(
@@ -156,25 +148,22 @@ class AsyncProcessorFactory {
         InteractionType interaction,
         RpcKind kind,
         concurrency::PRIORITY prio)
-        : MethodMetadata(
-              executor, interaction, kind, prio, false /* isWildcard */) {}
-
-    MethodMetadata(
-        folly::badge<WildcardMethodMetadata>,
-        ExecutorType executor,
-        InteractionType interaction,
-        RpcKind kind,
-        concurrency::PRIORITY prio)
-        : MethodMetadata(
-              executor, interaction, kind, prio, true /* isWildcard */) {}
+        : executorType(executor),
+          interactionType(interaction),
+          rpcKind(kind),
+          priority(prio) {}
 
     virtual ~MethodMetadata() = default;
+
+    bool isWildcard() const {
+      // This dynamic_cast is cheap because WildcardMethodMetadata is final.
+      return dynamic_cast<const WildcardMethodMetadata*>(this);
+    }
 
     const ExecutorType executorType{ExecutorType::UNKNOWN};
     const InteractionType interactionType{InteractionType::UNKNOWN};
     const std::optional<RpcKind> rpcKind{};
     const std::optional<concurrency::PRIORITY> priority{};
-    const bool isWildcard{false};
   };
 
   /**
@@ -185,12 +174,7 @@ class AsyncProcessorFactory {
    */
   struct WildcardMethodMetadata final : public MethodMetadata {
     explicit WildcardMethodMetadata(ExecutorType executorType)
-        : MethodMetadata(
-              folly::badge<WildcardMethodMetadata>(),
-              executorType,
-              InteractionType::UNKNOWN,
-              RpcKind(),
-              concurrency::PRIORITY()) {}
+        : MethodMetadata(executorType) {}
     WildcardMethodMetadata() : WildcardMethodMetadata(ExecutorType::UNKNOWN) {}
     WildcardMethodMetadata(const WildcardMethodMetadata&) = delete;
     WildcardMethodMetadata& operator=(const WildcardMethodMetadata&) = delete;

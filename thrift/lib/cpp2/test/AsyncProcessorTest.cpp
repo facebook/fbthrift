@@ -461,7 +461,7 @@ TEST_P(
             Cpp2RequestContext* context,
             folly::EventBase* eb,
             concurrency::ThreadManager* tm) override {
-          if (untypedMethodMetadata.isWildcard) {
+          if (untypedMethodMetadata.isWildcard()) {
             AsyncProcessorHelper::sendUnknownMethodError(
                 std::move(req), "someUnknownMethod");
             return;
@@ -480,7 +480,7 @@ TEST_P(
             ServerRequest&& request,
             const AsyncProcessorFactory::MethodMetadata& methodMetadata)
             override {
-          if (methodMetadata.isWildcard) {
+          if (methodMetadata.isWildcard()) {
             auto eb = detail::ServerRequestHelper::eventBase(request);
             eb->runInEventBaseThread([request = std::move(request)]() mutable {
               AsyncProcessorHelper::sendUnknownMethodError(

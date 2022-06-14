@@ -364,7 +364,7 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           Cpp2RequestContext* context,
           folly::EventBase* eb,
           concurrency::ThreadManager* tm) override {
-        if (untypedMethodMetadata.isWildcard) {
+        if (untypedMethodMetadata.isWildcard()) {
           std::string message = folly::variant_match(
               message_,
               [](const std::string& m) { return m; },
@@ -391,7 +391,7 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           ServerRequest&& request,
           const AsyncProcessorFactory::MethodMetadata& methodMetadata)
           override {
-        if (methodMetadata.isWildcard) {
+        if (methodMetadata.isWildcard()) {
           std::string message = folly::variant_match(
               message_,
               [](const std::string& m) { return m; },

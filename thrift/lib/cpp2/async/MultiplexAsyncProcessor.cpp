@@ -186,7 +186,7 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
       }
     };
 
-    if (!untypedMethodMetadata.isWildcard) {
+    if (!untypedMethodMetadata.isWildcard()) {
       const auto& methodMetadata =
           AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
               untypedMethodMetadata);
@@ -345,7 +345,7 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
 
   std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
   derefProcessor(const MethodMetadata& methodMetadata) const {
-    if (methodMetadata.isWildcard) {
+    if (methodMetadata.isWildcard()) {
       return std::make_pair(
           processors_[compositionMetadata_.wildcardIndex().value()].get(),
           &methodMetadata);
@@ -418,7 +418,7 @@ MultiplexAsyncProcessorFactory::createMethodMetadata() {
 std::shared_ptr<folly::RequestContext>
 MultiplexAsyncProcessorFactory::getBaseContextForRequest(
     const MethodMetadata& untypedMethodMetadata) {
-  if (!untypedMethodMetadata.isWildcard) {
+  if (!untypedMethodMetadata.isWildcard()) {
     const auto& methodMetadata =
         AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
             untypedMethodMetadata);
