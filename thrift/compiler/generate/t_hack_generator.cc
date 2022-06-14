@@ -567,11 +567,7 @@ class t_hack_generator : public t_concat_generator {
   std::string field_to_typehint(
       const t_field& tfield,
       const std::string& struct_class_name,
-      bool is_field_nullable = false,
-      bool is_type_nullable = false,
-      bool shape = false,
-      bool immutable_collections = false,
-      bool ignore_adapter = false);
+      bool is_field_nullable = false);
   std::string get_stream_function_return_typehint(
       const t_stream_response* tstream);
   std::string get_sink_function_return_typehint(const t_sink* tsink);
@@ -5873,25 +5869,15 @@ std::string t_hack_generator::type_to_typehint(
 std::string t_hack_generator::field_to_typehint(
     const t_field& tfield,
     const std::string& struct_class_name,
-    bool is_field_nullable,
-    bool is_type_nullable,
-    bool shape,
-    bool immutable_collections,
-    bool ignore_adapter) {
+    bool is_field_nullable) {
   std::string typehint;
-  if (!ignore_adapter) {
-    // Check the adapter before resolving typedefs.
-    if (const auto* adapter = find_hack_field_adapter(tfield)) {
-      typehint = *adapter + "::THackType";
-    }
+  // Check the adapter before resolving typedefs.
+  if (const auto* adapter = find_hack_field_adapter(tfield)) {
+    typehint = *adapter + "::THackType";
   }
+
   if (typehint.empty()) {
-    typehint = type_to_typehint(
-        tfield.get_type(),
-        is_type_nullable,
-        shape,
-        immutable_collections,
-        ignore_adapter);
+    typehint = type_to_typehint(tfield.get_type());
   }
   if (const auto* field_wrapper = find_hack_wrapper(tfield)) {
     typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
