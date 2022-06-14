@@ -157,19 +157,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   };
 
   /**
-   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
-   * type should only be called before the server has started processing
-   * requests.
-   */
-  struct StaticAttributeTag {};
-  /**
-   * Tag type for ServerAttributeDynamic setters. Setters marked with this tag
-   * type can be called even after the server has started processing requests.
-   * The corresponding value will be dynamically updated.
-   */
-  struct DynamicAttributeTag {};
-
-  /**
    * The type of thread manager to create for the server.
    */
   enum class ThreadManagerType : int {
@@ -771,7 +758,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  uint32_t getMaxRequests() const {
+  uint32_t getMaxRequests() const override {
     return adaptiveConcurrencyController_.enabled()
         ? static_cast<uint32_t>(adaptiveConcurrencyController_.getMaxRequests())
         : maxRequests_.get();
@@ -785,7 +772,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMaxRequests(
       uint32_t maxRequests,
       AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) {
+      DynamicAttributeTag = DynamicAttributeTag{}) override {
     maxRequests_.set(maxRequests, source);
     // Eventually we'll remove the simple setMaxRequests but for now ensure it
     // updates the concurrency controller for the default async pool.

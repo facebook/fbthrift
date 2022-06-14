@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -60,6 +61,19 @@ struct PreprocessParams;
  */
 class ServerConfigs {
  public:
+  /**
+   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
+   * type should only be called before the server has started processing
+   * requests.
+   */
+  struct StaticAttributeTag {};
+  /**
+   * Tag type for ServerAttributeDynamic setters. Setters marked with this tag
+   * type can be called even after the server has started processing requests.
+   * The corresponding value will be dynamically updated.
+   */
+  struct DynamicAttributeTag {};
+
   virtual ~ServerConfigs() = default;
 
   /**
@@ -148,6 +162,12 @@ class ServerConfigs {
   }
 
   int32_t getActiveRequests() const { return activeRequests_.load(); }
+
+  virtual uint32_t getMaxRequests() const = 0;
+  virtual void setMaxRequests(
+      uint32_t maxRequests,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) = 0;
 
   enum class RequestHandlingCapability { NONE, INTERNAL_METHODS_ONLY, ALL };
   /**

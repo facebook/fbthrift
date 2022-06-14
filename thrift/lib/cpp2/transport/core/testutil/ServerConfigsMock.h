@@ -21,6 +21,7 @@
 #include <folly/experimental/observer/SimpleObservable.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 
@@ -80,6 +81,16 @@ class ServerConfigsMock : public ServerConfigs {
   const AdaptiveConcurrencyController& getAdaptiveConcurrencyController()
       const override {
     return adaptiveConcurrencyController_;
+  }
+
+  uint32_t getMaxRequests() const { return **oMaxRequests_.getObserver(); }
+
+  void setMaxRequests(
+      uint32_t maxRequests,
+      apache::thrift::AttributeSource =
+          apache::thrift::AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
+    oMaxRequests_.setValue(maxRequests);
   }
 
   uint32_t getListenerTos() const override { return 0; }
