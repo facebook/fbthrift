@@ -23,18 +23,26 @@ from thrift.test.testset import thrift_types
 
 class AnyRegistryTest(unittest.TestCase):
     def test_round_trip(self) -> None:
-        registry = AnyRegistry()
-        registry.register_module(thrift_types)
-        original = thrift_types.struct_map_string_i32(
-            field_1={
-                "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42
-            }
-        )
-        any_obj = registry.store(original, StandardProtocol.Compact)
-        self.assertIsNotNone(any_obj.typeHashPrefixSha2_256)
-        self.assertEqual(StandardProtocol.Compact, any_obj.protocol)
-        loaded = registry.load(any_obj)
-        self.assertEqual(original, loaded)
+        def _test_for_protocol(protocol: StandardProtocol) -> None:
+            registry = AnyRegistry()
+            registry.register_module(thrift_types)
+            original = thrift_types.struct_map_string_i32(
+                field_1={
+                    "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42
+                }
+            )
+            any_obj = registry.store(original, protocol)
+            self.assertIsNotNone(any_obj.typeHashPrefixSha2_256)
+            self.assertEqual(protocol, any_obj.protocol)
+            loaded = registry.load(any_obj)
+            self.assertEqual(original, loaded)
+
+        for prot in (
+            StandardProtocol.Binary,
+            StandardProtocol.Compact,
+            StandardProtocol.SimpleJson,
+        ):
+            _test_for_protocol(prot)
 
     def test_absent_protocol(self) -> None:
         registry = AnyRegistry()

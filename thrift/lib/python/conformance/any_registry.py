@@ -34,6 +34,8 @@ def _to_serializer_protocol(protocol: typing.Optional[StandardProtocol]) -> Prot
         return Protocol.BINARY
     if protocol == StandardProtocol.Compact:
         return Protocol.COMPACT
+    if protocol == StandardProtocol.SimpleJson:
+        return Protocol.JSON
     raise ValueError(f"Unsupported protocol: {protocol}")
 
 
