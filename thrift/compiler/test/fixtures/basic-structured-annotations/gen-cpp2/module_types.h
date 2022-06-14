@@ -201,6 +201,10 @@ class structured_annotation_inline final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -394,6 +398,10 @@ class structured_annotation_with_default final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 1;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
   
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
@@ -532,6 +540,10 @@ class structured_annotation_forward final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 1;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
   
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
@@ -668,6 +680,10 @@ class structured_annotation_recursive final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_forward>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 3;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, };
   
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::recurse __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -912,6 +928,10 @@ class structured_annotation_nested final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::nest __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -1105,6 +1125,10 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::i64_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
   
   static ::apache::thrift::tag::annotated_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::annotated_type __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -1411,6 +1435,10 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 1;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
   
   static ::apache::thrift::tag::context __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
@@ -1562,6 +1590,10 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i64_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::first __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::second __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);

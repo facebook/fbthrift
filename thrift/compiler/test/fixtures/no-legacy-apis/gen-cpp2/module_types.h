@@ -131,6 +131,10 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::myIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::myStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -324,6 +328,10 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);

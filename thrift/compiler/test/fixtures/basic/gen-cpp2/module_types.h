@@ -232,6 +232,9 @@ class MyDataItem final  {
   static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 0;
+
   
 
   static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
@@ -317,6 +320,10 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::string_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 9;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, };
   
   static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::MyStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -895,6 +902,10 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
   
   static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -1347,6 +1358,10 @@ class ReservedKeyword final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 1;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
   
   static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
@@ -1481,6 +1496,10 @@ class UnionToBeRenamed final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 1;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
   
   static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 

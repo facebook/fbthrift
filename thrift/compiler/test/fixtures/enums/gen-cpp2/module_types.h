@@ -135,6 +135,10 @@ class SomeStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
   
   static ::apache::thrift::tag::reasonable __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::fine __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);

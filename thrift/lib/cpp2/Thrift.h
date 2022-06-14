@@ -127,6 +127,12 @@ struct struct_private_access {
   static decltype(T::__fbthrift_ident(FieldIdTag<Id>{})) __fbthrift_ident();
   template <typename T, FieldId Id>
   using ident_tag = decltype(__fbthrift_ident<T, Id>());
+
+  template <typename T>
+  static constexpr auto __fbthrift_field_ids = T::__fbthrift_field_ids;
+
+  template <typename T>
+  static constexpr auto __fbthrift_field_size_v = T::__fbthrift_field_size_v;
 };
 
 template <typename T, typename = void>

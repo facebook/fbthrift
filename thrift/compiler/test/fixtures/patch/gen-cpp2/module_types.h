@@ -588,6 +588,10 @@ class MyData final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -779,6 +783,10 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -1092,6 +1100,10 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 24;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, ::apache::thrift::FieldId{10}, ::apache::thrift::FieldId{11}, ::apache::thrift::FieldId{12}, ::apache::thrift::FieldId{13}, ::apache::thrift::FieldId{14}, ::apache::thrift::FieldId{15}, ::apache::thrift::FieldId{16}, ::apache::thrift::FieldId{17}, ::apache::thrift::FieldId{18}, ::apache::thrift::FieldId{19}, ::apache::thrift::FieldId{20}, ::apache::thrift::FieldId{21}, ::apache::thrift::FieldId{22}, ::apache::thrift::FieldId{23}, ::apache::thrift::FieldId{30}, };
   
   static ::apache::thrift::tag::boolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::byteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -2525,6 +2537,10 @@ class MyDataPatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -2694,6 +2710,10 @@ class MyDataValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 3;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, };
   
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -2918,6 +2938,10 @@ class OptionalMyDataValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -3185,6 +3209,10 @@ class MyUnionPatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 2;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
   
   static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -3355,6 +3383,10 @@ class MyUnionValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -3633,6 +3665,10 @@ class OptionalMyUnionValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -3902,6 +3938,10 @@ class MyStructField21PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -4198,6 +4238,10 @@ class OptionalMyStructField21PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField21PatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -4477,6 +4521,10 @@ class MyStructField22PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -4773,6 +4821,10 @@ class OptionalMyStructField22PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField22PatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -5051,6 +5103,10 @@ class MyStructField23PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 3;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{7}, };
   
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -5294,6 +5350,10 @@ class OptionalMyStructField23PatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField23PatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
@@ -5593,6 +5653,10 @@ class MyStructPatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField23PatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 24;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, ::apache::thrift::FieldId{10}, ::apache::thrift::FieldId{11}, ::apache::thrift::FieldId{12}, ::apache::thrift::FieldId{13}, ::apache::thrift::FieldId{14}, ::apache::thrift::FieldId{15}, ::apache::thrift::FieldId{16}, ::apache::thrift::FieldId{17}, ::apache::thrift::FieldId{18}, ::apache::thrift::FieldId{19}, ::apache::thrift::FieldId{20}, ::apache::thrift::FieldId{21}, ::apache::thrift::FieldId{22}, ::apache::thrift::FieldId{23}, ::apache::thrift::FieldId{30}, };
   
   static ::apache::thrift::tag::boolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::byteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -6752,6 +6816,10 @@ class MyStructValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 3;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, };
   
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
@@ -6976,6 +7044,10 @@ class OptionalMyStructValuePatchStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, };
   
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);

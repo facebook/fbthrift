@@ -23,6 +23,8 @@ namespace apache {
 namespace thrift {
 namespace type {
 
+using detail::field_size_v;
+
 template <class StructTag>
 using ordinal_fn =
     ::apache::thrift::detail::st::struct_private_access::ordinal_fn<
@@ -40,18 +42,17 @@ template <typename FieldTag>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_v =
     FieldId(detail::field_to_id::apply<FieldTag>::value);
 
-// The number of fields in the given struct.
-template <typename StructTag>
-FOLLY_INLINE_VARIABLE constexpr int16_t field_size_v =
-    detail::fields_size<detail::struct_fields<StructTag>>::value;
-
 template <typename StructTag, Ordinal ord>
 using field_tag_by_ordinal =
     typename detail::field_tag_by_ord<StructTag, ord>::type;
 
-template <typename Structured, Ordinal ord>
+template <
+    typename StructTag,
+    Ordinal ord,
+    detail::if_valid_ordinal<StructTag, ord>* = nullptr>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
-    field_id_v<field_tag_by_ordinal<Structured, ord>>;
+    ::apache::thrift::detail::st::struct_private_access::__fbthrift_field_ids<
+        native_type<StructTag>>[folly::to_underlying(ord) - 1];
 
 template <typename Structured, Ordinal ord>
 using field_type_tag_by_ordinal =

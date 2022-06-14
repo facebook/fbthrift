@@ -211,6 +211,10 @@ class Foo final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = 11;
+
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, ::apache::thrift::FieldId{10}, ::apache::thrift::FieldId{11}, };
   
   static ::apache::thrift::tag::intField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::optionalIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);

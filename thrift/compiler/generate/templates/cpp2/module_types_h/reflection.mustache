@@ -20,6 +20,12 @@
     <%field:type_tag%><%^last?%>,<%/last?%>
   <%/struct:fields%>
   >;
+
+  static constexpr std::size_t __fbthrift_field_size_v = <%struct:fields_size%>;
+
+<%#struct:fields?%>
+  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {<%#struct:fields%>::apache::thrift::FieldId{<%field:key%>}, <%/struct:fields%>};
+<%/struct:fields?%>
   
   <%#struct:fields%>
   static ::apache::thrift::tag::<%field:cpp_name%> __fbthrift_ident(::apache::thrift::type::field_id_u_c<<%field:key%>>);

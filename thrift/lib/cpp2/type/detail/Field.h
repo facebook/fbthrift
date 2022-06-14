@@ -50,6 +50,15 @@ using struct_fields =
     ::apache::thrift::detail::st::struct_private_access::fields<
         native_type<StructTag>>;
 
+template <typename StructTag>
+FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
+    ::apache::thrift::detail::st::struct_private_access::
+        __fbthrift_field_size_v<native_type<StructTag>>;
+
+template <typename StructTag, Ordinal ord>
+using if_valid_ordinal = std::enable_if_t<
+    ord != Ordinal{0} && folly::to_underlying(ord) <= field_size_v<StructTag>>;
+
 struct field_to_id {
   template <class>
   struct apply;
