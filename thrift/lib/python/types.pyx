@@ -94,7 +94,9 @@ cdef class StringTypeInfo:
         return inst
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, str value not None):
+    def to_internal_data(self, object value not None):
+        if not isinstance(value, str):
+            raise TypeError(f"value {value} is not a <class 'str'>.")
         return value.encode("UTF-8")
 
     # convert deserialized data to user format

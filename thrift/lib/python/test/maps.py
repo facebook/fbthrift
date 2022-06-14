@@ -15,6 +15,8 @@
 
 import unittest
 
+from enum import Enum
+
 from testing.thrift_types import (
     easy,
     F14MapFollyString,
@@ -25,6 +27,10 @@ from testing.thrift_types import (
     StrStrIntListMapMap,
     StrStrMap,
 )
+
+
+class MyStringEnum(str, Enum):
+    test = "test"
 
 
 class MapTests(unittest.TestCase):
@@ -48,6 +54,7 @@ class MapTests(unittest.TestCase):
     def test_getitem(self) -> None:
         x = StrStrMap({"test": "value"})
         self.assertEqual(x["test"], "value")
+        self.assertEqual(x[MyStringEnum.test], "value")
         with self.assertRaises(KeyError):
             # pyre-ignore[6]: purposely use a wrong type to raise a KeyError
             x[5]
