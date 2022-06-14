@@ -62,6 +62,8 @@ class MyStruct(_fbthrift_python_types.Struct):
         no_hack_codegen_field: _typing.Optional[str]=...
     ) -> MyStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, bool, bool, _typing.AbstractSet[float], str]]]: ...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 
 class MyDataItem(_fbthrift_python_types.Struct):
@@ -73,6 +75,8 @@ class MyDataItem(_fbthrift_python_types.Struct):
         self,
     ) -> MyDataItem: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyDataItem": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 
 class MyUnion(_fbthrift_python_types.Union):
@@ -101,6 +105,8 @@ class MyUnion(_fbthrift_python_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct, MyDataItem, _typing.AbstractSet[float]]]
     type: Type
     def get_type(self) -> Type:...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class ReservedKeyword(_fbthrift_python_types.Struct):
@@ -115,6 +121,8 @@ class ReservedKeyword(_fbthrift_python_types.Struct):
         reserved_field: _typing.Optional[int]=...
     ) -> ReservedKeyword: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.ReservedKeyword": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ReservedKeyword": ...   # type: ignore
 
 
 class UnionToBeRenamed(_fbthrift_python_types.Union):
@@ -134,6 +142,8 @@ class UnionToBeRenamed(_fbthrift_python_types.Union):
     value: _typing.Final[_typing.Union[None, int]]
     type: Type
     def get_type(self) -> Type:...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.UnionToBeRenamed": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.UnionToBeRenamed": ...   # type: ignore
 
 
 class _fbthrift_FooService_simple_rpc_args(_fbthrift_python_types.Struct):

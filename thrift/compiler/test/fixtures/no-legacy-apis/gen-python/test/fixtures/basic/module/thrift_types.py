@@ -46,6 +46,17 @@ class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.basic.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStruct, self)
 
 
 class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -80,6 +91,17 @@ class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.basic.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnion, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import test.fixtures.basic.module.thrift_metadata

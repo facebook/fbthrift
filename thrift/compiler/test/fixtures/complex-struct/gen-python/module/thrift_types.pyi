@@ -43,6 +43,8 @@ class MyStructFloatFieldThrowExp(_fbthrift_python_types.Struct):
         myFloatField: _typing.Optional[float]=...
     ) -> MyStructFloatFieldThrowExp: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int, str, float]]]: ...
+    def to_py3_struct(self) -> "module.types.MyStructFloatFieldThrowExp": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructFloatFieldThrowExp": ...   # type: ignore
 
 
 class MyStructMapFloatThrowExp(_fbthrift_python_types.Struct):
@@ -60,6 +62,8 @@ class MyStructMapFloatThrowExp(_fbthrift_python_types.Struct):
         mapListOfFloats: _typing.Optional[_typing.Mapping[int, _typing.Sequence[_typing.Sequence[float]]]]=...
     ) -> MyStructMapFloatThrowExp: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, _typing.Mapping[int, _typing.Sequence[_typing.Sequence[float]]]]]]: ...
+    def to_py3_struct(self) -> "module.types.MyStructMapFloatThrowExp": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructMapFloatThrowExp": ...   # type: ignore
 
 
 class MyStruct(_fbthrift_python_types.Struct):
@@ -155,6 +159,8 @@ class MyStruct(_fbthrift_python_types.Struct):
         mListList: _typing.Optional[_typing.Mapping[_typing.Sequence[int], _typing.Sequence[int]]]=...
     ) -> MyStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, int, int, int, float, _typing.Sequence[float], _typing.Sequence[int], _typing.Sequence[int], _typing.Sequence[int], _typing.Sequence[str], _typing.Sequence[bool], _typing.Sequence[int], _typing.Mapping[int, str], _typing.Mapping[int, str], _typing.Mapping[str, MyStruct], _typing.Mapping[str, bool], _typing.Mapping[int, int], _typing.Mapping[int, bool], _typing.AbstractSet[int], _typing.AbstractSet[MyStruct], _typing.AbstractSet[int], _typing.AbstractSet[str], _typing.AbstractSet[int], _typing.Mapping[_typing.Sequence[int], _typing.Sequence[int]]]]]: ...
+    def to_py3_struct(self) -> "module.types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 
 class SimpleStruct(_fbthrift_python_types.Struct):
@@ -172,6 +178,8 @@ class SimpleStruct(_fbthrift_python_types.Struct):
         name: _typing.Optional[str]=...
     ) -> SimpleStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str]]]: ...
+    def to_py3_struct(self) -> "module.types.SimpleStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.SimpleStruct": ...   # type: ignore
 
 
 class defaultStruct(_fbthrift_python_types.Struct):
@@ -249,6 +257,8 @@ class defaultStruct(_fbthrift_python_types.Struct):
         enumMapDFset: _typing.Optional[_typing.Mapping[str, _typing.Mapping[int, MyEnum]]]=...
     ) -> defaultStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int, int, int, bytes, bytes, int, int, float, float, float, _typing.Mapping[int, str], _typing.Sequence[MyEnum], _typing.AbstractSet[str], SimpleStruct, _typing.Sequence[SimpleStruct], MyUnion, _typing.Sequence[MyUnion], _typing.Mapping[int, _typing.Sequence[SimpleStruct]], _typing.Mapping[int, str], _typing.Mapping[int, int], _typing.Mapping[str, _typing.Mapping[int, MyEnum]]]]]: ...
+    def to_py3_struct(self) -> "module.types.defaultStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.defaultStruct": ...   # type: ignore
 
 
 class MyStructTypeDef(_fbthrift_python_types.Struct):
@@ -287,6 +297,8 @@ class MyStructTypeDef(_fbthrift_python_types.Struct):
         myMapListOfTypeDef: _typing.Optional[_typing.Mapping[int, _typing.Sequence[_typing.Sequence[float]]]]=...
     ) -> MyStructTypeDef: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int, str, str, _typing.Mapping[int, str], _typing.Mapping[int, str], _typing.Sequence[float], _typing.Sequence[float], _typing.Mapping[int, _typing.Sequence[_typing.Sequence[float]]]]]]: ...
+    def to_py3_struct(self) -> "module.types.MyStructTypeDef": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructTypeDef": ...   # type: ignore
 
 
 class MyDataItem(_fbthrift_python_types.Struct):
@@ -298,6 +310,8 @@ class MyDataItem(_fbthrift_python_types.Struct):
         self,
     ) -> MyDataItem: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+    def to_py3_struct(self) -> "module.types.MyDataItem": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 
 class MyUnion(_fbthrift_python_types.Union):
@@ -332,6 +346,8 @@ class MyUnion(_fbthrift_python_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct, MyDataItem, ComplexNestedStruct, int, int]]
     type: Type
     def get_type(self) -> Type:...
+    def to_py3_struct(self) -> "module.types.MyUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class MyUnionFloatFieldThrowExp(_fbthrift_python_types.Union):
@@ -360,6 +376,8 @@ class MyUnionFloatFieldThrowExp(_fbthrift_python_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, _typing.Sequence[_typing.Sequence[float]], MyDataItem, ComplexNestedStruct]]
     type: Type
     def get_type(self) -> Type:...
+    def to_py3_struct(self) -> "module.types.MyUnionFloatFieldThrowExp": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnionFloatFieldThrowExp": ...   # type: ignore
 
 
 class ComplexNestedStruct(_fbthrift_python_types.Struct):
@@ -425,6 +443,8 @@ class ComplexNestedStruct(_fbthrift_python_types.Struct):
         mapKeyListValSet: _typing.Optional[_typing.Mapping[_typing.Sequence[int], _typing.AbstractSet[_typing.Mapping[float, str]]]]=...
     ) -> ComplexNestedStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_typing.AbstractSet[_typing.AbstractSet[int]], _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[MyEnum]]]], _typing.Sequence[_typing.Sequence[MyStruct]], _typing.AbstractSet[_typing.Sequence[_typing.Sequence[int]]], _typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[int]]], _typing.Mapping[int, _typing.Sequence[_typing.Sequence[MyStruct]]], _typing.Mapping[MyStruct, int], _typing.Sequence[_typing.Mapping[int, int]], _typing.Sequence[_typing.Mapping[str, _typing.Sequence[MyStruct]]], _typing.Mapping[_typing.AbstractSet[int], int], _typing.Mapping[_typing.Sequence[str], int], _typing.Mapping[_typing.Mapping[int, str], _typing.Mapping[int, str]], _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]], _typing.Mapping[_typing.Mapping[_typing.Mapping[int, str], str], _typing.Mapping[int, str]], _typing.Mapping[int, _typing.Sequence[MyStruct]], _typing.Mapping[int, _typing.AbstractSet[bool]], _typing.Mapping[_typing.AbstractSet[bool], MyEnum], _typing.Mapping[_typing.Sequence[int], _typing.AbstractSet[_typing.Mapping[float, str]]]]]]: ...
+    def to_py3_struct(self) -> "module.types.ComplexNestedStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ComplexNestedStruct": ...   # type: ignore
 
 
 class TypeRemapped(_fbthrift_python_types.Struct):
@@ -448,6 +468,8 @@ class TypeRemapped(_fbthrift_python_types.Struct):
         binaryTestBuffer: _typing.Optional[bytes]=...
     ) -> TypeRemapped: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_typing.Mapping[int, str], _typing.Mapping[int, _typing.Mapping[int, int]], int, bytes]]]: ...
+    def to_py3_struct(self) -> "module.types.TypeRemapped": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.TypeRemapped": ...   # type: ignore
 
 
 class emptyXcep(_fbthrift_python_exceptions.GeneratedError):
@@ -456,6 +478,8 @@ class emptyXcep(_fbthrift_python_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+    def to_py3_struct(self) -> "module.types.emptyXcep": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.emptyXcep": ...   # type: ignore
 
 
 class reqXcep(_fbthrift_python_exceptions.GeneratedError):
@@ -468,6 +492,8 @@ class reqXcep(_fbthrift_python_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
+    def to_py3_struct(self) -> "module.types.reqXcep": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.reqXcep": ...   # type: ignore
 
 
 class optXcep(_fbthrift_python_exceptions.GeneratedError):
@@ -480,6 +506,8 @@ class optXcep(_fbthrift_python_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
+    def to_py3_struct(self) -> "module.types.optXcep": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.optXcep": ...   # type: ignore
 
 
 class complexException(_fbthrift_python_exceptions.GeneratedError):
@@ -500,6 +528,8 @@ class complexException(_fbthrift_python_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, _typing.Sequence[str], MyEnum, MyUnion, MyStruct, _typing.Mapping[int, str]]]]: ...
+    def to_py3_struct(self) -> "module.types.complexException": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.complexException": ...   # type: ignore
 
 
 DEFAULT_PORT_NUM: int = ...

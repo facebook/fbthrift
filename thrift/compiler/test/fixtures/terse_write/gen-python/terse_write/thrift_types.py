@@ -30,6 +30,17 @@ class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("terse_write.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("terse_write.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStruct, self)
 
 
 class MyStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
@@ -56,6 +67,17 @@ class MyStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructWithCustomDefault()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("terse_write.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStructWithCustomDefault, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("terse_write.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructWithCustomDefault, self)
 
 
 class StructLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -186,6 +208,17 @@ class StructLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_StructLevelTerseStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("terse_write.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.StructLevelTerseStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("terse_write.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.StructLevelTerseStruct, self)
 
 
 class FieldLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -428,6 +461,17 @@ class FieldLevelTerseStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_FieldLevelTerseStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("terse_write.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.FieldLevelTerseStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("terse_write.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.FieldLevelTerseStruct, self)
 
 
 class TerseStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
@@ -558,6 +602,17 @@ class TerseStructWithCustomDefault(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_TerseStructWithCustomDefault()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("terse_write.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.TerseStructWithCustomDefault, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("terse_write.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.TerseStructWithCustomDefault, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import terse_write.thrift_metadata

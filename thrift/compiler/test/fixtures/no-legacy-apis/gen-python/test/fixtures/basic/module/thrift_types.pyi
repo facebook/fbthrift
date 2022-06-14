@@ -36,6 +36,8 @@ class MyStruct(_fbthrift_python_types.Struct):
         myStringField: _typing.Optional[str]=...
     ) -> MyStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str]]]: ...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 
 class MyUnion(_fbthrift_python_types.Union):
@@ -58,6 +60,8 @@ class MyUnion(_fbthrift_python_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct]]
     type: Type
     def get_type(self) -> Type:...
+    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class _fbthrift_MyService_query_args(_fbthrift_python_types.Struct):

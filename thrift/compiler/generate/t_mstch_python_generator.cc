@@ -423,6 +423,8 @@ class mstch_python_program : public mstch_program {
         this,
         {
             {"program:module_path", &mstch_python_program::module_path},
+            {"program:py_legacy_module_path",
+             &mstch_python_program::py_legacy_module_path},
             {"program:is_types_file?", &mstch_python_program::is_types_file},
             {"program:include_namespaces",
              &mstch_python_program::include_namespaces},
@@ -467,6 +469,14 @@ class mstch_python_program : public mstch_program {
   mstch::node module_path() {
     return get_py3_namespace_with_name_and_prefix(
         program_, get_option("root_module_prefix"));
+  }
+
+  mstch::node py_legacy_module_path() {
+    std::string module_path = program_->get_namespace("py");
+    if (module_path.empty()) {
+      return program_->name();
+    }
+    return module_path;
   }
 
   mstch::node base_library_package() {

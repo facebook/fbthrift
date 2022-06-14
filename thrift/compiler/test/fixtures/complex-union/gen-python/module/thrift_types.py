@@ -74,6 +74,17 @@ class ComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.ComplexUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.ComplexUnion, self)
 
 
 class ListUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -108,6 +119,17 @@ class ListUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_ListUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.ListUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.ListUnion, self)
 
 
 class DataUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -142,6 +164,17 @@ class DataUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_DataUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.DataUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.DataUnion, self)
 
 
 class Val(metaclass=_fbthrift_python_types.StructMeta):
@@ -184,6 +217,17 @@ class Val(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_Val()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.Val, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.Val, self)
 
 
 class ValUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -218,6 +262,17 @@ class ValUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_ValUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.ValUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.ValUnion, self)
 
 
 class VirtualComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -252,6 +307,17 @@ class VirtualComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_VirtualComplexUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.VirtualComplexUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.VirtualComplexUnion, self)
 
 
 class NonCopyableStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -278,6 +344,17 @@ class NonCopyableStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_NonCopyableStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.NonCopyableStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.NonCopyableStruct, self)
 
 
 class NonCopyableUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -304,6 +381,17 @@ class NonCopyableUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_NonCopyableUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.NonCopyableUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.NonCopyableUnion, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata

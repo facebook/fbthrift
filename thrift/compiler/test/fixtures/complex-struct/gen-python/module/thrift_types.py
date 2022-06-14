@@ -60,6 +60,17 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructFloatFieldThrowExp()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStructFloatFieldThrowExp, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructFloatFieldThrowExp, self)
 
 
 class MyStructMapFloatThrowExp(metaclass=_fbthrift_python_types.StructMeta):
@@ -94,6 +105,17 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructMapFloatThrowExp()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStructMapFloatThrowExp, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructMapFloatThrowExp, self)
 
 
 class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -336,6 +358,17 @@ class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStruct, self)
 
 
 class SimpleStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -370,6 +403,17 @@ class SimpleStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_SimpleStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.SimpleStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.SimpleStruct, self)
 
 
 class defaultStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -564,6 +608,17 @@ class defaultStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_defaultStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.defaultStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.defaultStruct, self)
 
 
 class MyStructTypeDef(metaclass=_fbthrift_python_types.StructMeta):
@@ -654,6 +709,17 @@ class MyStructTypeDef(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructTypeDef()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyStructTypeDef, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructTypeDef, self)
 
 
 class MyDataItem(metaclass=_fbthrift_python_types.StructMeta):
@@ -672,6 +738,17 @@ class MyDataItem(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyDataItem()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyDataItem, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyDataItem, self)
 
 
 class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -738,6 +815,17 @@ class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnion, self)
 
 
 class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_python_types.UnionMeta):
@@ -788,6 +876,17 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnionFloatFieldThrowExp()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.MyUnionFloatFieldThrowExp, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnionFloatFieldThrowExp, self)
 
 
 class ComplexNestedStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -950,6 +1049,17 @@ class ComplexNestedStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexNestedStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.ComplexNestedStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.ComplexNestedStruct, self)
 
 
 class TypeRemapped(metaclass=_fbthrift_python_types.StructMeta):
@@ -1000,6 +1110,17 @@ class TypeRemapped(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_TypeRemapped()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.TypeRemapped, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.TypeRemapped, self)
 
 
 class emptyXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -1018,6 +1139,17 @@ class emptyXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_emptyXcep()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.emptyXcep, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.emptyXcep, self)
 
 
 class reqXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -1052,6 +1184,17 @@ class reqXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_reqXcep()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.reqXcep, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.reqXcep, self)
 
 
 class optXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -1086,6 +1229,17 @@ class optXcep(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_optXcep()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.optXcep, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.optXcep, self)
 
 
 class complexException(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -1152,6 +1306,17 @@ class complexException(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta)
     def __get_metadata__():
         return _fbthrift_metadata__exception_complexException()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.complexException, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.complexException, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata

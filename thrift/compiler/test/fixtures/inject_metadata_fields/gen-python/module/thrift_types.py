@@ -38,6 +38,17 @@ class Fields(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_Fields()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.Fields, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.Fields, self)
 
 
 class FieldsInjectedToEmptyStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -64,6 +75,17 @@ class FieldsInjectedToEmptyStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_FieldsInjectedToEmptyStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.FieldsInjectedToEmptyStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.FieldsInjectedToEmptyStruct, self)
 
 
 class FieldsInjectedToStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -98,6 +120,17 @@ class FieldsInjectedToStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_FieldsInjectedToStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.FieldsInjectedToStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.FieldsInjectedToStruct, self)
 
 
 class FieldsInjectedWithIncludedStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -148,6 +181,17 @@ class FieldsInjectedWithIncludedStruct(metaclass=_fbthrift_python_types.StructMe
     def __get_metadata__():
         return _fbthrift_metadata__struct_FieldsInjectedWithIncludedStruct()
 
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.FieldsInjectedWithIncludedStruct, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.FieldsInjectedWithIncludedStruct, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata
