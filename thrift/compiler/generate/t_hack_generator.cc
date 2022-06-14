@@ -753,9 +753,6 @@ class t_hack_generator : public t_concat_generator {
 
   const char* UNION_EMPTY = "_EMPTY_";
 
-  std::string generate_array_typehint(
-      const std::string& key_type, const std::string& value_type);
-
   bool is_base_exception_property(const t_field*);
 
   std::string render_service_metadata_response(
@@ -1533,13 +1530,6 @@ bool t_hack_generator::is_hack_const_type(const t_type* type) {
     }
   }
   return false;
-}
-
-std::string t_hack_generator::generate_array_typehint(
-    const std::string& key_type, const std::string& value_type) {
-  std::ostringstream stream;
-  stream << array_keyword_ << "<" << key_type << ", " << value_type << ">";
-  return stream.str();
 }
 
 std::string t_hack_generator::render_string(std::string value) {
