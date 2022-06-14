@@ -37,7 +37,17 @@ public class FB303ServiceAsyncClientImpl extends AbstractThriftClient implements
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      super(channel, headers, persistentHeaders, eventHandlers);
+      this("FB303Service", channel, methods, headers, persistentHeaders, eventHandlers);
+    }
+
+    public FB303ServiceAsyncClientImpl(
+        String serviceName,
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(serviceName, channel, headers, persistentHeaders, eventHandlers);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -57,7 +67,19 @@ public class FB303ServiceAsyncClientImpl extends AbstractThriftClient implements
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
+      this("FB303Service", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+    }
+
+    public FB303ServiceAsyncClientImpl(
+        String serviceName,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        Mono<? extends RpcClient> rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

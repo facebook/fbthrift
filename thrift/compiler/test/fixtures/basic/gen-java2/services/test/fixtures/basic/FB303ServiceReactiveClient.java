@@ -95,6 +95,7 @@ public class FB303ServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.basic.ReservedKeyword> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "FB303Service",
                     _createsimpleRpcWriter(intParameter),
                     _simpleRpc_READER,
                     _simpleRpc_EXCEPTION_READERS,

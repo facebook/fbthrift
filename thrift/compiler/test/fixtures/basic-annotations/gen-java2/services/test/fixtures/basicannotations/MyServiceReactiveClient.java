@@ -99,6 +99,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createpingWriter(),
                     _ping_READER,
                     _ping_EXCEPTION_READERS,
@@ -145,6 +146,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<String> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _creategetRandomDataWriter(),
                     _getRandomData_READER,
                     _getRandomData_EXCEPTION_READERS,
@@ -200,6 +202,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Boolean> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createhasDataByIdWriter(id),
                     _hasDataById_READER,
                     _hasDataById_EXCEPTION_READERS,
@@ -255,6 +258,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<String> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _creategetDataByIdWriter(id),
                     _getDataById_READER,
                     _getDataById_EXCEPTION_READERS,
@@ -319,6 +323,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createputDataByIdWriter(id, data),
                     _putDataById_READER,
                     _putDataById_EXCEPTION_READERS,
@@ -383,6 +388,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createlobDataByIdWriter(id, data),
                     _lobDataById_READER,
                     _lobDataById_EXCEPTION_READERS,
@@ -429,6 +435,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createdoNothingWriter(),
                     _doNothing_READER,
                     _doNothing_EXCEPTION_READERS,

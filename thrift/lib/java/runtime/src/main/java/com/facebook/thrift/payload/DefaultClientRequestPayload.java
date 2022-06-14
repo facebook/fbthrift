@@ -21,6 +21,7 @@ import org.apache.thrift.RequestRpcMetadata;
 
 @SuppressWarnings("rawtypes")
 final class DefaultClientRequestPayload<T> implements ClientRequestPayload<T> {
+  private final String serviceName;
   private final Writer dataWriter;
   private final Reader<T> reader;
   private final Reader firstResponseReader;
@@ -30,6 +31,7 @@ final class DefaultClientRequestPayload<T> implements ClientRequestPayload<T> {
   private final Map<String, String> persistentHeaders;
 
   DefaultClientRequestPayload(
+      final String serviceName,
       final Writer dataWriter,
       final Reader<T> reader,
       final Reader firstResponseReader,
@@ -37,6 +39,7 @@ final class DefaultClientRequestPayload<T> implements ClientRequestPayload<T> {
       final Map<Short, Reader> streamExceptionReaders,
       final RequestRpcMetadata requestRpcMetadata,
       final Map<String, String> persistentHeaders) {
+    this.serviceName = serviceName;
     this.dataWriter = dataWriter;
     this.reader = reader;
     this.firstResponseReader = firstResponseReader;
@@ -44,6 +47,11 @@ final class DefaultClientRequestPayload<T> implements ClientRequestPayload<T> {
     this.streamExceptionReaders = streamExceptionReaders;
     this.requestRpcMetadata = requestRpcMetadata;
     this.persistentHeaders = persistentHeaders;
+  }
+
+  @Override
+  public String getServiceName() {
+    return serviceName;
   }
 
   @Override

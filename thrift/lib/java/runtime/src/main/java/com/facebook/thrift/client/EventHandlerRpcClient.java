@@ -139,6 +139,11 @@ public class EventHandlerRpcClient implements RpcClient {
     }
 
     @Override
+    public String getServiceName() {
+      return delegate.getServiceName();
+    }
+
+    @Override
     public Writer getDataWriter() {
       return protocol -> {
         for (int i = 0; i < handlers.size(); i++) {

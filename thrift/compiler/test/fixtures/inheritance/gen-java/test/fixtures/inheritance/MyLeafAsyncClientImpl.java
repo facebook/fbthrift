@@ -37,7 +37,17 @@ public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsync
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      super(channel, methods, headers, persistentHeaders, eventHandlers);
+      this("MyLeaf", channel, methods, headers, persistentHeaders, eventHandlers);
+    }
+
+    public MyLeafAsyncClientImpl(
+        String serviceName,
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -57,7 +67,19 @@ public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsync
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+      this("MyLeaf", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+    }
+
+    public MyLeafAsyncClientImpl(
+        String serviceName,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        Mono<? extends RpcClient> rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

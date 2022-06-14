@@ -174,6 +174,11 @@ public class InstrumentedRpcClient implements RpcClient {
     }
 
     @Override
+    public String getServiceName() {
+      return delegate.getServiceName();
+    }
+
+    @Override
     public Writer getDataWriter() {
       long start = System.nanoTime();
       return protocol -> {

@@ -86,6 +86,7 @@ public class MyServicePrioParentReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyServicePrioParent",
                     _createpingWriter(),
                     _ping_READER,
                     _ping_EXCEPTION_READERS,
@@ -132,6 +133,7 @@ public class MyServicePrioParentReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyServicePrioParent",
                     _createpongWriter(),
                     _pong_READER,
                     _pong_EXCEPTION_READERS,

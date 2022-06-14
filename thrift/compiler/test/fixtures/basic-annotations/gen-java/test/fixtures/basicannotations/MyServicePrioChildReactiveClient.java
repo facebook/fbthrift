@@ -69,6 +69,7 @@ public class MyServicePrioChildReactiveClient extends test.fixtures.basicannotat
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyServicePrioChild",
                     _createpangWriter(),
                     _pang_READER,
                     _pang_EXCEPTION_READERS,

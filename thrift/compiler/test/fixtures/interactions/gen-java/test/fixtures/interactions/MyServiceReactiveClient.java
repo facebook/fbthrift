@@ -100,6 +100,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createfooWriter(),
                     _foo_READER,
                     _foo_EXCEPTION_READERS,
@@ -155,6 +156,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createinteractWriter(arg),
                     _interact_READER,
                     _interact_EXCEPTION_READERS,
@@ -201,6 +203,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createinteractFastWriter(),
                     _interactFast_READER,
                     _interactFast_EXCEPTION_READERS,
@@ -249,6 +252,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createserializeWriter(),
                     _serialize_READER,
                     _serialize_FIRST_READER,
@@ -337,6 +341,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteraction",
                   _createfrobnicateWriter(),
                   _frobnicate_READER,
                   _frobnicate_EXCEPTION_READERS_INT,
@@ -397,6 +402,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteraction",
                   _createpingWriter(),
                   _ping_READER,
                   _ping_EXCEPTION_READERS_INT,
@@ -448,6 +454,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Boolean> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteraction",
                   _createtruthifyWriter(),
                   _truthify_READER,
                   _truthify_EXCEPTION_READERS_INT,
@@ -551,6 +558,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteractionFast",
                   _createfrobnicateWriter(),
                   _frobnicate_READER,
                   _frobnicate_EXCEPTION_READERS_INT,
@@ -611,6 +619,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteractionFast",
                   _createpingWriter(),
                   _ping_READER,
                   _ping_EXCEPTION_READERS_INT,
@@ -662,6 +671,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Boolean> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteractionFast",
                   _createtruthifyWriter(),
                   _truthify_READER,
                   _truthify_EXCEPTION_READERS_INT,
@@ -764,6 +774,7 @@ public class MyServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "SerialInteraction",
                   _createfrobnicateWriter(),
                   _frobnicate_READER,
                   _frobnicate_EXCEPTION_READERS_INT,

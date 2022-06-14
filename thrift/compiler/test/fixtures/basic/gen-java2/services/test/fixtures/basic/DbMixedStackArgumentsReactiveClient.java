@@ -97,6 +97,7 @@ public class DbMixedStackArgumentsReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<byte[]> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "DbMixedStackArguments",
                     _creategetDataByKey0Writer(key),
                     _getDataByKey0_READER,
                     _getDataByKey0_EXCEPTION_READERS,
@@ -152,6 +153,7 @@ public class DbMixedStackArgumentsReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<byte[]> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "DbMixedStackArguments",
                     _creategetDataByKey1Writer(key),
                     _getDataByKey1_READER,
                     _getDataByKey1_EXCEPTION_READERS,

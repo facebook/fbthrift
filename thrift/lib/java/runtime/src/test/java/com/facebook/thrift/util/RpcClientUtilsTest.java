@@ -95,6 +95,7 @@ public class RpcClientUtilsTest {
   private final Map<Short, Reader> exceptionMap = ImmutableMap.of((short) 1, exReader);
   private final ClientRequestPayload<PingResponse> requestPayload =
       ClientRequestPayload.create(
+          "test",
           null,
           reader,
           reader,
@@ -277,6 +278,7 @@ public class RpcClientUtilsTest {
   public void testUndefinedExceptioStringResponse() {
     ClientRequestPayload<PingResponse> requestPayload =
         ClientRequestPayload.create(
+            "test",
             null,
             reader,
             reader,
@@ -306,6 +308,7 @@ public class RpcClientUtilsTest {
   public void testUndefinedExceptionResponse() {
     ClientRequestPayload<PingResponse> requestPayload =
         ClientRequestPayload.create(
+            "test",
             null,
             reader,
             reader,

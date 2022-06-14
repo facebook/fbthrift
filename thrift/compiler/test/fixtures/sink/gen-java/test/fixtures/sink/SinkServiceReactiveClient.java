@@ -126,6 +126,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodWriter(),
                     _method_READER,
                     _method_EXCEPTION_READERS,
@@ -136,6 +137,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodSinkWriter(_p),
                     _method_READER,
                     _method_EXCEPTION_READERS,
@@ -202,6 +204,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodAndReponseWriter(),
                     _methodAndReponse_READER,
                     _methodAndReponse_FIRST_READER,
@@ -213,6 +216,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodAndReponseSinkWriter(_p),
                     _methodAndReponse_READER,
                     _methodAndReponse_FIRST_READER,
@@ -278,6 +282,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodThrowWriter(),
                     _methodThrow_READER,
                     _methodThrow_EXCEPTION_READERS,
@@ -288,6 +293,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodThrowSinkWriter(_p),
                     _methodThrow_READER,
                     _methodThrow_EXCEPTION_READERS,
@@ -353,6 +359,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodSinkThrowWriter(),
                     _methodSinkThrow_READER,
                     _methodSinkThrow_EXCEPTION_READERS,
@@ -363,6 +370,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodSinkThrowSinkWriter(_p),
                     _methodSinkThrow_READER,
                     _methodSinkThrow_EXCEPTION_READERS,
@@ -428,6 +436,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodFinalThrowWriter(),
                     _methodFinalThrow_READER,
                     _methodFinalThrow_EXCEPTION_READERS,
@@ -438,6 +447,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodFinalThrowSinkWriter(_p),
                     _methodFinalThrow_READER,
                     _methodFinalThrow_EXCEPTION_READERS,
@@ -503,6 +513,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodBothThrowWriter(),
                     _methodBothThrow_READER,
                     _methodBothThrow_EXCEPTION_READERS,
@@ -513,6 +524,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodBothThrowSinkWriter(_p),
                     _methodBothThrow_READER,
                     _methodBothThrow_EXCEPTION_READERS,
@@ -578,6 +590,7 @@ public class SinkServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodFastWriter(),
                     _methodFast_READER,
                     _methodFast_EXCEPTION_READERS,
@@ -588,6 +601,7 @@ public class SinkServiceReactiveClient
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "SinkService",
                     _createmethodFastSinkWriter(_p),
                     _methodFast_READER,
                     _methodFast_EXCEPTION_READERS,

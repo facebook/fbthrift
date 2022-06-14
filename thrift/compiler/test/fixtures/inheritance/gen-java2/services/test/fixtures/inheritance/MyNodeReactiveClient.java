@@ -69,6 +69,7 @@ public class MyNodeReactiveClient extends test.fixtures.inheritance.MyRootReacti
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyNode",
                     _createdoMidWriter(),
                     _doMid_READER,
                     _doMid_EXCEPTION_READERS,

@@ -85,6 +85,7 @@ public class FooServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "FooService",
                     _createsimpleRpcWriter(),
                     _simpleRpc_READER,
                     _simpleRpc_EXCEPTION_READERS,

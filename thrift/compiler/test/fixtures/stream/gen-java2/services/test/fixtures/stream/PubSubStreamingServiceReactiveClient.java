@@ -130,6 +130,7 @@ public class PubSubStreamingServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "PubSubStreamingService",
                     _createreturnstreamWriter(i32From, i32To),
                     _returnstream_READER,
                     _returnstream_EXCEPTION_READERS,
@@ -190,6 +191,7 @@ public class PubSubStreamingServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "PubSubStreamingService",
                     _createstreamthrowsWriter(foo),
                     _streamthrows_READER,
                     _streamthrows_EXCEPTION_READERS,
@@ -250,6 +252,7 @@ public class PubSubStreamingServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "PubSubStreamingService",
                     _createboththrowsWriter(foo),
                     _boththrows_READER,
                     _boththrows_EXCEPTION_READERS,
@@ -311,6 +314,7 @@ public class PubSubStreamingServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "PubSubStreamingService",
                     _createresponseandstreamthrowsWriter(foo),
                     _responseandstreamthrows_READER,
                     _responseandstreamthrows_FIRST_READER,
@@ -380,6 +384,7 @@ public class PubSubStreamingServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "PubSubStreamingService",
                     _createreturnstreamFastWriter(i32From, i32To),
                     _returnstreamFast_READER,
                     _returnstreamFast_EXCEPTION_READERS,

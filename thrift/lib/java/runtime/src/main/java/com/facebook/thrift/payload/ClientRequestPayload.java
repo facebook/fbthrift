@@ -22,6 +22,8 @@ import org.apache.thrift.RequestRpcMetadata;
 
 @SuppressWarnings("rawtypes")
 public interface ClientRequestPayload<T> {
+  String getServiceName();
+
   Writer getDataWriter();
 
   Reader<T> getResponseReader();
@@ -43,6 +45,7 @@ public interface ClientRequestPayload<T> {
     allHeaders.putAll(additionalHeader);
 
     return new DefaultClientRequestPayload<>(
+        getServiceName(),
         getDataWriter(),
         getResponseReader(),
         getFirstResponseReader(),
@@ -55,16 +58,25 @@ public interface ClientRequestPayload<T> {
   }
 
   static <T> ClientRequestPayload<T> create(
+      final String serviceName,
       final Writer dataWriter,
       final Reader<T> reader,
       final Map<Short, Reader> exceptionReaders,
       final RequestRpcMetadata requestRpcMetadata,
       final Map<String, String> persistentHeaders) {
     return new DefaultClientRequestPayload<>(
-        dataWriter, reader, null, exceptionReaders, null, requestRpcMetadata, persistentHeaders);
+        serviceName,
+        dataWriter,
+        reader,
+        null,
+        exceptionReaders,
+        null,
+        requestRpcMetadata,
+        persistentHeaders);
   }
 
   static <T> ClientRequestPayload<T> create(
+      final String serviceName,
       final Writer dataWriter,
       final Reader<T> reader,
       final Map<Short, Reader> exceptionReaders,
@@ -72,6 +84,7 @@ public interface ClientRequestPayload<T> {
       final RequestRpcMetadata requestRpcMetadata,
       final Map<String, String> persistentHeaders) {
     return new DefaultClientRequestPayload<>(
+        serviceName,
         dataWriter,
         reader,
         null,
@@ -82,6 +95,7 @@ public interface ClientRequestPayload<T> {
   }
 
   static <T> ClientRequestPayload<T> create(
+      final String serviceName,
       final Writer dataWriter,
       final Reader<T> reader,
       final Reader firstResponseReader,
@@ -90,6 +104,7 @@ public interface ClientRequestPayload<T> {
       final RequestRpcMetadata requestRpcMetadata,
       final Map<String, String> persistentHeaders) {
     return new DefaultClientRequestPayload<>(
+        serviceName,
         dataWriter,
         reader,
         firstResponseReader,

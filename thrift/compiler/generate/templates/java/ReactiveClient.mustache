@@ -195,6 +195,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "{{service:name}}",
                     _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                     _{{function:javaName}}_READER,
                     _{{function:javaName}}_EXCEPTION_READERS,
@@ -269,6 +270,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{#type:stream_elem_type}}{{> BoxedType}}{{/type:stream_elem_type}}{{/function:return_type}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "{{service:name}}",
                     _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                     _{{function:javaName}}_READER,{{#function:return_type}}{{#type:stream_has_first_response?}}
                     _{{function:javaName}}_FIRST_READER,{{/type:stream_has_first_response?}}{{/function:return_type}}
@@ -362,6 +364,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{#type:sink_final_response_type}}{{> BoxedType}}{{/type:sink_final_response_type}}{{/function:return_type}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "{{service:name}}",
                     _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                     _{{function:javaName}}_READER,{{#function:return_type}}{{#type:sink_has_first_response?}}
                     _{{function:javaName}}_FIRST_READER,{{/type:sink_has_first_response?}}{{/function:return_type}}
@@ -373,6 +376,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{#type:sink_final_response_type}}{{> BoxedType}}{{/type:sink_final_response_type}}{{/function:return_type}}>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "{{service:name}}",
                     _create{{function:javaName}}SinkWriter(_p),
                     _{{function:javaName}}_READER,{{#function:return_type}}{{#type:sink_has_first_response?}}
                     _{{function:javaName}}_FIRST_READER,{{/type:sink_has_first_response?}}{{/function:return_type}}
@@ -490,6 +494,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
           com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "{{service:name}}",
                   _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                   _{{function:javaName}}_READER,
                   _{{function:javaName}}_EXCEPTION_READERS_INT,
@@ -566,6 +571,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
           com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{#type:stream_elem_type}}{{> BoxedType}}{{/type:stream_elem_type}}{{/function:return_type}}> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "{{service:name}}",
                   _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                   _{{function:javaName}}_READER,{{#function:return_type}}{{#type:stream_has_first_response?}}
                   _{{function:javaName}}_FIRST_READER,{{/type:stream_has_first_response?}}{{/function:return_type}}

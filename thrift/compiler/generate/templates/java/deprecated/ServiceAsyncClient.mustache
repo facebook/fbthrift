@@ -66,7 +66,17 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      {{^service:extends}}super(channel, headers, persistentHeaders, eventHandlers);{{/service:extends}}{{#service:extends}}super(channel, methods, headers, persistentHeaders, eventHandlers);{{/service:extends}}
+      this("{{service:name}}", channel, methods, headers, persistentHeaders, eventHandlers);
+    }
+
+    public {{service:javaCapitalName}}AsyncClientImpl(
+        String serviceName,
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      {{^service:extends}}super(serviceName, channel, headers, persistentHeaders, eventHandlers);{{/service:extends}}{{#service:extends}}super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);{{/service:extends}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -94,7 +104,19 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      {{^service:extends}}super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
+      this("{{service:name}}", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+    }
+
+    public {{service:javaCapitalName}}AsyncClientImpl(
+        String serviceName,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        Mono<? extends RpcClient> rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      {{^service:extends}}super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

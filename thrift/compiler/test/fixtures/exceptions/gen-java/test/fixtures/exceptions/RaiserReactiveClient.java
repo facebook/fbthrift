@@ -100,6 +100,7 @@ public class RaiserReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "Raiser",
                     _createdoBlandWriter(),
                     _doBland_READER,
                     _doBland_EXCEPTION_READERS,
@@ -146,6 +147,7 @@ public class RaiserReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "Raiser",
                     _createdoRaiseWriter(),
                     _doRaise_READER,
                     _doRaise_EXCEPTION_READERS,
@@ -192,6 +194,7 @@ public class RaiserReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<String> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "Raiser",
                     _createget200Writer(),
                     _get200_READER,
                     _get200_EXCEPTION_READERS,
@@ -238,6 +241,7 @@ public class RaiserReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<String> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "Raiser",
                     _createget500Writer(),
                     _get500_READER,
                     _get500_EXCEPTION_READERS,

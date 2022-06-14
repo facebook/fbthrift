@@ -85,6 +85,7 @@ public class MyRootReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyRoot",
                     _createdoRootWriter(),
                     _doRoot_READER,
                     _doRoot_EXCEPTION_READERS,

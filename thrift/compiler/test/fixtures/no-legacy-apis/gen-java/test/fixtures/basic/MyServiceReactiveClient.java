@@ -95,6 +95,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.basic.MyStruct> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createqueryWriter(u),
                     _query_READER,
                     _query_EXCEPTION_READERS,

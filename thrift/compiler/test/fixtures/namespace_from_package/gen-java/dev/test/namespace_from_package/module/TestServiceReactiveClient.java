@@ -95,6 +95,7 @@ public class TestServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Long> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "TestService",
                     _createinitWriter(int1),
                     _init_READER,
                     _init_EXCEPTION_READERS,

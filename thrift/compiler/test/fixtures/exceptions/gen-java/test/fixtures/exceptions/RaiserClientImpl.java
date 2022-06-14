@@ -45,7 +45,17 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      super(channel, headers, persistentHeaders, eventHandlers);
+      this("Raiser", channel, methods, headers, persistentHeaders, eventHandlers);
+    }
+
+    protected RaiserClientImpl(
+        String serviceName,
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(serviceName, channel, headers, persistentHeaders, eventHandlers);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -68,7 +78,19 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
+      this("Raiser", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+    }
+
+    protected RaiserClientImpl(
+        String serviceName,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        Mono<? extends RpcClient> rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

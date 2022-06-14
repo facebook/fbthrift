@@ -86,6 +86,7 @@ public class BadServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "BadService",
                     _createbarWriter(),
                     _bar_READER,
                     _bar_EXCEPTION_READERS,
@@ -167,6 +168,7 @@ public class BadServiceReactiveClient
 
           com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "BadInteraction",
                   _createfooWriter(),
                   _foo_READER,
                   _foo_EXCEPTION_READERS_INT,

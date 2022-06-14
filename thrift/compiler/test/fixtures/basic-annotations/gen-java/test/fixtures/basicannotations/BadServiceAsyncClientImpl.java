@@ -42,7 +42,17 @@ public class BadServiceAsyncClientImpl extends AbstractThriftClient implements B
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      super(channel, headers, persistentHeaders, eventHandlers);
+      this("BadService", channel, methods, headers, persistentHeaders, eventHandlers);
+    }
+
+    public BadServiceAsyncClientImpl(
+        String serviceName,
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(serviceName, channel, headers, persistentHeaders, eventHandlers);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -64,7 +74,19 @@ public class BadServiceAsyncClientImpl extends AbstractThriftClient implements B
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
+      this("BadService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+    }
+
+    public BadServiceAsyncClientImpl(
+        String serviceName,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        Mono<? extends RpcClient> rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

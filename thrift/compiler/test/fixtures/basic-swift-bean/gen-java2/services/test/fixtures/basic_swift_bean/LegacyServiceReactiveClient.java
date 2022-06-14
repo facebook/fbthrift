@@ -109,6 +109,7 @@ public class LegacyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Map<String, List<Integer>>> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "legacy_service",
                     _creategetPointsWriter(key, legacyStuff),
                     _getPoints_READER,
                     _getPoints_EXCEPTION_READERS,

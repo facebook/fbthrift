@@ -108,6 +108,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createqueryWriter(s, i),
                     _query_READER,
                     _query_EXCEPTION_READERS,
@@ -172,6 +173,7 @@ public class MyServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "MyService",
                     _createhasArgDocsWriter(s, i),
                     _hasArgDocs_READER,
                     _hasArgDocs_EXCEPTION_READERS,

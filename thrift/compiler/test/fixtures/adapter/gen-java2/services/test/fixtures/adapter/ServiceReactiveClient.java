@@ -115,6 +115,7 @@ public class ServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
+                    "Service",
                     _createfuncWriter(arg1, arg2, arg3),
                     _func_READER,
                     _func_EXCEPTION_READERS,
