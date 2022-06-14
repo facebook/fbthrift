@@ -16,7 +16,7 @@
 
 package "test.dev/foo/php/ns"
 
-namespace php foo_php_ns
+namespace php foo.php.ns
 
 enum Status {
   Unknown = 0,

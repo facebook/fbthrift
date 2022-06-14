@@ -675,7 +675,7 @@ class t_hack_generator : public t_concat_generator {
   std::string php_namespace(const t_program* p) const {
     std::string php_ns = p->get_namespace("php");
     if (!php_ns.empty()) {
-      std::replace(php_ns.begin(), php_ns.end(), '.', '\\');
+      std::replace(php_ns.begin(), php_ns.end(), '.', '_');
       php_ns.push_back('_');
     }
     return php_ns;
