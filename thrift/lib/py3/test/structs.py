@@ -267,6 +267,18 @@ class StructTests(unittest.TestCase):
                 ("changes", "bar"),
             ],
         )
+        self.assertEqual(
+            [k for k, _ in Reserved],
+            [
+                "from_",
+                "nonlocal_",
+                "ok",
+                "is_cpdef",
+                "move",
+                "inst",
+                "changes",
+            ],
+        )
 
     def test_dir(self) -> None:
         expected = ["__iter__", "an_int", "name", "val", "val_list"]

@@ -86,11 +86,12 @@ cdef class StructMeta(type):
             # Unify different exception types to ValueError
             raise ValueError(e)
 
+    def __iter__(cls):
+        for i in range(cls._fbthrift_get_struct_size()):
+            yield cls._fbthrift_get_field_name_by_index(i), None
+
     def __dir__(cls):
-        return [
-            cls._fbthrift_get_field_name_by_index(i)
-            for i in range(cls._fbthrift_get_struct_size())
-        ] + ["__iter__"]
+        return tuple(name for name, _ in cls) + ("__iter__", )
 
 
 cdef Struct _fbthrift_struct_update_nested_field(Struct obj, list path_and_vals):

@@ -42,7 +42,7 @@ NOTSET = __NotSet()
 class HasIsSet(Protocol[_T]):
     __fbthrift_IsSet: Type[_T]
 
-class StructMeta(type):
+class StructMeta(type, Iterable[Tuple[str, Any]]):
     @staticmethod
     def isset(struct: HasIsSet[_T]) -> _T: ...
     @staticmethod
