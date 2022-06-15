@@ -159,7 +159,6 @@ typedef string QueryString
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef map<string, string> QueryArgs
 
-
 /**
  * A (scheme-less) URI.
  *
@@ -167,7 +166,7 @@ typedef map<string, string> QueryArgs
  *
  * See rfc3986
  */
- // TODO(afuller): Add definition for 'normal' based on unicode + uri specs.
+// TODO(afuller): Add definition for 'normal' based on unicode + uri specs.
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef string Uri (thrift.uri = "")
 
