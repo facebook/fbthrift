@@ -58,6 +58,8 @@ TEST(AnyRefTest, List) {
   EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
   index = 1;
   EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+  EXPECT_THROW(ref.add(AnyRef::create<string_t>(value[0])), std::runtime_error);
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());

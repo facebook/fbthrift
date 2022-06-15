@@ -45,14 +45,14 @@ class AnyRef {
   constexpr AnyRef() noexcept = default;
 
   template <typename Tag, typename T>
-  constexpr static AnyRef create(T&& value) {
-    return {Tag{}, std::forward<T>(value)};
+  constexpr static AnyRef create(T&& val) {
+    return {Tag{}, std::forward<T>(val)};
   }
 
   // Rebinds the AnyRef to another value (or void).
   template <typename Tag, typename T = native_type<Tag>>
-  void reset(T&& value) {
-    ref_ = {&detail::getRefInfo<Tag, T>(), &value};
+  void reset(T&& val) {
+    ref_ = {&detail::getRefInfo<Tag, T>(), &val};
   }
   void reset() noexcept { ref_ = {}; }
 
@@ -70,6 +70,21 @@ class AnyRef {
   constexpr const Type& type() const { return ref_.type().thriftType; }
   constexpr const std::type_info& typeId() const {
     return ref_.info->type.cppType;
+  }
+
+  // Append to a list, string, etc.
+  void append(AnyRef val) { ref_.append(val.ref_); }
+
+  // Add to a set, number, etc.
+  bool add(AnyRef val) { return ref_.add(val.ref_); }
+
+  // Put a key-value pair, overwriting any existing entry in a map, struct, etc.
+  //
+  // Returns true if an exisiting value was replaced.
+  bool put(FieldId id, AnyRef val) { return ref_.put(id, val.ref_); }
+  bool put(AnyRef key, AnyRef val) { return ref_.put(key.ref_, val.ref_); }
+  bool put(const std::string& name, AnyRef val) {
+    return put(AnyRef::create<string_t>(name), val);
   }
 
   // TODO(afuller): Add const access versions.
@@ -103,13 +118,9 @@ class AnyRef {
  private:
   detail::Ref ref_;
 
-  template <typename Tag, typename T>
-  AnyRef(Tag, T&& value)
-      : ref_{
-            &detail::getRefInfo<Tag, T>(),
-            const_cast<std::decay_t<T>*>(&value)} {}
-
   constexpr explicit AnyRef(detail::Ref data) : ref_(data) {}
+  template <typename Tag, typename T>
+  AnyRef(Tag, T&& val) : ref_(detail::Ref::create<Tag>(std::forward<T>(val))) {}
 };
 
 } // namespace type

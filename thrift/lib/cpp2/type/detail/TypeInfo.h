@@ -58,9 +58,13 @@ struct TypeInfo {
   const std::type_info& cppType;
 
   // Type-erased ~v-table.
+  // TODO(afuller): Consider merging some of these functions to reduce size.
   bool (*empty)(const void*);
   bool (*identical)(const void*, const Ref&);
   void (*clear)(void*);
+  void (*append)(void*, const Ref&);
+  bool (*add)(void*, const Ref&);
+  bool (*put)(void*, FieldId, const Ref*, const Ref&);
   Ref (*get)(void*, const RefInfo::QualSet&, FieldId, const Ref*);
 
   // Type-safe, const-preserving casting functions.
@@ -104,6 +108,12 @@ struct Ref {
   const RefInfo* info = &getRefInfo<type::void_t>();
   void* ptr = nullptr;
 
+  template <typename Tag, typename T = native_type<Tag>>
+  static Ref create(T&& val) {
+    // Note: const safety is preserved in the RefInfo, and validated at runtime.
+    return {&getRefInfo<Tag, T>(), const_cast<std::decay_t<T>*>(&val)};
+  }
+
   // Throws if reference is const.
   constexpr void ensureMut() const {
     if (info->is[RefInfo::Const]) {
@@ -140,6 +150,15 @@ struct Ref {
         type().identical(ptr, rhs);
   }
   void clear() const { mutType().clear(ptr); }
+  void append(const Ref& val) const { mutType().append(ptr, val); }
+  bool add(const Ref& val) const { return mutType().add(ptr, val); }
+  bool put(const Ref& key, const Ref& val) const {
+    return mutType().put(ptr, {}, &key, val);
+  }
+  bool put(FieldId id, const Ref& val) const {
+    return mutType().put(ptr, id, nullptr, val);
+  }
+
   Ref get(FieldId id, const Ref* key) const {
     return type().get(ptr, info->is, id, key);
   }
@@ -164,6 +183,18 @@ struct TypeErasedOp {
     folly::throw_exception<std::bad_any_cast>();
   }
 
+  static void append(void*, const Ref&) {
+    // TODO(afuller): Implement.
+    folly::throw_exception<std::runtime_error>("not implemented");
+  }
+  static bool add(void*, const Ref&) {
+    // TODO(afuller): Implement.
+    folly::throw_exception<std::runtime_error>("not implemented");
+  }
+  static bool put(void*, FieldId, const Ref*, const Ref&) {
+    // TODO(afuller): Implement.
+    folly::throw_exception<std::runtime_error>("not implemented");
+  }
   static Ref get(void*, const RefInfo::QualSet&, FieldId, const Ref*) {
     // TODO(afuller): Implement type-erased 'get' access.
     folly::throw_exception<std::runtime_error>("not implemented");
@@ -176,6 +207,15 @@ struct TypeErasedOp<void_t, T> {
   static bool empty(const void*) { return true; }
   static bool identical(const void*, const Ref&) { return true; }
   static void clear(void*) {}
+  static void append(void*, const Ref&) {
+    folly::throw_exception<std::out_of_range>("void does not support 'append'");
+  }
+  static bool add(void*, const Ref&) {
+    folly::throw_exception<std::out_of_range>("void does not support 'add'");
+  }
+  static bool put(void*, FieldId, const Ref*, const Ref&) {
+    folly::throw_exception<std::out_of_range>("void does not support 'put'");
+  }
   static Ref get(void*, const RefInfo::QualSet&, FieldId, const Ref*) {
     folly::throw_exception<std::out_of_range>("void does not support 'get'");
   }
@@ -190,6 +230,9 @@ FOLLY_EXPORT const TypeInfo& getTypeInfoImpl() {
       &Op::empty,
       &Op::identical,
       &Op::clear,
+      &Op::append,
+      &Op::add,
+      &Op::put,
       &Op::get,
   };
   return *kValue;
