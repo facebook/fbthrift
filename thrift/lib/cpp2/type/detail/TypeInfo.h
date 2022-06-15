@@ -31,26 +31,7 @@ namespace thrift {
 namespace type {
 namespace detail {
 
-struct TypeInfo; // Forward declare.
-struct Ref; // Forward declare.
-
-// Runtime reference information for a Thrift reference.
-//
-// TODO(viz): Embed the qualifiers bits into a pointer in Ref instead of using
-// RefInfo, which adds an extra layer of lazy singletons.
-struct RefInfo {
-  enum Qualifier {
-    Const,
-    Rvalue,
-
-    QualifierSize,
-  };
-  using QualSet = std::bitset<QualifierSize>;
-
-  const TypeInfo& type;
-  // TODO(afuller): Use `bool isConst : 1;` instead.
-  QualSet is;
-};
+struct Ptr;
 
 // Runtime type information for a Thrift type.
 struct TypeInfo {
@@ -60,12 +41,12 @@ struct TypeInfo {
   // Type-erased ~v-table.
   // TODO(afuller): Consider merging some of these functions to reduce size.
   bool (*empty)(const void*);
-  bool (*identical)(const void*, const Ref&);
+  bool (*identical)(const void*, const Ptr&);
   void (*clear)(void*);
-  void (*append)(void*, const Ref&);
-  bool (*add)(void*, const Ref&);
-  bool (*put)(void*, FieldId, const Ref*, const Ref&);
-  Ref (*get)(void*, const RefInfo::QualSet&, FieldId, const Ref*);
+  void (*append)(void*, const Ptr&);
+  bool (*add)(void*, const Ptr&);
+  bool (*put)(void*, FieldId, const Ptr*, const Ptr&);
+  Ptr (*get)(Ptr, FieldId, const Ptr*);
 
   // Type-safe, const-preserving casting functions.
   template <typename T>
@@ -93,36 +74,33 @@ const TypeInfo& getTypeInfo() {
   return getTypeInfoImpl<Tag, std::decay_t<T>>();
 }
 
-template <typename Tag, typename T = native_type<Tag>>
-FOLLY_EXPORT const RefInfo& getRefInfo() {
-  static const RefInfo kValue{
-      getTypeInfo<Tag, T>(),
-      (std::is_rvalue_reference_v<T> << RefInfo::Rvalue) |
-          (std::is_const_v<std::remove_reference_t<T>> << RefInfo::Const)};
-  return kValue;
-}
-
-// A re-bindable, type-erased reference to a Thrift value.
-// TODO(afuller): Rename to ~Ptr as it actually provides pointer semantics.
-struct Ref {
-  const RefInfo* info = &getRefInfo<type::void_t>();
-  void* ptr = nullptr;
-
+// A type-erased, qualifier-preserving pointer to a Thrift value.
+struct Ptr {
   template <typename Tag, typename T = native_type<Tag>>
-  static Ref create(T&& val) {
-    // Note: const safety is preserved in the RefInfo, and validated at runtime.
-    return {&getRefInfo<Tag, T>(), const_cast<std::decay_t<T>*>(&val)};
+  static Ptr create(T&& val) {
+    // Note: const safety is validated at runtime.
+    return {
+        &getTypeInfo<Tag, T>(),
+        const_cast<std::decay_t<T>*>(&val),
+        std::is_const_v<std::remove_reference_t<T>>,
+        std::is_rvalue_reference_v<T>};
   }
+
+  const TypeInfo* info = &getTypeInfo<type::void_t>();
+  void* ptr = nullptr;
+  // TODO(afuller): Embed the qualifiers bits into the pointer's high bits.
+  bool isConst : 1;
+  bool isRvalue : 1;
 
   // Throws if reference is const.
   constexpr void ensureMut() const {
-    if (info->is[RefInfo::Const]) {
+    if (isConst) {
       folly::throw_exception<std::logic_error>("cannot modify a const ref");
     }
   }
 
   // Provides 'const' access to TypeInfo.
-  constexpr const TypeInfo& type() const { return info->type; }
+  constexpr const TypeInfo& type() const { return *info; }
 
   // Provides 'mut' access to TypeInfo.
   constexpr const TypeInfo& mutType() const { return (ensureMut(), type()); }
@@ -142,25 +120,36 @@ struct Ref {
   }
   template <typename T>
   constexpr T* tryMut() const {
-    return info->is[RefInfo::Const] ? nullptr : type().tryAs<T>(ptr);
+    return isConst ? nullptr : type().tryAs<T>(ptr);
   }
   bool empty() const { return type().empty(ptr); }
-  bool identical(const Ref& rhs) const {
+  bool identical(const Ptr& rhs) const {
     return type().thriftType == rhs.type().thriftType &&
         type().identical(ptr, rhs);
   }
   void clear() const { mutType().clear(ptr); }
-  void append(const Ref& val) const { mutType().append(ptr, val); }
-  bool add(const Ref& val) const { return mutType().add(ptr, val); }
-  bool put(const Ref& key, const Ref& val) const {
+
+  void append(const Ptr& val) const { mutType().append(ptr, val); }
+  bool add(const Ptr& val) const { return mutType().add(ptr, val); }
+  bool put(const Ptr& key, const Ptr& val) const {
     return mutType().put(ptr, {}, &key, val);
   }
-  bool put(FieldId id, const Ref& val) const {
+  bool put(FieldId id, const Ptr& val) const {
     return mutType().put(ptr, id, nullptr, val);
   }
 
-  Ref get(FieldId id, const Ref* key) const {
-    return type().get(ptr, info->is, id, key);
+  Ptr mergeQuals(bool ctxConst, bool ctxRvalue) const {
+    return {info, ptr, isConst || ctxConst, isRvalue && ctxRvalue};
+  }
+
+  // Gets the given field or entry, taking into account the context in
+  // which the value is being accessed.
+  Ptr get(
+      FieldId id,
+      const Ptr* key,
+      bool ctxConst = false,
+      bool ctxRvalue = false) const {
+    return type().get(mergeQuals(ctxConst, ctxRvalue), id, key);
   }
 };
 
@@ -172,7 +161,7 @@ struct TypeErasedOp {
   static bool empty(const void* ptr) { return op::isEmpty<Tag>(ref(ptr)); }
   static void clear(void* ptr) { op::clear<Tag>(ref(ptr)); }
 
-  static bool identical(const void* lhs, const Ref& rhs) {
+  static bool identical(const void* lhs, const Ptr& rhs) {
     // Caller should have already checked the types match.
     assert(rhs.type().thriftType == Tag{});
     if (rhs.type().cppType == typeid(T)) {
@@ -183,19 +172,19 @@ struct TypeErasedOp {
     folly::throw_exception<std::bad_any_cast>();
   }
 
-  static void append(void*, const Ref&) {
+  static void append(void*, const Ptr&) {
     // TODO(afuller): Implement.
     folly::throw_exception<std::runtime_error>("not implemented");
   }
-  static bool add(void*, const Ref&) {
+  static bool add(void*, const Ptr&) {
     // TODO(afuller): Implement.
     folly::throw_exception<std::runtime_error>("not implemented");
   }
-  static bool put(void*, FieldId, const Ref*, const Ref&) {
+  static bool put(void*, FieldId, const Ptr*, const Ptr&) {
     // TODO(afuller): Implement.
     folly::throw_exception<std::runtime_error>("not implemented");
   }
-  static Ref get(void*, const RefInfo::QualSet&, FieldId, const Ref*) {
+  static Ptr get(Ptr, FieldId, const Ptr*) {
     // TODO(afuller): Implement type-erased 'get' access.
     folly::throw_exception<std::runtime_error>("not implemented");
   }
@@ -205,18 +194,18 @@ struct TypeErasedOp {
 template <typename T>
 struct TypeErasedOp<void_t, T> {
   static bool empty(const void*) { return true; }
-  static bool identical(const void*, const Ref&) { return true; }
+  static bool identical(const void*, const Ptr&) { return true; }
   static void clear(void*) {}
-  static void append(void*, const Ref&) {
+  static void append(void*, const Ptr&) {
     folly::throw_exception<std::out_of_range>("void does not support 'append'");
   }
-  static bool add(void*, const Ref&) {
+  static bool add(void*, const Ptr&) {
     folly::throw_exception<std::out_of_range>("void does not support 'add'");
   }
-  static bool put(void*, FieldId, const Ref*, const Ref&) {
+  static bool put(void*, FieldId, const Ptr*, const Ptr&) {
     folly::throw_exception<std::out_of_range>("void does not support 'put'");
   }
-  static Ref get(void*, const RefInfo::QualSet&, FieldId, const Ref*) {
+  static Ptr get(Ptr, FieldId, const Ptr*) {
     folly::throw_exception<std::out_of_range>("void does not support 'get'");
   }
 };
