@@ -77,7 +77,7 @@ cdef __StructSpec get_reflection__BoolPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="invert",
             type=bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -114,7 +114,7 @@ cdef __StructSpec get_reflection__BytePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=int,
             kind=__NumberType.BYTE,
@@ -151,7 +151,7 @@ cdef __StructSpec get_reflection__I16Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=int,
             kind=__NumberType.I16,
@@ -188,7 +188,7 @@ cdef __StructSpec get_reflection__I32Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=int,
             kind=__NumberType.I32,
@@ -225,7 +225,7 @@ cdef __StructSpec get_reflection__I64Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=int,
             kind=__NumberType.I64,
@@ -262,7 +262,7 @@ cdef __StructSpec get_reflection__FloatPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=float,
             kind=__NumberType.FLOAT,
@@ -299,7 +299,7 @@ cdef __StructSpec get_reflection__DoublePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=5,
             name="add",
             type=float,
             kind=__NumberType.DOUBLE,

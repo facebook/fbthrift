@@ -147,7 +147,7 @@ struct PatchGen : StructGen {
     kPrependId = 4,
     kAppendId = 5,
 
-    // Set, Map
+    // Set, Map, Number
     kRemoveId = 4,
     kAddId = 5,
 

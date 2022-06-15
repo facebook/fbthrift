@@ -25,12 +25,12 @@ import com.facebook.thrift.protocol.*;
 public class FloatPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("FloatPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.FLOAT, (short)1);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.FLOAT, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.FLOAT, (short)5);
 
   public final Float assign;
   public final Float add;
   public static final int ASSIGN = 1;
-  public static final int ADD = 2;
+  public static final int ADD = 5;
 
   public FloatPatch(
       Float assign,

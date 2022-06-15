@@ -25,12 +25,12 @@ import com.facebook.thrift.protocol.*;
 public class I64Patch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("I64Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.I64, (short)1);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.I64, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.I64, (short)5);
 
   public final Long assign;
   public final Long add;
   public static final int ASSIGN = 1;
-  public static final int ADD = 2;
+  public static final int ADD = 5;
 
   public I64Patch(
       Long assign,

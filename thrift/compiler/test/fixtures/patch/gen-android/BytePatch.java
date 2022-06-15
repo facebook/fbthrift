@@ -25,12 +25,12 @@ import com.facebook.thrift.protocol.*;
 public class BytePatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("BytePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.BYTE, (short)1);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.BYTE, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.BYTE, (short)5);
 
   public final Byte assign;
   public final Byte add;
   public static final int ASSIGN = 1;
-  public static final int ADD = 2;
+  public static final int ADD = 5;
 
   public BytePatch(
       Byte assign,

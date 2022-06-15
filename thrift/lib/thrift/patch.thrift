@@ -50,7 +50,7 @@ struct BoolPatch {
   1: optional bool assign;
 
   // If the bool value should be inverted.
-  2: bool invert;
+  5: bool invert;
 } (
   cpp.name = "BoolPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
@@ -66,7 +66,7 @@ struct BytePatch {
   1: optional byte assign;
 
   // Add to a given value.
-  2: byte add;
+  5: byte add;
 } (
   cpp.name = "BytePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
@@ -82,7 +82,7 @@ struct I16Patch {
   1: optional i16 assign;
 
   // Add to a given value.
-  2: i16 add;
+  5: i16 add;
 } (
   cpp.name = "I16PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
@@ -98,7 +98,7 @@ struct I32Patch {
   1: optional i32 assign;
 
   // Add to a given value.
-  2: i32 add;
+  5: i32 add;
 } (
   cpp.name = "I32PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
@@ -114,7 +114,7 @@ struct I64Patch {
   1: optional i64 assign;
 
   // Add to a given value.
-  2: i64 add;
+  5: i64 add;
 } (
   cpp.name = "I64PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
@@ -130,7 +130,7 @@ struct FloatPatch {
   1: optional float assign;
 
   // Add to a given value.
-  2: float add;
+  5: float add;
 } (
   cpp.name = "FloatPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
@@ -146,7 +146,7 @@ struct DoublePatch {
   1: optional double assign;
 
   // Add to a given value.
-  2: double add;
+  5: double add;
 } (
   cpp.name = "DoublePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",

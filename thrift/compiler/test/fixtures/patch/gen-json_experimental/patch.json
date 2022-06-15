@@ -36,7 +36,7 @@
           },
           "invert" : {
             "name" : "invert",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 53,
             "required" : "opt-in-req-out",
             "type" : "bool"
@@ -58,7 +58,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 69,
             "required" : "opt-in-req-out",
             "type" : "byte"
@@ -80,7 +80,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 85,
             "required" : "opt-in-req-out",
             "type" : "i16"
@@ -102,7 +102,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 101,
             "required" : "opt-in-req-out",
             "type" : "i32"
@@ -124,7 +124,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 117,
             "required" : "opt-in-req-out",
             "type" : "i64"
@@ -146,7 +146,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 133,
             "required" : "opt-in-req-out",
             "type" : "float"
@@ -168,7 +168,7 @@
           },
           "add" : {
             "name" : "add",
-            "key" : 2,
+            "key" : 5,
             "lineno" : 149,
             "required" : "opt-in-req-out",
             "type" : "double"

@@ -211,7 +211,7 @@ class BoolPatch:
           self.assign = iprot.readBool()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.BOOL:
           self.invert = iprot.readBool()
         else:
@@ -234,7 +234,7 @@ class BoolPatch:
       oprot.writeBool(self.assign)
       oprot.writeFieldEnd()
     if self.invert != None:
-      oprot.writeFieldBegin('invert', TType.BOOL, 2)
+      oprot.writeFieldBegin('invert', TType.BOOL, 5)
       oprot.writeBool(self.invert)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -320,7 +320,7 @@ class BytePatch:
           self.assign = iprot.readByte()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.BYTE:
           self.add = iprot.readByte()
         else:
@@ -343,7 +343,7 @@ class BytePatch:
       oprot.writeByte(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.BYTE, 2)
+      oprot.writeFieldBegin('add', TType.BYTE, 5)
       oprot.writeByte(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -433,7 +433,7 @@ class I16Patch:
           self.assign = iprot.readI16()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.I16:
           self.add = iprot.readI16()
         else:
@@ -456,7 +456,7 @@ class I16Patch:
       oprot.writeI16(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.I16, 2)
+      oprot.writeFieldBegin('add', TType.I16, 5)
       oprot.writeI16(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -546,7 +546,7 @@ class I32Patch:
           self.assign = iprot.readI32()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.I32:
           self.add = iprot.readI32()
         else:
@@ -569,7 +569,7 @@ class I32Patch:
       oprot.writeI32(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.I32, 2)
+      oprot.writeFieldBegin('add', TType.I32, 5)
       oprot.writeI32(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -659,7 +659,7 @@ class I64Patch:
           self.assign = iprot.readI64()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.I64:
           self.add = iprot.readI64()
         else:
@@ -682,7 +682,7 @@ class I64Patch:
       oprot.writeI64(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.I64, 2)
+      oprot.writeFieldBegin('add', TType.I64, 5)
       oprot.writeI64(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -768,7 +768,7 @@ class FloatPatch:
           self.assign = iprot.readFloat()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.FLOAT:
           self.add = iprot.readFloat()
         else:
@@ -791,7 +791,7 @@ class FloatPatch:
       oprot.writeFloat(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.FLOAT, 2)
+      oprot.writeFieldBegin('add', TType.FLOAT, 5)
       oprot.writeFloat(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -877,7 +877,7 @@ class DoublePatch:
           self.assign = iprot.readDouble()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 5:
         if ftype == TType.DOUBLE:
           self.add = iprot.readDouble()
         else:
@@ -900,7 +900,7 @@ class DoublePatch:
       oprot.writeDouble(self.assign)
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.DOUBLE, 2)
+      oprot.writeFieldBegin('add', TType.DOUBLE, 5)
       oprot.writeDouble(self.add)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2540,7 +2540,10 @@ all_structs.append(BoolPatch)
 BoolPatch.thrift_spec = (
   None, # 0
   (1, TType.BOOL, 'assign', None, None, 1, ), # 1
-  (2, TType.BOOL, 'invert', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.BOOL, 'invert', None, None, 2, ), # 5
 )
 
 BoolPatch.thrift_struct_annotations = {
@@ -2569,7 +2572,10 @@ all_structs.append(BytePatch)
 BytePatch.thrift_spec = (
   None, # 0
   (1, TType.BYTE, 'assign', None, None, 1, ), # 1
-  (2, TType.BYTE, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.BYTE, 'add', None, None, 2, ), # 5
 )
 
 BytePatch.thrift_struct_annotations = {
@@ -2598,7 +2604,10 @@ all_structs.append(I16Patch)
 I16Patch.thrift_spec = (
   None, # 0
   (1, TType.I16, 'assign', None, None, 1, ), # 1
-  (2, TType.I16, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.I16, 'add', None, None, 2, ), # 5
 )
 
 I16Patch.thrift_struct_annotations = {
@@ -2627,7 +2636,10 @@ all_structs.append(I32Patch)
 I32Patch.thrift_spec = (
   None, # 0
   (1, TType.I32, 'assign', None, None, 1, ), # 1
-  (2, TType.I32, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.I32, 'add', None, None, 2, ), # 5
 )
 
 I32Patch.thrift_struct_annotations = {
@@ -2656,7 +2668,10 @@ all_structs.append(I64Patch)
 I64Patch.thrift_spec = (
   None, # 0
   (1, TType.I64, 'assign', None, None, 1, ), # 1
-  (2, TType.I64, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.I64, 'add', None, None, 2, ), # 5
 )
 
 I64Patch.thrift_struct_annotations = {
@@ -2685,7 +2700,10 @@ all_structs.append(FloatPatch)
 FloatPatch.thrift_spec = (
   None, # 0
   (1, TType.FLOAT, 'assign', None, None, 1, ), # 1
-  (2, TType.FLOAT, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.FLOAT, 'add', None, None, 2, ), # 5
 )
 
 FloatPatch.thrift_struct_annotations = {
@@ -2714,7 +2732,10 @@ all_structs.append(DoublePatch)
 DoublePatch.thrift_spec = (
   None, # 0
   (1, TType.DOUBLE, 'assign', None, None, 1, ), # 1
-  (2, TType.DOUBLE, 'add', None, None, 2, ), # 2
+  None, # 2
+  None, # 3
+  None, # 4
+  (5, TType.DOUBLE, 'add', None, None, 2, ), # 5
 )
 
 DoublePatch.thrift_struct_annotations = {

@@ -25,12 +25,12 @@ import com.facebook.thrift.protocol.*;
 public class DoublePatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("DoublePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.DOUBLE, (short)1);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.DOUBLE, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.DOUBLE, (short)5);
 
   public final Double assign;
   public final Double add;
   public static final int ASSIGN = 1;
-  public static final int ADD = 2;
+  public static final int ADD = 5;
 
   public DoublePatch(
       Double assign,

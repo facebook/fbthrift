@@ -27,12 +27,12 @@ import com.facebook.thrift.protocol.*;
 public class BoolPatch implements TBase, java.io.Serializable, Cloneable, Comparable<BoolPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("BoolPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.BOOL, (short)1);
-  private static final TField INVERT_FIELD_DESC = new TField("invert", TType.BOOL, (short)2);
+  private static final TField INVERT_FIELD_DESC = new TField("invert", TType.BOOL, (short)5);
 
   public boolean assign;
   public boolean invert;
   public static final int ASSIGN = 1;
-  public static final int INVERT = 2;
+  public static final int INVERT = 5;
 
   // isset id assignments
   private static final int __ASSIGN_ISSET_ID = 0;

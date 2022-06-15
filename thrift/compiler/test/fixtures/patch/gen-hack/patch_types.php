@@ -191,14 +191,14 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::BOOL,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'invert',
       'type' => \TType::BOOL,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'invert' => 2,
+    'invert' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -211,7 +211,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'invert' => bool,
     ...
   );
-  const int STRUCTURAL_ID = 3875050023329461666;
+  const int STRUCTURAL_ID = 6281923520710299122;
   /**
    * Original thrift field:-
    * 1: bool assign
@@ -219,7 +219,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?bool $assign;
   /**
    * Original thrift field:-
-   * 2: bool invert
+   * 5: bool invert
    */
   public bool $invert;
 
@@ -262,7 +262,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
@@ -337,14 +337,14 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::BYTE,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::BYTE,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -357,7 +357,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 4364926226693714377;
+  const int STRUCTURAL_ID = 954691050536739640;
   /**
    * Original thrift field:-
    * 1: byte assign
@@ -365,7 +365,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?int $assign;
   /**
    * Original thrift field:-
-   * 2: byte add
+   * 5: byte add
    */
   public int $add;
 
@@ -408,7 +408,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
@@ -493,14 +493,14 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::I16,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::I16,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -513,7 +513,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 7982053966984816637;
+  const int STRUCTURAL_ID = 4380241046829614708;
   /**
    * Original thrift field:-
    * 1: i16 assign
@@ -521,7 +521,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?int $assign;
   /**
    * Original thrift field:-
-   * 2: i16 add
+   * 5: i16 add
    */
   public int $add;
 
@@ -564,7 +564,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
@@ -649,14 +649,14 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::I32,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::I32,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -669,7 +669,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 1442315754779904080;
+  const int STRUCTURAL_ID = 9058493238744289093;
   /**
    * Original thrift field:-
    * 1: i32 assign
@@ -677,7 +677,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?int $assign;
   /**
    * Original thrift field:-
-   * 2: i32 add
+   * 5: i32 add
    */
   public int $add;
 
@@ -720,7 +720,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
@@ -805,14 +805,14 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::I64,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::I64,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -825,7 +825,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 6712631685845531374;
+  const int STRUCTURAL_ID = 18985712847221971;
   /**
    * Original thrift field:-
    * 1: i64 assign
@@ -833,7 +833,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?int $assign;
   /**
    * Original thrift field:-
-   * 2: i64 add
+   * 5: i64 add
    */
   public int $add;
 
@@ -876,7 +876,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
@@ -951,14 +951,14 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::FLOAT,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::FLOAT,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -971,7 +971,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => float,
     ...
   );
-  const int STRUCTURAL_ID = 8559016797145234950;
+  const int STRUCTURAL_ID = 7438541297246591104;
   /**
    * Original thrift field:-
    * 1: float assign
@@ -979,7 +979,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?float $assign;
   /**
    * Original thrift field:-
-   * 2: float add
+   * 5: float add
    */
   public float $add;
 
@@ -1022,7 +1022,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
@@ -1097,14 +1097,14 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::DOUBLE,
     ),
-    2 => shape(
+    5 => shape(
       'var' => 'add',
       'type' => \TType::DOUBLE,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'add' => 2,
+    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -1117,7 +1117,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => float,
     ...
   );
-  const int STRUCTURAL_ID = 2907066783911210347;
+  const int STRUCTURAL_ID = 7963527284725361585;
   /**
    * Original thrift field:-
    * 1: double assign
@@ -1125,7 +1125,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?float $assign;
   /**
    * Original thrift field:-
-   * 2: double add
+   * 5: double add
    */
   public float $add;
 
@@ -1168,7 +1168,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 5,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
