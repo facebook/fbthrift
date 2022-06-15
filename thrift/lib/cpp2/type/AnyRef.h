@@ -26,7 +26,7 @@
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/detail/ThriftTypeInfo.h>
+#include <thrift/lib/cpp2/type/detail/TypeInfo.h>
 
 namespace apache {
 namespace thrift {
@@ -37,6 +37,9 @@ namespace type {
 // Should typically be passed by value as it only holds two
 // ponters; a pointer to the value being reference and a pointer to the static
 // runtime metadata associated with the type of the value.
+//
+// TODO(afuller): Merge this with AnyValue and AnyStruct to create the omega
+// `Any` type.
 class AnyRef {
  public:
   constexpr AnyRef() noexcept = default;
@@ -48,90 +51,66 @@ class AnyRef {
 
   // Rebinds the AnyRef to another value (or void).
   template <typename Tag, typename T = native_type<Tag>>
-  void reset(T&& value);
-  void reset() noexcept { info_ = &getAnyRefInfo<void_t>(); }
+  void reset(T&& value) {
+    ref_ = {&detail::getRefInfo<Tag, T>(), &value};
+  }
+  void reset() noexcept { ref_ = {}; }
 
   // Returns true iff the referenced value is 'empty', and not serialized in a
   // 'terse' context.
-  bool empty() const { return info_->type.empty(ptr_); }
+  bool empty() const { return ref_.empty(); }
   // Returns true iff the referenced value is identical to the given value.
-  bool identical(const AnyRef& rhs) const {
-    return info_->type.thriftType == rhs.info_->type.thriftType &&
-        info_->type.identical(ptr_, rhs.info_->type, rhs.ptr_);
-  }
+  bool identical(const AnyRef& rhs) const { return ref_.identical(rhs.ref_); }
+
   // Sets the referenced value to it's intrinsic default (e.g. ignoring custom
   // field defaults).
-  void clear() { ensureMutable().clear(ptr_); }
+  void clear() { ref_.clear(); }
 
   // Type accessors.
-  constexpr const Type& type() const { return info_->type.thriftType; }
-  constexpr const std::type_info& typeId() const { return info_->type.cppType; }
+  constexpr const Type& type() const { return ref_.type().thriftType; }
+  constexpr const std::type_info& typeId() const {
+    return ref_.info->type.cppType;
+  }
+
+  // TODO(afuller): Add const access versions.
+  // Get by key value.
+  AnyRef get(AnyRef key) { return AnyRef{ref_.get({}, &key.ref_)}; }
+  // Get by field id.
+  AnyRef get(FieldId id) { return AnyRef{ref_.get(id, nullptr)}; }
+  // Get by name.
+  AnyRef get(const std::string& name) {
+    return get(AnyRef::create<type::string_t>(name));
+  }
 
   // Type-safe value accessors.
   template <typename Tag>
   constexpr const native_type<Tag>& as() const {
-    return info_->type.as<native_type<Tag>>(ptr_);
+    return ref_.as<native_type<Tag>>();
   }
   template <typename Tag>
-  constexpr native_type<Tag>& as_mut() {
-    ensureMutable();
-    return info_->type.as<native_type<Tag>>(ptr_);
+  constexpr native_type<Tag>& mut() {
+    return ref_.mut<native_type<Tag>>();
   }
   template <typename Tag>
-  constexpr const native_type<Tag>* try_as() const noexcept {
-    return info_->type.try_as<native_type<Tag>>(ptr_);
+  constexpr const native_type<Tag>* tryAs() const noexcept {
+    return ref_.tryAs<native_type<Tag>>();
+  }
+  template <typename Tag>
+  constexpr const native_type<Tag>* tryMut() const noexcept {
+    return ref_.tryMut<native_type<Tag>>();
   }
 
  private:
-  enum Qualifier {
-    Const,
-    Rvalue,
-
-    QualifierSize,
-  };
-
-  // TODO(viz): Embed the qualiferes bits in the pointers instead of using
-  // AnyRefInfo, which adds an extra layer of lazy singletons.
-  struct AnyRefInfo {
-    const detail::ThriftTypeInfo& type;
-    std::bitset<QualifierSize> is;
-  };
-
-  const AnyRefInfo* info_ = &getAnyRefInfo<void_t>();
-  void* ptr_ = nullptr;
-
-  template <typename Tag, typename T = native_type<Tag>>
-  FOLLY_EXPORT static const AnyRefInfo& getAnyRefInfo();
+  detail::Ref ref_;
 
   template <typename Tag, typename T>
-  constexpr AnyRef(Tag, T&& value)
-      : info_(&getAnyRefInfo<Tag, T>()),
-        ptr_(const_cast<std::decay_t<T>*>(&value)) {}
+  AnyRef(Tag, T&& value)
+      : ref_{
+            &detail::getRefInfo<Tag, T>(),
+            const_cast<std::decay_t<T>*>(&value)} {}
 
-  const detail::ThriftTypeInfo& ensureMutable();
+  constexpr explicit AnyRef(detail::Ref data) : ref_(data) {}
 };
-
-template <typename Tag, typename T>
-void AnyRef::reset(T&& value) {
-  info_ = getAnyRefInfo<Tag, T>();
-  ptr_ = &value;
-}
-
-template <typename Tag, typename T>
-FOLLY_EXPORT auto AnyRef::getAnyRefInfo() -> const AnyRefInfo& {
-  static const AnyRefInfo kValue{
-      detail::getTypeInfo<Tag, T>(),
-      (std::is_rvalue_reference_v<T> << Rvalue) |
-          (std::is_const_v<std::remove_reference_t<T>> << Const)};
-  return kValue;
-}
-
-inline const detail::ThriftTypeInfo& AnyRef::ensureMutable() {
-  if (info_->is[Const]) {
-    folly::throw_exception<std::logic_error>("cannot modify a const ref");
-  }
-  return info_->type;
-}
 
 } // namespace type
 } // namespace thrift

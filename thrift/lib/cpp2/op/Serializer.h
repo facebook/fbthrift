@@ -113,7 +113,7 @@ class TagSerializer : public Serializer {
   using Base::decode;
   void decode(folly::io::Cursor& cursor, type::AnyRef value) const final {
     checkType(value.type(), type::Type::get<Tag>());
-    derived().decode(cursor, value.as_mut<Tag>());
+    derived().decode(cursor, value.mut<Tag>());
   }
   void decode(
       const type::Type& type,

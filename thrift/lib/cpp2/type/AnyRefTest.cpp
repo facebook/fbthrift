@@ -22,14 +22,16 @@ namespace apache::thrift::type {
 namespace {
 
 TEST(AnyRefTest, Void) {
-  AnyRef value;
-  EXPECT_EQ(value.type(), Type::get<void_t>());
-  EXPECT_TRUE(value.empty());
-  value.clear();
-  EXPECT_TRUE(value.empty());
+  AnyRef ref;
+  EXPECT_EQ(ref.type(), Type::get<void_t>());
+  EXPECT_TRUE(ref.empty());
+  ref.clear();
+  EXPECT_TRUE(ref.empty());
+  EXPECT_THROW(ref.get(FieldId{1}), std::out_of_range);
+  EXPECT_THROW(ref.get("field1"), std::out_of_range);
 
-  EXPECT_THROW(value.as<string_t>(), std::bad_any_cast);
-  EXPECT_TRUE(value.try_as<string_t>() == nullptr);
+  EXPECT_THROW(ref.as<string_t>(), std::bad_any_cast);
+  EXPECT_TRUE(ref.tryAs<string_t>() == nullptr);
 }
 
 TEST(AnyRefTest, Int) {
@@ -48,7 +50,15 @@ TEST(AnyRefTest, List) {
   auto ref = AnyRef::create<list<string_t>>(value);
   EXPECT_TRUE(ref.empty());
   value.emplace_back("hi");
+
   EXPECT_FALSE(ref.empty());
+  EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
+  EXPECT_THROW(ref.get("field1"), std::runtime_error);
+  int index = 0;
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+  index = 1;
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+
   ref.clear();
   EXPECT_TRUE(ref.empty());
   EXPECT_TRUE(value.empty());
