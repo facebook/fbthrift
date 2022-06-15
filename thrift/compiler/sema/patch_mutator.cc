@@ -420,12 +420,6 @@ t_type_ref patch_generator::find_patch_type(
     t_type_ref result = program_.scope()->ref_type(
         *structured->program(), name, field.src_range());
     if (auto* ph = result.get_unresolved_type()) {
-      // Try the current program.
-      t_type_ref fallback =
-          program_.scope()->ref_type(program_, name, field.src_range());
-      if (fallback.resolved()) {
-        return fallback; // TODO(afuller): Remove support for local fallbacks.
-      }
       // Set the location info, in case the type can't be resolved later.
       ph->set_lineno(field.lineno());
       ph->set_src_range(field.src_range());
