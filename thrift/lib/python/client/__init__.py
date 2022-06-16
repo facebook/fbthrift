@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 from thrift.python.client.async_client import AsyncClient  # noqa: F401
 from thrift.python.client.async_client_factory import get_client  # noqa: F401
 from thrift.python.client.client_wrapper import Client  # noqa: F401

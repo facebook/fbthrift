@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 import enum
 from types import MappingProxyType
 from typing import cast, Iterator, Mapping, Optional, Sequence, Tuple, Type, Union

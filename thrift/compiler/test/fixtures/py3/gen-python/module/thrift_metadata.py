@@ -4,6 +4,9 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from __future__ import annotations
+
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 
 

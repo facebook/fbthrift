@@ -4,6 +4,9 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from __future__ import annotations
+
 from abc import ABCMeta
 import typing as _typing
 

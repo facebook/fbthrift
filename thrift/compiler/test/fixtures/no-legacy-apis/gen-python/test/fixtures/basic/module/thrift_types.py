@@ -4,6 +4,9 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from __future__ import annotations
+
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
