@@ -281,6 +281,7 @@ add_library(
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
+  server/CPUConcurrencyController.cpp
   server/LoggingEvent.cpp
   server/LoggingEventHelper.cpp
   server/MonitoringMethodNames.cpp
