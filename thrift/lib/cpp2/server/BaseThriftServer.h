@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
+#include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
 #include <thrift/lib/cpp2/server/ControlServerInterface.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ResourcePool.h>
@@ -430,6 +431,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
+  CPUConcurrencyController cpuConcurrencyController_;
 
  protected:
   //! The server's listening addresses
@@ -832,6 +834,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   const AdaptiveConcurrencyController& getAdaptiveConcurrencyController()
       const final {
     return adaptiveConcurrencyController_;
+  }
+
+  const CPUConcurrencyController& getCPUConcurrencyController() const final {
+    return cpuConcurrencyController_;
   }
 
   std::shared_ptr<server::TServerObserver> getObserverShared() const {

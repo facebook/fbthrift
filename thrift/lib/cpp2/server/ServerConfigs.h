@@ -43,6 +43,7 @@ using PreprocessResult = std::variant<
 class Cpp2ConnContext;
 class Cpp2RequestContext;
 class AdaptiveConcurrencyController;
+class CPUConcurrencyController;
 class ResourcePoolSet;
 
 namespace concurrency {
@@ -97,6 +98,9 @@ class ServerConfigs {
   virtual AdaptiveConcurrencyController& getAdaptiveConcurrencyController() = 0;
   virtual const AdaptiveConcurrencyController&
   getAdaptiveConcurrencyController() const = 0;
+
+  virtual const CPUConcurrencyController& getCPUConcurrencyController()
+      const = 0;
 
   // @see BaseThriftServer::getNumIOWorkerThreads function.
   virtual size_t getNumIOWorkerThreads() const = 0;

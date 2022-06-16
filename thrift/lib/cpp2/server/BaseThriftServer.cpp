@@ -60,8 +60,8 @@ const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();
 
 BaseThriftServer::BaseThriftServer()
-    : adaptiveConcurrencyController_{apache::thrift::detail::
-          makeAdaptiveConcurrencyConfig(), maxRequests_.getObserver()},
+    : adaptiveConcurrencyController_{detail::makeAdaptiveConcurrencyConfig(), maxRequests_.getObserver()},
+      cpuConcurrencyController_{detail::makeCPUConcurrencyControllerConfig(), *this},
       addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
