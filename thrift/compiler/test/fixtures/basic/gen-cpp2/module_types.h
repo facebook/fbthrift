@@ -237,7 +237,7 @@ class MyDataItem final  {
 
   
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
     }
     return ::apache::thrift::Ordinal{0};
@@ -335,7 +335,7 @@ class MyStruct final  {
   static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
   static ::apache::thrift::tag::no_hack_codegen_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
       case 1: return ::apache::thrift::Ordinal{1};
       case 2: return ::apache::thrift::Ordinal{2};
@@ -912,7 +912,7 @@ class MyUnion final  {
   static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
       case 1: return ::apache::thrift::Ordinal{1};
       case 2: return ::apache::thrift::Ordinal{2};
@@ -1365,7 +1365,7 @@ class ReservedKeyword final  {
   
   static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
       case 1: return ::apache::thrift::Ordinal{1};
     }
@@ -1503,7 +1503,7 @@ class UnionToBeRenamed final  {
   
   static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
       case 1: return ::apache::thrift::Ordinal{1};
     }

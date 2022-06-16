@@ -145,7 +145,7 @@ class SomeStruct final  {
   static ::apache::thrift::tag::questionable __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::tags __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
       case 1: return ::apache::thrift::Ordinal{1};
       case 2: return ::apache::thrift::Ordinal{2};

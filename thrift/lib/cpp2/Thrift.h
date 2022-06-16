@@ -121,7 +121,8 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(
       clear_terse_fields_fn, __fbthrift_clear_terse_fields);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
-  FOLLY_CREATE_STATIC_MEMBER_INVOKER(ordinal_fn, __fbthrift_ordinal);
+  FOLLY_CREATE_STATIC_MEMBER_INVOKER(
+      ordinal_fn, __fbthrift_field_id_to_ordinal);
 
   template <typename T, FieldId Id>
   static decltype(T::__fbthrift_ident(FieldIdTag<Id>{})) __fbthrift_ident();
