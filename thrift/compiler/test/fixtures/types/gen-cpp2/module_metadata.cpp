@@ -369,7 +369,7 @@ StructMetadata<::apache::thrift::fixtures::types::MyStruct>::gen(ThriftMetadata&
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::apache::thrift::fixtures::types::Renaming>::gen(ThriftMetadata& metadata) {
+StructMetadata<::apache::thrift::fixtures::types::Renamed>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.Renaming", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;

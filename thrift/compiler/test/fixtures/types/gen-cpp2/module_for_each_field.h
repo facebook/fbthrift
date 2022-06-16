@@ -128,7 +128,7 @@ struct ForEachField<::apache::thrift::fixtures::types::MyStruct> {
 };
 
 template <>
-struct ForEachField<::apache::thrift::fixtures::types::Renaming> {
+struct ForEachField<::apache::thrift::fixtures::types::Renamed> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).bar_ref()...);

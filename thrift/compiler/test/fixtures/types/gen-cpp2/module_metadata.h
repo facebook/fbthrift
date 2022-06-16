@@ -105,7 +105,7 @@ class StructMetadata<::apache::thrift::fixtures::types::MyStruct> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::fixtures::types::Renaming> {
+class StructMetadata<::apache::thrift::fixtures::types::Renamed> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

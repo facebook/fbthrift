@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/op/detail/StructPatch.h>
 #include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/lib/cpp2/type/Testing.h>
+#include <thrift/test/gen-cpp2/StructPatchTest_fatal_types.h>
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {

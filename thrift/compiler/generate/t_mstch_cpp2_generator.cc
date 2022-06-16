@@ -116,6 +116,10 @@ std::vector<t_annotation> get_fatal_annotations(
 std::string get_fatal_string_short_id(const std::string& key) {
   return boost::algorithm::replace_all_copy(key, ".", "_");
 }
+std::string get_fatal_string_short_id(const t_named* node) {
+  // Use the unmodified cpp name.
+  return cpp2::get_name(node);
+}
 
 std::string get_fatal_namespace_name_short_id(
     const std::string& lang, const std::string& ns) {
@@ -1704,9 +1708,7 @@ class mstch_cpp2_program : public mstch_program {
   template <typename Node>
   void collect_fatal_string_annotated(
       std::map<std::string, std::string>& fatal_strings, const Node* node) {
-    // TODO: extra copy
-    auto cpp_name = cpp2::get_name(node);
-    fatal_strings.emplace(get_fatal_string_short_id(cpp_name), cpp_name);
+    fatal_strings.emplace(get_fatal_string_short_id(node), node->get_name());
     auto hash = cpp2::sha256_hex(node->get_name());
     fatal_strings.emplace("__fbthrift_hash_" + hash, node->get_name());
     for (const auto& a : node->annotations()) {
@@ -1718,7 +1720,7 @@ class mstch_cpp2_program : public mstch_program {
   std::vector<std::string> get_fatal_enum_names() {
     std::vector<std::string> result;
     for (const auto* enm : program_->enums()) {
-      result.push_back(get_fatal_string_short_id(enm->get_name()));
+      result.push_back(get_fatal_string_short_id(enm));
     }
     return result;
   }
@@ -1726,7 +1728,7 @@ class mstch_cpp2_program : public mstch_program {
     std::vector<std::string> result;
     for (const auto* obj : program_->objects()) {
       if (obj->is_union()) {
-        result.push_back(get_fatal_string_short_id(obj->get_name()));
+        result.push_back(get_fatal_string_short_id(obj));
       }
     }
     return result;
@@ -1735,26 +1737,26 @@ class mstch_cpp2_program : public mstch_program {
     std::vector<std::string> result;
     for (const auto* obj : program_->objects()) {
       if (!obj->is_union()) {
-        result.push_back(get_fatal_string_short_id(obj->get_name()));
+        result.push_back(get_fatal_string_short_id(obj));
       }
     }
     // typedefs resolve to struct
     for (const t_typedef* i : alias_to_struct()) {
-      result.push_back(get_fatal_string_short_id(i->get_name()));
+      result.push_back(get_fatal_string_short_id(i));
     }
     return result;
   }
   std::vector<std::string> get_fatal_constant_names() {
     std::vector<std::string> result;
     for (const auto* cnst : program_->consts()) {
-      result.push_back(get_fatal_string_short_id(cnst->get_name()));
+      result.push_back(get_fatal_string_short_id(cnst));
     }
     return result;
   }
   std::vector<std::string> get_fatal_service_names() {
     std::vector<std::string> result;
     for (const auto* service : program_->services()) {
-      result.push_back(get_fatal_string_short_id(service->get_name()));
+      result.push_back(get_fatal_string_short_id(service));
     }
     return result;
   }
@@ -1849,8 +1851,7 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node fatal_identifiers() {
     std::map<std::string, std::string> unique_names;
-    unique_names.emplace(
-        get_fatal_string_short_id(program_->name()), program_->name());
+    unique_names.emplace(get_fatal_string_short_id(program_), program_->name());
     // languages and namespaces
     for (const auto& pair : program_->namespaces()) {
       unique_names.emplace(get_fatal_string_short_id(pair.first), pair.first);
@@ -1861,8 +1862,7 @@ class mstch_cpp2_program : public mstch_program {
     // enums
     for (const auto* enm : program_->enums()) {
       collect_fatal_string_annotated(unique_names, enm);
-      unique_names.emplace(
-          get_fatal_string_short_id(enm->get_name()), enm->get_name());
+      unique_names.emplace(get_fatal_string_short_id(enm), enm->get_name());
       for (const auto& i : enm->get_enum_values()) {
         collect_fatal_string_annotated(unique_names, i);
       }
@@ -1881,26 +1881,23 @@ class mstch_cpp2_program : public mstch_program {
     }
     // consts
     for (const auto* cnst : program_->consts()) {
-      unique_names.emplace(
-          get_fatal_string_short_id(cnst->get_name()), cnst->get_name());
+      unique_names.emplace(get_fatal_string_short_id(cnst), cnst->get_name());
     }
     // services
     for (const auto* service : program_->services()) {
       // function annotations are not currently included.
       unique_names.emplace(
-          get_fatal_string_short_id(service->get_name()), service->get_name());
+          get_fatal_string_short_id(service), service->get_name());
       for (const auto* f : service->get_functions()) {
-        unique_names.emplace(
-            get_fatal_string_short_id(f->get_name()), f->get_name());
+        unique_names.emplace(get_fatal_string_short_id(f), f->get_name());
         for (const auto& p : f->get_paramlist()->fields()) {
-          unique_names.emplace(get_fatal_string_short_id(p.name()), p.name());
+          unique_names.emplace(get_fatal_string_short_id(&p), p.name());
         }
       }
     }
     // typedefs resolve to struct
     for (const t_typedef* i : alias_to_struct()) {
-      unique_names.emplace(
-          get_fatal_string_short_id(i->get_name()), i->get_name());
+      unique_names.emplace(get_fatal_string_short_id(i), i->get_name());
     }
 
     mstch::array a;

@@ -3208,6 +3208,7 @@ Renaming.thrift_spec = (
 )
 
 Renaming.thrift_struct_annotations = {
+  "cpp.name": "Renamed",
 }
 Renaming.thrift_field_annotations = {
   1: {

@@ -117,7 +117,7 @@ struct MyDataItem {} (cpp.noncomparable)
 
 struct Renaming {
   1: i64 foo (cpp.name = 'bar');
-}
+} (cpp.name = "Renamed")
 
 struct AnnotatedTypes {
   1: TBinary (noop_annotation) binary_field;

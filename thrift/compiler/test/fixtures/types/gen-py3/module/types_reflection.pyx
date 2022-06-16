@@ -550,7 +550,7 @@ cdef __StructSpec get_reflection__Renaming():
         name="Renaming",
         kind=__StructType.STRUCT,
         annotations={
-        },
+            """cpp.name""": """Renamed""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

@@ -129,7 +129,7 @@ struct TccStructTraits<::apache::thrift::fixtures::types::MyStruct> {
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::apache::thrift::fixtures::types::Renaming> {
+struct TccStructTraits<::apache::thrift::fixtures::types::Renamed> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -2362,7 +2362,7 @@ extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactPro
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
-void Renaming::readNoXfer(Protocol_* iprot) {
+void Renamed::readNoXfer(Protocol_* iprot) {
   __fbthrift_clear_terse_fields();
 
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
@@ -2405,7 +2405,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Renaming>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Renamed>>();
   }
 
   switch (_readState.fieldId) {
@@ -2429,7 +2429,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t Renaming::serializedSize(Protocol_ const* prot_) const {
+uint32_t Renamed::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Renaming");
   {
@@ -2441,7 +2441,7 @@ uint32_t Renaming::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Renaming::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t Renamed::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Renaming");
   {
@@ -2453,7 +2453,7 @@ uint32_t Renaming::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Renaming::write(Protocol_* prot_) const {
+uint32_t Renamed::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Renaming");
   bool previousFieldHasValue = true;
@@ -2469,14 +2469,14 @@ uint32_t Renaming::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void Renaming::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Renaming::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Renaming::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Renaming::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void Renamed::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Renamed::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Renamed::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Renamed::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Renamed::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Renamed::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Renamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Renamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {

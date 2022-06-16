@@ -49,7 +49,7 @@ struct __fbthrift_strings_module {
   using NoexceptMoveComplexStruct = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'u', 'c', 't'>;
   using NoexceptMoveEmpty = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'E', 'm', 'p', 't', 'y'>;
   using NoexceptMoveSimpleStruct = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'S', 'i', 'm', 'p', 'l', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
-  using Renaming = ::fatal::sequence<char, 'R', 'e', 'n', 'a', 'm', 'i', 'n', 'g'>;
+  using Renamed = ::fatal::sequence<char, 'R', 'e', 'n', 'a', 'm', 'i', 'n', 'g'>;
   using SomeService = ::fatal::sequence<char, 'S', 'o', 'm', 'e', 'S', 'e', 'r', 'v', 'i', 'c', 'e'>;
   using StructWithDoubleUnderscores = ::fatal::sequence<char, 'S', 't', 'r', 'u', 'c', 't', 'W', 'i', 't', 'h', 'D', 'o', 'u', 'b', 'l', 'e', 'U', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e', 's'>;
   using TrivialNestedWithDefault = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
@@ -152,7 +152,7 @@ struct __fbthrift_strings_module {
   using aa_unique = ::fatal::sequence<char, 'a', 'a', '_', 'u', 'n', 'i', 'q', 'u', 'e'>;
   using apache__thrift__fixtures__types = ::fatal::sequence<char, 'a', 'p', 'a', 'c', 'h', 'e', ':', ':', 't', 'h', 'r', 'i', 'f', 't', ':', ':', 'f', 'i', 'x', 't', 'u', 'r', 'e', 's', ':', ':', 't', 'y', 'p', 'e', 's'>;
   using b = ::fatal::sequence<char, 'b'>;
-  using bar = ::fatal::sequence<char, 'b', 'a', 'r'>;
+  using bar = ::fatal::sequence<char, 'f', 'o', 'o'>;
   using big = ::fatal::sequence<char, 'b', 'i', 'g'>;
   using biggish = ::fatal::sequence<char, 'b', 'i', 'g', 'g', 'i', 's', 'h'>;
   using binary_field = ::fatal::sequence<char, 'b', 'i', 'n', 'a', 'r', 'y', '_', 'f', 'i', 'e', 'l', 'd'>;
@@ -234,7 +234,7 @@ struct module_module_traits {
       ::fatal::pair<::apache::thrift::fixtures::types::MinPadding, strings::MinPadding>,
       ::fatal::pair<::apache::thrift::fixtures::types::MyStruct, strings::MyStruct>,
       ::fatal::pair<::apache::thrift::fixtures::types::MyDataItem, strings::MyDataItem>,
-      ::fatal::pair<::apache::thrift::fixtures::types::Renaming, strings::Renaming>,
+      ::fatal::pair<::apache::thrift::fixtures::types::Renamed, strings::Renamed>,
       ::fatal::pair<::apache::thrift::fixtures::types::AnnotatedTypes, strings::AnnotatedTypes>,
       ::fatal::pair<::apache::thrift::fixtures::types::ForwardUsageRoot, strings::ForwardUsageRoot>,
       ::fatal::pair<::apache::thrift::fixtures::types::ForwardUsageStruct, strings::ForwardUsageStruct>,
@@ -284,7 +284,7 @@ class module_tags {
     using MinPadding = __fbthrift_strings::MinPadding;
     using MyStruct = __fbthrift_strings::MyStruct;
     using MyDataItem = __fbthrift_strings::MyDataItem;
-    using Renaming = __fbthrift_strings::Renaming;
+    using Renamed = __fbthrift_strings::Renamed;
     using AnnotatedTypes = __fbthrift_strings::AnnotatedTypes;
     using ForwardUsageRoot = __fbthrift_strings::ForwardUsageRoot;
     using ForwardUsageStruct = __fbthrift_strings::ForwardUsageStruct;

@@ -135,7 +135,7 @@ class <%struct:cpp_name%>_struct_traits {
   };
  public:
   using type = <%struct:cpp_fullname%>;
-  using name = __fbthrift_strings_<%program:name%>::<%struct:name%>;
+  using name = __fbthrift_strings_<%program:name%>::<%struct:cpp_name%>;
   using member = __fbthrift_member;
   using members = ::fatal::list<
       <%#struct:fields%>

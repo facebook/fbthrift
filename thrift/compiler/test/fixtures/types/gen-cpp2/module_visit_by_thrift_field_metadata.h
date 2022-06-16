@@ -206,14 +206,14 @@ struct VisitByFieldId<::apache::thrift::fixtures::types::MyStruct> {
 };
 
 template <>
-struct VisitByFieldId<::apache::thrift::fixtures::types::Renaming> {
+struct VisitByFieldId<::apache::thrift::fixtures::types::Renamed> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).bar_ref());
     default:
-      throwInvalidThriftId(fieldId, "::apache::thrift::fixtures::types::Renaming");
+      throwInvalidThriftId(fieldId, "::apache::thrift::fixtures::types::Renamed");
     }
   }
 };

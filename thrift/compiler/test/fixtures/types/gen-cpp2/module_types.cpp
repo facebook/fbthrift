@@ -1473,11 +1473,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::Renamed>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::Renaming>;
+  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::Renamed>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1493,26 +1493,26 @@ void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFiel
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 
-Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
+Renamed::Renamed(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     __fbthrift_field_bar(std::move(bar__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
 
 
-void Renaming::__fbthrift_clear() {
+void Renamed::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_bar = ::std::int64_t();
   __isset = {};
 }
 
-void Renaming::__fbthrift_clear_terse_fields() {
+void Renamed::__fbthrift_clear_terse_fields() {
 }
 
-bool Renaming::__fbthrift_is_empty() const {
+bool Renamed::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Renaming::operator==(const Renaming& rhs) const {
+bool Renamed::operator==(const Renamed& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -1522,7 +1522,7 @@ bool Renaming::operator==(const Renaming& rhs) const {
   return true;
 }
 
-bool Renaming::operator<(const Renaming& rhs) const {
+bool Renamed::operator<(const Renamed& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -1533,20 +1533,20 @@ bool Renaming::operator<(const Renaming& rhs) const {
 }
 
 
-void swap(Renaming& a, Renaming& b) {
+void swap(Renamed& a, Renamed& b) {
   using ::std::swap;
   swap(a.bar_ref().value(), b.bar_ref().value());
   swap(a.__isset, b.__isset);
 }
 
-template void Renaming::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Renaming::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Renaming::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Renaming::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void Renamed::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Renamed::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Renamed::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Renamed::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Renamed::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Renamed::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Renamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Renamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 }}}} // apache::thrift::fixtures::types

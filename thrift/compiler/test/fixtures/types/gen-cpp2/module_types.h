@@ -573,7 +573,7 @@ class ComplexNestedWithDefault;
 class MinPadding;
 class MyDataItem;
 class MyStruct;
-class Renaming;
+class Renamed;
 class AnnotatedTypes;
 class ForwardUsageStruct;
 class ForwardUsageRoot;
@@ -2983,7 +2983,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
 }
 
 
-class Renaming final  {
+class Renamed final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -2996,28 +2996,28 @@ class Renaming final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = Renaming;
+  using __fbthrift_cpp2_type = Renamed;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  Renaming() :
+  Renamed() :
       __fbthrift_field_bar() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
+  Renamed(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
 
-  Renaming(Renaming&&) = default;
+  Renamed(Renamed&&) = default;
 
-  Renaming(const Renaming&) = default;
+  Renamed(const Renamed&) = default;
 
 
-  Renaming& operator=(Renaming&&) = default;
+  Renamed& operator=(Renamed&&) = default;
 
-  Renaming& operator=(const Renaming&) = default;
+  Renamed& operator=(const Renamed&) = default;
  private:
   ::std::int64_t __fbthrift_field_bar;
  private:
@@ -3025,8 +3025,8 @@ class Renaming final  {
 
  public:
 
-  bool operator==(const Renaming&) const;
-  bool operator<(const Renaming&) const;
+  bool operator==(const Renamed&) const;
+  bool operator<(const Renamed&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
@@ -3091,12 +3091,12 @@ class Renaming final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Renaming>;
-  friend void swap(Renaming& a, Renaming& b);
+  friend class ::apache::thrift::Cpp2Ops<Renamed>;
+  friend void swap(Renamed& a, Renamed& b);
 };
 
 template <class Protocol_>
-unsigned long Renaming::read(Protocol_* iprot) {
+unsigned long Renamed::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

@@ -862,7 +862,7 @@ class MyStruct_struct_traits {
   >;
 };
 
-class Renaming_struct_traits {
+class Renamed_struct_traits {
   class __fbthrift_annotations : public __fbthrift_refl_impl::no_annotations {
     class __fbthrift_members {
      public:
@@ -874,7 +874,7 @@ class Renaming_struct_traits {
   };
 
   struct __fbthrift_member_bar {
-    using owner = ::apache::thrift::fixtures::types::Renaming;
+    using owner = ::apache::thrift::fixtures::types::Renamed;
     using name = __fbthrift_strings_module::__fbthrift_hash_2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae;
     using type = ::std::int64_t;
     using tag = ::apache::thrift::tag::bar;
@@ -890,8 +890,8 @@ class Renaming_struct_traits {
     using bar = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_bar>;
   };
  public:
-  using type = ::apache::thrift::fixtures::types::Renaming;
-  using name = __fbthrift_strings_module::Renaming;
+  using type = ::apache::thrift::fixtures::types::Renamed;
+  using name = __fbthrift_strings_module::Renamed;
   using member = __fbthrift_member;
   using members = ::fatal::list<
       member::bar
@@ -1661,7 +1661,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(ComplexNestedWithDefault, __fbthrift_refl::Complex
 THRIFT_REGISTER_STRUCT_TRAITS(MinPadding, __fbthrift_refl::MinPadding_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(MyDataItem, __fbthrift_refl::MyDataItem_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(MyStruct, __fbthrift_refl::MyStruct_struct_traits);
-THRIFT_REGISTER_STRUCT_TRAITS(Renaming, __fbthrift_refl::Renaming_struct_traits);
+THRIFT_REGISTER_STRUCT_TRAITS(Renamed, __fbthrift_refl::Renamed_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(AnnotatedTypes, __fbthrift_refl::AnnotatedTypes_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(ForwardUsageStruct, __fbthrift_refl::ForwardUsageStruct_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(ForwardUsageRoot, __fbthrift_refl::ForwardUsageRoot_struct_traits);

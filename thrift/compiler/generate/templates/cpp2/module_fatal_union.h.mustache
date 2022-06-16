@@ -137,7 +137,7 @@ class <%struct:cpp_name%>_variant_traits {
 
  public:
   using type = <%struct:cpp_fullname%>;
-  using name = __fbthrift_strings_<%program:name%>::<%struct:name%>;
+  using name = __fbthrift_strings_<%program:name%>::<%struct:cpp_name%>;
   using id = type::Type;
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<

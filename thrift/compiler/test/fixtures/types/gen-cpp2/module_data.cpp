@@ -239,13 +239,13 @@ const std::array<protocol::TType, 4> TStructDataStorage<::apache::thrift::fixtur
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renamed>::fields_names = {{
   "foo",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renamed>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renamed>::fields_types = {{
   TType::T_I64,
 }};
 
