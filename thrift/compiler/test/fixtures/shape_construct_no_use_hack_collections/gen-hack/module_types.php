@@ -147,12 +147,12 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum>, \IT
    * Original thrift field:-
    * 4: list<string> list_of_strings
    */
-  public ?varray<string> $list_of_strings;
+  public ?vec<string> $list_of_strings;
   /**
    * Original thrift field:-
    * 5: map<string, i32> map_of_string_to_ints
    */
-  public ?darray<string, int> $map_of_string_to_ints;
+  public ?dict<string, int> $map_of_string_to_ints;
   /**
    * Original thrift field:-
    * 6: struct module.Foo struct_foo
@@ -160,7 +160,7 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum>, \IT
   public ?Foo $struct_foo;
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
-  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?varray<string> $list_of_strings = null, ?darray<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null)[] {
+  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?vec<string> $list_of_strings = null, ?dict<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null)[] {
     $this->_type = TestUnionEnum::_EMPTY_;
     if ($int_value !== null) {
       $this->int_value = $int_value;
@@ -297,18 +297,18 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum>, \IT
     return $this->double_value as nonnull;
   }
 
-  public function set_list_of_strings(varray<string> $list_of_strings)[write_props]: this {
+  public function set_list_of_strings(vec<string> $list_of_strings)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
     return $this;
   }
 
-  public function get_list_of_strings()[]: ?varray<string> {
+  public function get_list_of_strings()[]: ?vec<string> {
     return $this->list_of_strings;
   }
 
-  public function getx_list_of_strings()[]: varray<string> {
+  public function getx_list_of_strings()[]: vec<string> {
     invariant(
       $this->_type === TestUnionEnum::list_of_strings,
       'get_list_of_strings called on an instance of TestUnion whose current type is %s',
@@ -317,18 +317,18 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum>, \IT
     return $this->list_of_strings as nonnull;
   }
 
-  public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints)[write_props]: this {
+  public function set_map_of_string_to_ints(dict<string, int> $map_of_string_to_ints)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
     return $this;
   }
 
-  public function get_map_of_string_to_ints()[]: ?darray<string, int> {
+  public function get_map_of_string_to_ints()[]: ?dict<string, int> {
     return $this->map_of_string_to_ints;
   }
 
-  public function getx_map_of_string_to_ints()[]: darray<string, int> {
+  public function getx_map_of_string_to_ints()[]: dict<string, int> {
     invariant(
       $this->_type === TestUnionEnum::map_of_string_to_ints,
       'get_map_of_string_to_ints called on an instance of TestUnion whose current type is %s',
@@ -584,12 +584,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public varray<string> $a;
+  public vec<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?darray<string, varray<dict<int, bool>>> $b;
+  public ?dict<string, vec<dict<int, bool>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -606,7 +606,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public string $str_value;
 
-  public function __construct(?varray<string> $a = null, ?darray<string, varray<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null)[] {
+  public function __construct(?vec<string> $a = null, ?dict<string, vec<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null)[] {
     $this->a = $a ?? vec[];
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -848,14 +848,14 @@ class TestStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 4: list<struct module.Foo> list_of_struct_foo
    */
-  public varray<Foo> $list_of_struct_foo;
+  public vec<Foo> $list_of_struct_foo;
   /**
    * Original thrift field:-
    * 5: map<string, struct module.Foo> map_of_string_to_struct_foo
    */
-  public darray<string, Foo> $map_of_string_to_struct_foo;
+  public dict<string, Foo> $map_of_string_to_struct_foo;
 
-  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?varray<Foo> $list_of_struct_foo = null, ?darray<string, Foo> $map_of_string_to_struct_foo = null)[] {
+  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?vec<Foo> $list_of_struct_foo = null, ?dict<string, Foo> $map_of_string_to_struct_foo = null)[] {
     $this->foo_struct = $foo_struct;
     $this->union_value = $union_value;
     $this->list_of_struct_foo = $list_of_struct_foo ?? vec[];

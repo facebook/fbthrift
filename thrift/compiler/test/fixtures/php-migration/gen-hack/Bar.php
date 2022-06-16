@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
+  public function baz(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
 }
 
 /**
@@ -61,7 +61,7 @@ interface BarClientIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -146,7 +146,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -189,7 +189,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz__LEGACY_ARRAYS(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz__LEGACY_ARRAYS(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -237,7 +237,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -280,7 +280,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz__LEGACY_ARRAYS(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz__LEGACY_ARRAYS(?dict<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -315,7 +315,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   }
 
   /* send and recv functions */
-  public function send_baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(dict<int, bool> $a, KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a === null ? null : $a,
       'b' => $b === null ? null : Vec\map($b, 
@@ -579,13 +579,13 @@ class Bar_baz_args implements \IThriftSyncStruct {
   );
 
   const int STRUCTURAL_ID = 7865027497865509792;
-  public ?darray<int, bool> $a;
-  public ?varray<darray<int, darray<string, bool>>> $b;
+  public ?dict<int, bool> $a;
+  public ?vec<dict<int, dict<string, bool>>> $b;
   public ?int $c;
   public ?Foo $d;
   public ?int $e;
 
-  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null)[] {
+  public function __construct(?dict<int, bool> $a = null, ?vec<dict<int, dict<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null)[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c;

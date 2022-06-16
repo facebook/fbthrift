@@ -577,7 +577,8 @@ class t_hack_generator : public t_concat_generator {
       bool nullable = false,
       bool shape = false,
       bool immutable_collections = false,
-      bool ignore_adapter = false);
+      bool ignore_adapter = false,
+      bool is_any_shape = false);
   std::string type_to_param_typehint(
       const t_type* ttype, bool nullable = false);
 
@@ -2647,7 +2648,13 @@ void t_hack_generator::generate_php_struct_shape_spec(
     if (const auto field_adapter = find_hack_field_adapter(field)) {
       typehint = *field_adapter + "::THackType";
     } else {
-      typehint = type_to_typehint(t, false, !is_constructor_shape);
+      typehint = type_to_typehint(
+          t,
+          false,
+          !is_constructor_shape,
+          false,
+          false,
+          true /* is_any_shape */);
     }
 
     std::string dval = "";
@@ -5764,7 +5771,8 @@ std::string t_hack_generator::type_to_typehint(
     bool nullable,
     bool shape,
     bool immutable_collections,
-    bool ignore_adapter) {
+    bool ignore_adapter,
+    bool is_any_shape) {
   if (!ignore_adapter) {
     // Check the adapter before resolving typedefs.
     if (const auto* adapter = find_hack_adapter(ttype)) {
@@ -5803,32 +5811,40 @@ std::string t_hack_generator::type_to_typehint(
     return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
   } else if (const auto* tlist = dynamic_cast<const t_list*>(ttype)) {
     std::string prefix;
-    if (arrays_) {
-      prefix = "vec";
-    } else if (no_use_hack_collections_) {
+    if (is_any_shape && !arrays_ &&
+        (no_use_hack_collections_ || (shape && array_migration_))) {
       prefix = "varray";
-    } else if (shape) {
-      prefix = array_migration_ ? "varray" : "vec";
+    } else if (arrays_ || no_use_hack_collections_ || shape) {
+      prefix = "vec";
     } else {
       prefix = immutable_collections ? "\\ConstVector" : "Vector";
     }
     return prefix + "<" +
         type_to_typehint(
-               tlist->get_elem_type(), false, shape, immutable_collections) +
+               tlist->get_elem_type(),
+               false,
+               shape,
+               immutable_collections,
+               false,
+               is_any_shape) +
         ">";
   } else if (const auto* tmap = dynamic_cast<const t_map*>(ttype)) {
     std::string prefix;
-    if (arrays_) {
+    if (is_any_shape && !arrays_ &&
+        (no_use_hack_collections_ || (shape && array_migration_))) {
+      prefix = no_use_hack_collections_ ? "darray" : array_keyword_;
+    } else if (arrays_ || no_use_hack_collections_ || shape) {
       prefix = "dict";
-    } else if (no_use_hack_collections_) {
-      prefix = "darray";
-    } else if (shape) {
-      prefix = array_keyword_;
     } else {
       prefix = immutable_collections ? "\\ConstMap" : "Map";
     }
     std::string key_type = type_to_typehint(
-        tmap->get_key_type(), false, shape, immutable_collections);
+        tmap->get_key_type(),
+        false,
+        shape,
+        immutable_collections,
+        false,
+        is_any_shape);
     if (shape && shape_arraykeys_ && key_type == "string") {
       key_type = "arraykey";
     } else if (!is_type_arraykey(tmap->get_key_type())) {
@@ -5836,16 +5852,21 @@ std::string t_hack_generator::type_to_typehint(
     }
     return prefix + "<" + key_type + ", " +
         type_to_typehint(
-               tmap->get_val_type(), false, shape, immutable_collections) +
+               tmap->get_val_type(),
+               false,
+               shape,
+               immutable_collections,
+               false,
+               is_any_shape) +
         ">";
   } else if (const auto* tset = dynamic_cast<const t_set*>(ttype)) {
     std::string prefix;
-    if (arraysets_) {
+    if (is_any_shape && (arraysets_ || (!arrays_ && shape))) {
       prefix = array_keyword_;
+    } else if (arraysets_) {
+      prefix = "dict";
     } else if (arrays_) {
       prefix = "keyset";
-    } else if (shape) {
-      prefix = array_keyword_;
     } else {
       prefix = immutable_collections ? "\\ConstSet" : "Set";
     }
@@ -5853,7 +5874,12 @@ std::string t_hack_generator::type_to_typehint(
     std::string key_type = !is_type_arraykey(tset->get_elem_type())
         ? "arraykey"
         : type_to_typehint(
-              tset->get_elem_type(), false, shape, immutable_collections);
+              tset->get_elem_type(),
+              false,
+              shape,
+              immutable_collections,
+              false,
+              is_any_shape);
     return prefix + "<" + key_type + suffix;
   } else {
     return "mixed";

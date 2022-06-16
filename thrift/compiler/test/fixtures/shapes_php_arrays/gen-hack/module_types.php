@@ -167,7 +167,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 3: set<i32> set_of_ints
    */
-  public darray<int, bool> $set_of_ints;
+  public dict<int, bool> $set_of_ints;
   /**
    * Original thrift field:-
    * 4: map<string, list<string>> map_of_list_of_strings
@@ -177,7 +177,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 5: map<string, set<string>> map_of_set_of_strings
    */
-  public Map<string, darray<string, bool>> $map_of_set_of_strings;
+  public Map<string, dict<string, bool>> $map_of_set_of_strings;
   /**
    * Original thrift field:-
    * 6: map<string, map<string, i32>> map_of_strings_to_map_of_string_ints
@@ -187,9 +187,9 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 7: map<i32, map<i32, set<string>>> optional_map_of_map_of_sets
    */
-  public ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets;
+  public ?Map<int, Map<int, dict<string, bool>>> $optional_map_of_map_of_sets;
 
-  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?darray<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, darray<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets = null)[] {
+  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?dict<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, dict<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, dict<string, bool>>> $optional_map_of_map_of_sets = null)[] {
     $this->just_int = $just_int ?? 0;
     $this->list_of_strings = $list_of_strings ?? Vector {};
     $this->set_of_ints = $set_of_ints ?? dict[];

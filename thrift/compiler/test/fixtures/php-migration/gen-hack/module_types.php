@@ -74,12 +74,12 @@ class Foo implements \IThriftSyncStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public ?varray<string> $a;
+  public ?vec<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?darray<string, varray<darray<int, bool>>> $b;
+  public ?dict<string, vec<dict<int, bool>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -91,7 +91,7 @@ class Foo implements \IThriftSyncStruct {
    */
   public ?bool $d;
 
-  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null)[] {
+  public function __construct(?vec<string> $a = null, ?dict<string, vec<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null)[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -296,14 +296,14 @@ class Baz extends \TException implements \IThriftSyncStruct {
    * Original thrift field:-
    * 3: set<string> some_container
    */
-  public ?darray<string, bool> $some_container;
+  public ?dict<string, bool> $some_container;
   /**
    * Original thrift field:-
    * 4: i32 code
    */
   public int $code;
 
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null)[] {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?dict<string, bool> $some_container = null, ?int $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
