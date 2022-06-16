@@ -56,7 +56,7 @@ doesn't know about the transform ID, an error MUST be returned as we
 don't know how to transform the data.
 
 Conversely, data in the info headers is ignorable.  This should only
-be things like timestamps, debuging tracing, etc.  Using the header
+be things like timestamps, debugging tracing, etc.  Using the header
 size you should be able to skip this data and read the payload safely
 if you don't know the info ID.
 

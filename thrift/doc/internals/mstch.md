@@ -87,7 +87,7 @@ this->write_output("my_output_file.txt", output);
 From within a given template for a generator, other templates may be included
 with the mstch inclusion syntax. If you have an existing template file named
 "Foo.mustache", it can be included by writing `{{> Foo}}`. Templates
-are permitted to recursively include themselves, however care must be taken to
+are permitted to recursively include themselves; however, care must be taken to
 make sure that this terminates.
 
 Note that the final newline, if present in a partial template file, is stripped
@@ -131,7 +131,7 @@ about the context.
 
 Lists represent zero or more elements of some other type, and function similar
 to for-each loops in other languages. The body of the loop will be expanded
-once per element in the list, and on each iteration the context will be
+once per element in the list, and, on each iteration, the context will be
 extended using each member of the list. While expanding lists, two boolean keys
 named `first?` and `last?` will be available, indicating whether the current
 iteration is the first or the last iteration, respectively.

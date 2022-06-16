@@ -36,7 +36,7 @@ similar to the older first-generation implementation:
 * Allows true zero-copy from client to server and back using IOBufs
   (vs. previous generated code that used std::string for binary type).
 
-* It's about 4x as fast as NonblockingServer in our loadtests
+* It's about 4x as fast as NonblockingServer in our load tests
   (`perf/cpp`) for small requests. Latency is also much improved
   depending on how parallel processing and out of order responses are
   used.
@@ -105,7 +105,7 @@ Will generate an interface similar to
 So you have three choices of handler type to implement:
 
 1. `sendResponse(...)` is the synchronous method. It will be read and
-   deserialized in an IO thread, then passed to a pool thread to be
+   deserialized in an IO thread, and then passed to a pool thread to be
    executed. When it returns, `_return` must contain the result, which
    will be passed back to the original IO thread to serialize the
    result and send it on the wire. You can block in this handler as
@@ -137,7 +137,7 @@ So you have three choices of handler type to implement:
    When the future completes, the result will be sent.
 
 You only need to override one of these methods in your handler. They
-will be called in turn until an overriden method is found. If you do
+will be called in turn until an overridden method is found. If you do
 not override any method, you will get a runtime error when the method
 is called.
 
@@ -165,7 +165,7 @@ python framework automatically knows which file changes need to go in.
 * enum class: Enums are now generated with C++11's enum class
   feature.
 
-* Arguments on heap: By default complex arguments are on the heap, so
+* Arguments on heap: By default, complex arguments are on the heap, so
   they can be moved between threads without a copy. To disable this,
   use option `stack_arguments`.
 
@@ -180,9 +180,9 @@ python framework automatically knows which file changes need to go in.
 ### Serialization using IOBufs
 
 An IOBuf is a network chained memory buffer, similar to FreeBSD's
-mbuf, or the linux kernel's sk_buff. They can have the memory
+mbuf, or the Linux kernel's sk_buff. They can have the memory
 internally if small enough, or externally malloced and shared. This is
-opaque to the user, and done mostly for performance reasons, similar
+opaque to the user and done mostly for performance reasons, similar
 to fbstring. The IOBuf header itself can point to a subregion of the
 allocated memory, like a view.
 
@@ -248,9 +248,9 @@ we call writeV with the whole of the queue.
   above.
 
 * The previous thrift ThreadManager used mutexs and condition
-  variables to queue tasks and wake up threads. In practice this
+  variables to queue tasks and wake up threads. In practice, this
   limited the throughput to around 300k qps. We have overhauled
   ThreadManager to use a lockless MPMC queue, as well as adding LIFO
   worker thread semantics. This improved the throughput to just under
-  1M qps. Unfortunately it is still sensitive to tuning for the
+  1M qps. Unfortunately, it is still sensitive to tuning for the
   number of worker and IO threads, due to context switching overhead.
