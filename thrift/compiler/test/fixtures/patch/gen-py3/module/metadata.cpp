@@ -14,11 +14,15 @@ namespace patch {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<MyData>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<InnerUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyDataValuePatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<InnerUnionPatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<InnerUnionValuePatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalInnerUnionValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyUnionPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyUnionValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyUnionValuePatch>::gen(metadata);

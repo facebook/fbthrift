@@ -131,6 +131,45 @@ cdef class __OptionalMyDataValuePatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_3(self, _fbthrift_value) except *
 
 
+ctypedef void (*__InnerUnionPatch_FieldsSetterFunc)(__InnerUnionPatch_FieldsSetter, object) except *
+
+cdef class __InnerUnionPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_patch_module_types.cInnerUnionPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __InnerUnionPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __InnerUnionPatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cInnerUnionPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+
+
+ctypedef void (*__InnerUnionValuePatch_FieldsSetterFunc)(__InnerUnionValuePatch_FieldsSetter, object) except *
+
+cdef class __InnerUnionValuePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_patch_module_types.cInnerUnionValuePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __InnerUnionValuePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __InnerUnionValuePatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cInnerUnionValuePatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalInnerUnionValuePatch_FieldsSetterFunc)(__OptionalInnerUnionValuePatch_FieldsSetter, object) except *
+
+cdef class __OptionalInnerUnionValuePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalInnerUnionValuePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalInnerUnionValuePatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
 ctypedef void (*__MyUnionPatch_FieldsSetterFunc)(__MyUnionPatch_FieldsSetter, object) except *
 
 cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
@@ -141,6 +180,7 @@ cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
     cdef __MyUnionPatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cMyUnionPatch* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyUnionValuePatch_FieldsSetterFunc)(__MyUnionValuePatch_FieldsSetter, object) except *

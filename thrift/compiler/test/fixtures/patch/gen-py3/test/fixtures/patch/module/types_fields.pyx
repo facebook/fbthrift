@@ -457,6 +457,147 @@ cdef class __OptionalMyDataValuePatch_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
+cdef class __InnerUnionPatch_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __InnerUnionPatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cInnerUnionPatch* struct_cpp_obj):
+        cdef __InnerUnionPatch_FieldsSetter __fbthrift_inst = __InnerUnionPatch_FieldsSetter.__new__(__InnerUnionPatch_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"innerOption")] = __InnerUnionPatch_FieldsSetter._set_field_0
+        return __fbthrift_inst
+
+    cdef void set_field(__InnerUnionPatch_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __InnerUnionPatch_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field innerOption
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cInnerUnionPatch](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.BinaryPatch):
+            raise TypeError(f'innerOption is not a { _apache_thrift_op_patch_types.BinaryPatch !r}.')
+        deref(self._struct_cpp_obj).innerOption_ref().assign(deref((<_apache_thrift_op_patch_types.BinaryPatch?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
+cdef class __InnerUnionValuePatch_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __InnerUnionValuePatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cInnerUnionValuePatch* struct_cpp_obj):
+        cdef __InnerUnionValuePatch_FieldsSetter __fbthrift_inst = __InnerUnionValuePatch_FieldsSetter.__new__(__InnerUnionValuePatch_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __InnerUnionValuePatch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patch")] = __InnerUnionValuePatch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"ensure")] = __InnerUnionValuePatch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patchAfter")] = __InnerUnionValuePatch_FieldsSetter._set_field_3
+        return __fbthrift_inst
+
+    cdef void set_field(__InnerUnionValuePatch_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __InnerUnionValuePatch_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cInnerUnionValuePatch](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field patch
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cInnerUnionValuePatch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnionPatch):
+            raise TypeError(f'patch is not a { _test_fixtures_patch_module_types.InnerUnionPatch !r}.')
+        deref(self._struct_cpp_obj).patch_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnionPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field ensure
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cInnerUnionValuePatch](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnion):
+            raise TypeError(f'ensure is not a { _test_fixtures_patch_module_types.InnerUnion !r}.')
+        deref(self._struct_cpp_obj).ensure_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnion?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field patchAfter
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cInnerUnionValuePatch](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnionPatch):
+            raise TypeError(f'patchAfter is not a { _test_fixtures_patch_module_types.InnerUnionPatch !r}.')
+        deref(self._struct_cpp_obj).patchAfter_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnionPatch?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
+cdef class __OptionalInnerUnionValuePatch_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __OptionalInnerUnionValuePatch_FieldsSetter _fbthrift_create(_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch* struct_cpp_obj):
+        cdef __OptionalInnerUnionValuePatch_FieldsSetter __fbthrift_inst = __OptionalInnerUnionValuePatch_FieldsSetter.__new__(__OptionalInnerUnionValuePatch_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __OptionalInnerUnionValuePatch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patch")] = __OptionalInnerUnionValuePatch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"ensure")] = __OptionalInnerUnionValuePatch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patchAfter")] = __OptionalInnerUnionValuePatch_FieldsSetter._set_field_3
+        return __fbthrift_inst
+
+    cdef void set_field(__OptionalInnerUnionValuePatch_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __OptionalInnerUnionValuePatch_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field patch
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnionValuePatch):
+            raise TypeError(f'patch is not a { _test_fixtures_patch_module_types.InnerUnionValuePatch !r}.')
+        deref(self._struct_cpp_obj).patch_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnionValuePatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field ensure
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnion):
+            raise TypeError(f'ensure is not a { _test_fixtures_patch_module_types.InnerUnion !r}.')
+        deref(self._struct_cpp_obj).ensure_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnion?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field patchAfter
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnionValuePatch):
+            raise TypeError(f'patchAfter is not a { _test_fixtures_patch_module_types.InnerUnionValuePatch !r}.')
+        deref(self._struct_cpp_obj).patchAfter_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnionValuePatch?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
 cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
@@ -465,6 +606,7 @@ cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"option1")] = __MyUnionPatch_FieldsSetter._set_field_0
         __fbthrift_inst._setters[__cstring_view(<const char*>"option2")] = __MyUnionPatch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"option3")] = __MyUnionPatch_FieldsSetter._set_field_2
         return __fbthrift_inst
 
     cdef void set_field(__MyUnionPatch_FieldsSetter self, const char* name, object value) except *:
@@ -491,6 +633,15 @@ cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I32Patch):
             raise TypeError(f'option2 is not a { _apache_thrift_op_patch_types.I32Patch !r}.')
         deref(self._struct_cpp_obj).option2_ref().assign(deref((<_apache_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field option3
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_patch_module_types.cMyUnionPatch](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_patch_module_types.InnerUnionValuePatch):
+            raise TypeError(f'option3 is not a { _test_fixtures_patch_module_types.InnerUnionValuePatch !r}.')
+        deref(self._struct_cpp_obj).option3_ref().assign(deref((<_test_fixtures_patch_module_types.InnerUnionValuePatch?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

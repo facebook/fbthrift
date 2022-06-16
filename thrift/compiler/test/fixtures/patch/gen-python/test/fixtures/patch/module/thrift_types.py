@@ -59,6 +59,43 @@ class MyData(metaclass=_fbthrift_python_types.StructMeta):
         return thrift.util.converter.to_py_struct(py_legacy_types.MyData, self)
 
 
+class InnerUnion(metaclass=_fbthrift_python_types.UnionMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "innerOption",  # name
+            _fbthrift_python_types.typeinfo_binary,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.InnerUnion"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/InnerUnion"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_InnerUnion()
+
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.patch.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.InnerUnion, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnion, self)
+
+
 class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
     _fbthrift_SPEC = (
         (
@@ -74,6 +111,14 @@ class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "option2",  # name
             _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            3,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "option3",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnion),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -484,6 +529,165 @@ class OptionalMyDataValuePatch(metaclass=_fbthrift_python_types.StructMeta):
         return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyDataValuePatch, self)
 
 
+class InnerUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "innerOption",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(apache.thrift.op.patch.thrift_types.BinaryPatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.InnerUnionPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/InnerUnionPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_InnerUnionPatch()
+
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.patch.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.InnerUnionPatch, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnionPatch, self)
+
+
+class InnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "clear",  # name
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            3,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patch",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnionPatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            4,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "ensure",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnion),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patchAfter",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnionPatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.InnerUnionValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/InnerUnionValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_InnerUnionValuePatch()
+
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.patch.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.InnerUnionValuePatch, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnionValuePatch, self)
+
+
+class OptionalInnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "clear",  # name
+            _fbthrift_python_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            3,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patch",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnionValuePatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            4,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "ensure",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnion),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patchAfter",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnionValuePatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalInnerUnionValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalInnerUnionValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalInnerUnionValuePatch()
+
+    def to_py3_struct(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.patch.module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.OptionalInnerUnionValuePatch, self)
+
+    def to_py_legacy_struct(self):
+        import importlib
+        py_legacy_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalInnerUnionValuePatch, self)
+
+
 class MyUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -499,6 +703,14 @@ class MyUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "option2",  # name
             lambda: _fbthrift_python_types.StructTypeInfo(apache.thrift.op.patch.thrift_types.I32Patch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            3,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "option3",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnionValuePatch),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
@@ -1349,6 +1561,8 @@ import test.fixtures.patch.module.thrift_metadata
 
 def _fbthrift_metadata__struct_MyData():
     return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_MyData()
+def _fbthrift_metadata__struct_InnerUnion():
+    return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_InnerUnion()
 def _fbthrift_metadata__struct_MyUnion():
     return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_MyUnion()
 def _fbthrift_metadata__struct_MyStruct():
@@ -1359,6 +1573,12 @@ def _fbthrift_metadata__struct_MyDataValuePatch():
     return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_MyDataValuePatch()
 def _fbthrift_metadata__struct_OptionalMyDataValuePatch():
     return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_OptionalMyDataValuePatch()
+def _fbthrift_metadata__struct_InnerUnionPatch():
+    return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_InnerUnionPatch()
+def _fbthrift_metadata__struct_InnerUnionValuePatch():
+    return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_InnerUnionValuePatch()
+def _fbthrift_metadata__struct_OptionalInnerUnionValuePatch():
+    return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_OptionalInnerUnionValuePatch()
 def _fbthrift_metadata__struct_MyUnionPatch():
     return test.fixtures.patch.module.thrift_metadata.gen_metadata_struct_MyUnionPatch()
 def _fbthrift_metadata__struct_MyUnionValuePatch():
@@ -1386,11 +1606,15 @@ def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
 
 _fbthrift_all_structs = [
     MyData,
+    InnerUnion,
     MyUnion,
     MyStruct,
     MyDataPatch,
     MyDataValuePatch,
     OptionalMyDataValuePatch,
+    InnerUnionPatch,
+    InnerUnionValuePatch,
+    OptionalInnerUnionValuePatch,
     MyUnionPatch,
     MyUnionValuePatch,
     OptionalMyUnionValuePatch,

@@ -28,9 +28,11 @@ public class MyUnion extends TUnion<MyUnion> {
   private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
   private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRING, (short)1);
   private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.I32, (short)2);
+  private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
 
   public static final int OPTION1 = 1;
   public static final int OPTION2 = 2;
+  public static final int OPTION3 = 3;
 
   public static final Map<Integer, FieldMetaData> metaDataMap = new HashMap<>();
 
@@ -62,6 +64,12 @@ public class MyUnion extends TUnion<MyUnion> {
     return x;
   }
 
+  public static MyUnion option3(InnerUnion __value) {
+    MyUnion x = new MyUnion();
+    x.setOption3(__value);
+    return x;
+  }
+
 
   @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
@@ -80,6 +88,14 @@ public class MyUnion extends TUnion<MyUnion> {
           return option2;
         }
         break;
+      case OPTION3:
+        if (__field.type == OPTION3_FIELD_DESC.type) {
+          InnerUnion option3;
+          option3 = new InnerUnion();
+          option3.read(iprot);
+          return option3;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -96,6 +112,10 @@ public class MyUnion extends TUnion<MyUnion> {
         Integer option2 = (Integer)getFieldValue();
         oprot.writeI32(option2);
         return;
+      case OPTION3:
+        InnerUnion option3 = (InnerUnion)getFieldValue();
+        option3.write(oprot);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -108,6 +128,8 @@ public class MyUnion extends TUnion<MyUnion> {
         return OPTION1_FIELD_DESC;
       case OPTION2:
         return OPTION2_FIELD_DESC;
+      case OPTION3:
+        return OPTION3_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -149,6 +171,14 @@ public class MyUnion extends TUnion<MyUnion> {
 
   public void setOption2(Integer __value) {
     __setValue(OPTION2, __value);
+  }
+
+  public InnerUnion getOption3() {
+    return (InnerUnion) __getValue(OPTION3);
+  }
+
+  public void setOption3(InnerUnion __value) {
+    __setValue(OPTION3, __value);
   }
 
   public boolean equals(Object other) {

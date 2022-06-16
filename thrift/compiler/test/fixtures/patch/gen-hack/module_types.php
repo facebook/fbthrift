@@ -153,10 +153,169 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+enum InnerUnionEnum: int {
+  _EMPTY_ = 0;
+  innerOption = 1;
+}
+
+/**
+ * Original thrift struct:-
+ * InnerUnion
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/InnerUnion'))>>
+class InnerUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\InnerUnionEnum>, \IThriftShapishSyncStruct {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'innerOption',
+      'union' => true,
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'innerOption' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'innerOption' => ?string,
+  );
+
+  const type TShape = shape(
+    ?'innerOption' => ?string,
+    ...
+  );
+  const int STRUCTURAL_ID = 8244649827300221001;
+  /**
+   * Original thrift field:-
+   * 1: binary innerOption
+   */
+  public ?string $innerOption;
+  protected \fixtures\patch\InnerUnionEnum $_type = \fixtures\patch\InnerUnionEnum::_EMPTY_;
+
+  public function __construct(?string $innerOption = null)[] {
+    $this->_type = \fixtures\patch\InnerUnionEnum::_EMPTY_;
+    if ($innerOption !== null) {
+      $this->innerOption = $innerOption;
+      $this->_type = \fixtures\patch\InnerUnionEnum::innerOption;
+    }
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'innerOption'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'InnerUnion';
+  }
+
+  public function getType()[]: \fixtures\patch\InnerUnionEnum {
+    return $this->_type;
+  }
+
+  public function reset()[write_props]: void {
+    switch ($this->_type) {
+      case \fixtures\patch\InnerUnionEnum::innerOption:
+        $this->innerOption = null;
+        break;
+      case \fixtures\patch\InnerUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = \fixtures\patch\InnerUnionEnum::_EMPTY_;
+  }
+
+  public function set_innerOption(string $innerOption)[write_props]: this {
+    $this->reset();
+    $this->_type = \fixtures\patch\InnerUnionEnum::innerOption;
+    $this->innerOption = $innerOption;
+    return $this;
+  }
+
+  public function get_innerOption()[]: ?string {
+    return $this->innerOption;
+  }
+
+  public function getx_innerOption()[]: string {
+    invariant(
+      $this->_type === \fixtures\patch\InnerUnionEnum::innerOption,
+      'get_innerOption called on an instance of InnerUnion whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->innerOption as nonnull;
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.InnerUnion",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                )
+              ),
+              "name" => "innerOption",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'innerOption'),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'innerOption' => $this->innerOption,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = \fixtures\patch\InnerUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'innerOption') !== null) {
+      $this->innerOption = /* HH_FIXME[4110] */ $parsed['innerOption'];
+      $this->_type = \fixtures\patch\InnerUnionEnum::innerOption;
+    }
+  }
+
+}
+
 enum MyUnionEnum: int {
   _EMPTY_ = 0;
   option1 = 1;
   option2 = 2;
+  option3 = 3;
 }
 
 /**
@@ -178,23 +337,32 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
       'union' => true,
       'type' => \TType::I32,
     ),
+    3 => shape(
+      'var' => 'option3',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnion::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'option1' => 1,
     'option2' => 2,
+    'option3' => 3,
   ];
 
   const type TConstructorShape = shape(
     ?'option1' => ?string,
     ?'option2' => ?int,
+    ?'option3' => ?\fixtures\patch\InnerUnion,
   );
 
   const type TShape = shape(
     ?'option1' => ?string,
     ?'option2' => ?int,
+    ?'option3' => ?\fixtures\patch\InnerUnion::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2852365033411015550;
+  const int STRUCTURAL_ID = 2373941666242479705;
   /**
    * Original thrift field:-
    * 1: string option1
@@ -205,9 +373,14 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
    * 2: i32 option2
    */
   public ?int $option2;
+  /**
+   * Original thrift field:-
+   * 3: struct module.InnerUnion option3
+   */
+  public ?\fixtures\patch\InnerUnion $option3;
   protected \fixtures\patch\MyUnionEnum $_type = \fixtures\patch\MyUnionEnum::_EMPTY_;
 
-  public function __construct(?string $option1 = null, ?int $option2 = null)[] {
+  public function __construct(?string $option1 = null, ?int $option2 = null, ?\fixtures\patch\InnerUnion $option3 = null)[] {
     $this->_type = \fixtures\patch\MyUnionEnum::_EMPTY_;
     if ($option1 !== null) {
       $this->option1 = $option1;
@@ -216,6 +389,10 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     if ($option2 !== null) {
       $this->option2 = $option2;
       $this->_type = \fixtures\patch\MyUnionEnum::option2;
+    }
+    if ($option3 !== null) {
+      $this->option3 = $option3;
+      $this->_type = \fixtures\patch\MyUnionEnum::option3;
     }
   }
 
@@ -227,6 +404,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     return new static(
       Shapes::idx($shape, 'option1'),
       Shapes::idx($shape, 'option2'),
+      Shapes::idx($shape, 'option3'),
     );
   }
 
@@ -245,6 +423,9 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
         break;
       case \fixtures\patch\MyUnionEnum::option2:
         $this->option2 = null;
+        break;
+      case \fixtures\patch\MyUnionEnum::option3:
+        $this->option3 = null;
         break;
       case \fixtures\patch\MyUnionEnum::_EMPTY_:
         break;
@@ -292,6 +473,26 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     return $this->option2 as nonnull;
   }
 
+  public function set_option3(\fixtures\patch\InnerUnion $option3)[write_props]: this {
+    $this->reset();
+    $this->_type = \fixtures\patch\MyUnionEnum::option3;
+    $this->option3 = $option3;
+    return $this;
+  }
+
+  public function get_option3()[]: ?\fixtures\patch\InnerUnion {
+    return $this->option3;
+  }
+
+  public function getx_option3()[]: \fixtures\patch\InnerUnion {
+    invariant(
+      $this->_type === \fixtures\patch\MyUnionEnum::option3,
+      'get_option3 called on an instance of MyUnion whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->option3 as nonnull;
+  }
+
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
@@ -319,6 +520,21 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
               "name" => "option2",
             )
           ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "option3",
+            )
+          ),
         ],
         "is_union" => true,
       )
@@ -337,6 +553,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     return new static(
       Shapes::idx($shape, 'option1'),
       Shapes::idx($shape, 'option2'),
+      Shapes::idx($shape, 'option3') === null ? null : (\fixtures\patch\InnerUnion::__fromShape($shape['option3'])),
     );
   }
 
@@ -344,6 +561,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
     return shape(
       'option1' => $this->option1,
       'option2' => $this->option2,
+      'option3' => $this->option3?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -370,6 +588,13 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
         $this->option2 = (int)$_tmp0;
       }
       $this->_type = \fixtures\patch\MyUnionEnum::option2;
+    }
+    if (idx($parsed, 'option3') !== null) {
+      $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['option3']);
+      $_tmp2 = \fixtures\patch\InnerUnion::withDefaultValues();
+      $_tmp2->readFromJson($_tmp1);
+      $this->option3 = $_tmp2;
+      $this->_type = \fixtures\patch\MyUnionEnum::option3;
     }
   }
 
@@ -1921,6 +2146,598 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
 
 /**
  * Original thrift struct:-
+ * InnerUnionPatch
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/InnerUnionPatch'))>>
+class InnerUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'innerOption',
+      'type' => \TType::STRUCT,
+      'class' => \thrift\op\BinaryPatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'innerOption' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'innerOption' => ?\thrift\op\BinaryPatch,
+  );
+
+  const type TShape = shape(
+    ?'innerOption' => ?\thrift\op\BinaryPatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 32095888299770904;
+  /**
+   * Original thrift field:-
+   * 1: struct patch.BinaryPatch innerOption
+   */
+  public ?\thrift\op\BinaryPatch $innerOption;
+
+  public function __construct(?\thrift\op\BinaryPatch $innerOption = null)[] {
+    $this->innerOption = $innerOption;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'innerOption'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'InnerUnionPatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.InnerUnionPatch",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "patch.BinaryPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "innerOption",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'innerOption' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'innerOption') === null ? null : (\thrift\op\BinaryPatch::__fromShape($shape['innerOption'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'innerOption' => $this->innerOption?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'innerOption') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['innerOption']);
+      $_tmp1 = \thrift\op\BinaryPatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->innerOption = $_tmp1;
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * InnerUnionValuePatch
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/InnerUnionValuePatch'))>>
+class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
+      'var' => 'clear',
+      'type' => \TType::BOOL,
+    ),
+    3 => shape(
+      'var' => 'patch',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnionPatch::class,
+    ),
+    4 => shape(
+      'var' => 'ensure',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnion::class,
+    ),
+    5 => shape(
+      'var' => 'patchAfter',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnionPatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'clear' => 2,
+    'patch' => 3,
+    'ensure' => 4,
+    'patchAfter' => 5,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'clear' => ?bool,
+    ?'patch' => ?\fixtures\patch\InnerUnionPatch,
+    ?'ensure' => ?\fixtures\patch\InnerUnion,
+    ?'patchAfter' => ?\fixtures\patch\InnerUnionPatch,
+  );
+
+  const type TShape = shape(
+    'clear' => bool,
+    ?'patch' => ?\fixtures\patch\InnerUnionPatch::TShape,
+    ?'ensure' => ?\fixtures\patch\InnerUnion::TShape,
+    ?'patchAfter' => ?\fixtures\patch\InnerUnionPatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 7701717709566785682;
+  /**
+   * Clears any set value. Applies first.
+   * 
+   * Original thrift field:-
+   * 2: bool clear
+   */
+  public bool $clear;
+  /**
+   * Patches any set value. Applies second.
+   * 
+   * Original thrift field:-
+   * 3: struct module.InnerUnionPatch patch
+   */
+  public ?\fixtures\patch\InnerUnionPatch $patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   * 
+   * Original thrift field:-
+   * 4: struct module.InnerUnion ensure
+   */
+  public ?\fixtures\patch\InnerUnion $ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   * 
+   * Original thrift field:-
+   * 5: struct module.InnerUnionPatch patchAfter
+   */
+  public ?\fixtures\patch\InnerUnionPatch $patchAfter;
+
+  public function __construct(?bool $clear = null, ?\fixtures\patch\InnerUnionPatch $patch = null, ?\fixtures\patch\InnerUnion $ensure = null, ?\fixtures\patch\InnerUnionPatch $patchAfter = null)[] {
+    $this->clear = $clear ?? false;
+    $this->patch = $patch;
+    $this->ensure = $ensure;
+    $this->patchAfter = $patchAfter;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'clear'),
+      Shapes::idx($shape, 'patch'),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'InnerUnionValuePatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.InnerUnionValuePatch",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "clear",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnionPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patch",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ensure",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnionPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patchAfter",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['clear'],
+      Shapes::idx($shape, 'patch') === null ? null : (\fixtures\patch\InnerUnionPatch::__fromShape($shape['patch'])),
+      Shapes::idx($shape, 'ensure') === null ? null : (\fixtures\patch\InnerUnion::__fromShape($shape['ensure'])),
+      Shapes::idx($shape, 'patchAfter') === null ? null : (\fixtures\patch\InnerUnionPatch::__fromShape($shape['patchAfter'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'clear' => $this->clear,
+      'patch' => $this->patch?->__toShape(),
+      'ensure' => $this->ensure?->__toShape(),
+      'patchAfter' => $this->patchAfter?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'clear') !== null) {
+      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
+    }
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
+      $_tmp1 = \fixtures\patch\InnerUnionPatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->patch = $_tmp1;
+    }
+    if (idx($parsed, 'ensure') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
+      $_tmp3 = \fixtures\patch\InnerUnion::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->ensure = $_tmp3;
+    }
+    if (idx($parsed, 'patchAfter') !== null) {
+      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
+      $_tmp5 = \fixtures\patch\InnerUnionPatch::withDefaultValues();
+      $_tmp5->readFromJson($_tmp4);
+      $this->patchAfter = $_tmp5;
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * OptionalInnerUnionValuePatch
+ */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalInnerUnionValuePatch'))>>
+class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
+      'var' => 'clear',
+      'type' => \TType::BOOL,
+    ),
+    3 => shape(
+      'var' => 'patch',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnionValuePatch::class,
+    ),
+    4 => shape(
+      'var' => 'ensure',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnion::class,
+    ),
+    5 => shape(
+      'var' => 'patchAfter',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnionValuePatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'clear' => 2,
+    'patch' => 3,
+    'ensure' => 4,
+    'patchAfter' => 5,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'clear' => ?bool,
+    ?'patch' => ?\fixtures\patch\InnerUnionValuePatch,
+    ?'ensure' => ?\fixtures\patch\InnerUnion,
+    ?'patchAfter' => ?\fixtures\patch\InnerUnionValuePatch,
+  );
+
+  const type TShape = shape(
+    'clear' => bool,
+    ?'patch' => ?\fixtures\patch\InnerUnionValuePatch::TShape,
+    ?'ensure' => ?\fixtures\patch\InnerUnion::TShape,
+    ?'patchAfter' => ?\fixtures\patch\InnerUnionValuePatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 5093727267085472978;
+  /**
+   * Clears any set value. Applies first.
+   * 
+   * Original thrift field:-
+   * 2: bool clear
+   */
+  public bool $clear;
+  /**
+   * Patches any set value. Applies second.
+   * 
+   * Original thrift field:-
+   * 3: struct module.InnerUnionValuePatch patch
+   */
+  public ?\fixtures\patch\InnerUnionValuePatch $patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   * 
+   * Original thrift field:-
+   * 4: struct module.InnerUnion ensure
+   */
+  public ?\fixtures\patch\InnerUnion $ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   * 
+   * Original thrift field:-
+   * 5: struct module.InnerUnionValuePatch patchAfter
+   */
+  public ?\fixtures\patch\InnerUnionValuePatch $patchAfter;
+
+  public function __construct(?bool $clear = null, ?\fixtures\patch\InnerUnionValuePatch $patch = null, ?\fixtures\patch\InnerUnion $ensure = null, ?\fixtures\patch\InnerUnionValuePatch $patchAfter = null)[] {
+    $this->clear = $clear ?? false;
+    $this->patch = $patch;
+    $this->ensure = $ensure;
+    $this->patchAfter = $patchAfter;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'clear'),
+      Shapes::idx($shape, 'patch'),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'OptionalInnerUnionValuePatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.OptionalInnerUnionValuePatch",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "clear",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnionValuePatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patch",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ensure",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnionValuePatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patchAfter",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['clear'],
+      Shapes::idx($shape, 'patch') === null ? null : (\fixtures\patch\InnerUnionValuePatch::__fromShape($shape['patch'])),
+      Shapes::idx($shape, 'ensure') === null ? null : (\fixtures\patch\InnerUnion::__fromShape($shape['ensure'])),
+      Shapes::idx($shape, 'patchAfter') === null ? null : (\fixtures\patch\InnerUnionValuePatch::__fromShape($shape['patchAfter'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'clear' => $this->clear,
+      'patch' => $this->patch?->__toShape(),
+      'ensure' => $this->ensure?->__toShape(),
+      'patchAfter' => $this->patchAfter?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'clear') !== null) {
+      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
+    }
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
+      $_tmp1 = \fixtures\patch\InnerUnionValuePatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->patch = $_tmp1;
+    }
+    if (idx($parsed, 'ensure') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
+      $_tmp3 = \fixtures\patch\InnerUnion::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->ensure = $_tmp3;
+    }
+    if (idx($parsed, 'patchAfter') !== null) {
+      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
+      $_tmp5 = \fixtures\patch\InnerUnionValuePatch::withDefaultValues();
+      $_tmp5->readFromJson($_tmp4);
+      $this->patchAfter = $_tmp5;
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * MyUnionPatch
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyUnionPatch'))>>
@@ -1938,23 +2755,31 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'type' => \TType::STRUCT,
       'class' => \thrift\op\I32Patch::class,
     ),
+    3 => shape(
+      'var' => 'option3',
+      'type' => \TType::STRUCT,
+      'class' => \fixtures\patch\InnerUnionValuePatch::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'option1' => 1,
     'option2' => 2,
+    'option3' => 3,
   ];
 
   const type TConstructorShape = shape(
     ?'option1' => ?\thrift\op\StringPatch,
     ?'option2' => ?\thrift\op\I32Patch,
+    ?'option3' => ?\fixtures\patch\InnerUnionValuePatch,
   );
 
   const type TShape = shape(
     ?'option1' => ?\thrift\op\StringPatch::TShape,
     ?'option2' => ?\thrift\op\I32Patch::TShape,
+    ?'option3' => ?\fixtures\patch\InnerUnionValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5589256399990868404;
+  const int STRUCTURAL_ID = 2674599234150276635;
   /**
    * Original thrift field:-
    * 1: struct patch.StringPatch option1
@@ -1965,10 +2790,16 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 2: struct patch.I32Patch option2
    */
   public ?\thrift\op\I32Patch $option2;
+  /**
+   * Original thrift field:-
+   * 3: struct module.InnerUnionValuePatch option3
+   */
+  public ?\fixtures\patch\InnerUnionValuePatch $option3;
 
-  public function __construct(?\thrift\op\StringPatch $option1 = null, ?\thrift\op\I32Patch $option2 = null)[] {
+  public function __construct(?\thrift\op\StringPatch $option1 = null, ?\thrift\op\I32Patch $option2 = null, ?\fixtures\patch\InnerUnionValuePatch $option3 = null)[] {
     $this->option1 = $option1;
     $this->option2 = $option2;
+    $this->option3 = $option3;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1979,6 +2810,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'option1'),
       Shapes::idx($shape, 'option2'),
+      Shapes::idx($shape, 'option3'),
     );
   }
 
@@ -2021,6 +2853,21 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "option2",
             )
           ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InnerUnionValuePatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "option3",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -2057,6 +2904,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'option1') === null ? null : (\thrift\op\StringPatch::__fromShape($shape['option1'])),
       Shapes::idx($shape, 'option2') === null ? null : (\thrift\op\I32Patch::__fromShape($shape['option2'])),
+      Shapes::idx($shape, 'option3') === null ? null : (\fixtures\patch\InnerUnionValuePatch::__fromShape($shape['option3'])),
     );
   }
 
@@ -2064,6 +2912,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'option1' => $this->option1?->__toShape(),
       'option2' => $this->option2?->__toShape(),
+      'option3' => $this->option3?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -2088,6 +2937,12 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp3 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->option2 = $_tmp3;
+    }
+    if (idx($parsed, 'option3') !== null) {
+      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['option3']);
+      $_tmp5 = \fixtures\patch\InnerUnionValuePatch::withDefaultValues();
+      $_tmp5->readFromJson($_tmp4);
+      $this->option3 = $_tmp5;
     }
   }
 

@@ -28,9 +28,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
   private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRING, (short)1);
   private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.I32, (short)2);
+  private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
 
   public static final int OPTION1 = 1;
   public static final int OPTION2 = 2;
+  public static final int OPTION3 = 3;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -40,6 +42,8 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(OPTION2, new FieldMetaData("option2", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(OPTION3, new FieldMetaData("option3", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, InnerUnion.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -71,6 +75,12 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     return x;
   }
 
+  public static MyUnion option3(InnerUnion __value) {
+    MyUnion x = new MyUnion();
+    x.setOption3(__value);
+    return x;
+  }
+
 
   @Override
   protected void checkType(short setField, Object __value) throws ClassCastException {
@@ -85,6 +95,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           break;
         }
         throw new ClassCastException("Was expecting value of type Integer for field 'option2', but got " + __value.getClass().getSimpleName());
+      case OPTION3:
+        if (__value instanceof InnerUnion) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type InnerUnion for field 'option3', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -109,6 +124,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
             break;
           case OPTION2:
             if (__field.type == OPTION2_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case OPTION3:
+            if (__field.type == OPTION3_FIELD_DESC.type) {
               setField_ = __field.id;
             }
             break;
@@ -140,6 +160,14 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           return option2;
         }
         break;
+      case OPTION3:
+        if (__field.type == OPTION3_FIELD_DESC.type) {
+          InnerUnion option3;
+          option3 = new InnerUnion();
+          option3.read(iprot);
+          return option3;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -156,6 +184,10 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         Integer option2 = (Integer)getFieldValue();
         oprot.writeI32(option2);
         return;
+      case OPTION3:
+        InnerUnion option3 = (InnerUnion)getFieldValue();
+        option3.write(oprot);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -168,6 +200,8 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         return OPTION1_FIELD_DESC;
       case OPTION2:
         return OPTION2_FIELD_DESC;
+      case OPTION3:
+        return OPTION3_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -210,6 +244,14 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public void setOption2(int __value) {
     setField_ = OPTION2;
     value_ = __value;
+  }
+
+  public InnerUnion getOption3() {
+    return (InnerUnion) __getValue(OPTION3);
+  }
+
+  public void setOption3(InnerUnion __value) {
+    __setValue(OPTION3, __value);
   }
 
   public boolean equals(Object other) {

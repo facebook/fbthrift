@@ -23,11 +23,20 @@ struct ForEachField<::test::fixtures::patch::MyData> {
 };
 
 template <>
+struct ForEachField<::test::fixtures::patch::InnerUnion> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).innerOption_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::test::fixtures::patch::MyUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).option1_ref()...);
     f(1, static_cast<T&&>(t).option2_ref()...);
+    f(2, static_cast<T&&>(t).option3_ref()...);
   }
 };
 
@@ -93,11 +102,42 @@ struct ForEachField<::test::fixtures::patch::OptionalMyDataValuePatchStruct> {
 };
 
 template <>
+struct ForEachField<::test::fixtures::patch::InnerUnionPatchStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).innerOption_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::test::fixtures::patch::InnerUnionValuePatchStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::test::fixtures::patch::OptionalInnerUnionValuePatchStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::test::fixtures::patch::MyUnionPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).option1_ref()...);
     f(1, static_cast<T&&>(t).option2_ref()...);
+    f(2, static_cast<T&&>(t).option3_ref()...);
   }
 };
 

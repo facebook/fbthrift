@@ -11,12 +11,19 @@ cdef class MyData_Builder(thrift.py3.builder.StructBuilder):
         yield "data1", self.data1
         yield "data2", self.data2
 
+cdef class InnerUnion_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_patch_module_types.InnerUnion
+
+    def __iter__(self):
+        yield "innerOption", self.innerOption
+
 cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _test_fixtures_patch_module_types.MyUnion
 
     def __iter__(self):
         yield "option1", self.option1
         yield "option2", self.option2
+        yield "option3", self.option3
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _test_fixtures_patch_module_types.MyStruct
@@ -71,12 +78,37 @@ cdef class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
         yield "ensure", self.ensure
         yield "patchAfter", self.patchAfter
 
+cdef class InnerUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_patch_module_types.InnerUnionPatch
+
+    def __iter__(self):
+        yield "innerOption", self.innerOption
+
+cdef class InnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_patch_module_types.InnerUnionValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalInnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_patch_module_types.OptionalInnerUnionValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
 cdef class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _test_fixtures_patch_module_types.MyUnionPatch
 
     def __iter__(self):
         yield "option1", self.option1
         yield "option2", self.option2
+        yield "option3", self.option3
 
 cdef class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _test_fixtures_patch_module_types.MyUnionValuePatch

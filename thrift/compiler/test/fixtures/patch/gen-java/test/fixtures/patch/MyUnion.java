@@ -29,6 +29,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRING, (short)1);
     public static final int _OPTION2 = 2;
     private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.I32, (short)2);
+    public static final int _OPTION3 = 3;
+    private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
 
     static {
       NAMES_TO_IDS.put("option1", 1);
@@ -37,6 +39,9 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       NAMES_TO_IDS.put("option2", 2);
       THRIFT_NAMES_TO_IDS.put("option2", 2);
       FIELD_METADATA.put(2, OPTION2_FIELD_DESC);
+      NAMES_TO_IDS.put("option3", 3);
+      THRIFT_NAMES_TO_IDS.put("option3", 3);
+      FIELD_METADATA.put(3, OPTION3_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyUnion"), 
         MyUnion.class, MyUnion::read0));
@@ -63,6 +68,13 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.id = 2;
     }
     
+    @ThriftConstructor
+    @Deprecated
+    public MyUnion(final test.fixtures.patch.InnerUnion option3) {
+        this.value = option3;
+        this.id = 3;
+    }
+    
     public static MyUnion fromOption1(final String option1) {
         MyUnion res = new MyUnion();
         res.value = option1;
@@ -74,6 +86,13 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         MyUnion res = new MyUnion();
         res.value = option2;
         res.id = 2;
+        return res;
+    }
+    
+    public static MyUnion fromOption3(final test.fixtures.patch.InnerUnion option3) {
+        MyUnion res = new MyUnion();
+        res.value = option3;
+        res.id = 3;
         return res;
     }
     
@@ -102,6 +121,18 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         return this.id == 2;
     }
 
+    @com.facebook.swift.codec.ThriftField(value=3, name="option3", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.InnerUnion getOption3() {
+        if (this.id != 3) {
+            throw new IllegalStateException("Not a option3 element!");
+        }
+        return (test.fixtures.patch.InnerUnion) value;
+    }
+
+    public boolean isSetOption3() {
+        return this.id == 3;
+    }
+
     @ThriftUnionId
     public short getThriftId() {
         return this.id;
@@ -123,6 +154,10 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         }
         if (isSetOption2()) {
             visitor.visitOption2(getOption2());
+            return;
+        }
+        if (isSetOption3()) {
+            visitor.visitOption3(getOption3());
             return;
         }
     }
@@ -163,6 +198,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public interface Visitor {
         void visitOption1(String option1);
         void visitOption2(int option2);
+        void visitOption3(test.fixtures.patch.InnerUnion option3);
     }
 
     public void write0(TProtocol oprot) throws TException {
@@ -182,6 +218,13 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         oprot.writeFieldBegin(OPTION2_FIELD_DESC);
         int option2 = (int)this.value;
         oprot.writeI32(option2);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _OPTION3: {
+        oprot.writeFieldBegin(OPTION3_FIELD_DESC);
+        test.fixtures.patch.InnerUnion option3 = (test.fixtures.patch.InnerUnion)this.value;
+        option3.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
@@ -215,6 +258,12 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
             if (__field.type == OPTION2_FIELD_DESC.type) {
               int option2 = oprot.readI32();
               res.value = option2;
+            }
+            break;
+          case _OPTION3:
+            if (__field.type == OPTION3_FIELD_DESC.type) {
+              test.fixtures.patch.InnerUnion option3 = test.fixtures.patch.InnerUnion.read0(oprot);
+              res.value = option3;
             }
             break;
           default:

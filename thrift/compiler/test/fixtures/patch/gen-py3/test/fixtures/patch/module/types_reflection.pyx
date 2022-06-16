@@ -62,6 +62,26 @@ cdef __StructSpec get_reflection__MyData():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__InnerUnion():
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="InnerUnion",
+        kind=__StructType.UNION,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="innerOption",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__MyUnion():
     cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyUnion",
@@ -87,6 +107,18 @@ cdef __StructSpec get_reflection__MyUnion():
             name="option2",
             type=int,
             kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="option3",
+            type=_test_fixtures_patch_module_types.InnerUnion,
+            kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
@@ -542,6 +574,153 @@ cdef __StructSpec get_reflection__OptionalMyDataValuePatch():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__InnerUnionPatch():
+    cdef _test_fixtures_patch_module_types.InnerUnionPatch defaults = _test_fixtures_patch_module_types.InnerUnionPatch._fbthrift_create(
+        constant_shared_ptr[_test_fixtures_patch_module_types.cInnerUnionPatch](
+            default_inst[_test_fixtures_patch_module_types.cInnerUnionPatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="InnerUnionPatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::UnionPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """InnerUnionPatchStruct""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="innerOption",
+            type=_apache_thrift_op_patch_types.BinaryPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__InnerUnionValuePatch():
+    cdef _test_fixtures_patch_module_types.InnerUnionValuePatch defaults = _test_fixtures_patch_module_types.InnerUnionValuePatch._fbthrift_create(
+        constant_shared_ptr[_test_fixtures_patch_module_types.cInnerUnionValuePatch](
+            default_inst[_test_fixtures_patch_module_types.cInnerUnionValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="InnerUnionValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::UnionValuePatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """InnerUnionValuePatchStruct""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_test_fixtures_patch_module_types.InnerUnionPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="ensure",
+            type=_test_fixtures_patch_module_types.InnerUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="patchAfter",
+            type=_test_fixtures_patch_module_types.InnerUnionPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__OptionalInnerUnionValuePatch():
+    cdef _test_fixtures_patch_module_types.OptionalInnerUnionValuePatch defaults = _test_fixtures_patch_module_types.OptionalInnerUnionValuePatch._fbthrift_create(
+        constant_shared_ptr[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch](
+            default_inst[_test_fixtures_patch_module_types.cOptionalInnerUnionValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="OptionalInnerUnionValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalInnerUnionValuePatchStruct""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_test_fixtures_patch_module_types.InnerUnionValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="ensure",
+            type=_test_fixtures_patch_module_types.InnerUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": "1",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="patchAfter",
+            type=_test_fixtures_patch_module_types.InnerUnionValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__MyUnionPatch():
     cdef _test_fixtures_patch_module_types.MyUnionPatch defaults = _test_fixtures_patch_module_types.MyUnionPatch._fbthrift_create(
         constant_shared_ptr[_test_fixtures_patch_module_types.cMyUnionPatch](
@@ -571,6 +750,18 @@ cdef __StructSpec get_reflection__MyUnionPatch():
             id=2,
             name="option2",
             type=_apache_thrift_op_patch_types.I32Patch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="option3",
+            type=_test_fixtures_patch_module_types.InnerUnionValuePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

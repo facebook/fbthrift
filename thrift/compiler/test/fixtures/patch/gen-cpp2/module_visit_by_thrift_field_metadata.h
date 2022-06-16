@@ -29,6 +29,19 @@ struct VisitByFieldId<::test::fixtures::patch::MyData> {
 };
 
 template <>
+struct VisitByFieldId<::test::fixtures::patch::InnerUnion> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).innerOption_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::test::fixtures::patch::InnerUnion");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::test::fixtures::patch::MyUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -37,6 +50,8 @@ struct VisitByFieldId<::test::fixtures::patch::MyUnion> {
       return f(0, static_cast<T&&>(t).option1_ref());
     case 2:
       return f(1, static_cast<T&&>(t).option2_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).option3_ref());
     default:
       throwInvalidThriftId(fieldId, "::test::fixtures::patch::MyUnion");
     }
@@ -154,6 +169,57 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyDataValuePatchStruct> {
 };
 
 template <>
+struct VisitByFieldId<::test::fixtures::patch::InnerUnionPatchStruct> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).innerOption_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::test::fixtures::patch::InnerUnionPatchStruct");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::test::fixtures::patch::InnerUnionValuePatchStruct> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::test::fixtures::patch::InnerUnionValuePatchStruct");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::test::fixtures::patch::OptionalInnerUnionValuePatchStruct> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::test::fixtures::patch::OptionalInnerUnionValuePatchStruct");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::test::fixtures::patch::MyUnionPatchStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -162,6 +228,8 @@ struct VisitByFieldId<::test::fixtures::patch::MyUnionPatchStruct> {
       return f(0, static_cast<T&&>(t).option1_ref());
     case 2:
       return f(1, static_cast<T&&>(t).option2_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).option3_ref());
     default:
       throwInvalidThriftId(fieldId, "::test::fixtures::patch::MyUnionPatchStruct");
     }

@@ -25,9 +25,16 @@ class MyData_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class InnerUnion_Builder(thrift.py3.builder.StructBuilder):
+    innerOption: _typing.Optional[bytes]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     option1: _typing.Optional[str]
     option2: _typing.Optional[int]
+    option3: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -85,9 +92,34 @@ class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class InnerUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    innerOption: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class InnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Any
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalInnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Any
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
     option1: _typing.Any
     option2: _typing.Any
+    option3: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

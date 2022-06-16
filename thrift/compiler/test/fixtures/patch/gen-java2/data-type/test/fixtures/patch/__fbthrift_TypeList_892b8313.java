@@ -11,17 +11,21 @@ import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_a9ed3f2b implements TypeList {
+public class __fbthrift_TypeList_892b8313 implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
   static {
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyData", "test.fixtures.patch.MyData"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/InnerUnion", "test.fixtures.patch.InnerUnion"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyUnion", "test.fixtures.patch.MyUnion"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyStruct", "test.fixtures.patch.MyStruct"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyDataPatch", "test.fixtures.patch.MyDataPatch"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyDataValuePatch", "test.fixtures.patch.MyDataValuePatch"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/OptionalMyDataValuePatch", "test.fixtures.patch.OptionalMyDataValuePatch"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/InnerUnionPatch", "test.fixtures.patch.InnerUnionPatch"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/InnerUnionValuePatch", "test.fixtures.patch.InnerUnionValuePatch"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/OptionalInnerUnionValuePatch", "test.fixtures.patch.OptionalInnerUnionValuePatch"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyUnionPatch", "test.fixtures.patch.MyUnionPatch"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/MyUnionValuePatch", "test.fixtures.patch.MyUnionValuePatch"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/OptionalMyUnionValuePatch", "test.fixtures.patch.OptionalMyUnionValuePatch"));

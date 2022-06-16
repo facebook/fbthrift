@@ -22,9 +22,14 @@ cdef class MyData_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint data2
 
 
+cdef class InnerUnion_Builder(thrift.py3.builder.StructBuilder):
+    cdef public bytes innerOption
+
+
 cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public str option1
     cdef public pint option2
+    cdef public object option3
 
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
@@ -72,9 +77,28 @@ cdef class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object patchAfter
 
 
+cdef class InnerUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public object innerOption
+
+
+cdef class InnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public object ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalInnerUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public object ensure
+    cdef public object patchAfter
+
+
 cdef class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object option1
     cdef public object option2
+    cdef public object option3
 
 
 cdef class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):

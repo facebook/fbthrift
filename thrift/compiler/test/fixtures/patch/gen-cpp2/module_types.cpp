@@ -124,6 +124,111 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::test::fixtures::patch::InnerUnion>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::InnerUnion>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::patch::InnerUnion::Type>::size;
+folly::Range<::test::fixtures::patch::InnerUnion::Type const*> const TEnumTraits<::test::fixtures::patch::InnerUnion::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::patch::InnerUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::patch::InnerUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::patch::InnerUnion::Type>::names);
+
+bool TEnumTraits<::test::fixtures::patch::InnerUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::patch::InnerUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+}} // apache::thrift
+namespace test { namespace fixtures { namespace patch {
+
+const char* InnerUnion::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/patch/InnerUnion";
+}
+
+void InnerUnion::__fbthrift_clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::innerOption:
+      destruct(value_.innerOption);
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool InnerUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
+bool InnerUnion::operator==(const InnerUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::innerOption:
+      return apache::thrift::StringTraits<std::string>::isEqual(
+          value_.innerOption,
+          rhs.value_.innerOption);
+    default:
+      return true;
+  }
+}
+
+bool InnerUnion::operator<(const InnerUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::innerOption:
+    return !apache::thrift::StringTraits<std::string>::isEqual(value_.innerOption, rhs.value_.innerOption) &&
+      apache::thrift::StringTraits<std::string>::isLess(value_.innerOption, rhs.value_.innerOption);
+    default:
+      return false;
+  }
+}
+
+void swap(InnerUnion& a, InnerUnion& b) {
+  InnerUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void InnerUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t InnerUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t InnerUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t InnerUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void InnerUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t InnerUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t InnerUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t InnerUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}}} // test::fixtures::patch
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::test::fixtures::patch::MyUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -171,6 +276,9 @@ void MyUnion::__fbthrift_clear() {
     case Type::option2:
       destruct(value_.option2);
       break;
+    case Type::option3:
+      destruct(value_.option3);
+      break;
     default:
       assert(false);
       break;
@@ -189,6 +297,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
       return value_.option1 == rhs.value_.option1;
     case Type::option2:
       return value_.option2 == rhs.value_.option2;
+    case Type::option3:
+      return value_.option3 == rhs.value_.option3;
     default:
       return true;
   }
@@ -206,6 +316,8 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
       return lhs.value_.option1 < rhs.value_.option1;
     case Type::option2:
       return lhs.value_.option2 < rhs.value_.option2;
+    case Type::option3:
+      return lhs.value_.option3 < rhs.value_.option3;
     default:
       return false;
   }
@@ -226,6 +338,12 @@ template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::variant,
+        ::test::fixtures::patch::InnerUnion>,
+    "inconsistent use of json option");
 
 }}} // test::fixtures::patch
 
@@ -1178,6 +1296,477 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::test::fixtures::patch::InnerUnionPatchStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::InnerUnionPatchStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test { namespace fixtures { namespace patch {
+
+const char* InnerUnionPatchStruct::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/patch/InnerUnionPatch";
+}
+
+InnerUnionPatchStruct::InnerUnionPatchStruct(const InnerUnionPatchStruct& srcObj) {
+  __fbthrift_field_innerOption = srcObj.__fbthrift_field_innerOption;
+  __isset.set(0,srcObj.__isset.get(0));
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
+}
+
+InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(const InnerUnionPatchStruct& src) {
+  InnerUnionPatchStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+InnerUnionPatchStruct::InnerUnionPatchStruct(InnerUnionPatchStruct&& other) noexcept  :
+    __fbthrift_field_innerOption(std::move(other.__fbthrift_field_innerOption)),
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
+}
+
+InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct&& other) noexcept {
+    this->__fbthrift_field_innerOption = std::move(other.__fbthrift_field_innerOption);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+InnerUnionPatchStruct::InnerUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct> innerOption__arg) :
+    __fbthrift_field_innerOption(std::move(innerOption__arg)) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void InnerUnionPatchStruct::__fbthrift_clear() {
+  // clear all fields
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
+  __isset = {};
+}
+
+void InnerUnionPatchStruct::__fbthrift_clear_terse_fields() {
+}
+
+bool InnerUnionPatchStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool InnerUnionPatchStruct::operator==(const InnerUnionPatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption)) {
+    return false;
+  }
+  return true;
+}
+
+bool InnerUnionPatchStruct::operator<(const InnerUnionPatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption);
+  }
+  return false;
+}
+
+
+void swap(InnerUnionPatchStruct& a, InnerUnionPatchStruct& b) {
+  using ::std::swap;
+  swap(a.innerOption_ref().value(), b.innerOption_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void InnerUnionPatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t InnerUnionPatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t InnerUnionPatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t InnerUnionPatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void InnerUnionPatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t InnerUnionPatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t InnerUnionPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t InnerUnionPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        InnerUnionPatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct>>,
+    "inconsistent use of json option");
+
+}}} // test::fixtures::patch
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test::fixtures::patch::InnerUnionValuePatchStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::InnerUnionValuePatchStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test { namespace fixtures { namespace patch {
+
+const char* InnerUnionValuePatchStruct::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/patch/InnerUnionValuePatch";
+}
+
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(const InnerUnionValuePatchStruct& srcObj) {
+  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
+  __isset.set(0,srcObj.__isset.get(0));
+  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
+  __isset.set(1,srcObj.__isset.get(1));
+  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
+  __isset.set(2,srcObj.__isset.get(2));
+  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
+  __isset.set(3,srcObj.__isset.get(3));
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+}
+
+InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(const InnerUnionValuePatchStruct& src) {
+  InnerUnionValuePatchStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(InnerUnionValuePatchStruct&& other) noexcept  :
+    __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
+    __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
+    __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
+    __fbthrift_field_patchAfter(std::move(other.__fbthrift_field_patchAfter)),
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+}
+
+InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct&& other) noexcept {
+    this->__fbthrift_field_clear = std::move(other.__fbthrift_field_clear);
+    this->__fbthrift_field_patch = std::move(other.__fbthrift_field_patch);
+    this->__fbthrift_field_ensure = std::move(other.__fbthrift_field_ensure);
+    this->__fbthrift_field_patchAfter = std::move(other.__fbthrift_field_patchAfter);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct> patch__arg, ::test::fixtures::patch::InnerUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct> patchAfter__arg) :
+    __fbthrift_field_clear(std::move(clear__arg)),
+    __fbthrift_field_patch(std::move(patch__arg)),
+    __fbthrift_field_ensure(std::move(ensure__arg)),
+    __fbthrift_field_patchAfter(std::move(patchAfter__arg)) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+}
+
+
+void InnerUnionValuePatchStruct::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_clear = bool();
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::clear(this->__fbthrift_field_ensure);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  __isset = {};
+}
+
+void InnerUnionValuePatchStruct::__fbthrift_clear_terse_fields() {
+}
+
+bool InnerUnionValuePatchStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool InnerUnionValuePatchStruct::operator==(const InnerUnionValuePatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch)) {
+    return false;
+  }
+  if (!(lhs.ensure_ref() == rhs.ensure_ref())) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter)) {
+    return false;
+  }
+  return true;
+}
+
+bool InnerUnionValuePatchStruct::operator<(const InnerUnionValuePatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return lhs.clear_ref() < rhs.clear_ref();
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch);
+  }
+  if (!(lhs.ensure_ref() == rhs.ensure_ref())) {
+    return lhs.ensure_ref() < rhs.ensure_ref();
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::UnionPatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter);
+  }
+  return false;
+}
+
+const ::test::fixtures::patch::InnerUnion& InnerUnionValuePatchStruct::get_ensure() const& {
+  return __fbthrift_field_ensure;
+}
+
+::test::fixtures::patch::InnerUnion InnerUnionValuePatchStruct::get_ensure() && {
+  return std::move(__fbthrift_field_ensure);
+}
+
+
+void swap(InnerUnionValuePatchStruct& a, InnerUnionValuePatchStruct& b) {
+  using ::std::swap;
+  swap(a.clear_ref().value(), b.clear_ref().value());
+  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.ensure_ref().value(), b.ensure_ref().value());
+  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void InnerUnionValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t InnerUnionValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t InnerUnionValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t InnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void InnerUnionValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t InnerUnionValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t InnerUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t InnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        InnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        InnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::variant,
+        ::test::fixtures::patch::InnerUnion>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        InnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>>,
+    "inconsistent use of json option");
+
+}}} // test::fixtures::patch
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test { namespace fixtures { namespace patch {
+
+const char* OptionalInnerUnionValuePatchStruct::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/patch/OptionalInnerUnionValuePatch";
+}
+
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(const OptionalInnerUnionValuePatchStruct& srcObj) {
+  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
+  __isset.set(0,srcObj.__isset.get(0));
+  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
+  __isset.set(1,srcObj.__isset.get(1));
+  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
+  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
+  __isset.set(2,srcObj.__isset.get(2));
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+}
+
+OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator=(const OptionalInnerUnionValuePatchStruct& src) {
+  OptionalInnerUnionValuePatchStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(OptionalInnerUnionValuePatchStruct&& other) noexcept  :
+    __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
+    __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
+    __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
+    __fbthrift_field_patchAfter(std::move(other.__fbthrift_field_patchAfter)),
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+}
+
+OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct&& other) noexcept {
+    this->__fbthrift_field_clear = std::move(other.__fbthrift_field_clear);
+    this->__fbthrift_field_patch = std::move(other.__fbthrift_field_patch);
+    this->__fbthrift_field_ensure = std::move(other.__fbthrift_field_ensure);
+    this->__fbthrift_field_patchAfter = std::move(other.__fbthrift_field_patchAfter);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> patchAfter__arg) :
+    __fbthrift_field_clear(std::move(clear__arg)),
+    __fbthrift_field_patch(std::move(patch__arg)),
+    __fbthrift_field_ensure(std::move(ensure__arg)),
+    __fbthrift_field_patchAfter(std::move(patchAfter__arg)) {
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+}
+
+
+void OptionalInnerUnionValuePatchStruct::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_clear = bool();
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
+  this->__fbthrift_field_ensure.reset();
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  __isset = {};
+}
+
+void OptionalInnerUnionValuePatchStruct::__fbthrift_clear_terse_fields() {
+}
+
+bool OptionalInnerUnionValuePatchStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool OptionalInnerUnionValuePatchStruct::operator==(const OptionalInnerUnionValuePatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch)) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ensure_ref(), rhs.ensure_ref()))) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter)) {
+    return false;
+  }
+  return true;
+}
+
+bool OptionalInnerUnionValuePatchStruct::operator<(const OptionalInnerUnionValuePatchStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return lhs.clear_ref() < rhs.clear_ref();
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patch, rhs.__fbthrift_field_patch);
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ensure_ref(), rhs.ensure_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.ensure_ref(), rhs.ensure_ref());
+  }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_patchAfter, rhs.__fbthrift_field_patchAfter);
+  }
+  return false;
+}
+
+
+void swap(OptionalInnerUnionValuePatchStruct& a, OptionalInnerUnionValuePatchStruct& b) {
+  using ::std::swap;
+  swap(a.clear_ref().value(), b.clear_ref().value());
+  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void OptionalInnerUnionValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t OptionalInnerUnionValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t OptionalInnerUnionValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t OptionalInnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void OptionalInnerUnionValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t OptionalInnerUnionValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t OptionalInnerUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t OptionalInnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalInnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalInnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::variant,
+        ::test::fixtures::patch::InnerUnion>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalInnerUnionValuePatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+    "inconsistent use of json option");
+
+}}} // test::fixtures::patch
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::test::fixtures::patch::MyUnionPatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -1206,8 +1795,11 @@ MyUnionPatchStruct::MyUnionPatchStruct(const MyUnionPatchStruct& srcObj) {
   __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_option2 = srcObj.__fbthrift_field_option2;
   __isset.set(1,srcObj.__isset.get(1));
+  __fbthrift_field_option3 = srcObj.__fbthrift_field_option3;
+  __isset.set(2,srcObj.__isset.get(2));
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
 }
 
 MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& src) {
@@ -1219,26 +1811,32 @@ MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& src)
 MyUnionPatchStruct::MyUnionPatchStruct(MyUnionPatchStruct&& other) noexcept  :
     __fbthrift_field_option1(std::move(other.__fbthrift_field_option1)),
     __fbthrift_field_option2(std::move(other.__fbthrift_field_option2)),
+    __fbthrift_field_option3(std::move(other.__fbthrift_field_option3)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
 }
 
 MyUnionPatchStruct& MyUnionPatchStruct::operator=(FOLLY_MAYBE_UNUSED MyUnionPatchStruct&& other) noexcept {
     this->__fbthrift_field_option1 = std::move(other.__fbthrift_field_option1);
     this->__fbthrift_field_option2 = std::move(other.__fbthrift_field_option2);
+    this->__fbthrift_field_option3 = std::move(other.__fbthrift_field_option3);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyUnionPatchStruct::MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> option1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> option2__arg) :
+MyUnionPatchStruct::MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> option1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> option2__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> option3__arg) :
     __fbthrift_field_option1(std::move(option1__arg)),
-    __fbthrift_field_option2(std::move(option2__arg)) {
+    __fbthrift_field_option2(std::move(option2__arg)),
+    __fbthrift_field_option3(std::move(option3__arg)) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
+  ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
 }
 
 
@@ -1246,6 +1844,7 @@ void MyUnionPatchStruct::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
   ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
+  ::apache::thrift::adapt_detail::clear<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
   __isset = {};
 }
 
@@ -1266,6 +1865,9 @@ bool MyUnionPatchStruct::operator==(const MyUnionPatchStruct& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::NumberPatchAdapter>(lhs.__fbthrift_field_option2, rhs.__fbthrift_field_option2)) {
     return false;
   }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_option3, rhs.__fbthrift_field_option3)) {
+    return false;
+  }
   return true;
 }
 
@@ -1279,6 +1881,9 @@ bool MyUnionPatchStruct::operator<(const MyUnionPatchStruct& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::NumberPatchAdapter>(lhs.__fbthrift_field_option2, rhs.__fbthrift_field_option2)) {
     return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::NumberPatchAdapter>(lhs.__fbthrift_field_option2, rhs.__fbthrift_field_option2);
   }
+  if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_option3, rhs.__fbthrift_field_option3)) {
+    return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::UnionValuePatchAdapter>(lhs.__fbthrift_field_option3, rhs.__fbthrift_field_option3);
+  }
   return false;
 }
 
@@ -1287,6 +1892,7 @@ void swap(MyUnionPatchStruct& a, MyUnionPatchStruct& b) {
   using ::std::swap;
   swap(a.option1_ref().value(), b.option1_ref().value());
   swap(a.option2_ref().value(), b.option2_ref().value());
+  swap(a.option3_ref().value(), b.option3_ref().value());
   swap(a.__isset, b.__isset);
 }
 
@@ -1310,6 +1916,12 @@ static_assert(
         MyUnionPatchStruct,
         ::apache::thrift::type_class::structure,
         ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnionPatchStruct,
+        ::apache::thrift::type_class::structure,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -3627,8 +4239,14 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructPatchAdapter, 3, ::test::fixtures::patch::MyDataPatchStruct, ::test::fixtures::patch::MyDataValuePatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 3, ::test::fixtures::patch::MyDataValuePatchStruct, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 5, ::test::fixtures::patch::MyDataValuePatchStruct, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::AssignPatchAdapter, 1, ::apache::thrift::op::BinaryPatchStruct, ::test::fixtures::patch::InnerUnionPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 3, ::test::fixtures::patch::InnerUnionPatchStruct, ::test::fixtures::patch::InnerUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 5, ::test::fixtures::patch::InnerUnionPatchStruct, ::test::fixtures::patch::InnerUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 3, ::test::fixtures::patch::InnerUnionValuePatchStruct, ::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 5, ::test::fixtures::patch::InnerUnionValuePatchStruct, ::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 1, ::apache::thrift::op::StringPatchStruct, ::test::fixtures::patch::MyUnionPatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::I32PatchStruct, ::test::fixtures::patch::MyUnionPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 3, ::test::fixtures::patch::InnerUnionValuePatchStruct, ::test::fixtures::patch::MyUnionPatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 3, ::test::fixtures::patch::MyUnionPatchStruct, ::test::fixtures::patch::MyUnionValuePatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 5, ::test::fixtures::patch::MyUnionPatchStruct, ::test::fixtures::patch::MyUnionValuePatchStruct>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 3, ::test::fixtures::patch::MyUnionValuePatchStruct, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>();

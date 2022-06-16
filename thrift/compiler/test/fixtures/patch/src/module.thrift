@@ -31,9 +31,14 @@ struct MyData {
   2: i32 data2;
 }
 
+union InnerUnion {
+  1: binary innerOption;
+}
+
 union MyUnion {
   1: string option1;
   2: i32 option2;
+  3: InnerUnion option3;
 }
 
 struct MyStruct {

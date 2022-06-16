@@ -75,10 +75,28 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __terse_field_ref[string] data1_ref()
         __terse_field_ref[cint32_t] data2_ref()
 
+    cdef enum cInnerUnion__type "::test::fixtures::patch::InnerUnion::Type":
+        cInnerUnion__type___EMPTY__ "::test::fixtures::patch::InnerUnion::Type::__EMPTY__",
+        cInnerUnion__type_innerOption "::test::fixtures::patch::InnerUnion::Type::innerOption",
+
+    cdef cppclass cInnerUnion "::test::fixtures::patch::InnerUnion":
+        cInnerUnion() except +
+        cInnerUnion(const cInnerUnion&) except +
+        bint operator==(cInnerUnion&)
+        bint operator!=(cInnerUnion&)
+        bint operator<(cInnerUnion&)
+        bint operator>(cInnerUnion&)
+        bint operator<=(cInnerUnion&)
+        bint operator>=(cInnerUnion&)
+        cInnerUnion__type getType() const
+        const string& get_innerOption() const
+        string& set_innerOption(const string&)
+
     cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::test::fixtures::patch::MyUnion::Type::__EMPTY__",
         cMyUnion__type_option1 "::test::fixtures::patch::MyUnion::Type::option1",
         cMyUnion__type_option2 "::test::fixtures::patch::MyUnion::Type::option2",
+        cMyUnion__type_option3 "::test::fixtures::patch::MyUnion::Type::option3",
 
     cdef cppclass cMyUnion "::test::fixtures::patch::MyUnion":
         cMyUnion() except +
@@ -94,6 +112,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         string& set_option1(const string&)
         const cint32_t& get_option2() const
         cint32_t& set_option2(const cint32_t&)
+        const cInnerUnion& get_option3() const
+        cInnerUnion& set_option3(const cInnerUnion&)
 
 
     cdef cppclass cMyStruct "::test::fixtures::patch::MyStruct":
@@ -173,6 +193,48 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __field_ref[cMyDataValuePatch] patchAfter_ref()
 
 
+    cdef cppclass cInnerUnionPatch "::test::fixtures::patch::InnerUnionPatch":
+        cInnerUnionPatch() except +
+        cInnerUnionPatch(const cInnerUnionPatch&) except +
+        bint operator==(cInnerUnionPatch&)
+        bint operator!=(cInnerUnionPatch&)
+        bint operator<(cInnerUnionPatch&)
+        bint operator>(cInnerUnionPatch&)
+        bint operator<=(cInnerUnionPatch&)
+        bint operator>=(cInnerUnionPatch&)
+        __field_ref[_apache_thrift_op_patch_types.cBinaryPatch] innerOption_ref()
+
+
+    cdef cppclass cInnerUnionValuePatch "::test::fixtures::patch::InnerUnionValuePatch":
+        cInnerUnionValuePatch() except +
+        cInnerUnionValuePatch(const cInnerUnionValuePatch&) except +
+        bint operator==(cInnerUnionValuePatch&)
+        bint operator!=(cInnerUnionValuePatch&)
+        bint operator<(cInnerUnionValuePatch&)
+        bint operator>(cInnerUnionValuePatch&)
+        bint operator<=(cInnerUnionValuePatch&)
+        bint operator>=(cInnerUnionValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cInnerUnionPatch] patch_ref()
+        __field_ref[cInnerUnion] ensure_ref()
+        __field_ref[cInnerUnionPatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalInnerUnionValuePatch "::test::fixtures::patch::OptionalInnerUnionValuePatch":
+        cOptionalInnerUnionValuePatch() except +
+        cOptionalInnerUnionValuePatch(const cOptionalInnerUnionValuePatch&) except +
+        bint operator==(cOptionalInnerUnionValuePatch&)
+        bint operator!=(cOptionalInnerUnionValuePatch&)
+        bint operator<(cOptionalInnerUnionValuePatch&)
+        bint operator>(cOptionalInnerUnionValuePatch&)
+        bint operator<=(cOptionalInnerUnionValuePatch&)
+        bint operator>=(cOptionalInnerUnionValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cInnerUnionValuePatch] patch_ref()
+        __optional_field_ref[cInnerUnion] ensure_ref()
+        __field_ref[cInnerUnionValuePatch] patchAfter_ref()
+
+
     cdef cppclass cMyUnionPatch "::test::fixtures::patch::MyUnionPatch":
         cMyUnionPatch() except +
         cMyUnionPatch(const cMyUnionPatch&) except +
@@ -184,6 +246,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>=(cMyUnionPatch&)
         __field_ref[_apache_thrift_op_patch_types.cStringPatch] option1_ref()
         __field_ref[_apache_thrift_op_patch_types.cI32Patch] option2_ref()
+        __field_ref[cInnerUnionValuePatch] option3_ref()
 
 
     cdef cppclass cMyUnionValuePatch "::test::fixtures::patch::MyUnionValuePatch":
@@ -380,6 +443,27 @@ cdef class MyData(thrift.py3.types.Struct):
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyData])
 
+cdef class __InnerUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+
+
+cdef class InnerUnion(thrift.py3.types.Union):
+    cdef shared_ptr[cInnerUnion] _cpp_obj
+    cdef readonly __InnerUnionType type
+    cdef readonly object value
+    cdef _load_cache(InnerUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cInnerUnion] _make_instance(
+        cInnerUnion* base_instance,
+        bytes innerOption
+    ) except *
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cInnerUnion])
+
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
 
@@ -396,7 +480,8 @@ cdef class MyUnion(thrift.py3.types.Union):
     cdef unique_ptr[cMyUnion] _make_instance(
         cMyUnion* base_instance,
         str option1,
-        object option2
+        object option2,
+        InnerUnion option3
     ) except *
 
     @staticmethod
@@ -486,13 +571,58 @@ cdef class OptionalMyDataValuePatch(thrift.py3.types.Struct):
 
 
 
+cdef class InnerUnionPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cInnerUnionPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__InnerUnionPatch_FieldsSetter _fields_setter
+    cdef inline object innerOption_impl(self)
+    cdef _apache_thrift_op_patch_types.BinaryPatch __fbthrift_cached_innerOption
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cInnerUnionPatch])
+
+
+
+cdef class InnerUnionValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cInnerUnionValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__InnerUnionValuePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef InnerUnionPatch __fbthrift_cached_patch
+    cdef InnerUnion __fbthrift_cached_ensure
+    cdef InnerUnionPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cInnerUnionValuePatch])
+
+
+
+cdef class OptionalInnerUnionValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalInnerUnionValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalInnerUnionValuePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef InnerUnionValuePatch __fbthrift_cached_patch
+    cdef InnerUnion __fbthrift_cached_ensure
+    cdef InnerUnionValuePatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalInnerUnionValuePatch])
+
+
+
 cdef class MyUnionPatch(thrift.py3.types.Struct):
     cdef shared_ptr[cMyUnionPatch] _cpp_obj
     cdef _fbthrift_types_fields.__MyUnionPatch_FieldsSetter _fields_setter
     cdef inline object option1_impl(self)
     cdef inline object option2_impl(self)
+    cdef inline object option3_impl(self)
     cdef _apache_thrift_op_patch_types.StringPatch __fbthrift_cached_option1
     cdef _apache_thrift_op_patch_types.I32Patch __fbthrift_cached_option2
+    cdef InnerUnionValuePatch __fbthrift_cached_option3
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyUnionPatch])

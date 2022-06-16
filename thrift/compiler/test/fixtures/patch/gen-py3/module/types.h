@@ -20,6 +20,16 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::test::fixtures::patch::InnerUnion::Type>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::test::fixtures::patch::MyUnion::Type>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -170,6 +180,54 @@ void reset_field<::test::fixtures::patch::OptionalMyDataValuePatch>(
 }
 
 template<>
+void reset_field<::test::fixtures::patch::InnerUnionPatch>(
+    ::test::fixtures::patch::InnerUnionPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.innerOption_ref().copy_from(default_inst<::test::fixtures::patch::InnerUnionPatch>().innerOption_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::test::fixtures::patch::InnerUnionValuePatch>(
+    ::test::fixtures::patch::InnerUnionValuePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::InnerUnionValuePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::InnerUnionValuePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::InnerUnionValuePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::InnerUnionValuePatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::test::fixtures::patch::OptionalInnerUnionValuePatch>(
+    ::test::fixtures::patch::OptionalInnerUnionValuePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalInnerUnionValuePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalInnerUnionValuePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalInnerUnionValuePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalInnerUnionValuePatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::test::fixtures::patch::MyUnionPatch>(
     ::test::fixtures::patch::MyUnionPatch& obj, uint16_t index) {
   switch (index) {
@@ -178,6 +236,9 @@ void reset_field<::test::fixtures::patch::MyUnionPatch>(
       return;
     case 1:
       obj.option2_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionPatch>().option2_ref());
+      return;
+    case 2:
+      obj.option3_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionPatch>().option3_ref());
       return;
   }
 }
@@ -457,6 +518,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::patch::InnerUnion>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::test::fixtures::patch::MyUnion>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
@@ -498,6 +569,36 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::test::fixtures::patch::OptionalMyDataValuePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::patch::InnerUnionPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::patch::InnerUnionValuePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::patch::OptionalInnerUnionValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

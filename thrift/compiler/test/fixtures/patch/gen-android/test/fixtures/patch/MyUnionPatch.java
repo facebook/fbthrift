@@ -28,17 +28,22 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyUnionPatch");
   private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRUCT, (short)1);
   private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.STRUCT, (short)2);
+  private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
 
   public final StringPatch option1;
   public final I32Patch option2;
+  public final InnerUnionValuePatch option3;
   public static final int OPTION1 = 1;
   public static final int OPTION2 = 2;
+  public static final int OPTION3 = 3;
 
   public MyUnionPatch(
       StringPatch option1,
-      I32Patch option2) {
+      I32Patch option2,
+      InnerUnionValuePatch option3) {
     this.option1 = option1;
     this.option2 = option2;
+    this.option3 = option3;
   }
 
   /**
@@ -54,6 +59,11 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
       this.option2 = TBaseHelper.deepCopy(other.option2);
     } else {
       this.option2 = null;
+    }
+    if (other.isSetOption3()) {
+      this.option3 = TBaseHelper.deepCopy(other.option3);
+    } else {
+      this.option3 = null;
     }
   }
 
@@ -79,6 +89,15 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
     return this.option2 != null;
   }
 
+  public InnerUnionValuePatch getOption3() {
+    return this.option3;
+  }
+
+  // Returns true if field option3 is set (has been assigned a value) and false otherwise
+  public boolean isSetOption3() {
+    return this.option3 != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -93,12 +112,14 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetOption2(), that.isSetOption2(), this.option2, that.option2)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOption3(), that.isSetOption3(), this.option3, that.option3)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {option1, option2});
+    return Arrays.deepHashCode(new Object[] {option1, option2, option3});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -109,6 +130,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
   public static MyUnionPatch deserialize(TProtocol iprot) throws TException {
     StringPatch tmp_option1 = null;
     I32Patch tmp_option2 = null;
+    InnerUnionValuePatch tmp_option3 = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -133,6 +155,13 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPTION3:
+          if (__field.type == TType.STRUCT) {
+            tmp_option3 = InnerUnionValuePatch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -145,6 +174,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
     _that = new MyUnionPatch(
       tmp_option1
       ,tmp_option2
+      ,tmp_option3
     );
     _that.validate();
     return _that;
@@ -162,6 +192,11 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
     if (this.option2 != null) {
       oprot.writeFieldBegin(OPTION2_FIELD_DESC);
       this.option2.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.option3 != null) {
+      oprot.writeFieldBegin(OPTION3_FIELD_DESC);
+      this.option3.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

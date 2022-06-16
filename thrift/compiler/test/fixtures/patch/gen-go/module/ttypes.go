@@ -180,11 +180,131 @@ func (p *MyData) String() string {
 }
 
 // Attributes:
+//  - InnerOption
+type InnerUnion struct {
+  InnerOption []byte `thrift:"innerOption,1,optional" db:"innerOption" json:"innerOption,omitempty"`
+}
+
+func NewInnerUnion() *InnerUnion {
+  return &InnerUnion{}
+}
+
+var InnerUnion_InnerOption_DEFAULT []byte
+
+func (p *InnerUnion) GetInnerOption() []byte {
+  return p.InnerOption
+}
+func (p *InnerUnion) IsSetInnerOption() bool {
+  return p != nil && p.InnerOption != nil
+}
+
+type InnerUnionBuilder struct {
+  obj *InnerUnion
+}
+
+func NewInnerUnionBuilder() *InnerUnionBuilder{
+  return &InnerUnionBuilder{
+    obj: NewInnerUnion(),
+  }
+}
+
+func (p InnerUnionBuilder) Emit() *InnerUnion{
+  return &InnerUnion{
+    InnerOption: p.obj.InnerOption,
+  }
+}
+
+func (i *InnerUnionBuilder) InnerOption(innerOption []byte) *InnerUnionBuilder {
+  i.obj.InnerOption = innerOption
+  return i
+}
+
+func (i *InnerUnion) SetInnerOption(innerOption []byte) *InnerUnion {
+  i.InnerOption = innerOption
+  return i
+}
+
+func (p *InnerUnion) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *InnerUnion)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.InnerOption = v
+  }
+  return nil
+}
+
+func (p *InnerUnion) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("InnerUnion"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *InnerUnion) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetInnerOption() {
+    if err := oprot.WriteFieldBegin("innerOption", thrift.STRING, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:innerOption: ", p), err) }
+    if err := oprot.WriteBinary(p.InnerOption); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.innerOption (1) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:innerOption: ", p), err) }
+  }
+  return err
+}
+
+func (p *InnerUnion) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  innerOptionVal := fmt.Sprintf("%v", p.InnerOption)
+  return fmt.Sprintf("InnerUnion({InnerOption:%s})", innerOptionVal)
+}
+
+// Attributes:
 //  - Option1
 //  - Option2
+//  - Option3
 type MyUnion struct {
   Option1 *string `thrift:"option1,1,optional" db:"option1" json:"option1,omitempty"`
   Option2 *int32 `thrift:"option2,2,optional" db:"option2" json:"option2,omitempty"`
+  Option3 *InnerUnion `thrift:"option3,3,optional" db:"option3" json:"option3,omitempty"`
 }
 
 func NewMyUnion() *MyUnion {
@@ -205,12 +325,22 @@ func (p *MyUnion) GetOption2() int32 {
   }
 return *p.Option2
 }
+var MyUnion_Option3_DEFAULT *InnerUnion
+func (p *MyUnion) GetOption3() *InnerUnion {
+  if !p.IsSetOption3() {
+    return MyUnion_Option3_DEFAULT
+  }
+return p.Option3
+}
 func (p *MyUnion) CountSetFieldsMyUnion() int {
   count := 0
   if (p.IsSetOption1()) {
     count++
   }
   if (p.IsSetOption2()) {
+    count++
+  }
+  if (p.IsSetOption3()) {
     count++
   }
   return count
@@ -223,6 +353,10 @@ func (p *MyUnion) IsSetOption1() bool {
 
 func (p *MyUnion) IsSetOption2() bool {
   return p != nil && p.Option2 != nil
+}
+
+func (p *MyUnion) IsSetOption3() bool {
+  return p != nil && p.Option3 != nil
 }
 
 type MyUnionBuilder struct {
@@ -239,6 +373,7 @@ func (p MyUnionBuilder) Emit() *MyUnion{
   return &MyUnion{
     Option1: p.obj.Option1,
     Option2: p.obj.Option2,
+    Option3: p.obj.Option3,
   }
 }
 
@@ -252,6 +387,11 @@ func (m *MyUnionBuilder) Option2(option2 *int32) *MyUnionBuilder {
   return m
 }
 
+func (m *MyUnionBuilder) Option3(option3 *InnerUnion) *MyUnionBuilder {
+  m.obj.Option3 = option3
+  return m
+}
+
 func (m *MyUnion) SetOption1(option1 *string) *MyUnion {
   m.Option1 = option1
   return m
@@ -259,6 +399,11 @@ func (m *MyUnion) SetOption1(option1 *string) *MyUnion {
 
 func (m *MyUnion) SetOption2(option2 *int32) *MyUnion {
   m.Option2 = option2
+  return m
+}
+
+func (m *MyUnion) SetOption3(option3 *InnerUnion) *MyUnion {
+  m.Option3 = option3
   return m
 }
 
@@ -281,6 +426,10 @@ func (p *MyUnion) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -316,6 +465,14 @@ func (p *MyUnion)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyUnion)  ReadField3(iprot thrift.Protocol) error {
+  p.Option3 = NewInnerUnion()
+  if err := p.Option3.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Option3), err)
+  }
+  return nil
+}
+
 func (p *MyUnion) Write(oprot thrift.Protocol) error {
   if c := p.CountSetFieldsMyUnion(); c > 1 {
     return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
@@ -324,6 +481,7 @@ func (p *MyUnion) Write(oprot thrift.Protocol) error {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -355,6 +513,19 @@ func (p *MyUnion) writeField2(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyUnion) writeField3(oprot thrift.Protocol) (err error) {
+  if p.IsSetOption3() {
+    if err := oprot.WriteFieldBegin("option3", thrift.STRUCT, 3); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:option3: ", p), err) }
+    if err := p.Option3.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Option3), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 3:option3: ", p), err) }
+  }
+  return err
+}
+
 func (p *MyUnion) String() string {
   if p == nil {
     return "<nil>"
@@ -372,7 +543,13 @@ func (p *MyUnion) String() string {
   } else {
     option2Val = fmt.Sprintf("%v", *p.Option2)
   }
-  return fmt.Sprintf("MyUnion({Option1:%s Option2:%s})", option1Val, option2Val)
+  var option3Val string
+  if p.Option3 == nil {
+    option3Val = "<nil>"
+  } else {
+    option3Val = fmt.Sprintf("%v", p.Option3)
+  }
+  return fmt.Sprintf("MyUnion({Option1:%s Option2:%s Option3:%s})", option1Val, option2Val, option3Val)
 }
 
 // Attributes:
@@ -2396,17 +2573,701 @@ func (p *OptionalMyDataValuePatch) String() string {
 }
 
 // Attributes:
+//  - InnerOption
+type InnerUnionPatch struct {
+  InnerOption *patch1.BinaryPatch `thrift:"innerOption,1" db:"innerOption" json:"innerOption"`
+}
+
+func NewInnerUnionPatch() *InnerUnionPatch {
+  return &InnerUnionPatch{
+    InnerOption: patch1.NewBinaryPatch(),
+  }
+}
+
+var InnerUnionPatch_InnerOption_DEFAULT *patch1.BinaryPatch
+func (p *InnerUnionPatch) GetInnerOption() *patch1.BinaryPatch {
+  if !p.IsSetInnerOption() {
+    return InnerUnionPatch_InnerOption_DEFAULT
+  }
+return p.InnerOption
+}
+func (p *InnerUnionPatch) IsSetInnerOption() bool {
+  return p != nil && p.InnerOption != nil
+}
+
+type InnerUnionPatchBuilder struct {
+  obj *InnerUnionPatch
+}
+
+func NewInnerUnionPatchBuilder() *InnerUnionPatchBuilder{
+  return &InnerUnionPatchBuilder{
+    obj: NewInnerUnionPatch(),
+  }
+}
+
+func (p InnerUnionPatchBuilder) Emit() *InnerUnionPatch{
+  return &InnerUnionPatch{
+    InnerOption: p.obj.InnerOption,
+  }
+}
+
+func (i *InnerUnionPatchBuilder) InnerOption(innerOption *patch1.BinaryPatch) *InnerUnionPatchBuilder {
+  i.obj.InnerOption = innerOption
+  return i
+}
+
+func (i *InnerUnionPatch) SetInnerOption(innerOption *patch1.BinaryPatch) *InnerUnionPatch {
+  i.InnerOption = innerOption
+  return i
+}
+
+func (p *InnerUnionPatch) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionPatch)  ReadField1(iprot thrift.Protocol) error {
+  p.InnerOption = patch1.NewBinaryPatch()
+  if err := p.InnerOption.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.InnerOption), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionPatch) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("InnerUnionPatch"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *InnerUnionPatch) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("innerOption", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:innerOption: ", p), err) }
+  if err := p.InnerOption.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.InnerOption), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:innerOption: ", p), err) }
+  return err
+}
+
+func (p *InnerUnionPatch) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  var innerOptionVal string
+  if p.InnerOption == nil {
+    innerOptionVal = "<nil>"
+  } else {
+    innerOptionVal = fmt.Sprintf("%v", p.InnerOption)
+  }
+  return fmt.Sprintf("InnerUnionPatch({InnerOption:%s})", innerOptionVal)
+}
+
+// Attributes:
+//  - Clear: Clears any set value. Applies first.
+//  - Patch: Patches any set value. Applies second.
+//  - Ensure: Assigns the value, if not already set. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+type InnerUnionValuePatch struct {
+  // unused field # 1
+  Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
+  Patch *InnerUnionPatch `thrift:"patch,3" db:"patch" json:"patch"`
+  Ensure *InnerUnion `thrift:"ensure,4" db:"ensure" json:"ensure"`
+  PatchAfter *InnerUnionPatch `thrift:"patchAfter,5" db:"patchAfter" json:"patchAfter"`
+}
+
+func NewInnerUnionValuePatch() *InnerUnionValuePatch {
+  return &InnerUnionValuePatch{
+    Patch: NewInnerUnionPatch(),
+    PatchAfter: NewInnerUnionPatch(),
+  }
+}
+
+
+func (p *InnerUnionValuePatch) GetClear() bool {
+  return p.Clear
+}
+var InnerUnionValuePatch_Patch_DEFAULT *InnerUnionPatch
+func (p *InnerUnionValuePatch) GetPatch() *InnerUnionPatch {
+  if !p.IsSetPatch() {
+    return InnerUnionValuePatch_Patch_DEFAULT
+  }
+return p.Patch
+}
+var InnerUnionValuePatch_Ensure_DEFAULT *InnerUnion
+func (p *InnerUnionValuePatch) GetEnsure() *InnerUnion {
+  if !p.IsSetEnsure() {
+    return InnerUnionValuePatch_Ensure_DEFAULT
+  }
+return p.Ensure
+}
+var InnerUnionValuePatch_PatchAfter_DEFAULT *InnerUnionPatch
+func (p *InnerUnionValuePatch) GetPatchAfter() *InnerUnionPatch {
+  if !p.IsSetPatchAfter() {
+    return InnerUnionValuePatch_PatchAfter_DEFAULT
+  }
+return p.PatchAfter
+}
+func (p *InnerUnionValuePatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
+}
+
+func (p *InnerUnionValuePatch) IsSetEnsure() bool {
+  return p != nil && p.Ensure != nil
+}
+
+func (p *InnerUnionValuePatch) IsSetPatchAfter() bool {
+  return p != nil && p.PatchAfter != nil
+}
+
+type InnerUnionValuePatchBuilder struct {
+  obj *InnerUnionValuePatch
+}
+
+func NewInnerUnionValuePatchBuilder() *InnerUnionValuePatchBuilder{
+  return &InnerUnionValuePatchBuilder{
+    obj: NewInnerUnionValuePatch(),
+  }
+}
+
+func (p InnerUnionValuePatchBuilder) Emit() *InnerUnionValuePatch{
+  return &InnerUnionValuePatch{
+    Clear: p.obj.Clear,
+    Patch: p.obj.Patch,
+    Ensure: p.obj.Ensure,
+    PatchAfter: p.obj.PatchAfter,
+  }
+}
+
+func (i *InnerUnionValuePatchBuilder) Clear(clear bool) *InnerUnionValuePatchBuilder {
+  i.obj.Clear = clear
+  return i
+}
+
+func (i *InnerUnionValuePatchBuilder) Patch(patch *InnerUnionPatch) *InnerUnionValuePatchBuilder {
+  i.obj.Patch = patch
+  return i
+}
+
+func (i *InnerUnionValuePatchBuilder) Ensure(ensure *InnerUnion) *InnerUnionValuePatchBuilder {
+  i.obj.Ensure = ensure
+  return i
+}
+
+func (i *InnerUnionValuePatchBuilder) PatchAfter(patchAfter *InnerUnionPatch) *InnerUnionValuePatchBuilder {
+  i.obj.PatchAfter = patchAfter
+  return i
+}
+
+func (i *InnerUnionValuePatch) SetClear(clear bool) *InnerUnionValuePatch {
+  i.Clear = clear
+  return i
+}
+
+func (i *InnerUnionValuePatch) SetPatch(patch *InnerUnionPatch) *InnerUnionValuePatch {
+  i.Patch = patch
+  return i
+}
+
+func (i *InnerUnionValuePatch) SetEnsure(ensure *InnerUnion) *InnerUnionValuePatch {
+  i.Ensure = ensure
+  return i
+}
+
+func (i *InnerUnionValuePatch) SetPatchAfter(patchAfter *InnerUnionPatch) *InnerUnionValuePatch {
+  i.PatchAfter = patchAfter
+  return i
+}
+
+func (p *InnerUnionValuePatch) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionValuePatch)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Clear = v
+  }
+  return nil
+}
+
+func (p *InnerUnionValuePatch)  ReadField3(iprot thrift.Protocol) error {
+  p.Patch = NewInnerUnionPatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionValuePatch)  ReadField4(iprot thrift.Protocol) error {
+  p.Ensure = NewInnerUnion()
+  if err := p.Ensure.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Ensure), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionValuePatch)  ReadField5(iprot thrift.Protocol) error {
+  p.PatchAfter = NewInnerUnionPatch()
+  if err := p.PatchAfter.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  }
+  return nil
+}
+
+func (p *InnerUnionValuePatch) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("InnerUnionValuePatch"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *InnerUnionValuePatch) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("clear", thrift.BOOL, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:clear: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Clear)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.clear (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:clear: ", p), err) }
+  return err
+}
+
+func (p *InnerUnionValuePatch) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:patch: ", p), err) }
+  return err
+}
+
+func (p *InnerUnionValuePatch) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("ensure", thrift.STRUCT, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:ensure: ", p), err) }
+  if err := p.Ensure.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Ensure), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:ensure: ", p), err) }
+  return err
+}
+
+func (p *InnerUnionValuePatch) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:patchAfter: ", p), err) }
+  if err := p.PatchAfter.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:patchAfter: ", p), err) }
+  return err
+}
+
+func (p *InnerUnionValuePatch) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  clearVal := fmt.Sprintf("%v", p.Clear)
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
+  } else {
+    patchVal = fmt.Sprintf("%v", p.Patch)
+  }
+  var ensureVal string
+  if p.Ensure == nil {
+    ensureVal = "<nil>"
+  } else {
+    ensureVal = fmt.Sprintf("%v", p.Ensure)
+  }
+  var patchAfterVal string
+  if p.PatchAfter == nil {
+    patchAfterVal = "<nil>"
+  } else {
+    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+  }
+  return fmt.Sprintf("InnerUnionValuePatch({Clear:%s Patch:%s Ensure:%s PatchAfter:%s})", clearVal, patchVal, ensureVal, patchAfterVal)
+}
+
+// Attributes:
+//  - Clear: Clears any set value. Applies first.
+//  - Patch: Patches any set value. Applies second.
+//  - Ensure: Assigns the value, if not already set. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+type OptionalInnerUnionValuePatch struct {
+  // unused field # 1
+  Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
+  Patch *InnerUnionValuePatch `thrift:"patch,3" db:"patch" json:"patch"`
+  Ensure *InnerUnion `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
+  PatchAfter *InnerUnionValuePatch `thrift:"patchAfter,5" db:"patchAfter" json:"patchAfter"`
+}
+
+func NewOptionalInnerUnionValuePatch() *OptionalInnerUnionValuePatch {
+  return &OptionalInnerUnionValuePatch{
+    Patch: NewInnerUnionValuePatch(),
+    PatchAfter: NewInnerUnionValuePatch(),
+  }
+}
+
+
+func (p *OptionalInnerUnionValuePatch) GetClear() bool {
+  return p.Clear
+}
+var OptionalInnerUnionValuePatch_Patch_DEFAULT *InnerUnionValuePatch
+func (p *OptionalInnerUnionValuePatch) GetPatch() *InnerUnionValuePatch {
+  if !p.IsSetPatch() {
+    return OptionalInnerUnionValuePatch_Patch_DEFAULT
+  }
+return p.Patch
+}
+var OptionalInnerUnionValuePatch_Ensure_DEFAULT *InnerUnion
+func (p *OptionalInnerUnionValuePatch) GetEnsure() *InnerUnion {
+  if !p.IsSetEnsure() {
+    return OptionalInnerUnionValuePatch_Ensure_DEFAULT
+  }
+return p.Ensure
+}
+var OptionalInnerUnionValuePatch_PatchAfter_DEFAULT *InnerUnionValuePatch
+func (p *OptionalInnerUnionValuePatch) GetPatchAfter() *InnerUnionValuePatch {
+  if !p.IsSetPatchAfter() {
+    return OptionalInnerUnionValuePatch_PatchAfter_DEFAULT
+  }
+return p.PatchAfter
+}
+func (p *OptionalInnerUnionValuePatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
+}
+
+func (p *OptionalInnerUnionValuePatch) IsSetEnsure() bool {
+  return p != nil && p.Ensure != nil
+}
+
+func (p *OptionalInnerUnionValuePatch) IsSetPatchAfter() bool {
+  return p != nil && p.PatchAfter != nil
+}
+
+type OptionalInnerUnionValuePatchBuilder struct {
+  obj *OptionalInnerUnionValuePatch
+}
+
+func NewOptionalInnerUnionValuePatchBuilder() *OptionalInnerUnionValuePatchBuilder{
+  return &OptionalInnerUnionValuePatchBuilder{
+    obj: NewOptionalInnerUnionValuePatch(),
+  }
+}
+
+func (p OptionalInnerUnionValuePatchBuilder) Emit() *OptionalInnerUnionValuePatch{
+  return &OptionalInnerUnionValuePatch{
+    Clear: p.obj.Clear,
+    Patch: p.obj.Patch,
+    Ensure: p.obj.Ensure,
+    PatchAfter: p.obj.PatchAfter,
+  }
+}
+
+func (o *OptionalInnerUnionValuePatchBuilder) Clear(clear bool) *OptionalInnerUnionValuePatchBuilder {
+  o.obj.Clear = clear
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatchBuilder) Patch(patch *InnerUnionValuePatch) *OptionalInnerUnionValuePatchBuilder {
+  o.obj.Patch = patch
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatchBuilder) Ensure(ensure *InnerUnion) *OptionalInnerUnionValuePatchBuilder {
+  o.obj.Ensure = ensure
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatchBuilder) PatchAfter(patchAfter *InnerUnionValuePatch) *OptionalInnerUnionValuePatchBuilder {
+  o.obj.PatchAfter = patchAfter
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatch) SetClear(clear bool) *OptionalInnerUnionValuePatch {
+  o.Clear = clear
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatch) SetPatch(patch *InnerUnionValuePatch) *OptionalInnerUnionValuePatch {
+  o.Patch = patch
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatch) SetEnsure(ensure *InnerUnion) *OptionalInnerUnionValuePatch {
+  o.Ensure = ensure
+  return o
+}
+
+func (o *OptionalInnerUnionValuePatch) SetPatchAfter(patchAfter *InnerUnionValuePatch) *OptionalInnerUnionValuePatch {
+  o.PatchAfter = patchAfter
+  return o
+}
+
+func (p *OptionalInnerUnionValuePatch) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Clear = v
+  }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch)  ReadField3(iprot thrift.Protocol) error {
+  p.Patch = NewInnerUnionValuePatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
+  }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch)  ReadField4(iprot thrift.Protocol) error {
+  p.Ensure = NewInnerUnion()
+  if err := p.Ensure.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Ensure), err)
+  }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch)  ReadField5(iprot thrift.Protocol) error {
+  p.PatchAfter = NewInnerUnionValuePatch()
+  if err := p.PatchAfter.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("OptionalInnerUnionValuePatch"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *OptionalInnerUnionValuePatch) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("clear", thrift.BOOL, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:clear: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Clear)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.clear (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:clear: ", p), err) }
+  return err
+}
+
+func (p *OptionalInnerUnionValuePatch) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:patch: ", p), err) }
+  return err
+}
+
+func (p *OptionalInnerUnionValuePatch) writeField4(oprot thrift.Protocol) (err error) {
+  if p.IsSetEnsure() {
+    if err := oprot.WriteFieldBegin("ensure", thrift.STRUCT, 4); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:ensure: ", p), err) }
+    if err := p.Ensure.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Ensure), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 4:ensure: ", p), err) }
+  }
+  return err
+}
+
+func (p *OptionalInnerUnionValuePatch) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:patchAfter: ", p), err) }
+  if err := p.PatchAfter.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:patchAfter: ", p), err) }
+  return err
+}
+
+func (p *OptionalInnerUnionValuePatch) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  clearVal := fmt.Sprintf("%v", p.Clear)
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
+  } else {
+    patchVal = fmt.Sprintf("%v", p.Patch)
+  }
+  var ensureVal string
+  if p.Ensure == nil {
+    ensureVal = "<nil>"
+  } else {
+    ensureVal = fmt.Sprintf("%v", p.Ensure)
+  }
+  var patchAfterVal string
+  if p.PatchAfter == nil {
+    patchAfterVal = "<nil>"
+  } else {
+    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+  }
+  return fmt.Sprintf("OptionalInnerUnionValuePatch({Clear:%s Patch:%s Ensure:%s PatchAfter:%s})", clearVal, patchVal, ensureVal, patchAfterVal)
+}
+
+// Attributes:
 //  - Option1
 //  - Option2
+//  - Option3
 type MyUnionPatch struct {
   Option1 *patch1.StringPatch `thrift:"option1,1" db:"option1" json:"option1"`
   Option2 *patch1.I32Patch `thrift:"option2,2" db:"option2" json:"option2"`
+  Option3 *InnerUnionValuePatch `thrift:"option3,3" db:"option3" json:"option3"`
 }
 
 func NewMyUnionPatch() *MyUnionPatch {
   return &MyUnionPatch{
     Option1: patch1.NewStringPatch(),
     Option2: patch1.NewI32Patch(),
+    Option3: NewInnerUnionValuePatch(),
   }
 }
 
@@ -2424,12 +3285,23 @@ func (p *MyUnionPatch) GetOption2() *patch1.I32Patch {
   }
 return p.Option2
 }
+var MyUnionPatch_Option3_DEFAULT *InnerUnionValuePatch
+func (p *MyUnionPatch) GetOption3() *InnerUnionValuePatch {
+  if !p.IsSetOption3() {
+    return MyUnionPatch_Option3_DEFAULT
+  }
+return p.Option3
+}
 func (p *MyUnionPatch) IsSetOption1() bool {
   return p != nil && p.Option1 != nil
 }
 
 func (p *MyUnionPatch) IsSetOption2() bool {
   return p != nil && p.Option2 != nil
+}
+
+func (p *MyUnionPatch) IsSetOption3() bool {
+  return p != nil && p.Option3 != nil
 }
 
 type MyUnionPatchBuilder struct {
@@ -2446,6 +3318,7 @@ func (p MyUnionPatchBuilder) Emit() *MyUnionPatch{
   return &MyUnionPatch{
     Option1: p.obj.Option1,
     Option2: p.obj.Option2,
+    Option3: p.obj.Option3,
   }
 }
 
@@ -2459,6 +3332,11 @@ func (m *MyUnionPatchBuilder) Option2(option2 *patch1.I32Patch) *MyUnionPatchBui
   return m
 }
 
+func (m *MyUnionPatchBuilder) Option3(option3 *InnerUnionValuePatch) *MyUnionPatchBuilder {
+  m.obj.Option3 = option3
+  return m
+}
+
 func (m *MyUnionPatch) SetOption1(option1 *patch1.StringPatch) *MyUnionPatch {
   m.Option1 = option1
   return m
@@ -2466,6 +3344,11 @@ func (m *MyUnionPatch) SetOption1(option1 *patch1.StringPatch) *MyUnionPatch {
 
 func (m *MyUnionPatch) SetOption2(option2 *patch1.I32Patch) *MyUnionPatch {
   m.Option2 = option2
+  return m
+}
+
+func (m *MyUnionPatch) SetOption3(option3 *InnerUnionValuePatch) *MyUnionPatch {
+  m.Option3 = option3
   return m
 }
 
@@ -2488,6 +3371,10 @@ func (p *MyUnionPatch) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -2521,11 +3408,20 @@ func (p *MyUnionPatch)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyUnionPatch)  ReadField3(iprot thrift.Protocol) error {
+  p.Option3 = NewInnerUnionValuePatch()
+  if err := p.Option3.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Option3), err)
+  }
+  return nil
+}
+
 func (p *MyUnionPatch) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyUnionPatch"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -2555,6 +3451,17 @@ func (p *MyUnionPatch) writeField2(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyUnionPatch) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("option3", thrift.STRUCT, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:option3: ", p), err) }
+  if err := p.Option3.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Option3), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:option3: ", p), err) }
+  return err
+}
+
 func (p *MyUnionPatch) String() string {
   if p == nil {
     return "<nil>"
@@ -2572,7 +3479,13 @@ func (p *MyUnionPatch) String() string {
   } else {
     option2Val = fmt.Sprintf("%v", p.Option2)
   }
-  return fmt.Sprintf("MyUnionPatch({Option1:%s Option2:%s})", option1Val, option2Val)
+  var option3Val string
+  if p.Option3 == nil {
+    option3Val = "<nil>"
+  } else {
+    option3Val = fmt.Sprintf("%v", p.Option3)
+  }
+  return fmt.Sprintf("MyUnionPatch({Option1:%s Option2:%s Option3:%s})", option1Val, option2Val, option3Val)
 }
 
 // Attributes:
