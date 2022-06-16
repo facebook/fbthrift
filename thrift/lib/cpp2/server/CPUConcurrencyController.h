@@ -17,7 +17,6 @@
 #pragma once
 
 #include <chrono>
-#include <gflags/gflags.h>
 
 #include <folly/experimental/FunctionScheduler.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
