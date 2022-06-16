@@ -33,15 +33,15 @@
 // If this file is always linked (e.g. link_whole), it will force
 // static linking to include the intialization logic.
 <%#program:structs%>
-<%#struct:thrift_uri%>
+<%#struct:any?%>
 extern FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_name%>;
-<%/struct:thrift_uri%>
+<%/struct:any?%>
 <%/program:structs%>
 FOLLY_EXPORT bool* __fbthrift_static_reg_<%program:name%>[] = {
 <%#program:structs%>
-<%#struct:thrift_uri%>
+<%#struct:any?%>
     &__fbthrift_static_init_<%struct:cpp_name%>,
-<%/struct:thrift_uri%>
+<%/struct:any?%>
 <%/program:structs%>
     nullptr};
 <%/program:any?%>

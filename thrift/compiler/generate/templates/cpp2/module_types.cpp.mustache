@@ -33,7 +33,7 @@
 // To include in statically-linked libraries, link whole (e.g. --whole-archive)
 // `<%program:name%>_sinit.cpp`.
 <%#program:structs%>
-<%#struct:thrift_uri%>
+<%#struct:any?%>
 FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_name%> = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         <%struct:cpp_name%>,
@@ -43,7 +43,7 @@ FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_name%> = (
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-<%/struct:thrift_uri%>
+<%/struct:any?%>
 <%/program:structs%>
 <% > common/namespace_cpp2_end%>
 

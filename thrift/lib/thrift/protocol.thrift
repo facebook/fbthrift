@@ -16,7 +16,7 @@
 
 // TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
 
-include "thrift/lib/thrift/standard.thrift"
+include "thrift/lib/thrift/protocol_detail.thrift"
 
 package "facebook.com/thrift/protocol"
 
@@ -29,39 +29,9 @@ namespace py.asyncio apache_thrift_asyncio.protocol
 namespace go thrift.lib.thrift.protocol
 namespace py thrift.lib.thrift.protocol
 
-// A dynamic struct/union/exception
-struct Object {
-  // The type of the object, if applicable.
-  1: standard.Uri type;
+typedef protocol_detail.Object Object (thrift.uri = "")
+typedef protocol_detail.Value Value (thrift.uri = "")
 
-  // The members of the object.
-  // TODO(ytj): use schema.FieldId as key
-  2: map<i16, Value> members;
-}
-
-// A dynamic value.
-union Value {
-  // Integers.
-  1: bool boolValue;
-  2: byte byteValue;
-  3: i16 i16Value;
-  4: i32 i32Value;
-  5: i64 i64Value;
-
-  // Floats.
-  6: float floatValue;
-  7: double doubleValue;
-
-  // Strings.
-  8: string stringValue;
-
-  9: standard.ByteBuffer binaryValue;
-
-  // A dynamic object value.
-  11: Object objectValue;
-
-  // Containers of values.
-  14: list<Value> listValue;
-  15: set<Value> setValue;
-  16: map<Value, Value> mapValue;
-}
+// TODO(afuller): java2 currently fails to build in xplat, without at least
+// one definition it does code gen for.
+struct FbthriftInternal_id_Java2Bug {}

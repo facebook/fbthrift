@@ -984,6 +984,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::cpp_frozen2_exclude},
             {"struct:has_non_optional_and_non_terse_field?",
              &mstch_cpp2_struct::has_non_optional_and_non_terse_field},
+            {"struct:any?", &mstch_cpp2_struct::any},
         });
     register_has_option(
         "struct:deprecated_tag_incompatible?", "deprecated_tag_incompatible");
@@ -1392,6 +1393,10 @@ class mstch_cpp2_struct : public mstch_struct {
 
   mstch::node fields_in_key_order() {
     return generate_fields(get_members_in_key_order());
+  }
+
+  mstch::node any() {
+    return strct_->uri() != "" && !strct_->has_annotation("cpp.detail.no_any");
   }
 
   std::shared_ptr<cpp2_generator_context> context_;
