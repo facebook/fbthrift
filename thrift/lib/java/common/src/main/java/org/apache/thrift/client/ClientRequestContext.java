@@ -19,6 +19,8 @@ package org.apache.thrift.client;
 import java.util.Map;
 
 public interface ClientRequestContext {
+  public String getServiceName();
+
   void setRequestHeader(String key, String value);
 
   Map<String, String> getResponseHeaders();
