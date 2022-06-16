@@ -1780,11 +1780,19 @@ class union1 final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    i = 1,
-    d = 2,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      i = 1,
+      d = 2,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type i = Type::i;
+  static constexpr Type d = Type::d;
+
 
   union1()
       : type_(Type::__EMPTY__) {}
@@ -2040,13 +2048,23 @@ class union2 final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    i = 1,
-    d = 2,
-    s = 3,
-    u = 4,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      i = 1,
+      d = 2,
+      s = 3,
+      u = 4,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type i = Type::i;
+  static constexpr Type d = Type::d;
+  static constexpr Type s = Type::s;
+  static constexpr Type u = Type::u;
+
 
   union2()
       : type_(Type::__EMPTY__) {}

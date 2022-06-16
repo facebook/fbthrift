@@ -787,14 +787,25 @@ class Baz final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    intField = 1,
-    setField = 4,
-    mapField = 6,
-    binaryField = 8,
-    longField = 9,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      intField = 1,
+      setField = 4,
+      mapField = 6,
+      binaryField = 8,
+      longField = 9,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type intField = Type::intField;
+  static constexpr Type setField = Type::setField;
+  static constexpr Type mapField = Type::mapField;
+  static constexpr Type binaryField = Type::binaryField;
+  static constexpr Type longField = Type::longField;
+
 
   Baz()
       : type_(Type::__EMPTY__) {}

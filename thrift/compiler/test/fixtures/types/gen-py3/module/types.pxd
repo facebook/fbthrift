@@ -641,7 +641,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         __field_ref[vector[string]] MyBinaryListField4_ref()
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
 
-    cdef enum cNoExceptMoveUnion__type "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type":
+    cdef enum cNoExceptMoveUnion__type "::apache::thrift::fixtures::types::NoExceptMoveUnion::__fbthrift_scope::__fbthrift_type":
         cNoExceptMoveUnion__type___EMPTY__ "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::__EMPTY__",
         cNoExceptMoveUnion__type_string_field "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::string_field",
         cNoExceptMoveUnion__type_i32_field "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::i32_field",

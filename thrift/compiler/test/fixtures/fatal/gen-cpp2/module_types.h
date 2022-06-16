@@ -1120,13 +1120,23 @@ class union1 final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    ui = 1,
-    ud = 3,
-    us = 5,
-    ue = 7,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      ui = 1,
+      ud = 3,
+      us = 5,
+      ue = 7,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type ui = Type::ui;
+  static constexpr Type ud = Type::ud;
+  static constexpr Type us = Type::us;
+  static constexpr Type ue = Type::ue;
+
 
   union1()
       : type_(Type::__EMPTY__) {}
@@ -1524,13 +1534,23 @@ class union2 final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    ui_2 = 1,
-    ud_2 = 2,
-    us_2 = 3,
-    ue_2 = 4,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      ui_2 = 1,
+      ud_2 = 2,
+      us_2 = 3,
+      ue_2 = 4,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type ui_2 = Type::ui_2;
+  static constexpr Type ud_2 = Type::ud_2;
+  static constexpr Type us_2 = Type::us_2;
+  static constexpr Type ue_2 = Type::ue_2;
+
 
   union2()
       : type_(Type::__EMPTY__) {}
@@ -1928,13 +1948,23 @@ class union3 final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    ui_3 = 1,
-    ud_3 = 2,
-    us_3 = 3,
-    ue_3 = 4,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      ui_3 = 1,
+      ud_3 = 2,
+      us_3 = 3,
+      ue_3 = 4,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type ui_3 = Type::ui_3;
+  static constexpr Type ud_3 = Type::ud_3;
+  static constexpr Type us_3 = Type::us_3;
+  static constexpr Type ue_3 = Type::ue_3;
+
 
   union3()
       : type_(Type::__EMPTY__) {}
@@ -2508,14 +2538,25 @@ class unionA final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    i = 1,
-    d = 2,
-    s = 3,
-    e = 4,
-    a = 5,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      i = 1,
+      d = 2,
+      s = 3,
+      e = 4,
+      a = 5,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type i = Type::i;
+  static constexpr Type d = Type::d;
+  static constexpr Type s = Type::s;
+  static constexpr Type e = Type::e;
+  static constexpr Type a = Type::a;
+
 
   unionA()
       : type_(Type::__EMPTY__) {}
@@ -7855,37 +7896,71 @@ class union_with_special_names final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    get = 1,
-    getter = 2,
-    lists = 3,
-    maps = 4,
-    name = 5,
-    name_to_value = 6,
-    names = 7,
-    prefix_tree = 8,
-    sets = 9,
-    setter = 10,
-    str = 11,
-    strings = 12,
-    type = 13,
-    value = 14,
-    value_to_name = 15,
-    values = 16,
-    id = 17,
-    ids = 18,
-    descriptor = 19,
-    descriptors = 20,
-    key = 21,
-    keys = 22,
-    annotation = 23,
-    annotations = 24,
-    member = 25,
-    members = 26,
-    field = 27,
-    fields = 28,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      get = 1,
+      getter = 2,
+      lists = 3,
+      maps = 4,
+      name = 5,
+      name_to_value = 6,
+      names = 7,
+      prefix_tree = 8,
+      sets = 9,
+      setter = 10,
+      str = 11,
+      strings = 12,
+      type = 13,
+      value = 14,
+      value_to_name = 15,
+      values = 16,
+      id = 17,
+      ids = 18,
+      descriptor = 19,
+      descriptors = 20,
+      key = 21,
+      keys = 22,
+      annotation = 23,
+      annotations = 24,
+      member = 25,
+      members = 26,
+      field = 27,
+      fields = 28,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type get = Type::get;
+  static constexpr Type getter = Type::getter;
+  static constexpr Type lists = Type::lists;
+  static constexpr Type maps = Type::maps;
+  static constexpr Type name = Type::name;
+  static constexpr Type name_to_value = Type::name_to_value;
+  static constexpr Type names = Type::names;
+  static constexpr Type prefix_tree = Type::prefix_tree;
+  static constexpr Type sets = Type::sets;
+  static constexpr Type setter = Type::setter;
+  static constexpr Type str = Type::str;
+  static constexpr Type strings = Type::strings;
+  static constexpr Type type = Type::type;
+  static constexpr Type value = Type::value;
+  static constexpr Type value_to_name = Type::value_to_name;
+  static constexpr Type values = Type::values;
+  static constexpr Type id = Type::id;
+  static constexpr Type ids = Type::ids;
+  static constexpr Type descriptor = Type::descriptor;
+  static constexpr Type descriptors = Type::descriptors;
+  static constexpr Type key = Type::key;
+  static constexpr Type keys = Type::keys;
+  static constexpr Type annotation = Type::annotation;
+  static constexpr Type annotations = Type::annotations;
+  static constexpr Type member = Type::member;
+  static constexpr Type members = Type::members;
+  static constexpr Type field = Type::field;
+  static constexpr Type fields = Type::fields;
+
 
   union_with_special_names()
       : type_(Type::__EMPTY__) {}
@@ -11799,10 +11874,17 @@ class UnionWithTypedefFieldAdapter final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    field = 1,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      field = 1,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type field = Type::field;
+
 
   UnionWithTypedefFieldAdapter()
       : type_(Type::__EMPTY__) {}

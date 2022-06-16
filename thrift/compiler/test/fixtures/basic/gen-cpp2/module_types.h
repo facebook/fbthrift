@@ -934,13 +934,23 @@ class MyUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    myEnum = 1,
-    myStruct = 2,
-    myDataItem = 3,
-    floatSet = 4,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      myEnum = 1,
+      myStruct = 2,
+      myDataItem = 3,
+      floatSet = 4,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type myEnum = Type::myEnum;
+  static constexpr Type myStruct = Type::myStruct;
+  static constexpr Type myDataItem = Type::myDataItem;
+  static constexpr Type floatSet = Type::floatSet;
+
 
   MyUnion()
       : type_(Type::__EMPTY__) {}
@@ -1522,10 +1532,17 @@ class UnionToBeRenamed final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    reserved_field = 1,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      reserved_field = 1,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type reserved_field = Type::reserved_field;
+
 
   UnionToBeRenamed()
       : type_(Type::__EMPTY__) {}

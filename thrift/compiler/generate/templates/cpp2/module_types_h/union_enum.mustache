@@ -14,9 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  enum Type : int {
-    __EMPTY__ = 0,
+%>
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
 <%#struct:fields%>
-    <%field:cpp_name%> = <%field:key%>,
+      <%field:cpp_name%> = <%field:key%>,
 <%/struct:fields%>
-  } ;
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+<%#struct:fields%>
+  static constexpr Type <%field:cpp_name%> = Type::<%field:cpp_name%>;
+<%/struct:fields%>

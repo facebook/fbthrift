@@ -119,7 +119,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyStructNestedAnnotation&)
         __field_ref[string] name_ref()
 
-    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
+    cdef enum cMyUnion__type "::cpp2::MyUnion::__fbthrift_scope::__fbthrift_type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
 
     cdef cppclass cMyUnion "::cpp2::MyUnion":

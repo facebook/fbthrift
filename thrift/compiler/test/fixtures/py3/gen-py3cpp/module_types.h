@@ -1563,10 +1563,17 @@ class BinaryUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    iobuf_val = 1,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      iobuf_val = 1,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type iobuf_val = Type::iobuf_val;
+
 
   BinaryUnion()
       : type_(Type::__EMPTY__) {}

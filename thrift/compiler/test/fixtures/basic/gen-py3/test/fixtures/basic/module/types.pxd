@@ -109,7 +109,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyDataItem&)
         bint operator>=(cMyDataItem&)
 
-    cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::Type":
+    cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::__fbthrift_scope::__fbthrift_type":
         cMyUnion__type___EMPTY__ "::test::fixtures::basic::MyUnion::Type::__EMPTY__",
         cMyUnion__type_myEnum "::test::fixtures::basic::MyUnion::Type::myEnum",
         cMyUnion__type_myStruct "::test::fixtures::basic::MyUnion::Type::myStruct",
@@ -147,7 +147,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>=(cReservedKeyword&)
         __field_ref[cint32_t] reserved_field_ref()
 
-    cdef enum cUnionToBeRenamed__type "::test::fixtures::basic::UnionToBeRenamed::Type":
+    cdef enum cUnionToBeRenamed__type "::test::fixtures::basic::UnionToBeRenamed::__fbthrift_scope::__fbthrift_type":
         cUnionToBeRenamed__type___EMPTY__ "::test::fixtures::basic::UnionToBeRenamed::Type::__EMPTY__",
         cUnionToBeRenamed__type_reserved_field "::test::fixtures::basic::UnionToBeRenamed::Type::reserved_field",
 

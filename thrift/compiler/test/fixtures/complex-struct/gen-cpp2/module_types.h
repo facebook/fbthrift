@@ -3875,15 +3875,27 @@ class MyUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    myEnum = 1,
-    myStruct = 2,
-    myDataItem = 3,
-    complexNestedStruct = 4,
-    longValue = 5,
-    intValue = 6,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      myEnum = 1,
+      myStruct = 2,
+      myDataItem = 3,
+      complexNestedStruct = 4,
+      longValue = 5,
+      intValue = 6,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type myEnum = Type::myEnum;
+  static constexpr Type myStruct = Type::myStruct;
+  static constexpr Type myDataItem = Type::myDataItem;
+  static constexpr Type complexNestedStruct = Type::complexNestedStruct;
+  static constexpr Type longValue = Type::longValue;
+  static constexpr Type intValue = Type::intValue;
+
 
   MyUnion()
       : type_(Type::__EMPTY__) {}
@@ -6191,13 +6203,23 @@ class MyUnionFloatFieldThrowExp final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    myEnum = 1,
-    setFloat = 2,
-    myDataItem = 3,
-    complexNestedStruct = 4,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      myEnum = 1,
+      setFloat = 2,
+      myDataItem = 3,
+      complexNestedStruct = 4,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type myEnum = Type::myEnum;
+  static constexpr Type setFloat = Type::setFloat;
+  static constexpr Type myDataItem = Type::myDataItem;
+  static constexpr Type complexNestedStruct = Type::complexNestedStruct;
+
 
   MyUnionFloatFieldThrowExp()
       : type_(Type::__EMPTY__) {}

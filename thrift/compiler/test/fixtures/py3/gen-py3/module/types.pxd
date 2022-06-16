@@ -141,7 +141,7 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         __field_ref[string] cdef__ref "cdef_ref"()
         __field_ref[foo_Bar] bytes_with_cpp_type_ref()
 
-    cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::Type":
+    cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::__fbthrift_scope::__fbthrift_type":
         cBinaryUnion__type___EMPTY__ "::py3::simple::BinaryUnion::Type::__EMPTY__",
         cBinaryUnion__type_iobuf_val "::py3::simple::BinaryUnion::Type::iobuf_val",
 

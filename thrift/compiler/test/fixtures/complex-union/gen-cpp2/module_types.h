@@ -159,15 +159,27 @@ class ComplexUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    intValue = 1,
-    stringValue = 5,
-    intListValue = 2,
-    stringListValue = 3,
-    typedefValue = 9,
-    stringRef = 14,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      intValue = 1,
+      stringValue = 5,
+      intListValue = 2,
+      stringListValue = 3,
+      typedefValue = 9,
+      stringRef = 14,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type intValue = Type::intValue;
+  static constexpr Type stringValue = Type::stringValue;
+  static constexpr Type intListValue = Type::intListValue;
+  static constexpr Type stringListValue = Type::stringListValue;
+  static constexpr Type typedefValue = Type::typedefValue;
+  static constexpr Type stringRef = Type::stringRef;
+
 
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
@@ -749,11 +761,19 @@ class ListUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    intListValue = 2,
-    stringListValue = 3,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      intListValue = 2,
+      stringListValue = 3,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type intListValue = Type::intListValue;
+  static constexpr Type stringListValue = Type::stringListValue;
+
 
   ListUnion()
       : type_(Type::__EMPTY__) {}
@@ -1037,11 +1057,19 @@ class DataUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    binaryData = 1,
-    stringData = 2,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      binaryData = 1,
+      stringData = 2,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type binaryData = Type::binaryData;
+  static constexpr Type stringData = Type::stringData;
+
 
   DataUnion()
       : type_(Type::__EMPTY__) {}
@@ -1552,11 +1580,19 @@ class ValUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    v1 = 1,
-    v2 = 2,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      v1 = 1,
+      v2 = 2,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type v1 = Type::v1;
+  static constexpr Type v2 = Type::v2;
+
 
   ValUnion()
       : type_(Type::__EMPTY__) {}
@@ -1840,11 +1876,19 @@ class VirtualComplexUnion  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    thingOne = 1,
-    thingTwo = 2,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      thingOne = 1,
+      thingTwo = 2,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type thingOne = Type::thingOne;
+  static constexpr Type thingTwo = Type::thingTwo;
+
 
   VirtualComplexUnion()
       : type_(Type::__EMPTY__) {}
@@ -2244,10 +2288,17 @@ class NonCopyableUnion final  {
 
 
  public:
-  enum Type : int {
-    __EMPTY__ = 0,
-    s = 1,
-  } ;
+  struct __fbthrift_scope {
+    enum __fbthrift_type : int {
+      __EMPTY__ = 0,
+      s = 1,
+    };
+  };
+
+  using Type = __fbthrift_scope::__fbthrift_type;
+  static constexpr Type __EMPTY__ = Type::__EMPTY__;
+  static constexpr Type s = Type::s;
+
 
   NonCopyableUnion()
       : type_(Type::__EMPTY__) {}

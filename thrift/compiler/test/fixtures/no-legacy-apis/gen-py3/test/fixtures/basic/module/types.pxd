@@ -84,7 +84,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __field_ref[cint64_t] myIntField_ref()
         __field_ref[string] myStringField_ref()
 
-    cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::Type":
+    cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::__fbthrift_scope::__fbthrift_type":
         cMyUnion__type___EMPTY__ "::test::fixtures::basic::MyUnion::Type::__EMPTY__",
         cMyUnion__type_myEnum "::test::fixtures::basic::MyUnion::Type::myEnum",
         cMyUnion__type_myDataItem "::test::fixtures::basic::MyUnion::Type::myDataItem",
