@@ -2874,10 +2874,8 @@ void t_hack_generator::generate_php_struct_stringifyMapKeys_method(
     return;
   }
   std::string arg_return_type;
-  if (arrays_) {
+  if (arrays_ || no_use_hack_collections_) {
     arg_return_type = "dict";
-  } else if (no_use_hack_collections_) {
-    arg_return_type = "darray";
   } else if (const_collections_) {
     arg_return_type = "\\ConstMap";
   } else {
