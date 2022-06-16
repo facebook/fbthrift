@@ -1692,10 +1692,8 @@ std::string t_hack_generator::render_const_value_helper(
   } else if (const auto* tmap = dynamic_cast<const t_map*>(type)) {
     const t_type* ktype = tmap->get_key_type();
     const t_type* vtype = tmap->get_val_type();
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       out << "dict[\n";
-    } else if (no_use_hack_collections_) {
-      out << "darray[\n";
     } else {
       out << (immutable_collections ? "Imm" : "") << "Map {\n";
     }
@@ -1725,10 +1723,8 @@ std::string t_hack_generator::render_const_value_helper(
     }
   } else if (const auto* tlist = dynamic_cast<const t_list*>(type)) {
     const t_type* etype = tlist->get_elem_type();
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       out << "vec[\n";
-    } else if (no_use_hack_collections_) {
-      out << "varray[\n";
     } else {
       out << (immutable_collections ? "Imm" : "") << "Vector {\n";
     }
