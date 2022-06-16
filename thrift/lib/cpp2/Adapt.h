@@ -28,7 +28,7 @@ namespace apache {
 namespace thrift {
 
 template <typename Struct, int16_t FieldId>
-struct FieldAdapterContext {
+struct FieldContext {
   static constexpr int16_t kFieldId = FieldId;
   Struct& object;
 };
@@ -49,14 +49,13 @@ template <typename Adapter, typename ThriftT>
 using adapted_t = decltype(Adapter::fromThrift(std::declval<ThriftT&&>()));
 
 // Used to detect if Adapter has the fromThriftField function which takes an
-// additional FieldAdapterContext argument.
+// additional FieldContext argument.
 template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
 using FromThriftFieldIdType = decltype(Adapter::fromThriftField(
-    std::declval<ThriftT>(),
-    std::declval<FieldAdapterContext<Struct, FieldId>>()));
+    std::declval<ThriftT>(), std::declval<FieldContext<Struct, FieldId>>()));
 template <typename Adapter, typename ThriftT, typename Struct>
 using FromThriftFieldType = decltype(Adapter::fromThriftField(
-    std::declval<ThriftT>(), std::declval<FieldAdapterContext<Struct, 0>>()));
+    std::declval<ThriftT>(), std::declval<FieldContext<Struct, 0>>()));
 template <typename Adapter, typename ThriftT, typename Struct>
 constexpr bool is_field_adapter_v =
     folly::is_detected_v<FromThriftFieldType, Adapter, ThriftT, Struct>;
@@ -103,8 +102,7 @@ template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
 constexpr FromThriftFieldIdType<Adapter, FieldId, ThriftT, Struct>
 fromThriftField(ThriftT&& value, Struct& object) {
   return Adapter::fromThriftField(
-      std::forward<ThriftT>(value),
-      FieldAdapterContext<Struct, FieldId>{object});
+      std::forward<ThriftT>(value), FieldContext<Struct, FieldId>{object});
 }
 
 // Converts a Thrift field value into an adapted type via Adapter.
@@ -141,18 +139,12 @@ void fromThrift(AdaptedT& adapted, ThriftT&& value) {
 // the reference to the Thrift object containing the field and the field ID as
 // a second argument to Adapter::construct.
 template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
-constexpr if_ctor_adapter<
-    Adapter,
-    AdaptedT,
-    FieldAdapterContext<Struct, FieldId>>
+constexpr if_ctor_adapter<Adapter, AdaptedT, FieldContext<Struct, FieldId>>
 construct(AdaptedT& field, Struct& object) {
-  Adapter::construct(field, FieldAdapterContext<Struct, FieldId>{object});
+  Adapter::construct(field, FieldContext<Struct, FieldId>{object});
 }
 template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
-constexpr if_not_ctor_adapter<
-    Adapter,
-    AdaptedT,
-    FieldAdapterContext<Struct, FieldId>>
+constexpr if_not_ctor_adapter<Adapter, AdaptedT, FieldContext<Struct, FieldId>>
 construct(AdaptedT&, Struct&) {}
 
 // Clear op based on the adapter, with a fallback to calling the default

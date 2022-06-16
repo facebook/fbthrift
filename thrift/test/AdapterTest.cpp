@@ -663,7 +663,7 @@ TEST(AdaptTest, AdapterWithContext) {
                 adapt_detail::ConstructType,
                 AdapterWithContext,
                 AdaptedWithContext<int64_t, basic::AdaptTestStruct, 0>,
-                FieldAdapterContext<basic::AdaptTestStruct, 0>>);
+                FieldContext<basic::AdaptTestStruct, 0>>);
 
   auto obj = basic::AdaptTestStruct();
   EXPECT_EQ(obj.data()->meta, &*obj.meta());

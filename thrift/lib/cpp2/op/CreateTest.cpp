@@ -71,7 +71,7 @@ struct TestTypeAdapter {
 struct TestFieldAdapter {
   template <typename T, typename Struct, int16_t FieldId>
   static WrapperWithContext<T> fromThriftField(
-      T value, apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+      T value, apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
     return {value, ctx.kFieldId, &ctx.object.meta};
   }
 

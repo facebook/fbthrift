@@ -153,18 +153,17 @@ struct AdapterWithContext {
   template <typename T, typename Struct, int16_t FieldId>
   static void construct(
       AdaptedWithContext<T, Struct, FieldId>& field,
-      apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
-    field.fieldId =
-        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId;
+      apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
+    field.fieldId = apache::thrift::FieldContext<Struct, FieldId>::kFieldId;
     field.meta = &*ctx.object.meta_ref();
   }
 
   template <typename T, typename Struct, int16_t FieldId>
   static AdaptedWithContext<T, Struct, FieldId> fromThriftField(
-      T value, apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+      T value, apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
     return {
         value,
-        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId,
+        apache::thrift::FieldContext<Struct, FieldId>::kFieldId,
         &*ctx.object.meta_ref()};
   }
 
@@ -178,18 +177,17 @@ struct AdapterWithContextAndClear {
   template <typename T, typename Struct, int16_t FieldId>
   static void construct(
       AdaptedWithContext<T, Struct, FieldId>& field,
-      apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
-    field.fieldId =
-        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId;
+      apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
+    field.fieldId = apache::thrift::FieldContext<Struct, FieldId>::kFieldId;
     field.meta = &*ctx.object.meta_ref();
   }
 
   template <typename T, typename Struct, int16_t FieldId>
   static AdaptedWithContext<T, Struct, FieldId> fromThriftField(
-      T value, apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+      T value, apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
     return {
         value,
-        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId,
+        apache::thrift::FieldContext<Struct, FieldId>::kFieldId,
         &*ctx.object.meta_ref()};
   }
 

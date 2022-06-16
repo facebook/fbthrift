@@ -72,7 +72,7 @@ struct Adapter {
   //  };
   //
   //  struct ThriftFieldAdapter {
-  //    // Context is an instantiation of apache::thrift::FieldAdapterContext
+  //    // Context is an instantiation of apache::thrift::FieldContext
   //    template <class Context>
   //    static void construct(AdaptedType& field, Context ctx);
   //
