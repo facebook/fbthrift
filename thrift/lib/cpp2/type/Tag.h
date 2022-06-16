@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/FieldId.h>
+#include <thrift/lib/cpp/Field.h>
 
 // Type tags for describing the 'shape' of thrift types at compile-time.
 //

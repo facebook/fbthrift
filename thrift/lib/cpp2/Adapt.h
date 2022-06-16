@@ -22,17 +22,11 @@
 #include <utility>
 
 #include <folly/Traits.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
 namespace thrift {
-
-template <typename Struct, int16_t FieldId>
-struct FieldContext {
-  static constexpr int16_t kFieldId = FieldId;
-  Struct& object;
-};
-
 namespace adapt_detail {
 
 // Identical to std::declval<const T&>.

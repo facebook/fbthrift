@@ -21,6 +21,14 @@
 
 namespace apache {
 namespace thrift {
+
+// TODO(dokwon): Change FieldContext to use strong FieldId type.
+template <typename Struct, int16_t FieldId>
+struct FieldContext {
+  static constexpr int16_t kFieldId = FieldId;
+  Struct& object;
+};
+
 namespace type {
 using field_id_u_t = int16_t;
 template <field_id_u_t id>

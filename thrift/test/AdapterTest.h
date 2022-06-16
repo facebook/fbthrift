@@ -21,6 +21,7 @@
 #include <string>
 
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/Thrift.h>
 

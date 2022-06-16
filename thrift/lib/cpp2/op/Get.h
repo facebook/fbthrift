@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/FieldId.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/op/detail/Get.h>
 
 namespace apache {

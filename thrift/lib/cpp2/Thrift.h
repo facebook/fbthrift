@@ -17,7 +17,7 @@
 #ifndef THRIFT_CPP2_H_
 #define THRIFT_CPP2_H_
 
-#include <thrift/lib/cpp/FieldId.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 

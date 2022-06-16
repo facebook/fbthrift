@@ -20,7 +20,7 @@ include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/standard.thrift"
 include "thrift/lib/thrift/type.thrift"
 
-cpp_include "<thrift/lib/cpp/FieldId.h>"
+cpp_include "<thrift/lib/cpp/Field.h>"
 
 // The canonical representations for a Thrift schema.
 //

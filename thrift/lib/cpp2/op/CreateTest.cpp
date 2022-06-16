@@ -15,7 +15,7 @@
  */
 
 #include <folly/portability/GTest.h>
-#include <thrift/lib/cpp/FieldId.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 #include <thrift/lib/cpp2/op/Create.h>
 #include <thrift/lib/cpp2/type/Tag.h>
