@@ -14,9 +14,25 @@
  * limitations under the License.
  */
 
+#include <folly/Indestructible.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_detail_types.h>
+
+namespace apache::thrift::protocol::detail {
+
+template <class Base>
+const char* ObjectWrapper<Base>::__fbthrift_thrift_uri() {
+  static const folly::Indestructible<std::string> ret = uri<Base>();
+  return ret->c_str();
+}
+
+template <class Base>
+const char* ValueWrapper<Base>::__fbthrift_thrift_uri() {
+  static const folly::Indestructible<std::string> ret = uri<Base>();
+  return ret->c_str();
+}
+} // namespace apache::thrift::protocol::detail
 
 namespace apache::thrift::conformance::register_protocol_object_and_value {
 namespace {

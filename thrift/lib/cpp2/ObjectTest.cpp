@@ -523,5 +523,22 @@ TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerializationAny) {
       testset::union_with<TypeParam>>();
 }
 
+TEST(Object, uri) {
+  EXPECT_EQ(uri<Object>(), "facebook.com/thrift/protocol/Object");
+  EXPECT_EQ(uri<Value>(), "facebook.com/thrift/protocol/Value");
+}
+
+TEST(Object, size) {
+  Object object;
+  object.members()[0];
+  object.members()[1];
+  EXPECT_EQ(object.size(), 2);
+}
+
+TEST(Value, emplace_string) {
+  Value value;
+  value.emplace_string() = "42";
+  EXPECT_EQ(value.stringValue_ref(), "42");
+}
 } // namespace
 } // namespace apache::thrift::protocol

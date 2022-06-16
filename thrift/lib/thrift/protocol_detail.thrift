@@ -17,6 +17,7 @@
 // TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
 
 include "thrift/lib/thrift/standard.thrift"
+cpp_include "thrift/lib/thrift/detail/protocol.h"
 
 package "facebook.com/thrift/protocol/detail"
 
@@ -29,8 +30,15 @@ namespace py.asyncio apache_thrift_asyncio.protocol_detail
 namespace go thrift.lib.thrift.protocol_detail
 namespace py thrift.lib.thrift.protocol_detail
 
-typedef ObjectStruct Object
-typedef ValueUnion Value
+typedef ObjectStruct (
+  cpp.type = "ObjectWrapper<ObjectStruct>",
+  cpp.indirection,
+) Object
+
+typedef ValueUnion (
+  cpp.type = "ValueWrapper<ValueUnion>",
+  cpp.indirection,
+) Value
 
 // A dynamic struct/union/exception
 struct ObjectStruct {
@@ -40,7 +48,11 @@ struct ObjectStruct {
   // The members of the object.
   // TODO(ytj): use schema.FieldId as key
   2: map<i16, Value> members;
-} (thrift.uri = "facebook.com/thrift/protocol/Object", cpp.detail.no_any)
+} (
+  cpp.virtual, // TODO(ytj): add protected dtor for base class
+  thrift.uri = "facebook.com/thrift/protocol/Object",
+  cpp.detail.no_any,
+)
 
 // A dynamic value.
 union ValueUnion {
@@ -67,4 +79,8 @@ union ValueUnion {
   14: list<Value> listValue;
   15: set<Value> setValue;
   16: map<Value, Value> mapValue;
-} (thrift.uri = "facebook.com/thrift/protocol/Value", cpp.detail.no_any)
+} (
+  cpp.virtual, // TODO(ytj): add protected dtor for base class
+  thrift.uri = "facebook.com/thrift/protocol/Value",
+  cpp.detail.no_any,
+)
