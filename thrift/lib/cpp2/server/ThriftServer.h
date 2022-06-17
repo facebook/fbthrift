@@ -161,7 +161,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::optional<wangle::SSLCacheOptions> sslCacheOptions_;
   wangle::FizzConfig fizzConfig_;
-  ThriftTlsConfig thriftConfig_;
+  ThriftTlsConfig thriftTlsConfig_;
 
   // Security negotiation settings
   SSLPolicy sslPolicy_{SSLPolicy::REQUIRED};
@@ -579,7 +579,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setFizzConfig(wangle::FizzConfig config) { fizzConfig_ = config; }
 
   void setThriftConfig(ThriftTlsConfig thriftConfig) {
-    thriftConfig_ = thriftConfig;
+    thriftTlsConfig_ = thriftConfig;
   }
 
   void setSSLCacheOptions(wangle::SSLCacheOptions options) {
@@ -680,7 +680,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     config.strictSSL = getStrictSSL() || getSSLPolicy() == SSLPolicy::REQUIRED;
     config.fizzConfig = fizzConfig_;
     config.customConfigMap["thrift_tls_config"] =
-        std::make_shared<ThriftTlsConfig>(thriftConfig_);
+        std::make_shared<ThriftTlsConfig>(thriftTlsConfig_);
     config.socketMaxReadsPerEvent = socketMaxReadsPerEvent_;
 
     config.useZeroCopy = !!zeroCopyEnableFunc_;
@@ -889,7 +889,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setEnableCodel(
       bool enableCodel,
       AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) override final {
+      ThriftServerConfig::DynamicAttributeTag =
+          ThriftServerConfig::DynamicAttributeTag{}) override final {
     THRIFT_SERVER_EVENT(call.setEnableCodel).log(*this, [enableCodel]() {
       return folly::dynamic::object("enableCodel", enableCodel);
     });
@@ -899,7 +900,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setQueueTimeout(
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) override final {
+      ThriftServerConfig::DynamicAttributeTag =
+          ThriftServerConfig::DynamicAttributeTag{}) override final {
     THRIFT_SERVER_EVENT(call.setQueueTimeout).log(*this, [timeout]() {
       return folly::dynamic::object("timeout_ms", timeout.count());
     });

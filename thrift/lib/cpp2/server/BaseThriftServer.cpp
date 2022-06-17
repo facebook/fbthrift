@@ -56,12 +56,13 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 
 using namespace std;
 
-const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
-    std::thread::hardware_concurrency();
-
 BaseThriftServer::BaseThriftServer()
-    : adaptiveConcurrencyController_{detail::makeAdaptiveConcurrencyConfig(), maxRequests_.getObserver()},
-      cpuConcurrencyController_{detail::makeCPUConcurrencyControllerConfig(), *this},
+    : thriftConfig_{},
+      adaptiveConcurrencyController_{
+          apache::thrift::detail::makeAdaptiveConcurrencyConfig(),
+          thriftConfig_.getMaxRequests().getObserver()},
+      cpuConcurrencyController_{
+          detail::makeCPUConcurrencyControllerConfig(), *this},
       addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(

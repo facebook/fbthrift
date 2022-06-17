@@ -618,7 +618,7 @@ void ThriftServer::setup() {
 
     // Do not allow setters to be called past this point until the IO worker
     // threads have been joined in stopWorkers().
-    configMutable_ = false;
+    thriftConfig_.freeze();
   } catch (std::exception& ex) {
     // This block allows us to investigate the exception using gdb
     LOG(ERROR) << "Got an exception while setting up the server: " << ex.what();
@@ -1002,7 +1002,7 @@ void ThriftServer::stopWorkers() {
   DCHECK(!duplexWorker_);
   ServerBootstrap::stop();
   ServerBootstrap::join();
-  configMutable_ = true;
+  thriftConfig_.unfreeze();
 }
 
 void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {

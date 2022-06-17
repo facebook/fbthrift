@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// TODO (malbashir): remove include when Static and dynamic tag types are
+// removed
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/server/ThriftServerConfig.h>
 
 namespace apache {

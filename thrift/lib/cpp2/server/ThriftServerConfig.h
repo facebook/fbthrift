@@ -40,19 +40,8 @@ class ThriftServerConfig {
   ThriftServerConfig() = default;
   ~ThriftServerConfig() = default;
 
-  /**
-   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
-   * type should only be called before the server has started processing
-   * requests.
-   */
-  struct StaticAttributeTag {};
-  /**
-   * Tag type for ServerAttributeDynamic setters. Setters marked with this tag
-   * type can be called even after the server has started processing requests.
-   * The corresponding value will be dynamically updated.
-   */
-  struct DynamicAttributeTag {};
-
+  using StaticAttributeTag = server::ServerConfigs::StaticAttributeTag;
+  using DynamicAttributeTag = server::ServerConfigs::DynamicAttributeTag;
   /**
    * Get the prefix for naming the CPU (pool) threads.
    *

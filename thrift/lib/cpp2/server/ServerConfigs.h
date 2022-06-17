@@ -62,6 +62,9 @@ struct PreprocessParams;
  */
 class ServerConfigs {
  public:
+  // TODO (malbashir): change the setter for dynamic attributes to accept
+  // folly::observer and remove static and dynamic tag types
+
   /**
    * Tag type for ServerAttributeStatic setters. Setters marked with this tag
    * type should only be called before the server has started processing

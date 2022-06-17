@@ -51,15 +51,7 @@
 #include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
 #include <thrift/lib/cpp2/server/ThreadManagerLoggingWrapper.h>
-
-THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
-THRIFT_FLAG_DECLARE_int64(server_default_queue_timeout_ms);
-
-THRIFT_FLAG_DECLARE_int64(server_polled_service_health_liveness_ms);
-THRIFT_FLAG_DECLARE_int64(
-    server_ingress_memory_limit_enforcement_payload_size_min_bytes);
-
-THRIFT_FLAG_DECLARE_bool(server_reject_header_connections);
+#include <thrift/lib/cpp2/server/ThriftServerConfig.h>
 
 namespace wangle {
 class ConnectionManager;
@@ -104,6 +96,14 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  private:
   std::shared_ptr<T> svIf_;
 };
+class BaseThriftServer;
+namespace detail {
+/**
+ * Gets the server's ThriftServerConfig which contains all the static and
+ * dynamic Server Attributes
+ */
+inline ThriftServerConfig& getThriftServerConfig(BaseThriftServer&);
+} // namespace detail
 
 /**
  *   Base class for thrift servers using cpp2 style generated code.
@@ -190,32 +190,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
  private:
-  //! Default number of worker threads (should be # of processor cores).
-  static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
-
-  static constexpr uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 4096;
-
-  static constexpr std::chrono::milliseconds DEFAULT_TIMEOUT =
-      std::chrono::milliseconds(60000);
-
-  static constexpr std::chrono::milliseconds DEFAULT_TASK_EXPIRE_TIME =
-      std::chrono::milliseconds(5000);
-
-  static constexpr std::chrono::milliseconds DEFAULT_STREAM_EXPIRE_TIME =
-      std::chrono::milliseconds(60000);
-
-  static constexpr std::chrono::milliseconds DEFAULT_SOCKET_WRITE_TIMEOUT =
-      std::chrono::milliseconds(60000);
-
-  static constexpr std::chrono::seconds DEFAULT_WORKERS_JOIN_TIMEOUT =
-      std::chrono::seconds(30);
-
-  /// Listen backlog
-  static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
-
-  //! Prefix for pool thread names
-  ServerAttributeStatic<std::string> poolThreadName_{""};
-
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
 
@@ -230,206 +204,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Explicitly set control service interface handler
   std::shared_ptr<ControlServerInterface> controlServiceHandler_;
 
-  //! Number of io worker threads (may be set) (should be # of CPU cores)
-  ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
-
-  // Timeout for joining worker threads
-  ServerAttributeStatic<std::chrono::seconds> workersJoinTimeout_{
-      DEFAULT_WORKERS_JOIN_TIMEOUT};
-
-  //! Number of CPU worker threads
-  ServerAttributeStatic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
-
-  ServerAttributeDynamic<bool> enableCodel_{false};
-
-  //! Milliseconds we'll wait for data to appear (0 = infinity)
-  ServerAttributeStatic<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
-
-  /**
-   * The time in milliseconds before an unperformed task expires
-   * (0 == infinite)
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds> taskExpireTime_{
-      DEFAULT_TASK_EXPIRE_TIME};
-
-  /**
-   * The time in milliseconds before a stream starves of having no request.
-   * (0 == infinite)
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds> streamExpireTime_{
-      DEFAULT_STREAM_EXPIRE_TIME};
-
-  /**
-   * The time we'll allow a task to wait on the queue and still perform it
-   * (0 == infinite)
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds> queueTimeout_{
-      folly::observer::makeValueObserver(
-          [timeoutMs = THRIFT_FLAG_OBSERVE(server_default_queue_timeout_ms)]() {
-            // Timeouts should be disabled for debug builds since this can
-            // generate false negatives in unit tests.
-            if (folly::kIsDebug) {
-              return std::chrono::milliseconds(0);
-            }
-            return std::chrono::milliseconds(**timeoutMs);
-          })};
-  /**
-   * The time we'll allow a new connection socket to wait on the queue before
-   * closing the connection. See `folly::AsyncServerSocket::setQueueTimeout`.
-   */
-  ServerAttributeDynamic<std::chrono::nanoseconds> socketQueueTimeout_{
-      folly::observer::makeObserver(
-          [timeoutMs =
-               THRIFT_FLAG_OBSERVE(server_default_socket_queue_timeout_ms)]()
-              -> std::chrono::nanoseconds {
-            // Disable timeout for debug builds and unit tests by default - this
-            // is a production overload protection feature.
-            if (folly::kIsDebug) {
-              return std::chrono::milliseconds::zero();
-            }
-            return std::chrono::milliseconds(**timeoutMs);
-          })};
-
-  /**
-   * How long a socket with outbound data will tolerate read inactivity from a
-   * client. Clients must read data from their end of the connection before this
-   * period expires or the server will drop the connection. The amount of data
-   * read is irrelevant. Zero indicates no timeout.
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds> socketWriteTimeout_{
-      DEFAULT_SOCKET_WRITE_TIMEOUT};
-
-  /**
-   * The number of incoming connections the TCP stack will buffer up while
-   * waiting for the Thrift server to call accept() on them.
-   *
-   * If the Thrift server cannot keep up, and this limit is reached, the
-   * TCP stack will start sending resets to drop excess connections.
-   *
-   * Actual behavior of the socket backlog is dependent on the TCP
-   * implementation, and it may be further limited or even ignored on some
-   * systems. See manpage for listen(2) for details.
-   */
-  ServerAttributeStatic<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
-
-  /**
-   * The maximum number of pending connections each io worker thread can hold.
-   */
-  ServerAttributeStatic<uint32_t> maxNumPendingConnectionsPerWorker_{
-      T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER};
-
-  // Max number of active connections
-  ServerAttributeDynamic<uint32_t> maxConnections_{0};
-
-  // Max active requests
-  ServerAttributeDynamic<uint32_t> maxRequests_{
-      concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE};
-
-  // If it is set true, server will check and use client timeout header
-  ServerAttributeDynamic<bool> useClientTimeout_{true};
-
-  // Max response size allowed. This is the size of the serialized and
-  // transformed response, headers not included. 0 (default) means no limit.
-  ServerAttributeDynamic<uint64_t> maxResponseSize_{0};
-
-  /**
-   * The maximum memory usage (in bytes) by each request debug payload.
-   * Payloads larger than this value will be simply dropped by instrumentation.
-   */
-  ServerAttributeStatic<uint64_t> maxDebugPayloadMemoryPerRequest_{
-      0x1000000}; // 16MB
-
-  /**
-   * The maximum memory usage by each worker to keep track of debug payload.
-   * Each time a request payload is added for tracking, the tracker should check
-   * whether it's using memory beyond this value and evict payloads based on
-   * its policies.
-   */
-  ServerAttributeStatic<uint64_t> maxDebugPayloadMemoryPerWorker_{
-      0x1000000}; // 16MB
-
-  /**
-   * The maximum number of debug payloads to track after request has finished.
-   */
-  ServerAttributeStatic<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
-
-  /**
-   * Batch all writes withing given time interval.
-   * (0 == disabled)
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds> writeBatchingInterval_{
-      std::chrono::milliseconds::zero()};
-
-  /**
-   * Trigger early flush when this number of writes are queued.
-   * Ignored if write batching interval is not set.
-   * (0 == disabled)
-   */
-  ServerAttributeDynamic<size_t> writeBatchingSize_{0};
-
-  /**
-   * Trigger early flush when the total number of bytes queued equals or exceeds
-   * this value. Ignored if write batching interval is not set. (0 == disabled)
-   */
-  ServerAttributeDynamic<size_t> writeBatchingByteSize_{0};
-
-  ServerAttributeStatic<folly::sorted_vector_set<std::string>>
-      methodsBypassMaxRequestsLimit_{{}};
-
   Metadata metadata_;
-
-  ServerAttributeDynamic<size_t> ingressMemoryLimit_{0};
-  ServerAttributeDynamic<size_t> egressMemoryLimit_{0};
-  ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
-      folly::observer::makeObserver(
-          [o = THRIFT_FLAG_OBSERVE(
-               server_ingress_memory_limit_enforcement_payload_size_min_bytes)]()
-              -> size_t { return **o < 0 ? 0ul : static_cast<size_t>(**o); })};
-
-  /**
-   * Per-connection threshold for number of allocated bytes allowed in egress
-   * buffer before applying backpressure by pausing streams.
-   * (0 == disabled)
-   */
-  ServerAttributeDynamic<size_t> egressBufferBackpressureThreshold_{0};
-
-  /**
-   * Factor of egress buffer backpressure threshold at which to resume streams.
-   * Should be set well below 1 to avoid rapidly turning backpressure on/off.
-   * Ignored if backpressure threshold is disabled.
-   */
-  ServerAttributeDynamic<double> egressBufferRecoveryFactor_{0.75};
-
-  /**
-   * The duration of time that a polled ServiceHealth value is considered
-   * current. i.e. another poll will only be scheduled after this amount of
-   * time has passed since the last poll completed.
-   *
-   * @see apache::thrift::PolledServiceHealth
-   */
-  ServerAttributeDynamic<std::chrono::milliseconds>
-      polledServiceHealthLiveness_{folly::observer::makeObserver(
-          [livenessMs = THRIFT_FLAG_OBSERVE(
-               server_polled_service_health_liveness_ms)]() {
-            return std::chrono::milliseconds(**livenessMs);
-          })};
-
-  /**
-   * Enable to reject all header-backed connections
-   */
-  ServerAttributeDynamic<bool> disableHeaderTransport_{
-      THRIFT_FLAG_OBSERVE(server_reject_header_connections)};
-
-  /**
-   * Socket options that will be applied to every connection to clients.
-   * If the socket does not support the specific option, it is silently ignored.
-   * Refer to setsockopt() for more details.
-   */
-  ServerAttributeDynamic<folly::SocketOptionMap> perConnectionSocketOptions_{
-      folly::emptySocketOptionMap};
 
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
+
+  friend ThriftServerConfig& detail::getThriftServerConfig(BaseThriftServer&);
+
+ protected:
+  ThriftServerConfig thriftConfig_;
+
+ private:
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
   CPUConcurrencyController cpuConcurrencyController_;
 
@@ -527,20 +312,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   ClientIdentityHook clientIdentityHook_;
 
-  // Flag indicating whether it is safe to mutate the server config through its
-  // setters.
-  std::atomic<bool> configMutable_{true};
-
   folly::Function<AllocIOBufFn> allocIOBufFn_;
-
-  template <typename T>
-  void setStaticAttribute(
-      ServerAttributeStatic<T>& staticAttribute,
-      T&& value,
-      AttributeSource source) {
-    CHECK(configMutable());
-    staticAttribute.set(std::move(value), source);
-  }
 
   BaseThriftServer();
   ~BaseThriftServer() override {}
@@ -596,7 +368,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return true if the configuration can be modified, false otherwise
    */
-  bool configMutable() { return configMutable_; }
+  bool configMutable() { return thriftConfig_.isFrozen(); }
 
   /**
    * Set the ThreadFactory that will be used to create worker threads for the
@@ -637,7 +409,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  std::string getCPUWorkerThreadName() const { return poolThreadName_.get(); }
+  std::string getCPUWorkerThreadName() const {
+    return thriftConfig_.getCPUWorkerThreadName();
+  }
 
   /**
    * Set the prefix for naming the CPU (pool) threads. Not set by default.
@@ -650,8 +424,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       const std::string& cpuWorkerThreadName,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        poolThreadName_, std::string{cpuWorkerThreadName}, source);
+    thriftConfig_.setCPUWorkerThreadName(
+        cpuWorkerThreadName, source, StaticAttributeTag{});
   }
 
   /**
@@ -722,7 +496,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  uint32_t getMaxConnections() const { return maxConnections_.get(); }
+  uint32_t getMaxConnections() const {
+    return thriftConfig_.getMaxConnections().get();
+  }
 
   /**
    * Set the maximum # of connections allowed before overload.
@@ -733,7 +509,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint32_t maxConnections,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    maxConnections_.set(maxConnections, source);
+    thriftConfig_.setMaxConnections(
+        maxConnections, source, DynamicAttributeTag{});
   }
 
   /**
@@ -744,7 +521,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::seconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(workersJoinTimeout_, std::move(timeout), source);
+    thriftConfig_.setWorkersJoinTimeout(
+        std::move(timeout), source, StaticAttributeTag{});
   }
 
   /**
@@ -752,7 +530,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return workers joing timeout in seconds
    */
   std::chrono::seconds getWorkersJoinTimeout() const {
-    return workersJoinTimeout_.get();
+    return thriftConfig_.getWorkersJoinTimeout();
   }
 
   /**
@@ -763,7 +541,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   uint32_t getMaxRequests() const override {
     return adaptiveConcurrencyController_.enabled()
         ? static_cast<uint32_t>(adaptiveConcurrencyController_.getMaxRequests())
-        : maxRequests_.get();
+        : thriftConfig_.getMaxRequests().get();
   }
 
   /**
@@ -775,7 +553,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint32_t maxRequests,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) override {
-    maxRequests_.set(maxRequests, source);
+    thriftConfig_.setMaxRequests(maxRequests, source, DynamicAttributeTag{});
     // Eventually we'll remove the simple setMaxRequests but for now ensure it
     // updates the concurrency controller for the default async pool.
     if (!resourcePoolSet().empty()) {
@@ -791,22 +569,27 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     }
   }
 
-  uint64_t getMaxResponseSize() const final { return maxResponseSize_.get(); }
+  uint64_t getMaxResponseSize() const final {
+    return thriftConfig_.getMaxResponseSize().get();
+  }
 
   void setMaxResponseSize(
       uint64_t size,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    maxResponseSize_.set(size, source);
+    thriftConfig_.setMaxResponseSize(size, source, DynamicAttributeTag{});
   }
 
-  bool getUseClientTimeout() const { return useClientTimeout_.get(); }
+  bool getUseClientTimeout() const {
+    return thriftConfig_.getUseClientTimeout().get();
+  }
 
   void setUseClientTimeout(
       bool useClientTimeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    useClientTimeout_.set(useClientTimeout, source);
+    thriftConfig_.setUseClientTimeout(
+        useClientTimeout, source, DynamicAttributeTag{});
   }
 
   // Get load of the server.
@@ -910,7 +693,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * hold.
    */
   uint32_t getMaxNumPendingConnectionsPerWorker() const {
-    return maxNumPendingConnectionsPerWorker_.get();
+    return thriftConfig_.getMaxNumPendingConnectionsPerWorker();
   }
   /**
    * Set the maximum number of pending connections each io worker thread can
@@ -922,8 +705,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint32_t num,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        maxNumPendingConnectionsPerWorker_, std::move(num), source);
+    thriftConfig_.setMaxNumPendingConnectionsPerWorker(
+        std::move(num), source, StaticAttributeTag{});
   }
 
   /**
@@ -935,7 +718,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    *  @return number of milliseconds, or 0 if no timeout set.
    */
-  std::chrono::milliseconds getIdleTimeout() const { return timeout_.get(); }
+  std::chrono::milliseconds getIdleTimeout() const {
+    return thriftConfig_.getIdleTimeout();
+  }
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
@@ -946,7 +731,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(timeout_, std::move(timeout), source);
+    thriftConfig_.setIdleTimeout(
+        std::move(timeout), source, StaticAttributeTag{});
   }
 
   /**
@@ -958,7 +744,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       size_t numIOWorkerThreads,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(nWorkers_, std::move(numIOWorkerThreads), source);
+    thriftConfig_.setNumIOWorkerThreads(
+        std::move(numIOWorkerThreads), source, StaticAttributeTag{});
   }
 
   /**
@@ -966,7 +753,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return number of IO worker threads
    */
-  size_t getNumIOWorkerThreads() const final { return nWorkers_.get(); }
+  size_t getNumIOWorkerThreads() const final {
+    return thriftConfig_.getNumIOWorkerThreads();
+  }
 
   /**
    * Set the number of CPU (pool) threads.
@@ -983,7 +772,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
     CHECK(!threadManager_);
-    setStaticAttribute(nPoolThreads_, std::move(numCPUWorkerThreads), source);
+    thriftConfig_.setNumCPUWorkerThreads(
+        std::move(numCPUWorkerThreads), source, StaticAttributeTag{});
   }
 
   /**
@@ -992,8 +782,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return number of CPU (pool) threads
    */
   size_t getNumCPUWorkerThreads() const {
-    auto nCPUWorkers = nPoolThreads_.get();
-    return nCPUWorkers ? nCPUWorkers : T_ASYNC_DEFAULT_WORKER_THREADS;
+    return thriftConfig_.getNumCPUWorkerThreads();
   }
 
   /**
@@ -1004,10 +793,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       bool enableCodel,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    enableCodel_.set(enableCodel, source);
+    thriftConfig_.setEnableCodel(enableCodel, source, DynamicAttributeTag{});
   }
 
-  bool getEnableCodel() const { return enableCodel_.get(); }
+  bool getEnableCodel() const { return thriftConfig_.getEnableCodel().get(); }
 
   /**
    * Sets the main server interface that exposes user-defined methods.
@@ -1093,7 +882,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    taskExpireTime_.set(timeout, source);
+    thriftConfig_.setTaskExpireTime(timeout, source, DynamicAttributeTag{});
   }
 
   /**
@@ -1102,7 +891,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return task expire time
    */
   std::chrono::milliseconds getTaskExpireTime() const {
-    return taskExpireTime_.get();
+    return thriftConfig_.getTaskExpireTime().get();
   }
 
   /**
@@ -1113,7 +902,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    streamExpireTime_.set(timeout, source);
+    thriftConfig_.setStreamExpireTime(timeout, source, DynamicAttributeTag{});
   }
 
   /**
@@ -1121,7 +910,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * stream will create timeout error.
    */
   std::chrono::milliseconds getStreamExpireTime() const final {
-    return streamExpireTime_.get();
+    return thriftConfig_.getStreamExpireTime().get();
   }
 
   /**
@@ -1134,7 +923,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    queueTimeout_.set(timeout, source);
+    thriftConfig_.setQueueTimeout(timeout, source, DynamicAttributeTag{});
   }
 
   /**
@@ -1143,7 +932,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return queue timeout
    */
   std::chrono::milliseconds getQueueTimeout() const {
-    return queueTimeout_.get();
+    return thriftConfig_.getQueueTimeout().get();
   }
 
   /**
@@ -1155,23 +944,26 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       folly::observer::Observer<std::chrono::nanoseconds> timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    socketQueueTimeout_.set(timeout, source);
+    thriftConfig_.setSocketQueueTimeout(timeout, source, DynamicAttributeTag{});
   }
+
   void setSocketQueueTimeout(
       folly::Optional<std::chrono::nanoseconds> timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     if (timeout) {
-      socketQueueTimeout_.set(*timeout, source);
+      thriftConfig_.setSocketQueueTimeout(
+          *timeout, source, DynamicAttributeTag{});
     } else {
-      socketQueueTimeout_.unset(source);
+      thriftConfig_.unsetSocketQueueTimeout(source, DynamicAttributeTag{});
     }
   }
+
   void setSocketQueueTimeout(
       std::chrono::nanoseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    socketQueueTimeout_.set(timeout, source);
+    thriftConfig_.setSocketQueueTimeout(timeout, source, DynamicAttributeTag{});
   }
 
   /**
@@ -1183,11 +975,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setSocketWriteTimeout(
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    socketWriteTimeout_.set(timeout, source);
+    thriftConfig_.setSocketWriteTimeout(timeout, source);
   }
 
   std::chrono::milliseconds getSocketWriteTimeout() const {
-    return socketWriteTimeout_.get();
+    return thriftConfig_.getSocketWriteTimeout().get();
   }
 
   /**
@@ -1197,7 +989,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   const folly::observer::Observer<std::chrono::nanoseconds>&
   getSocketQueueTimeout() const {
-    return socketQueueTimeout_.getObserver();
+    return thriftConfig_.getSocketQueueTimeout().getObserver();
   }
 
   /**
@@ -1239,7 +1031,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       int listenBacklog,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(listenBacklog_, std::move(listenBacklog), source);
+    thriftConfig_.setListenBacklog(
+        std::move(listenBacklog), source, StaticAttributeTag{});
   }
 
   /**
@@ -1247,7 +1040,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return listen backlog.
    */
-  int getListenBacklog() const { return listenBacklog_.get(); }
+  int getListenBacklog() const { return thriftConfig_.getListenBacklog(); }
 
   // Do not try to access ThreadManager in this function as
   // ThreadManagers are being deprecated from thrift server
@@ -1272,15 +1065,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       const std::vector<std::string>& methods,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        methodsBypassMaxRequestsLimit_,
-        folly::sorted_vector_set<std::string>{methods.begin(), methods.end()},
-        source);
+    thriftConfig_.setMethodsBypassMaxRequestsLimit(
+        methods, source, StaticAttributeTag{});
   }
 
   const folly::sorted_vector_set<std::string>&
   getMethodsBypassMaxRequestsLimit() const {
-    return methodsBypassMaxRequestsLimit_.get();
+    return thriftConfig_.getMethodsBypassMaxRequestsLimit();
   }
 
   void setGetLoad(std::function<int64_t(const std::string&)> getLoad) {
@@ -1336,7 +1127,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Return the maximum memory usage by each debug payload.
    */
   uint64_t getMaxDebugPayloadMemoryPerRequest() const {
-    return maxDebugPayloadMemoryPerRequest_.get();
+    return thriftConfig_.getMaxDebugPayloadMemoryPerRequest();
   }
 
   /**
@@ -1346,8 +1137,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint64_t limit,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        maxDebugPayloadMemoryPerRequest_, std::move(limit), source);
+    thriftConfig_.setMaxDebugPayloadMemoryPerRequest(
+        std::move(limit), source, StaticAttributeTag{});
   }
 
   /**
@@ -1355,7 +1146,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * payloads.
    */
   uint64_t getMaxDebugPayloadMemoryPerWorker() const {
-    return maxDebugPayloadMemoryPerWorker_.get();
+    return thriftConfig_.getMaxDebugPayloadMemoryPerWorker();
   }
 
   /**
@@ -1366,8 +1157,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint64_t limit,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
+    // setStaticAttribute(
+    //     maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
+    thriftConfig_.setMaxDebugPayloadMemoryPerWorker(
+        std::move(limit), source, StaticAttributeTag{});
   }
 
   /**
@@ -1375,7 +1168,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * payloads.
    */
   uint16_t getMaxFinishedDebugPayloadsPerWorker() const {
-    return maxFinishedDebugPayloadsPerWorker_.get();
+    return thriftConfig_.getMaxFinishedDebugPayloadsPerWorker();
   }
 
   /**
@@ -1386,8 +1179,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint16_t limit,
       AttributeSource source = AttributeSource::OVERRIDE,
       StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        maxFinishedDebugPayloadsPerWorker_, std::move(limit), source);
+    thriftConfig_.setMaxFinishedDebugPayloadsPerWorker(
+        std::move(limit), source, StaticAttributeTag{});
   }
 
   /**
@@ -1396,14 +1189,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setWriteBatchingInterval(
       std::chrono::milliseconds interval,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    writeBatchingInterval_.set(interval, source);
+    thriftConfig_.setWriteBatchingInterval(interval, source);
   }
 
   /**
    * Get write batching interval
    */
   std::chrono::milliseconds getWriteBatchingInterval() const {
-    return writeBatchingInterval_.get();
+    return thriftConfig_.getWriteBatchingInterval().get();
   }
 
   /**
@@ -1411,13 +1204,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setWriteBatchingSize(
       size_t batchingSize, AttributeSource source = AttributeSource::OVERRIDE) {
-    writeBatchingSize_.set(batchingSize, source);
+    thriftConfig_.setWriteBatchingSize(batchingSize, source);
   }
 
   /**
    * Get write batching size
    */
-  size_t getWriteBatchingSize() const { return writeBatchingSize_.get(); }
+  size_t getWriteBatchingSize() const {
+    return thriftConfig_.getWriteBatchingSize().get();
+  }
 
   /**
    * Set write batching byte size. Ignored if write batching interval is not
@@ -1426,14 +1221,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setWriteBatchingByteSize(
       size_t batchingByteSize,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    writeBatchingByteSize_.set(batchingByteSize, source);
+    thriftConfig_.setWriteBatchingByteSize(batchingByteSize, source);
   }
 
   /**
    * Get write batching byte size
    */
   size_t getWriteBatchingByteSize() const {
-    return writeBatchingByteSize_.get();
+    return thriftConfig_.getWriteBatchingByteSize().get();
   }
 
   const Metadata& metadata() const { return metadata_; }
@@ -1449,13 +1244,16 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       size_t ingressMemoryLimit,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    ingressMemoryLimit_.set(ingressMemoryLimit, source);
+    thriftConfig_.setIngressMemoryLimit(
+        ingressMemoryLimit, source, DynamicAttributeTag{});
   }
 
-  size_t getIngressMemoryLimit() const { return ingressMemoryLimit_.get(); }
+  size_t getIngressMemoryLimit() const {
+    return thriftConfig_.getIngressMemoryLimit().get();
+  }
 
   folly::observer::Observer<size_t> getIngressMemoryLimitObserver() const {
-    return ingressMemoryLimit_.getObserver();
+    return thriftConfig_.getIngressMemoryLimit().getObserver();
   }
 
   /**
@@ -1468,13 +1266,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setEgressMemoryLimit(
       size_t max, AttributeSource source = AttributeSource::OVERRIDE) {
-    egressMemoryLimit_.set(max, source);
+    thriftConfig_.setEgressMemoryLimit(max, source);
   }
 
-  size_t getEgressMemoryLimit() const { return egressMemoryLimit_.get(); }
+  size_t getEgressMemoryLimit() const {
+    return thriftConfig_.getEgressMemoryLimit().get();
+  }
 
   folly::observer::Observer<size_t> getEgressMemoryLimitObserver() const {
-    return egressMemoryLimit_.getObserver();
+    return thriftConfig_.getEgressMemoryLimit().getObserver();
   }
 
   /**
@@ -1485,21 +1285,24 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       size_t minPayloadSizeToEnforceIngressMemoryLimit,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    minPayloadSizeToEnforceIngressMemoryLimit_.set(
-        minPayloadSizeToEnforceIngressMemoryLimit, source);
+    thriftConfig_.setMinPayloadSizeToEnforceIngressMemoryLimit(
+        minPayloadSizeToEnforceIngressMemoryLimit,
+        source,
+        DynamicAttributeTag{});
   }
 
   size_t getMinPayloadSizeToEnforceIngressMemoryLimit() const {
-    return minPayloadSizeToEnforceIngressMemoryLimit_.get();
+    return thriftConfig_.getMinPayloadSizeToEnforceIngressMemoryLimit().get();
   }
 
   folly::observer::Observer<size_t>
   getMinPayloadSizeToEnforceIngressMemoryLimitObserver() const {
-    return minPayloadSizeToEnforceIngressMemoryLimit_.getObserver();
+    return thriftConfig_.getMinPayloadSizeToEnforceIngressMemoryLimit()
+        .getObserver();
   }
 
   size_t getEgressBufferBackpressureThreshold() const {
-    return egressBufferBackpressureThreshold_.get();
+    return thriftConfig_.getEgressBufferBackpressureThreshold().get();
   }
 
   /**
@@ -1511,11 +1314,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       size_t thresholdInBytes,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    egressBufferBackpressureThreshold_.set(thresholdInBytes, source);
+    thriftConfig_.setEgressBufferBackpressureThreshold(
+        thresholdInBytes, source, DynamicAttributeTag{});
   }
 
   double getEgressBufferRecoveryFactor() const {
-    return egressBufferRecoveryFactor_.get();
+    return thriftConfig_.getEgressBufferRecoveryFactor().get();
   }
 
   /**
@@ -1526,20 +1330,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       double recoveryFactor,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    recoveryFactor = std::max(0.0, std::min(1.0, recoveryFactor));
-    egressBufferRecoveryFactor_.set(recoveryFactor, source);
+    thriftConfig_.setEgressBufferRecoveryFactor(
+        recoveryFactor, source, DynamicAttributeTag{});
   }
 
   folly::observer::Observer<std::chrono::milliseconds>
   getPolledServiceHealthLivenessObserver() const {
-    return polledServiceHealthLiveness_.getObserver();
+    return thriftConfig_.getPolledServiceHealthLiveness().getObserver();
   }
 
   void setPolledServiceHealthLiveness(
       std::chrono::milliseconds liveness,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    polledServiceHealthLiveness_.set(liveness, source);
+    thriftConfig_.setPolledServiceHealthLiveness(
+        liveness, source, DynamicAttributeTag{});
   }
 
   const auto& adaptiveConcurrencyController() const {
@@ -1551,18 +1356,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       bool value = true,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    disableHeaderTransport_.set(value, source);
+    thriftConfig_.disableLegacyTransports(value, source, DynamicAttributeTag{});
   }
-  bool isHeaderDisabled() const { return disableHeaderTransport_.get(); }
+  bool isHeaderDisabled() const {
+    return thriftConfig_.isHeaderDisabled().get();
+  }
 
   const folly::SocketOptionMap& getPerConnectionSocketOptions() const {
-    return perConnectionSocketOptions_.get();
+    return thriftConfig_.getPerConnectionSocketOptions().get();
   }
   void setPerConnectionSocketOptions(
       folly::SocketOptionMap options,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
-    perConnectionSocketOptions_.set(std::move(options), source);
+    thriftConfig_.setPerConnectionSocketOptions(
+        std::move(options), source, DynamicAttributeTag{});
   }
 
   /**
@@ -1579,5 +1387,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ResourcePoolSet& resourcePoolSet() override { return resourcePoolSet_; }
 };
+
+namespace detail {
+inline ThriftServerConfig& getThriftServerConfig(BaseThriftServer& server) {
+  return server.thriftConfig_;
+}
+} // namespace detail
+
 } // namespace thrift
 } // namespace apache
