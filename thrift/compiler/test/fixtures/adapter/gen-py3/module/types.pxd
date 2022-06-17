@@ -80,7 +80,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint64_t] adaptedLongField_ref()
         __field_ref[cint64_t] doubleAdaptedField_ref()
 
-    cdef enum cBaz__type "::cpp2::Baz::__fbthrift_scope::__fbthrift_type":
+    cdef enum cBaz__type "::cpp2::Baz::Type":
         cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
         cBaz__type_intField "::cpp2::Baz::Type::intField",
         cBaz__type_setField "::cpp2::Baz::Type::setField",

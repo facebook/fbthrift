@@ -75,7 +75,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __terse_field_ref[string] data1_ref()
         __terse_field_ref[cint32_t] data2_ref()
 
-    cdef enum cInnerUnion__type "::test::fixtures::patch::InnerUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cInnerUnion__type "::test::fixtures::patch::InnerUnion::Type":
         cInnerUnion__type___EMPTY__ "::test::fixtures::patch::InnerUnion::Type::__EMPTY__",
         cInnerUnion__type_innerOption "::test::fixtures::patch::InnerUnion::Type::innerOption",
 
@@ -92,7 +92,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         const string& get_innerOption() const
         string& set_innerOption(const string&)
 
-    cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::test::fixtures::patch::MyUnion::Type::__EMPTY__",
         cMyUnion__type_option1 "::test::fixtures::patch::MyUnion::Type::option1",
         cMyUnion__type_option2 "::test::fixtures::patch::MyUnion::Type::option2",

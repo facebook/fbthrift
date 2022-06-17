@@ -69,7 +69,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
 
-    cdef enum cNada__type "::cpp2::Nada::__fbthrift_scope::__fbthrift_type":
+    cdef enum cNada__type "::cpp2::Nada::Type":
         cNada__type___EMPTY__ "::cpp2::Nada::Type::__EMPTY__",
 
     cdef cppclass cNada "::cpp2::Nada":

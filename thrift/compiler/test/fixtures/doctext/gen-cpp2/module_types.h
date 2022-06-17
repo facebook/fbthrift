@@ -259,19 +259,11 @@ class U final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      i = 1,
-      s = 2,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type i = Type::i;
-  static constexpr Type s = Type::s;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    i = 1,
+    s = 2,
+  } ;
 
   U()
       : type_(Type::__EMPTY__) {}

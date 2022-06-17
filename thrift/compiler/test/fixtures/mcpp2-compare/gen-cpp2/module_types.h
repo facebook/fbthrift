@@ -2121,19 +2121,11 @@ class SimpleUnion  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      intValue = 7,
-      stringValue = 2,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type intValue = Type::intValue;
-  static constexpr Type stringValue = Type::stringValue;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    intValue = 7,
+    stringValue = 2,
+  } ;
 
   SimpleUnion()
       : type_(Type::__EMPTY__) {}
@@ -2403,71 +2395,37 @@ class ComplexUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      intValue = 1,
-      opt_intValue = 201,
-      stringValue = 3,
-      opt_stringValue = 203,
-      intValue2 = 4,
-      intValue3 = 6,
-      doubelValue = 7,
-      boolValue = 8,
-      union_list = 9,
-      union_set = 10,
-      union_map = 11,
-      opt_union_map = 211,
-      enum_field = 12,
-      enum_container = 13,
-      a_struct = 14,
-      a_set_struct = 15,
-      a_union = 16,
-      opt_a_union = 216,
-      a_union_list = 17,
-      a_union_typedef = 18,
-      a_union_typedef_list = 19,
-      MyBinaryField = 20,
-      MyBinaryField2 = 21,
-      MyBinaryListField4 = 23,
-      ref_field = 24,
-      ref_field2 = 25,
-      excp_field = 26,
-      MyCustomField = 27,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type intValue = Type::intValue;
-  static constexpr Type opt_intValue = Type::opt_intValue;
-  static constexpr Type stringValue = Type::stringValue;
-  static constexpr Type opt_stringValue = Type::opt_stringValue;
-  static constexpr Type intValue2 = Type::intValue2;
-  static constexpr Type intValue3 = Type::intValue3;
-  static constexpr Type doubelValue = Type::doubelValue;
-  static constexpr Type boolValue = Type::boolValue;
-  static constexpr Type union_list = Type::union_list;
-  static constexpr Type union_set = Type::union_set;
-  static constexpr Type union_map = Type::union_map;
-  static constexpr Type opt_union_map = Type::opt_union_map;
-  static constexpr Type enum_field = Type::enum_field;
-  static constexpr Type enum_container = Type::enum_container;
-  static constexpr Type a_struct = Type::a_struct;
-  static constexpr Type a_set_struct = Type::a_set_struct;
-  static constexpr Type a_union = Type::a_union;
-  static constexpr Type opt_a_union = Type::opt_a_union;
-  static constexpr Type a_union_list = Type::a_union_list;
-  static constexpr Type a_union_typedef = Type::a_union_typedef;
-  static constexpr Type a_union_typedef_list = Type::a_union_typedef_list;
-  static constexpr Type MyBinaryField = Type::MyBinaryField;
-  static constexpr Type MyBinaryField2 = Type::MyBinaryField2;
-  static constexpr Type MyBinaryListField4 = Type::MyBinaryListField4;
-  static constexpr Type ref_field = Type::ref_field;
-  static constexpr Type ref_field2 = Type::ref_field2;
-  static constexpr Type excp_field = Type::excp_field;
-  static constexpr Type MyCustomField = Type::MyCustomField;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    intValue = 1,
+    opt_intValue = 201,
+    stringValue = 3,
+    opt_stringValue = 203,
+    intValue2 = 4,
+    intValue3 = 6,
+    doubelValue = 7,
+    boolValue = 8,
+    union_list = 9,
+    union_set = 10,
+    union_map = 11,
+    opt_union_map = 211,
+    enum_field = 12,
+    enum_container = 13,
+    a_struct = 14,
+    a_set_struct = 15,
+    a_union = 16,
+    opt_a_union = 216,
+    a_union_list = 17,
+    a_union_typedef = 18,
+    a_union_typedef_list = 19,
+    MyBinaryField = 20,
+    MyBinaryField2 = 21,
+    MyBinaryListField4 = 23,
+    ref_field = 24,
+    ref_field2 = 25,
+    excp_field = 26,
+    MyCustomField = 27,
+  } ;
 
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
@@ -8979,19 +8937,11 @@ class FloatUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      floatSide = 1,
-      doubleSide = 2,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type floatSide = Type::floatSide;
-  static constexpr Type doubleSide = Type::doubleSide;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    floatSide = 1,
+    doubleSide = 2,
+  } ;
 
   FloatUnion()
       : type_(Type::__EMPTY__) {}

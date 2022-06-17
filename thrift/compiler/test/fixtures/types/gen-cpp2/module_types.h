@@ -4408,19 +4408,11 @@ class NoExceptMoveUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      string_field = 1,
-      i32_field = 2,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type string_field = Type::string_field;
-  static constexpr Type i32_field = Type::i32_field;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    string_field = 1,
+    i32_field = 2,
+  } ;
 
   NoExceptMoveUnion()
       : type_(Type::__EMPTY__) {}

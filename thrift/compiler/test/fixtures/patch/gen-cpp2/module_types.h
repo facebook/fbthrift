@@ -875,17 +875,10 @@ class InnerUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      innerOption = 1,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type innerOption = Type::innerOption;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    innerOption = 1,
+  } ;
 
   InnerUnion()
       : type_(Type::__EMPTY__) {}
@@ -1115,21 +1108,12 @@ class MyUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      option1 = 1,
-      option2 = 2,
-      option3 = 3,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type option1 = Type::option1;
-  static constexpr Type option2 = Type::option2;
-  static constexpr Type option3 = Type::option3;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    option1 = 1,
+    option2 = 2,
+    option3 = 3,
+  } ;
 
   MyUnion()
       : type_(Type::__EMPTY__) {}

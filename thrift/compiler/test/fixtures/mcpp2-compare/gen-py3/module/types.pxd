@@ -464,7 +464,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[_folly_IOBuf] MyCustomField_ref()
         __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
 
-    cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
         cSimpleUnion__type_intValue "::some::valid::ns::SimpleUnion::Type::intValue",
         cSimpleUnion__type_stringValue "::some::valid::ns::SimpleUnion::Type::stringValue",
@@ -484,7 +484,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         const string& get_stringValue() const
         string& set_stringValue(const string&)
 
-    cdef enum cComplexUnion__type "::some::valid::ns::ComplexUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cComplexUnion__type "::some::valid::ns::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "::some::valid::ns::ComplexUnion::Type::__EMPTY__",
         cComplexUnion__type_intValue "::some::valid::ns::ComplexUnion::Type::intValue",
         cComplexUnion__type_opt_intValue "::some::valid::ns::ComplexUnion::Type::opt_intValue",
@@ -767,7 +767,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[float] floatField_ref()
         __field_ref[double] doubleField_ref()
 
-    cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::Type":
         cFloatUnion__type___EMPTY__ "::some::valid::ns::FloatUnion::Type::__EMPTY__",
         cFloatUnion__type_floatSide "::some::valid::ns::FloatUnion::Type::floatSide",
         cFloatUnion__type_doubleSide "::some::valid::ns::FloatUnion::Type::doubleSide",

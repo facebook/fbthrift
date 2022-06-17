@@ -77,7 +77,7 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef enum cMyUnion__type "::cpp2::MyUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
         cMyUnion__type_anInteger "::cpp2::MyUnion::Type::anInteger",
         cMyUnion__type_aString "::cpp2::MyUnion::Type::aString",

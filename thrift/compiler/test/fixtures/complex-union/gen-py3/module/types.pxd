@@ -58,7 +58,7 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef enum cComplexUnion__type "::cpp2::ComplexUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cComplexUnion__type "::cpp2::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "::cpp2::ComplexUnion::Type::__EMPTY__",
         cComplexUnion__type_intValue "::cpp2::ComplexUnion::Type::intValue",
         cComplexUnion__type_stringValue "::cpp2::ComplexUnion::Type::stringValue",
@@ -90,7 +90,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const unique_ptr[string]& get_stringRef() const
         unique_ptr[string]& set_stringRef(const string&)
 
-    cdef enum cListUnion__type "::cpp2::ListUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cListUnion__type "::cpp2::ListUnion::Type":
         cListUnion__type___EMPTY__ "::cpp2::ListUnion::Type::__EMPTY__",
         cListUnion__type_intListValue "::cpp2::ListUnion::Type::intListValue",
         cListUnion__type_stringListValue "::cpp2::ListUnion::Type::stringListValue",
@@ -110,7 +110,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const vector[string]& get_stringListValue() const
         vector[string]& set_stringListValue(const vector[string]&)
 
-    cdef enum cDataUnion__type "::cpp2::DataUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cDataUnion__type "::cpp2::DataUnion::Type":
         cDataUnion__type___EMPTY__ "::cpp2::DataUnion::Type::__EMPTY__",
         cDataUnion__type_binaryData "::cpp2::DataUnion::Type::binaryData",
         cDataUnion__type_stringData "::cpp2::DataUnion::Type::stringData",
@@ -144,7 +144,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint32_t] intVal_ref()
         __field_ref[cmap[cint16_t,string]] typedefValue_ref()
 
-    cdef enum cValUnion__type "::cpp2::ValUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cValUnion__type "::cpp2::ValUnion::Type":
         cValUnion__type___EMPTY__ "::cpp2::ValUnion::Type::__EMPTY__",
         cValUnion__type_v1 "::cpp2::ValUnion::Type::v1",
         cValUnion__type_v2 "::cpp2::ValUnion::Type::v2",
@@ -164,7 +164,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cVal& get_v2() const
         cVal& set_v2(const cVal&)
 
-    cdef enum cVirtualComplexUnion__type "::cpp2::VirtualComplexUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cVirtualComplexUnion__type "::cpp2::VirtualComplexUnion::Type":
         cVirtualComplexUnion__type___EMPTY__ "::cpp2::VirtualComplexUnion::Type::__EMPTY__",
         cVirtualComplexUnion__type_thingOne "::cpp2::VirtualComplexUnion::Type::thingOne",
         cVirtualComplexUnion__type_thingTwo "::cpp2::VirtualComplexUnion::Type::thingTwo",
@@ -195,7 +195,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cNonCopyableStruct&)
         __field_ref[cint64_t] num_ref()
 
-    cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::__fbthrift_scope::__fbthrift_type":
+    cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
         cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",
         cNonCopyableUnion__type_s "::cpp2::NonCopyableUnion::Type::s",
 

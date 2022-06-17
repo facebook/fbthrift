@@ -169,7 +169,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[double] b_ref()
         __optional_field_ref[cint8_t] c_ref()
 
-    cdef enum cunion1__type "::cpp2::union1::__fbthrift_scope::__fbthrift_type":
+    cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",
         cunion1__type_i "::cpp2::union1::Type::i",
         cunion1__type_d "::cpp2::union1::Type::d",
@@ -189,7 +189,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const double& get_d() const
         double& set_d(const double&)
 
-    cdef enum cunion2__type "::cpp2::union2::__fbthrift_scope::__fbthrift_type":
+    cdef enum cunion2__type "::cpp2::union2::Type":
         cunion2__type___EMPTY__ "::cpp2::union2::Type::__EMPTY__",
         cunion2__type_i "::cpp2::union2::Type::i",
         cunion2__type_d "::cpp2::union2::Type::d",

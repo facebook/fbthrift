@@ -118,7 +118,7 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{#struct:union?}}
-    cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__fbthrift_scope::__fbthrift_type":
+    cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
         c{{struct:name}}__type___EMPTY__ "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
     {{#struct:py3_fields}}
         c{{struct:name}}__type_{{field:py_name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",

@@ -415,19 +415,11 @@ class MyUnion final  {
 
 
  public:
-  struct __fbthrift_scope {
-    enum __fbthrift_type : int {
-      __EMPTY__ = 0,
-      anInteger = 1,
-      aString = 2,
-    };
-  };
-
-  using Type = __fbthrift_scope::__fbthrift_type;
-  static constexpr Type __EMPTY__ = Type::__EMPTY__;
-  static constexpr Type anInteger = Type::anInteger;
-  static constexpr Type aString = Type::aString;
-
+  enum Type : int {
+    __EMPTY__ = 0,
+    anInteger = 1,
+    aString = 2,
+  } ;
 
   MyUnion()
       : type_(Type::__EMPTY__) {}
