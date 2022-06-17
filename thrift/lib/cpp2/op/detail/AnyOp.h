@@ -31,7 +31,6 @@ using Ptr = type::detail::Ptr;
 template <typename Tag, typename T>
 struct AnyOp : BaseAnyOp<Tag, T> {
   using type::detail::BaseErasedOp::unimplemented;
-
   [[noreturn]] static void append(void*, const Ptr&) { unimplemented(); }
   [[noreturn]] static bool add(void*, const Ptr&) { unimplemented(); }
   [[noreturn]] static bool put(void*, FieldId, const Ptr*, const Ptr&) {
@@ -39,6 +38,33 @@ struct AnyOp : BaseAnyOp<Tag, T> {
   }
   [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) { unimplemented(); }
 };
+
+template <typename Tag, typename T>
+struct NumericOp : BaseAnyOp<Tag, T> {
+  using Base = BaseAnyOp<Tag, T>;
+  using Base::ref;
+  using Base::same;
+
+  static bool add(void* self, const Ptr& val) {
+    ref(self) += same(val);
+    return true;
+  }
+};
+
+template <typename T>
+struct AnyOp<type::bool_t, T> : NumericOp<type::bool_t, T> {};
+template <typename T>
+struct AnyOp<type::byte_t, T> : NumericOp<type::byte_t, T> {};
+template <typename T>
+struct AnyOp<type::i16_t, T> : NumericOp<type::i16_t, T> {};
+template <typename T>
+struct AnyOp<type::i32_t, T> : NumericOp<type::i32_t, T> {};
+template <typename T>
+struct AnyOp<type::i64_t, T> : NumericOp<type::i64_t, T> {};
+template <typename T>
+struct AnyOp<type::float_t, T> : NumericOp<type::float_t, T> {};
+template <typename T>
+struct AnyOp<type::double_t, T> : NumericOp<type::double_t, T> {};
 
 // Create a AnyOp-based Thrift pointer.
 template <typename Tag, typename T = type::native_type<Tag>>

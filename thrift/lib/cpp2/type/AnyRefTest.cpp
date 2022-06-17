@@ -39,6 +39,8 @@ TEST(AnyRefTest, Int) {
   AnyRef ref = AnyRef::create<i32_t>(value);
   EXPECT_EQ(ref.type(), Type::get<i32_t>());
   EXPECT_FALSE(ref.empty());
+  EXPECT_TRUE(ref.add(ref));
+  EXPECT_EQ(value, 2);
   ref.clear();
   EXPECT_TRUE(ref.empty());
   EXPECT_EQ(value, 0);
