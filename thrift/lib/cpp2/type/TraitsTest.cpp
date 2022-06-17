@@ -369,15 +369,15 @@ TEST(TraitsTest, Adapted) {
 TEST(TraitsTest, FieldAdapted) {
   using tag =
       field_tag<adapted<FieldAdapter, i64_t>, FieldContext<TestStruct, 1>>;
-  // TODO(dokwon): Enable primitive_types and name for field adapted tag.
   // All traits that operate on the standard type, match the given tag.
-  // testContains<primitive_types, tag, true>();
-  // testContains<structured_types, tag, false>();
-  // testContains<singular_types, tag, true>();
-  // testContains<container_types, tag, false>();
-  // testContains<composite_types, tag, false>();
-  // EXPECT_EQ(base_type_v<tag>, BaseType::I64);
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  EXPECT_EQ(base_type_v<tag>, BaseType::I64);
 
+  // TODO(dokwon): Enable getName for field adapted tag.
   // The name and native_type have changed.
   // EXPECT_EQ(
   //     getName<tag>(), folly::pretty_name<FieldValue<int64_t, TestStruct,
