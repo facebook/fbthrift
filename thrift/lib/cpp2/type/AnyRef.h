@@ -16,17 +16,16 @@
 
 #pragma once
 
-#include <bitset>
-#include <stdexcept>
-#include <type_traits>
+#include <string>
 #include <typeinfo>
 #include <utility>
 
-#include <folly/CPortability.h>
-#include <folly/lang/Exception.h>
+#include <thrift/lib/cpp/Field.h>
+#include <thrift/lib/cpp2/op/detail/AnyOp.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/detail/TypeInfo.h>
+#include <thrift/lib/cpp2/type/Type.h>
+#include <thrift/lib/cpp2/type/detail/Ptr.h>
 
 namespace apache {
 namespace thrift {
@@ -41,8 +40,6 @@ namespace type {
 // TODO(afuller): Merge this with AnyValue and AnyStruct to create the omega
 // `Any` type.
 class AnyRef {
-  using Ptr = detail::Ptr;
-
  public:
   AnyRef() noexcept = default;
 
@@ -54,7 +51,7 @@ class AnyRef {
   // Rebinds the AnyRef to another value (or void).
   template <typename Tag, typename T = native_type<Tag>>
   void reset(T&& val) {
-    ptr_ = Ptr::create<Tag, T>(&val);
+    ptr_ = op::detail::createAnyPtr<Tag, T>(std::forward<T>(val));
   }
   void reset() noexcept { ptr_ = {}; }
 
@@ -124,15 +121,16 @@ class AnyRef {
   }
 
  private:
-  Ptr ptr_;
+  detail::Ptr ptr_;
 
   static AnyRef asRef(const std::string& name) {
     return AnyRef::create<type::string_t>(name);
   }
 
-  constexpr explicit AnyRef(Ptr data) : ptr_(data) {}
+  constexpr explicit AnyRef(detail::Ptr data) : ptr_(data) {}
   template <typename Tag, typename T>
-  AnyRef(Tag, T&& val) : ptr_(Ptr::create<Tag>(std::forward<T>(val))) {}
+  AnyRef(Tag, T&& val)
+      : ptr_(op::detail::createAnyPtr<Tag>(std::forward<T>(val))) {}
 
   AnyRef getImpl(
       AnyRef key, bool ctxConst = false, bool ctxRvalue = false) const {

@@ -27,8 +27,8 @@ TEST(AnyRefTest, Void) {
   EXPECT_TRUE(ref.empty());
   ref.clear();
   EXPECT_TRUE(ref.empty());
-  EXPECT_THROW(ref.get(FieldId{1}), std::out_of_range);
-  EXPECT_THROW(ref.get("field1"), std::out_of_range);
+  EXPECT_THROW(ref.get(FieldId{1}), std::logic_error);
+  EXPECT_THROW(ref.get("field1"), std::logic_error);
 
   EXPECT_THROW(ref.as<string_t>(), std::bad_any_cast);
   EXPECT_TRUE(ref.tryAs<string_t>() == nullptr);
