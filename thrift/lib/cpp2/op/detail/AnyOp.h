@@ -88,6 +88,25 @@ struct AnyOp<type::list<ValTag>, T> : BaseAnyOp<type::list<ValTag>, T> {
   }
 };
 
+template <typename KeyTag, typename T>
+struct AnyOp<type::set<KeyTag>, T> : BaseAnyOp<type::set<KeyTag>, T> {
+  using Tag = type::set<KeyTag>;
+  using Base = BaseAnyOp<Tag, T>;
+  using Base::ref;
+  using Base::unimplemented;
+  constexpr static decltype(auto) key(const Ptr& ptr) {
+    return Base::template ref<KeyTag>(ptr);
+  }
+
+  static bool add(void* self, const Ptr& k) {
+    return ref(self).emplace(key(k)).second;
+  }
+
+  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) {
+    unimplemented(); // TODO(afuller): Get by key (aka contains).
+  }
+};
+
 // Create a AnyOp-based Thrift pointer.
 template <typename Tag, typename T = type::native_type<Tag>>
 Ptr createAnyPtr(T&& val) {

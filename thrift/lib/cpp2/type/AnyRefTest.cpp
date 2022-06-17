@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/type/AnyRef.h>
 
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
 namespace apache::thrift::type {
@@ -49,10 +50,11 @@ TEST(AnyRefTest, Int) {
 
 TEST(AnyRefTest, List) {
   std::vector<std::string> value;
-  std::string entry = "hi";
+  std::string elem = "hi";
   auto ref = AnyRef::create<list<string_t>>(value);
   EXPECT_TRUE(ref.empty());
-  ref.append(AnyRef::create<string_t>(entry));
+  ref.append(AnyRef::create<string_t>(elem));
+  EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
@@ -63,6 +65,24 @@ TEST(AnyRefTest, List) {
   EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
   EXPECT_THROW(ref.add(AnyRef::create<string_t>(value[0])), std::runtime_error);
   EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+
+  ref.clear();
+  EXPECT_TRUE(ref.empty());
+  EXPECT_TRUE(value.empty());
+}
+
+TEST(AnyRefTest, Set) {
+  std::set<std::string> value;
+  std::string key = "hi";
+  auto ref = AnyRef::create<set<string_t>>(value);
+  EXPECT_TRUE(ref.empty());
+  EXPECT_TRUE(ref.add(AnyRef::create<string_t>(key)));
+  EXPECT_THAT(value, ::testing::ElementsAre("hi"));
+
+  EXPECT_FALSE(ref.empty());
+  EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
+  EXPECT_THROW(ref.get("hi"), std::runtime_error);
+  EXPECT_THROW(ref.get(AnyRef::create<string_t>(key)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
