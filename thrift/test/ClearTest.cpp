@@ -15,6 +15,7 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/test/gen-cpp2/clear_types.h>
 
 namespace apache::thrift::test {
@@ -104,6 +105,28 @@ TEST(AdaptTest, AdapterClearTestStruct) {
   EXPECT_EQ(obj.data()->value, 0);
   EXPECT_EQ(obj.data()->fieldId, 1);
   EXPECT_EQ(*obj.data()->meta, "");
+}
+
+TEST(AdaptTest, AdapterClearTestStructOpClear) {
+  static_assert(folly::is_detected_v<
+                adapt_detail::ClearType,
+                AdapterWithContextAndClear,
+                AdaptedWithContext<int64_t, AdapterClearTestStruct, 1>>);
+  using namespace apache::thrift::type;
+  using field_type_tag = field_tag<
+      adapted<AdapterWithContextAndClear, i64_t>,
+      FieldContext<AdapterClearTestStruct, 1>>;
+
+  auto obj = AdapterClearTestStruct();
+
+  obj.data()->value = 42;
+  obj.meta() = "foo";
+
+  apache::thrift::op::clear<field_type_tag>(*obj.data(), obj);
+
+  EXPECT_EQ(obj.data()->value, 0);
+  EXPECT_EQ(obj.data()->fieldId, 1);
+  EXPECT_EQ(*obj.data()->meta, "foo");
 }
 
 } // namespace

@@ -85,6 +85,19 @@ struct Clear<type::adapted<Adapter, Tag>> {
 template <typename Tag, typename Context>
 struct Clear<type::field_tag<Tag, Context>> : Clear<Tag> {};
 
+template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
+struct Clear<type::field_tag<
+    type::adapted<Adapter, Tag>,
+    FieldContext<Struct, FieldId>>> {
+  using field_adapted_tag = type::
+      field_tag<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
+  static_assert(type::is_concrete_v<field_adapted_tag>, "");
+  template <typename T>
+  void operator()(T& value, Struct& obj) const {
+    ::apache::thrift::adapt_detail::clear<Adapter, FieldId>(value, obj);
+  }
+};
+
 template <typename Tag>
 struct Empty {
   static_assert(type::is_concrete_v<Tag>, "");

@@ -20,6 +20,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Testing.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 #include <thrift/test/testset/gen-cpp2/testset_fatal_all.h>
@@ -29,9 +30,7 @@ namespace apache::thrift::op {
 namespace {
 using namespace apache::thrift::test;
 
-struct TestStruct;
-
-template <typename Tag>
+template <typename Tag, bool IsAdaptedField = false>
 void testClearImpl(
     const type::native_type<Tag>& expected,
     type::native_type<Tag> unexpected,
@@ -45,7 +44,13 @@ void testClearImpl(
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
   EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
 
-  clear<Tag>(unexpected);
+  if constexpr (IsAdaptedField) {
+    TestStruct obj;
+    clear<Tag>(unexpected, obj);
+  } else {
+    clear<Tag>(unexpected);
+  }
+
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(unexpected, IsIdenticalTo<Tag>(expected));
 }
@@ -105,6 +110,16 @@ TEST(ClearTest, Adapter) {
   testClearImpl<type::adapted<TestAdapter, type::i64_t>>({}, {1}, true);
   testClearImpl<type::adapted<TestAdapter, type::list<type::i64_t>>>(
       {}, {{1}}, true);
+  testClearImpl<
+      type::field_tag<
+          type::adapted<FieldAdapter, type::i64_t>,
+          FieldContext<TestStruct, 1>>,
+      true>({}, {1}, true);
+  testClearImpl<
+      type::field_tag<
+          type::adapted<FieldAdapter, type::list<type::i64_t>>,
+          FieldContext<TestStruct, 1>>,
+      true>({}, {{1}}, true);
 }
 
 } // namespace
