@@ -149,10 +149,14 @@ template <typename T, typename Tag>
 struct native_types<cpp_type<T, Tag>>
     : concrete_type<typename native_types<Tag>::standard_type, T> {};
 
+// Traits for field type tag.
+//
+// TODO(dokwon): Remove this after field_t migration.
 template <typename Tag, FieldId Id>
 struct native_types<field_t<Id, Tag>> : native_types<Tag> {};
 
-// TODO(dokwon): Add specialization for field_t<Id, adapted<Adapter, Tag>>.
+template <typename Tag, typename Context>
+struct native_types<field_tag<Tag, Context>> : native_types<Tag> {};
 
 } // namespace detail
 } // namespace type

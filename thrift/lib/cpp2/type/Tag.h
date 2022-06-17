@@ -106,6 +106,10 @@ struct field_t;
 template <class... Tags>
 struct fields;
 
+// TODO(dokwon): Rename field_tag to field_t.
+template <typename Tag, typename Context>
+struct field_tag;
+
 } // namespace type
 } // namespace thrift
 } // namespace apache

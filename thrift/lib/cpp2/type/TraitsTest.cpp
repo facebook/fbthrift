@@ -35,6 +35,20 @@ namespace {
 using conformance::Object;
 using conformance::Value;
 
+template <typename T>
+struct TestValue {
+  T value;
+};
+
+struct TestAdapter {
+  template <typename T>
+  static TestValue<T> fromThrift(T&& value) {
+    return {std::forward<T>(value)};
+  }
+};
+
+struct TestStruct;
+
 template <typename Types, typename Tag, bool Expected>
 void testContains() {
   static_assert(Types::template contains<Tag>() == Expected);
@@ -53,6 +67,11 @@ template <
 void test_concrete_type() {
   test::same_type<standard_type<Tag>, StandardType>;
   test::same_type<native_type<Tag>, NativeType>;
+
+  // TODO(dokwon): Rename to field_tag after field_t migration.
+  using field_type_tag = field_tag<Tag, FieldContext<TestStruct, 0>>;
+  test::same_type<standard_type<field_type_tag>, StandardType>;
+  test::same_type<native_type<field_type_tag>, NativeType>;
 }
 
 TEST(TraitsTest, Bool) {
@@ -315,18 +334,6 @@ TEST(TraitsTest, Map) {
   EXPECT_EQ(getName<tag_t>(), "map<i16, i32>");
   test_concrete_type<tag_t, std::map<int16_t, int32_t>>();
 }
-
-template <typename T>
-struct TestValue {
-  T value;
-};
-
-struct TestAdapter {
-  template <typename T>
-  static TestValue<T> fromThrift(T&& value) {
-    return {std::forward<T>(value)};
-  }
-};
 
 TEST(TraitsTest, Adapted) {
   using tag = adapted<TestAdapter, i64_t>;
