@@ -19,6 +19,7 @@ package com.facebook.thrift.util;
 import static com.facebook.thrift.util.PlatformUtils.getOS;
 import static org.apache.thrift.Constants.K_ROCKET_PROTOCOL_KEY;
 
+import com.facebook.thrift.client.ClientBuilder;
 import com.facebook.thrift.client.ThriftClientConfig;
 import com.facebook.thrift.legacy.codec.LegacyTransportType;
 import com.facebook.thrift.metadata.ThriftTransportType;
@@ -53,6 +54,9 @@ import io.rsocket.core.RSocketConnector;
 import io.rsocket.frame.decoder.PayloadDecoder;
 import io.rsocket.util.ByteBufPayload;
 import java.io.FileInputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Map;
@@ -400,5 +404,25 @@ public final class RpcClientUtils {
     return RSocketConnector.create()
         .setupPayload(setupPayload)
         .payloadDecoder(PayloadDecoder.ZERO_COPY);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> ClientBuilder<T> getClientBuilder(Class<T> clientInterface) {
+    MethodHandle clientBuilderMethodHandle = clientBuilderMethodHandle(clientInterface);
+    try {
+      return (ClientBuilder<T>) clientBuilderMethodHandle.invoke();
+    } catch (Throwable t) {
+      throw Exceptions.propagate(t);
+    }
+  }
+
+  private static MethodHandle clientBuilderMethodHandle(Class<?> clientInterface) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      return lookup.findStatic(
+          clientInterface, "clientBuilder", MethodType.methodType(ClientBuilder.class));
+    } catch (Throwable t) {
+      throw Exceptions.propagate(t);
+    }
   }
 }
