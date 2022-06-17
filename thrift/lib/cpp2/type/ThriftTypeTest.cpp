@@ -83,6 +83,13 @@ static_assert(!is_concrete_v<adapted<int, int>>);
 static_assert(is_concrete_v<adapted<int, void_t>>);
 static_assert(is_concrete_v<list<adapted<int, void_t>>>);
 
+static_assert(
+    !is_concrete_v<field_tag<adapted<int, int>, FieldContext<void, 0>>>);
+static_assert(
+    is_concrete_v<field_tag<adapted<int, void_t>, FieldContext<void, 0>>>);
+static_assert(is_concrete_v<
+              field_tag<list<adapted<int, void_t>>, FieldContext<void, 0>>>);
+
 static_assert(!is_concrete_v<cpp_type<int, int>>);
 static_assert(is_concrete_v<cpp_type<int, void_t>>);
 static_assert(is_concrete_v<list<cpp_type<int, void_t>>>);
@@ -141,6 +148,13 @@ static_assert(is_thrift_type_tag_v<map<void_t, void_t>>);
 static_assert(!is_thrift_type_tag_v<adapted<int, int>>);
 static_assert(is_thrift_type_tag_v<adapted<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<adapted<int, void_t>>>);
+
+static_assert(
+    !is_thrift_type_tag_v<field_tag<adapted<int, int>, FieldContext<void, 0>>>);
+static_assert(!is_thrift_type_tag_v<
+              field_tag<adapted<int, void_t>, FieldContext<void, 0>>>);
+static_assert(!is_thrift_type_tag_v<
+              field_tag<list<adapted<int, void_t>>, FieldContext<void, 0>>>);
 
 static_assert(!is_thrift_type_tag_v<cpp_type<int, int>>);
 static_assert(is_thrift_type_tag_v<cpp_type<int, void_t>>);
@@ -326,5 +340,10 @@ static_assert(!isConcrete<adapted<TestAdapter, enum_c>>());
 static_assert(isConcrete<cpp_type<void, void_t>>());
 static_assert(!isConcrete<cpp_type<int, enum_c>>());
 
+// A field tag is concrete if it's type tag is concrete.
+static_assert(isConcrete<field_tag<void_t, FieldContext<void, 0>>>());
+static_assert(
+    isConcrete<
+        field_tag<adapted<TestAdapter, void_t>, FieldContext<void, 0>>>());
 } // namespace
 } // namespace apache::thrift::type

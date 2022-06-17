@@ -178,6 +178,13 @@ template <typename T, typename Tag>
 struct is_concrete<cpp_type<T, Tag>>
     : folly::bool_constant<is_concrete_v<Tag>> {};
 
+template <typename Tag, typename Context>
+struct is_concrete<field_tag<Tag, Context>>
+    : folly::bool_constant<is_concrete_v<Tag>> {};
+template <typename Adapter, typename Tag, typename Context>
+struct is_concrete<field_tag<adapted<Adapter, Tag>, Context>>
+    : folly::bool_constant<is_concrete_v<Tag>> {};
+
 template <>
 struct is_thrift_type_tag<all_c> : std::true_type {};
 template <>
@@ -230,6 +237,11 @@ struct is_thrift_type_tag<adapted<Adapter, Tag>>
 template <typename T, typename Tag>
 struct is_thrift_type_tag<cpp_type<T, Tag>>
     : folly::bool_constant<is_thrift_type_tag_v<Tag>> {};
+
+// field tag is not thrift type tag.
+template <typename Tag, typename Context>
+struct is_thrift_type_tag<field_tag<Tag, Context>>
+    : folly::bool_constant<false> {};
 
 template <typename V1, typename V2>
 FOLLY_INLINE_VARIABLE constexpr bool is_a_v<list<V1>, list<V2>> =
