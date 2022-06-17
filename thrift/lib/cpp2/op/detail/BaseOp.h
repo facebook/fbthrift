@@ -31,17 +31,16 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
   // Blind convert the pointer to T
   static T& ref(void* ptr) { return *static_cast<T*>(ptr); }
   static const T& ref(const void* ptr) { return *static_cast<const T*>(ptr); }
-
-  // Try to convert other to T, bad_type() on falure.
-  template <typename P>
-  static const T& same(P& other) {
-    if (other.type().cppType == typeid(T)) {
-      return ref(other.ptr);
+  template <typename PTag, typename U = type::native_type<PTag>>
+  static const U& ref(const Ptr& ptr) {
+    if (ptr.type().cppType == typeid(U)) {
+      return *static_cast<const U*>(ptr.ptr);
     }
-    // TODO(afuller): Convert to the standard type and perform the comparsion
-    // using that.
     bad_type();
   }
+
+  // Try to convert other to T, bad_type() on failure.
+  static const T& same(const Ptr& other) { return ref<Tag, T>(other); }
 
   // Ops all Thrift types support.
   static bool empty(const void* ptr) { return op::isEmpty<Tag>(ref(ptr)); }

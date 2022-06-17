@@ -66,6 +66,28 @@ struct AnyOp<type::float_t, T> : NumericOp<type::float_t, T> {};
 template <typename T>
 struct AnyOp<type::double_t, T> : NumericOp<type::double_t, T> {};
 
+template <typename ValTag, typename T>
+struct AnyOp<type::list<ValTag>, T> : BaseAnyOp<type::list<ValTag>, T> {
+  using Tag = type::list<ValTag>;
+  using Base = BaseAnyOp<Tag, T>;
+  using Base::ref;
+  using Base::unimplemented;
+
+  static decltype(auto) val(const Ptr& v) {
+    return Base::template ref<ValTag>(v);
+  }
+
+  static void append(void* self, const Ptr& v) {
+    ref(self).emplace_back(val(v));
+  }
+  [[noreturn]] static bool add(void*, const Ptr&) {
+    unimplemented(); // TODO(afuller): Add if not already present.
+  }
+  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) {
+    unimplemented(); // TODO(afuller): Get by index.
+  }
+};
+
 // Create a AnyOp-based Thrift pointer.
 template <typename Tag, typename T = type::native_type<Tag>>
 Ptr createAnyPtr(T&& val) {

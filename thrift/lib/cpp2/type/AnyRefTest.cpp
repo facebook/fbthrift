@@ -49,9 +49,10 @@ TEST(AnyRefTest, Int) {
 
 TEST(AnyRefTest, List) {
   std::vector<std::string> value;
+  std::string entry = "hi";
   auto ref = AnyRef::create<list<string_t>>(value);
   EXPECT_TRUE(ref.empty());
-  value.emplace_back("hi");
+  ref.append(AnyRef::create<string_t>(entry));
 
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);

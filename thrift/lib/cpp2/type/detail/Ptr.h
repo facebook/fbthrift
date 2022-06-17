@@ -100,7 +100,7 @@ struct Ptr {
 
 // A base impl that throws for every op.
 struct BaseErasedOp {
-  [[noreturn]] static void bad_op(const char* msg) {
+  [[noreturn]] static void bad_op(const char* msg = "not supported") {
     folly::throw_exception<std::logic_error>(msg);
   }
   [[noreturn]] static void bad_type() {
@@ -110,22 +110,14 @@ struct BaseErasedOp {
     folly::throw_exception<std::runtime_error>(msg);
   }
 
-  [[noreturn]] static bool empty(const void*) {
-    bad_op("'empty' is not supported");
-  }
-  [[noreturn]] static void clear(void*) { bad_op("'clear' is not supported"); }
-  [[noreturn]] static void append(void*, const Ptr&) {
-    bad_op("'append' is not supported");
-  }
-  [[noreturn]] static bool add(void*, const Ptr&) {
-    bad_op("'add' is not supported");
-  }
+  [[noreturn]] static bool empty(const void*) { bad_op(); }
+  [[noreturn]] static void clear(void*) { bad_op(); }
+  [[noreturn]] static void append(void*, const Ptr&) { bad_op(); }
+  [[noreturn]] static bool add(void*, const Ptr&) { bad_op(); }
   [[noreturn]] static bool put(void*, FieldId, const Ptr*, const Ptr&) {
-    bad_op("'clear' is not supported");
+    bad_op();
   }
-  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) {
-    bad_op("'get' is not supported");
-  }
+  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) { bad_op(); }
 };
 
 // The ops for the empty type 'void'.
