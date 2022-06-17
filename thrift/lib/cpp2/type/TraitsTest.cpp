@@ -34,36 +34,11 @@ namespace apache::thrift::type {
 namespace {
 using conformance::Object;
 using conformance::Value;
-
-template <typename T>
-struct TestValue {
-  T value;
-};
-
-struct TestAdapter {
-  template <typename T>
-  static TestValue<T> fromThrift(T&& value) {
-    return {std::forward<T>(value)};
-  }
-};
-
-template <typename T, typename Struct, int16_t FieldId>
-struct FieldValue {};
-
-struct FieldAdapter {
-  template <typename T, typename Struct, int16_t FieldId>
-  static FieldValue<T, Struct, FieldId> fromThriftField(
-      T&&, FieldContext<Struct, FieldId>&&) {
-    return {};
-  }
-
-  template <typename T, typename Struct, int16_t FieldId>
-  static const T& toThrift(const FieldValue<T, Struct, FieldId>&) {
-    return {};
-  }
-};
-
-struct TestStruct;
+using test::FieldAdapter;
+using test::FieldValue;
+using test::TestAdapter;
+using test::TestStruct;
+using test::TestValue;
 
 template <typename Types, typename Tag, bool Expected>
 void testContains() {

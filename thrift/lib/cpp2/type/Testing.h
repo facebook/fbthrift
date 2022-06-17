@@ -47,7 +47,35 @@ constexpr bool same_type = detail::SameType<Expected, Actual>::value;
 template <typename Expected, typename Actual>
 constexpr bool same_tag = same_type<Expected, Actual>;
 
-struct TestAdapter;
+template <typename T>
+struct TestValue {
+  T value;
+};
+
+struct TestAdapter {
+  template <typename T>
+  static TestValue<T> fromThrift(T&& value) {
+    return {std::forward<T>(value)};
+  }
+};
+
+template <typename T, typename Struct, int16_t FieldId>
+struct FieldValue {};
+
+struct FieldAdapter {
+  template <typename T, typename Struct, int16_t FieldId>
+  static FieldValue<T, Struct, FieldId> fromThriftField(
+      T&&, FieldContext<Struct, FieldId>&&) {
+    return {};
+  }
+
+  template <typename T, typename Struct, int16_t FieldId>
+  static const T& toThrift(const FieldValue<T, Struct, FieldId>&) {
+    return {};
+  }
+};
+
+struct TestStruct;
 
 // Creates a custom protocol, skipping validation.
 inline type::Protocol makeProtocol(std::string name) {
