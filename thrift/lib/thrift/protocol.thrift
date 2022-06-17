@@ -17,6 +17,7 @@
 // TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
 
 include "thrift/lib/thrift/protocol_detail.thrift"
+include "thrift/lib/thrift/id.thrift"
 
 package "facebook.com/thrift/protocol"
 
@@ -32,6 +33,6 @@ namespace py thrift.lib.thrift.protocol
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
 
-// TODO(afuller): java2 currently fails to build in xplat, without at least
-// one definition it does code gen for.
-struct FbthriftInternal_id_Java2Bug {}
+struct Path {
+  1: list<id.ExternId> path;
+}
