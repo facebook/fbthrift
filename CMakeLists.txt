@@ -34,9 +34,9 @@ set(BIN_INSTALL_DIR bin CACHE STRING
     "The subdirectory where the compiler binary should be installed")
 set(INCLUDE_INSTALL_DIR include CACHE STRING
     "The subdirectory where include files should be installed")
-set(LIB_INSTALL_DIR lib CACHE STRING
+set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING
     "The subdirectory where libraries should be installed")
-set(CMAKE_INSTALL_DIR lib/cmake/fbthrift CACHE STRING
+set(CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/fbthrift CACHE STRING
     "The subdirectory where CMake package config files should be installed")
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
