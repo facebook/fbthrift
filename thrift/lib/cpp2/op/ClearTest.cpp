@@ -29,8 +29,8 @@ namespace apache::thrift::op {
 namespace {
 using namespace apache::thrift::test;
 
-// TODO(dokwon): Remove get_underlying_tag after supporting field_t for all
-// type/op library.
+struct TestStruct;
+
 template <typename Tag>
 void testClearImpl(
     const type::native_type<Tag>& expected,
@@ -40,9 +40,7 @@ void testClearImpl(
   // SCOPED_TRACE(type::getName<Tag>());
 
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
-  EXPECT_THAT(
-      getIntrinsicDefault<get_underlying_tag_t<Tag>>(),
-      IsIdenticalTo<Tag>(expected));
+  EXPECT_THAT(getIntrinsicDefault<Tag>(), IsIdenticalTo<Tag>(expected));
 
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
   EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
@@ -58,7 +56,8 @@ void testClear(
     type::native_type<Tag> unexpected,
     bool emptiable = true) {
   testClearImpl<Tag>(expected, unexpected, emptiable);
-  testClearImpl<type::field_t<FieldId{1}, Tag>>(
+  testClearImpl<
+      type::field_tag<Tag, apache::thrift::FieldContext<TestStruct, 0>>>(
       expected, unexpected, emptiable);
 }
 

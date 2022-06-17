@@ -31,6 +31,7 @@ namespace detail {
 
 // C++'s intrinsic default for the underlying native type, is the intrisitic
 // default for for all unstructured types.
+// TODO(dokwon): Support field_ref types.
 template <typename T>
 constexpr T getIntrinsicDefault(type::all_c) {
   return T{};
@@ -75,8 +76,9 @@ struct Clear<type::adapted<Adapter, Tag>> {
   // TODO(afuller): implement.
 };
 
-template <typename Tag, FieldId Id>
-struct Clear<type::field_t<Id, Tag>> : Clear<Tag> {};
+// TODO(dokwon): Support field_ref types.
+template <typename Tag, typename Context>
+struct Clear<type::field_tag<Tag, Context>> : Clear<Tag> {};
 
 template <typename Tag>
 struct Empty {
@@ -104,8 +106,9 @@ struct Empty<type::adapted<Adapter, Tag>> {
   // TODO(afuller): implement.
 };
 
-template <typename Tag, FieldId Id>
-struct Empty<type::field_t<Id, Tag>> : Empty<Tag> {};
+// TODO(dokwon): Support field_ref types.
+template <typename Tag, typename Context>
+struct Empty<type::field_tag<Tag, Context>> : Empty<Tag> {};
 
 } // namespace detail
 } // namespace op

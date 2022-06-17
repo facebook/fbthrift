@@ -222,15 +222,4 @@ class MultiSerializer : public op::Serializer {
   void checkAnyDblDec() const;
 };
 
-template <typename Tag>
-struct get_underlying_tag {
-  using type = Tag;
-};
-template <typename Tag, FieldId Id>
-struct get_underlying_tag<type::field_t<Id, Tag>> {
-  using type = Tag;
-};
-template <typename Tag>
-using get_underlying_tag_t = typename get_underlying_tag<Tag>::type;
-
 } // namespace apache::thrift::test

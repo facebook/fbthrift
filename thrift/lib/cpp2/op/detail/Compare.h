@@ -77,8 +77,9 @@ struct IdenticalTo<type::adapted<Adapter, Tag>> {
   // TODO(afuller): Implement.
 };
 
-template <typename Tag, FieldId Id>
-struct IdenticalTo<type::field_t<Id, Tag>> : IdenticalTo<Tag> {};
+// TODO(dokwon): Support field_ref types.
+template <typename Tag, typename Context>
+struct IdenticalTo<type::field_tag<Tag, Context>> : IdenticalTo<Tag> {};
 
 template <typename F, typename I>
 struct FloatIdenticalTo {
