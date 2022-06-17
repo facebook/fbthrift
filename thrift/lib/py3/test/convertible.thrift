@@ -35,6 +35,7 @@ struct Nested {
   1: Simple simpleField;
   2: list<Simple> simpleList;
   3: map<Color, Simple> colorToSimpleMap;
+  4: optional Simple optionalSimple;
 }
 
 union Union {

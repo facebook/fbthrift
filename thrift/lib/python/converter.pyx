@@ -28,6 +28,8 @@ cimport thrift.py3.types as py3_types
 
 
 def to_python_struct(cls, obj):
+    if obj is None:
+        return None
     return _to_python_struct(cls, obj)
 
 
