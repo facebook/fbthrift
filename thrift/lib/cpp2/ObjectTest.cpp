@@ -29,6 +29,7 @@
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/conformance/if/gen-cpp2/conformance_types_custom_protocol.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
@@ -565,10 +566,63 @@ TEST(Object, Wrapper) {
   EXPECT_EQ(object.size(), 1);
 }
 
-TEST(Value, emplace_string) {
+TEST(Value, Wrapper) {
+  Object obj;
+  obj.members()[100] = asValueStruct<type::string_t>("200");
+
+  const std::vector<Value> l = {
+      asValueStruct<type::i32_t>(10), asValueStruct<type::i32_t>(20)};
+
+  const std::set<Value> s = {
+      asValueStruct<type::i32_t>(30), asValueStruct<type::i32_t>(40)};
+
+  const std::map<Value, Value> m = {
+      {asValueStruct<type::i32_t>(50), asValueStruct<type::i32_t>(60)},
+      {asValueStruct<type::i32_t>(70), asValueStruct<type::i32_t>(80)}};
+
   Value value;
-  value.emplace_string() = "42";
-  EXPECT_EQ(value.stringValue_ref(), "42");
+
+#define FBTHRIFT_TEST_THRIFT_VALUE_TYPE(TYPE, VALUE)                   \
+  do {                                                                 \
+    EXPECT_FALSE(value.is_##TYPE());                                   \
+    EXPECT_FALSE(value.TYPE##Value_ref());                             \
+    EXPECT_THROW(value.as_##TYPE(), apache::thrift::bad_field_access); \
+    EXPECT_EQ(value.if_##TYPE(), nullptr);                             \
+    EXPECT_FALSE(value.TYPE##Value_ref());                             \
+    value.emplace_##TYPE() = VALUE;                                    \
+    EXPECT_TRUE(value.is_##TYPE());                                    \
+    EXPECT_EQ(value.as_##TYPE(), VALUE);                               \
+    EXPECT_EQ(*value.if_##TYPE(), VALUE);                              \
+    EXPECT_EQ(value.TYPE##Value_ref(), VALUE);                         \
+  } while (false)
+
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(bool, true);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(byte, 1);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(i16, 2);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(i32, 3);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(i64, 4);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(float, 5);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(double, 6);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(string, "7");
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(object, obj);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(list, l);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(set, s);
+  FBTHRIFT_TEST_THRIFT_VALUE_TYPE(map, m);
+
+#undef FBTHRIFT_VALUE_TEST_TYPE
+
+  // `binary` type requires special code since IOBuf doesn't have operator==
+  const auto buf = *folly::IOBuf::copyBuffer("90");
+  EXPECT_FALSE(value.is_binary());
+  EXPECT_FALSE(value.binaryValue_ref());
+  EXPECT_THROW(value.as_binary(), apache::thrift::bad_field_access);
+  EXPECT_EQ(value.if_binary(), nullptr);
+  EXPECT_FALSE(value.binaryValue_ref());
+  value.emplace_binary() = buf;
+  EXPECT_TRUE(value.is_binary());
+  EXPECT_TRUE(folly::IOBufEqualTo{}(value.as_binary(), buf));
+  EXPECT_TRUE(folly::IOBufEqualTo{}(*value.if_binary(), buf));
+  EXPECT_TRUE(folly::IOBufEqualTo{}(value.binaryValue_ref().value(), buf));
 }
 } // namespace
 } // namespace apache::thrift::protocol

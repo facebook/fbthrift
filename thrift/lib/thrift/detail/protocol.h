@@ -105,7 +105,34 @@ class ValueWrapper : public Base {
   // TODO(ytj): Provide boost.json.value like APIs
   // www.boost.org/doc/libs/release/libs/json/doc/html/json/ref/boost__json__value.html
 
-  std::string& emplace_string() { return Base::stringValue_ref().ensure(); }
+#define FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(TYPE)                       \
+  decltype(auto) as_##TYPE() { return *Base::TYPE##Value_ref(); }              \
+  decltype(auto) as_##TYPE() const { return *Base::TYPE##Value_ref(); }        \
+  bool is_##TYPE() const { return Base::TYPE##Value_ref().has_value(); }       \
+  decltype(auto) emplace_##TYPE() { return Base::TYPE##Value_ref().ensure(); } \
+  decltype(auto) if_##TYPE() {                                                 \
+    return is_##TYPE() ? &*Base::TYPE##Value_ref() : nullptr;                  \
+  }                                                                            \
+  decltype(auto) if_##TYPE() const {                                           \
+    return is_##TYPE() ? &*Base::TYPE##Value_ref() : nullptr;                  \
+  }                                                                            \
+  /* enforce semicolon after macro */ static_assert(true, "")
+
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(bool);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(byte);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(i16);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(i32);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(i64);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(float);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(double);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(string);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(binary);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(object);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(list);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(set);
+  FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE(map);
+
+#undef FBTHRIFT_THRIFT_VALUE_GEN_METHOD_FROM_TYPE
 };
 
 } // namespace apache::thrift::protocol::detail
