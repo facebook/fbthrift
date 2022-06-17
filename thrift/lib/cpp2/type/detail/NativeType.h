@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <folly/Traits.h>
+#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
@@ -157,6 +158,20 @@ struct native_types<field_t<Id, Tag>> : native_types<Tag> {};
 
 template <typename Tag, typename Context>
 struct native_types<field_tag<Tag, Context>> : native_types<Tag> {};
+
+// Traits for field adapted types.
+//
+// Field adapted types are concrete and have an adapted native_type.
+template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
+struct native_types<
+    field_tag<adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>>
+    : concrete_type<
+          typename native_types<Tag>::standard_type,
+          adapt_detail::adapted_field_t<
+              Adapter,
+              FieldId,
+              typename native_types<Tag>::native_type,
+              Struct>> {};
 
 } // namespace detail
 } // namespace type

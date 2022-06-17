@@ -47,6 +47,22 @@ struct TestAdapter {
   }
 };
 
+template <typename T, typename Struct, int16_t FieldId>
+struct FieldValue {};
+
+struct FieldAdapter {
+  template <typename T, typename Struct, int16_t FieldId>
+  static FieldValue<T, Struct, FieldId> fromThriftField(
+      T&&, FieldContext<Struct, FieldId>&&) {
+    return {};
+  }
+
+  template <typename T, typename Struct, int16_t FieldId>
+  static const T& toThrift(const FieldValue<T, Struct, FieldId>&) {
+    return {};
+  }
+};
+
 struct TestStruct;
 
 template <typename Types, typename Tag, bool Expected>
@@ -348,6 +364,26 @@ TEST(TraitsTest, Adapted) {
   // The name and native_type have changed.
   EXPECT_EQ(getName<tag>(), folly::pretty_name<TestValue<long>>());
   test_concrete_type<tag, int64_t, TestValue<int64_t>>();
+}
+
+TEST(TraitsTest, FieldAdapted) {
+  using tag =
+      field_tag<adapted<FieldAdapter, i64_t>, FieldContext<TestStruct, 1>>;
+  // TODO(dokwon): Enable primitive_types and name for field adapted tag.
+  // All traits that operate on the standard type, match the given tag.
+  // testContains<primitive_types, tag, true>();
+  // testContains<structured_types, tag, false>();
+  // testContains<singular_types, tag, true>();
+  // testContains<container_types, tag, false>();
+  // testContains<composite_types, tag, false>();
+  // EXPECT_EQ(base_type_v<tag>, BaseType::I64);
+
+  // The name and native_type have changed.
+  // EXPECT_EQ(
+  //     getName<tag>(), folly::pretty_name<FieldValue<int64_t, TestStruct,
+  //     1>>());
+  test::same_type<standard_type<tag>, int64_t>;
+  test::same_type<native_type<tag>, FieldValue<int64_t, TestStruct, 1>>;
 }
 
 TEST(TraitsTest, CppType) {
