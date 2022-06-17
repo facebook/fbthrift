@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <typeinfo>
+
+#include <folly/Demangle.h>
 #include <folly/ExceptionWrapper.h>
 
 #include <thrift/lib/cpp/SerializedMessage.h>
@@ -37,6 +40,13 @@ using server::TConnectionContext;
 class TProcessorEventHandler {
  public:
   virtual ~TProcessorEventHandler() {}
+
+  /**
+   * Returns the name of the TProcessorEventHandler implementation
+   */
+  virtual std::string_view getName() const {
+    return folly::demangle(typeid(*this).name());
+  }
 
   /**
    * Called before calling other callback methods.
