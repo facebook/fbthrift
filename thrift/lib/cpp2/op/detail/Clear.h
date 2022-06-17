@@ -83,14 +83,13 @@ struct Clear<type::adapted<Adapter, Tag>> {
 
 // TODO(dokwon): Support field_ref types.
 template <typename Tag, typename Context>
-struct Clear<type::field_tag<Tag, Context>> : Clear<Tag> {};
+struct Clear<type::field<Tag, Context>> : Clear<Tag> {};
 
 template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
-struct Clear<type::field_tag<
-    type::adapted<Adapter, Tag>,
-    FieldContext<Struct, FieldId>>> {
-  using field_adapted_tag = type::
-      field_tag<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
+struct Clear<
+    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>> {
+  using field_adapted_tag =
+      type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
   static_assert(type::is_concrete_v<field_adapted_tag>, "");
   template <typename T>
   void operator()(T& value, Struct& obj) const {
@@ -132,7 +131,7 @@ struct Empty<type::adapted<Adapter, Tag>> {
 
 // TODO(dokwon): Support field_ref types.
 template <typename Tag, typename Context>
-struct Empty<type::field_tag<Tag, Context>> : Empty<Tag> {};
+struct Empty<type::field<Tag, Context>> : Empty<Tag> {};
 
 } // namespace detail
 } // namespace op

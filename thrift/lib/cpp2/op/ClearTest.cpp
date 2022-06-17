@@ -61,8 +61,7 @@ void testClear(
     type::native_type<Tag> unexpected,
     bool emptiable = true) {
   testClearImpl<Tag>(expected, unexpected, emptiable);
-  testClearImpl<
-      type::field_tag<Tag, apache::thrift::FieldContext<TestStruct, 0>>>(
+  testClearImpl<type::field<Tag, apache::thrift::FieldContext<TestStruct, 0>>>(
       expected, unexpected, emptiable);
 }
 
@@ -111,12 +110,12 @@ TEST(ClearTest, Adapter) {
   testClearImpl<type::adapted<TestAdapter, type::list<type::i64_t>>>(
       {}, {{1}}, true);
   testClearImpl<
-      type::field_tag<
+      type::field<
           type::adapted<FieldAdapter, type::i64_t>,
           FieldContext<TestStruct, 1>>,
       true>({}, {1}, true);
   testClearImpl<
-      type::field_tag<
+      type::field<
           type::adapted<FieldAdapter, type::list<type::i64_t>>,
           FieldContext<TestStruct, 1>>,
       true>({}, {{1}}, true);

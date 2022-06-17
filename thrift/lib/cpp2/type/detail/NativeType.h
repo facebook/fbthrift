@@ -157,14 +157,13 @@ template <typename Tag, FieldId Id>
 struct native_types<field_t<Id, Tag>> : native_types<Tag> {};
 
 template <typename Tag, typename Context>
-struct native_types<field_tag<Tag, Context>> : native_types<Tag> {};
+struct native_types<field<Tag, Context>> : native_types<Tag> {};
 
 // Traits for field adapted types.
 //
 // Field adapted types are concrete and have an adapted native_type.
 template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
-struct native_types<
-    field_tag<adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>>
+struct native_types<field<adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>>
     : concrete_type<
           typename native_types<Tag>::standard_type,
           adapt_detail::adapted_field_t<

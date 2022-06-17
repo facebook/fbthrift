@@ -59,10 +59,9 @@ void test_concrete_type() {
   test::same_type<standard_type<Tag>, StandardType>;
   test::same_type<native_type<Tag>, NativeType>;
 
-  // TODO(dokwon): Rename to field_tag after field_t migration.
-  using field_type_tag = field_tag<Tag, FieldContext<TestStruct, 0>>;
-  test::same_type<standard_type<field_type_tag>, StandardType>;
-  test::same_type<native_type<field_type_tag>, NativeType>;
+  using field_tag = field<Tag, FieldContext<TestStruct, 0>>;
+  test::same_type<standard_type<field_tag>, StandardType>;
+  test::same_type<native_type<field_tag>, NativeType>;
 }
 
 TEST(TraitsTest, Bool) {
@@ -342,8 +341,7 @@ TEST(TraitsTest, Adapted) {
 }
 
 TEST(TraitsTest, FieldAdapted) {
-  using tag =
-      field_tag<adapted<FieldAdapter, i64_t>, FieldContext<TestStruct, 1>>;
+  using tag = field<adapted<FieldAdapter, i64_t>, FieldContext<TestStruct, 1>>;
   // All traits that operate on the standard type, match the given tag.
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();

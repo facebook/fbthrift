@@ -113,7 +113,7 @@ TEST(AdaptTest, AdapterClearTestStructOpClear) {
                 AdapterWithContextAndClear,
                 AdaptedWithContext<int64_t, AdapterClearTestStruct, 1>>);
   using namespace apache::thrift::type;
-  using field_type_tag = field_tag<
+  using field_type_tag = field<
       adapted<AdapterWithContextAndClear, i64_t>,
       FieldContext<AdapterClearTestStruct, 1>>;
 
