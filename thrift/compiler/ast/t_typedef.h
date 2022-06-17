@@ -42,6 +42,9 @@ class t_typedef : public t_type {
   template <typename UnaryPredicate>
   static const t_type* find_type_if(const t_type* type, UnaryPredicate&& pred) {
     while (true) {
+      if (!type) {
+        return nullptr;
+      }
       if (pred(type)) {
         return type;
       }
