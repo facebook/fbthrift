@@ -528,11 +528,41 @@ TEST(Object, uri) {
   EXPECT_EQ(uri<Value>(), "facebook.com/thrift/protocol/Value");
 }
 
-TEST(Object, size) {
+TEST(Object, Wrapper) {
   Object object;
   object.members()[0];
-  object.members()[1];
+  object.members()[2];
   EXPECT_EQ(object.size(), 2);
+  EXPECT_EQ(&object[FieldId{0}], &object.members()[0]);
+  EXPECT_EQ(&object[FieldId{2}], &object.members()[2]);
+  EXPECT_EQ(&object.at(FieldId{0}), &object.members()[0]);
+  EXPECT_EQ(&object.at(FieldId{2}), &object.members()[2]);
+  EXPECT_EQ(object.if_contains(FieldId{0}), &object.members()[0]);
+  EXPECT_EQ(object.if_contains(FieldId{2}), &object.members()[2]);
+
+  EXPECT_EQ(object.contains(FieldId{0}), true);
+  EXPECT_EQ(object.contains(FieldId{1}), false);
+  EXPECT_EQ(object.contains(FieldId{2}), true);
+  EXPECT_THROW(object.at(FieldId{1}), std::out_of_range);
+
+  std::vector<int16_t> ids;
+  std::vector<Value*> values;
+  for (auto&& i : object) {
+    ids.push_back(i.first);
+    values.push_back(&i.second);
+  }
+
+  EXPECT_EQ(ids.size(), 2);
+  EXPECT_EQ(ids[0], 0);
+  EXPECT_EQ(ids[1], 2);
+  EXPECT_EQ(values.size(), 2);
+  EXPECT_EQ(values[0], &object.members()[0]);
+  EXPECT_EQ(values[1], &object.members()[2]);
+
+  object.erase(FieldId{0});
+  EXPECT_EQ(object.contains(FieldId{0}), false);
+  EXPECT_EQ(object.contains(FieldId{2}), true);
+  EXPECT_EQ(object.size(), 1);
 }
 
 TEST(Value, emplace_string) {

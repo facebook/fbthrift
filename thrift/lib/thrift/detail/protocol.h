@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::protocol::detail {
@@ -46,12 +47,48 @@ class ObjectWrapper : public Base {
 
  public:
   using Base::Base;
+  using Base::members;
   using __fbthrift_cpp2_indirection_fn = detail::converter<ObjectWrapper, Base>;
 
   // TODO(ytj): Provide boost.json.value like APIs
   // www.boost.org/doc/libs/release/libs/json/doc/html/json/ref/boost__json__object.html
 
-  size_t size() const { return Base::members()->size(); }
+  Value& operator[](FieldId i) {
+    return members().value()[folly::to_underlying(i)];
+  }
+
+  const Value& operator[](FieldId i) const {
+    return members().value()[folly::to_underlying(i)];
+  }
+
+  Value& at(FieldId i) { return members()->at(folly::to_underlying(i)); }
+  const Value& at(FieldId i) const {
+    return members()->at(folly::to_underlying(i));
+  }
+
+  Value* if_contains(FieldId i) {
+    auto iter = members()->find(folly::to_underlying(i));
+    return iter == members()->end() ? nullptr : &iter->second;
+  }
+
+  const Value* if_contains(FieldId i) const {
+    auto iter = members()->find(folly::to_underlying(i));
+    return iter == members()->end() ? nullptr : &iter->second;
+  }
+
+  bool contains(FieldId i) const {
+    return members()->contains(folly::to_underlying(i));
+  }
+
+  std::size_t erase(FieldId i) {
+    return members()->erase(folly::to_underlying(i));
+  }
+
+  auto begin() { return members()->begin(); }
+  auto begin() const { return members()->begin(); }
+  auto end() { return members()->end(); }
+  auto end() const { return members()->end(); }
+  size_t size() const { return members()->size(); }
 };
 
 template <class Base>
