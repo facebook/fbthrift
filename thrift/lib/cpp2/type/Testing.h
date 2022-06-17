@@ -57,25 +57,32 @@ struct TestAdapter {
   static TestValue<T> fromThrift(T&& value) {
     return {std::forward<T>(value)};
   }
+
+  template <typename T>
+  static const T& toThrift(const TestValue<T>& value) {
+    return value.value;
+  }
 };
 
 template <typename T, typename Struct, int16_t FieldId>
-struct FieldValue {};
+struct FieldValue {
+  T value;
+};
 
 struct FieldAdapter {
   template <typename T, typename Struct, int16_t FieldId>
   static FieldValue<T, Struct, FieldId> fromThriftField(
-      T&&, FieldContext<Struct, FieldId>&&) {
-    return {};
+      T&& value, FieldContext<Struct, FieldId>&&) {
+    return {std::forward<T>(value)};
   }
 
   template <typename T, typename Struct, int16_t FieldId>
-  static const T& toThrift(const FieldValue<T, Struct, FieldId>&) {
-    return {};
+  static const T& toThrift(const FieldValue<T, Struct, FieldId>& value) {
+    return value.value;
   }
 };
 
-struct TestStruct;
+struct TestStruct {};
 
 // Creates a custom protocol, skipping validation.
 inline type::Protocol makeProtocol(std::string name) {

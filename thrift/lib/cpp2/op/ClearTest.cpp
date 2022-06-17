@@ -101,5 +101,11 @@ TEST(ClearTest, Structured) {
   testClear<type::union_t<testset::union_i64>>({}, one);
 }
 
+TEST(ClearTest, Adapter) {
+  testClearImpl<type::adapted<TestAdapter, type::i64_t>>({}, {1}, true);
+  testClearImpl<type::adapted<TestAdapter, type::list<type::i64_t>>>(
+      {}, {{1}}, true);
+}
+
 } // namespace
 } // namespace apache::thrift::op

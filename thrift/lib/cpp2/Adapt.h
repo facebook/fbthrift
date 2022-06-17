@@ -143,6 +143,18 @@ construct(AdaptedT&, Struct&) {}
 
 // Clear op based on the adapter, with a fallback to calling the default
 // constructor and Adapter::construct for context population.
+template <typename Adapter, typename AdaptedT>
+constexpr if_clear_adapter<Adapter, AdaptedT> clear(AdaptedT& field) {
+  Adapter::clear(field);
+}
+
+template <typename Adapter, typename AdaptedT>
+constexpr if_not_clear_adapter<Adapter, AdaptedT> clear(AdaptedT& field) {
+  field = AdaptedT();
+}
+
+// Clear op based on the field adapter, with a fallback to calling the default
+// constructor and Adapter::construct for context population.
 template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
 constexpr if_clear_adapter<Adapter, AdaptedT> clear(AdaptedT& field, Struct&) {
   Adapter::clear(field);

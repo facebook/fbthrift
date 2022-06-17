@@ -21,6 +21,7 @@
 
 #include <folly/CPortability.h>
 #include <folly/Overload.h>
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
@@ -57,25 +58,16 @@ struct EqualTo {
 
 template <typename Adapter, typename Tag>
 struct EqualTo<type::adapted<Adapter, Tag>> {
-  // TODO(afuller): Implement.
+  using adapted_tag = type::adapted<Adapter, Tag>;
+  static_assert(type::is_concrete_v<adapted_tag>, "");
+  template <typename T1, typename T2 = T1>
+  constexpr bool operator()(const T1& lhs, const T2& rhs) const {
+    return ::apache::thrift::adapt_detail::equal<Adapter>(lhs, rhs);
+  }
 };
 
 template <typename Tag>
-struct IdenticalTo : EqualTo<Tag> {
-  // Identical is the same as equal for integral, enum and string types.
-  // TODO(afuller): Implement proper specializations for all structured
-  // types.
-  static_assert(
-      type::is_a_v<Tag, type::integral_c> || type::is_a_v<Tag, type::enum_c> ||
-          type::is_a_v<Tag, type::string_c> ||
-          type::is_a_v<Tag, type::structured_c>,
-      "");
-};
-
-template <typename Adapter, typename Tag>
-struct IdenticalTo<type::adapted<Adapter, Tag>> {
-  // TODO(afuller): Implement.
-};
+struct IdenticalTo : EqualTo<Tag> {};
 
 // TODO(dokwon): Support field_ref types.
 template <typename Tag, typename Context>

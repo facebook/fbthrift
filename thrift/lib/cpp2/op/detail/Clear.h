@@ -73,7 +73,12 @@ struct Clear {
 
 template <typename Adapter, typename Tag>
 struct Clear<type::adapted<Adapter, Tag>> {
-  // TODO(afuller): implement.
+  using adapted_tag = type::adapted<Adapter, Tag>;
+  static_assert(type::is_concrete_v<adapted_tag>, "");
+  template <typename T>
+  void operator()(T& value) const {
+    ::apache::thrift::adapt_detail::clear<Adapter>(value);
+  }
 };
 
 // TODO(dokwon): Support field_ref types.
@@ -103,7 +108,13 @@ struct Empty {
 
 template <typename Adapter, typename Tag>
 struct Empty<type::adapted<Adapter, Tag>> {
-  // TODO(afuller): implement.
+  using adapted_tag = type::adapted<Adapter, Tag>;
+  static_assert(type::is_concrete_v<adapted_tag>, "");
+  template <typename T>
+  constexpr bool operator()(const T& value) const {
+    return op::identical<adapted_tag>(
+        value, getIntrinsicDefault<T>(adapted_tag{}));
+  }
 };
 
 // TODO(dokwon): Support field_ref types.
