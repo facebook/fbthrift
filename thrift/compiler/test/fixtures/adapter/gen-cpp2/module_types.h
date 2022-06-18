@@ -215,18 +215,6 @@ class Foo final  {
   static constexpr std::size_t __fbthrift_field_size_v = 11;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, ::apache::thrift::FieldId{10}, ::apache::thrift::FieldId{11}, };
-  
-  static ::apache::thrift::tag::intField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::optionalIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::intFieldWithDefault __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::setField __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-  static ::apache::thrift::tag::optionalSetField __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
-  static ::apache::thrift::tag::mapField __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
-  static ::apache::thrift::tag::optionalMapField __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
-  static ::apache::thrift::tag::binaryField __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
-  static ::apache::thrift::tag::longField __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
-  static ::apache::thrift::tag::adaptedLongField __fbthrift_ident(::apache::thrift::type::field_id_u_c<10>);
-  static ::apache::thrift::tag::doubleAdaptedField __fbthrift_ident(::apache::thrift::type::field_id_u_c<11>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -244,6 +232,21 @@ class Foo final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::intField,
+                                                      ::apache::thrift::tag::optionalIntField,
+                                                      ::apache::thrift::tag::intFieldWithDefault,
+                                                      ::apache::thrift::tag::setField,
+                                                      ::apache::thrift::tag::optionalSetField,
+                                                      ::apache::thrift::tag::mapField,
+                                                      ::apache::thrift::tag::optionalMapField,
+                                                      ::apache::thrift::tag::binaryField,
+                                                      ::apache::thrift::tag::longField,
+                                                      ::apache::thrift::tag::adaptedLongField,
+                                                      ::apache::thrift::tag::doubleAdaptedField>;
 
 
   void __fbthrift_clear();

@@ -205,9 +205,6 @@ class structured_annotation_inline final  {
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
-  
-  static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -216,6 +213,12 @@ class structured_annotation_inline final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::count,
+                                                      ::apache::thrift::tag::name>;
 
 
   void __fbthrift_clear();
@@ -402,8 +405,6 @@ class structured_annotation_with_default final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -411,6 +412,11 @@ class structured_annotation_with_default final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::name>;
 
 
   void __fbthrift_clear();
@@ -544,8 +550,6 @@ class structured_annotation_forward final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -553,6 +557,11 @@ class structured_annotation_forward final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::count>;
 
 
   void __fbthrift_clear();
@@ -684,10 +693,6 @@ class structured_annotation_recursive final  {
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, };
-  
-  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::recurse __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::forward __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -697,6 +702,13 @@ class structured_annotation_recursive final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::name,
+                                                      ::apache::thrift::tag::recurse,
+                                                      ::apache::thrift::tag::forward>;
 
 
   void __fbthrift_clear();
@@ -932,9 +944,6 @@ class structured_annotation_nested final  {
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
-  
-  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::nest __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -943,6 +952,12 @@ class structured_annotation_nested final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::name,
+                                                      ::apache::thrift::tag::nest>;
 
 
   void __fbthrift_clear();
@@ -1129,11 +1144,6 @@ class MyStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
-  
-  static ::apache::thrift::tag::annotated_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::annotated_type __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::annotated_recursive __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::annotated_nested __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -1144,6 +1154,14 @@ class MyStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::annotated_field,
+                                                      ::apache::thrift::tag::annotated_type,
+                                                      ::apache::thrift::tag::annotated_recursive,
+                                                      ::apache::thrift::tag::annotated_nested>;
 
 
   void __fbthrift_clear();
@@ -1439,8 +1457,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::context __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -1448,6 +1464,11 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::context>;
 
 
   void __fbthrift_clear();
@@ -1594,9 +1615,6 @@ class MyUnion final  {
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
-  
-  static ::apache::thrift::tag::first __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::second __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -1605,6 +1623,12 @@ class MyUnion final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::first,
+                                                      ::apache::thrift::tag::second>;
 
 
   void __fbthrift_clear();

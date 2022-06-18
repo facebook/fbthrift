@@ -57,8 +57,6 @@ class Foo final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::MyInt __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -66,6 +64,11 @@ class Foo final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::MyInt>;
 
 
   void __fbthrift_clear();

@@ -235,13 +235,16 @@ class MyDataItem final  {
 
   static constexpr std::size_t __fbthrift_field_size_v = 0;
 
-  
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void>;
 
 
   void __fbthrift_clear();
@@ -324,16 +327,6 @@ class MyStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 9;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, };
-  
-  static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::MyStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::MyDataField __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-  static ::apache::thrift::tag::oneway __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
-  static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
-  static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
-  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
-  static ::apache::thrift::tag::no_hack_codegen_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -349,6 +342,19 @@ class MyStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::MyIntField,
+                                                      ::apache::thrift::tag::MyStringField,
+                                                      ::apache::thrift::tag::MyDataField,
+                                                      ::apache::thrift::tag::myEnum,
+                                                      ::apache::thrift::tag::oneway,
+                                                      ::apache::thrift::tag::readonly,
+                                                      ::apache::thrift::tag::idempotent,
+                                                      ::apache::thrift::tag::floatSet,
+                                                      ::apache::thrift::tag::no_hack_codegen_field>;
 
 
   void __fbthrift_clear();
@@ -906,11 +912,6 @@ class MyUnion final  {
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
-  
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -921,6 +922,14 @@ class MyUnion final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myEnum,
+                                                      ::apache::thrift::tag::myStruct,
+                                                      ::apache::thrift::tag::myDataItem,
+                                                      ::apache::thrift::tag::floatSet>;
 
 
   void __fbthrift_clear();
@@ -1362,8 +1371,6 @@ class ReservedKeyword final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -1371,6 +1378,11 @@ class ReservedKeyword final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::reserved_field>;
 
 
   void __fbthrift_clear();
@@ -1500,8 +1512,6 @@ class UnionToBeRenamed final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::reserved_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -1509,6 +1519,11 @@ class UnionToBeRenamed final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::reserved_field>;
 
 
   void __fbthrift_clear();

@@ -135,9 +135,6 @@ class MyStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
-  
-  static ::apache::thrift::tag::myIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -146,6 +143,12 @@ class MyStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myIntField,
+                                                      ::apache::thrift::tag::myStringField>;
 
 
   void __fbthrift_clear();
@@ -332,9 +335,6 @@ class MyUnion final  {
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, };
-  
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -343,6 +343,12 @@ class MyUnion final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myEnum,
+                                                      ::apache::thrift::tag::myDataItem>;
 
 
   void __fbthrift_clear();

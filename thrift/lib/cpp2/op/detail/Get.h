@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/Thrift.h>
-#include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/Field.h>
 
 namespace apache {
 namespace thrift {
@@ -35,8 +35,11 @@ template <
     FieldId Id,
     typename...,
     typename T,
-    typename IdentTag = thrift::detail::st::struct_private_access::
-        ident_tag<folly::remove_cvref_t<T>, Id>>
+    FieldOrdinal ord =
+        type::ordinal<type::struct_t<folly::remove_cvref_t<T>>>(Id),
+    typename IdentTag = thrift::detail::st::struct_private_access::ident<
+        folly::remove_cvref_t<T>,
+        std::integral_constant<FieldOrdinal, ord>>>
 FOLLY_ERASE constexpr decltype(auto) get(type::structured_c, T&& t) noexcept(
     noexcept(access_field<IdentTag>(static_cast<T&&>(t)))) {
   return access_field<IdentTag>(static_cast<T&&>(t));

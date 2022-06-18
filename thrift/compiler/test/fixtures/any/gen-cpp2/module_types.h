@@ -69,8 +69,6 @@ class MyStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -78,6 +76,11 @@ class MyStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myString>;
 
 
   void __fbthrift_clear();
@@ -210,8 +213,6 @@ class MyUnion final  {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -219,6 +220,11 @@ class MyUnion final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myString>;
 
 
   void __fbthrift_clear();
@@ -437,8 +443,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, };
-  
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -446,6 +450,11 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::myString>;
 
 
   void __fbthrift_clear();

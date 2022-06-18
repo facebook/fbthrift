@@ -515,16 +515,6 @@ class YourStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 9;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, };
-  
-  static ::apache::thrift::tag::majorVer __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::package __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::annotation_with_quote __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::class_ __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
-  static ::apache::thrift::tag::empty_annotations __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
-  static ::apache::thrift::tag::my_enum __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
-  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
-  static ::apache::thrift::tag::my_union __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -540,6 +530,19 @@ class YourStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::majorVer,
+                                                      ::apache::thrift::tag::package,
+                                                      ::apache::thrift::tag::annotation_with_quote,
+                                                      ::apache::thrift::tag::class_,
+                                                      ::apache::thrift::tag::annotation_with_trailing_comma,
+                                                      ::apache::thrift::tag::empty_annotations,
+                                                      ::apache::thrift::tag::my_enum,
+                                                      ::apache::thrift::tag::cpp_type_annotation,
+                                                      ::apache::thrift::tag::my_union>;
 
 
   void __fbthrift_clear();

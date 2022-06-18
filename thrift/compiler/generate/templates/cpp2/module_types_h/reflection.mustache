@@ -26,10 +26,6 @@
 <%#struct:fields?%>
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {<%#struct:fields%>::apache::thrift::FieldId{<%field:key%>}, <%/struct:fields%>};
 <%/struct:fields?%>
-  
-  <%#struct:fields%>
-  static ::apache::thrift::tag::<%field:cpp_name%> __fbthrift_ident(::apache::thrift::type::field_id_u_c<<%field:key%>>);
-  <%/struct:fields%>
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -39,5 +35,10 @@
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void<%#struct:fields%>,
+                                                      ::apache::thrift::tag::<%field:cpp_name%><%/struct:fields%>>;
 
 <%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>

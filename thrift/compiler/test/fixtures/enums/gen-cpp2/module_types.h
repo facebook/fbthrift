@@ -139,11 +139,6 @@ class SomeStruct final  {
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, };
-  
-  static ::apache::thrift::tag::reasonable __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::fine __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::questionable __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::tags __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
   static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -154,6 +149,14 @@ class SomeStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::reasonable,
+                                                      ::apache::thrift::tag::fine,
+                                                      ::apache::thrift::tag::questionable,
+                                                      ::apache::thrift::tag::tags>;
 
 
   void __fbthrift_clear();
