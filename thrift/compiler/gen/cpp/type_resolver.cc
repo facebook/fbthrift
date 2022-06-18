@@ -366,15 +366,9 @@ std::string type_resolver::gen_type_tag(const t_field& field) {
   std::string type_tag = gen_type_tag(*field.type());
   if (const std::string* adapter = find_structured_adapter_annotation(field)) {
     return fmt::format(
-        "::apache::thrift::type::field_t<::apache::thrift::FieldId{{{}}}, ::apache::thrift::type::adapted<{}, {}>>",
-        field.id(),
-        *adapter,
-        type_tag);
+        "::apache::thrift::type::adapted<{}, {}>", *adapter, type_tag);
   }
-  return fmt::format(
-      "::apache::thrift::type::field_t<::apache::thrift::FieldId{{{}}}, {}>",
-      field.id(),
-      type_tag);
+  return type_tag;
 }
 
 std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {

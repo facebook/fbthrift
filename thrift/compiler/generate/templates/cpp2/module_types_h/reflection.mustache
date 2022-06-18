@@ -17,7 +17,7 @@
 %><%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
   using __fbthrift_fields = ::apache::thrift::type::fields<
   <%#struct:fields%>
-    <%field:type_tag%><%^last?%>,<%/last?%>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{<%field:key%>}, <%field:type_tag%>><%^last?%>,<%/last?%>
   <%/struct:fields%>
   >;
 
