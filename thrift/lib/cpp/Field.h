@@ -40,5 +40,7 @@ enum class FieldId : type::field_id_u_t {};
 template <FieldId Id>
 using FieldIdTag = type::field_id_u_c<static_cast<type::field_id_u_t>(Id)>;
 
+enum class FieldOrdinal : uint16_t {};
+
 } // namespace thrift
 } // namespace apache

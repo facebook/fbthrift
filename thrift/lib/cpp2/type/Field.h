@@ -42,19 +42,19 @@ template <typename FieldTag>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_v =
     FieldId(detail::field_to_id::apply<FieldTag>::value);
 
-template <typename StructTag, Ordinal ord>
+template <typename StructTag, FieldOrdinal ord>
 using field_tag_by_ordinal =
     typename detail::field_tag_by_ord<StructTag, ord>::type;
 
 template <
     typename StructTag,
-    Ordinal ord,
+    FieldOrdinal ord,
     detail::if_valid_ordinal<StructTag, ord>* = nullptr>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
     ::apache::thrift::detail::st::struct_private_access::__fbthrift_field_ids<
         native_type<StructTag>>[folly::to_underlying(ord) - 1];
 
-template <typename Structured, Ordinal ord>
+template <typename Structured, FieldOrdinal ord>
 using field_type_tag_by_ordinal =
     field_type_tag<field_tag_by_ordinal<Structured, ord>>;
 

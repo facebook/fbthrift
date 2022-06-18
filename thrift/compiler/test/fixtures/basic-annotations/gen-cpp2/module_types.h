@@ -526,19 +526,19 @@ class YourStruct final  {
   static ::apache::thrift::tag::cpp_type_annotation __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
   static ::apache::thrift::tag::my_union __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 2: return ::apache::thrift::Ordinal{1};
-      case 1: return ::apache::thrift::Ordinal{2};
-      case 3: return ::apache::thrift::Ordinal{3};
-      case 4: return ::apache::thrift::Ordinal{4};
-      case 5: return ::apache::thrift::Ordinal{5};
-      case 6: return ::apache::thrift::Ordinal{6};
-      case 7: return ::apache::thrift::Ordinal{7};
-      case 8: return ::apache::thrift::Ordinal{8};
-      case 9: return ::apache::thrift::Ordinal{9};
+      case 2: return ::apache::thrift::FieldOrdinal{1};
+      case 1: return ::apache::thrift::FieldOrdinal{2};
+      case 3: return ::apache::thrift::FieldOrdinal{3};
+      case 4: return ::apache::thrift::FieldOrdinal{4};
+      case 5: return ::apache::thrift::FieldOrdinal{5};
+      case 6: return ::apache::thrift::FieldOrdinal{6};
+      case 7: return ::apache::thrift::FieldOrdinal{7};
+      case 8: return ::apache::thrift::FieldOrdinal{8};
+      case 9: return ::apache::thrift::FieldOrdinal{9};
     }
-    return ::apache::thrift::Ordinal{0};
+    return ::apache::thrift::FieldOrdinal{0};
   }
 
 

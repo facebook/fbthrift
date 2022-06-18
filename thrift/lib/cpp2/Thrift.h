@@ -32,8 +32,6 @@
 namespace apache {
 namespace thrift {
 
-enum class Ordinal : uint16_t {};
-
 namespace detail {
 template <typename Tag>
 struct invoke_reffer;

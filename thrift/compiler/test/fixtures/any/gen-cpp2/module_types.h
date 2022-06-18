@@ -72,11 +72,11 @@ class MyStruct final  {
   
   static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return ::apache::thrift::Ordinal{1};
+      case 1: return ::apache::thrift::FieldOrdinal{1};
     }
-    return ::apache::thrift::Ordinal{0};
+    return ::apache::thrift::FieldOrdinal{0};
   }
 
 
@@ -213,11 +213,11 @@ class MyUnion final  {
   
   static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return ::apache::thrift::Ordinal{1};
+      case 1: return ::apache::thrift::FieldOrdinal{1};
     }
-    return ::apache::thrift::Ordinal{0};
+    return ::apache::thrift::FieldOrdinal{0};
   }
 
 
@@ -440,11 +440,11 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   
   static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr ::apache::thrift::Ordinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return ::apache::thrift::Ordinal{1};
+      case 1: return ::apache::thrift::FieldOrdinal{1};
     }
-    return ::apache::thrift::Ordinal{0};
+    return ::apache::thrift::FieldOrdinal{0};
   }
 
 

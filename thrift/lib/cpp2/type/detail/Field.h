@@ -55,9 +55,10 @@ FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_field_size_v<native_type<StructTag>>;
 
-template <typename StructTag, Ordinal ord>
+template <typename StructTag, FieldOrdinal ord>
 using if_valid_ordinal = std::enable_if_t<
-    ord != Ordinal{0} && folly::to_underlying(ord) <= field_size_v<StructTag>>;
+    ord != FieldOrdinal{0} &&
+    folly::to_underlying(ord) <= field_size_v<StructTag>>;
 
 struct field_to_id {
   template <class>
@@ -77,12 +78,12 @@ struct field_to_tag {
   };
 };
 
-template <class StructTag, Ordinal ord>
+template <class StructTag, FieldOrdinal ord>
 struct field_tag_by_ord {
   using type = field_at_t<
       struct_fields<StructTag>,
-      ord == Ordinal{0} ? static_cast<std::size_t>(-1)
-                        : folly::to_underlying(ord) - 1>;
+      ord == FieldOrdinal{0} ? static_cast<std::size_t>(-1)
+                             : folly::to_underlying(ord) - 1>;
 };
 
 } // namespace detail
