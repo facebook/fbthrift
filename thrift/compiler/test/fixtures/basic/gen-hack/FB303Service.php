@@ -499,7 +499,7 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
     }
 
     if (idx($parsed, 'int_parameter') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['int_parameter'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_parameter']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -605,7 +605,7 @@ class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['success']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyRenamedStruct>($parsed['success']));
       $_tmp1 = \fixtures\basic\MyRenamedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;

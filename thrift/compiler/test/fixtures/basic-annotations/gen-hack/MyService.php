@@ -1891,7 +1891,7 @@ class MyService_ping_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'myExcept') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myExcept']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyException>($parsed['myExcept']));
       $_tmp1 = MyException::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myExcept = $_tmp1;
@@ -2053,7 +2053,7 @@ class MyService_getRandomData_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['success']);
     }
   }
 
@@ -2154,7 +2154,7 @@ class MyService_hasDataById_args implements \IThriftSyncStruct, \IThriftShapishS
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+      $this->id = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['id']);
     }
   }
 
@@ -2240,7 +2240,7 @@ class MyService_hasDataById_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['success']);
     }
   }
 
@@ -2341,7 +2341,7 @@ class MyService_getDataById_args implements \IThriftSyncStruct, \IThriftShapishS
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+      $this->id = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['id']);
     }
   }
 
@@ -2427,7 +2427,7 @@ class MyService_getDataById_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['success']);
     }
   }
 
@@ -2561,10 +2561,10 @@ class MyService_putDataById_args implements \IThriftSyncStruct, \IThriftShapishS
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+      $this->id = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['id']);
     }
     if (idx($parsed, 'data') !== null) {
-      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
+      $this->data = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['data']);
     }
   }
 
@@ -2749,10 +2749,10 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishS
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+      $this->id = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['id']);
     }
     if (idx($parsed, 'data') !== null) {
-      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
+      $this->data = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['data']);
     }
   }
 

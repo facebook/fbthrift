@@ -681,7 +681,7 @@ class BadService_bar_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['success'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['success']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

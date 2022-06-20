@@ -356,7 +356,7 @@ class MyService_second_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
     }
 
     if (idx($parsed, 'count') !== null) {
-      $this->count = /* HH_FIXME[4110] */ $parsed['count'];
+      $this->count = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['count']);
     }
   }
 
@@ -449,7 +449,7 @@ class MyService_second_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['success']);
     }
   }
 

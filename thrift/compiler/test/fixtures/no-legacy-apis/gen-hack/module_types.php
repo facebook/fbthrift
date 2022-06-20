@@ -171,10 +171,10 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'myIntField') !== null) {
-      $this->myIntField = /* HH_FIXME[4110] */ $parsed['myIntField'];
+      $this->myIntField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['myIntField']);
     }
     if (idx($parsed, 'myStringField') !== null) {
-      $this->myStringField = /* HH_FIXME[4110] */ $parsed['myStringField'];
+      $this->myStringField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['myStringField']);
     }
   }
 
@@ -396,11 +396,11 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\no-legacy-a
     }
 
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = \fixtures\no-legacy-apis\MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);
+      $this->myEnum = \fixtures\no-legacy-apis\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\no-legacy-apis\MyEnum>($parsed['myEnum']));
       $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::myEnum;
     }
     if (idx($parsed, 'myDataItem') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\no-legacy-apis\MyStruct>($parsed['myDataItem']));
       $_tmp1 = \fixtures\no-legacy-apis\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myDataItem = $_tmp1;

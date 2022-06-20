@@ -119,7 +119,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'int_field') !== null) {
-      $this->int_field = /* HH_FIXME[4110] */ $parsed['int_field'];
+      $this->int_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
     }
   }
 
@@ -379,11 +379,11 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     }
 
     if (idx($parsed, 'union_annotated_field') !== null) {
-      $this->union_annotated_field = /* HH_FIXME[4110] */ $parsed['union_annotated_field'];
+      $this->union_annotated_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['union_annotated_field']);
       $this->_type = MyUnionEnum::union_annotated_field;
     }
     if (idx($parsed, 'union_adapted_type') !== null) {
-      $this->union_adapted_type = /* HH_FIXME[4110] */ $parsed['union_adapted_type'];
+      $this->union_adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['union_adapted_type']);
       $this->_type = MyUnionEnum::union_adapted_type;
     }
   }
@@ -574,13 +574,13 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     }
 
     if (idx($parsed, 'code') !== null) {
-      $this->code = /* HH_FIXME[4110] */ $parsed['code'];
+      $this->code = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['code']);
     }
     if (idx($parsed, 'message') !== null) {
-      $this->message = /* HH_FIXME[4110] */ $parsed['message'];
+      $this->message = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['message']);
     }
     if (idx($parsed, 'annotated_message') !== null) {
-      $this->annotated_message = /* HH_FIXME[4110] */ $parsed['annotated_message'];
+      $this->annotated_message = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotated_message']);
     }
   }
 

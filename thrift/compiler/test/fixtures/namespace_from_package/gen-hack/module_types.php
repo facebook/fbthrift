@@ -111,7 +111,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'MyInt') !== null) {
-      $this->MyInt = /* HH_FIXME[4110] */ $parsed['MyInt'];
+      $this->MyInt = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['MyInt']);
     }
   }
 

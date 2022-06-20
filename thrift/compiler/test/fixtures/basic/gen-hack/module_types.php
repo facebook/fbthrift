@@ -370,28 +370,28 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
+      $this->MyIntField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['MyIntField']);
     }
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
+      $this->MyStringField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyStringField']);
     }
     if (idx($parsed, 'MyDataField') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['MyDataField']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['MyDataField']));
       $_tmp1 = \fixtures\basic\MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
     }
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = \fixtures\basic\MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);
+      $this->myEnum = \fixtures\basic\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyEnum>($parsed['myEnum']));
     }
     if (idx($parsed, 'oneway') !== null) {
-      $this->oneway = /* HH_FIXME[4110] */ $parsed['oneway'];
+      $this->oneway = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['oneway']);
     }
     if (idx($parsed, 'readonly') !== null) {
-      $this->readonly = /* HH_FIXME[4110] */ $parsed['readonly'];
+      $this->readonly = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['readonly']);
     }
     if (idx($parsed, 'idempotent') !== null) {
-      $this->idempotent = /* HH_FIXME[4110] */ $parsed['idempotent'];
+      $this->idempotent = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['idempotent']);
     }
   }
 
@@ -751,18 +751,18 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyUni
     }
 
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = \fixtures\basic\MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);
+      $this->myEnum = \fixtures\basic\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyEnum>($parsed['myEnum']));
       $this->_type = \fixtures\basic\MyUnionEnum::myEnum;
     }
     if (idx($parsed, 'myStruct') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myStruct']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyStruct>($parsed['myStruct']));
       $_tmp1 = \fixtures\basic\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myStruct = $_tmp1;
       $this->_type = \fixtures\basic\MyUnionEnum::myStruct;
     }
     if (idx($parsed, 'myDataItem') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
+      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['myDataItem']));
       $_tmp3 = \fixtures\basic\MyDataItem::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;
@@ -892,7 +892,7 @@ class MyRenamedStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'reserved_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['reserved_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['reserved_field']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1070,7 +1070,7 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
     }
 
     if (idx($parsed, 'reserved_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['reserved_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['reserved_field']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

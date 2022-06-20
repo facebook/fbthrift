@@ -734,7 +734,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
     }
 
     if (idx($parsed, 'key') !== null) {
-      $this->key = /* HH_FIXME[4110] */ $parsed['key'];
+      $this->key = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['key']);
     }
   }
 
@@ -820,7 +820,7 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['success']);
     }
   }
 
@@ -921,7 +921,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
     }
 
     if (idx($parsed, 'key') !== null) {
-      $this->key = /* HH_FIXME[4110] */ $parsed['key'];
+      $this->key = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['key']);
     }
   }
 
@@ -1007,7 +1007,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['success']);
     }
   }
 

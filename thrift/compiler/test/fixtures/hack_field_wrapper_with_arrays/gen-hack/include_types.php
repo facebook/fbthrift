@@ -236,7 +236,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     }
 
     if (idx($parsed, 'nested_struct') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['nested_struct']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyNestedStruct>($parsed['nested_struct']));
       $_tmp1 = MyNestedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->nested_struct = $_tmp1;
@@ -609,19 +609,19 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     }
 
     if (idx($parsed, 'wrapped_field') !== null) {
-      $this->wrapped_field = /* HH_FIXME[4110] */ $parsed['wrapped_field'];
+      $this->wrapped_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['wrapped_field']);
     }
     if (idx($parsed, 'annotated_field') !== null) {
-      $this->annotated_field = /* HH_FIXME[4110] */ $parsed['annotated_field'];
+      $this->annotated_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['annotated_field']);
     }
     if (idx($parsed, 'adapted_type') !== null) {
-      $this->adapted_type = /* HH_FIXME[4110] */ $parsed['adapted_type'];
+      $this->adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['adapted_type']);
     }
     if (idx($parsed, 'adapted__and_wrapped_type') !== null) {
-      $this->adapted__and_wrapped_type = /* HH_FIXME[4110] */ $parsed['adapted__and_wrapped_type'];
+      $this->adapted__and_wrapped_type = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['adapted__and_wrapped_type']);
     }
     if (idx($parsed, 'optional_adapted_and_wrapped_type') !== null) {
-      $this->optional_adapted_and_wrapped_type = /* HH_FIXME[4110] */ $parsed['optional_adapted_and_wrapped_type'];
+      $this->optional_adapted_and_wrapped_type = HH\FIXME\UNSAFE_CAST<mixed, \MyAdapter1::THackType>($parsed['optional_adapted_and_wrapped_type']);
     }
   }
 
@@ -1246,9 +1246,9 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     }
 
     if (idx($parsed, 'map_of_string_to_MyStruct') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_MyStruct'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, MyStruct>>($parsed['map_of_string_to_MyStruct']);
       $_container4 = dict[];
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_value5 = MyStruct::withDefaultValues();
         $_tmp6 = json_encode($_value2);
         $_tmp7 = MyStruct::withDefaultValues();
@@ -1259,13 +1259,13 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $this->map_of_string_to_MyStruct = $_container4;
     }
     if (idx($parsed, 'map_of_string_to_list_of_MyStruct') !== null) {
-      $_json11 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_list_of_MyStruct'];
+      $_json11 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, vec<MyStruct>>>($parsed['map_of_string_to_list_of_MyStruct']);
       $_container12 = dict[];
-      foreach(/* HH_FIXME[4110] */ $_json11 as $_key9 => $_value10) {
+      foreach($_json11 as $_key9 => $_value10) {
         $_value13 = vec[];
         $_json17 = $_value10;
         $_container18 = vec[];
-        foreach(/* HH_FIXME[4110] */ $_json17 as $_key15 => $_value16) {
+        foreach($_json17 as $_key15 => $_value16) {
           $_elem19 = MyStruct::withDefaultValues();
           $_tmp20 = json_encode($_value16);
           $_tmp21 = MyStruct::withDefaultValues();
@@ -1279,13 +1279,13 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $this->map_of_string_to_list_of_MyStruct = $_container12;
     }
     if (idx($parsed, 'map_of_string_to_map_of_string_to_i32') !== null) {
-      $_json25 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_map_of_string_to_i32'];
+      $_json25 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, int>>>($parsed['map_of_string_to_map_of_string_to_i32']);
       $_container26 = dict[];
-      foreach(/* HH_FIXME[4110] */ $_json25 as $_key23 => $_value24) {
+      foreach($_json25 as $_key23 => $_value24) {
         $_value27 = dict[];
         $_json31 = $_value24;
         $_container32 = dict[];
-        foreach(/* HH_FIXME[4110] */ $_json31 as $_key29 => $_value30) {
+        foreach($_json31 as $_key29 => $_value30) {
           $_value33 = 0;
           $_tmp34 = (int)$_value30;
           if ($_tmp34 > 0x7fffffff) {
@@ -1301,13 +1301,13 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $this->map_of_string_to_map_of_string_to_i32 = $_container26;
     }
     if (idx($parsed, 'map_of_string_to_map_of_string_to_MyStruct') !== null) {
-      $_json38 = /* HH_FIXME[4110] */ $parsed['map_of_string_to_map_of_string_to_MyStruct'];
+      $_json38 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, MyStruct>>>($parsed['map_of_string_to_map_of_string_to_MyStruct']);
       $_container39 = dict[];
-      foreach(/* HH_FIXME[4110] */ $_json38 as $_key36 => $_value37) {
+      foreach($_json38 as $_key36 => $_value37) {
         $_value40 = dict[];
         $_json44 = $_value37;
         $_container45 = dict[];
-        foreach(/* HH_FIXME[4110] */ $_json44 as $_key42 => $_value43) {
+        foreach($_json44 as $_key42 => $_value43) {
           $_value46 = MyStruct::withDefaultValues();
           $_tmp47 = json_encode($_value43);
           $_tmp48 = MyStruct::withDefaultValues();
@@ -1321,17 +1321,17 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $this->map_of_string_to_map_of_string_to_MyStruct = $_container39;
     }
     if (idx($parsed, 'list_of_map_of_string_to_list_of_MyStruct') !== null) {
-      $_json52 = /* HH_FIXME[4110] */ $parsed['list_of_map_of_string_to_list_of_MyStruct'];
+      $_json52 = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, vec<MyStruct>>>>($parsed['list_of_map_of_string_to_list_of_MyStruct']);
       $_container53 = vec[];
-      foreach(/* HH_FIXME[4110] */ $_json52 as $_key50 => $_value51) {
+      foreach($_json52 as $_key50 => $_value51) {
         $_elem54 = dict[];
         $_json58 = $_value51;
         $_container59 = dict[];
-        foreach(/* HH_FIXME[4110] */ $_json58 as $_key56 => $_value57) {
+        foreach($_json58 as $_key56 => $_value57) {
           $_value60 = vec[];
           $_json64 = $_value57;
           $_container65 = vec[];
-          foreach(/* HH_FIXME[4110] */ $_json64 as $_key62 => $_value63) {
+          foreach($_json64 as $_key62 => $_value63) {
             $_elem66 = MyStruct::withDefaultValues();
             $_tmp67 = json_encode($_value63);
             $_tmp68 = MyStruct::withDefaultValues();
@@ -1348,13 +1348,13 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $this->list_of_map_of_string_to_list_of_MyStruct = $_container53;
     }
     if (idx($parsed, 'list_of_map_of_string_to_MyStruct') !== null) {
-      $_json72 = /* HH_FIXME[4110] */ $parsed['list_of_map_of_string_to_MyStruct'];
+      $_json72 = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, MyStruct>>>($parsed['list_of_map_of_string_to_MyStruct']);
       $_container73 = vec[];
-      foreach(/* HH_FIXME[4110] */ $_json72 as $_key70 => $_value71) {
+      foreach($_json72 as $_key70 => $_value71) {
         $_elem74 = dict[];
         $_json78 = $_value71;
         $_container79 = dict[];
-        foreach(/* HH_FIXME[4110] */ $_json78 as $_key76 => $_value77) {
+        foreach($_json78 as $_key76 => $_value77) {
           $_value80 = MyStruct::withDefaultValues();
           $_tmp81 = json_encode($_value77);
           $_tmp82 = MyStruct::withDefaultValues();

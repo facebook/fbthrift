@@ -188,7 +188,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
     }
 
     if (idx($parsed, 'count') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['count'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['count']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -521,24 +521,24 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
     if (idx($parsed, 'recurse') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['recurse']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($parsed['recurse']));
       $_tmp1 = structured_annotation_recursive::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->recurse = $_tmp1;
     }
     if (idx($parsed, 'default') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['default']);
+      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($parsed['default']));
       $_tmp3 = structured_annotation_with_default::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->default = $_tmp3;
     }
     if (idx($parsed, 'recurse_map') !== null) {
-      $_json7 = /* HH_FIXME[4110] */ $parsed['recurse_map'];
+      $_json7 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, structured_annotation_recursive>>($parsed['recurse_map']);
       $_container8 = dict[];
-      foreach(/* HH_FIXME[4110] */ $_json7 as $_key5 => $_value6) {
+      foreach($_json7 as $_key5 => $_value6) {
         $_value9 = structured_annotation_recursive::withDefaultValues();
         $_tmp10 = json_encode($_value6);
         $_tmp11 = structured_annotation_recursive::withDefaultValues();
@@ -743,7 +743,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'annotated_recursive') !== null) {
-      $this->annotated_recursive = /* HH_FIXME[4110] */ $parsed['annotated_recursive'];
+      $this->annotated_recursive = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotated_recursive']);
     }
   }
 

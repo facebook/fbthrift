@@ -337,7 +337,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     }
 
     if (idx($parsed, 'weeks') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['weeks'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['weeks']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -347,16 +347,16 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
       throw new \TProtocolException("Required field weeks cannot be found.");
     }
     if (idx($parsed, 'title') !== null) {
-      $this->title = /* HH_FIXME[4110] */ $parsed['title'];
+      $this->title = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['title']);
     }
     if (idx($parsed, 'employer') !== null) {
-      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);
+      $this->employer = Company::coerce(HH\FIXME\UNSAFE_CAST<mixed, Company>($parsed['employer']));
     }
     if (idx($parsed, 'compensation') !== null) {
-      $this->compensation = /* HH_FIXME[4110] */ $parsed['compensation'];
+      $this->compensation = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['compensation']);
     }
     if (idx($parsed, 'school') !== null) {
-      $this->school = /* HH_FIXME[4110] */ $parsed['school'];
+      $this->school = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['school']);
     }
   }
 
@@ -511,10 +511,10 @@ class SWE implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'employer') !== null) {
-      $this->employer = Company::coerce(/* HH_FIXME[4110] */ $parsed['employer']);
+      $this->employer = Company::coerce(HH\FIXME\UNSAFE_CAST<mixed, Company>($parsed['employer']));
     }
     if (idx($parsed, 'compensation') !== null) {
-      $this->compensation = /* HH_FIXME[4110] */ $parsed['compensation'];
+      $this->compensation = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['compensation']);
     }
   }
 

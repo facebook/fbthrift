@@ -1111,8 +1111,8 @@ void t_hack_generator::generate_json_container(
       indent(out) << container << " = Set {};\n";
     }
   }
-  indent(out) << "foreach(/* HH_FIXME[4110] */ " << json << " as " << key
-              << " => " << value << ") {\n";
+  indent(out) << "foreach(" << json << " as " << key << " => " << value
+              << ") {\n";
   indent_up();
 
   if (const auto* tlist = dynamic_cast<const t_list*>(ttype)) {
@@ -1223,13 +1223,15 @@ void t_hack_generator::generate_json_reader(
     }
     indent(out) << "if (idx($parsed, '" << tf.name() << "') !== null) {\n";
     indent_up();
+    std::string typehint = type_to_typehint(tf.get_type());
     generate_json_field(
         out,
         namer,
         &tf,
         "$this->",
         "",
-        "/* HH_FIXME[4110] */ $parsed['" + tf.name() + "']");
+        "HH\\FIXME\\UNSAFE_CAST<mixed, " + typehint + ">($parsed['" +
+            tf.name() + "'])");
     if (tstruct->is_union()) {
       indent(out) << "$this->_type = "
                   << union_field_to_enum(tstruct, &tf, tstruct->name())

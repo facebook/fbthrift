@@ -124,7 +124,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
   }
 
@@ -250,7 +250,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
   }
 
@@ -376,7 +376,7 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'reason') !== null) {
-      $this->reason = /* HH_FIXME[4110] */ $parsed['reason'];
+      $this->reason = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['reason']);
     }
   }
 
@@ -520,10 +520,10 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
     if (idx($parsed, 'reason') !== null) {
-      $this->reason = /* HH_FIXME[4110] */ $parsed['reason'];
+      $this->reason = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['reason']);
     }
   }
 

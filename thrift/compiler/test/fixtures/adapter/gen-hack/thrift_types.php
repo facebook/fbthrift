@@ -301,7 +301,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct, \IThr
     }
 
     if (idx($parsed, 'message') !== null) {
-      $this->message = /* HH_FIXME[4110] */ $parsed['message'];
+      $this->message = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['message']);
     }
   }
 
@@ -423,7 +423,7 @@ class facebook_thrift_annotation_Legacy implements \IThriftSyncStruct, \IThriftS
     }
 
     if (idx($parsed, 'message') !== null) {
-      $this->message = /* HH_FIXME[4110] */ $parsed['message'];
+      $this->message = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['message']);
     }
   }
 
@@ -544,7 +544,7 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
     }
 
     if (idx($parsed, 'field_name') !== null) {
-      $this->field_name = /* HH_FIXME[4110] */ $parsed['field_name'];
+      $this->field_name = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['field_name']);
     }
   }
 
@@ -1405,7 +1405,7 @@ class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStru
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
   }
 

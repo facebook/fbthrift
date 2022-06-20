@@ -142,7 +142,7 @@ class MyStructNestedAnnotation implements \IThriftSyncStruct, \IThriftShapishSyn
     }
 
     if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
   }
 
@@ -652,30 +652,30 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'major') !== null) {
-      $this->major = /* HH_FIXME[4110] */ $parsed['major'];
+      $this->major = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['major']);
     }
     if (idx($parsed, 'package') !== null) {
-      $this->package = /* HH_FIXME[4110] */ $parsed['package'];
+      $this->package = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['package']);
     }
     if (idx($parsed, 'annotation_with_quote') !== null) {
-      $this->annotation_with_quote = /* HH_FIXME[4110] */ $parsed['annotation_with_quote'];
+      $this->annotation_with_quote = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotation_with_quote']);
     }
     if (idx($parsed, 'class_') !== null) {
-      $this->class_ = /* HH_FIXME[4110] */ $parsed['class_'];
+      $this->class_ = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['class_']);
     }
     if (idx($parsed, 'annotation_with_trailing_comma') !== null) {
-      $this->annotation_with_trailing_comma = /* HH_FIXME[4110] */ $parsed['annotation_with_trailing_comma'];
+      $this->annotation_with_trailing_comma = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotation_with_trailing_comma']);
     }
     if (idx($parsed, 'empty_annotations') !== null) {
-      $this->empty_annotations = /* HH_FIXME[4110] */ $parsed['empty_annotations'];
+      $this->empty_annotations = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['empty_annotations']);
     }
     if (idx($parsed, 'my_enum') !== null) {
-      $this->my_enum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['my_enum']);
+      $this->my_enum = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['my_enum']));
     }
     if (idx($parsed, 'cpp_type_annotation') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['cpp_type_annotation'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<string>>($parsed['cpp_type_annotation']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = '';
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -683,7 +683,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->cpp_type_annotation = $_container4;
     }
     if (idx($parsed, 'my_union') !== null) {
-      $_tmp6 = json_encode(/* HH_FIXME[4110] */ $parsed['my_union']);
+      $_tmp6 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyUnion>($parsed['my_union']));
       $_tmp7 = MyUnion::withDefaultValues();
       $_tmp7->readFromJson($_tmp6);
       $this->my_union = $_tmp7;
@@ -822,10 +822,10 @@ class SecretStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+      $this->id = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['id']);
     }
     if (idx($parsed, 'password') !== null) {
-      $this->password = /* HH_FIXME[4110] */ $parsed['password'];
+      $this->password = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['password']);
     }
   }
 

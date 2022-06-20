@@ -217,7 +217,7 @@ class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSy
     }
 
     if (idx($parsed, 'field1') !== null) {
-      $this->field1 = /* HH_FIXME[4110] */ $parsed['field1'];
+      $this->field1 = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field1']);
     }
   }
 
@@ -740,10 +740,10 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     }
 
     if (idx($parsed, 'bool_field') !== null) {
-      $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
+      $this->bool_field = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['bool_field']);
     }
     if (idx($parsed, 'byte_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['byte_field']);
       if ($_tmp0 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -751,7 +751,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       }
     }
     if (idx($parsed, 'short_field') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['short_field']);
       if ($_tmp1 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -759,7 +759,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       }
     }
     if (idx($parsed, 'int_field') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -767,27 +767,27 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       }
     }
     if (idx($parsed, 'long_field') !== null) {
-      $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
+      $this->long_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['long_field']);
     }
     if (idx($parsed, 'float_field') !== null) {
-      $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
+      $this->float_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['float_field']);
     }
     if (idx($parsed, 'double_field') !== null) {
-      $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
+      $this->double_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['double_field']);
     }
     if (idx($parsed, 'string_field') !== null) {
-      $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
+      $this->string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['string_field']);
     }
     if (idx($parsed, 'binary_field') !== null) {
-      $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
+      $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
-      $_json6 = /* HH_FIXME[4110] */ $parsed['list_field'];
+      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
       $_container7 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json6 as $_key4 => $_value5) {
+      foreach($_json6 as $_key4 => $_value5) {
         $_elem8 = 0;
         $_tmp9 = (int)$_value5;
         if ($_tmp9 > 0x7fff) {
@@ -800,9 +800,9 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->list_field = $_container7;
     }
     if (idx($parsed, 'set_field') !== null) {
-      $_json13 = /* HH_FIXME[4110] */ $parsed['set_field'];
+      $_json13 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['set_field']);
       $_container14 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json13 as $_key11 => $_value12) {
+      foreach($_json13 as $_key11 => $_value12) {
         $_elem15 = 0;
         $_tmp16 = (int)$_value12;
         if ($_tmp16 > 0x7fff) {
@@ -815,9 +815,9 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->set_field = $_container14;
     }
     if (idx($parsed, 'map_field') !== null) {
-      $_json20 = /* HH_FIXME[4110] */ $parsed['map_field'];
+      $_json20 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['map_field']);
       $_container21 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json20 as $_key18 => $_value19) {
+      foreach($_json20 as $_key18 => $_value19) {
         $_value22 = 0;
         $_tmp23 = (int)$_value19;
         if ($_tmp23 > 0x7fff) {
@@ -830,7 +830,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['struct_field']));
       $_tmp25 = MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
@@ -1913,10 +1913,10 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     }
 
     if (idx($parsed, 'terse_bool_field') !== null) {
-      $this->terse_bool_field = /* HH_FIXME[4110] */ $parsed['terse_bool_field'];
+      $this->terse_bool_field = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['terse_bool_field']);
     }
     if (idx($parsed, 'terse_byte_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['terse_byte_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['terse_byte_field']);
       if ($_tmp0 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1924,7 +1924,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'terse_short_field') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['terse_short_field'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['terse_short_field']);
       if ($_tmp1 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1932,7 +1932,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'terse_int_field') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['terse_int_field'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['terse_int_field']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1940,27 +1940,27 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'terse_long_field') !== null) {
-      $this->terse_long_field = /* HH_FIXME[4110] */ $parsed['terse_long_field'];
+      $this->terse_long_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['terse_long_field']);
     }
     if (idx($parsed, 'terse_float_field') !== null) {
-      $this->terse_float_field = /* HH_FIXME[4110] */ $parsed['terse_float_field'];
+      $this->terse_float_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['terse_float_field']);
     }
     if (idx($parsed, 'terse_double_field') !== null) {
-      $this->terse_double_field = /* HH_FIXME[4110] */ $parsed['terse_double_field'];
+      $this->terse_double_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['terse_double_field']);
     }
     if (idx($parsed, 'terse_string_field') !== null) {
-      $this->terse_string_field = /* HH_FIXME[4110] */ $parsed['terse_string_field'];
+      $this->terse_string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['terse_string_field']);
     }
     if (idx($parsed, 'terse_binary_field') !== null) {
-      $this->terse_binary_field = /* HH_FIXME[4110] */ $parsed['terse_binary_field'];
+      $this->terse_binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['terse_binary_field']);
     }
     if (idx($parsed, 'terse_enum_field') !== null) {
-      $this->terse_enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['terse_enum_field']);
+      $this->terse_enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['terse_enum_field']));
     }
     if (idx($parsed, 'terse_list_field') !== null) {
-      $_json6 = /* HH_FIXME[4110] */ $parsed['terse_list_field'];
+      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['terse_list_field']);
       $_container7 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json6 as $_key4 => $_value5) {
+      foreach($_json6 as $_key4 => $_value5) {
         $_elem8 = 0;
         $_tmp9 = (int)$_value5;
         if ($_tmp9 > 0x7fff) {
@@ -1973,9 +1973,9 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_list_field = $_container7;
     }
     if (idx($parsed, 'terse_set_field') !== null) {
-      $_json13 = /* HH_FIXME[4110] */ $parsed['terse_set_field'];
+      $_json13 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['terse_set_field']);
       $_container14 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json13 as $_key11 => $_value12) {
+      foreach($_json13 as $_key11 => $_value12) {
         $_elem15 = 0;
         $_tmp16 = (int)$_value12;
         if ($_tmp16 > 0x7fff) {
@@ -1988,9 +1988,9 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_set_field = $_container14;
     }
     if (idx($parsed, 'terse_map_field') !== null) {
-      $_json20 = /* HH_FIXME[4110] */ $parsed['terse_map_field'];
+      $_json20 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['terse_map_field']);
       $_container21 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json20 as $_key18 => $_value19) {
+      foreach($_json20 as $_key18 => $_value19) {
         $_value22 = 0;
         $_tmp23 = (int)$_value19;
         if ($_tmp23 > 0x7fff) {
@@ -2003,16 +2003,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_map_field = $_container21;
     }
     if (idx($parsed, 'terse_struct_field') !== null) {
-      $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['terse_struct_field']);
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['terse_struct_field']));
       $_tmp25 = MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->terse_struct_field = $_tmp25;
     }
     if (idx($parsed, 'bool_field') !== null) {
-      $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
+      $this->bool_field = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['bool_field']);
     }
     if (idx($parsed, 'byte_field') !== null) {
-      $_tmp26 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
+      $_tmp26 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['byte_field']);
       if ($_tmp26 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2020,7 +2020,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'short_field') !== null) {
-      $_tmp27 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
+      $_tmp27 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['short_field']);
       if ($_tmp27 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2028,7 +2028,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'int_field') !== null) {
-      $_tmp28 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
+      $_tmp28 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
       if ($_tmp28 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2036,27 +2036,27 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       }
     }
     if (idx($parsed, 'long_field') !== null) {
-      $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
+      $this->long_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['long_field']);
     }
     if (idx($parsed, 'float_field') !== null) {
-      $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
+      $this->float_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['float_field']);
     }
     if (idx($parsed, 'double_field') !== null) {
-      $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
+      $this->double_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['double_field']);
     }
     if (idx($parsed, 'string_field') !== null) {
-      $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
+      $this->string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['string_field']);
     }
     if (idx($parsed, 'binary_field') !== null) {
-      $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
+      $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
-      $_json32 = /* HH_FIXME[4110] */ $parsed['list_field'];
+      $_json32 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
       $_container33 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json32 as $_key30 => $_value31) {
+      foreach($_json32 as $_key30 => $_value31) {
         $_elem34 = 0;
         $_tmp35 = (int)$_value31;
         if ($_tmp35 > 0x7fff) {
@@ -2069,9 +2069,9 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->list_field = $_container33;
     }
     if (idx($parsed, 'set_field') !== null) {
-      $_json39 = /* HH_FIXME[4110] */ $parsed['set_field'];
+      $_json39 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['set_field']);
       $_container40 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json39 as $_key37 => $_value38) {
+      foreach($_json39 as $_key37 => $_value38) {
         $_elem41 = 0;
         $_tmp42 = (int)$_value38;
         if ($_tmp42 > 0x7fff) {
@@ -2084,9 +2084,9 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->set_field = $_container40;
     }
     if (idx($parsed, 'map_field') !== null) {
-      $_json46 = /* HH_FIXME[4110] */ $parsed['map_field'];
+      $_json46 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['map_field']);
       $_container47 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json46 as $_key44 => $_value45) {
+      foreach($_json46 as $_key44 => $_value45) {
         $_value48 = 0;
         $_tmp49 = (int)$_value45;
         if ($_tmp49 > 0x7fff) {
@@ -2099,7 +2099,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->map_field = $_container47;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp50 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
+      $_tmp50 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['struct_field']));
       $_tmp51 = MyStruct::withDefaultValues();
       $_tmp51->readFromJson($_tmp50);
       $this->struct_field = $_tmp51;
@@ -2631,10 +2631,10 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     }
 
     if (idx($parsed, 'bool_field') !== null) {
-      $this->bool_field = /* HH_FIXME[4110] */ $parsed['bool_field'];
+      $this->bool_field = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['bool_field']);
     }
     if (idx($parsed, 'byte_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['byte_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['byte_field']);
       if ($_tmp0 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2642,7 +2642,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       }
     }
     if (idx($parsed, 'short_field') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['short_field'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['short_field']);
       if ($_tmp1 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2650,7 +2650,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       }
     }
     if (idx($parsed, 'int_field') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['int_field'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2658,27 +2658,27 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       }
     }
     if (idx($parsed, 'long_field') !== null) {
-      $this->long_field = /* HH_FIXME[4110] */ $parsed['long_field'];
+      $this->long_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['long_field']);
     }
     if (idx($parsed, 'float_field') !== null) {
-      $this->float_field = /* HH_FIXME[4110] */ $parsed['float_field'];
+      $this->float_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['float_field']);
     }
     if (idx($parsed, 'double_field') !== null) {
-      $this->double_field = /* HH_FIXME[4110] */ $parsed['double_field'];
+      $this->double_field = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['double_field']);
     }
     if (idx($parsed, 'string_field') !== null) {
-      $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
+      $this->string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['string_field']);
     }
     if (idx($parsed, 'binary_field') !== null) {
-      $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
+      $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['enum_field']);
+      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
-      $_json6 = /* HH_FIXME[4110] */ $parsed['list_field'];
+      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
       $_container7 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json6 as $_key4 => $_value5) {
+      foreach($_json6 as $_key4 => $_value5) {
         $_elem8 = 0;
         $_tmp9 = (int)$_value5;
         if ($_tmp9 > 0x7fff) {
@@ -2691,9 +2691,9 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->list_field = $_container7;
     }
     if (idx($parsed, 'set_field') !== null) {
-      $_json13 = /* HH_FIXME[4110] */ $parsed['set_field'];
+      $_json13 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['set_field']);
       $_container14 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json13 as $_key11 => $_value12) {
+      foreach($_json13 as $_key11 => $_value12) {
         $_elem15 = 0;
         $_tmp16 = (int)$_value12;
         if ($_tmp16 > 0x7fff) {
@@ -2706,9 +2706,9 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->set_field = $_container14;
     }
     if (idx($parsed, 'map_field') !== null) {
-      $_json20 = /* HH_FIXME[4110] */ $parsed['map_field'];
+      $_json20 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['map_field']);
       $_container21 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json20 as $_key18 => $_value19) {
+      foreach($_json20 as $_key18 => $_value19) {
         $_value22 = 0;
         $_tmp23 = (int)$_value19;
         if ($_tmp23 > 0x7fff) {
@@ -2721,7 +2721,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(/* HH_FIXME[4110] */ $parsed['struct_field']);
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStructWithCustomDefault>($parsed['struct_field']));
       $_tmp25 = MyStructWithCustomDefault::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;

@@ -292,18 +292,18 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'reasonable') !== null) {
-      $this->reasonable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['reasonable']);
+      $this->reasonable = \fixtures\enums\Metasyntactic::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\enums\Metasyntactic>($parsed['reasonable']));
     }
     if (idx($parsed, 'fine') !== null) {
-      $this->fine = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['fine']);
+      $this->fine = \fixtures\enums\Metasyntactic::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\enums\Metasyntactic>($parsed['fine']));
     }
     if (idx($parsed, 'questionable') !== null) {
-      $this->questionable = \fixtures\enums\Metasyntactic::coerce(/* HH_FIXME[4110] */ $parsed['questionable']);
+      $this->questionable = \fixtures\enums\Metasyntactic::coerce(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\enums\Metasyntactic>($parsed['questionable']));
     }
     if (idx($parsed, 'tags') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['tags'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['tags']);
       $_container4 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {

@@ -226,7 +226,7 @@ class decorated_struct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'field') !== null) {
-      $this->field = /* HH_FIXME[4110] */ $parsed['field'];
+      $this->field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['field']);
     }
   }
 
@@ -619,9 +619,9 @@ class ContainerStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'fieldA') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['fieldA'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldA']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -634,9 +634,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldA = $_container4;
     }
     if (idx($parsed, 'fieldB') !== null) {
-      $_json10 = /* HH_FIXME[4110] */ $parsed['fieldB'];
+      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldB']);
       $_container11 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json10 as $_key8 => $_value9) {
+      foreach($_json10 as $_key8 => $_value9) {
         $_elem12 = 0;
         $_tmp13 = (int)$_value9;
         if ($_tmp13 > 0x7fffffff) {
@@ -649,9 +649,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldB = $_container11;
     }
     if (idx($parsed, 'fieldC') !== null) {
-      $_json17 = /* HH_FIXME[4110] */ $parsed['fieldC'];
+      $_json17 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldC']);
       $_container18 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json17 as $_key15 => $_value16) {
+      foreach($_json17 as $_key15 => $_value16) {
         $_elem19 = 0;
         $_tmp20 = (int)$_value16;
         if ($_tmp20 > 0x7fffffff) {
@@ -664,9 +664,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldC = $_container18;
     }
     if (idx($parsed, 'fieldD') !== null) {
-      $_json24 = /* HH_FIXME[4110] */ $parsed['fieldD'];
+      $_json24 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldD']);
       $_container25 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json24 as $_key22 => $_value23) {
+      foreach($_json24 as $_key22 => $_value23) {
         $_elem26 = 0;
         $_tmp27 = (int)$_value23;
         if ($_tmp27 > 0x7fffffff) {
@@ -679,9 +679,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldD = $_container25;
     }
     if (idx($parsed, 'fieldE') !== null) {
-      $_json31 = /* HH_FIXME[4110] */ $parsed['fieldE'];
+      $_json31 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldE']);
       $_container32 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json31 as $_key29 => $_value30) {
+      foreach($_json31 as $_key29 => $_value30) {
         $_elem33 = 0;
         $_tmp34 = (int)$_value30;
         if ($_tmp34 > 0x7fffffff) {
@@ -694,9 +694,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldE = $_container32;
     }
     if (idx($parsed, 'fieldF') !== null) {
-      $_json38 = /* HH_FIXME[4110] */ $parsed['fieldF'];
+      $_json38 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['fieldF']);
       $_container39 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json38 as $_key36 => $_value37) {
+      foreach($_json38 as $_key36 => $_value37) {
         $_elem40 = 0;
         $_tmp41 = (int)$_value37;
         if ($_tmp41 > 0x7fffffff) {
@@ -709,9 +709,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldF = $_container39;
     }
     if (idx($parsed, 'fieldG') !== null) {
-      $_json45 = /* HH_FIXME[4110] */ $parsed['fieldG'];
+      $_json45 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, string>>($parsed['fieldG']);
       $_container46 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json45 as $_key43 => $_value44) {
+      foreach($_json45 as $_key43 => $_value44) {
         $_value47 = '';
         $_value47 = $_value44;
         $_container46[$_key43] = $_value47;
@@ -719,9 +719,9 @@ class ContainerStruct implements \IThriftSyncStruct {
       $this->fieldG = $_container46;
     }
     if (idx($parsed, 'fieldH') !== null) {
-      $_json51 = /* HH_FIXME[4110] */ $parsed['fieldH'];
+      $_json51 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, string>>($parsed['fieldH']);
       $_container52 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json51 as $_key49 => $_value50) {
+      foreach($_json51 as $_key49 => $_value50) {
         $_value53 = '';
         $_value53 = $_value50;
         $_container52[$_key49] = $_value53;
@@ -833,9 +833,9 @@ class CppTypeStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'fieldA') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['fieldA'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['fieldA']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -939,7 +939,7 @@ class VirtualStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
+      $this->MyIntField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['MyIntField']);
     }
   }
 
@@ -1085,10 +1085,10 @@ class MyStructWithForwardRefEnum implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['a']);
+      $this->a = MyForwardRefEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyForwardRefEnum>($parsed['a']));
     }
     if (idx($parsed, 'b') !== null) {
-      $this->b = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['b']);
+      $this->b = MyForwardRefEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyForwardRefEnum>($parsed['b']));
     }
   }
 
@@ -1206,7 +1206,7 @@ class TrivialNumeric implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['a'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['a']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1214,7 +1214,7 @@ class TrivialNumeric implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'b') !== null) {
-      $this->b = /* HH_FIXME[4110] */ $parsed['b'];
+      $this->b = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['b']);
     }
   }
 
@@ -1337,7 +1337,7 @@ class TrivialNestedWithDefault implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'z') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['z'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['z']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1345,7 +1345,7 @@ class TrivialNestedWithDefault implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'n') !== null) {
-      $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
+      $_tmp1 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, TrivialNumeric>($parsed['n']));
       $_tmp2 = TrivialNumeric::withDefaultValues();
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
@@ -1488,12 +1488,12 @@ class ComplexString implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = /* HH_FIXME[4110] */ $parsed['a'];
+      $this->a = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['a']);
     }
     if (idx($parsed, 'b') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['b'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, int>>($parsed['b']);
       $_container4 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_value5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -1626,10 +1626,10 @@ class ComplexNestedWithDefault implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'z') !== null) {
-      $this->z = /* HH_FIXME[4110] */ $parsed['z'];
+      $this->z = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['z']);
     }
     if (idx($parsed, 'n') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ComplexString>($parsed['n']));
       $_tmp1 = ComplexString::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
@@ -1822,7 +1822,7 @@ class MinPadding implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'small') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['small'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['small']);
       if ($_tmp0 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1832,12 +1832,12 @@ class MinPadding implements \IThriftSyncStruct {
       throw new \TProtocolException("Required field small cannot be found.");
     }
     if (idx($parsed, 'big') !== null) {
-      $this->big = /* HH_FIXME[4110] */ $parsed['big'];
+      $this->big = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['big']);
     } else {
       throw new \TProtocolException("Required field big cannot be found.");
     }
     if (idx($parsed, 'medium') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['medium'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['medium']);
       if ($_tmp1 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1847,7 +1847,7 @@ class MinPadding implements \IThriftSyncStruct {
       throw new \TProtocolException("Required field medium cannot be found.");
     }
     if (idx($parsed, 'biggish') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['biggish'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['biggish']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1857,7 +1857,7 @@ class MinPadding implements \IThriftSyncStruct {
       throw new \TProtocolException("Required field biggish cannot be found.");
     }
     if (idx($parsed, 'tiny') !== null) {
-      $_tmp3 = (int)/* HH_FIXME[4110] */ $parsed['tiny'];
+      $_tmp3 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['tiny']);
       if ($_tmp3 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -2044,16 +2044,16 @@ class MyStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
+      $this->MyIntField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['MyIntField']);
     }
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
+      $this->MyStringField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyStringField']);
     }
     if (idx($parsed, 'majorVer') !== null) {
-      $this->majorVer = /* HH_FIXME[4110] */ $parsed['majorVer'];
+      $this->majorVer = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['majorVer']);
     }
     if (idx($parsed, 'data') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['data']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyDataItem>($parsed['data']));
       $_tmp1 = MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
@@ -2215,7 +2215,7 @@ class Renaming implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $this->foo = /* HH_FIXME[4110] */ $parsed['foo'];
+      $this->foo = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['foo']);
     }
   }
 
@@ -2413,16 +2413,16 @@ class AnnotatedTypes implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'binary_field') !== null) {
-      $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
+      $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'list_field') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['list_field'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<Map<int, string>>>($parsed['list_field']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = Map {};
         $_json9 = $_value2;
         $_container10 = Map {};
-        foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
+        foreach($_json9 as $_key7 => $_value8) {
           $_value11 = '';
           $_value11 = $_value8;
           $_container10[$_key7] = $_value11;
@@ -2578,13 +2578,13 @@ class ForwardUsageRoot implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'ForwardUsageStruct') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageStruct']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageStruct>($parsed['ForwardUsageStruct']));
       $_tmp1 = ForwardUsageStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
     }
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageByRef']);
+      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageByRef>($parsed['ForwardUsageByRef']));
       $_tmp3 = ForwardUsageByRef::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
@@ -2687,7 +2687,7 @@ class ForwardUsageStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
@@ -2790,7 +2790,7 @@ class ForwardUsageByRef implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
@@ -2952,7 +2952,7 @@ class NoexceptMoveSimpleStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'boolField') !== null) {
-      $this->boolField = /* HH_FIXME[4110] */ $parsed['boolField'];
+      $this->boolField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['boolField']);
     }
   }
 
@@ -3282,32 +3282,32 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'MyBoolField') !== null) {
-      $this->MyBoolField = /* HH_FIXME[4110] */ $parsed['MyBoolField'];
+      $this->MyBoolField = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['MyBoolField']);
     }
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
+      $this->MyIntField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['MyIntField']);
     }
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
+      $this->MyStringField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyStringField']);
     }
     if (idx($parsed, 'MyStringField2') !== null) {
-      $this->MyStringField2 = /* HH_FIXME[4110] */ $parsed['MyStringField2'];
+      $this->MyStringField2 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyStringField2']);
     }
     if (idx($parsed, 'MyBinaryField') !== null) {
-      $this->MyBinaryField = /* HH_FIXME[4110] */ $parsed['MyBinaryField'];
+      $this->MyBinaryField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyBinaryField']);
     }
     if (idx($parsed, 'MyBinaryField2') !== null) {
-      $this->MyBinaryField2 = /* HH_FIXME[4110] */ $parsed['MyBinaryField2'];
+      $this->MyBinaryField2 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyBinaryField2']);
     }
     if (idx($parsed, 'MyBinaryField3') !== null) {
-      $this->MyBinaryField3 = /* HH_FIXME[4110] */ $parsed['MyBinaryField3'];
+      $this->MyBinaryField3 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyBinaryField3']);
     } else {
       throw new \TProtocolException("Required field MyBinaryField3 cannot be found.");
     }
     if (idx($parsed, 'MyBinaryListField4') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['MyBinaryListField4'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<string>>($parsed['MyBinaryListField4']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = '';
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -3315,9 +3315,9 @@ class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
       $this->MyBinaryListField4 = $_container4;
     }
     if (idx($parsed, 'MyMapEnumAndInt') !== null) {
-      $_json9 = /* HH_FIXME[4110] */ $parsed['MyMapEnumAndInt'];
+      $_json9 = HH\FIXME\UNSAFE_CAST<mixed, Map<MyEnumA, string>>($parsed['MyMapEnumAndInt']);
       $_container10 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
+      foreach($_json9 as $_key7 => $_value8) {
         $_value11 = '';
         $_value11 = $_value8;
         $_container10[$_key7] = $_value11;
@@ -3515,11 +3515,11 @@ class NoExceptMoveUnion implements \IThriftSyncStruct, \IThriftUnion<NoExceptMov
     }
 
     if (idx($parsed, 'string_field') !== null) {
-      $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
+      $this->string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['string_field']);
       $this->_type = NoExceptMoveUnionEnum::string_field;
     }
     if (idx($parsed, 'i32_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['i32_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['i32_field']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -3811,9 +3811,9 @@ class AllocatorAware implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'aa_list') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['aa_list'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['aa_list']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -3826,9 +3826,9 @@ class AllocatorAware implements \IThriftSyncStruct {
       $this->aa_list = $_container4;
     }
     if (idx($parsed, 'aa_set') !== null) {
-      $_json10 = /* HH_FIXME[4110] */ $parsed['aa_set'];
+      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['aa_set']);
       $_container11 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json10 as $_key8 => $_value9) {
+      foreach($_json10 as $_key8 => $_value9) {
         $_elem12 = 0;
         $_tmp13 = (int)$_value9;
         if ($_tmp13 > 0x7fffffff) {
@@ -3841,9 +3841,9 @@ class AllocatorAware implements \IThriftSyncStruct {
       $this->aa_set = $_container11;
     }
     if (idx($parsed, 'aa_map') !== null) {
-      $_json17 = /* HH_FIXME[4110] */ $parsed['aa_map'];
+      $_json17 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['aa_map']);
       $_container18 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json17 as $_key15 => $_value16) {
+      foreach($_json17 as $_key15 => $_value16) {
         $_value19 = 0;
         $_tmp20 = (int)$_value16;
         if ($_tmp20 > 0x7fffffff) {
@@ -3856,10 +3856,10 @@ class AllocatorAware implements \IThriftSyncStruct {
       $this->aa_map = $_container18;
     }
     if (idx($parsed, 'aa_string') !== null) {
-      $this->aa_string = /* HH_FIXME[4110] */ $parsed['aa_string'];
+      $this->aa_string = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['aa_string']);
     }
     if (idx($parsed, 'not_a_container') !== null) {
-      $_tmp21 = (int)/* HH_FIXME[4110] */ $parsed['not_a_container'];
+      $_tmp21 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['not_a_container']);
       if ($_tmp21 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -3867,7 +3867,7 @@ class AllocatorAware implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'aa_unique') !== null) {
-      $_tmp22 = (int)/* HH_FIXME[4110] */ $parsed['aa_unique'];
+      $_tmp22 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['aa_unique']);
       if ($_tmp22 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -3875,7 +3875,7 @@ class AllocatorAware implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'aa_shared') !== null) {
-      $_tmp23 = (int)/* HH_FIXME[4110] */ $parsed['aa_shared'];
+      $_tmp23 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['aa_shared']);
       if ($_tmp23 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -3974,7 +3974,7 @@ class AllocatorAware2 implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'not_a_container') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['not_a_container'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['not_a_container']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -4148,7 +4148,7 @@ class TypedefStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'i32_field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['i32_field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['i32_field']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -4156,7 +4156,7 @@ class TypedefStruct implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'IntTypedef_field') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['IntTypedef_field'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['IntTypedef_field']);
       if ($_tmp1 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -4164,7 +4164,7 @@ class TypedefStruct implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'UintTypedef_field') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['UintTypedef_field'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['UintTypedef_field']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -4263,7 +4263,7 @@ class StructWithDoubleUnderscores implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, '__field') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['__field'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['__field']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

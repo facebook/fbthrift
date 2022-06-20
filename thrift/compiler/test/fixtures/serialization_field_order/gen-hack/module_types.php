@@ -167,7 +167,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'field1') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['field1'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field1']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -175,7 +175,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'field2') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['field2'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field2']);
       if ($_tmp1 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -183,7 +183,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'field3') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['field3'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field3']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -350,7 +350,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'field1') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['field1'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field1']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -358,7 +358,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'field2') !== null) {
-      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['field2'];
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field2']);
       if ($_tmp1 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -366,7 +366,7 @@ class Foo2 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'field3') !== null) {
-      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['field3'];
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field3']);
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

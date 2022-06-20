@@ -400,13 +400,13 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     }
 
     if (idx($parsed, 'arg1') !== null) {
-      $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
+      $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, \Adapter1::THackType>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
-      $this->arg2 = /* HH_FIXME[4110] */ $parsed['arg2'];
+      $this->arg2 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg2']);
     }
     if (idx($parsed, 'arg3') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg3']);
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Foo>($parsed['arg3']));
       $_tmp1 = Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg3 = $_tmp1;
@@ -518,7 +518,7 @@ class Service_func_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['success'];
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, \Adapter1::THackType>($parsed['success']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

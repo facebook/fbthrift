@@ -478,9 +478,9 @@ class SomeService_bounce_map_args implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'm') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['m'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, string>>($parsed['m']);
       $_container4 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_value5 = '';
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
@@ -602,9 +602,9 @@ class SomeService_bounce_map_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['success'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, string>>($parsed['success']);
       $_container4 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_value5 = '';
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
@@ -708,9 +708,9 @@ class SomeService_binary_keyed_map_args implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'r') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['r'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['r']);
       $_container4 = Vector {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -832,9 +832,9 @@ class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['success'];
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, int>>($parsed['success']);
       $_container4 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+      foreach($_json3 as $_key1 => $_value2) {
         $_value5 = 0;
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
