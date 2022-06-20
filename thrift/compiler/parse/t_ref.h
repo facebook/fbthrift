@@ -33,6 +33,7 @@ class t_ref {
   constexpr t_ref() = default;
   constexpr t_ref(const t_ref&) noexcept = default;
   constexpr t_ref(std::nullptr_t) noexcept {}
+  constexpr t_ref& operator=(const t_ref&) = default;
 
   template <typename U>
   constexpr /* implicit */ t_ref(const t_ref<U>& u) noexcept : ptr_(u.get()) {}
