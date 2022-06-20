@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/Object.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
@@ -29,6 +30,19 @@ using namespace std;
 using namespace folly;
 using namespace apache::thrift;
 using namespace thrift::benchmark;
+
+template <class>
+struct SerializerTraits;
+template <class ReaderType, class WriterType>
+struct SerializerTraits<Serializer<ReaderType, WriterType>> {
+  using Reader = ReaderType;
+  using Writer = WriterType;
+};
+
+template <class T>
+using GetReader = typename SerializerTraits<T>::Reader;
+template <class T>
+using GetWriter = typename SerializerTraits<T>::Writer;
 
 struct FrozenSerializer {
   template <class T>
@@ -48,24 +62,47 @@ struct FrozenSerializer {
   }
 };
 
+enum class SerializerMethod {
+  Codegen,
+  Object,
+};
+
 // The benckmark is to measure single struct use case, the iteration here is
 // more like a benchmark artifact, so avoid doing optimizationon iteration
 // usecase in this benchmark (e.g. move string definition out of while loop)
 
-template <typename Serializer, typename Struct, typename Counter>
+template <
+    SerializerMethod kSerializerMethod,
+    typename Serializer,
+    typename Struct,
+    typename Counter>
 void writeBench(size_t iters, Counter&&) {
   BenchmarkSuspender susp;
   auto strct = create<Struct>();
+  protocol::Object obj;
+  if constexpr (kSerializerMethod == SerializerMethod::Object) {
+    IOBufQueue q;
+    Serializer::serialize(strct, &q);
+    obj = protocol::parseObject<GetReader<Serializer>>(*q.move());
+  }
   susp.dismiss();
 
   while (iters--) {
-    IOBufQueue q;
-    Serializer::serialize(strct, &q);
+    if constexpr (kSerializerMethod == SerializerMethod::Object) {
+      auto q = protocol::serializeObject<GetWriter<Serializer>>(obj);
+    } else {
+      IOBufQueue q;
+      Serializer::serialize(strct, &q);
+    }
   }
   susp.rehire();
 }
 
-template <typename Serializer, typename Struct, typename Counter>
+template <
+    SerializerMethod kSerializerMethod,
+    typename Serializer,
+    typename Struct,
+    typename Counter>
 void readBench(size_t iters, Counter&& counter) {
   BenchmarkSuspender susp;
   auto strct = create<Struct>();
@@ -77,46 +114,61 @@ void readBench(size_t iters, Counter&& counter) {
   susp.dismiss();
 
   while (iters--) {
-    Struct data;
-    Serializer::deserialize(buf.get(), data);
+    if constexpr (kSerializerMethod == SerializerMethod::Object) {
+      auto obj = protocol::parseObject<GetReader<Serializer>>(*buf);
+    } else {
+      Struct data;
+      Serializer::deserialize(buf.get(), data);
+    }
   }
   susp.rehire();
   counter["serialized_size"] = buf->computeChainDataLength();
 }
 
-#define X1(proto, rdwr, bench)                                           \
-  BENCHMARK_COUNTERS(proto##Protocol_##rdwr##_##bench, counter, iters) { \
-    rdwr##Bench<proto##Serializer, bench>(iters, counter);               \
+constexpr SerializerMethod getSerializerMethod(std::string_view prefix) {
+  return prefix == "" ? SerializerMethod::Codegen
+      : prefix == "Object"
+      ? SerializerMethod::Object
+      : throw std::invalid_argument(std::string(prefix) + " is invalid");
+}
+
+#define X1(Prefix, proto, rdwr, bench)                                   \
+  BENCHMARK_COUNTERS(                                                    \
+      Prefix##proto##Protocol_##rdwr##_##bench, counter, iters) {        \
+    rdwr##Bench<getSerializerMethod(#Prefix), proto##Serializer, bench>( \
+        iters, counter);                                                 \
   }
 
-#define X2(proto, bench)  \
-  X1(proto, write, bench) \
-  X1(proto, read, bench)
+#define X2(Prefix, proto, bench)  \
+  X1(Prefix, proto, write, bench) \
+  X1(Prefix, proto, read, bench)
 
-#define X(proto)             \
-  X2(proto, Empty)           \
-  X2(proto, SmallInt)        \
-  X2(proto, BigInt)          \
-  X2(proto, SmallString)     \
-  X2(proto, BigString)       \
-  X2(proto, BigBinary)       \
-  X2(proto, LargeBinary)     \
-  X2(proto, Mixed)           \
-  X2(proto, MixedInt)        \
-  X2(proto, SmallListInt)    \
-  X2(proto, BigListInt)      \
-  X2(proto, BigListMixed)    \
-  X2(proto, BigListMixedInt) \
-  X2(proto, LargeListMixed)  \
-  X2(proto, LargeMapInt)     \
-  X2(proto, NestedMap)       \
-  X2(proto, ComplexStruct)
+#define X(Prefix, proto)             \
+  X2(Prefix, proto, Empty)           \
+  X2(Prefix, proto, SmallInt)        \
+  X2(Prefix, proto, BigInt)          \
+  X2(Prefix, proto, SmallString)     \
+  X2(Prefix, proto, BigString)       \
+  X2(Prefix, proto, BigBinary)       \
+  X2(Prefix, proto, LargeBinary)     \
+  X2(Prefix, proto, Mixed)           \
+  X2(Prefix, proto, MixedInt)        \
+  X2(Prefix, proto, SmallListInt)    \
+  X2(Prefix, proto, BigListInt)      \
+  X2(Prefix, proto, BigListMixed)    \
+  X2(Prefix, proto, BigListMixedInt) \
+  X2(Prefix, proto, LargeListMixed)  \
+  X2(Prefix, proto, LargeMapInt)     \
+  X2(Prefix, proto, NestedMap)       \
+  X2(Prefix, proto, ComplexStruct)
 
-X(Binary)
-X(Compact)
-X(SimpleJSON)
-X(JSON)
-X(Frozen)
+X(, Binary)
+X(, Compact)
+X(, SimpleJSON)
+X(, JSON)
+X(, Frozen)
+X(Object, Binary)
+X(Object, Compact)
 
 int main(int argc, char** argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
