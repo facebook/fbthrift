@@ -377,8 +377,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
         if (ftype == protocol::T_STOP) {
           break;
         }
-        auto val = parseValue(prot, ftype);
-        objectValue.members()->emplace(fid, val);
+        objectValue[FieldId{fid}] = parseValue(prot, ftype);
         prot.readFieldEnd();
       }
       prot.readStructEnd();
@@ -392,8 +391,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
       prot.readMapBegin(keyType, valType, size);
       for (uint32_t i = 0; i < size; i++) {
         auto key = parseValue(prot, keyType);
-        auto val = parseValue(prot, valType);
-        mapValue.emplace(key, val);
+        mapValue[std::move(key)] = parseValue(prot, valType);
       }
       prot.readMapEnd();
       return result;
@@ -404,8 +402,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
       auto& setValue = result.setValue_ref().ensure();
       prot.readSetBegin(elemType, size);
       for (uint32_t i = 0; i < size; i++) {
-        auto val = parseValue(prot, elemType);
-        setValue.emplace(val);
+        setValue.insert(parseValue(prot, elemType));
       }
       prot.readSetEnd();
       return result;
@@ -415,9 +412,9 @@ Value parseValue(Protocol& prot, TType arg_type) {
       uint32_t size;
       prot.readListBegin(elemType, size);
       auto& listValue = result.listValue_ref().ensure();
+      listValue.reserve(size);
       for (uint32_t i = 0; i < size; i++) {
-        auto val = parseValue(prot, elemType);
-        listValue.emplace_back(val);
+        listValue.push_back(parseValue(prot, elemType));
       }
       prot.readListEnd();
       return result;
