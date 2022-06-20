@@ -33,6 +33,8 @@ namespace py thrift.lib.thrift.protocol
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
 
+typedef id.ExternId PathSegmentId // TODO(ytj): add adapter
+
 struct Path {
-  1: list<id.ExternId> path;
+  1: list<PathSegmentId> path;
 }
