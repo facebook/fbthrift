@@ -22,6 +22,7 @@
 #include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Optional.h>
+#include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
 
 #include <vector>
@@ -171,8 +172,7 @@ X(Object, Binary)
 X(Object, Compact)
 
 int main(int argc, char** argv) {
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  google::InitGoogleLogging(argv[0]);
+  folly::Init init(&argc, &argv);
   runBenchmarks();
   return 0;
 }
