@@ -436,6 +436,7 @@ class mstch_python_program : public mstch_program {
             {"program:adapter_type_hint_modules",
              &mstch_python_program::adapter_type_hint_modules},
         });
+    register_has_option("program:import_static?", "import_static");
     gather_included_program_namespaces();
     visit_types_for_services_and_interactions();
     visit_types_for_objects();

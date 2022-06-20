@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+import __static__
+
 from abc import ABCMeta
 import typing as _typing
 
