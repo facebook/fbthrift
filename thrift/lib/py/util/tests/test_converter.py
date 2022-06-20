@@ -16,7 +16,7 @@
 import unittest
 
 import convertible.thrift_types as python_types
-import convertible.ttypes as py_legacy_types
+import convertible.ttypes as py_deprecated_types
 import convertible.types as py3_types
 from thrift.util.converter import to_py_struct
 
@@ -24,7 +24,7 @@ from thrift.util.converter import to_py_struct
 class Py3ToPyLegacyConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py_struct(
-            py_legacy_types.Simple,
+            py_deprecated_types.Simple,
             py3_types.Simple(
                 intField=42,
                 strField="simple",
@@ -40,12 +40,12 @@ class Py3ToPyLegacyConverterTest(unittest.TestCase):
         self.assertEqual(simple.intList, [1, 2, 3])
         self.assertEqual(simple.strSet, {"hello", "world"})
         self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
-        self.assertEqual(simple.color, py_legacy_types.Color.GREEN)
+        self.assertEqual(simple.color, py_deprecated_types.Color.GREEN)
         self.assertEqual(simple.name, "renamed")
 
     def test_nested(self) -> None:
         nested = to_py_struct(
-            py_legacy_types.Nested,
+            py_deprecated_types.Nested,
             py3_types.Nested(
                 simpleField=py3_types.Simple(
                     intField=42,
@@ -89,23 +89,25 @@ class Py3ToPyLegacyConverterTest(unittest.TestCase):
         self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
         self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
         self.assertEqual(
-            nested.colorToSimpleMap[py_legacy_types.Color.BLUE].color,
-            py_legacy_types.Color.BLUE,
+            nested.colorToSimpleMap[py_deprecated_types.Color.BLUE].color,
+            py_deprecated_types.Color.BLUE,
         )
 
     def test_simple_union(self) -> None:
-        simple_union = to_py_struct(py_legacy_types.Union, py3_types.Union(intField=42))
+        simple_union = to_py_struct(
+            py_deprecated_types.Union, py3_types.Union(intField=42)
+        )
         self.assertEqual(simple_union.get_intField(), 42)
 
     def test_union_with_containers(self) -> None:
         union_with_list = to_py_struct(
-            py_legacy_types.Union, py3_types.Union(intList=[1, 2, 3])
+            py_deprecated_types.Union, py3_types.Union(intList=[1, 2, 3])
         )
         self.assertEqual(union_with_list.get_intList(), [1, 2, 3])
 
     def test_complex_union(self) -> None:
         complex_union = to_py_struct(
-            py_legacy_types.Union,
+            py_deprecated_types.Union,
             py3_types.Union(
                 simple_=py3_types.Simple(
                     intField=42,
@@ -132,13 +134,13 @@ class PythonToPyLegacyConverterTest(unittest.TestCase):
             strToIntMap={"one": 1, "two": 2},
             color=python_types.Color.GREEN,
             name_="renamed",
-        ).to_py_legacy_struct()
+        )._to_py_deprecated()
         self.assertEqual(simple.intField, 42)
         self.assertEqual(simple.strField, "simple")
         self.assertEqual(simple.intList, [1, 2, 3])
         self.assertEqual(simple.strSet, {"hello", "world"})
         self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
-        self.assertEqual(simple.color, py_legacy_types.Color.GREEN)
+        self.assertEqual(simple.color, py_deprecated_types.Color.GREEN)
         self.assertEqual(simple.name, "renamed")
 
     def test_nested(self) -> None:
@@ -179,21 +181,21 @@ class PythonToPyLegacyConverterTest(unittest.TestCase):
                     color=python_types.Color.BLUE,
                 )
             },
-        ).to_py_legacy_struct()
+        )._to_py_deprecated()
         self.assertEqual(nested.simpleField.intField, 42)
         self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
         self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
         self.assertEqual(
-            nested.colorToSimpleMap[py_legacy_types.Color.BLUE].color,
-            py_legacy_types.Color.BLUE,
+            nested.colorToSimpleMap[py_deprecated_types.Color.BLUE].color,
+            py_deprecated_types.Color.BLUE,
         )
 
     def test_simple_union(self) -> None:
-        simple_union = python_types.Union(intField=42).to_py_legacy_struct()
+        simple_union = python_types.Union(intField=42)._to_py_deprecated()
         self.assertEqual(simple_union.get_intField(), 42)
 
     def test_union_with_containers(self) -> None:
-        union_with_list = python_types.Union(intList=[1, 2, 3]).to_py_legacy_struct()
+        union_with_list = python_types.Union(intList=[1, 2, 3])._to_py_deprecated()
         self.assertEqual(union_with_list.get_intList(), [1, 2, 3])
 
     def test_complex_union(self) -> None:
@@ -207,6 +209,6 @@ class PythonToPyLegacyConverterTest(unittest.TestCase):
                 color=python_types.Color.NONE,
                 name_="renamed",
             )
-        ).to_py_legacy_struct()
+        )._to_py_deprecated()
         self.assertEqual(complex_union.get_simpleField().intField, 42)
         self.assertEqual(complex_union.get_simpleField().name, "renamed")

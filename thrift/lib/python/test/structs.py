@@ -256,6 +256,10 @@ class StructTests(unittest.TestCase):
                 },
             )
 
+    def test_to_python(self) -> None:
+        e = easy()
+        self.assertEquals(e, e._to_python())
+
 
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:

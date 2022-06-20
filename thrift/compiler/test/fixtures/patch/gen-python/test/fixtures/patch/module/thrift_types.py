@@ -49,17 +49,20 @@ class MyData(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyData()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyData, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyData, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyData, self)
 
 
 class InnerUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -86,17 +89,20 @@ class InnerUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_InnerUnion()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.InnerUnion, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnion, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.InnerUnion, self)
 
 
 class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -139,17 +145,20 @@ class MyUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyUnion, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnion, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyUnion, self)
 
 
 class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -360,17 +369,20 @@ class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStruct, self)
 
 
 class MyDataPatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -405,17 +417,20 @@ class MyDataPatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyDataPatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyDataPatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyDataPatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyDataPatch, self)
 
 
 class MyDataValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -458,17 +473,20 @@ class MyDataValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyDataValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyDataValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyDataValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyDataValuePatch, self)
 
 
 class OptionalMyDataValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -519,17 +537,20 @@ class OptionalMyDataValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyDataValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyDataValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyDataValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyDataValuePatch, self)
 
 
 class InnerUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -556,17 +577,20 @@ class InnerUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_InnerUnionPatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.InnerUnionPatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnionPatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.InnerUnionPatch, self)
 
 
 class InnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -617,17 +641,20 @@ class InnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_InnerUnionValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.InnerUnionValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.InnerUnionValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.InnerUnionValuePatch, self)
 
 
 class OptionalInnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -678,17 +705,20 @@ class OptionalInnerUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalInnerUnionValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalInnerUnionValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalInnerUnionValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalInnerUnionValuePatch, self)
 
 
 class MyUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -731,17 +761,20 @@ class MyUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnionPatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyUnionPatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnionPatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyUnionPatch, self)
 
 
 class MyUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -792,17 +825,20 @@ class MyUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnionValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyUnionValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyUnionValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyUnionValuePatch, self)
 
 
 class OptionalMyUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -853,17 +889,20 @@ class OptionalMyUnionValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyUnionValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyUnionValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyUnionValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyUnionValuePatch, self)
 
 
 class MyStructPatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1074,17 +1113,20 @@ class MyStructPatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructPatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStructPatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructPatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructPatch, self)
 
 
 class MyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1135,17 +1177,20 @@ class MyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructField21Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStructField21Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructField21Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructField21Patch, self)
 
 
 class OptionalMyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1196,17 +1241,20 @@ class OptionalMyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyStructField21Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyStructField21Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyStructField21Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyStructField21Patch, self)
 
 
 class MyStructField22Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1257,17 +1305,20 @@ class MyStructField22Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructField22Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStructField22Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructField22Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructField22Patch, self)
 
 
 class OptionalMyStructField22Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1318,17 +1369,20 @@ class OptionalMyStructField22Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyStructField22Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyStructField22Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyStructField22Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyStructField22Patch, self)
 
 
 class MyStructField23Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1371,17 +1425,20 @@ class MyStructField23Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructField23Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStructField23Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructField23Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructField23Patch, self)
 
 
 class OptionalMyStructField23Patch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1432,17 +1489,20 @@ class OptionalMyStructField23Patch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyStructField23Patch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyStructField23Patch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyStructField23Patch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyStructField23Patch, self)
 
 
 class MyStructValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1485,17 +1545,20 @@ class MyStructValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.MyStructValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.MyStructValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructValuePatch, self)
 
 
 class OptionalMyStructValuePatch(metaclass=_fbthrift_python_types.StructMeta):
@@ -1546,17 +1609,20 @@ class OptionalMyStructValuePatch(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyStructValuePatch()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.patch.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalMyStructValuePatch, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalMyStructValuePatch, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalMyStructValuePatch, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import test.fixtures.patch.module.thrift_metadata

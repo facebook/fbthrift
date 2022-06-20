@@ -98,8 +98,9 @@ class {{struct:name}}({{!
         }}{{#struct:fields_and_mixin_fields}}{{^first?}}, {{/first?}}{{> fields/adapted_type}}{{!
         }}{{/struct:fields_and_mixin_fields}}]]]: ...
     {{/struct:union?}}
-    def to_py3_struct(self) -> "{{program:module_path}}.types.{{struct:name}}": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "{{program:py_legacy_module_path}}.ttypes.{{struct:name}}": ...   # type: ignore
+    def _to_python(self) -> {{struct:name}}: ...
+    def _to_py3(self) -> "{{program:module_path}}.types.{{struct:name}}": ...  # type: ignore
+    def _to_py_deprecated(self) -> "{{program:py_deprecated_module_path}}.ttypes.{{struct:name}}": ...  # type: ignore
 {{/program:structs}}
 {{#program:constants?}}
 

@@ -44,17 +44,20 @@ class Fiery(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
             return str(field)
         return field
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.Fiery, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.Fiery, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Fiery, self)
 
 
 class Serious(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -88,17 +91,20 @@ class Serious(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
             return str(field)
         return field
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.Serious, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.Serious, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Serious, self)
 
 
 class ComplexFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -140,17 +146,20 @@ class ComplexFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta
             return str(field)
         return field
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.ComplexFieldNames, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.ComplexFieldNames, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ComplexFieldNames, self)
 
 
 class CustomFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -192,17 +201,20 @@ class CustomFieldNames(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta)
             return str(field)
         return field
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.CustomFieldNames, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.CustomFieldNames, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.CustomFieldNames, self)
 
 
 class ExceptionWithPrimitiveField(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -244,17 +256,20 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_python_exceptions.Generate
             return str(field)
         return field
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.ExceptionWithPrimitiveField, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.ExceptionWithPrimitiveField, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithPrimitiveField, self)
 
 
 class Banal(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
@@ -273,17 +288,20 @@ class Banal(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_Banal()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.Banal, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.Banal, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Banal, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata

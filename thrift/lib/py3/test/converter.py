@@ -16,7 +16,7 @@
 import unittest
 
 import convertible.thrift_types as python_types
-import convertible.ttypes as py_legacy_types
+import convertible.ttypes as py_deprecated_types
 import convertible.types as py3_types
 from thrift.py3.converter import to_py3_struct
 from thrift.py3.types import Struct
@@ -26,13 +26,13 @@ class PyLegacyToPy3ConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py3_struct(
             py3_types.Simple,
-            py_legacy_types.Simple(
+            py_deprecated_types.Simple(
                 intField=42,
                 strField="simple",
                 intList=[1, 2, 3],
                 strSet={"hello", "world"},
                 strToIntMap={"one": 1, "two": 2},
-                color=py_legacy_types.Color.GREEN,
+                color=py_deprecated_types.Color.GREEN,
                 name="myname",
             ),
         )
@@ -47,44 +47,44 @@ class PyLegacyToPy3ConverterTest(unittest.TestCase):
     def test_nested(self) -> None:
         nested = to_py3_struct(
             py3_types.Nested,
-            py_legacy_types.Nested(
-                simpleField=py_legacy_types.Simple(
+            py_deprecated_types.Nested(
+                simpleField=py_deprecated_types.Simple(
                     intField=42,
                     strField="simple",
                     intList=[1, 2, 3],
                     strSet={"hello", "world"},
                     strToIntMap={"one": 1, "two": 2},
-                    color=py_legacy_types.Color.NONE,
+                    color=py_deprecated_types.Color.NONE,
                     name="myname",
                 ),
                 simpleList=[
-                    py_legacy_types.Simple(
+                    py_deprecated_types.Simple(
                         intField=200,
                         strField="face",
                         intList=[4, 5, 6],
                         strSet={"keep", "calm"},
                         strToIntMap={"three": 3, "four": 4},
-                        color=py_legacy_types.Color.RED,
+                        color=py_deprecated_types.Color.RED,
                         name="myname",
                     ),
-                    py_legacy_types.Simple(
+                    py_deprecated_types.Simple(
                         intField=404,
                         strField="b00k",
                         intList=[7, 8, 9],
                         strSet={"carry", "on"},
                         strToIntMap={"five": 5, "six": 6},
-                        color=py_legacy_types.Color.GREEN,
+                        color=py_deprecated_types.Color.GREEN,
                         name="myname",
                     ),
                 ],
                 colorToSimpleMap={
-                    py_legacy_types.Color.BLUE: py_legacy_types.Simple(
+                    py_deprecated_types.Color.BLUE: py_deprecated_types.Simple(
                         intField=500,
                         strField="internal",
                         intList=[10],
                         strSet={"server", "error"},
                         strToIntMap={"seven": 7, "eight": 8, "nine": 9},
-                        color=py_legacy_types.Color.BLUE,
+                        color=py_deprecated_types.Color.BLUE,
                         name="myname",
                     )
                 },
@@ -99,21 +99,21 @@ class PyLegacyToPy3ConverterTest(unittest.TestCase):
 
     def test_simple_union(self) -> None:
         simple_union = to_py3_struct(
-            py3_types.Union, py_legacy_types.Union(intField=42)
+            py3_types.Union, py_deprecated_types.Union(intField=42)
         )
         self.assertEqual(simple_union.type, py3_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
         simple_union = to_py3_struct(
-            py3_types.Union, py_legacy_types.Union(name="myname")
+            py3_types.Union, py_deprecated_types.Union(name="myname")
         )
         self.assertEqual(simple_union.type, py3_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
         union_with_list = to_py3_struct(
-            py3_types.Union, py_legacy_types.Union(intList=[1, 2, 3])
+            py3_types.Union, py_deprecated_types.Union(intList=[1, 2, 3])
         )
         self.assertEqual(union_with_list.type, py3_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
@@ -121,14 +121,14 @@ class PyLegacyToPy3ConverterTest(unittest.TestCase):
     def test_complex_union(self) -> None:
         complex_union = to_py3_struct(
             py3_types.Union,
-            py_legacy_types.Union(
-                simpleField=py_legacy_types.Simple(
+            py_deprecated_types.Union(
+                simpleField=py_deprecated_types.Simple(
                     intField=42,
                     strField="simple",
                     intList=[1, 2, 3],
                     strSet={"hello", "world"},
                     strToIntMap={"one": 1, "two": 2},
-                    color=py_legacy_types.Color.NONE,
+                    color=py_deprecated_types.Color.NONE,
                 )
             ),
         )
@@ -138,7 +138,7 @@ class PyLegacyToPy3ConverterTest(unittest.TestCase):
     def test_optional_defaults(self) -> None:
         converted = to_py3_struct(
             py3_types.OptionalDefaultsStruct,
-            py_legacy_types.OptionalDefaultsStruct(),
+            py_deprecated_types.OptionalDefaultsStruct(),
         )
         # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.py3_types._T]]` for 1st
         #  param but got `OptionalDefaultsStruct`.
@@ -158,7 +158,7 @@ class PythontoPy3ConverterTest(unittest.TestCase):
             strToIntMap={"one": 1, "two": 2},
             color=python_types.Color.GREEN,
             name_="myname",
-        ).to_py3_struct()
+        )._to_py3()
         self.assertEqual(simple.intField, 42)
         self.assertEqual(simple.strField, "simple")
         self.assertEqual(simple.intList, [1, 2, 3])
@@ -209,7 +209,7 @@ class PythontoPy3ConverterTest(unittest.TestCase):
                     name_="myname",
                 )
             },
-        ).to_py3_struct()
+        )._to_py3()
         self.assertEqual(nested.simpleField.intField, 42)
         self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
         self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
@@ -218,17 +218,17 @@ class PythontoPy3ConverterTest(unittest.TestCase):
         )
 
     def test_simple_union(self) -> None:
-        simple_union = python_types.Union(intField=42).to_py3_struct()
+        simple_union = python_types.Union(intField=42)._to_py3()
         self.assertEqual(simple_union.type, py3_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        simple_union = python_types.Union(name_="myname").to_py3_struct()
+        simple_union = python_types.Union(name_="myname")._to_py3()
         self.assertEqual(simple_union.type, py3_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
-        union_with_list = python_types.Union(intList=[1, 2, 3]).to_py3_struct()
+        union_with_list = python_types.Union(intList=[1, 2, 3])._to_py3()
         self.assertEqual(union_with_list.type, py3_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
 
@@ -242,12 +242,12 @@ class PythontoPy3ConverterTest(unittest.TestCase):
                 strToIntMap={"one": 1, "two": 2},
                 color=python_types.Color.NONE,
             )
-        ).to_py3_struct()
+        )._to_py3()
         self.assertEqual(complex_union.type, py3_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
 
     def test_optional_defaults(self) -> None:
-        converted = python_types.OptionalDefaultsStruct().to_py3_struct()
+        converted = python_types.OptionalDefaultsStruct()._to_py3()
         # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.py3_types._T]]` for 1st
         #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyString)

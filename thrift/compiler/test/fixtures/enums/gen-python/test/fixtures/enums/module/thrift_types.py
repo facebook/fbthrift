@@ -65,17 +65,20 @@ class SomeStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_SomeStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("test.fixtures.enums.module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.SomeStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.SomeStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SomeStruct, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import test.fixtures.enums.module.thrift_metadata

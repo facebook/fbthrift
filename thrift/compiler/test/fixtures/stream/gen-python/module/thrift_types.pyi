@@ -21,8 +21,9 @@ class FooEx(_fbthrift_python_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
-    def to_py3_struct(self) -> "module.types.FooEx": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.FooEx": ...   # type: ignore
+    def _to_python(self) -> FooEx: ...
+    def _to_py3(self) -> "module.types.FooEx": ...  # type: ignore
+    def _to_py_deprecated(self) -> "module.ttypes.FooEx": ...  # type: ignore
 
 
 class _fbthrift_PubSubStreamingService_returnstream_args(_fbthrift_python_types.Struct):

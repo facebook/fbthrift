@@ -41,17 +41,20 @@ class SimpleException(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_SimpleException()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.SimpleException, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.SimpleException, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SimpleException, self)
 
 
 class OptionalRefStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -78,17 +81,20 @@ class OptionalRefStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalRefStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.OptionalRefStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.OptionalRefStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.OptionalRefStruct, self)
 
 
 class SimpleStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -171,17 +177,20 @@ class SimpleStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_SimpleStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.SimpleStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.SimpleStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SimpleStruct, self)
 
 
 class ComplexStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -272,17 +281,20 @@ class ComplexStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.ComplexStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.ComplexStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ComplexStruct, self)
 
 
 class BinaryUnion(metaclass=_fbthrift_python_types.UnionMeta):
@@ -309,17 +321,20 @@ class BinaryUnion(metaclass=_fbthrift_python_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_BinaryUnion()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.BinaryUnion, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.BinaryUnion, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.BinaryUnion, self)
 
 
 class BinaryUnionStruct(metaclass=_fbthrift_python_types.StructMeta):
@@ -346,17 +361,20 @@ class BinaryUnionStruct(metaclass=_fbthrift_python_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_BinaryUnionStruct()
 
-    def to_py3_struct(self):
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
         import importlib
         py3_types = importlib.import_module("module.types")
         import thrift.py3.converter
         return thrift.py3.converter.to_py3_struct(py3_types.BinaryUnionStruct, self)
 
-    def to_py_legacy_struct(self):
+    def _to_py_deprecated(self):
         import importlib
-        py_legacy_types = importlib.import_module("module.ttypes")
+        py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
-        return thrift.util.converter.to_py_struct(py_legacy_types.BinaryUnionStruct, self)
+        return thrift.util.converter.to_py_struct(py_deprecated_types.BinaryUnionStruct, self)
 
 # This unfortunately has to be down here to prevent circular imports
 import module.thrift_metadata
