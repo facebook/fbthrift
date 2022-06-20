@@ -129,6 +129,8 @@ class ServerConfigs {
   // @see ThriftServer::getListenerTos function.
   virtual uint32_t getListenerTos() const = 0;
 
+  virtual bool resourcePoolEnabled() const { return false; }
+
   // @see BaseThriftServer::resourcePoolSet function.
   virtual const ResourcePoolSet& resourcePoolSet() const {
     LOG(FATAL) << "Unimplemented resourcePoolSet const";

@@ -1373,6 +1373,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
         std::move(options), source, DynamicAttributeTag{});
   }
 
+  bool resourcePoolEnabled() const override {
+    return getRuntimeServerActions().resourcePoolEnabled;
+  }
+
   /**
    * Get the ResourcePoolSet used by this ThriftServer. There is always one, but
    * it may be empty if ResourcePools are not in use.

@@ -423,7 +423,8 @@ void Cpp2Worker::dispatchRequest(
     if (auto* found = std::get_if<PerServiceMetadata::MetadataFound>(
             &methodMetadataResult);
         LIKELY(found != nullptr)) {
-      if (!serverConfigs->resourcePoolSet().empty()) {
+      if (serverConfigs->resourcePoolEnabled() &&
+          !serverConfigs->resourcePoolSet().empty()) {
         if (!found->metadata.rpcKind) {
           std::string_view methodName = cpp2ReqCtx->getMethodName();
           AsyncProcessorHelper::sendUnknownMethodError(
