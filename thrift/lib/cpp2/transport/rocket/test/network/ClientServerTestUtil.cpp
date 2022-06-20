@@ -603,6 +603,10 @@ uint16_t RocketTestServer::getListeningPort() const {
   return listeningSocket_->getAddress().getPort();
 }
 
+wangle::ConnectionManager* RocketTestServer::getConnectionManager() const {
+  return acceptor_->getConnectionManager();
+}
+
 void RocketTestServer::setExpectedRemainingStreams(size_t n) {
   if (auto acceptor =
           dynamic_cast<RocketTestServerAcceptor*>(acceptor_.get())) {

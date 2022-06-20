@@ -31,6 +31,8 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
+#include <wangle/acceptor/ConnectionManager.h>
+
 namespace folly {
 class EventBase;
 class IOBuf;
@@ -100,6 +102,7 @@ class RocketTestServer {
   ~RocketTestServer();
 
   uint16_t getListeningPort() const;
+  wangle::ConnectionManager* getConnectionManager() const;
   void setExpectedRemainingStreams(size_t n);
 
   void setExpectedSetupMetadata(MetadataOpaqueMap<std::string, std::string> md);

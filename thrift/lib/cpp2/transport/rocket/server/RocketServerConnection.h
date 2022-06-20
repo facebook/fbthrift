@@ -26,6 +26,8 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Executor.h>
+#include <folly/ObserverContainer.h>
+#include <folly/Portability.h>
 #include <folly/container/F14Map.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/io/IOBuf.h>
@@ -42,10 +44,14 @@
 #include <thrift/lib/cpp2/server/MemoryTracker.h>
 #include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnectionObserver.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+
+THRIFT_FLAG_DECLARE_bool(enable_rocket_connection_observers);
 
 namespace apache {
 namespace thrift {
@@ -94,7 +100,8 @@ class RocketServerConnection final
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
-      apache::thrift::MessageChannel::SendCallbackPtr cb = nullptr);
+      MessageChannel::SendCallbackPtr cb = nullptr,
+      StreamId streamId = StreamId());
 
   RocketStreamClientCallback& createStreamClientCallback(
       StreamId streamId,
@@ -235,6 +242,83 @@ class RocketServerConnection final
     return socket_->getPeerAddress();
   }
 
+  using RocketServerConnectionObserverContainer = folly::ObserverContainer<
+      RocketServerConnectionObserver,
+      RocketServerConnection,
+      folly::ObserverContainerBasePolicyDefault<
+          RocketServerConnectionObserver::Events /* EventEnum */,
+          32 /* BitsetSize (max number of interface events) */>>;
+  using Observer = RocketServerConnectionObserverContainer::Observer;
+  using ManagedObserver =
+      RocketServerConnectionObserverContainer::ManagedObserver;
+
+  /**
+   * Adds an observer.
+   *
+   * If the observer is already added, this is a no-op.
+   *
+   * @param observer     Observer to add.
+   * @return             Whether the observer was added (fails if no list).
+   */
+  bool addObserver(Observer* observer) {
+    if (auto list = getObserverContainer()) {
+      list->addObserver(observer);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Removes an observer.
+   *
+   * @param observer     Observer to remove.
+   * @return             Whether the observer was found and removed.
+   */
+  bool removeObserver(Observer* observer) {
+    if (auto list = getObserverContainer()) {
+      return list->removeObserver(observer);
+    }
+    return false;
+  }
+
+  /**
+   * Get the number of observers.
+   *
+   * @return             Number of observers.
+   */
+  size_t numObservers() const {
+    if (auto list = getObserverContainer()) {
+      return list->numObservers();
+    }
+    return 0;
+  }
+
+  /**
+   * Returns list of attached observers that are of type T.
+   *
+   * @return             Attached observers of type T.
+   */
+  template <typename T = Observer>
+  std::vector<T*> findObservers() {
+    if (auto list = getObserverContainer()) {
+      return list->findObservers<T>();
+    }
+    return {};
+  }
+
+ private:
+  /**
+   * Returns the RocketServerConnectionObserverContainer or nullptr if not
+   * available.
+   */
+  RocketServerConnectionObserverContainer* getObserverContainer() const {
+    if (THRIFT_FLAG(enable_rocket_connection_observers)) {
+      return const_cast<RocketServerConnectionObserverContainer*>(
+          &observerContainer_);
+    }
+    return nullptr;
+  }
+
  private:
   void startDrain(std::optional<DrainCompleteCode> drainCompleteCode);
 
@@ -266,6 +350,8 @@ class RocketServerConnection final
     size_t requestCompleteCount{0};
     // the counts of valid sendCallbacks in each inflight write
     std::vector<apache::thrift::MessageChannel::SendCallbackPtr> sendCallbacks;
+    // the WriteEvent objects associated with each write in the batch
+    std::vector<RocketServerConnectionObserver::WriteEvent> writeEvents;
   };
   // The size of the queue is equal to the total number of inflight writes to
   // the underlying transport, i.e., writes for which the
@@ -317,13 +403,22 @@ class RocketServerConnection final
 
     void enqueueWrite(
         std::unique_ptr<folly::IOBuf> data,
-        apache::thrift::MessageChannel::SendCallbackPtr cb) {
+        MessageChannel::SendCallbackPtr cb,
+        StreamId streamId) {
       if (cb) {
         cb->sendQueued();
         bufferedWritesContext_.sendCallbacks.push_back(std::move(cb));
       }
-      if (batchingByteSize_) {
-        totalBytesBuffered_ += data->computeChainDataLength();
+
+      if (auto hasObservers = connection_.numObservers() != 0;
+          batchingByteSize_ || hasObservers) {
+        auto totalBytesInWrite = data->computeChainDataLength();
+
+        if (hasObservers) {
+          bufferedWritesContext_.writeEvents.emplace_back(
+              streamId, totalBytesBuffered_, totalBytesInWrite);
+        }
+        totalBytesBuffered_ += totalBytesInWrite;
       }
       if (!bufferedWrites_) {
         bufferedWrites_ = std::move(data);
@@ -503,6 +598,14 @@ class RocketServerConnection final
   void resumeStreams();
 
   friend class RocketServerFrameContext;
+
+  // Container of observers for the RocketServerConnection.
+  //
+  // This member MUST be last in the list of members to ensure it is destroyed
+  // first, before any other members are destroyed. This ensures that observers
+  // can inspect any state available through public methods
+  // when destruction of the Rocket connection begins.
+  RocketServerConnectionObserverContainer observerContainer_;
 };
 
 } // namespace rocket

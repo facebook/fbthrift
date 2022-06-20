@@ -53,6 +53,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/ClientServerTestUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/test/network/Mocks.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/Util.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -60,6 +61,7 @@ using namespace apache::thrift;
 using namespace apache::thrift::rocket;
 using namespace apache::thrift::rocket::test;
 using namespace apache::thrift::transport;
+using namespace testing;
 
 namespace {
 // Used for testing RocketClient against RocketTestServer
@@ -1158,4 +1160,225 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
   // will invoke closeNow() with some write callbacks not fullfilled yet, that
   // should not in any invalid state
   evb.reset();
+}
+
+/**
+ * Rocket connection observer tests
+ */
+
+TEST_F(RocketNetworkTest, ObserverIsNotInstalledWhenFlagIsFalse) {
+  auto observer =
+      std::make_unique<NiceMock<MockRocketServerConnectionObserver>>();
+
+  this->server_->getEventBase().runInEventBaseThreadAndWait([&] {
+    auto connCount = 0;
+    server_->getConnectionManager()->forEachConnection(
+        [&](wangle::ManagedConnection* connection) {
+          if (auto conn = dynamic_cast<RocketServerConnection*>(connection)) {
+            EXPECT_EQ(conn->numObservers(), 0);
+            conn->addObserver(observer.get());
+            EXPECT_EQ(conn->numObservers(), 0);
+            connCount += 1;
+          }
+        });
+    EXPECT_EQ(connCount, 1);
+  });
+}
+
+MATCHER_P3(WriteEventMatcher, id, bytes, offset, "") {
+  return arg.streamId == StreamId(id) &&
+      arg.totalBytesInWrite == (size_t)bytes &&
+      arg.batchOffset == (size_t)offset;
+}
+
+TEST_F(RocketNetworkTest, ObserverIsNotifiedOnWriteSuccessRequestResponse) {
+  THRIFT_FLAG_SET_MOCK(enable_rocket_connection_observers, true);
+  this->withClient([&](RocketTestClient& client) {
+    RocketServerConnection::ManagedObserver::EventSet eventSet;
+    eventSet.enable(
+        RocketServerConnection::ManagedObserver::Events::WriteEvents);
+    auto observer =
+        std::make_unique<NiceMock<MockRocketServerConnectionObserver>>(
+            eventSet);
+
+    this->server_->getEventBase().runInEventBaseThreadAndWait([&] {
+      auto connCount = 0;
+      server_->getConnectionManager()->forEachConnection(
+          [&](wangle::ManagedConnection* connection) {
+            if (auto conn = dynamic_cast<RocketServerConnection*>(connection)) {
+              EXPECT_EQ(conn->numObservers(), 0);
+              conn->addObserver(observer.get());
+              EXPECT_EQ(conn->numObservers(), 1);
+              connCount += 1;
+            }
+          });
+      EXPECT_EQ(connCount, 1);
+    });
+
+    constexpr size_t kSetupFrameSize(14);
+    constexpr size_t kSetupFrameStreamId(0);
+
+    // send a request and check the event notifications when the response is
+    // ready and written to the socket
+    {
+      constexpr folly::StringPiece kMetadata("metadata");
+      constexpr folly::StringPiece kData("data");
+
+      // responses to setup frame (stream id = 0) and to the first request
+      // (stream id = 1) are batched together
+      EXPECT_CALL(
+          *observer,
+          writeReady(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId /* streamId */,
+                  kSetupFrameSize /* totalBytesWritten */,
+                  0 /* batchOffset */)));
+      EXPECT_CALL(
+          *observer,
+          writeSuccess(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId /* streamId */,
+                  kSetupFrameSize /* totalBytesWritten */,
+                  0 /* batchOffset */)));
+      EXPECT_CALL(
+          *observer,
+          writeReady(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId + 1 /* streamId */,
+                  24 /* totalBytesWritten */,
+                  kSetupFrameSize /* batchOffset */)));
+      EXPECT_CALL(
+          *observer,
+          writeSuccess(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId + 1 /* streamId */,
+                  24 /* totalBytesWritten */,
+                  kSetupFrameSize /* batchOffset */)));
+
+      client.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kMetadata, kData),
+          std::chrono::milliseconds(250) /* timeout */);
+
+      Mock::VerifyAndClearExpectations(observer.get());
+    }
+
+    // send another request and check again the event notifications
+    {
+      constexpr folly::StringPiece kNewMetadata("new_metadata");
+      constexpr folly::StringPiece kNewData("new_data");
+      EXPECT_CALL(
+          *observer,
+          writeReady(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId + 3 /* streamId */,
+                  32 /* totalBytesWritten */,
+                  0 /* batchOffset */)));
+      EXPECT_CALL(
+          *observer,
+          writeSuccess(
+              _,
+              WriteEventMatcher(
+                  kSetupFrameStreamId + 3 /* streamId */,
+                  32 /* totalBytesWritten */,
+                  0 /* batchOffset */)));
+
+      client.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kNewMetadata, kNewData),
+          std::chrono::milliseconds(250) /* timeout */);
+    }
+
+    server_->getEventBase().runInEventBaseThreadAndWait([&] {
+      server_->getConnectionManager()->forEachConnection(
+          [&](wangle::ManagedConnection* connection) {
+            if (auto conn = dynamic_cast<RocketServerConnection*>(connection)) {
+              conn->removeObserver(observer.get());
+              EXPECT_EQ(conn->numObservers(), 0);
+            }
+          });
+    });
+  });
+}
+
+TEST_F(RocketNetworkTest, ObserverIsNotifiedOnWriteSuccessRequestStream) {
+  THRIFT_FLAG_SET_MOCK(enable_rocket_connection_observers, true);
+  this->withClient([this](RocketTestClient& client) {
+    RocketServerConnection::ManagedObserver::EventSet eventSet;
+    eventSet.enable(
+        RocketServerConnection::ManagedObserver::Events::WriteEvents);
+    auto observer =
+        std::make_unique<NiceMock<MockRocketServerConnectionObserver>>(
+            eventSet);
+
+    this->server_->getEventBase().runInEventBaseThreadAndWait([&] {
+      auto connCount = 0;
+      server_->getConnectionManager()->forEachConnection(
+          [&](wangle::ManagedConnection* connection) {
+            if (auto conn = dynamic_cast<RocketServerConnection*>(connection)) {
+              EXPECT_EQ(conn->numObservers(), 0);
+              conn->addObserver(observer.get());
+              EXPECT_EQ(conn->numObservers(), 1);
+              connCount += 1;
+            }
+          });
+      EXPECT_EQ(connCount, 1);
+    });
+
+    constexpr size_t kSetupFrameSize(14);
+    constexpr size_t kSetupFrameStreamId(0);
+    constexpr size_t kNumRequestedPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    EXPECT_CALL(
+        *observer,
+        writeReady(
+            _,
+            WriteEventMatcher(
+                kSetupFrameStreamId /* streamId */,
+                kSetupFrameSize /* totalBytesWritten */,
+                0 /* batchOffset */)));
+    EXPECT_CALL(
+        *observer,
+        writeSuccess(
+            _,
+            WriteEventMatcher(
+                kSetupFrameStreamId /* streamId */,
+                kSetupFrameSize /* totalBytesWritten */,
+                0 /* batchOffset */)));
+    EXPECT_CALL(
+        *observer,
+        writeReady(
+            _,
+            WriteEventMatcher(
+                kSetupFrameStreamId + 1 /* streamId */,
+                16 /* totalBytesWritten */,
+                kSetupFrameSize /* batchOffset */)));
+    EXPECT_CALL(
+        *observer,
+        writeSuccess(
+            _,
+            WriteEventMatcher(
+                kSetupFrameStreamId + 1 /* streamId */,
+                16 /* totalBytesWritten */,
+                kSetupFrameSize /* batchOffset */)));
+
+    auto stream = client.sendRequestStreamSync(
+        Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
+
+    server_->getEventBase().runInEventBaseThreadAndWait([&] {
+      server_->getConnectionManager()->forEachConnection(
+          [&](wangle::ManagedConnection* connection) {
+            if (auto conn = dynamic_cast<RocketServerConnection*>(connection)) {
+              conn->removeObserver(observer.get());
+              EXPECT_EQ(conn->numObservers(), 0);
+            }
+          });
+    });
+  });
 }

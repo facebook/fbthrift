@@ -49,6 +49,8 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
+THRIFT_FLAG_DEFINE_bool(enable_rocket_connection_observers, false);
+
 namespace apache {
 namespace thrift {
 namespace rocket {
@@ -80,7 +82,8 @@ RocketServerConnection::RocketServerConnection(
           cfg.writeBatchingByteSize),
       socketDrainer_(*this),
       ingressMemoryTracker_(ingressMemoryTracker),
-      egressMemoryTracker_(egressMemoryTracker) {
+      egressMemoryTracker_(egressMemoryTracker),
+      observerContainer_(this) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
@@ -138,20 +141,32 @@ void RocketServerConnection::flushWrites(
     std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context) {
   DestructorGuard dg(this);
   DVLOG(10) << fmt::format("write: {} B", writes->computeChainDataLength());
+
+  if (auto observerContainer = getObserverContainer();
+      observerContainer && observerContainer->numObservers()) {
+    for (const auto& writeEvent : context.writeEvents) {
+      observerContainer->invokeInterfaceMethodAllObservers(
+          [&](auto observer, auto observed) {
+            observer->writeReady(observed, writeEvent);
+          });
+    }
+  }
+
   inflightWritesQueue_.push_back(std::move(context));
   socket_->writeChain(this, std::move(writes));
 }
 
 void RocketServerConnection::send(
     std::unique_ptr<folly::IOBuf> data,
-    apache::thrift::MessageChannel::SendCallbackPtr cb) {
+    MessageChannel::SendCallbackPtr cb,
+    StreamId streamId) {
   evb_.dcheckIsInEventBaseThread();
 
   if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
     return;
   }
 
-  writeBatcher_.enqueueWrite(std::move(data), std::move(cb));
+  writeBatcher_.enqueueWrite(std::move(data), std::move(cb), streamId);
 }
 
 RocketServerConnection::~RocketServerConnection() {
@@ -713,6 +728,16 @@ void RocketServerConnection::writeSuccess() noexcept {
     frameHandler_->requestComplete();
   }
 
+  if (auto observerContainer = getObserverContainer();
+      observerContainer && observerContainer->numObservers()) {
+    for (const auto& writeEvent : context.writeEvents) {
+      observerContainer->invokeInterfaceMethodAllObservers(
+          [&](auto observer, auto observed) {
+            observer->writeSuccess(observed, writeEvent);
+          });
+    }
+  }
+
   for (auto& cb : context.sendCallbacks) {
     cb.release()->messageSent();
   }
@@ -842,22 +867,26 @@ void RocketServerConnection::sendPayload(
     apache::thrift::MessageChannel::SendCallbackPtr cb) {
   send(
       PayloadFrame(streamId, std::move(payload), flags).serialize(),
-      std::move(cb));
+      std::move(cb),
+      streamId);
 }
 
 void RocketServerConnection::sendError(
     StreamId streamId,
     RocketException&& rex,
     apache::thrift::MessageChannel::SendCallbackPtr cb) {
-  send(ErrorFrame(streamId, std::move(rex)).serialize(), std::move(cb));
+  send(
+      ErrorFrame(streamId, std::move(rex)).serialize(),
+      std::move(cb),
+      streamId);
 }
 
 void RocketServerConnection::sendRequestN(StreamId streamId, int32_t n) {
-  send(RequestNFrame(streamId, n).serialize());
+  send(RequestNFrame(streamId, n).serialize(), nullptr, streamId);
 }
 
 void RocketServerConnection::sendCancel(StreamId streamId) {
-  send(CancelFrame(streamId).serialize());
+  send(CancelFrame(streamId).serialize(), nullptr, streamId);
 }
 
 void RocketServerConnection::sendExt(
@@ -865,7 +894,10 @@ void RocketServerConnection::sendExt(
     Payload&& payload,
     Flags flags,
     ExtFrameType extFrameType) {
-  send(ExtFrame(streamId, std::move(payload), flags, extFrameType).serialize());
+  send(
+      ExtFrame(streamId, std::move(payload), flags, extFrameType).serialize(),
+      nullptr,
+      streamId);
 }
 void RocketServerConnection::sendMetadataPush(
     std::unique_ptr<folly::IOBuf> metadata) {
