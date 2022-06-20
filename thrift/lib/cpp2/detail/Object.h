@@ -54,7 +54,7 @@ struct ValueHelper {
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Double) {
       result.doubleValue_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::String) {
-      result.set_stringValue(std::forward<T>(value));
+      result.stringValue_ref() = std::forward<T>(value);
     }
   }
 };
