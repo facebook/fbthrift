@@ -42,5 +42,11 @@ using FieldIdTag = type::field_id_u_c<static_cast<type::field_id_u_t>(Id)>;
 
 enum class FieldOrdinal : uint16_t {};
 
+template <std::underlying_type_t<FieldId> id>
+using field_id = std::integral_constant<FieldId, FieldId(id)>;
+
+template <std::underlying_type_t<FieldOrdinal> ord>
+using field_ordinal = std::integral_constant<FieldOrdinal, FieldOrdinal(ord)>;
+
 } // namespace thrift
 } // namespace apache

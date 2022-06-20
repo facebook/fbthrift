@@ -264,4 +264,37 @@ TEST(UnionFieldsTest, Get) {
   EXPECT_THROW((*op::getById<Tag, FieldId{1}>(u)), bad_field_access);
 }
 
+template <class Struct, class Ordinal, class Id, class Ident, class TypeTag>
+void checkField() {
+  test::same_tag<Id, struct_private_access::field_id<Struct, Ordinal>>;
+  test::same_tag<TypeTag, struct_private_access::type_tag<Struct, Ordinal>>;
+  test::same_tag<Ident, struct_private_access::ident<Struct, Ordinal>>;
+}
+
+TEST(FieldsTest, UnifiedAPIs) {
+  // clang-format off
+  using test_cpp2::cpp_reflection::struct3;
+  checkField<struct3, field_ordinal<0>,  void,         void,        void>();
+  checkField<struct3, field_ordinal<1>,  field_id<2>,  tag::fieldA, i32_t>();
+  checkField<struct3, field_ordinal<2>,  field_id<1>,  tag::fieldB, string_t>();
+  checkField<struct3, field_ordinal<3>,  field_id<3>,  tag::fieldC, enum_t<::test_cpp2::cpp_reflection::enum1>>();
+  checkField<struct3, field_ordinal<4>,  field_id<4>,  tag::fieldD, enum_t<::test_cpp2::cpp_reflection::enum2>>();
+  checkField<struct3, field_ordinal<5>,  field_id<5>,  tag::fieldE, union_t<::test_cpp2::cpp_reflection::union1>>();
+  checkField<struct3, field_ordinal<6>,  field_id<6>,  tag::fieldF, union_t<::test_cpp2::cpp_reflection::union2>>();
+  checkField<struct3, field_ordinal<7>,  field_id<7>,  tag::fieldG, struct_t<::test_cpp2::cpp_reflection::struct1>>();
+  checkField<struct3, field_ordinal<8>,  field_id<8>,  tag::fieldH, union_t<::test_cpp2::cpp_reflection::union2>>();
+  checkField<struct3, field_ordinal<9>,  field_id<9>,  tag::fieldI, list<i32_t>>();
+  checkField<struct3, field_ordinal<10>, field_id<10>, tag::fieldJ, list<string_t>>();
+  checkField<struct3, field_ordinal<11>, field_id<11>, tag::fieldK, cpp_type<std::deque<std::string>, list<string_t>>>();
+  checkField<struct3, field_ordinal<12>, field_id<12>, tag::fieldL, list<struct_t<::test_cpp2::cpp_reflection::structA>>>();
+  checkField<struct3, field_ordinal<13>, field_id<13>, tag::fieldM, set<i32_t>>();
+  checkField<struct3, field_ordinal<14>, field_id<14>, tag::fieldN, set<string_t>>();
+  checkField<struct3, field_ordinal<15>, field_id<15>, tag::fieldO, set<string_t>>();
+  checkField<struct3, field_ordinal<16>, field_id<16>, tag::fieldP, set<struct_t<::test_cpp2::cpp_reflection::structB>>>();
+  checkField<struct3, field_ordinal<17>, field_id<17>, tag::fieldQ, map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>>();
+  checkField<struct3, field_ordinal<18>, field_id<18>, tag::fieldR, map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>();
+  checkField<struct3, field_ordinal<19>, field_id<20>, tag::fieldS, map<binary_t, binary_t>>();
+  // clang-format off
+}
+
 } // namespace apache::thrift::type

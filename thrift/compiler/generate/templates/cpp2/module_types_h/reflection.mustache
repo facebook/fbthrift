@@ -37,6 +37,16 @@
   }
 
   template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void<%#struct:fields%>,
+                                                   ::apache::thrift::field_id<<%field:key%>><%/struct:fields%>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void<%#struct:fields%>,
+                                                         <%field:type_tag%><%/struct:fields%>>;
+
+  template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                       void<%#struct:fields%>,
                                                       ::apache::thrift::tag::<%field:cpp_name%><%/struct:fields%>>;

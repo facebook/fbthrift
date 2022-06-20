@@ -243,6 +243,14 @@ class MyDataItem final  {
   }
 
   template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void>;
+
+  template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                       void>;
 
@@ -342,6 +350,32 @@ class MyStruct final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>,
+                                                   ::apache::thrift::field_id<2>,
+                                                   ::apache::thrift::field_id<3>,
+                                                   ::apache::thrift::field_id<4>,
+                                                   ::apache::thrift::field_id<5>,
+                                                   ::apache::thrift::field_id<6>,
+                                                   ::apache::thrift::field_id<7>,
+                                                   ::apache::thrift::field_id<8>,
+                                                   ::apache::thrift::field_id<9>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::i64_t,
+                                                         ::apache::thrift::type::string_t,
+                                                         ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>,
+                                                         ::apache::thrift::type::bool_t,
+                                                         ::apache::thrift::type::bool_t,
+                                                         ::apache::thrift::type::bool_t,
+                                                         ::apache::thrift::type::set<::apache::thrift::type::float_t>,
+                                                         ::apache::thrift::type::string_t>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -924,6 +958,22 @@ class MyUnion final  {
   }
 
   template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>,
+                                                   ::apache::thrift::field_id<2>,
+                                                   ::apache::thrift::field_id<3>,
+                                                   ::apache::thrift::field_id<4>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>,
+                                                         ::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>,
+                                                         ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>,
+                                                         ::apache::thrift::type::set<::apache::thrift::type::float_t>>;
+
+  template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                       void,
                                                       ::apache::thrift::tag::myEnum,
@@ -1380,6 +1430,16 @@ class ReservedKeyword final  {
   }
 
   template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::i32_t>;
+
+  template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                       void,
                                                       ::apache::thrift::tag::reserved_field>;
@@ -1519,6 +1579,16 @@ class UnionToBeRenamed final  {
     }
     return ::apache::thrift::FieldOrdinal{0};
   }
+
+  template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::i32_t>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),

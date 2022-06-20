@@ -234,6 +234,36 @@ class Foo final  {
   }
 
   template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>,
+                                                   ::apache::thrift::field_id<2>,
+                                                   ::apache::thrift::field_id<3>,
+                                                   ::apache::thrift::field_id<4>,
+                                                   ::apache::thrift::field_id<5>,
+                                                   ::apache::thrift::field_id<6>,
+                                                   ::apache::thrift::field_id<7>,
+                                                   ::apache::thrift::field_id<8>,
+                                                   ::apache::thrift::field_id<9>,
+                                                   ::apache::thrift::field_id<10>,
+                                                   ::apache::thrift::field_id<11>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>,
+                                                         ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
+                                                         ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
+                                                         ::apache::thrift::type::adapted<my::Adapter3, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::list<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::string_t>>>>>,
+                                                         ::apache::thrift::type::adapted<my::Adapter3, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::list<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::string_t>>>>>,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::binary_t>,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>,
+                                                         ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>,
+                                                         ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>;
+
+  template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                       void,
                                                       ::apache::thrift::tag::intField,
