@@ -301,6 +301,7 @@ add_library(
   server/ServiceHealthPoller.cpp
   server/ThriftProcessor.cpp
   server/ThriftServer.cpp
+  server/ThriftServerConfig.cpp
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
   transport/core/ThriftClient.cpp
