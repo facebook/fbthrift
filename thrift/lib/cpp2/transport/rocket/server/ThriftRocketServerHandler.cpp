@@ -57,8 +57,6 @@ const int64_t kRocketServerMinVersion = 8;
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_server_max_version, kRocketServerMaxVersion);
 
-THRIFT_FLAG_DEFINE_int64(monitoring_over_user_logging_sample_rate, 0);
-
 namespace apache {
 namespace thrift {
 namespace rocket {
@@ -560,22 +558,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
   if (UNLIKELY(samplingStatus.isEnabled())) {
     timestamps.readEnd = readEnd;
     timestamps.processBegin = std::chrono::steady_clock::now();
-  }
-
-  // Log monitoring methods that are called over non-monitoring interface so
-  // that they can be migrated.
-  LoggingSampler monitoringLogSampler{
-      THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
-  if (UNLIKELY(monitoringLogSampler.isSampled())) {
-    if (LIKELY(connContext_.getInterfaceKind() != InterfaceKind::MONITORING)) {
-      auto& methodName = request->getMethodName();
-      if (UNLIKELY(isMonitoringMethodName(methodName))) {
-        THRIFT_CONNECTION_EVENT(monitoring_over_user)
-            .logSampled(connContext_, monitoringLogSampler, [&] {
-              return folly::dynamic::object("method_name", methodName);
-            });
-      }
-    }
   }
 
   if (serverConfigs_) {
