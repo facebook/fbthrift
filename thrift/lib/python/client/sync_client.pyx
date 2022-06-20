@@ -30,6 +30,7 @@ from thrift.python.serializer import serialize_iobuf, deserialize
 cdef class SyncClient:
     def __init__(SyncClient self, RequestChannel channel):
         self._omni_client = make_unique[cOmniClient](cmove(channel._cpp_obj))
+        self._exit_callbacks = []
 
     def __enter__(SyncClient self):
         if not self._omni_client:
@@ -37,7 +38,14 @@ cdef class SyncClient:
         return self
 
     def __exit__(SyncClient self, exec_type, exc_value, traceback):
-        self._omni_client.reset()
+        try:
+            for callback in self._exit_callbacks:
+                try:
+                    callback()
+                except Exception:
+                    pass
+        finally:
+            self._omni_client.reset()
 
     def _send_request(
         SyncClient self,
@@ -79,3 +87,6 @@ cdef class SyncClient:
 
     def set_persistent_header(SyncClient self, string key, string value):
         self._persistent_headers[key] = value
+
+    def _at_exit(SyncClient self, callback):
+        self._exit_callbacks.append(callback)

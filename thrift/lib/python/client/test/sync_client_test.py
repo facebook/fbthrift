@@ -136,3 +136,22 @@ class SyncClientTests(unittest.TestCase):
             with get_sync_client(TestService, path="/no/where") as client:
                 with self.assertRaises(HijackTestException):
                     client.add(1, 2)
+
+    def test_exit_callback(self) -> None:
+        class Callback:
+            def __init__(self):
+                self.triggered = False
+
+            def trigger(self):
+                self.triggered = True
+
+        cb1 = Callback()
+        cb2 = Callback()
+
+        with server_in_another_process() as path:
+            with get_sync_client(TestService, path=path) as client:
+                client._at_exit(cb1.trigger)
+                client._at_exit(cb2.trigger)
+
+        self.assertTrue(cb1.triggered)
+        self.assertTrue(cb2.triggered)
