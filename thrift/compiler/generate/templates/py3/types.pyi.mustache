@@ -55,6 +55,10 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 
 {{/program:enums}}
 {{#program:structs}}
+{{#struct:union?}}
+_{{struct:name}}ValueType = _typing.Union[None, {{#struct:py3_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/struct:py3_fields}}]
+
+{{/struct:union?}}
 class {{struct:name}}({{> types/python_struct_class}}, _typing.Hashable):
     class __fbthrift_IsSet:
     {{#struct:py3_fields}}
@@ -103,9 +107,9 @@ class {{struct:name}}({{> types/python_struct_class}}, _typing.Hashable):
     {{/struct:py3_fields}}
 
     @staticmethod
-    def fromValue(value: _typing.Union[None, {{#struct:py3_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/struct:py3_fields}}]) -> {{struct:name}}: ...
+    def fromValue(value: _{{struct:name}}ValueType) -> {{struct:name}}: ...
     @__property__
-    def value(self) -> _typing.Union[None, {{#struct:py3_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/struct:py3_fields}}]: ...
+    def value(self) -> _{{struct:name}}ValueType: ...
     @__property__
     def type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}
