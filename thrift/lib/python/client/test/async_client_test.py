@@ -243,25 +243,3 @@ class AsyncClientTests(IsolatedAsyncioTestCase):
                 with self.assertRaises(ArithmeticException) as e:
                     await client.nums(4, 2)
                 self.assertEqual(e.exception.msg, "from outside of stream")
-
-    async def test_exit_callback(self) -> None:
-        class Callback:
-            def __init__(self):
-                self.triggered = False
-
-            def trigger(self):
-                self.triggered = True
-
-            async def async_trigger(self):
-                self.triggered = True
-
-        cb1 = Callback()
-        cb2 = Callback()
-
-        async with server_in_event_loop() as addr:
-            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
-                client._at_aexit(cb1.trigger)
-                client._at_aexit(cb2.async_trigger)
-
-        self.assertTrue(cb1.triggered)
-        self.assertTrue(cb2.triggered)

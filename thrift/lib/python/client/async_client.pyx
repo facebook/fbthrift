@@ -15,7 +15,6 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
 import asyncio
-import inspect
 
 cimport cython
 cimport folly.iobuf
@@ -42,9 +41,6 @@ cdef class AsyncClient:
         self._executor_wrapper = folly.executor.loop_to_q[loop]
         self._connect_future = loop.create_future()
 
-    def __init__(AsyncClient self):
-        self._aexit_callbacks = []
-
     cdef bind_client(self, cRequestChannel_ptr channel):
         self._omni_client = make_unique[cOmniClient](cmove(channel))
 
@@ -59,21 +55,12 @@ cdef class AsyncClient:
         return self
 
     async def __aexit__(AsyncClient self, exc_type, exc_value, traceback):
-        try:
-            for callback in self._aexit_callbacks:
-                try:
-                    ret = callback()
-                    if inspect.isawaitable(ret):
-                        await ret
-                except Exception:
-                    pass
-        finally:
-            self._omni_client.reset()
-            # To break any future usage of this client
-            badfuture = asyncio.get_event_loop().create_future()
-            badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
-            badfuture.exception()
-            self._connect_future = badfuture
+        self._omni_client.reset()
+        # To break any future usage of this client
+        badfuture = asyncio.get_event_loop().create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
 
     def _send_request(
         AsyncClient self,
@@ -117,9 +104,6 @@ cdef class AsyncClient:
 
     def set_persistent_header(AsyncClient self, string key, string value):
         self._persistent_headers[key] = value
-
-    def _at_aexit(AsyncClient self, callback):
-        self._aexit_callbacks.append(callback)
 
 
 cdef void _async_client_send_request_callback(
