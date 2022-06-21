@@ -70,5 +70,24 @@
 #endif
   };
 
-  template<class T> using __fbthrift_ordinal = ::apache::thrift::field_ordinal<__fbthrift_ordinal_impl::value<T>>;
+<%! For non-unique field data, such as type tag, we can have same type tag for multiple fields.
+    In that case, we can not use template specialization since we can not specialize the same type twice.
+    Usually, this is handled by scanning all types to check whether there are duplicates,
+    e.g., https://github.com/llvm/llvm-project/blob/llvmorg-14.0.5/libcxx/include/tuple#L1218.
+    However, the build speed is much faster if we use partial specialization like this instead. %>
+  struct __fbthrift_ordinal_impl_for_non_unique_type {
+    template<class, class, class> struct Impl { static constexpr int value = 0; };
+    <%#struct:fields%>
+    template<class T> struct Impl<<%field:type_tag%>, T, std::enable_if_t<sizeof(T) != -<%field:ordinal%>>> { static constexpr int value = <%field:ordinal%>; };
+    <%/struct:fields%>
+    
+    template<class T> static constexpr int value = Impl<T, T, void>::value;
+  };
+
+  template<class T> using __fbthrift_ordinal = ::apache::thrift::field_ordinal<
+    std::conditional_t<
+        __fbthrift_ordinal_impl::value<T> != 0,
+        __fbthrift_ordinal_impl,
+        __fbthrift_ordinal_impl_for_non_unique_type>::template value<T>
+  >;
 <%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>
