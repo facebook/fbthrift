@@ -21,7 +21,7 @@ import convertible.types as py3_types
 from thrift.util.converter import to_py_struct
 
 
-class Py3ToPyLegacyConverterTest(unittest.TestCase):
+class Py3ToPyDeprecatedConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py_struct(
             py_deprecated_types.Simple,
@@ -124,7 +124,7 @@ class Py3ToPyLegacyConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.get_simpleField().name, "renamed")
 
 
-class PythonToPyLegacyConverterTest(unittest.TestCase):
+class PythonToPyDeprecatedConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = python_types.Simple(
             intField=42,
@@ -212,3 +212,18 @@ class PythonToPyLegacyConverterTest(unittest.TestCase):
         )._to_py_deprecated()
         self.assertEqual(complex_union.get_simpleField().intField, 42)
         self.assertEqual(complex_union.get_simpleField().name, "renamed")
+
+    def test_optional_type(self) -> None:
+        self.assertIsNone(to_py_struct(py_deprecated_types.Simple, None))
+        self.assertIsNone(
+            to_py_struct(
+                py_deprecated_types.Simple, python_types.Nested().optionalSimple
+            )
+        )
+
+        with self.assertRaises(AttributeError):
+            # make sure pyre complains
+            # pyre-ignore[16]: Optional type has no attribute `intField`.
+            to_py_struct(
+                py_deprecated_types.Simple, python_types.Nested().optionalSimple
+            ).intField

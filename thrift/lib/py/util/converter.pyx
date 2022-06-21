@@ -24,6 +24,8 @@ from thrift.util import parse_struct_spec
 
 
 def to_py_struct(cls, obj):
+    if obj is None:
+        return None
     return _to_py_struct(cls, obj)
 
 

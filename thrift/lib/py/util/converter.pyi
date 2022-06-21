@@ -18,7 +18,11 @@ import thrift.py3.types as py3_types
 import thrift.python.types as python_types
 
 T = typing.TypeVar("T")
+TObj = typing.Union[py3_types.Struct, python_types.StructOrUnion]
 
+@typing.overload
+def to_py_struct(cls: typing.Type[T], obj: TObj) -> T: ...
+@typing.overload
 def to_py_struct(
-    cls: typing.Type[T], obj: typing.Union[py3_types.Struct, python_types.StructOrUnion]
-) -> T: ...
+    cls: typing.Type[T], obj: typing.Optional[TObj]
+) -> typing.Optional[T]: ...
