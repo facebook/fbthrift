@@ -140,6 +140,12 @@ struct struct_private_access {
   template <typename T, typename Ord>
   using type_tag = decltype(__fbthrift_type_tag<T, Ord>());
 
+  template <typename T, typename U>
+  static typename T::template __fbthrift_ordinal<U> __fbthrift_ordinal();
+
+  template <typename T, typename U>
+  using ordinal = decltype(__fbthrift_ordinal<T, U>());
+
   template <typename T>
   static constexpr auto __fbthrift_field_ids = T::__fbthrift_field_ids;
 

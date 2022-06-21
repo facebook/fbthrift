@@ -51,4 +51,24 @@
                                                       void<%#struct:fields%>,
                                                       ::apache::thrift::tag::<%field:cpp_name%><%/struct:fields%>>;
 
+  struct __fbthrift_ordinal_impl {
+#if defined(_MSC_VER) || defined(__clang__)
+    template<class> static constexpr int value = 0;
+    <%#struct:fields%>
+    template<> static constexpr int value<::apache::thrift::field_id<<%field:key%>>> = <%field:ordinal%>;
+    template<> static constexpr int value<::apache::thrift::tag::<%field:cpp_name%>> = <%field:ordinal%>;
+    <%/struct:fields%>
+#else
+<%! Build speed wise, function overload is much slower than explicit template specification %>
+<%! TODO(ytj): Remove #else branch when gcc fixed bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85282 %>
+    template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
+    <%#struct:fields%>
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<<%field:key%>>>) { return <%field:ordinal%>; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::<%field:cpp_name%>>) { return <%field:ordinal%>; }
+    <%/struct:fields%>
+    template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
+#endif
+  };
+
+  template<class T> using __fbthrift_ordinal = ::apache::thrift::field_ordinal<__fbthrift_ordinal_impl::value<T>>;
 <%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>

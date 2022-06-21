@@ -269,6 +269,8 @@ void checkField() {
   test::same_tag<Id, struct_private_access::field_id<Struct, Ordinal>>;
   test::same_tag<TypeTag, struct_private_access::type_tag<Struct, Ordinal>>;
   test::same_tag<Ident, struct_private_access::ident<Struct, Ordinal>>;
+  test::same_tag<Ordinal, struct_private_access::ordinal<Struct, Id>>;
+  test::same_tag<Ordinal, struct_private_access::ordinal<Struct, Ident>>;
 }
 
 TEST(FieldsTest, UnifiedAPIs) {

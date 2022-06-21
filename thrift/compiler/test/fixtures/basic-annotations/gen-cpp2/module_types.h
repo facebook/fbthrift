@@ -570,6 +570,52 @@ class YourStruct final  {
                                                       ::apache::thrift::tag::cpp_type_annotation,
                                                       ::apache::thrift::tag::my_union>;
 
+  struct __fbthrift_ordinal_impl {
+#if defined(_MSC_VER) || defined(__clang__)
+    template<class> static constexpr int value = 0;
+    template<> static constexpr int value<::apache::thrift::field_id<2>> = 1;
+    template<> static constexpr int value<::apache::thrift::tag::majorVer> = 1;
+    template<> static constexpr int value<::apache::thrift::field_id<1>> = 2;
+    template<> static constexpr int value<::apache::thrift::tag::package> = 2;
+    template<> static constexpr int value<::apache::thrift::field_id<3>> = 3;
+    template<> static constexpr int value<::apache::thrift::tag::annotation_with_quote> = 3;
+    template<> static constexpr int value<::apache::thrift::field_id<4>> = 4;
+    template<> static constexpr int value<::apache::thrift::tag::class_> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<5>> = 5;
+    template<> static constexpr int value<::apache::thrift::tag::annotation_with_trailing_comma> = 5;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 6;
+    template<> static constexpr int value<::apache::thrift::tag::empty_annotations> = 6;
+    template<> static constexpr int value<::apache::thrift::field_id<7>> = 7;
+    template<> static constexpr int value<::apache::thrift::tag::my_enum> = 7;
+    template<> static constexpr int value<::apache::thrift::field_id<8>> = 8;
+    template<> static constexpr int value<::apache::thrift::tag::cpp_type_annotation> = 8;
+    template<> static constexpr int value<::apache::thrift::field_id<9>> = 9;
+    template<> static constexpr int value<::apache::thrift::tag::my_union> = 9;
+#else
+    template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 1; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::majorVer>) { return 1; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<1>>) { return 2; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::package>) { return 2; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<3>>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::annotation_with_quote>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::class_>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 5; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::annotation_with_trailing_comma>) { return 5; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 6; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::empty_annotations>) { return 6; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<7>>) { return 7; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::my_enum>) { return 7; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<8>>) { return 8; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::cpp_type_annotation>) { return 8; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<9>>) { return 9; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::my_union>) { return 9; }
+    template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
+#endif
+  };
+
+  template<class T> using __fbthrift_ordinal = ::apache::thrift::field_ordinal<__fbthrift_ordinal_impl::value<T>>;
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
