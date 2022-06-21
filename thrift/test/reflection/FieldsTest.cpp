@@ -281,6 +281,30 @@ void checkField() {
   if constexpr (is_type_tag_unique) {
     test::same_tag<Ordinal, struct_private_access::ordinal<Struct, TypeTag>>;
   }
+
+  using StructTag = struct_t<Struct>;
+  namespace field = apache::thrift::field;
+  test::same_tag<field::ordinal<StructTag, Ordinal>, Ordinal>;
+  test::same_tag<field::id<StructTag, Ordinal>, Id>;
+  test::same_tag<field::type_tag<StructTag, Ordinal>, TypeTag>;
+  test::same_tag<field::ident<StructTag, Ordinal>, Ident>;
+
+  test::same_tag<field::ordinal<StructTag, Id>, Ordinal>;
+  test::same_tag<field::id<StructTag, Id>, Id>;
+  test::same_tag<field::type_tag<StructTag, Id>, TypeTag>;
+  test::same_tag<field::ident<StructTag, Id>, Ident>;
+
+  if constexpr (is_type_tag_unique) {
+    test::same_tag<field::ordinal<StructTag, TypeTag>, Ordinal>;
+    test::same_tag<field::id<StructTag, TypeTag>, Id>;
+    test::same_tag<field::type_tag<StructTag, TypeTag>, TypeTag>;
+    test::same_tag<field::ident<StructTag, TypeTag>, Ident>;
+  }
+
+  test::same_tag<field::ordinal<StructTag, Ident>, Ordinal>;
+  test::same_tag<field::id<StructTag, Ident>, Id>;
+  test::same_tag<field::type_tag<StructTag, Ident>, TypeTag>;
+  test::same_tag<field::ident<StructTag, Ident>, Ident>;
 }
 
 TEST(FieldsTest, UnifiedAPIs) {
@@ -307,6 +331,31 @@ TEST(FieldsTest, UnifiedAPIs) {
   checkField<struct3, field_ordinal<18>, field_id<18>, tag::fieldR, true,  map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>();
   checkField<struct3, field_ordinal<19>, field_id<20>, tag::fieldS, true,  map<binary_t, binary_t>>();
   // clang-format off
+}
+
+TEST(FieldsTest, NotFoundFieldInfo) {
+  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  namespace field = apache::thrift::field;
+
+  test::same_tag<field::ordinal<Tag, field_ordinal<0>>, field_ordinal<0>>;
+  test::same_tag<field::id<Tag, field_ordinal<0>>, void>;
+  test::same_tag<field::type_tag<Tag, field_ordinal<0>>, void>;
+  test::same_tag<field::ident<Tag, field_ordinal<0>>, void>;
+
+  test::same_tag<field::ordinal<Tag, field_id<200>>, field_ordinal<0>>;
+  test::same_tag<field::id<Tag, field_id<200>>, void>;
+  test::same_tag<field::type_tag<Tag, field_id<200>>, void>;
+  test::same_tag<field::ident<Tag, field_id<200>>, void>;
+
+  test::same_tag<field::ordinal<Tag, binary_t>, field_ordinal<0>>;
+  test::same_tag<field::id<Tag, binary_t>, void>;
+  test::same_tag<field::type_tag<Tag, binary_t>, void>;
+  test::same_tag<field::ident<Tag, binary_t>, void>;
+
+  test::same_tag<field::ordinal<Tag, tag::a>, field_ordinal<0>>;
+  test::same_tag<field::id<Tag, tag::a>, void>;
+  test::same_tag<field::type_tag<Tag, tag::a>, void>;
+  test::same_tag<field::ident<Tag, tag::a>, void>;
 }
 
 } // namespace apache::thrift::type

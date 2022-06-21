@@ -88,5 +88,26 @@ struct field_tag_by_ord {
 
 } // namespace detail
 } // namespace type
+namespace field {
+namespace detail {
+template <class Tag, class T>
+struct OrdinalImpl {
+  using type = ::apache::thrift::detail::st::struct_private_access::
+      ordinal<type::native_type<Tag>, T>;
+};
+
+template <class Tag, FieldOrdinal Ord>
+struct OrdinalImpl<Tag, std::integral_constant<FieldOrdinal, Ord>> {
+  static_assert(
+      folly::to_underlying(Ord) <=
+          ::apache::thrift::detail::st::struct_private_access::
+              __fbthrift_field_size_v<type::native_type<Tag>>,
+      "FieldOrdinal cannot be larger than the number of fields");
+
+  // T is an ordinal, return itself
+  using type = std::integral_constant<FieldOrdinal, Ord>;
+};
+} // namespace detail
+} // namespace field
 } // namespace thrift
 } // namespace apache

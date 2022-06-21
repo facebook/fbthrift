@@ -65,5 +65,21 @@ template <typename StructTag, FieldId Id>
 using field_tag_by_id = field_tag_by_ordinal<StructTag, ordinal<StructTag>(Id)>;
 
 } // namespace type
+namespace field {
+template <class Tag, class T>
+using ordinal = typename detail::OrdinalImpl<Tag, T>::type;
+
+template <class Tag, class T>
+using id = ::apache::thrift::detail::st::struct_private_access::
+    field_id<type::native_type<Tag>, ordinal<Tag, T>>;
+
+template <class Tag, class T>
+using type_tag = ::apache::thrift::detail::st::struct_private_access::
+    type_tag<type::native_type<Tag>, ordinal<Tag, T>>;
+
+template <class Tag, class T>
+using ident = ::apache::thrift::detail::st::struct_private_access::
+    ident<type::native_type<Tag>, ordinal<Tag, T>>;
+} // namespace field
 } // namespace thrift
 } // namespace apache
