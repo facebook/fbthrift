@@ -94,17 +94,18 @@ struct TestThriftType {
 template <typename Tag>
 void testCreateWithTag() {
   using tag = Tag;
-  using field_tag = field_t<FieldId{0}, tag>;
+  using field_tag = field<tag, FieldContext<TestThriftType, 0>>;
   using adapted_tag = adapted<TestTypeAdapter, tag>;
-  using type_adapted_field_tag = field_t<FieldId{0}, adapted_tag>;
+  using type_adapted_field_tag =
+      field<adapted_tag, FieldContext<TestThriftType, 0>>;
   using field_adapted_field_tag =
-      field_t<FieldId{0}, adapted<TestFieldAdapter, tag>>;
+      field<adapted<TestFieldAdapter, tag>, FieldContext<TestThriftType, 0>>;
 
   TestThriftType object;
 
   auto type_created = create<tag>();
   auto adapted_created = create<adapted_tag>();
-  auto field_created = create<field_tag>(object);
+  auto field_created = create<field_tag>();
   auto type_adapted_field_created = create<type_adapted_field_tag>(object);
   auto field_adapted_field_created = create<field_adapted_field_tag>(object);
 

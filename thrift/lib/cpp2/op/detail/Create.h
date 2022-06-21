@@ -37,42 +37,21 @@ struct Create {
   }
 };
 
-template <typename Tag, FieldId Id>
-struct Create<type::field_t<Id, Tag>> {
-  static_assert(type::is_concrete_v<Tag>, "");
+// TODO(dokwon): Support field_ref types.
+template <typename Tag, typename Context>
+struct Create<type::field<Tag, Context>> : Create<Tag> {};
 
-  template <typename Struct, typename T = type::native_type<Tag>>
-  constexpr T operator()(Struct&) const {
-    return T{};
-  }
-};
+template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
+struct Create<
+    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>> {
+  using field_adapted_tag =
+      type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
+  static_assert(type::is_concrete_v<field_adapted_tag>, "");
 
-template <typename Adapter, typename Tag, FieldId Id>
-struct Create<type::field_t<Id, type::adapted<Adapter, Tag>>> {
-  using adapted_tag = type::adapted<Adapter, Tag>;
-  static_assert(type::is_concrete_v<adapted_tag>, "");
-
-  template <typename Struct, typename AdapterT = Adapter>
-  constexpr adapt_detail::
-      if_not_field_adapter<AdapterT, type::standard_type<Tag>, Struct>
-      operator()(Struct&) const {
-    return type::native_type<adapted_tag>{};
-  }
-
-  template <typename Struct, typename AdapterT = Adapter>
-  constexpr adapt_detail::FromThriftFieldIdType<
-      AdapterT,
-      static_cast<int16_t>(Id),
-      type::standard_type<Tag>,
-      Struct>
-  operator()(Struct& object) const {
-    adapt_detail::FromThriftFieldIdType<
-        AdapterT,
-        static_cast<int16_t>(Id),
-        type::standard_type<Tag>,
-        Struct>
-        obj{};
-    adapt_detail::construct<Adapter, static_cast<int16_t>(Id)>(obj, object);
+  template <typename T = type::native_type<field_adapted_tag>>
+  constexpr T operator()(Struct& object) const {
+    T obj{};
+    adapt_detail::construct<Adapter, FieldId>(obj, object);
     return obj;
   }
 };
