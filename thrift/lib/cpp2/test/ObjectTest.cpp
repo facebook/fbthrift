@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/ObjectTest_types.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/test/testset/Testset.h>
 #include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
@@ -52,6 +53,38 @@ decltype(auto) at(C& container, size_t i) {
   auto itr = container.begin();
   std::advance(itr, i);
   return *itr;
+}
+
+TEST(ObjectTest, Example) {
+  using facebook::thrift::lib::test::Bar;
+
+  Bar bar;
+  bar.field_3() = {"foo", "bar", "baz"};
+  bar.field_4()->field_1() = 42;
+  bar.field_4()->field_2() = "Everything";
+
+  auto serialized = CompactSerializer::serialize<folly::IOBufQueue>(bar).move();
+
+  // We can parse arbitrary serialized thrift blob into Protocol Object
+  Object obj = parseObject<CompactSerializer::ProtocolReader>(*serialized);
+
+  // We can re-serialize it back to Protocol Object
+  // Note: there is no guarantee that serialized data is byte-wise idential.
+  serialized = serializeObject<CompactSerializer::ProtocolWriter>(obj);
+
+  // Test round-trip.
+  EXPECT_EQ(CompactSerializer::deserialize<Bar>(serialized.get()), bar);
+
+  // Test constructing the same Object manually
+  Object foo;
+  foo[FieldId{1}].emplace_i32() = 42;
+  foo[FieldId{2}].emplace_binary() = *folly::IOBuf::copyBuffer("Everything");
+
+  Object obj2;
+  obj2[FieldId{10}] = asValueStruct<type::list<type::binary_t>>(*bar.field_3());
+  obj2[FieldId{20}].emplace_object() = foo;
+
+  EXPECT_EQ(obj, obj2);
 }
 
 TEST(ObjectTest, TypeEnforced) {
