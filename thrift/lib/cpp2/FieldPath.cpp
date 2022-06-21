@@ -20,8 +20,7 @@
 namespace apache::thrift::protocol {
 namespace {
 template <class T>
-folly::like_t<T, Value>* FOLLY_NULLABLE get_impl(T& object, const Path& path) {
-  auto* obj = &object;
+folly::like_t<T, Value>* FOLLY_NULLABLE get_impl(T* obj, const Path& path) {
   for (auto iter = path.path()->begin(); iter != path.path()->end(); ++iter) {
     auto next = obj->members()->find(*iter);
     if (next == obj->members()->end()) {
@@ -44,11 +43,11 @@ folly::like_t<T, Value>* FOLLY_NULLABLE get_impl(T& object, const Path& path) {
 }
 } // namespace
 
-const Value* get(const Object& object, const Path& path) {
-  return get_impl(object, path);
+const Value* FOLLY_NULLABLE get(const Object& object, const Path& path) {
+  return get_impl(&object, path);
 }
 
-Value* get(Object& object, const Path& path) {
-  return get_impl(object, path);
+Value* FOLLY_NULLABLE get(Object& object, const Path& path) {
+  return get_impl(&object, path);
 }
 } // namespace apache::thrift::protocol
