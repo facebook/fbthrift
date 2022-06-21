@@ -16,38 +16,19 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/Field.h>
-#include <thrift/lib/cpp2/op/detail/Get.h>
+#include <thrift/lib/cpp2/type/Field.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
 
-template <typename Tag, typename IdentTag>
-struct GetByIdent {
-  template <typename T>
-  FOLLY_ERASE constexpr decltype(auto) operator()(T&& t) const
-      noexcept(noexcept(detail::get<IdentTag>(Tag{}, static_cast<T&&>(t)))) {
-    return detail::get<IdentTag>(Tag{}, static_cast<T&&>(t));
-  }
-};
-
-// Gets a field by identifier tag.
-template <typename Tag, typename IdentTag>
-FOLLY_INLINE_VARIABLE constexpr GetByIdent<Tag, IdentTag> getByIdent{};
-
-template <typename Tag, FieldId Id>
-struct GetById {
-  template <typename T>
-  FOLLY_ERASE constexpr decltype(auto) operator()(T&& t) const
-      noexcept(noexcept(detail::get<Id>(Tag{}, static_cast<T&&>(t)))) {
-    return detail::get<Id>(Tag{}, static_cast<T&&>(t));
-  }
-};
+template <typename Tag, class T>
+FOLLY_INLINE_VARIABLE constexpr auto get = access_field<field::ident<Tag, T>>;
 
 // Gets a field by FieldId.
 template <typename Tag, FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr GetById<Tag, Id> getById{};
+FOLLY_INLINE_VARIABLE constexpr auto getById =
+    get<Tag, std::integral_constant<FieldId, Id>>;
 
 } // namespace op
 } // namespace thrift

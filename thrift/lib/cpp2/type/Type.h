@@ -127,7 +127,10 @@ class Type : public detail::Wrap<TypeStruct> {
   template <typename CTag, typename T>
   static decltype(auto) getName(T&& result) {
     constexpr auto id = static_cast<FieldId>(base_type_v<CTag>);
-    return op::getById<type::union_t<T>, id>(*std::forward<T>(result).name());
+    using FieldType =
+        folly::remove_cvref_t<decltype(*std::forward<T>(result).name())>;
+    return op::getById<type::union_t<FieldType>, id>(
+        *std::forward<T>(result).name());
   }
 
   template <typename Tag>
