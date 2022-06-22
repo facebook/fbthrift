@@ -30,7 +30,7 @@
 %><%^type:resolves_to_container?%><%^type:raw_string_or_binary?%><%^type:struct?%><%!
   %><%#field:cpp_first_adapter%><%!
     // Must use == operator, and check against the default constructor (ignoring any IDL-specified default).
-    %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!(<% >  module_types_tcc/field_ref %> == <%type:cpp_type%>())<%!
+    %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!(<% >  module_types_tcc/field_ref %> == <%field:cpp_type%>())<%!
   %><%/field:cpp_first_adapter%><%!
   %><%^field:cpp_first_adapter%><%!
     %><%#field:cpp_ref?%> && <%/field:cpp_ref?%><% >  module_types_tcc/field_ref %> != <% > field/intrinsic_default%><%!

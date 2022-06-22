@@ -455,8 +455,41 @@ TYPED_TEST_P(
   EXPECT_EQ(obj, objd);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, AdaptedFields) {
+  terse_write::AdaptedFields obj;
+  terse_write::EmptyStruct empty;
+
+  obj.field1() = Wrapper<int32_t>{1};
+  obj.field2() = Wrapper<int32_t>{2};
+  obj.field3() = AdaptedWithContext<int32_t, terse_write::AdaptedFields, 3>{3};
+  obj.field4() = Wrapper<Wrapper<int32_t>>{{4}};
+  obj.field5() =
+      AdaptedWithContext<Wrapper<int32_t>, terse_write::AdaptedFields, 5>{
+          Wrapper<int32_t>{5}};
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  EXPECT_NE(emptys, objs);
+
+  obj.field1() = Wrapper<int32_t>{0};
+  obj.field2() = Wrapper<int32_t>{0};
+  obj.field3() = AdaptedWithContext<int32_t, terse_write::AdaptedFields, 3>{0};
+  obj.field4() = Wrapper<Wrapper<int32_t>>{{0}};
+  obj.field5() =
+      AdaptedWithContext<Wrapper<int32_t>, terse_write::AdaptedFields, 5>{
+          Wrapper<int32_t>{0}};
+
+  objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::AdaptedFields objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+  EXPECT_EQ(emptys, objs);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
+    AdaptedFields,
     MixedFieldsStruct,
     MixedFieldsStructWithCustomDefault,
     NestedMixedStruct,

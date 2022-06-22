@@ -17,6 +17,8 @@
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
+cpp_include "thrift/test/AdapterTest.h"
+
 namespace cpp2 apache.thrift.test.terse_write
 namespace py3 apache.thrift.test.terse_write
 
@@ -134,4 +136,21 @@ struct TerseStructWithCustomDefault {
   12: set<i32> set_field = [1];
   13: map<i32, i32> map_field = {1: 1};
   14: MyStructWithCustomDefault struct_field;
+}
+
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef i32 AdaptedInteger
+
+@thrift.TerseWrite
+struct AdaptedFields {
+  1: AdaptedInteger field1 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  2: i32 field2 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  3: i32 field3 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  4: AdaptedInteger field4 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  5: AdaptedInteger field5 (py3.hidden);
+  6: string meta;
 }
