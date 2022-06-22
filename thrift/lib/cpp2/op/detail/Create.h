@@ -37,6 +37,20 @@ struct Create {
   }
 };
 
+template <typename Adapter, typename Tag>
+struct Create<type::adapted<Adapter, Tag>> {
+  using adapted_tag = type::adapted<Adapter, Tag>;
+  static_assert(type::is_concrete_v<adapted_tag>, "");
+
+  template <typename T = type::native_type<adapted_tag>>
+  constexpr T operator()() const {
+    // Note, we use op::create to create the intrinsic default of underlying
+    // type since the underlying type might be another adapted type is not
+    // default constructible.
+    return Adapter::fromThrift(Create<Tag>{}());
+  }
+};
+
 // TODO(dokwon): Support field_ref types.
 template <typename Tag, typename Context>
 struct Create<type::field<Tag, Context>> : Create<Tag> {};
@@ -48,9 +62,19 @@ struct Create<
       type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
   static_assert(type::is_concrete_v<field_adapted_tag>, "");
 
-  template <typename T = type::native_type<field_adapted_tag>>
-  constexpr T operator()(Struct& object) const {
-    T obj{};
+  template <typename AdapterT = Adapter>
+  constexpr adapt_detail::
+      if_not_field_adapter<AdapterT, type::native_type<Tag>, Struct>
+      operator()(Struct&) const {
+    return AdapterT::fromThrift(Create<Tag>{}());
+  }
+
+  template <typename AdapterT = Adapter>
+  constexpr adapt_detail::
+      FromThriftFieldIdType<AdapterT, FieldId, type::native_type<Tag>, Struct>
+      operator()(Struct& object) const {
+    auto obj = AdapterT::fromThriftField(
+        Create<Tag>{}(), FieldContext<Struct, FieldId>{object});
     adapt_detail::construct<Adapter, FieldId>(obj, object);
     return obj;
   }

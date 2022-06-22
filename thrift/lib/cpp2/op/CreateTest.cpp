@@ -34,20 +34,20 @@ namespace testset = apache::thrift::test::testset;
 template <typename T>
 struct Wrapper {
   T value;
-  // TODO(afuller): Support adapting the 'create' op.
-  // Wrapper() = delete;
+  Wrapper() = delete;
+  explicit Wrapper(T val) : value(std::move(val)) {}
   bool operator==(const Wrapper& other) const { return value == other.value; }
   bool operator<(const Wrapper& other) const { return value < other.value; }
 };
 
 // Wrapper with context with default constructor deleted.
-template <typename T>
+template <typename T, typename Struct, int16_t FieldId>
 struct WrapperWithContext {
   T value;
-  int16_t fieldId = 0;
   std::string* meta = nullptr;
-  // TODO(afuller): Support adapting the 'create' op.
-  // WrapperWithContext() = delete;
+  WrapperWithContext() = delete;
+  explicit WrapperWithContext(T val, std::string& m)
+      : value(std::move(val)), meta(&m) {}
   bool operator==(const WrapperWithContext& other) const {
     return value == other.value;
   }
@@ -59,7 +59,7 @@ struct WrapperWithContext {
 struct TestTypeAdapter {
   template <typename T>
   static Wrapper<T> fromThrift(T value) {
-    return {value};
+    return Wrapper<T>{value};
   }
 
   template <typename T>
@@ -70,22 +70,26 @@ struct TestTypeAdapter {
 
 struct TestFieldAdapter {
   template <typename T, typename Struct, int16_t FieldId>
-  static WrapperWithContext<T> fromThriftField(
+  static WrapperWithContext<T, Struct, FieldId> fromThriftField(
       T value, apache::thrift::FieldContext<Struct, FieldId>&& ctx) {
-    return {value, ctx.kFieldId, &ctx.object.meta};
+    return WrapperWithContext<T, Struct, FieldId>{value, ctx.object.meta};
   }
 
-  template <typename T>
-  static T toThrift(WrapperWithContext<T> wrapper) {
+  template <typename T, typename Struct, int16_t FieldId>
+  static T toThrift(WrapperWithContext<T, Struct, FieldId> wrapper) {
     return wrapper.value;
   }
 
-  template <typename T, typename Context>
-  static void construct(WrapperWithContext<T>& field, Context&& ctx) {
-    field.fieldId = Context::kFieldId;
+  template <typename T, typename Struct, int16_t FieldId>
+  static void construct(
+      WrapperWithContext<T, Struct, FieldId>& field,
+      FieldContext<Struct, FieldId>&& ctx) {
     field.meta = &ctx.object.meta;
   }
 };
+
+template <typename T>
+using adapted_tag = adapted<TestTypeAdapter, T>;
 
 struct TestThriftType {
   std::string meta;
@@ -94,20 +98,28 @@ struct TestThriftType {
 template <typename Tag>
 void testCreateWithTag() {
   using tag = Tag;
-  using field_tag = field<tag, FieldContext<TestThriftType, 0>>;
-  using adapted_tag = adapted<TestTypeAdapter, tag>;
+  using field_tag = type::field<tag, FieldContext<TestThriftType, 0>>;
   using type_adapted_field_tag =
-      field<adapted_tag, FieldContext<TestThriftType, 0>>;
-  using field_adapted_field_tag =
+      type::field<adapted_tag<tag>, FieldContext<TestThriftType, 0>>;
+  using field_adapted_field_tag = type::
       field<adapted<TestFieldAdapter, tag>, FieldContext<TestThriftType, 0>>;
+  using double_type_adapted_field_tag = type::
+      field<adapted_tag<adapted_tag<tag>>, FieldContext<TestThriftType, 0>>;
+  using field_and_type_adapted_field_tag = type::field<
+      adapted<TestFieldAdapter, adapted_tag<tag>>,
+      FieldContext<TestThriftType, 0>>;
 
   TestThriftType object;
 
   auto type_created = create<tag>();
-  auto adapted_created = create<adapted_tag>();
+  auto adapted_created = create<adapted_tag<tag>>();
   auto field_created = create<field_tag>();
   auto type_adapted_field_created = create<type_adapted_field_tag>(object);
   auto field_adapted_field_created = create<field_adapted_field_tag>(object);
+  auto double_type_adapted_field_created =
+      create<double_type_adapted_field_tag>(object);
+  auto field_and_type_adapted_field_created =
+      create<field_and_type_adapted_field_tag>(object);
 
   test::same_type<decltype(type_created), native_type<tag>>;
   test::same_type<decltype(adapted_created), Wrapper<native_type<tag>>>;
@@ -117,19 +129,17 @@ void testCreateWithTag() {
       Wrapper<native_type<tag>>>;
   test::same_type<
       decltype(field_adapted_field_created),
-      WrapperWithContext<native_type<tag>>>;
+      WrapperWithContext<native_type<tag>, TestThriftType, 0>>;
+  test::same_type<
+      decltype(double_type_adapted_field_created),
+      Wrapper<Wrapper<native_type<tag>>>>;
+  test::same_type<
+      decltype(field_and_type_adapted_field_created),
+      WrapperWithContext<Wrapper<native_type<tag>>, TestThriftType, 0>>;
 
-  Wrapper<native_type<tag>> type_adapted_default{native_type<tag>()};
-  WrapperWithContext<native_type<tag>> field_adapted_default{
-      native_type<tag>()};
-
-  EXPECT_EQ(type_created, native_type<tag>());
-  EXPECT_EQ(adapted_created, type_adapted_default);
-  EXPECT_EQ(field_created, native_type<tag>());
-  EXPECT_EQ(type_adapted_field_created, type_adapted_default);
-  EXPECT_EQ(field_adapted_field_created, field_adapted_default);
   // Check if the context is correctly populated.
   EXPECT_EQ(&object.meta, field_adapted_field_created.meta);
+  EXPECT_EQ(&object.meta, field_and_type_adapted_field_created.meta);
 }
 
 template <typename Tag>
