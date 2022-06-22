@@ -23,6 +23,8 @@ from thrift.py3.types cimport CompiledEnum, Container, Struct
 from thrift.python.types cimport Struct as lite_Struct, Union as lite_Union
 
 def to_py3_struct(cls, obj):
+    if obj is None:
+        return None
     return _to_py3_struct(cls, obj)
 
 

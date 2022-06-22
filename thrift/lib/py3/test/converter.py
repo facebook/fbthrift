@@ -254,3 +254,16 @@ class PythontoPy3ConverterTest(unittest.TestCase):
         # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.py3_types._T]]` for 1st
         #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyColor)
+
+    def test_optional_type(self) -> None:
+        self.assertIsNone(to_py3_struct(py3_types.Simple, None))
+        self.assertIsNone(
+            to_py3_struct(py3_types.Simple, python_types.Nested().optionalSimple)
+        )
+
+        with self.assertRaises(AttributeError):
+            # make sure pyre complains
+            # pyre-ignore[16]: Optional type has no attribute `intField`.
+            to_py3_struct(
+                py3_types.Simple, python_types.Nested().optionalSimple
+            ).intField
