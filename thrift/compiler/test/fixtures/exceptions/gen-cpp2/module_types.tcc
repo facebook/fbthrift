@@ -181,8 +181,6 @@ extern template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) 
 extern template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Serious::readNoXfer(Protocol_* iprot) {
@@ -303,8 +301,6 @@ extern template uint32_t Serious::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void ComplexFieldNames::readNoXfer(Protocol_* iprot) {
@@ -460,8 +456,6 @@ extern template uint32_t ComplexFieldNames::write<>(apache::thrift::CompactProto
 extern template uint32_t ComplexFieldNames::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexFieldNames::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void CustomFieldNames::readNoXfer(Protocol_* iprot) {
@@ -617,8 +611,6 @@ extern template uint32_t CustomFieldNames::write<>(apache::thrift::CompactProtoc
 extern template uint32_t CustomFieldNames::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t CustomFieldNames::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void ExceptionWithPrimitiveField::readNoXfer(Protocol_* iprot) {
@@ -774,8 +766,6 @@ extern template uint32_t ExceptionWithPrimitiveField::write<>(apache::thrift::Co
 extern template uint32_t ExceptionWithPrimitiveField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ExceptionWithPrimitiveField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Banal::readNoXfer(Protocol_* iprot) {
@@ -854,5 +844,6 @@ extern template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*)
 extern template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

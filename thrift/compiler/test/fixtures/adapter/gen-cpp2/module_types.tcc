@@ -595,8 +595,6 @@ extern template uint32_t Foo::write<>(apache::thrift::CompactProtocolWriter*) co
 extern template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Baz::readNoXfer(Protocol_* iprot) {
@@ -840,8 +838,6 @@ extern template uint32_t Baz::write<>(apache::thrift::CompactProtocolWriter*) co
 extern template uint32_t Baz::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Baz::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Bar::readNoXfer(Protocol_* iprot) {
@@ -1173,8 +1169,6 @@ extern template uint32_t Bar::write<>(apache::thrift::CompactProtocolWriter*) co
 extern template uint32_t Bar::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Bar::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void StructWithFieldAdapter::readNoXfer(Protocol_* iprot) {
@@ -1425,8 +1419,6 @@ extern template uint32_t StructWithFieldAdapter::write<>(apache::thrift::Compact
 extern template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void TerseAdaptedFields::readNoXfer(Protocol_* iprot) {
@@ -1630,8 +1622,6 @@ extern template uint32_t TerseAdaptedFields::write<>(apache::thrift::CompactProt
 extern template uint32_t TerseAdaptedFields::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TerseAdaptedFields::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void A::readNoXfer(Protocol_* iprot) {
@@ -1711,8 +1701,6 @@ extern template uint32_t A::write<>(apache::thrift::CompactProtocolWriter*) cons
 extern template uint32_t A::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void B::readNoXfer(Protocol_* iprot) {
@@ -1834,5 +1822,6 @@ extern template void B::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t B::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t B::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t B::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

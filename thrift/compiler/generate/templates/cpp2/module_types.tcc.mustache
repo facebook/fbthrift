@@ -28,9 +28,12 @@
 <% > module_types_tcc/tcc_struct_traits%>
 <%/program:tablebased?%>
 
-<%#program:structs%><%!
-%><% > common/namespace_cpp2_begin%>
+<% > common/namespace_cpp2_begin%>
 
+<%#program:structs%>
+<%#struct:extra_namespace%>
+namespace <%struct:extra_namespace%> {
+<%/struct:extra_namespace%>
 <%#program:tablebased?%>
 extern const ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthrift_struct_info_<%struct:cpp_underlying_name%>;
 <%/program:tablebased?%>
@@ -61,7 +64,10 @@ extern template uint32_t <%struct:cpp_underlying_name%>::write<>(apache::thrift:
 extern template uint32_t <%struct:cpp_underlying_name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t <%struct:cpp_underlying_name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
-
-<% > common/namespace_cpp2_end%>
+<%#struct:extra_namespace%>
+} // namespace <%struct:extra_namespace%>
+<%/struct:extra_namespace%>
 
 <%/program:structs%>
+
+<% > common/namespace_cpp2_end%>

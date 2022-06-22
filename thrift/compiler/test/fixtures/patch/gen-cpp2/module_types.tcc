@@ -333,8 +333,6 @@ extern template uint32_t MyData::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t MyData::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyData::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void InnerUnion::readNoXfer(Protocol_* iprot) {
@@ -440,8 +438,6 @@ extern template uint32_t InnerUnion::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t InnerUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t InnerUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyUnion::readNoXfer(Protocol_* iprot) {
@@ -611,8 +607,6 @@ extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -1634,8 +1628,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyDataPatchStruct::readNoXfer(Protocol_* iprot) {
@@ -1799,8 +1791,6 @@ extern template uint32_t MyDataPatchStruct::write<>(apache::thrift::CompactProto
 extern template uint32_t MyDataPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyDataPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -2002,8 +1992,6 @@ extern template uint32_t MyDataValuePatchStruct::write<>(apache::thrift::Compact
 extern template uint32_t MyDataValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -2246,8 +2234,6 @@ extern template uint32_t OptionalMyDataValuePatchStruct::write<>(apache::thrift:
 extern template uint32_t OptionalMyDataValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void InnerUnionPatchStruct::readNoXfer(Protocol_* iprot) {
@@ -2370,8 +2356,6 @@ extern template uint32_t InnerUnionPatchStruct::write<>(apache::thrift::CompactP
 extern template uint32_t InnerUnionPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t InnerUnionPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void InnerUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -2611,8 +2595,6 @@ extern template uint32_t InnerUnionValuePatchStruct::write<>(apache::thrift::Com
 extern template uint32_t InnerUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t InnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalInnerUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -2855,8 +2837,6 @@ extern template uint32_t OptionalInnerUnionValuePatchStruct::write<>(apache::thr
 extern template uint32_t OptionalInnerUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalInnerUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyUnionPatchStruct::readNoXfer(Protocol_* iprot) {
@@ -3061,8 +3041,6 @@ extern template uint32_t MyUnionPatchStruct::write<>(apache::thrift::CompactProt
 extern template uint32_t MyUnionPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnionPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -3302,8 +3280,6 @@ extern template uint32_t MyUnionValuePatchStruct::write<>(apache::thrift::Compac
 extern template uint32_t MyUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -3546,8 +3522,6 @@ extern template uint32_t OptionalMyUnionValuePatchStruct::write<>(apache::thrift
 extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -3788,8 +3762,6 @@ extern template uint32_t MyStructField21PatchStruct::write<>(apache::thrift::Com
 extern template uint32_t MyStructField21PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -4032,8 +4004,6 @@ extern template uint32_t OptionalMyStructField21PatchStruct::write<>(apache::thr
 extern template uint32_t OptionalMyStructField21PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -4274,8 +4244,6 @@ extern template uint32_t MyStructField22PatchStruct::write<>(apache::thrift::Com
 extern template uint32_t MyStructField22PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -4518,8 +4486,6 @@ extern template uint32_t OptionalMyStructField22PatchStruct::write<>(apache::thr
 extern template uint32_t OptionalMyStructField22PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -4720,8 +4686,6 @@ extern template uint32_t MyStructField23PatchStruct::write<>(apache::thrift::Com
 extern template uint32_t MyStructField23PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
@@ -4964,8 +4928,6 @@ extern template uint32_t OptionalMyStructField23PatchStruct::write<>(apache::thr
 extern template uint32_t OptionalMyStructField23PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructPatchStruct::readNoXfer(Protocol_* iprot) {
@@ -6031,8 +5993,6 @@ extern template uint32_t MyStructPatchStruct::write<>(apache::thrift::CompactPro
 extern template uint32_t MyStructPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void MyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -6234,8 +6194,6 @@ extern template uint32_t MyStructValuePatchStruct::write<>(apache::thrift::Compa
 extern template uint32_t MyStructValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
 
 template <class Protocol_>
 void OptionalMyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
@@ -6477,5 +6435,6 @@ extern template void OptionalMyStructValuePatchStruct::readNoXfer<>(apache::thri
 extern template uint32_t OptionalMyStructValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t OptionalMyStructValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalMyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // test::fixtures::patch

@@ -175,8 +175,6 @@ extern template uint32_t MyStructNestedAnnotation::write<>(apache::thrift::Compa
 extern template uint32_t MyStructNestedAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void YourUnion::readNoXfer(Protocol_* iprot) {
@@ -251,8 +249,6 @@ extern template uint32_t YourUnion::write<>(apache::thrift::CompactProtocolWrite
 extern template uint32_t YourUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t YourUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void YourException::readNoXfer(Protocol_* iprot) {
@@ -332,8 +328,6 @@ extern template uint32_t YourException::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t YourException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t YourException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void YourStruct::readNoXfer(Protocol_* iprot) {
@@ -757,8 +751,6 @@ extern template uint32_t YourStruct::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t YourStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t YourStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void SecretStruct::readNoXfer(Protocol_* iprot) {
@@ -913,5 +905,6 @@ extern template void SecretStruct::readNoXfer<>(apache::thrift::CompactProtocolR
 extern template uint32_t SecretStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t SecretStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

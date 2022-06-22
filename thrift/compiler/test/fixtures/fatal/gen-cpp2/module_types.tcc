@@ -367,8 +367,6 @@ extern template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void union2::readNoXfer(Protocol_* iprot) {
@@ -567,8 +565,6 @@ extern template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void union3::readNoXfer(Protocol_* iprot) {
@@ -767,8 +763,6 @@ extern template uint32_t union3::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t union3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structA::readNoXfer(Protocol_* iprot) {
@@ -924,8 +918,6 @@ extern template uint32_t structA::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t structA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void unionA::readNoXfer(Protocol_* iprot) {
@@ -1157,8 +1149,6 @@ extern template uint32_t unionA::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t unionA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t unionA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structB::readNoXfer(Protocol_* iprot) {
@@ -1314,8 +1304,6 @@ extern template uint32_t structB::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t structB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void structC::readNoXfer(Protocol_* iprot) {
@@ -2576,8 +2564,6 @@ extern template uint32_t structC::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t structC::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structC::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct1::readNoXfer(Protocol_* iprot) {
@@ -2887,8 +2873,6 @@ extern template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct2::readNoXfer(Protocol_* iprot) {
@@ -3235,8 +3219,6 @@ extern template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct3::readNoXfer(Protocol_* iprot) {
@@ -4023,8 +4005,6 @@ extern template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct4::readNoXfer(Protocol_* iprot) {
@@ -4274,8 +4254,6 @@ extern template uint32_t struct4::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t struct4::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct5::readNoXfer(Protocol_* iprot) {
@@ -4547,8 +4525,6 @@ extern template uint32_t struct5::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t struct5::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_binary::readNoXfer(Protocol_* iprot) {
@@ -4667,8 +4643,6 @@ extern template uint32_t struct_binary::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t struct_binary::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void dep_A_struct::readNoXfer(Protocol_* iprot) {
@@ -4865,8 +4839,6 @@ extern template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWr
 extern template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void dep_B_struct::readNoXfer(Protocol_* iprot) {
@@ -5063,8 +5035,6 @@ extern template uint32_t dep_B_struct::write<>(apache::thrift::CompactProtocolWr
 extern template uint32_t dep_B_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void annotated::readNoXfer(Protocol_* iprot) {
@@ -5183,8 +5153,6 @@ extern template uint32_t annotated::write<>(apache::thrift::CompactProtocolWrite
 extern template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void union_with_special_names::readNoXfer(Protocol_* iprot) {
@@ -6127,8 +6095,6 @@ extern template uint32_t union_with_special_names::write<>(apache::thrift::Compa
 extern template uint32_t union_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_with_special_names::readNoXfer(Protocol_* iprot) {
@@ -7246,8 +7212,6 @@ extern template uint32_t struct_with_special_names::write<>(apache::thrift::Comp
 extern template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void struct_with_indirections::readNoXfer(Protocol_* iprot) {
@@ -7514,8 +7478,6 @@ extern template uint32_t struct_with_indirections::write<>(apache::thrift::Compa
 extern template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void StructWithFieldAdapter::readNoXfer(Protocol_* iprot) {
@@ -7636,8 +7598,6 @@ extern template uint32_t StructWithFieldAdapter::write<>(apache::thrift::Compact
 extern template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 void UnionWithTypedefFieldAdapter::readNoXfer(Protocol_* iprot) {
@@ -7744,5 +7704,6 @@ extern template void UnionWithTypedefFieldAdapter::readNoXfer<>(apache::thrift::
 extern template uint32_t UnionWithTypedefFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t UnionWithTypedefFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }} // test_cpp2::cpp_reflection

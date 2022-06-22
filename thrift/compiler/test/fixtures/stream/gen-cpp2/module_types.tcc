@@ -108,4 +108,5 @@ extern template uint32_t FooEx::write<>(apache::thrift::CompactProtocolWriter*) 
 extern template uint32_t FooEx::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t FooEx::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 } // cpp2

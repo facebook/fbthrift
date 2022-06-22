@@ -115,8 +115,6 @@ extern template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) 
 extern template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Nada::readNoXfer(Protocol_* iprot) {
@@ -190,5 +188,6 @@ extern template void Nada::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t Nada::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Nada::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

@@ -315,8 +315,6 @@ extern template uint32_t decorated_struct::write<>(apache::thrift::CompactProtoc
 extern template uint32_t decorated_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ContainerStruct::readNoXfer(Protocol_* iprot) {
@@ -718,8 +716,6 @@ extern template uint32_t ContainerStruct::write<>(apache::thrift::CompactProtoco
 extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void CppTypeStruct::readNoXfer(Protocol_* iprot) {
@@ -841,8 +837,6 @@ extern template uint32_t CppTypeStruct::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t CppTypeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void VirtualStruct::readNoXfer(Protocol_* iprot) {
@@ -961,8 +955,6 @@ extern template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyStructWithForwardRefEnum::readNoXfer(Protocol_* iprot) {
@@ -1118,8 +1110,6 @@ extern template uint32_t MyStructWithForwardRefEnum::write<>(apache::thrift::Com
 extern template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TrivialNumeric::readNoXfer(Protocol_* iprot) {
@@ -1275,8 +1265,6 @@ extern template uint32_t TrivialNumeric::write<>(apache::thrift::CompactProtocol
 extern template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TrivialNestedWithDefault::readNoXfer(Protocol_* iprot) {
@@ -1434,8 +1422,6 @@ extern template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::Compa
 extern template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ComplexString::readNoXfer(Protocol_* iprot) {
@@ -1594,8 +1580,6 @@ extern template uint32_t ComplexString::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t ComplexString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ComplexNestedWithDefault::readNoXfer(Protocol_* iprot) {
@@ -1753,8 +1737,6 @@ extern template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::Compa
 extern template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MinPadding::readNoXfer(Protocol_* iprot) {
@@ -2016,8 +1998,6 @@ extern template uint32_t MinPadding::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyDataItem::readNoXfer(Protocol_* iprot) {
@@ -2097,8 +2077,6 @@ extern template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -2330,8 +2308,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void Renamed::readNoXfer(Protocol_* iprot) {
@@ -2450,8 +2426,6 @@ extern template uint32_t Renamed::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t Renamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Renamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AnnotatedTypes::readNoXfer(Protocol_* iprot) {
@@ -2610,8 +2584,6 @@ extern template uint32_t AnnotatedTypes::write<>(apache::thrift::CompactProtocol
 extern template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageStruct::readNoXfer(Protocol_* iprot) {
@@ -2734,8 +2706,6 @@ extern template uint32_t ForwardUsageStruct::write<>(apache::thrift::CompactProt
 extern template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageRoot::readNoXfer(Protocol_* iprot) {
@@ -2900,8 +2870,6 @@ extern template uint32_t ForwardUsageRoot::write<>(apache::thrift::CompactProtoc
 extern template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void ForwardUsageByRef::readNoXfer(Protocol_* iprot) {
@@ -3024,8 +2992,6 @@ extern template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProto
 extern template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveEmpty::readNoXfer(Protocol_* iprot) {
@@ -3105,8 +3071,6 @@ extern template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::CompactProto
 extern template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveSimpleStruct::readNoXfer(Protocol_* iprot) {
@@ -3225,8 +3189,6 @@ extern template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::Compa
 extern template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoexceptMoveComplexStruct::readNoXfer(Protocol_* iprot) {
@@ -3648,8 +3610,6 @@ extern template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::Comp
 extern template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
@@ -3786,8 +3746,6 @@ extern template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProto
 extern template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AllocatorAware::readNoXfer(Protocol_* iprot) {
@@ -4151,8 +4109,6 @@ extern template uint32_t AllocatorAware::write<>(apache::thrift::CompactProtocol
 extern template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void AllocatorAware2::readNoXfer(Protocol_* iprot) {
@@ -4271,8 +4227,6 @@ extern template uint32_t AllocatorAware2::write<>(apache::thrift::CompactProtoco
 extern template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void TypedefStruct::readNoXfer(Protocol_* iprot) {
@@ -4465,8 +4419,6 @@ extern template uint32_t TypedefStruct::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t TypedefStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
 void StructWithDoubleUnderscores::readNoXfer(Protocol_* iprot) {
@@ -4584,5 +4536,6 @@ extern template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::C
 extern template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}}} // apache::thrift::fixtures::types

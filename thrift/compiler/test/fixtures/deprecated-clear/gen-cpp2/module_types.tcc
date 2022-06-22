@@ -600,4 +600,5 @@ extern template uint32_t StructWithDefaultStruct::write<>(apache::thrift::Compac
 extern template uint32_t StructWithDefaultStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructWithDefaultStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 }}} // apache::thrift::test

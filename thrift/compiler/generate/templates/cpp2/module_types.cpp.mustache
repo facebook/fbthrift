@@ -99,6 +99,9 @@ FOLLY_POP_WARNING
 <%/struct:union?%>
 
 <% > common/namespace_cpp2_begin%>
+<%#struct:extra_namespace%>
+namespace <%struct:extra_namespace%> {
+<%/struct:extra_namespace%>
 
 
 <%#struct:thrift_uri%>
@@ -234,6 +237,9 @@ static_assert(
 <%/field:type%>
 <%/struct:fields%>
 
+<%#struct:extra_namespace%>
+} // namespace <%struct:extra_namespace%>
+<%/struct:extra_namespace%>
 <% > common/namespace_cpp2_end%>
 
 <%/program:structs%><%!

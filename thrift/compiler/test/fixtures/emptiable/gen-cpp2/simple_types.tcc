@@ -129,8 +129,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void EmptiableStruct::readNoXfer(Protocol_* iprot) {
@@ -769,8 +767,6 @@ extern template uint32_t EmptiableStruct::write<>(apache::thrift::CompactProtoco
 extern template uint32_t EmptiableStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t EmptiableStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void EmptiableTerseStruct::readNoXfer(Protocol_* iprot) {
@@ -1395,8 +1391,6 @@ extern template uint32_t EmptiableTerseStruct::write<>(apache::thrift::CompactPr
 extern template uint32_t EmptiableTerseStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t EmptiableTerseStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void NotEmptiableStruct::readNoXfer(Protocol_* iprot) {
@@ -2032,5 +2026,6 @@ extern template void NotEmptiableStruct::readNoXfer<>(apache::thrift::CompactPro
 extern template uint32_t NotEmptiableStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NotEmptiableStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NotEmptiableStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // apache::thrift::test

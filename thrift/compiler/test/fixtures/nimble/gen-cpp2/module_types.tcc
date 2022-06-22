@@ -261,4 +261,5 @@ extern template uint32_t BasicTypes::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t BasicTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 } // cpp2

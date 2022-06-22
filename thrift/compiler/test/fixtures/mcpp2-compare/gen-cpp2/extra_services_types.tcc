@@ -617,4 +617,5 @@ extern template uint32_t containerStruct2::write<>(apache::thrift::SimpleJSONPro
 extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
 }} // extra::svc

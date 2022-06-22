@@ -184,4 +184,5 @@ extern template uint32_t IncludedB::write<>(apache::thrift::CompactProtocolWrite
 extern template uint32_t IncludedB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t IncludedB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 }} // some::ns

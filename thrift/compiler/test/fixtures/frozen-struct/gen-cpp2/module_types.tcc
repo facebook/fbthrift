@@ -349,8 +349,6 @@ extern template uint32_t ModuleA::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // some::ns
-namespace some { namespace ns {
 
 template <class Protocol_>
 void ModuleB::readNoXfer(Protocol_* iprot) {
@@ -505,5 +503,6 @@ extern template void ModuleB::readNoXfer<>(apache::thrift::CompactProtocolReader
 extern template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }} // some::ns

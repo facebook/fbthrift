@@ -158,8 +158,6 @@ extern template uint32_t AStruct::write<>(apache::thrift::SimpleJSONProtocolWrit
 extern template uint32_t AStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // a::different::ns
-namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
 void AStructB::readNoXfer(Protocol_* iprot) {
@@ -300,5 +298,6 @@ extern template void AStructB::readNoXfer<>(apache::thrift::SimpleJSONProtocolRe
 extern template uint32_t AStructB::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 
 }}} // a::different::ns

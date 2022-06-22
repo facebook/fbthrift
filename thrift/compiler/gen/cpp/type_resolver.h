@@ -23,6 +23,7 @@
 #include <utility>
 
 #include <boost/optional.hpp>
+#include <fmt/core.h>
 
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_container.h>
@@ -105,8 +106,12 @@ class type_resolver {
   const std::string& get_underlying_namespaced_name(
       const t_program& program, const t_type& node) {
     return detail::get_or_gen(underlying_namespaced_name_cache_, &node, [&] {
-      return namespaces_.get_namespace(program) +
-          "::" + get_underlying_name(node);
+      auto extra = get_extra_namespace(node);
+      return fmt::format(
+          "{}::{}{}",
+          namespaces_.get_namespace(program),
+          (extra ? *extra + "::" : ""),
+          get_underlying_name(node));
     });
   }
 
@@ -116,6 +121,10 @@ class type_resolver {
       return *name;
     }
     return namespace_resolver::get_cpp_name(node);
+  }
+
+  const std::string* get_extra_namespace(const t_type& /*node*/) {
+    return nullptr;
   }
 
   // Checks whether a t_type could resolve to a scalar.

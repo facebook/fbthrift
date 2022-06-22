@@ -151,4 +151,5 @@ extern template uint32_t ReflectionStruct::write<>(apache::thrift::SimpleJSONPro
 extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
 } // cpp2

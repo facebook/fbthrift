@@ -76,6 +76,9 @@ typedef <%typedef:cpp_type%> <%typedef:name%>;
 <%/is_struct?%>
 <%#is_struct?%>
 
+<%#struct:extra_namespace%>
+namespace <%struct:extra_namespace%> {
+<%/struct:extra_namespace%>
 class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_underlying_name%> <%!
 %><%^struct:exception?%><%^struct:virtual%>final <%/struct:virtual%><%/struct:exception?%><%!
 %><%#struct:exception?%>: public apache::thrift::TException<%/struct:exception?%> {
@@ -330,6 +333,9 @@ unsigned long <%struct:cpp_underlying_name%>::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+<%#struct:extra_namespace%>
+} // namespace <%struct:extra_namespace%>
+<%/struct:extra_namespace%>
 
 <%/is_struct?%>
 <%/program:structs_and_typedefs%>

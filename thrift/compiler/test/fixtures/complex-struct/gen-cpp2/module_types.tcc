@@ -356,8 +356,6 @@ extern template uint32_t MyStructFloatFieldThrowExp::write<>(apache::thrift::Com
 extern template uint32_t MyStructFloatFieldThrowExp::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructFloatFieldThrowExp::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyStructMapFloatThrowExp::readNoXfer(Protocol_* iprot) {
@@ -516,8 +514,6 @@ extern template uint32_t MyStructMapFloatThrowExp::write<>(apache::thrift::Compa
 extern template uint32_t MyStructMapFloatThrowExp::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructMapFloatThrowExp::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyDataItem::readNoXfer(Protocol_* iprot) {
@@ -597,8 +593,6 @@ extern template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -1775,8 +1769,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void SimpleStruct::readNoXfer(Protocol_* iprot) {
@@ -1932,8 +1924,6 @@ extern template uint32_t SimpleStruct::write<>(apache::thrift::CompactProtocolWr
 extern template uint32_t SimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t SimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void ComplexNestedStruct::readNoXfer(Protocol_* iprot) {
@@ -2735,8 +2725,6 @@ extern template uint32_t ComplexNestedStruct::write<>(apache::thrift::CompactPro
 extern template uint32_t ComplexNestedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexNestedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyUnion::readNoXfer(Protocol_* iprot) {
@@ -3003,8 +2991,6 @@ extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void defaultStruct::readNoXfer(Protocol_* iprot) {
@@ -3931,8 +3917,6 @@ extern template uint32_t defaultStruct::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t defaultStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t defaultStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyStructTypeDef::readNoXfer(Protocol_* iprot) {
@@ -4362,8 +4346,6 @@ extern template uint32_t MyStructTypeDef::write<>(apache::thrift::CompactProtoco
 extern template uint32_t MyStructTypeDef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructTypeDef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void MyUnionFloatFieldThrowExp::readNoXfer(Protocol_* iprot) {
@@ -4569,8 +4551,6 @@ extern template uint32_t MyUnionFloatFieldThrowExp::write<>(apache::thrift::Comp
 extern template uint32_t MyUnionFloatFieldThrowExp::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnionFloatFieldThrowExp::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void TypeRemapped::readNoXfer(Protocol_* iprot) {
@@ -4806,8 +4786,6 @@ extern template uint32_t TypeRemapped::write<>(apache::thrift::CompactProtocolWr
 extern template uint32_t TypeRemapped::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TypeRemapped::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void emptyXcep::readNoXfer(Protocol_* iprot) {
@@ -4887,8 +4865,6 @@ extern template uint32_t emptyXcep::write<>(apache::thrift::CompactProtocolWrite
 extern template uint32_t emptyXcep::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t emptyXcep::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void reqXcep::readNoXfer(Protocol_* iprot) {
@@ -5042,8 +5018,6 @@ extern template uint32_t reqXcep::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t reqXcep::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t reqXcep::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void optXcep::readNoXfer(Protocol_* iprot) {
@@ -5203,8 +5177,6 @@ extern template uint32_t optXcep::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t optXcep::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t optXcep::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void complexException::readNoXfer(Protocol_* iprot) {
@@ -5519,5 +5491,6 @@ extern template void complexException::readNoXfer<>(apache::thrift::CompactProto
 extern template uint32_t complexException::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t complexException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t complexException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

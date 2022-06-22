@@ -168,8 +168,6 @@ extern template uint32_t Mixin1::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t Mixin1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Mixin1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Mixin2::readNoXfer(Protocol_* iprot) {
@@ -329,8 +327,6 @@ extern template uint32_t Mixin2::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t Mixin2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Mixin3Base::readNoXfer(Protocol_* iprot) {
@@ -449,8 +445,6 @@ extern template uint32_t Mixin3Base::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t Mixin3Base::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
@@ -646,5 +640,6 @@ extern template void Foo::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t Foo::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

@@ -136,8 +136,6 @@ extern template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -557,8 +555,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
 
 template <class Protocol_>
 void MyUnion::readNoXfer(Protocol_* iprot) {
@@ -764,8 +760,6 @@ extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
 
 template <class Protocol_>
 void ReservedKeyword::readNoXfer(Protocol_* iprot) {
@@ -884,8 +878,6 @@ extern template uint32_t ReservedKeyword::write<>(apache::thrift::CompactProtoco
 extern template uint32_t ReservedKeyword::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ReservedKeyword::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
 
 template <class Protocol_>
 void UnionToBeRenamed::readNoXfer(Protocol_* iprot) {
@@ -990,5 +982,6 @@ extern template void UnionToBeRenamed::readNoXfer<>(apache::thrift::CompactProto
 extern template uint32_t UnionToBeRenamed::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t UnionToBeRenamed::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t UnionToBeRenamed::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // test::fixtures::basic

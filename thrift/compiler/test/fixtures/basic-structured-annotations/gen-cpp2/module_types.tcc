@@ -233,8 +233,6 @@ extern template uint32_t structured_annotation_inline::write<>(apache::thrift::C
 extern template uint32_t structured_annotation_inline::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structured_annotation_inline::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_with_default::readNoXfer(Protocol_* iprot) {
@@ -353,8 +351,6 @@ extern template uint32_t structured_annotation_with_default::write<>(apache::thr
 extern template uint32_t structured_annotation_with_default::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structured_annotation_with_default::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_forward::readNoXfer(Protocol_* iprot) {
@@ -473,8 +469,6 @@ extern template uint32_t structured_annotation_forward::write<>(apache::thrift::
 extern template uint32_t structured_annotation_forward::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structured_annotation_forward::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_recursive::readNoXfer(Protocol_* iprot) {
@@ -671,8 +665,6 @@ extern template uint32_t structured_annotation_recursive::write<>(apache::thrift
 extern template uint32_t structured_annotation_recursive::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structured_annotation_recursive::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void structured_annotation_nested::readNoXfer(Protocol_* iprot) {
@@ -830,8 +822,6 @@ extern template uint32_t structured_annotation_nested::write<>(apache::thrift::C
 extern template uint32_t structured_annotation_nested::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t structured_annotation_nested::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -1061,8 +1051,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void MyException::readNoXfer(Protocol_* iprot) {
@@ -1181,8 +1169,6 @@ extern template uint32_t MyException::write<>(apache::thrift::CompactProtocolWri
 extern template uint32_t MyException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 template <class Protocol_>
 void MyUnion::readNoXfer(Protocol_* iprot) {
@@ -1318,5 +1304,6 @@ extern template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader
 extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // test::fixtures::basic-structured-annotations

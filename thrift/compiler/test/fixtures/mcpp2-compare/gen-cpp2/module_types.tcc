@@ -210,8 +210,6 @@ extern template uint32_t Empty::write<>(apache::thrift::SimpleJSONProtocolWriter
 extern template uint32_t Empty::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ASimpleStruct::readNoXfer(Protocol_* iprot) {
@@ -336,8 +334,6 @@ extern template uint32_t ASimpleStruct::write<>(apache::thrift::SimpleJSONProtoc
 extern template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ASimpleStructNoexcept::readNoXfer(Protocol_* iprot) {
@@ -462,8 +458,6 @@ extern template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::SimpleJS
 extern template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
@@ -985,8 +979,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void SimpleUnion::readNoXfer(Protocol_* iprot) {
@@ -1127,8 +1119,6 @@ extern template uint32_t SimpleUnion::write<>(apache::thrift::SimpleJSONProtocol
 extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ComplexUnion::readNoXfer(Protocol_* iprot) {
@@ -2155,8 +2145,6 @@ extern template uint32_t ComplexUnion::write<>(apache::thrift::SimpleJSONProtoco
 extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnException::readNoXfer(Protocol_* iprot) {
@@ -2927,8 +2915,6 @@ extern template uint32_t AnException::write<>(apache::thrift::SimpleJSONProtocol
 extern template uint32_t AnException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnotherException::readNoXfer(Protocol_* iprot) {
@@ -3128,8 +3114,6 @@ extern template uint32_t AnotherException::write<>(apache::thrift::SimpleJSONPro
 extern template uint32_t AnotherException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void containerStruct::readNoXfer(Protocol_* iprot) {
@@ -5065,8 +5049,6 @@ extern template uint32_t containerStruct::write<>(apache::thrift::SimpleJSONProt
 extern template uint32_t containerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void MyIncludedStruct::readNoXfer(Protocol_* iprot) {
@@ -5326,8 +5308,6 @@ extern template uint32_t MyIncludedStruct::write<>(apache::thrift::SimpleJSONPro
 extern template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AnnotatedStruct::readNoXfer(Protocol_* iprot) {
@@ -7243,8 +7223,6 @@ extern template uint32_t AnnotatedStruct::write<>(apache::thrift::SimpleJSONProt
 extern template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void ComplexContainerStruct::readNoXfer(Protocol_* iprot) {
@@ -7414,8 +7392,6 @@ extern template uint32_t ComplexContainerStruct::write<>(apache::thrift::SimpleJ
 extern template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void FloatStruct::readNoXfer(Protocol_* iprot) {
@@ -7579,8 +7555,6 @@ extern template uint32_t FloatStruct::write<>(apache::thrift::SimpleJSONProtocol
 extern template uint32_t FloatStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void FloatUnion::readNoXfer(Protocol_* iprot) {
@@ -7721,8 +7695,6 @@ extern template uint32_t FloatUnion::write<>(apache::thrift::SimpleJSONProtocolW
 extern template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
@@ -7843,5 +7815,6 @@ extern template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thri
 extern template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 
 }}} // some::valid::ns

@@ -261,4 +261,5 @@ extern template uint32_t SomeStruct::write<>(apache::thrift::CompactProtocolWrit
 extern template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 }}} // test::fixtures::enums

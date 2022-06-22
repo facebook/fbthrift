@@ -168,8 +168,6 @@ extern template uint32_t Fields::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t Fields::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Fields::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void FieldsInjectedToEmptyStruct::readNoXfer(Protocol_* iprot) {
@@ -288,8 +286,6 @@ extern template uint32_t FieldsInjectedToEmptyStruct::write<>(apache::thrift::Co
 extern template uint32_t FieldsInjectedToEmptyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t FieldsInjectedToEmptyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void FieldsInjectedToStruct::readNoXfer(Protocol_* iprot) {
@@ -445,8 +441,6 @@ extern template uint32_t FieldsInjectedToStruct::write<>(apache::thrift::Compact
 extern template uint32_t FieldsInjectedToStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t FieldsInjectedToStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void FieldsInjectedWithIncludedStruct::readNoXfer(Protocol_* iprot) {
@@ -681,5 +675,6 @@ extern template void FieldsInjectedWithIncludedStruct::readNoXfer<>(apache::thri
 extern template uint32_t FieldsInjectedWithIncludedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t FieldsInjectedWithIncludedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t FieldsInjectedWithIncludedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

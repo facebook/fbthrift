@@ -287,8 +287,6 @@ extern template uint32_t Default::write<>(apache::thrift::CompactProtocolWriter*
 extern template uint32_t Default::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Default::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void NonAtomic::readNoXfer(Protocol_* iprot) {
@@ -526,8 +524,6 @@ extern template uint32_t NonAtomic::write<>(apache::thrift::CompactProtocolWrite
 extern template uint32_t NonAtomic::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NonAtomic::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void Atomic::readNoXfer(Protocol_* iprot) {
@@ -765,8 +761,6 @@ extern template uint32_t Atomic::write<>(apache::thrift::CompactProtocolWriter*)
 extern template uint32_t Atomic::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Atomic::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-namespace cpp2 {
 
 template <class Protocol_>
 void AtomicFoo::readNoXfer(Protocol_* iprot) {
@@ -1003,5 +997,6 @@ extern template void AtomicFoo::readNoXfer<>(apache::thrift::CompactProtocolRead
 extern template uint32_t AtomicFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t AtomicFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AtomicFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 } // cpp2

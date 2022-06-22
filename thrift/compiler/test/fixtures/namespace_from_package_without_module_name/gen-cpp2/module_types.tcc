@@ -147,4 +147,5 @@ extern template uint32_t Foo::write<>(apache::thrift::CompactProtocolWriter*) co
 extern template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
 }} // test::namespace_from_package_without_module_name

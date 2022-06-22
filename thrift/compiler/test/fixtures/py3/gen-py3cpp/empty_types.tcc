@@ -21,3 +21,6 @@ namespace detail {
 } // namespace thrift
 } // namespace apache
 
+namespace cpp2 {
+
+} // cpp2

@@ -19,7 +19,13 @@
 <% > common/namespace_cpp2_begin%>
 
 <%#program:structs%>
+<%#struct:extra_namespace%>
+namespace <%struct:extra_namespace%> {
+<%/struct:extra_namespace%>
 class <%struct:cpp_underlying_name%>;
+<%#struct:extra_namespace%>
+} // namespace <%struct:extra_namespace%>
+<%/struct:extra_namespace%>
 <%#struct:is_directly_adapted?%>
 using <%struct:cpp_name%> = <%struct:cpp_underlying_type%>;
 <%/struct:is_directly_adapted?%>

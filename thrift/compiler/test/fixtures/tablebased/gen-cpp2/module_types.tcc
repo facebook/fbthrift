@@ -104,8 +104,6 @@ extern template uint32_t TrivialTypesStruct::write<>(apache::thrift::SimpleJSONP
 extern template uint32_t TrivialTypesStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t TrivialTypesStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // test::fixtures::tablebased
-namespace test { namespace fixtures { namespace tablebased {
 extern const ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_ContainerStruct;
 
 template <class Protocol_>
@@ -221,8 +219,6 @@ extern template uint32_t ContainerStruct::write<>(apache::thrift::SimpleJSONProt
 extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // test::fixtures::tablebased
-namespace test { namespace fixtures { namespace tablebased {
 extern const ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_ExampleUnion;
 
 
@@ -303,5 +299,6 @@ extern template void ExampleUnion::readNoXfer<>(apache::thrift::SimpleJSONProtoc
 extern template uint32_t ExampleUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t ExampleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ExampleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 
 }}} // test::fixtures::tablebased

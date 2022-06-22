@@ -994,6 +994,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:has_non_optional_and_non_terse_field?",
              &mstch_cpp2_struct::has_non_optional_and_non_terse_field},
             {"struct:any?", &mstch_cpp2_struct::any},
+            {"struct:extra_namespace", &mstch_cpp2_struct::extra_namespace},
         });
     register_has_option(
         "struct:deprecated_tag_incompatible?", "deprecated_tag_incompatible");
@@ -1284,6 +1285,11 @@ class mstch_cpp2_struct : public mstch_struct {
               field.get_req() != t_field::e_req::optional &&
               field.get_req() != t_field::e_req::terse;
         });
+  }
+
+  mstch::node extra_namespace() {
+    auto* extra = context_->resolver().get_extra_namespace(*strct_);
+    return extra ? *extra : mstch::node{};
   }
 
  protected:

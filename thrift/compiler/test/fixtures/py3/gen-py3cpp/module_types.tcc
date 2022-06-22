@@ -182,8 +182,6 @@ extern template uint32_t SimpleException::write<>(apache::thrift::CompactProtoco
 extern template uint32_t SimpleException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t SimpleException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // py3::simple
-namespace py3 { namespace simple {
 
 template <class Protocol_>
 void OptionalRefStruct::readNoXfer(Protocol_* iprot) {
@@ -304,8 +302,6 @@ extern template uint32_t OptionalRefStruct::write<>(apache::thrift::CompactProto
 extern template uint32_t OptionalRefStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OptionalRefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // py3::simple
-namespace py3 { namespace simple {
 
 template <class Protocol_>
 void SimpleStruct::readNoXfer(Protocol_* iprot) {
@@ -683,8 +679,6 @@ extern template uint32_t SimpleStruct::write<>(apache::thrift::CompactProtocolWr
 extern template uint32_t SimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t SimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // py3::simple
-namespace py3 { namespace simple {
 
 template <class Protocol_>
 void ComplexStruct::readNoXfer(Protocol_* iprot) {
@@ -1103,8 +1097,6 @@ extern template uint32_t ComplexStruct::write<>(apache::thrift::CompactProtocolW
 extern template uint32_t ComplexStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // py3::simple
-namespace py3 { namespace simple {
 
 template <class Protocol_>
 void BinaryUnion::readNoXfer(Protocol_* iprot) {
@@ -1210,8 +1202,6 @@ extern template uint32_t BinaryUnion::write<>(apache::thrift::CompactProtocolWri
 extern template uint32_t BinaryUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BinaryUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // py3::simple
-namespace py3 { namespace simple {
 
 template <class Protocol_>
 void BinaryUnionStruct::readNoXfer(Protocol_* iprot) {
@@ -1331,5 +1321,6 @@ extern template void BinaryUnionStruct::readNoXfer<>(apache::thrift::CompactProt
 extern template uint32_t BinaryUnionStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t BinaryUnionStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BinaryUnionStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }} // py3::simple

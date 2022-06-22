@@ -136,8 +136,6 @@ extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void MyStructWithCustomDefault::readNoXfer(Protocol_* iprot) {
@@ -256,8 +254,6 @@ extern template uint32_t MyStructWithCustomDefault::write<>(apache::thrift::Comp
 extern template uint32_t MyStructWithCustomDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStructWithCustomDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void StructLevelTerseStruct::readNoXfer(Protocol_* iprot) {
@@ -882,8 +878,6 @@ extern template uint32_t StructLevelTerseStruct::write<>(apache::thrift::Compact
 extern template uint32_t StructLevelTerseStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t StructLevelTerseStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void FieldLevelTerseStruct::readNoXfer(Protocol_* iprot) {
@@ -2037,8 +2031,6 @@ extern template uint32_t FieldLevelTerseStruct::write<>(apache::thrift::CompactP
 extern template uint32_t FieldLevelTerseStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t FieldLevelTerseStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void TerseStructWithCustomDefault::readNoXfer(Protocol_* iprot) {
@@ -2662,5 +2654,6 @@ extern template void TerseStructWithCustomDefault::readNoXfer<>(apache::thrift::
 extern template uint32_t TerseStructWithCustomDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t TerseStructWithCustomDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t TerseStructWithCustomDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 
 }}} // apache::thrift::test
