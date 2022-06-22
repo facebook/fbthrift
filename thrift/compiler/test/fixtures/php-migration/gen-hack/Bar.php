@@ -609,16 +609,11 @@ class Bar_baz_args implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'a'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'b'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'c'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'd'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'e'),
+      HH\FIXME\UNSAFE_CAST<mixed, dict<int, bool>>(idx($map, 'a'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<int, dict<string, bool>>>>(idx($map, 'b'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'c'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, Foo>(idx($map, 'd'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'e'), 'map value is mixed'),
     );
   }
 
@@ -783,8 +778,7 @@ class Bar_baz_result implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'success'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'success'), 'map value is mixed'),
     );
   }
 

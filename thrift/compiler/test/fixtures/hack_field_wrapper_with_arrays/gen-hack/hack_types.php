@@ -56,8 +56,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'name'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'name'), 'map value is mixed'),
     );
   }
 
@@ -181,8 +180,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'name'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'name'), 'map value is mixed'),
     );
   }
 
@@ -310,8 +308,7 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'reason'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'reason'), 'map value is mixed'),
     );
   }
 
@@ -453,10 +450,8 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'name'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'reason'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'name'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'reason'), 'map value is mixed'),
     );
   }
 

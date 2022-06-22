@@ -53,8 +53,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'int_field'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'int_field'), 'map value is mixed'),
     );
   }
 
@@ -205,14 +204,12 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = idx($map, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>(HH\FIXME\UNSAFE_CAST<mixed, int>($union_annotated_field, 'Map value is mixed'), 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
     }
     $union_adapted_type = idx($map, 'union_adapted_type');
     if ($union_adapted_type !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->union_adapted_type = $union_adapted_type;
+      $obj->union_adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($union_adapted_type, 'Map value is mixed');
       $obj->_type = MyUnionEnum::union_adapted_type;
     }
     return $obj;
@@ -482,18 +479,15 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     $obj = new static();
     $code = idx($map, 'code');
     if ($code !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->code = $code;
+      $obj->code = HH\FIXME\UNSAFE_CAST<mixed, int>($code, 'Map value is mixed');
     }
     $message = idx($map, 'message');
     if ($message !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->message = $message;
+      $obj->message = HH\FIXME\UNSAFE_CAST<mixed, string>($message, 'Map value is mixed');
     }
     $annotated_message = idx($map, 'annotated_message');
     if ($annotated_message !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_annotated_message()->genWrap($annotated_message);
+      await $obj->get_annotated_message()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, string>($annotated_message, 'Map value is mixed'));
     }
     return $obj;
   }

@@ -172,28 +172,23 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     $obj = new static();
     $weeks = idx($map, 'weeks');
     if ($weeks !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->weeks = $weeks;
+      $obj->weeks = HH\FIXME\UNSAFE_CAST<mixed, int>($weeks, 'Map value is mixed');
     }
     $title = idx($map, 'title');
     if ($title !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->title = $title;
+      $obj->title = HH\FIXME\UNSAFE_CAST<mixed, string>($title, 'Map value is mixed');
     }
     $employer = idx($map, 'employer');
     if ($employer !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->employer = $employer;
+      $obj->employer = HH\FIXME\UNSAFE_CAST<mixed, Company>($employer, 'Map value is mixed');
     }
     $compensation = idx($map, 'compensation');
     if ($compensation !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_compensation()->genWrap($compensation);
+      await $obj->get_compensation()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, float>($compensation, 'Map value is mixed'));
     }
     $school = idx($map, 'school');
     if ($school !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->school = $school;
+      $obj->school = HH\FIXME\UNSAFE_CAST<mixed, string>($school, 'Map value is mixed');
     }
     return $obj;
   }
@@ -424,10 +419,8 @@ class SWE implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'employer'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'compensation'),
+      HH\FIXME\UNSAFE_CAST<mixed, Company>(idx($map, 'employer'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, float>(idx($map, 'compensation'), 'map value is mixed'),
     );
   }
 

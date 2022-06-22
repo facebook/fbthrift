@@ -63,10 +63,8 @@ class Foo implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'a'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'b'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'a'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'b'), 'map value is mixed'),
     );
   }
 

@@ -251,8 +251,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct, \IThr
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'message'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'message'), 'map value is mixed'),
     );
   }
 
@@ -388,8 +387,7 @@ class facebook_thrift_annotation_Legacy implements \IThriftSyncStruct, \IThriftS
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'message'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'message'), 'map value is mixed'),
     );
   }
 
@@ -520,8 +518,7 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'field_name'),
+      HH\FIXME\UNSAFE_CAST<mixed, bool>(idx($map, 'field_name'), 'map value is mixed'),
     );
   }
 
@@ -1460,8 +1457,7 @@ class facebook_thrift_annotation_GenDefaultEnumValue implements \IThriftSyncStru
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'name'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'name'), 'map value is mixed'),
     );
   }
 

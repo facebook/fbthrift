@@ -268,10 +268,8 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg1'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg2'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'arg1'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyStruct>(idx($map, 'arg2'), 'map value is mixed'),
     );
   }
 
@@ -401,8 +399,7 @@ class Service_func_result implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'success'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'success'), 'map value is mixed'),
     );
   }
 

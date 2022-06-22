@@ -433,10 +433,8 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg1'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg2'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'arg1'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyStruct>(idx($map, 'arg2'), 'map value is mixed'),
     );
   }
 
@@ -575,8 +573,7 @@ class Service1_func_result implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'success'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyStruct>(idx($map, 'success'), 'map value is mixed'),
     );
   }
 
@@ -689,10 +686,8 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg1'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'arg2'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'arg1'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyStruct>(idx($map, 'arg2'), 'map value is mixed'),
     );
   }
 
@@ -831,8 +826,7 @@ class Service1_func1_result implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'success'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyStruct>(idx($map, 'success'), 'map value is mixed'),
     );
   }
 

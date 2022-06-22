@@ -122,8 +122,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'count'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'count'), 'map value is mixed'),
     );
   }
 
@@ -319,23 +318,19 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     $obj = new static();
     $name = idx($map, 'name');
     if ($name !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->name = $name;
+      $obj->name = HH\FIXME\UNSAFE_CAST<mixed, string>($name, 'Map value is mixed');
     }
     $recurse = idx($map, 'recurse');
     if ($recurse !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_recurse()->genWrap($recurse);
+      await $obj->get_recurse()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($recurse, 'Map value is mixed'));
     }
     $default = idx($map, 'default');
     if ($default !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->default = $default;
+      $obj->default = HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($default, 'Map value is mixed');
     }
     $recurse_map = idx($map, 'recurse_map');
     if ($recurse_map !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->recurse_map = $recurse_map;
+      $obj->recurse_map = HH\FIXME\UNSAFE_CAST<mixed, dict<string, structured_annotation_recursive>>($recurse_map, 'Map value is mixed');
     }
     return $obj;
   }
@@ -599,8 +594,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'annotated_recursive'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'annotated_recursive'), 'map value is mixed'),
     );
   }
 

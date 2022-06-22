@@ -3808,15 +3808,20 @@ void t_hack_generator::generate_php_struct_field_methods(
     out << "\n";
     out << indent() << "public function setCodeAsEnum(" << enum_type
         << " $code)[write_props]: void {\n";
+    std::string code_expr = "$code";
     if (!enum_transparenttype_) {
-      out << indent() << "  /* HH_FIXME[4110] nontransparent enum */\n";
+      code_expr =
+          "HH\\FIXME\\UNSAFE_CAST<arraykey, int>($code, 'nontransparent enum')";
     }
-    out << indent() << "  $this->code = $code;\n" << indent() << "}\n\n";
+    out << indent() << "  $this->code = " << code_expr << ";\n"
+        << indent() << "}\n\n";
+
     out << indent() << "public function getCodeAsEnum()[]: " << enum_type
         << " {\n"
-        << indent()
-        << "  /* HH_FIXME[4110] retain HHVM enforcement semantics */\n"
-        << indent() << "  return $this->code;\n"
+        << indent() << "  return "
+        << "HH\\FIXME\\UNSAFE_CAST<int, " + enum_type + ">" +
+            "($this->code, 'retain HHVM enforcement semantics')"
+        << ";\n"
         << indent() << "}\n";
   }
 }
@@ -3978,12 +3983,16 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
       // Capture value from constructor and update _type field
       out << indent() << "if ($" << field_name << " !== null) {\n";
     }
+
+    std::string field_expr =
+        "$" + field_name + (!nullable ? " ?? " + dval : "");
     if (need_enum_code_fixme) {
-      out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+      field_expr = "HH\\FIXME\\UNSAFE_CAST<arraykey, int>(" + field_expr +
+          ", 'nontransparent Enum')";
     }
-    out << indent() << (tstruct->is_union() ? "  " : "") << "$this->"
-        << field_name << " = $" << field_name
-        << (!nullable ? " ?? " + dval : "") << ";\n";
+    out << indent() << (tstruct->is_union() ? "  " : "")
+        << "$this->" + field_name + " = " << field_expr << ";\n";
+
     if (tstruct->is_union()) {
       out << indent()
           << "  $this->_type = " << union_field_to_enum(tstruct, &field, name)
@@ -4607,9 +4616,10 @@ void t_hack_generator::generate_php_struct_from_map(
     if (skip_codegen(&field)) {
       continue;
     }
-    out << indent()
-        << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
-    out << indent() << "idx($map, '" << field.name() << "'),\n";
+
+    std::string typehint = type_to_typehint(field.get_type());
+    out << indent() << "HH\\FIXME\\UNSAFE_CAST<mixed, " << typehint
+        << ">(idx($map, '" << field.name() << "'), 'map value is mixed'),\n";
   }
   indent_down();
   out << indent() << ");\n";
@@ -4735,8 +4745,9 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method(
     indent_up();
 
     if (method_type == ThriftAsyncStructCreationMethod::FROM_MAP) {
-      out << indent()
-          << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
+      std::string typehint = type_to_typehint(field.get_type());
+      field_ref = "HH\\FIXME\\UNSAFE_CAST<mixed, " + typehint + ">(" +
+          field_ref + ", 'Map value is mixed')";
     }
 
     generate_php_struct_async_struct_creation_method_field_assignment(

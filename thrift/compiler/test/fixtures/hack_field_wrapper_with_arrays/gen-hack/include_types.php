@@ -149,8 +149,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'nested_struct'),
+      HH\FIXME\UNSAFE_CAST<mixed, MyNestedStruct>(idx($map, 'nested_struct'), 'map value is mixed'),
     );
   }
 
@@ -392,28 +391,23 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     $obj = new static();
     $wrapped_field = idx($map, 'wrapped_field');
     if ($wrapped_field !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_wrapped_field()->genWrap($wrapped_field);
+      await $obj->get_wrapped_field()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, int>($wrapped_field, 'Map value is mixed'));
     }
     $annotated_field = idx($map, 'annotated_field');
     if ($annotated_field !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_annotated_field()->genWrap($annotated_field);
+      await $obj->get_annotated_field()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, int>($annotated_field, 'Map value is mixed'));
     }
     $adapted_type = idx($map, 'adapted_type');
     if ($adapted_type !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->adapted_type = $adapted_type;
+      $obj->adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($adapted_type, 'Map value is mixed');
     }
     $adapted__and_wrapped_type = idx($map, 'adapted__and_wrapped_type');
     if ($adapted__and_wrapped_type !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_adapted__and_wrapped_type()->genWrap($adapted__and_wrapped_type);
+      await $obj->get_adapted__and_wrapped_type()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, int>($adapted__and_wrapped_type, 'Map value is mixed'));
     }
     $optional_adapted_and_wrapped_type = idx($map, 'optional_adapted_and_wrapped_type');
     if ($optional_adapted_and_wrapped_type !== null) {
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      await $obj->get_optional_adapted_and_wrapped_type()->genWrap($optional_adapted_and_wrapped_type);
+      await $obj->get_optional_adapted_and_wrapped_type()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, \MyAdapter1::THackType>($optional_adapted_and_wrapped_type, 'Map value is mixed'));
     }
     return $obj;
   }
@@ -845,18 +839,12 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'map_of_string_to_MyStruct'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'map_of_string_to_list_of_MyStruct'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'map_of_string_to_map_of_string_to_i32'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'map_of_string_to_map_of_string_to_MyStruct'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'list_of_map_of_string_to_list_of_MyStruct'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'list_of_map_of_string_to_MyStruct'),
+      HH\FIXME\UNSAFE_CAST<mixed, dict<string, MyStruct>>(idx($map, 'map_of_string_to_MyStruct'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, dict<string, vec<MyStruct>>>(idx($map, 'map_of_string_to_list_of_MyStruct'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, int>>>(idx($map, 'map_of_string_to_map_of_string_to_i32'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, MyStruct>>>(idx($map, 'map_of_string_to_map_of_string_to_MyStruct'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, vec<MyStruct>>>>(idx($map, 'list_of_map_of_string_to_list_of_MyStruct'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, MyStruct>>>(idx($map, 'list_of_map_of_string_to_MyStruct'), 'map value is mixed'),
     );
   }
 

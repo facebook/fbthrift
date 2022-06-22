@@ -82,8 +82,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
   }
 
   public function getCodeAsEnum()[]: MyEnum {
-    /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;
+    return HH\FIXME\UNSAFE_CAST<int, MyEnum>($this->code, 'retain HHVM enforcement semantics');
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {

@@ -78,20 +78,17 @@ class MyException1 extends \TException implements \IThriftSyncStruct {
   public /* Originally defined as MyEnum */ int $code;
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
-    /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code, 'nontransparent enum');
   }
 
   public function getCodeAsEnum()[]: MyEnum {
-    /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;
+    return HH\FIXME\UNSAFE_CAST<int, MyEnum>($this->code, 'retain HHVM enforcement semantics');
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
-      /* HH_FIXME[4110] nontransparent Enum */
-    $this->code = $code ?? MyEnum::MyValue1;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code ?? MyEnum::MyValue1, 'nontransparent Enum');
   }
 
   public static function withDefaultValues()[]: this {
@@ -201,20 +198,17 @@ class MyException2 extends \TException implements \IThriftSyncStruct {
   public /* Originally defined as MyEnum */ int $code;
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
-    /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code, 'nontransparent enum');
   }
 
   public function getCodeAsEnum()[]: MyEnum {
-    /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;
+    return HH\FIXME\UNSAFE_CAST<int, MyEnum>($this->code, 'retain HHVM enforcement semantics');
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
-      /* HH_FIXME[4110] nontransparent Enum */
-    $this->code = $code ?? MyEnum::MyValue1;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code ?? MyEnum::MyValue1, 'nontransparent Enum');
   }
 
   public static function withDefaultValues()[]: this {
@@ -323,20 +317,17 @@ class MyException3 extends \TException implements \IThriftSyncStruct {
   public /* Originally defined as MyEnum */ int $code;
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
-    /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code, 'nontransparent enum');
   }
 
   public function getCodeAsEnum()[]: MyEnum {
-    /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;
+    return HH\FIXME\UNSAFE_CAST<int, MyEnum>($this->code, 'retain HHVM enforcement semantics');
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
-      /* HH_FIXME[4110] nontransparent Enum */
-    $this->code = $code ?? MyEnum::MyValue1;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code ?? MyEnum::MyValue1, 'nontransparent Enum');
   }
 
   public static function withDefaultValues()[]: this {
@@ -445,20 +436,17 @@ class MyException4 extends \TException implements \IThriftSyncStruct {
   public /* Originally defined as MyEnum */ int $code;
 
   public function setCodeAsEnum(MyEnum $code)[write_props]: void {
-    /* HH_FIXME[4110] nontransparent enum */
-    $this->code = $code;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code, 'nontransparent enum');
   }
 
   public function getCodeAsEnum()[]: MyEnum {
-    /* HH_FIXME[4110] retain HHVM enforcement semantics */
-    return $this->code;
+    return HH\FIXME\UNSAFE_CAST<int, MyEnum>($this->code, 'retain HHVM enforcement semantics');
   }
 
   public function __construct(?string $message = null, ?MyEnum $code = null)[] {
     parent::__construct();
     $this->message = $message ?? '';
-      /* HH_FIXME[4110] nontransparent Enum */
-    $this->code = $code ?? MyEnum::MyValue2;
+    $this->code = HH\FIXME\UNSAFE_CAST<arraykey, int>($code ?? MyEnum::MyValue2, 'nontransparent Enum');
   }
 
   public static function withDefaultValues()[]: this {

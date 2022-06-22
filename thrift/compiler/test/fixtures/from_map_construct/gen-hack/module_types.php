@@ -146,14 +146,10 @@ class Foo implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'a'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'b'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'c'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'd'),
+      HH\FIXME\UNSAFE_CAST<mixed, Vector<string>>(idx($map, 'a'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, Map<string, Vector<Set<int>>>>(idx($map, 'b'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'c'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, bool>(idx($map, 'd'), 'map value is mixed'),
     );
   }
 
@@ -380,14 +376,10 @@ class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum> {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'string_field'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'int_field'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'enum_field'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'foo_struct'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'string_field'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'int_field'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, TestEnum>(idx($map, 'enum_field'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, Foo>(idx($map, 'foo_struct'), 'map value is mixed'),
     );
   }
 
@@ -666,14 +658,10 @@ class Baz extends \TException implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'message'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'some_field'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'some_container'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'code'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'message'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, Foo>(idx($map, 'some_field'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, Set<string>>(idx($map, 'some_container'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'code'), 'map value is mixed'),
     );
   }
 
@@ -806,8 +794,7 @@ class OptBaz extends \TException implements \IThriftSyncStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'message'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'message'), 'map value is mixed'),
     );
   }
 
