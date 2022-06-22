@@ -61,7 +61,7 @@ cdef __StructSpec get_reflection__BoolPatch():
         name="BoolPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::BoolPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """BoolPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::BoolPatchAdapter""",            """cpp.detail.underlying_name""": """BoolPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -98,7 +98,7 @@ cdef __StructSpec get_reflection__BytePatch():
         name="BytePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """BytePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """BytePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -135,7 +135,7 @@ cdef __StructSpec get_reflection__I16Patch():
         name="I16Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """I16PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """I16PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -172,7 +172,7 @@ cdef __StructSpec get_reflection__I32Patch():
         name="I32Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """I32PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """I32PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -209,7 +209,7 @@ cdef __StructSpec get_reflection__I64Patch():
         name="I64Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """I64PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """I64PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -246,7 +246,7 @@ cdef __StructSpec get_reflection__FloatPatch():
         name="FloatPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """FloatPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """FloatPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -283,7 +283,7 @@ cdef __StructSpec get_reflection__DoublePatch():
         name="DoublePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """DoublePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::NumberPatchAdapter""",            """cpp.detail.underlying_name""": """DoublePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -320,7 +320,7 @@ cdef __StructSpec get_reflection__StringPatch():
         name="StringPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StringPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """StringPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StringPatchAdapter""",            """cpp.detail.underlying_name""": """StringPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -381,7 +381,7 @@ cdef __StructSpec get_reflection__BinaryPatch():
         name="BinaryPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::AssignPatchAdapter""",            """cpp.detail.adapted_alias""": """1""",            """cpp.name""": """BinaryPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::AssignPatchAdapter""",            """cpp.detail.underlying_name""": """BinaryPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -406,7 +406,7 @@ cdef __StructSpec get_reflection__OptionalBoolPatch():
         name="OptionalBoolPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalBoolPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalBoolPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -467,7 +467,7 @@ cdef __StructSpec get_reflection__OptionalBytePatch():
         name="OptionalBytePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalBytePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalBytePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -528,7 +528,7 @@ cdef __StructSpec get_reflection__OptionalI16Patch():
         name="OptionalI16Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalI16PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalI16PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -589,7 +589,7 @@ cdef __StructSpec get_reflection__OptionalI32Patch():
         name="OptionalI32Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalI32PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalI32PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -650,7 +650,7 @@ cdef __StructSpec get_reflection__OptionalI64Patch():
         name="OptionalI64Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalI64PatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalI64PatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -711,7 +711,7 @@ cdef __StructSpec get_reflection__OptionalFloatPatch():
         name="OptionalFloatPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalFloatPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalFloatPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -772,7 +772,7 @@ cdef __StructSpec get_reflection__OptionalDoublePatch():
         name="OptionalDoublePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalDoublePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalDoublePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -833,7 +833,7 @@ cdef __StructSpec get_reflection__OptionalStringPatch():
         name="OptionalStringPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalStringPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalStringPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -894,7 +894,7 @@ cdef __StructSpec get_reflection__OptionalBinaryPatch():
         name="OptionalBinaryPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """OptionalBinaryPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.detail.underlying_name""": """OptionalBinaryPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

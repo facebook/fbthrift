@@ -34,9 +34,9 @@
 // `<%program:name%>_sinit.cpp`.
 <%#program:structs%>
 <%#struct:any?%>
-FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_name%> = (
+FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_underlying_name%> = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
-        <%struct:cpp_name%>,
+        <%struct:cpp_underlying_name%>,
 <%#program:json?%>
         apache::thrift::conformance::StandardProtocol::SimpleJson,
 <%/program:json?%>
@@ -102,7 +102,7 @@ FOLLY_POP_WARNING
 
 
 <%#struct:thrift_uri%>
-const char* <%struct:cpp_name%>::__fbthrift_thrift_uri() {
+const char* <%struct:cpp_underlying_name%>::__fbthrift_thrift_uri() {
   return "<%struct:thrift_uri%>";
 }
 
@@ -111,8 +111,8 @@ const char* <%struct:cpp_name%>::__fbthrift_thrift_uri() {
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
 <%^struct:is_eligible_for_constexpr?%>
-<%struct:cpp_name%>::<%struct:cpp_name%>(const <%struct:cpp_name%>&) = default;
-<%struct:cpp_name%>& <%struct:cpp_name%>::operator=(const <%struct:cpp_name%>&) = default;
+<%struct:cpp_underlying_name%>::<%struct:cpp_underlying_name%>(const <%struct:cpp_underlying_name%>&) = default;
+<%struct:cpp_underlying_name%>& <%struct:cpp_underlying_name%>::operator=(const <%struct:cpp_underlying_name%>&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:nondefault_copy_ctor_and_assignment?%>
@@ -159,24 +159,24 @@ const char* <%struct:cpp_name%>::__fbthrift_thrift_uri() {
 <% > module_types_cpp/union_swap%>
 <%/struct:union?%>
 
-template void <%struct:cpp_name%>::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void <%struct:cpp_name%>::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void <%struct:cpp_underlying_name%>::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t <%struct:cpp_underlying_name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void <%struct:cpp_underlying_name%>::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t <%struct:cpp_underlying_name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 <%#program:json?%>
-template void <%struct:cpp_name%>::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
-template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
-template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template void <%struct:cpp_underlying_name%>::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t <%struct:cpp_underlying_name%>::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t <%struct:cpp_underlying_name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
 
 <%#program:tablebased?%>
 <%#struct:union?%>
-constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:cpp_name%>_unionExt = {
+constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:cpp_underlying_name%>_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<<%struct:cpp_fullname%>>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<%struct:cpp_fullname%>>(),
   /* .getActiveId */ nullptr,
@@ -186,7 +186,7 @@ constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:c
 %><%/field:type%><%/struct:fields_in_key_order%>},
 };
 <%/struct:union?%>
-constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthrift_struct_info_<%struct:cpp_name%> = {
+constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthrift_struct_info_<%struct:cpp_underlying_name%> = {
   /* .numFields */ <%struct:fields_size%>,
   /* .name */ "<%struct:name%>",<%!
   %><%#struct:union?%>
@@ -226,7 +226,7 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
 <%#type:transitively_refers_to_struct?%>
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
-        <%struct:cpp_name%>,
+        <%struct:cpp_underlying_name%>,
         <%type:type_class%>,
         <%type:cpp_type%>>,
     "inconsistent use of json option");
@@ -279,7 +279,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .get */ nullptr,
   /* .set */ nullptr,
-  /* .typeExt */ &<% > common/namespace_cpp2 %>__fbthrift_struct_info_<%struct:cpp_name%>,
+  /* .typeExt */ &<% > common/namespace_cpp2 %>__fbthrift_struct_info_<%struct:cpp_underlying_name%>,
 };
 <%/program:structs%>
 }}} // namespace apache::thrift::detail

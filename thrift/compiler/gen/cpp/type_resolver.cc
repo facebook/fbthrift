@@ -199,6 +199,10 @@ std::string type_resolver::gen_standard_type(const t_type& node) {
     return *type;
   }
 
+  if (auto name = node.find_annotation_or_null("cpp.detail.underlying_name")) {
+    return namespaces_.get_namespace(*node.program()) + "::" + *name;
+  }
+
   if (const auto* ttypedef = dynamic_cast<const t_typedef*>(&node)) {
     // Traverse the typedef.
     // TODO(afuller): Always traverse the adapter. There are some cpp.type and

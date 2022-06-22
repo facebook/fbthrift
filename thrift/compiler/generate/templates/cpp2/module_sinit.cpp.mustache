@@ -34,13 +34,13 @@
 // static linking to include the intialization logic.
 <%#program:structs%>
 <%#struct:any?%>
-extern FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_name%>;
+extern FOLLY_EXPORT bool __fbthrift_static_init_<%struct:cpp_underlying_name%>;
 <%/struct:any?%>
 <%/program:structs%>
 FOLLY_EXPORT bool* __fbthrift_static_reg_<%program:name%>[] = {
 <%#program:structs%>
 <%#struct:any?%>
-    &__fbthrift_static_init_<%struct:cpp_name%>,
+    &__fbthrift_static_init_<%struct:cpp_underlying_name%>,
 <%/struct:any?%>
 <%/program:structs%>
     nullptr};

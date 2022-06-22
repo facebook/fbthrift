@@ -52,9 +52,8 @@ struct BoolPatch {
   // If the bool value should be inverted.
   5: bool invert;
 } (
-  cpp.name = "BoolPatchStruct",
+  cpp.detail.underlying_name = "BoolPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for an 8-bit integer value.
@@ -68,9 +67,8 @@ struct BytePatch {
   // Add to a given value.
   5: byte add;
 } (
-  cpp.name = "BytePatchStruct",
+  cpp.detail.underlying_name = "BytePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a 16-bit integer value.
@@ -84,9 +82,8 @@ struct I16Patch {
   // Add to a given value.
   5: i16 add;
 } (
-  cpp.name = "I16PatchStruct",
+  cpp.detail.underlying_name = "I16PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a 32-bit integer value.
@@ -100,9 +97,8 @@ struct I32Patch {
   // Add to a given value.
   5: i32 add;
 } (
-  cpp.name = "I32PatchStruct",
+  cpp.detail.underlying_name = "I32PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a 64-bit integer value.
@@ -116,9 +112,8 @@ struct I64Patch {
   // Add to a given value.
   5: i64 add;
 } (
-  cpp.name = "I64PatchStruct",
+  cpp.detail.underlying_name = "I64PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a 32-bit floating point value.
@@ -132,9 +127,8 @@ struct FloatPatch {
   // Add to a given value.
   5: float add;
 } (
-  cpp.name = "FloatPatchStruct",
+  cpp.detail.underlying_name = "FloatPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for an 64-bit floating point value.
@@ -148,9 +142,8 @@ struct DoublePatch {
   // Add to a given value.
   5: double add;
 } (
-  cpp.name = "DoublePatchStruct",
+  cpp.detail.underlying_name = "DoublePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a string value.
@@ -170,9 +163,8 @@ struct StringPatch {
   // Append to a given value.
   5: string append;
 } (
-  cpp.name = "StringPatchStruct",
+  cpp.detail.underlying_name = "StringPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",
-  cpp.detail.adapted_alias,
 )
 
 // A patch for a binary value.
@@ -183,7 +175,6 @@ struct BinaryPatch {
   // If set, all other patch operations are ignored.
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
 } (
-  cpp.name = "BinaryPatchStruct",
+  cpp.detail.underlying_name = "BinaryPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::AssignPatchAdapter",
-  cpp.detail.adapted_alias,
 )

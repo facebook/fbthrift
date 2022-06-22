@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>void <%struct:cpp_name%>::__fbthrift_clear() {
+%>void <%struct:cpp_underlying_name%>::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -30,6 +30,6 @@
   type_ = Type::__EMPTY__;
 }
 
-bool <%struct:cpp_name%>::__fbthrift_is_empty() const {
+bool <%struct:cpp_underlying_name%>::__fbthrift_is_empty() const {
   return type_ == Type::__EMPTY__;
 }

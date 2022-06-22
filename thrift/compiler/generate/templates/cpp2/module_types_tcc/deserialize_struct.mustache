@@ -16,7 +16,7 @@
 
 %><%^program:tablebased?%>
 template <class Protocol_>
-void <%struct:cpp_name%>::readNoXfer(Protocol_* iprot) {
+void <%struct:cpp_underlying_name%>::readNoXfer(Protocol_* iprot) {
   <%!
     Terse fields are cleared to their intrinsic default values so that when fields are missing during
     deserialization, it will be still set to intrinsic default even if the field has the custom default in IDL.
@@ -132,7 +132,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<<%struct:cpp_name%>>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<<%struct:cpp_underlying_name%>>>();
   }
 
   switch (_readState.fieldId) {
@@ -162,7 +162,7 @@ _skip:
 <%#field:type%>
 <%#field:lazy?%>
 template<class ProtocolReader>
-void <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
+void <%struct:cpp_underlying_name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
   ProtocolReader reader;
   reader.setInput(&<%#field:lazy_ref?%>*<%/field:lazy_ref?%>__fbthrift_serializedData_.<%field:cpp_name%>);
   ProtocolReader *iprot = &reader;
@@ -175,11 +175,11 @@ void <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const 
 <%/program:tablebased?%>
 <%#program:tablebased?%>
 template <class Protocol_>
-void <%struct:cpp_name%>::readNoXfer(Protocol_* iprot) {
+void <%struct:cpp_underlying_name%>::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      <% > common/namespace_cpp2%>__fbthrift_struct_info_<%struct:cpp_name%>
+      <% > common/namespace_cpp2%>__fbthrift_struct_info_<%struct:cpp_underlying_name%>
     ),
     this);
 }

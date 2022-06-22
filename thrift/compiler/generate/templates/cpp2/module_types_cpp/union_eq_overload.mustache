@@ -16,7 +16,7 @@
 
 %>
 
-bool <%struct:cpp_name%>::operator==(const <%struct:cpp_name%>& rhs) const {
+bool <%struct:cpp_underlying_name%>::operator==(const <%struct:cpp_underlying_name%>& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
 <%#struct:fields%>

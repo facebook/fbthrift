@@ -889,7 +889,7 @@ MyDataPatchStruct& MyDataPatchStruct::operator=(FOLLY_MAYBE_UNUSED MyDataPatchSt
 }
 
 
-MyDataPatchStruct::MyDataPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> data1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> data2__arg) :
+MyDataPatchStruct::MyDataPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch data1__arg, ::apache::thrift::op::I32Patch data2__arg) :
     __fbthrift_field_data1(std::move(data1__arg)),
     __fbthrift_field_data2(std::move(data2__arg)) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_data1, *this);
@@ -960,13 +960,13 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyDataPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>,
+        ::apache::thrift::op::StringPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyDataPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
+        ::apache::thrift::op::I32Patch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1030,7 +1030,7 @@ MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED MyD
 }
 
 
-MyDataValuePatchStruct::MyDataValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct> patch__arg) :
+MyDataValuePatchStruct::MyDataValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> assign__arg, bool clear__arg, ::test::fixtures::patch::MyDataPatch patch__arg) :
     __fbthrift_field_assign(std::move(assign__arg)),
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)) {
@@ -1115,7 +1115,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>>,
+        ::test::fixtures::patch::MyDataPatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1185,7 +1185,7 @@ OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(FOLLY_
 }
 
 
-OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> patchAfter__arg) :
+OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyDataValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> ensure__arg, ::test::fixtures::patch::MyDataValuePatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1275,7 +1275,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
+        ::test::fixtures::patch::MyDataValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -1287,7 +1287,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
+        ::test::fixtures::patch::MyDataValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1344,7 +1344,7 @@ InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(FOLLY_MAYBE_UNUSED Inner
 }
 
 
-InnerUnionPatchStruct::InnerUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct> innerOption__arg) :
+InnerUnionPatchStruct::InnerUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BinaryPatch innerOption__arg) :
     __fbthrift_field_innerOption(std::move(innerOption__arg)) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
   __isset.set(folly::index_constant<0>(), true);
@@ -1404,7 +1404,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         InnerUnionPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct>>,
+        ::apache::thrift::op::BinaryPatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1475,7 +1475,7 @@ InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(FOLLY_MAYBE_UN
 }
 
 
-InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct> patch__arg, ::test::fixtures::patch::InnerUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct> patchAfter__arg) :
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionPatch patch__arg, ::test::fixtures::patch::InnerUnion ensure__arg, ::test::fixtures::patch::InnerUnionPatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1574,7 +1574,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         InnerUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>>,
+        ::test::fixtures::patch::InnerUnionPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -1586,7 +1586,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         InnerUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>>,
+        ::test::fixtures::patch::InnerUnionPatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1656,7 +1656,7 @@ OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator
 }
 
 
-OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> patchAfter__arg) :
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> ensure__arg, ::test::fixtures::patch::InnerUnionValuePatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1746,7 +1746,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalInnerUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+        ::test::fixtures::patch::InnerUnionValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -1758,7 +1758,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalInnerUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+        ::test::fixtures::patch::InnerUnionValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1827,7 +1827,7 @@ MyUnionPatchStruct& MyUnionPatchStruct::operator=(FOLLY_MAYBE_UNUSED MyUnionPatc
 }
 
 
-MyUnionPatchStruct::MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> option1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> option2__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct> option3__arg) :
+MyUnionPatchStruct::MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch option1__arg, ::apache::thrift::op::I32Patch option2__arg, ::test::fixtures::patch::InnerUnionValuePatch option3__arg) :
     __fbthrift_field_option1(std::move(option1__arg)),
     __fbthrift_field_option2(std::move(option2__arg)),
     __fbthrift_field_option3(std::move(option3__arg)) {
@@ -1909,19 +1909,19 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>,
+        ::apache::thrift::op::StringPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
+        ::apache::thrift::op::I32Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+        ::test::fixtures::patch::InnerUnionValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -1992,7 +1992,7 @@ MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED M
 }
 
 
-MyUnionValuePatchStruct::MyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct> patch__arg, ::test::fixtures::patch::MyUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct> patchAfter__arg) :
+MyUnionValuePatchStruct::MyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionPatch patch__arg, ::test::fixtures::patch::MyUnion ensure__arg, ::test::fixtures::patch::MyUnionPatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2091,7 +2091,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>>,
+        ::test::fixtures::patch::MyUnionPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -2103,7 +2103,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>>,
+        ::test::fixtures::patch::MyUnionPatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -2173,7 +2173,7 @@ OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(FOLL
 }
 
 
-OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> patchAfter__arg) :
+OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> ensure__arg, ::test::fixtures::patch::MyUnionValuePatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2263,7 +2263,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
+        ::test::fixtures::patch::MyUnionValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -2275,7 +2275,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
+        ::test::fixtures::patch::MyUnionValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -2505,7 +2505,7 @@ OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator
 }
 
 
-OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct> patch__arg, ::std::vector<::std::int16_t> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct> patchAfter__arg) :
+OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructField21Patch patch__arg, ::std::vector<::std::int16_t> ensure__arg, ::test::fixtures::patch::MyStructField21Patch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2604,13 +2604,13 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField21PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>>,
+        ::test::fixtures::patch::MyStructField21Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField21PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>>,
+        ::test::fixtures::patch::MyStructField21Patch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -2840,7 +2840,7 @@ OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator
 }
 
 
-OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct> patch__arg, ::std::set<::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct> patchAfter__arg) :
+OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructField22Patch patch__arg, ::std::set<::std::string> ensure__arg, ::test::fixtures::patch::MyStructField22Patch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2939,13 +2939,13 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField22PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>>,
+        ::test::fixtures::patch::MyStructField22Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField22PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>>,
+        ::test::fixtures::patch::MyStructField22Patch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -3155,7 +3155,7 @@ OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator
 }
 
 
-OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct> patch__arg, ::std::map<::std::string, ::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct> patchAfter__arg) :
+OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructField23Patch patch__arg, ::std::map<::std::string, ::std::string> ensure__arg, ::test::fixtures::patch::MyStructField23Patch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -3254,13 +3254,13 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField23PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>>,
+        ::test::fixtures::patch::MyStructField23Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField23PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>>,
+        ::test::fixtures::patch::MyStructField23Patch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -3455,7 +3455,7 @@ MyStructPatchStruct& MyStructPatchStruct::operator=(FOLLY_MAYBE_UNUSED MyStructP
 }
 
 
-MyStructPatchStruct::MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::op::BoolPatchStruct> boolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::BytePatchStruct> byteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I16PatchStruct> i16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> i32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I64PatchStruct> i64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::FloatPatchStruct> floatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::DoublePatchStruct> doubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> stringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct> binaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> structVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBoolPatchStruct> optBoolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBytePatchStruct> optByteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI16PatchStruct> optI16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI32PatchStruct> optI32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI64PatchStruct> optI64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalFloatPatchStruct> optFloatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalDoublePatchStruct> optDoubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalStringPatchStruct> optStringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBinaryPatchStruct> optBinaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct> optStructVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct> optListVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct> optSetVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct> optMapVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> unionVal__arg) :
+MyStructPatchStruct::MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BoolPatch boolVal__arg, ::apache::thrift::op::BytePatch byteVal__arg, ::apache::thrift::op::I16Patch i16Val__arg, ::apache::thrift::op::I32Patch i32Val__arg, ::apache::thrift::op::I64Patch i64Val__arg, ::apache::thrift::op::FloatPatch floatVal__arg, ::apache::thrift::op::DoublePatch doubleVal__arg, ::apache::thrift::op::StringPatch stringVal__arg, ::apache::thrift::op::BinaryPatch binaryVal__arg, ::test::fixtures::patch::MyDataValuePatch structVal__arg, ::apache::thrift::op::OptionalBoolPatch optBoolVal__arg, ::apache::thrift::op::OptionalBytePatch optByteVal__arg, ::apache::thrift::op::OptionalI16Patch optI16Val__arg, ::apache::thrift::op::OptionalI32Patch optI32Val__arg, ::apache::thrift::op::OptionalI64Patch optI64Val__arg, ::apache::thrift::op::OptionalFloatPatch optFloatVal__arg, ::apache::thrift::op::OptionalDoublePatch optDoubleVal__arg, ::apache::thrift::op::OptionalStringPatch optStringVal__arg, ::apache::thrift::op::OptionalBinaryPatch optBinaryVal__arg, ::test::fixtures::patch::OptionalMyDataValuePatch optStructVal__arg, ::test::fixtures::patch::OptionalMyStructField21Patch optListVal__arg, ::test::fixtures::patch::OptionalMyStructField22Patch optSetVal__arg, ::test::fixtures::patch::OptionalMyStructField23Patch optMapVal__arg, ::test::fixtures::patch::MyUnionValuePatch unionVal__arg) :
     __fbthrift_field_boolVal(std::move(boolVal__arg)),
     __fbthrift_field_byteVal(std::move(byteVal__arg)),
     __fbthrift_field_i16Val(std::move(i16Val__arg)),
@@ -3768,145 +3768,145 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::op::BoolPatchStruct>>,
+        ::apache::thrift::op::BoolPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::BytePatchStruct>>,
+        ::apache::thrift::op::BytePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I16PatchStruct>>,
+        ::apache::thrift::op::I16Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
+        ::apache::thrift::op::I32Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I64PatchStruct>>,
+        ::apache::thrift::op::I64Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::FloatPatchStruct>>,
+        ::apache::thrift::op::FloatPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::DoublePatchStruct>>,
+        ::apache::thrift::op::DoublePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>,
+        ::apache::thrift::op::StringPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct>>,
+        ::apache::thrift::op::BinaryPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
+        ::test::fixtures::patch::MyDataValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBoolPatchStruct>>,
+        ::apache::thrift::op::OptionalBoolPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBytePatchStruct>>,
+        ::apache::thrift::op::OptionalBytePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI16PatchStruct>>,
+        ::apache::thrift::op::OptionalI16Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI32PatchStruct>>,
+        ::apache::thrift::op::OptionalI32Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI64PatchStruct>>,
+        ::apache::thrift::op::OptionalI64Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalFloatPatchStruct>>,
+        ::apache::thrift::op::OptionalFloatPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalDoublePatchStruct>>,
+        ::apache::thrift::op::OptionalDoublePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalStringPatchStruct>>,
+        ::apache::thrift::op::OptionalStringPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBinaryPatchStruct>>,
+        ::apache::thrift::op::OptionalBinaryPatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>>,
+        ::test::fixtures::patch::OptionalMyDataValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>>,
+        ::test::fixtures::patch::OptionalMyStructField21Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>>,
+        ::test::fixtures::patch::OptionalMyStructField22Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>>,
+        ::test::fixtures::patch::OptionalMyStructField23Patch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
+        ::test::fixtures::patch::MyUnionValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -3970,7 +3970,7 @@ MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED
 }
 
 
-MyStructValuePatchStruct::MyStructValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct> patch__arg) :
+MyStructValuePatchStruct::MyStructValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> assign__arg, bool clear__arg, ::test::fixtures::patch::MyStructPatch patch__arg) :
     __fbthrift_field_assign(std::move(assign__arg)),
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)) {
@@ -4055,7 +4055,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>>,
+        ::test::fixtures::patch::MyStructPatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch
@@ -4125,7 +4125,7 @@ OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(FO
 }
 
 
-OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct> patchAfter__arg) :
+OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> ensure__arg, ::test::fixtures::patch::MyStructValuePatch patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -4215,7 +4215,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>>,
+        ::test::fixtures::patch::MyStructValuePatch>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -4227,7 +4227,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>>,
+        ::test::fixtures::patch::MyStructValuePatch>,
     "inconsistent use of json option");
 
 }}} // test::fixtures::patch

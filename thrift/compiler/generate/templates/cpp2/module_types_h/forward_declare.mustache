@@ -19,10 +19,10 @@
 <% > common/namespace_cpp2_begin%>
 
 <%#program:structs%>
-class <%struct:cpp_name%>;
-<%#struct:cpp_adapted_alias%>
-using <%struct:name%> = <%struct:cpp_adapted_alias%>;
-<%/struct:cpp_adapted_alias%>
+class <%struct:cpp_underlying_name%>;
+<%#struct:is_directly_adapted?%>
+using <%struct:cpp_name%> = <%struct:cpp_underlying_type%>;
+<%/struct:is_directly_adapted?%>
 <%/program:structs%>
 <% > common/namespace_cpp2_end%>
 <%/program:structs?%>

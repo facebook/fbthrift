@@ -2548,8 +2548,7 @@ BoolPatch.thrift_spec = (
 
 BoolPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::BoolPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "BoolPatchStruct",
+  "cpp.detail.underlying_name": "BoolPatchStruct",
 }
 BoolPatch.thrift_field_annotations = {
 }
@@ -2580,8 +2579,7 @@ BytePatch.thrift_spec = (
 
 BytePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "BytePatchStruct",
+  "cpp.detail.underlying_name": "BytePatchStruct",
 }
 BytePatch.thrift_field_annotations = {
 }
@@ -2612,8 +2610,7 @@ I16Patch.thrift_spec = (
 
 I16Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "I16PatchStruct",
+  "cpp.detail.underlying_name": "I16PatchStruct",
 }
 I16Patch.thrift_field_annotations = {
 }
@@ -2644,8 +2641,7 @@ I32Patch.thrift_spec = (
 
 I32Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "I32PatchStruct",
+  "cpp.detail.underlying_name": "I32PatchStruct",
 }
 I32Patch.thrift_field_annotations = {
 }
@@ -2676,8 +2672,7 @@ I64Patch.thrift_spec = (
 
 I64Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "I64PatchStruct",
+  "cpp.detail.underlying_name": "I64PatchStruct",
 }
 I64Patch.thrift_field_annotations = {
 }
@@ -2708,8 +2703,7 @@ FloatPatch.thrift_spec = (
 
 FloatPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "FloatPatchStruct",
+  "cpp.detail.underlying_name": "FloatPatchStruct",
 }
 FloatPatch.thrift_field_annotations = {
 }
@@ -2740,8 +2734,7 @@ DoublePatch.thrift_spec = (
 
 DoublePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::NumberPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "DoublePatchStruct",
+  "cpp.detail.underlying_name": "DoublePatchStruct",
 }
 DoublePatch.thrift_field_annotations = {
 }
@@ -2772,8 +2765,7 @@ StringPatch.thrift_spec = (
 
 StringPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::StringPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "StringPatchStruct",
+  "cpp.detail.underlying_name": "StringPatchStruct",
 }
 StringPatch.thrift_field_annotations = {
 }
@@ -2804,8 +2796,7 @@ BinaryPatch.thrift_spec = (
 
 BinaryPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::AssignPatchAdapter",
-  "cpp.detail.adapted_alias": "1",
-  "cpp.name": "BinaryPatchStruct",
+  "cpp.detail.underlying_name": "BinaryPatchStruct",
 }
 BinaryPatch.thrift_field_annotations = {
 }
@@ -2834,8 +2825,7 @@ OptionalBoolPatch.thrift_spec = (
 
 OptionalBoolPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalBoolPatchStruct",
+  "cpp.detail.underlying_name": "OptionalBoolPatchStruct",
 }
 OptionalBoolPatch.thrift_field_annotations = {
 }
@@ -2870,8 +2860,7 @@ OptionalBytePatch.thrift_spec = (
 
 OptionalBytePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalBytePatchStruct",
+  "cpp.detail.underlying_name": "OptionalBytePatchStruct",
 }
 OptionalBytePatch.thrift_field_annotations = {
 }
@@ -2906,8 +2895,7 @@ OptionalI16Patch.thrift_spec = (
 
 OptionalI16Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalI16PatchStruct",
+  "cpp.detail.underlying_name": "OptionalI16PatchStruct",
 }
 OptionalI16Patch.thrift_field_annotations = {
 }
@@ -2942,8 +2930,7 @@ OptionalI32Patch.thrift_spec = (
 
 OptionalI32Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalI32PatchStruct",
+  "cpp.detail.underlying_name": "OptionalI32PatchStruct",
 }
 OptionalI32Patch.thrift_field_annotations = {
 }
@@ -2978,8 +2965,7 @@ OptionalI64Patch.thrift_spec = (
 
 OptionalI64Patch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalI64PatchStruct",
+  "cpp.detail.underlying_name": "OptionalI64PatchStruct",
 }
 OptionalI64Patch.thrift_field_annotations = {
 }
@@ -3014,8 +3000,7 @@ OptionalFloatPatch.thrift_spec = (
 
 OptionalFloatPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalFloatPatchStruct",
+  "cpp.detail.underlying_name": "OptionalFloatPatchStruct",
 }
 OptionalFloatPatch.thrift_field_annotations = {
 }
@@ -3050,8 +3035,7 @@ OptionalDoublePatch.thrift_spec = (
 
 OptionalDoublePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalDoublePatchStruct",
+  "cpp.detail.underlying_name": "OptionalDoublePatchStruct",
 }
 OptionalDoublePatch.thrift_field_annotations = {
 }
@@ -3086,8 +3070,7 @@ OptionalStringPatch.thrift_spec = (
 
 OptionalStringPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalStringPatchStruct",
+  "cpp.detail.underlying_name": "OptionalStringPatchStruct",
 }
 OptionalStringPatch.thrift_field_annotations = {
 }
@@ -3122,8 +3105,7 @@ OptionalBinaryPatch.thrift_spec = (
 
 OptionalBinaryPatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
-  "cpp.detail.adapted_alias": "",
-  "cpp.name": "OptionalBinaryPatchStruct",
+  "cpp.detail.underlying_name": "OptionalBinaryPatchStruct",
 }
 OptionalBinaryPatch.thrift_field_annotations = {
 }

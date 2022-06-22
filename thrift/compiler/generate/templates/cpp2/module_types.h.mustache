@@ -76,7 +76,7 @@ typedef <%typedef:cpp_type%> <%typedef:name%>;
 <%/is_struct?%>
 <%#is_struct?%>
 
-class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name%> <%!
+class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_underlying_name%> <%!
 %><%^struct:exception?%><%^struct:virtual%>final <%/struct:virtual%><%/struct:exception?%><%!
 %><%#struct:exception?%>: public apache::thrift::TException<%/struct:exception?%> {
  private:
@@ -106,7 +106,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%#struct:cpp_trivially_relocatable%>
   using IsRelocatable = std::true_type;
 <%/struct:cpp_trivially_relocatable%>
-  using __fbthrift_cpp2_type = <%struct:cpp_name%>;
+  using __fbthrift_cpp2_type = <%struct:cpp_underlying_name%>;
   static constexpr bool __fbthrift_cpp2_is_union =
     <%#struct:union?%>true<%/struct:union?%><%^struct:union?%>false<%/struct:union?%>;
 
@@ -129,10 +129,10 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 
 <%#struct:cpp_data_method?%>
  public:
-  <%struct:cpp_name%>& _data() & { return *this; }
-  <%struct:cpp_name%>&& _data() && { return std::move(*this); }
-  const <%struct:cpp_name%>& _data() const& { return *this; }
-  const <%struct:cpp_name%>&& _data() const&& { return std::move(*this); }
+  <%struct:cpp_underlying_name%>& _data() & { return *this; }
+  <%struct:cpp_underlying_name%>&& _data() && { return std::move(*this); }
+  const <%struct:cpp_underlying_name%>& _data() const& { return *this; }
+  const <%struct:cpp_underlying_name%>&& _data() const&& { return std::move(*this); }
 
 <%/struct:cpp_data_method?%>
  public:
@@ -140,14 +140,14 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <% > module_types_h/union_enum%>
 
 
-  <%struct:cpp_name%>()
+  <%struct:cpp_underlying_name%>()
       : type_(Type::__EMPTY__) {}
 
 <% > module_types_h/union_copy_ctor%>
 
 <% > module_types_h/union_assign_overload%>
 
-  <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:cpp_name%>() {
+  <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:cpp_underlying_name%>() {
     apache::thrift::clear(*this);
   }
 
@@ -155,8 +155,8 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 
 <%^struct:cpp_noncomparable%>
 
-  bool operator==(const <%struct:cpp_name%>&) const;
-  bool operator<(const <%struct:cpp_name%>&) const;
+  bool operator==(const <%struct:cpp_underlying_name%>&) const;
+  bool operator<(const <%struct:cpp_underlying_name%>&) const;
 <%/struct:cpp_noncomparable%>
 <% > module_types_h/union_setters%>
 
@@ -186,9 +186,9 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%^struct:union?%>
 
 <%#struct:is_large?%>
-  <%struct:cpp_name%>();
+  <%struct:cpp_underlying_name%>();
   <%#struct:message%>
-  explicit <%struct:cpp_name%>(std::string __message);
+  explicit <%struct:cpp_underlying_name%>(std::string __message);
   <%/struct:message%>
 <%/struct:is_large?%>
 <%^struct:is_large?%>
@@ -198,28 +198,28 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%#struct:legacy_api?%>
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  <%struct:cpp_name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
+  <%struct:cpp_underlying_name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
 <%/struct:legacy_api?%>
 
 <%#struct:is_eligible_for_constexpr?%>
-  <%struct:cpp_name%>(<%struct:cpp_name%>&&) = default;
+  <%struct:cpp_underlying_name%>(<%struct:cpp_underlying_name%>&&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:is_eligible_for_constexpr?%>
-  <%struct:cpp_name%>(<%struct:cpp_name%>&&) noexcept;
+  <%struct:cpp_underlying_name%>(<%struct:cpp_underlying_name%>&&) noexcept;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:is_eligible_for_constexpr?%>
 
-  <%struct:cpp_name%>(const <%struct:cpp_name%>&) = default;
+  <%struct:cpp_underlying_name%>(const <%struct:cpp_underlying_name%>&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:is_eligible_for_constexpr?%>
 
-  <%struct:cpp_name%>(const <%struct:cpp_name%>& src);
+  <%struct:cpp_underlying_name%>(const <%struct:cpp_underlying_name%>& src);
 <%/struct:is_eligible_for_constexpr?%>
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:nondefault_copy_ctor_and_assignment?%>
-  <%struct:cpp_name%>(const <%struct:cpp_name%>& src);
+  <%struct:cpp_underlying_name%>(const <%struct:cpp_underlying_name%>& src);
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
 
@@ -228,39 +228,39 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%/struct:cpp_allocator%>
 
 <%#struct:is_eligible_for_constexpr?%>
-  <%struct:cpp_name%>& operator=(<%struct:cpp_name%>&&) = default;
+  <%struct:cpp_underlying_name%>& operator=(<%struct:cpp_underlying_name%>&&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:is_eligible_for_constexpr?%>
-  <%struct:cpp_name%>& operator=(<%struct:cpp_name%>&&) noexcept;
+  <%struct:cpp_underlying_name%>& operator=(<%struct:cpp_underlying_name%>&&) noexcept;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:is_eligible_for_constexpr?%>
 
-  <%struct:cpp_name%>& operator=(const <%struct:cpp_name%>&) = default;
+  <%struct:cpp_underlying_name%>& operator=(const <%struct:cpp_underlying_name%>&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:is_eligible_for_constexpr?%>
-  <%struct:cpp_name%>& operator=(const <%struct:cpp_name%>& src);
+  <%struct:cpp_underlying_name%>& operator=(const <%struct:cpp_underlying_name%>& src);
 <%/struct:is_eligible_for_constexpr?%>
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:nondefault_copy_ctor_and_assignment?%>
-  <%struct:cpp_name%>& operator=(const <%struct:cpp_name%>& src);
+  <%struct:cpp_underlying_name%>& operator=(const <%struct:cpp_underlying_name%>& src);
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
 <%^struct:virtual%>
 <%#struct:is_large?%>
 
-  ~<%struct:cpp_name%>()<%#struct:exception?%> override<%/struct:exception?%>;
+  ~<%struct:cpp_underlying_name%>()<%#struct:exception?%> override<%/struct:exception?%>;
 
 <%/struct:is_large?%>
 <%/struct:virtual%>
 <%#struct:virtual%>
 
 <%^struct:is_large?%>
-  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:cpp_name%>() <%#struct:exception?%> override<%/struct:exception?%>{}
+  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:cpp_underlying_name%>() <%#struct:exception?%> override<%/struct:exception?%>{}
 <%/struct:is_large?%>
 <%#struct:is_large?%>
-  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:cpp_name%>() <%#struct:exception?%> override<%/struct:exception?%>;
+  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:cpp_underlying_name%>() <%#struct:exception?%> override<%/struct:exception?%>;
 <%/struct:is_large?%>
 
 <%/struct:virtual%>
@@ -271,8 +271,8 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
  public:
 <%^struct:cpp_noncomparable%>
 
-  bool operator==(const <%struct:cpp_name%>&) const;
-  bool operator<(const <%struct:cpp_name%>&) const;
+  bool operator==(const <%struct:cpp_underlying_name%>&) const;
+  bool operator<(const <%struct:cpp_underlying_name%>&) const;
 <%/struct:cpp_noncomparable%>
 <%#struct:fields?%>
 <% > module_types_h/field_ref%>
@@ -311,21 +311,21 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<<%struct:cpp_name%>>;
-  friend void swap(<%struct:cpp_name%>& a, <%struct:cpp_name%>& b);
+  friend class ::apache::thrift::Cpp2Ops<<%struct:cpp_underlying_name%>>;
+  friend void swap(<%struct:cpp_underlying_name%>& a, <%struct:cpp_underlying_name%>& b);
   <%#program:tablebased?%>
   <%^struct:union?%>
-  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<<%struct:cpp_name%>>)(std::int16_t fieldIndex);
-  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<<%struct:cpp_name%>>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<<%struct:cpp_underlying_name%>>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<<%struct:cpp_underlying_name%>>)(std::int16_t fieldIndex);
   <%/struct:union?%>
   <%#struct:union?%>
-  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<<%struct:cpp_name%>>)();
+  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<<%struct:cpp_underlying_name%>>)();
   <%/struct:union?%>
   <%/program:tablebased?%>
 };
 
 template <class Protocol_>
-unsigned long <%struct:cpp_name%>::read(Protocol_* iprot) {
+unsigned long <%struct:cpp_underlying_name%>::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

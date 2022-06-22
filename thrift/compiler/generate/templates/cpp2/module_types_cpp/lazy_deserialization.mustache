@@ -18,7 +18,7 @@
 <%#struct:fields%>
 <%#field:type%>
 <%#field:lazy?%>
-const <%field:cpp_storage_type%>& <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>() const {
+const <%field:cpp_storage_type%>& <%struct:cpp_underlying_name%>::__fbthrift_read_field_<%field:cpp_name%>() const {
   const auto isDeserialized = __fbthrift_isDeserialized_.<%field:cpp_name%>.load(std::memory_order_relaxed);
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_<%field:cpp_name%>_slow();
@@ -26,7 +26,7 @@ const <%field:cpp_storage_type%>& <%struct:cpp_name%>::__fbthrift_read_field_<%f
   return <%field:cpp_storage_name%>;
 }
 
-<%field:cpp_storage_type%>& <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>() {
+<%field:cpp_storage_type%>& <%struct:cpp_underlying_name%>::__fbthrift_read_field_<%field:cpp_name%>() {
   const auto isDeserialized = __fbthrift_isDeserialized_.<%field:cpp_name%>.load(std::memory_order_relaxed);
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_<%field:cpp_name%>_slow();
@@ -36,7 +36,7 @@ const <%field:cpp_storage_type%>& <%struct:cpp_name%>::__fbthrift_read_field_<%f
   return <%field:cpp_storage_name%>;
 }
 
-void <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>_slow() const {
+void <%struct:cpp_underlying_name%>::__fbthrift_read_field_<%field:cpp_name%>_slow() const {
   auto lock = folly::make_unique_lock(__fbthrift_deserializationMutex_);
   if (__fbthrift_isDeserialized_.<%field:cpp_name%> & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
     return;

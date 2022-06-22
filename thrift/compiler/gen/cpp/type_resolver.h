@@ -48,9 +48,29 @@ class type_resolver {
  public:
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type& node) {
+    if (is_directly_adapted(node)) {
+      return detail::get_or_gen(
+          type_cache_, &node, [&]() { return gen_type(node, nullptr); });
+    }
+
     return detail::get_or_gen(type_cache_, &node, [&]() {
       return gen_type(node, find_adapter(node));
     });
+  }
+
+  const std::string& get_underlying_type_name(const t_type& node) {
+    if (is_directly_adapted(node)) {
+      return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
+        auto adapter = find_structured_adapter_annotation(node);
+        if (!adapter) {
+          adapter = find_adapter(node);
+        }
+        return gen_adapted_type(
+            adapter, get_underlying_namespaced_name(*node.get_program(), node));
+      });
+    }
+
+    return get_type_name(node);
   }
 
   const std::string& get_type_name(const t_typedef& node);
@@ -80,6 +100,22 @@ class type_resolver {
   std::string get_namespaced_name(
       const t_program& program, const t_named& node) {
     return namespaces_.get_namespaced_name(program, node);
+  }
+
+  const std::string& get_underlying_namespaced_name(
+      const t_program& program, const t_type& node) {
+    return detail::get_or_gen(underlying_namespaced_name_cache_, &node, [&] {
+      return namespaces_.get_namespace(program) +
+          "::" + get_underlying_name(node);
+    });
+  }
+
+  const std::string& get_underlying_name(const t_type& node) {
+    if (auto name =
+            node.find_annotation_or_null("cpp.detail.underlying_name")) {
+      return *name;
+    }
+    return namespace_resolver::get_cpp_name(node);
   }
 
   // Checks whether a t_type could resolve to a scalar.
@@ -135,6 +171,10 @@ class type_resolver {
     return node.find_annotation_or_null({"cpp.template", "cpp2.template"});
   }
 
+  static bool is_directly_adapted(const t_type& node) {
+    return node.has_annotation("cpp.detail.underlying_name");
+  }
+
  private:
   using type_resolve_fn =
       const std::string& (type_resolver::*)(const t_type& node);
@@ -144,6 +184,9 @@ class type_resolver {
   std::unordered_map<const t_type*, std::string> typedef_cache_;
   std::unordered_map<const t_field*, std::string> field_type_cache_;
   std::unordered_map<const t_type*, std::string> standard_type_cache_;
+  std::unordered_map<const t_type*, std::string> underlying_type_cache_;
+  std::unordered_map<const t_type*, std::string>
+      underlying_namespaced_name_cache_;
   // TODO(afuller): Use a custom key type with a std::unordered_map (std::tuple
   // does not have an std::hash specialization).
   std::map<std::tuple<const t_field*, reference_type>, std::string>

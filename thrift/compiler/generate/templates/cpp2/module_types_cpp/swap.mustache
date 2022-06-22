@@ -23,7 +23,7 @@ void swap(Struct& a, Struct& b) {
   swap(a.element, b.element);
 }
 
-%>void swap(<%struct:cpp_name%>& a, <%struct:cpp_name%>& b) {
+%>void swap(<%struct:cpp_underlying_name%>& a, <%struct:cpp_underlying_name%>& b) {
   using ::std::swap;
 <%#struct:fields%>
   swap(a.<% > module_types_cpp/field_value_ref%>, b.<% > module_types_cpp/field_value_ref%>);
