@@ -99,6 +99,19 @@ cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_3(self, _fbthrift_value) except *
 
 
+ctypedef void (*__TerseAdaptedFields_FieldsSetterFunc)(__TerseAdaptedFields_FieldsSetter, object) except *
+
+cdef class __TerseAdaptedFields_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cTerseAdaptedFields* _struct_cpp_obj
+    cdef cumap[__cstring_view, __TerseAdaptedFields_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __TerseAdaptedFields_FieldsSetter _fbthrift_create(_module_types.cTerseAdaptedFields* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+
+
 ctypedef void (*__B_FieldsSetterFunc)(__B_FieldsSetter, object) except *
 
 cdef class __B_FieldsSetter(__StructFieldsSetter):

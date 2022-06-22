@@ -68,6 +68,14 @@ class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class TerseAdaptedFields_Builder(thrift.py3.builder.StructBuilder):
+    int_field: _typing.Optional[int]
+    string_field: _typing.Optional[str]
+    set_field: _typing.Optional[set]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class B_Builder(thrift.py3.builder.StructBuilder):
     a: _typing.Any
 

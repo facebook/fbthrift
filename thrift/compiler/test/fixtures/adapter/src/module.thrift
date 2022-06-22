@@ -157,6 +157,18 @@ struct StructWithFieldAdapter {
   4: optional i32 opt_boxed_field;
 }
 
+struct TerseAdaptedFields {
+  @cpp.Adapter{name = "my::Adapter1"}
+  @thrift.TerseWrite
+  1: i32 int_field;
+  @cpp.Adapter{name = "my::Adapter1"}
+  @thrift.TerseWrite
+  2: string string_field;
+  @cpp.Adapter{name = "my::Adapter1"}
+  @thrift.TerseWrite
+  3: set<i32> set_field;
+}
+
 @hack.Adapter{name = '\Adapter2'}
 typedef Bar (
   cpp.adapter = 'my::Adapter2',

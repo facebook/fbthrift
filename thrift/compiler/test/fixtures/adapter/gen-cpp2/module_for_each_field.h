@@ -68,6 +68,16 @@ struct ForEachField<::cpp2::StructWithFieldAdapter> {
 };
 
 template <>
+struct ForEachField<::cpp2::TerseAdaptedFields> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).int_field_ref()...);
+    f(1, static_cast<T&&>(t).string_field_ref()...);
+    f(2, static_cast<T&&>(t).set_field_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::A> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {

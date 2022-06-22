@@ -746,6 +746,142 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::TerseAdaptedFields>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::TerseAdaptedFields>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+TerseAdaptedFields::TerseAdaptedFields(const TerseAdaptedFields& srcObj) {
+  __fbthrift_field_int_field = srcObj.__fbthrift_field_int_field;
+  __fbthrift_field_string_field = srcObj.__fbthrift_field_string_field;
+  __fbthrift_field_set_field = srcObj.__fbthrift_field_set_field;
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
+}
+
+TerseAdaptedFields& TerseAdaptedFields::operator=(const TerseAdaptedFields& src) {
+  TerseAdaptedFields tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+TerseAdaptedFields::TerseAdaptedFields(TerseAdaptedFields&& other) noexcept  :
+    __fbthrift_field_int_field(std::move(other.__fbthrift_field_int_field)),
+    __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
+    __fbthrift_field_set_field(std::move(other.__fbthrift_field_set_field)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
+}
+
+TerseAdaptedFields& TerseAdaptedFields::operator=(FOLLY_MAYBE_UNUSED TerseAdaptedFields&& other) noexcept {
+    this->__fbthrift_field_int_field = std::move(other.__fbthrift_field_int_field);
+    this->__fbthrift_field_string_field = std::move(other.__fbthrift_field_string_field);
+    this->__fbthrift_field_set_field = std::move(other.__fbthrift_field_set_field);
+    return *this;
+}
+
+
+TerseAdaptedFields::TerseAdaptedFields(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, TerseAdaptedFields> int_field__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::string, TerseAdaptedFields> string_field__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::set<::std::int32_t>, TerseAdaptedFields> set_field__arg) :
+    __fbthrift_field_int_field(std::move(int_field__arg)),
+    __fbthrift_field_string_field(std::move(string_field__arg)),
+    __fbthrift_field_set_field(std::move(set_field__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
+}
+
+
+void TerseAdaptedFields::__fbthrift_clear() {
+  // clear all fields
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
+}
+
+void TerseAdaptedFields::__fbthrift_clear_terse_fields() {
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
+}
+
+bool TerseAdaptedFields::__fbthrift_is_empty() const {
+  return !(!(this->__fbthrift_field_int_field == ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, TerseAdaptedFields>())) &&
+ !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_string_field)) &&
+ !(!this->__fbthrift_field_set_field.empty());
+}
+
+bool TerseAdaptedFields::operator==(const TerseAdaptedFields& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_int_field, rhs.__fbthrift_field_int_field)) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_string_field, rhs.__fbthrift_field_string_field)) {
+    return false;
+  }
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_set_field, rhs.__fbthrift_field_set_field)) {
+    return false;
+  }
+  return true;
+}
+
+bool TerseAdaptedFields::operator<(const TerseAdaptedFields& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_int_field, rhs.__fbthrift_field_int_field)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_int_field, rhs.__fbthrift_field_int_field);
+  }
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_string_field, rhs.__fbthrift_field_string_field)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_string_field, rhs.__fbthrift_field_string_field);
+  }
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_set_field, rhs.__fbthrift_field_set_field)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_set_field, rhs.__fbthrift_field_set_field);
+  }
+  return false;
+}
+
+
+void swap(TerseAdaptedFields& a, TerseAdaptedFields& b) {
+  using ::std::swap;
+  swap(a.int_field_ref().value(), b.int_field_ref().value());
+  swap(a.string_field_ref().value(), b.string_field_ref().value());
+  swap(a.set_field_ref().value(), b.set_field_ref().value());
+}
+
+template void TerseAdaptedFields::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TerseAdaptedFields::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TerseAdaptedFields::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TerseAdaptedFields::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TerseAdaptedFields::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TerseAdaptedFields::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TerseAdaptedFields::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TerseAdaptedFields::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::A>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -951,6 +1087,9 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 4, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::TerseAdaptedFields>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::string, ::cpp2::TerseAdaptedFields>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::set<::std::int32_t>, ::cpp2::TerseAdaptedFields>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter, 1, ::cpp2::A, ::cpp2::B>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::std::set<::std::string>>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter1, ::std::string>();

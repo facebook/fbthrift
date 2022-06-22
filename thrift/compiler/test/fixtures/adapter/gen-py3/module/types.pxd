@@ -134,6 +134,20 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cint32_t] opt_boxed_field_ref()
 
 
+    cdef cppclass cTerseAdaptedFields "::cpp2::TerseAdaptedFields":
+        cTerseAdaptedFields() except +
+        cTerseAdaptedFields(const cTerseAdaptedFields&) except +
+        bint operator==(cTerseAdaptedFields&)
+        bint operator!=(cTerseAdaptedFields&)
+        bint operator<(cTerseAdaptedFields&)
+        bint operator>(cTerseAdaptedFields&)
+        bint operator<=(cTerseAdaptedFields&)
+        bint operator>=(cTerseAdaptedFields&)
+        __terse_field_ref[cint32_t] int_field_ref()
+        __terse_field_ref[string] string_field_ref()
+        __terse_field_ref[cset[cint32_t]] set_field_ref()
+
+
     cdef cppclass cB "::cpp2::B":
         cB() except +
         cB(const cB&) except +
@@ -242,6 +256,19 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
 
 
 
+cdef class TerseAdaptedFields(thrift.py3.types.Struct):
+    cdef shared_ptr[cTerseAdaptedFields] _cpp_obj
+    cdef _fbthrift_types_fields.__TerseAdaptedFields_FieldsSetter _fields_setter
+    cdef inline object int_field_impl(self)
+    cdef inline object string_field_impl(self)
+    cdef inline object set_field_impl(self)
+    cdef Set__i32 __fbthrift_cached_set_field
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cTerseAdaptedFields])
+
+
+
 cdef class B(thrift.py3.types.Struct):
     cdef shared_ptr[cB] _cpp_obj
     cdef _fbthrift_types_fields.__B_FieldsSetter _fields_setter
@@ -288,5 +315,12 @@ cdef class List__Foo(thrift.py3.types.List):
     cdef _fbthrift_create(shared_ptr[vector[cFoo]])
     @staticmethod
     cdef shared_ptr[vector[cFoo]] _make_instance(object items) except *
+
+cdef class Set__i32(thrift.py3.types.Set):
+    cdef shared_ptr[cset[cint32_t]] _cpp_obj
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]])
+    @staticmethod
+    cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 

@@ -2229,6 +2229,246 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
 
 /**
  * Original thrift struct:-
+ * TerseAdaptedFields
+ */
+class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'int_field',
+      'type' => \TType::I32,
+    ),
+    2 => shape(
+      'var' => 'string_field',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'set_field',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'int_field' => 1,
+    'string_field' => 2,
+    'set_field' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'int_field' => ?int,
+    ?'string_field' => ?string,
+    ?'set_field' => ?Set<int>,
+  );
+
+  const type TShape = shape(
+    'int_field' => int,
+    'string_field' => string,
+    'set_field' => dict<int, bool>,
+  );
+  const int STRUCTURAL_ID = 4698812981420911373;
+  /**
+   * Original thrift field:-
+   * 1: i32 int_field
+   */
+  public int $int_field;
+  /**
+   * Original thrift field:-
+   * 2: string string_field
+   */
+  public string $string_field;
+  /**
+   * Original thrift field:-
+   * 3: set<i32> set_field
+   */
+  public Set<int> $set_field;
+
+  public function __construct(?int $int_field = null, ?string $string_field = null, ?Set<int> $set_field = null)[] {
+    $this->int_field = $int_field ?? 0;
+    $this->string_field = $string_field ?? '';
+    $this->set_field = $set_field ?? Set {};
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'int_field'),
+      Shapes::idx($shape, 'string_field'),
+      Shapes::idx($shape, 'set_field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'TerseAdaptedFields';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.TerseAdaptedFields",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "int_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "string_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "set_field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'int_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+              shape(
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'string_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+              shape(
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'set_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+              shape(
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['int_field'],
+      $shape['string_field'],
+      new Set(Keyset\keys($shape['set_field'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'int_field' => $this->int_field,
+      'string_field' => $this->string_field,
+      'set_field' => ThriftUtil::toDArray(Dict\fill_keys($this->set_field->toValuesArray(), true), static::class),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'int_field') !== null) {
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->int_field = (int)$_tmp0;
+      }
+    }
+    if (idx($parsed, 'string_field') !== null) {
+      $this->string_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['string_field']);
+    }
+    if (idx($parsed, 'set_field') !== null) {
+      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, Set<int>>($parsed['set_field']);
+      $_container5 = Set {};
+      foreach($_json4 as $_key2 => $_value3) {
+        $_elem6 = 0;
+        $_tmp7 = (int)$_value3;
+        if ($_tmp7 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_elem6 = (int)$_tmp7;
+        }
+        $_container5->add($_elem6);
+      }
+      $this->set_field = $_container5;
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * B
  */
 class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {

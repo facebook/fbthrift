@@ -39,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'B', 'A', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter', 'AdaptedA']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'TerseAdaptedFields', 'B', 'A', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter', 'AdaptedA']
 
 class Foo:
   """
@@ -1104,6 +1104,151 @@ class StructWithFieldAdapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class TerseAdaptedFields:
+  """
+  Attributes:
+   - int_field
+   - string_field
+   - set_field
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.int_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRING:
+          self.string_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.SET:
+          self.set_field = set()
+          (_etype149, _size146) = iprot.readSetBegin()
+          if _size146 >= 0:
+            for _i150 in range(_size146):
+              _elem151 = iprot.readI32()
+              self.set_field.add(_elem151)
+          else: 
+            while iprot.peekSet():
+              _elem152 = iprot.readI32()
+              self.set_field.add(_elem152)
+          iprot.readSetEnd()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('TerseAdaptedFields')
+    if self.int_field != None:
+      oprot.writeFieldBegin('int_field', TType.I32, 1)
+      oprot.writeI32(self.int_field)
+      oprot.writeFieldEnd()
+    if self.string_field != None:
+      oprot.writeFieldBegin('string_field', TType.STRING, 2)
+      oprot.writeString(self.string_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.string_field, bytes) else oprot.writeString(self.string_field)
+      oprot.writeFieldEnd()
+    if self.set_field != None:
+      oprot.writeFieldBegin('set_field', TType.SET, 3)
+      oprot.writeSetBegin(TType.I32, len(self.set_field))
+      for iter153 in self.set_field:
+        oprot.writeI32(iter153)
+      oprot.writeSetEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'int_field' in json_obj and json_obj['int_field'] is not None:
+      self.int_field = json_obj['int_field']
+      if self.int_field > 0x7fffffff or self.int_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'string_field' in json_obj and json_obj['string_field'] is not None:
+      self.string_field = json_obj['string_field']
+    if 'set_field' in json_obj and json_obj['set_field'] is not None:
+      self.set_field = set_cls()
+      for _tmp_e154 in json_obj['set_field']:
+        if _tmp_e154 > 0x7fffffff or _tmp_e154 < -0x80000000:
+          raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+        self.set_field.add(_tmp_e154)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.int_field is not None:
+      value = pprint.pformat(self.int_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int_field=%s' % (value))
+    if self.string_field is not None:
+      value = pprint.pformat(self.string_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    string_field=%s' % (value))
+    if self.set_field is not None:
+      value = pprint.pformat(self.set_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    set_field=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'int_field',
+      'string_field',
+      'set_field',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 class B:
   """
   Attributes:
@@ -1448,6 +1593,35 @@ def StructWithFieldAdapter__setstate__(self, state):
 
 StructWithFieldAdapter.__getstate__ = lambda self: self.__dict__.copy()
 StructWithFieldAdapter.__setstate__ = StructWithFieldAdapter__setstate__
+
+all_structs.append(TerseAdaptedFields)
+TerseAdaptedFields.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'int_field', None, None, 3, ), # 1
+  (2, TType.STRING, 'string_field', True, None, 3, ), # 2
+  (3, TType.SET, 'set_field', (TType.I32,None), None, 3, ), # 3
+)
+
+TerseAdaptedFields.thrift_struct_annotations = {
+}
+TerseAdaptedFields.thrift_field_annotations = {
+}
+
+def TerseAdaptedFields__init__(self, int_field=None, string_field=None, set_field=None,):
+  self.int_field = int_field
+  self.string_field = string_field
+  self.set_field = set_field
+
+TerseAdaptedFields.__init__ = TerseAdaptedFields__init__
+
+def TerseAdaptedFields__setstate__(self, state):
+  state.setdefault('int_field', None)
+  state.setdefault('string_field', None)
+  state.setdefault('set_field', None)
+  self.__dict__ = state
+
+TerseAdaptedFields.__getstate__ = lambda self: self.__dict__.copy()
+TerseAdaptedFields.__setstate__ = TerseAdaptedFields__setstate__
 
 all_structs.append(B)
 B.thrift_spec = (

@@ -50,6 +50,14 @@ cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
         yield "opt_shared_field", self.opt_shared_field
         yield "opt_boxed_field", self.opt_boxed_field
 
+cdef class TerseAdaptedFields_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.TerseAdaptedFields
+
+    def __iter__(self):
+        yield "int_field", self.int_field
+        yield "string_field", self.string_field
+        yield "set_field", self.set_field
+
 cdef class B_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.B
 

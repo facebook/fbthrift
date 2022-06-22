@@ -114,6 +114,22 @@ void reset_field<::cpp2::StructWithFieldAdapter>(
 }
 
 template<>
+void reset_field<::cpp2::TerseAdaptedFields>(
+    ::cpp2::TerseAdaptedFields& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.int_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().int_field_ref());
+      return;
+    case 1:
+      obj.string_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().string_field_ref());
+      return;
+    case 2:
+      obj.set_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().set_field_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::cpp2::B>(
     ::cpp2::B& obj, uint16_t index) {
   switch (index) {
@@ -163,6 +179,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::StructWithFieldAdapter>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::TerseAdaptedFields>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

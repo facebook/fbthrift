@@ -133,6 +133,22 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::StructWithFieldA
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_names = {{
+  "int_field",
+  "string_field",
+  "set_field",
+}};
+const std::array<int16_t, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_SET,
+}};
+
 const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::A>::fields_names = {{
 }};
 const std::array<int16_t, 0> TStructDataStorage<::cpp2::A>::fields_ids = {{

@@ -1924,6 +1924,229 @@ func (p *StructWithFieldAdapter) String() string {
 }
 
 // Attributes:
+//  - IntField
+//  - StringField
+//  - SetField
+type TerseAdaptedFields struct {
+  IntField int32 `thrift:"int_field,1" db:"int_field" json:"int_field"`
+  StringField string `thrift:"string_field,2" db:"string_field" json:"string_field"`
+  SetField []int32 `thrift:"set_field,3" db:"set_field" json:"set_field"`
+}
+
+func NewTerseAdaptedFields() *TerseAdaptedFields {
+  return &TerseAdaptedFields{}
+}
+
+
+func (p *TerseAdaptedFields) GetIntField() int32 {
+  return p.IntField
+}
+
+func (p *TerseAdaptedFields) GetStringField() string {
+  return p.StringField
+}
+
+func (p *TerseAdaptedFields) GetSetField() []int32 {
+  return p.SetField
+}
+type TerseAdaptedFieldsBuilder struct {
+  obj *TerseAdaptedFields
+}
+
+func NewTerseAdaptedFieldsBuilder() *TerseAdaptedFieldsBuilder{
+  return &TerseAdaptedFieldsBuilder{
+    obj: NewTerseAdaptedFields(),
+  }
+}
+
+func (p TerseAdaptedFieldsBuilder) Emit() *TerseAdaptedFields{
+  return &TerseAdaptedFields{
+    IntField: p.obj.IntField,
+    StringField: p.obj.StringField,
+    SetField: p.obj.SetField,
+  }
+}
+
+func (t *TerseAdaptedFieldsBuilder) IntField(intField int32) *TerseAdaptedFieldsBuilder {
+  t.obj.IntField = intField
+  return t
+}
+
+func (t *TerseAdaptedFieldsBuilder) StringField(stringField string) *TerseAdaptedFieldsBuilder {
+  t.obj.StringField = stringField
+  return t
+}
+
+func (t *TerseAdaptedFieldsBuilder) SetField(setField []int32) *TerseAdaptedFieldsBuilder {
+  t.obj.SetField = setField
+  return t
+}
+
+func (t *TerseAdaptedFields) SetIntField(intField int32) *TerseAdaptedFields {
+  t.IntField = intField
+  return t
+}
+
+func (t *TerseAdaptedFields) SetStringField(stringField string) *TerseAdaptedFields {
+  t.StringField = stringField
+  return t
+}
+
+func (t *TerseAdaptedFields) SetSetField(setField []int32) *TerseAdaptedFields {
+  t.SetField = setField
+  return t
+}
+
+func (p *TerseAdaptedFields) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TerseAdaptedFields)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.IntField = v
+  }
+  return nil
+}
+
+func (p *TerseAdaptedFields)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.StringField = v
+  }
+  return nil
+}
+
+func (p *TerseAdaptedFields)  ReadField3(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]int32, 0, size)
+  p.SetField =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem18 int32
+    if v, err := iprot.ReadI32(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem18 = v
+    }
+    p.SetField = append(p.SetField, _elem18)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
+func (p *TerseAdaptedFields) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TerseAdaptedFields"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TerseAdaptedFields) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("int_field", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:int_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.IntField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.int_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:int_field: ", p), err) }
+  return err
+}
+
+func (p *TerseAdaptedFields) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("string_field", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:string_field: ", p), err) }
+  if err := oprot.WriteString(string(p.StringField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.string_field (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:string_field: ", p), err) }
+  return err
+}
+
+func (p *TerseAdaptedFields) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("set_field", thrift.SET, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:set_field: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.I32, len(p.SetField)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[int32]bool, len(p.SetField))
+  for _, v := range p.SetField {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.SetField {
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:set_field: ", p), err) }
+  return err
+}
+
+func (p *TerseAdaptedFields) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  intFieldVal := fmt.Sprintf("%v", p.IntField)
+  stringFieldVal := fmt.Sprintf("%v", p.StringField)
+  setFieldVal := fmt.Sprintf("%v", p.SetField)
+  return fmt.Sprintf("TerseAdaptedFields({IntField:%s StringField:%s SetField:%s})", intFieldVal, stringFieldVal, setFieldVal)
+}
+
+// Attributes:
 //  - A
 type B struct {
   A *A `thrift:"a,1" db:"a" json:"a"`

@@ -818,6 +818,123 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
+cdef class TerseAdaptedFields(thrift.py3.types.Struct):
+    def __init__(TerseAdaptedFields self, **kwargs):
+        self._cpp_obj = make_shared[cTerseAdaptedFields]()
+        self._fields_setter = _fbthrift_types_fields.__TerseAdaptedFields_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(TerseAdaptedFields self, **kwargs):
+        if not kwargs:
+            return self
+        cdef TerseAdaptedFields __fbthrift_inst = TerseAdaptedFields.__new__(TerseAdaptedFields)
+        __fbthrift_inst._cpp_obj = make_shared[cTerseAdaptedFields](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__TerseAdaptedFields_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("TerseAdaptedFields", {
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cTerseAdaptedFields] cpp_obj):
+        __fbthrift_inst = <TerseAdaptedFields>TerseAdaptedFields.__new__(TerseAdaptedFields)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline int_field_impl(self):
+
+        return deref(self._cpp_obj).int_field_ref().value()
+
+    @property
+    def int_field(self):
+        return self.int_field_impl()
+
+    cdef inline string_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).string_field_ref().value()).decode('UTF-8')
+
+    @property
+    def string_field(self):
+        return self.string_field_impl()
+
+    cdef inline set_field_impl(self):
+
+        if self.__fbthrift_cached_set_field is None:
+            self.__fbthrift_cached_set_field = Set__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).set_field_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_set_field
+
+    @property
+    def set_field(self):
+        return self.set_field_impl()
+
+
+    def __hash__(TerseAdaptedFields self):
+        return super().__hash__()
+
+    def __repr__(TerseAdaptedFields self):
+        return super().__repr__()
+
+    def __str__(TerseAdaptedFields self):
+        return super().__str__()
+
+
+    def __copy__(TerseAdaptedFields self):
+        cdef shared_ptr[cTerseAdaptedFields] cpp_obj = make_shared[cTerseAdaptedFields](
+            deref(self._cpp_obj)
+        )
+        return TerseAdaptedFields._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cTerseAdaptedFields](
+            self._cpp_obj,
+            (<TerseAdaptedFields>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__TerseAdaptedFields()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cTerseAdaptedFields].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.TerseAdaptedFields"
+
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cTerseAdaptedFields](idx))
+
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 3
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(TerseAdaptedFields self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cTerseAdaptedFields](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(TerseAdaptedFields self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cTerseAdaptedFields]()
+        with nogil:
+            needed = serializer.cdeserialize[cTerseAdaptedFields](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
 cdef class B(thrift.py3.types.Struct):
     def __init__(B self, **kwargs):
         self._cpp_obj = make_shared[cB]()
@@ -1335,6 +1452,87 @@ cdef class List__Foo(thrift.py3.types.List):
 
 
 Sequence.register(List__Foo)
+
+@__cython.auto_pickle(False)
+cdef class Set__i32(thrift.py3.types.Set):
+    def __init__(self, items=None):
+        if isinstance(items, Set__i32):
+            self._cpp_obj = (<Set__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = Set__i32._make_instance(items)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]] c_items):
+        __fbthrift_inst = <Set__i32>Set__i32.__new__(Set__i32)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(Set__i32 self):
+        cdef shared_ptr[cset[cint32_t]] cpp_obj = make_shared[cset[cint32_t]](
+            deref(self._cpp_obj)
+        )
+        return Set__i32._fbthrift_create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cset[cint32_t]] c_inst = make_shared[cset[cint32_t]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                item = <cint32_t> item
+                deref(c_inst).insert(item)
+        return c_inst
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
+            return False
+        return pbool(deref(self._cpp_obj).count(item))
+
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef __set_iter[cset[cint32_t]] itr = __set_iter[cset[cint32_t]](self._cpp_obj)
+        cdef cint32_t citem = 0
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNext(self._cpp_obj, citem)
+            yield citem
+
+    def __hash__(self):
+        return super().__hash__()
+
+    def __richcmp__(self, other, int op):
+        if isinstance(other, Set__i32):
+            # C level comparisons
+            return __setcmp(
+                self._cpp_obj,
+                (<Set__i32> other)._cpp_obj,
+                op,
+            )
+        return self._fbthrift_py_richcmp(other, op)
+
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
+        if not isinstance(other, Set__i32):
+            other = Set__i32(other)
+        cdef shared_ptr[cset[cint32_t]] result
+        return Set__i32._fbthrift_create(__set_op[cset[cint32_t]](
+            self._cpp_obj,
+            (<Set__i32>other)._cpp_obj,
+            op,
+        ))
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Set__i32()
+
+
+Set.register(Set__i32)
 
 SetWithAdapter = Set__string
 StringWithAdapter = str
