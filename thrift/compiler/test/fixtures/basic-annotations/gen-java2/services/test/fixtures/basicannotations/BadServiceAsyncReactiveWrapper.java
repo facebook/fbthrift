@@ -26,7 +26,7 @@ public class BadServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Integer> bar() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.bar());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.bar());
     }
 
     public class BadInteractionImpl implements BadInteraction {
@@ -37,15 +37,15 @@ public class BadServiceAsyncReactiveWrapper
         }
 
         public reactor.core.publisher.Mono<Void> foo() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.foo());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.foo());
         }
 
         public reactor.core.publisher.Mono<Void> foo(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.foo( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.foo( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> fooWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.fooWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.fooWrapper( rpcOptions));
         }
 
         @java.lang.Override

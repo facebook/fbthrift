@@ -95,6 +95,10 @@ public final class FutureUtil {
         .subscribeOn(scheduler);
   }
 
+  public static <T> Mono<T> toMono(final Supplier<ListenableFuture<T>> futureSupplier) {
+    return Mono.fromSupplier(futureSupplier).flatMap(FutureUtil::toMono);
+  }
+
   /**
    * Takes Google ListenableFuture and returns a reactor-core Mono
    *

@@ -39,7 +39,7 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
     {{#service:singleRequestFunctions}}
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     }
 
     {{/service:singleRequestFunctions}}
@@ -68,15 +68,15 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
         {{#service:singleRequestFunctions}}
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}));
         }
 
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
         }
 
         {{/service:singleRequestFunctions}}

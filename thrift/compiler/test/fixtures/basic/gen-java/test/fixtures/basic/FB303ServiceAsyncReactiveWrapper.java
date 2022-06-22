@@ -26,7 +26,7 @@ public class FB303ServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<test.fixtures.basic.ReservedKeyword> simpleRpc(final int intParameter) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.simpleRpc(intParameter));
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.simpleRpc(intParameter));
     }
 
 }

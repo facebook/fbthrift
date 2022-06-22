@@ -26,17 +26,17 @@ public class MyServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> foo() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.foo());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.foo());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> interact(final int arg) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.interact(arg));
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.interact(arg));
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Integer> interactFast() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.interactFast());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.interactFast());
     }
 
     @java.lang.Override
@@ -52,27 +52,27 @@ public class MyServiceAsyncReactiveWrapper
         }
 
         public reactor.core.publisher.Mono<Integer> frobnicate() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate());
         }
 
         public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicateWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicateWrapper( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<Void> ping() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.ping());
         }
 
         public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.ping( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.pingWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.pingWrapper( rpcOptions));
         }
 
         @java.lang.Override
@@ -98,27 +98,27 @@ public class MyServiceAsyncReactiveWrapper
         }
 
         public reactor.core.publisher.Mono<Integer> frobnicate() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate());
         }
 
         public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicateWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicateWrapper( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<Void> ping() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.ping());
         }
 
         public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.ping( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.pingWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.pingWrapper( rpcOptions));
         }
 
         @java.lang.Override
@@ -144,15 +144,15 @@ public class MyServiceAsyncReactiveWrapper
         }
 
         public reactor.core.publisher.Mono<Void> frobnicate() {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate());
         }
 
         public reactor.core.publisher.Mono<Void> frobnicate(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicate( rpcOptions));
         }
 
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> frobnicateWrapper(RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicateWrapper( rpcOptions));
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.frobnicateWrapper( rpcOptions));
         }
 
         @java.lang.Override

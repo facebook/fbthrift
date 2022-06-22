@@ -26,12 +26,12 @@ public class MyServicePrioParentAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> ping() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.ping());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.ping());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> pong() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.pong());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.pong());
     }
 
 }

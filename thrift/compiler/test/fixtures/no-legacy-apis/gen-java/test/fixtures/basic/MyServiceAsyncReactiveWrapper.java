@@ -26,7 +26,7 @@ public class MyServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<test.fixtures.basic.MyStruct> query(final test.fixtures.basic.MyUnion u) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.query(u));
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.query(u));
     }
 
 }

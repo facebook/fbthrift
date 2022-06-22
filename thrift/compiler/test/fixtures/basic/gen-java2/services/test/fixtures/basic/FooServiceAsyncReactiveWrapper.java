@@ -26,7 +26,7 @@ public class FooServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> simpleRpc() {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.simpleRpc());
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.simpleRpc());
     }
 
 }

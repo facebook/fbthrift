@@ -26,7 +26,7 @@ public class TestServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Long> init(final long int1) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.init(int1));
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.init(int1));
     }
 
 }
