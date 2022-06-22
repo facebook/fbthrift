@@ -242,7 +242,7 @@ class TransportPeekingManager : public PeekingManagerBase,
       // Check for new transports
       bool acceptedHandler = false;
       for (auto const& handler : *server_->getRoutingHandlers()) {
-        if (handler->canAcceptConnection(peekBytes)) {
+        if (handler->canAcceptConnection(peekBytes, tinfo_)) {
           handler->handleConnection(
               acceptor_->getConnectionManager(),
               std::move(transport),

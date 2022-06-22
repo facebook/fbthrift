@@ -130,7 +130,7 @@ void HTTP2RoutingHandler::stopListening() {
 }
 
 bool HTTP2RoutingHandler::canAcceptConnection(
-    const std::vector<uint8_t>& bytes) {
+    const std::vector<uint8_t>& bytes, const wangle::TransportInfo&) {
   return listening_ &&
       /*
        * HTTP/2.0 requests start with the following sequence:

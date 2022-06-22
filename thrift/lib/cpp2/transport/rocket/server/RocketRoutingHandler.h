@@ -53,7 +53,9 @@ class RocketRoutingHandler : public TransportRoutingHandler {
   RocketRoutingHandler& operator=(const RocketRoutingHandler&) = delete;
 
   void stopListening() override;
-  bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
+  bool canAcceptConnection(
+      const std::vector<uint8_t>& bytes,
+      const wangle::TransportInfo& tinfo) override;
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
       wangle::ConnectionManager* connectionManager,

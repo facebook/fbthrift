@@ -45,9 +45,13 @@ class TransportRoutingHandler {
 
   /*
    * Performs a check on the first bytes read from the wire
-   * and determines if this protocol is supported by this routing handler
+   * and determines if this protocol is supported by this routing handler.
+   * Transport info is provided in case additional validation is needed
+   * around security and other properties of the transport.
    */
-  virtual bool canAcceptConnection(const std::vector<uint8_t>& bytes) = 0;
+  virtual bool canAcceptConnection(
+      const std::vector<uint8_t>& bytes,
+      const wangle::TransportInfo& tinfo) = 0;
 
   /*
    * Determines if the protocol indicated by the protocol name is supported by

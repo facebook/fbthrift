@@ -76,7 +76,7 @@ void RocketRoutingHandler::stopListening() {
 }
 
 bool RocketRoutingHandler::canAcceptConnection(
-    const std::vector<uint8_t>& bytes) {
+    const std::vector<uint8_t>& bytes, const wangle::TransportInfo&) {
   class FrameHeader {
    public:
     /*
