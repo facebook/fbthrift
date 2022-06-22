@@ -157,7 +157,22 @@ cdef class InitialResponse(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cInitialResponse](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.InitialResponse, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.InitialResponse, self)
 @__cython.auto_pickle(False)
 cdef class FinalResponse(thrift.py3.types.Struct):
     def __init__(FinalResponse self, **kwargs):
@@ -257,7 +272,22 @@ cdef class FinalResponse(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFinalResponse](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FinalResponse, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FinalResponse, self)
 @__cython.auto_pickle(False)
 cdef class SinkPayload(thrift.py3.types.Struct):
     def __init__(SinkPayload self, **kwargs):
@@ -357,7 +387,22 @@ cdef class SinkPayload(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cSinkPayload](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.SinkPayload, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SinkPayload, self)
 @__cython.auto_pickle(False)
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __init__(CompatibleWithKeywordSink self, **kwargs):
@@ -457,7 +502,22 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cCompatibleWithKeywordSink](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.CompatibleWithKeywordSink, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.CompatibleWithKeywordSink, self)
 @__cython.auto_pickle(False)
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __init__(InitialException self, *args, **kwargs):
@@ -548,7 +608,22 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cInitialException](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.InitialException, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.InitialException, self)
 @__cython.auto_pickle(False)
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __init__(SinkException1 self, *args, **kwargs):
@@ -639,7 +714,22 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cSinkException1](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.SinkException1, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SinkException1, self)
 @__cython.auto_pickle(False)
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     def __init__(SinkException2 self, *args, **kwargs):
@@ -730,4 +820,19 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cSinkException2](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.SinkException2, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SinkException2, self)

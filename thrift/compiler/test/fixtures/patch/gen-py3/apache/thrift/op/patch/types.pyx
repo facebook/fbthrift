@@ -147,7 +147,22 @@ cdef class GeneratePatch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cGeneratePatch](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "apache.thrift.op.patch.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.GeneratePatch, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("thrift.lib.thrift.patch.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.GeneratePatch, self)
 @__cython.auto_pickle(False)
 cdef class GenerateOptionalPatch(thrift.py3.types.Struct):
     def __init__(GenerateOptionalPatch self, **kwargs):
@@ -231,4 +246,19 @@ cdef class GenerateOptionalPatch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cGenerateOptionalPatch](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "apache.thrift.op.patch.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.GenerateOptionalPatch, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("thrift.lib.thrift.patch.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.GenerateOptionalPatch, self)

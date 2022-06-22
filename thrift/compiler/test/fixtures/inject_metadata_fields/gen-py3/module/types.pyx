@@ -161,7 +161,22 @@ cdef class Fields(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFields](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Fields, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Fields, self)
 @__cython.auto_pickle(False)
 cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
     def __init__(FieldsInjectedToEmptyStruct self, **kwargs):
@@ -261,7 +276,22 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFieldsInjectedToEmptyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FieldsInjectedToEmptyStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FieldsInjectedToEmptyStruct, self)
 @__cython.auto_pickle(False)
 cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
     def __init__(FieldsInjectedToStruct self, **kwargs):
@@ -370,7 +400,22 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFieldsInjectedToStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FieldsInjectedToStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FieldsInjectedToStruct, self)
 @__cython.auto_pickle(False)
 cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     def __init__(FieldsInjectedWithIncludedStruct self, **kwargs):
@@ -501,4 +546,19 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFieldsInjectedWithIncludedStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FieldsInjectedWithIncludedStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FieldsInjectedWithIncludedStruct, self)

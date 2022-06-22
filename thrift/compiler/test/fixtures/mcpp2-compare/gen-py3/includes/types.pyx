@@ -199,7 +199,22 @@ cdef class AStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cAStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "includes.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.AStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("includes.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.AStruct, self)
 @__cython.auto_pickle(False)
 cdef class AStructB(thrift.py3.types.Struct):
     def __init__(AStructB self, **kwargs):
@@ -302,6 +317,21 @@ cdef class AStructB(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cAStructB](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "includes.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.AStructB, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("includes.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.AStructB, self)
 IncludedConstant = 42
 IncludedInt64 = int

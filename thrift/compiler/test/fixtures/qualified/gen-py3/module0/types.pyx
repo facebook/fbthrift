@@ -208,7 +208,22 @@ cdef class Struct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module0.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Struct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module0.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Struct, self)
 @__cython.auto_pickle(False)
 cdef class List__Enum(thrift.py3.types.List):
     def __init__(self, items=None):

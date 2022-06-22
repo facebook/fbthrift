@@ -65,6 +65,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.MyUnion": ...   # type: ignore
+    def _to_py3(self) -> MyUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 class MyField(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -123,6 +126,9 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyField') -> bool: ...
     def __ge__(self, other: 'MyField') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyField": ...   # type: ignore
+    def _to_py3(self) -> MyField: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyField": ...   # type: ignore
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -157,6 +163,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 class StructWithUnion(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -192,6 +201,9 @@ class StructWithUnion(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithUnion') -> bool: ...
     def __ge__(self, other: 'StructWithUnion') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithUnion": ...   # type: ignore
+    def _to_py3(self) -> StructWithUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithUnion": ...   # type: ignore
 
 class RecursiveStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -219,6 +231,9 @@ class RecursiveStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'RecursiveStruct') -> bool: ...
     def __ge__(self, other: 'RecursiveStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.RecursiveStruct": ...   # type: ignore
+    def _to_py3(self) -> RecursiveStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.RecursiveStruct": ...   # type: ignore
 
 class StructWithContainers(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -265,6 +280,9 @@ class StructWithContainers(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithContainers') -> bool: ...
     def __ge__(self, other: 'StructWithContainers') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithContainers": ...   # type: ignore
+    def _to_py3(self) -> StructWithContainers: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithContainers": ...   # type: ignore
 
 class StructWithSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -299,6 +317,9 @@ class StructWithSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithSharedConst') -> bool: ...
     def __ge__(self, other: 'StructWithSharedConst') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithSharedConst": ...   # type: ignore
+    def _to_py3(self) -> StructWithSharedConst: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithSharedConst": ...   # type: ignore
 
 class Empty(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -321,6 +342,9 @@ class Empty(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Empty') -> bool: ...
     def __ge__(self, other: 'Empty') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.Empty": ...   # type: ignore
+    def _to_py3(self) -> Empty: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Empty": ...   # type: ignore
 
 class StructWithRef(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -355,6 +379,9 @@ class StructWithRef(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithRef') -> bool: ...
     def __ge__(self, other: 'StructWithRef') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithRef": ...   # type: ignore
+    def _to_py3(self) -> StructWithRef: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithRef": ...   # type: ignore
 
 class StructWithBox(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -392,6 +419,9 @@ class StructWithBox(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithBox') -> bool: ...
     def __ge__(self, other: 'StructWithBox') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithBox": ...   # type: ignore
+    def _to_py3(self) -> StructWithBox: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithBox": ...   # type: ignore
 
 class StructWithRefTypeUnique(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -426,6 +456,9 @@ class StructWithRefTypeUnique(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithRefTypeUnique') -> bool: ...
     def __ge__(self, other: 'StructWithRefTypeUnique') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithRefTypeUnique": ...   # type: ignore
+    def _to_py3(self) -> StructWithRefTypeUnique: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithRefTypeUnique": ...   # type: ignore
 
 class StructWithRefTypeShared(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -460,6 +493,9 @@ class StructWithRefTypeShared(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithRefTypeShared') -> bool: ...
     def __ge__(self, other: 'StructWithRefTypeShared') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithRefTypeShared": ...   # type: ignore
+    def _to_py3(self) -> StructWithRefTypeShared: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithRefTypeShared": ...   # type: ignore
 
 class StructWithRefTypeSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -494,6 +530,9 @@ class StructWithRefTypeSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithRefTypeSharedConst') -> bool: ...
     def __ge__(self, other: 'StructWithRefTypeSharedConst') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithRefTypeSharedConst": ...   # type: ignore
+    def _to_py3(self) -> StructWithRefTypeSharedConst: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithRefTypeSharedConst": ...   # type: ignore
 
 class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -520,6 +559,9 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct, _typing.
     def __le__(self, other: 'StructWithRefAndAnnotCppNoexceptMoveCtor') -> bool: ...
     def __ge__(self, other: 'StructWithRefAndAnnotCppNoexceptMoveCtor') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithRefAndAnnotCppNoexceptMoveCtor": ...   # type: ignore
+    def _to_py3(self) -> StructWithRefAndAnnotCppNoexceptMoveCtor: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithRefAndAnnotCppNoexceptMoveCtor": ...   # type: ignore
 
 class StructWithString(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -562,6 +604,9 @@ class StructWithString(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithString') -> bool: ...
     def __ge__(self, other: 'StructWithString') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithString": ...   # type: ignore
+    def _to_py3(self) -> StructWithString: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithString": ...   # type: ignore
 
 _List__RecursiveStructT = _typing.TypeVar('_List__RecursiveStructT', bound=_typing.Sequence[RecursiveStruct])
 

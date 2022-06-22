@@ -325,6 +325,10 @@ class StructTests(unittest.TestCase):
                 },
             )
 
+    def test_to_py3(self) -> None:
+        e = easy()
+        self.assertEqual(e, e._to_py3())
+
 
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:

@@ -25,18 +25,15 @@ from thrift.python.converter import to_python_struct
 
 class Py3ToPythonConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
-        simple = to_python_struct(
-            python_types.Simple,
-            py3_types.Simple(
-                intField=42,
-                strField="simple",
-                intList=[1, 2, 3],
-                strSet={"hello", "world"},
-                strToIntMap={"one": 1, "two": 2},
-                color=py3_types.Color.GREEN,
-                name_="myname",
-            ),
-        )
+        simple = py3_types.Simple(
+            intField=42,
+            strField="simple",
+            intList=[1, 2, 3],
+            strSet={"hello", "world"},
+            strToIntMap={"one": 1, "two": 2},
+            color=py3_types.Color.GREEN,
+            name_="myname",
+        )._to_python()
         self.assertEqual(simple.intField, 42)
         self.assertEqual(simple.strField, "simple")
         self.assertEqual(simple.intList, [1, 2, 3])
@@ -46,51 +43,48 @@ class Py3ToPythonConverterTest(unittest.TestCase):
         self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
-        nested = to_python_struct(
-            python_types.Nested,
-            py3_types.Nested(
-                simpleField=py3_types.Simple(
-                    intField=42,
-                    strField="simple",
-                    intList=[1, 2, 3],
-                    strSet={"hello", "world"},
-                    strToIntMap={"one": 1, "two": 2},
-                    color=py3_types.Color.NONE,
+        nested = py3_types.Nested(
+            simpleField=py3_types.Simple(
+                intField=42,
+                strField="simple",
+                intList=[1, 2, 3],
+                strSet={"hello", "world"},
+                strToIntMap={"one": 1, "two": 2},
+                color=py3_types.Color.NONE,
+                name_="myname",
+            ),
+            simpleList=[
+                py3_types.Simple(
+                    intField=200,
+                    strField="face",
+                    intList=[4, 5, 6],
+                    strSet={"keep", "calm"},
+                    strToIntMap={"three": 3, "four": 4},
+                    color=py3_types.Color.RED,
                     name_="myname",
                 ),
-                simpleList=[
-                    py3_types.Simple(
-                        intField=200,
-                        strField="face",
-                        intList=[4, 5, 6],
-                        strSet={"keep", "calm"},
-                        strToIntMap={"three": 3, "four": 4},
-                        color=py3_types.Color.RED,
-                        name_="myname",
-                    ),
-                    py3_types.Simple(
-                        intField=404,
-                        strField="b00k",
-                        intList=[7, 8, 9],
-                        strSet={"carry", "on"},
-                        strToIntMap={"five": 5, "six": 6},
-                        color=py3_types.Color.GREEN,
-                        name_="myname",
-                    ),
-                ],
-                colorToSimpleMap={
-                    py3_types.Color.BLUE: py3_types.Simple(
-                        intField=500,
-                        strField="internal",
-                        intList=[10],
-                        strSet={"server", "error"},
-                        strToIntMap={"seven": 7, "eight": 8, "nine": 9},
-                        color=py3_types.Color.BLUE,
-                        name_="myname",
-                    )
-                },
-            ),
-        )
+                py3_types.Simple(
+                    intField=404,
+                    strField="b00k",
+                    intList=[7, 8, 9],
+                    strSet={"carry", "on"},
+                    strToIntMap={"five": 5, "six": 6},
+                    color=py3_types.Color.GREEN,
+                    name_="myname",
+                ),
+            ],
+            colorToSimpleMap={
+                py3_types.Color.BLUE: py3_types.Simple(
+                    intField=500,
+                    strField="internal",
+                    intList=[10],
+                    strSet={"server", "error"},
+                    strToIntMap={"seven": 7, "eight": 8, "nine": 9},
+                    color=py3_types.Color.BLUE,
+                    name_="myname",
+                )
+            },
+        )._to_python()
         self.assertEqual(nested.simpleField.intField, 42)
         self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
         self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
@@ -100,40 +94,31 @@ class Py3ToPythonConverterTest(unittest.TestCase):
         )
 
     def test_simple_union(self) -> None:
-        simple_union = to_python_struct(
-            python_types.Union, py3_types.Union(intField=42)
-        )
+        simple_union = py3_types.Union(intField=42)._to_python()
         self.assertEqual(simple_union.type, python_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        simple_union = to_python_struct(
-            python_types.Union, py3_types.Union(name_="myname")
-        )
+        simple_union = py3_types.Union(name_="myname")._to_python()
         self.assertEqual(simple_union.type, python_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
-        union_with_list = to_python_struct(
-            python_types.Union, py3_types.Union(intList=[1, 2, 3])
-        )
+        union_with_list = py3_types.Union(intList=[1, 2, 3])._to_python()
         self.assertEqual(union_with_list.type, python_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
 
     def test_complex_union(self) -> None:
-        complex_union = to_python_struct(
-            python_types.Union,
-            py3_types.Union(
-                simple_=py3_types.Simple(
-                    intField=42,
-                    strField="simple",
-                    intList=[1, 2, 3],
-                    strSet={"hello", "world"},
-                    strToIntMap={"one": 1, "two": 2},
-                    color=py3_types.Color.NONE,
-                )
-            ),
-        )
+        complex_union = py3_types.Union(
+            simple_=py3_types.Simple(
+                intField=42,
+                strField="simple",
+                intList=[1, 2, 3],
+                strSet={"hello", "world"},
+                strToIntMap={"one": 1, "two": 2},
+                color=py3_types.Color.NONE,
+            )
+        )._to_python()
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
 

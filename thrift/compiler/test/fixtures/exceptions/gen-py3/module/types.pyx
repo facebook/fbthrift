@@ -151,7 +151,22 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cFiery](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Fiery, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Fiery, self)
 @__cython.auto_pickle(False)
 cdef class Serious(thrift.py3.exceptions.GeneratedError):
     def __init__(Serious self, *args, **kwargs):
@@ -247,7 +262,22 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cSerious](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Serious, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Serious, self)
 @__cython.auto_pickle(False)
 cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     def __init__(ComplexFieldNames self, *args, **kwargs):
@@ -350,7 +380,22 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cComplexFieldNames](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.ComplexFieldNames, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ComplexFieldNames, self)
 @__cython.auto_pickle(False)
 cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     def __init__(CustomFieldNames self, *args, **kwargs):
@@ -453,7 +498,22 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cCustomFieldNames](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.CustomFieldNames, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.CustomFieldNames, self)
 @__cython.auto_pickle(False)
 cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
     def __init__(ExceptionWithPrimitiveField self, *args, **kwargs):
@@ -556,7 +616,22 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cExceptionWithPrimitiveField](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.ExceptionWithPrimitiveField, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithPrimitiveField, self)
 @__cython.auto_pickle(False)
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __init__(Banal self, *args, **kwargs):
@@ -638,4 +713,19 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cBanal](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Banal, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Banal, self)

@@ -96,6 +96,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -118,6 +121,9 @@ class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyDataItem') -> bool: ...
     def __ge__(self, other: 'MyDataItem') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.MyDataItem": ...   # type: ignore
+    def _to_py3(self) -> MyDataItem: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 _MyUnionValueType = _typing.Union[None, MyEnum, MyStruct, MyDataItem, _typing.AbstractSet[float]]
 
@@ -167,6 +173,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.MyUnion": ...   # type: ignore
+    def _to_py3(self) -> MyUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 class ReservedKeyword(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -194,6 +203,9 @@ class ReservedKeyword(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ReservedKeyword') -> bool: ...
     def __ge__(self, other: 'ReservedKeyword') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.ReservedKeyword": ...   # type: ignore
+    def _to_py3(self) -> ReservedKeyword: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ReservedKeyword": ...   # type: ignore
 
 _UnionToBeRenamedValueType = _typing.Union[None, int]
 
@@ -228,6 +240,9 @@ class UnionToBeRenamed(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "UnionToBeRenamed.Type": ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.UnionToBeRenamed": ...   # type: ignore
+    def _to_py3(self) -> UnionToBeRenamed: ...
+    def _to_py_deprecated(self) -> "module.ttypes.UnionToBeRenamed": ...   # type: ignore
 
 class Set__float(_typing.AbstractSet[float], _typing.Hashable):
     def __init__(self, items: _typing.Optional[_typing.AbstractSet[float]]=None) -> None: ...

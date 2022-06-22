@@ -54,6 +54,9 @@ class SimpleException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'SimpleException') -> bool: ...
     def __ge__(self, other: 'SimpleException') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.SimpleException": ...   # type: ignore
+    def _to_py3(self) -> SimpleException: ...
+    def _to_py_deprecated(self) -> "module.ttypes.SimpleException": ...   # type: ignore
 
 class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -81,6 +84,9 @@ class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'OptionalRefStruct') -> bool: ...
     def __ge__(self, other: 'OptionalRefStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.OptionalRefStruct": ...   # type: ignore
+    def _to_py3(self) -> OptionalRefStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.OptionalRefStruct": ...   # type: ignore
 
 class SimpleStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -138,6 +144,9 @@ class SimpleStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'SimpleStruct') -> bool: ...
     def __ge__(self, other: 'SimpleStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.SimpleStruct": ...   # type: ignore
+    def _to_py3(self) -> SimpleStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.SimpleStruct": ...   # type: ignore
 
 class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -205,6 +214,9 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ComplexStruct') -> bool: ...
     def __ge__(self, other: 'ComplexStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ComplexStruct": ...   # type: ignore
+    def _to_py3(self) -> ComplexStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ComplexStruct": ...   # type: ignore
 
 _BinaryUnionValueType = _typing.Union[None, _fbthrift_iobuf.IOBuf]
 
@@ -239,6 +251,9 @@ class BinaryUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "BinaryUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.BinaryUnion": ...   # type: ignore
+    def _to_py3(self) -> BinaryUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.BinaryUnion": ...   # type: ignore
 
 class BinaryUnionStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -266,6 +281,9 @@ class BinaryUnionStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'BinaryUnionStruct') -> bool: ...
     def __ge__(self, other: 'BinaryUnionStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.BinaryUnionStruct": ...   # type: ignore
+    def _to_py3(self) -> BinaryUnionStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.BinaryUnionStruct": ...   # type: ignore
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])
 

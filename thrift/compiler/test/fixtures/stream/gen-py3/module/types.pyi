@@ -36,6 +36,9 @@ class FooEx(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'FooEx') -> bool: ...
     def __ge__(self, other: 'FooEx') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.FooEx": ...   # type: ignore
+    def _to_py3(self) -> FooEx: ...
+    def _to_py_deprecated(self) -> "module.ttypes.FooEx": ...   # type: ignore
 
 
 class ClientBufferedStream__i32(thrift.py3.stream.ClientBufferedStream[int]):

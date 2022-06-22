@@ -70,6 +70,9 @@ class decorated_struct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'decorated_struct') -> bool: ...
     def __ge__(self, other: 'decorated_struct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.decorated_struct": ...   # type: ignore
+    def _to_py3(self) -> decorated_struct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.decorated_struct": ...   # type: ignore
 
 class ContainerStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -128,6 +131,9 @@ class ContainerStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
+    def _to_python(self) -> "module.thrift_types.ContainerStruct": ...   # type: ignore
+    def _to_py3(self) -> ContainerStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ContainerStruct": ...   # type: ignore
 
 class CppTypeStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -155,6 +161,9 @@ class CppTypeStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'CppTypeStruct') -> bool: ...
     def __ge__(self, other: 'CppTypeStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.CppTypeStruct": ...   # type: ignore
+    def _to_py3(self) -> CppTypeStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.CppTypeStruct": ...   # type: ignore
 
 class VirtualStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -182,6 +191,9 @@ class VirtualStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'VirtualStruct') -> bool: ...
     def __ge__(self, other: 'VirtualStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.VirtualStruct": ...   # type: ignore
+    def _to_py3(self) -> VirtualStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.VirtualStruct": ...   # type: ignore
 
 class MyStructWithForwardRefEnum(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -214,6 +226,9 @@ class MyStructWithForwardRefEnum(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStructWithForwardRefEnum') -> bool: ...
     def __ge__(self, other: 'MyStructWithForwardRefEnum') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyStructWithForwardRefEnum": ...   # type: ignore
+    def _to_py3(self) -> MyStructWithForwardRefEnum: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStructWithForwardRefEnum": ...   # type: ignore
 
 class TrivialNumeric(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -246,6 +261,9 @@ class TrivialNumeric(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'TrivialNumeric') -> bool: ...
     def __ge__(self, other: 'TrivialNumeric') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.TrivialNumeric": ...   # type: ignore
+    def _to_py3(self) -> TrivialNumeric: ...
+    def _to_py_deprecated(self) -> "module.ttypes.TrivialNumeric": ...   # type: ignore
 
 class TrivialNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -278,6 +296,9 @@ class TrivialNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'TrivialNestedWithDefault') -> bool: ...
     def __ge__(self, other: 'TrivialNestedWithDefault') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.TrivialNestedWithDefault": ...   # type: ignore
+    def _to_py3(self) -> TrivialNestedWithDefault: ...
+    def _to_py_deprecated(self) -> "module.ttypes.TrivialNestedWithDefault": ...   # type: ignore
 
 class ComplexString(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -310,6 +331,9 @@ class ComplexString(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ComplexString') -> bool: ...
     def __ge__(self, other: 'ComplexString') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ComplexString": ...   # type: ignore
+    def _to_py3(self) -> ComplexString: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ComplexString": ...   # type: ignore
 
 class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -342,6 +366,9 @@ class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ComplexNestedWithDefault') -> bool: ...
     def __ge__(self, other: 'ComplexNestedWithDefault') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ComplexNestedWithDefault": ...   # type: ignore
+    def _to_py3(self) -> ComplexNestedWithDefault: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ComplexNestedWithDefault": ...   # type: ignore
 
 class MinPadding(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -389,6 +416,9 @@ class MinPadding(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MinPadding') -> bool: ...
     def __ge__(self, other: 'MinPadding') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MinPadding": ...   # type: ignore
+    def _to_py3(self) -> MinPadding: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MinPadding": ...   # type: ignore
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -431,6 +461,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -453,6 +486,9 @@ class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyDataItem') -> bool: ...
     def __ge__(self, other: 'MyDataItem') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyDataItem": ...   # type: ignore
+    def _to_py3(self) -> MyDataItem: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 class Renaming(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -480,6 +516,9 @@ class Renaming(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Renaming') -> bool: ...
     def __ge__(self, other: 'Renaming') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.Renaming": ...   # type: ignore
+    def _to_py3(self) -> Renaming: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Renaming": ...   # type: ignore
 
 class AnnotatedTypes(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -508,6 +547,9 @@ class AnnotatedTypes(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
+    def _to_python(self) -> "module.thrift_types.AnnotatedTypes": ...   # type: ignore
+    def _to_py3(self) -> AnnotatedTypes: ...
+    def _to_py_deprecated(self) -> "module.ttypes.AnnotatedTypes": ...   # type: ignore
 
 class ForwardUsageRoot(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -539,6 +581,9 @@ class ForwardUsageRoot(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ForwardUsageRoot') -> bool: ...
     def __ge__(self, other: 'ForwardUsageRoot') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ForwardUsageRoot": ...   # type: ignore
+    def _to_py3(self) -> ForwardUsageRoot: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ForwardUsageRoot": ...   # type: ignore
 
 class ForwardUsageStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -566,6 +611,9 @@ class ForwardUsageStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ForwardUsageStruct') -> bool: ...
     def __ge__(self, other: 'ForwardUsageStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ForwardUsageStruct": ...   # type: ignore
+    def _to_py3(self) -> ForwardUsageStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ForwardUsageStruct": ...   # type: ignore
 
 class ForwardUsageByRef(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -593,6 +641,9 @@ class ForwardUsageByRef(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'ForwardUsageByRef') -> bool: ...
     def __ge__(self, other: 'ForwardUsageByRef') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.ForwardUsageByRef": ...   # type: ignore
+    def _to_py3(self) -> ForwardUsageByRef: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ForwardUsageByRef": ...   # type: ignore
 
 class NoexceptMoveEmpty(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -615,6 +666,9 @@ class NoexceptMoveEmpty(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'NoexceptMoveEmpty') -> bool: ...
     def __ge__(self, other: 'NoexceptMoveEmpty') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.NoexceptMoveEmpty": ...   # type: ignore
+    def _to_py3(self) -> NoexceptMoveEmpty: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NoexceptMoveEmpty": ...   # type: ignore
 
 class NoexceptMoveSimpleStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -642,6 +696,9 @@ class NoexceptMoveSimpleStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'NoexceptMoveSimpleStruct') -> bool: ...
     def __ge__(self, other: 'NoexceptMoveSimpleStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.NoexceptMoveSimpleStruct": ...   # type: ignore
+    def _to_py3(self) -> NoexceptMoveSimpleStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NoexceptMoveSimpleStruct": ...   # type: ignore
 
 class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -709,6 +766,9 @@ class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'NoexceptMoveComplexStruct') -> bool: ...
     def __ge__(self, other: 'NoexceptMoveComplexStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.NoexceptMoveComplexStruct": ...   # type: ignore
+    def _to_py3(self) -> NoexceptMoveComplexStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NoexceptMoveComplexStruct": ...   # type: ignore
 
 _NoExceptMoveUnionValueType = _typing.Union[None, str, int]
 
@@ -748,6 +808,9 @@ class NoExceptMoveUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "NoExceptMoveUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.NoExceptMoveUnion": ...   # type: ignore
+    def _to_py3(self) -> NoExceptMoveUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NoExceptMoveUnion": ...   # type: ignore
 
 class AllocatorAware(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -803,6 +866,9 @@ class AllocatorAware(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'AllocatorAware') -> bool: ...
     def __ge__(self, other: 'AllocatorAware') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.AllocatorAware": ...   # type: ignore
+    def _to_py3(self) -> AllocatorAware: ...
+    def _to_py_deprecated(self) -> "module.ttypes.AllocatorAware": ...   # type: ignore
 
 class AllocatorAware2(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -830,6 +896,9 @@ class AllocatorAware2(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'AllocatorAware2') -> bool: ...
     def __ge__(self, other: 'AllocatorAware2') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.AllocatorAware2": ...   # type: ignore
+    def _to_py3(self) -> AllocatorAware2: ...
+    def _to_py_deprecated(self) -> "module.ttypes.AllocatorAware2": ...   # type: ignore
 
 class TypedefStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -867,6 +936,9 @@ class TypedefStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'TypedefStruct') -> bool: ...
     def __ge__(self, other: 'TypedefStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.TypedefStruct": ...   # type: ignore
+    def _to_py3(self) -> TypedefStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.TypedefStruct": ...   # type: ignore
 
 class StructWithDoubleUnderscores(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -894,6 +966,9 @@ class StructWithDoubleUnderscores(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithDoubleUnderscores') -> bool: ...
     def __ge__(self, other: 'StructWithDoubleUnderscores') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithDoubleUnderscores": ...   # type: ignore
+    def _to_py3(self) -> StructWithDoubleUnderscores: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithDoubleUnderscores": ...   # type: ignore
 
 class std_unordered_map__Map__i32_string(_typing.Mapping[int, str], _typing.Hashable):
     def __init__(self, items: _typing.Optional[_typing.Mapping[int, str]]=None) -> None: ...

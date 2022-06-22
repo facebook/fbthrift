@@ -226,7 +226,22 @@ cdef class Color(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cColor](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Color, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Color, self)
 @__cython.auto_pickle(False)
 cdef class Vehicle(thrift.py3.types.Struct):
     def __init__(Vehicle self, **kwargs):
@@ -370,7 +385,22 @@ cdef class Vehicle(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cVehicle](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Vehicle, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Vehicle, self)
 @__cython.auto_pickle(False)
 cdef class Person(thrift.py3.types.Struct):
     def __init__(Person self, **kwargs):
@@ -577,7 +607,22 @@ cdef class Person(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cPerson](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Person, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Person, self)
 @__cython.auto_pickle(False)
 cdef class Set__i64(thrift.py3.types.Set):
     def __init__(self, items=None):

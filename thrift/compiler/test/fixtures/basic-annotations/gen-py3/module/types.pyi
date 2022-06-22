@@ -51,6 +51,9 @@ class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStructNestedAnnotation') -> bool: ...
     def __ge__(self, other: 'MyStructNestedAnnotation') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyStructNestedAnnotation": ...   # type: ignore
+    def _to_py3(self) -> MyStructNestedAnnotation: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStructNestedAnnotation": ...   # type: ignore
 
 _MyUnionValueType = _typing.Union[None, ]
 
@@ -80,6 +83,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.MyUnion": ...   # type: ignore
+    def _to_py3(self) -> MyUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 class MyException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -97,6 +103,9 @@ class MyException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'MyException') -> bool: ...
     def __ge__(self, other: 'MyException') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyException": ...   # type: ignore
+    def _to_py3(self) -> MyException: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyException": ...   # type: ignore
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -164,6 +173,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 class SecretStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -196,6 +208,9 @@ class SecretStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'SecretStruct') -> bool: ...
     def __ge__(self, other: 'SecretStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.SecretStruct": ...   # type: ignore
+    def _to_py3(self) -> SecretStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.SecretStruct": ...   # type: ignore
 
 _std_deque_std_string__List__stringT = _typing.TypeVar('_std_deque_std_string__List__stringT', bound=_typing.Sequence[str])
 

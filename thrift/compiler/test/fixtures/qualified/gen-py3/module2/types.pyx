@@ -174,7 +174,22 @@ cdef class Struct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module2.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Struct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module2.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Struct, self)
 @__cython.auto_pickle(False)
 cdef class BigStruct(thrift.py3.types.Struct):
     def __init__(BigStruct self, **kwargs):
@@ -285,7 +300,22 @@ cdef class BigStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cBigStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module2.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.BigStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module2.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.BigStruct, self)
 c2 = Struct._fbthrift_create(constant_shared_ptr(cc2()))
 c3 = Struct._fbthrift_create(constant_shared_ptr(cc3()))
 c4 = Struct._fbthrift_create(constant_shared_ptr(cc4()))

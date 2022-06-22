@@ -159,7 +159,22 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "matching_struct_names.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("matching_struct_names.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStruct, self)
 @__cython.auto_pickle(False)
 cdef class Combo(thrift.py3.types.Struct):
     def __init__(Combo self, **kwargs):
@@ -294,7 +309,22 @@ cdef class Combo(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cCombo](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "matching_struct_names.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Combo, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("matching_struct_names.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Combo, self)
 @__cython.auto_pickle(False)
 cdef class List__MyStruct(thrift.py3.types.List):
     def __init__(self, items=None):

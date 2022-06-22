@@ -174,7 +174,22 @@ cdef class A(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cA](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "a.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.A, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("a.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.A, self)
 @__cython.auto_pickle(False)
 cdef class List__c_C(thrift.py3.types.List):
     def __init__(self, items=None):

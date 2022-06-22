@@ -236,7 +236,22 @@ cdef class SomeStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cSomeStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.SomeStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.SomeStruct, self)
 @__cython.auto_pickle(False)
 cdef class Set__i32(thrift.py3.types.Set):
     def __init__(self, items=None):

@@ -46,6 +46,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "terse_write.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "terse_write.ttypes.MyStruct": ...   # type: ignore
 
 class MyStructWithCustomDefault(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -73,6 +76,9 @@ class MyStructWithCustomDefault(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStructWithCustomDefault') -> bool: ...
     def __ge__(self, other: 'MyStructWithCustomDefault') -> bool: ...
 
+    def _to_python(self) -> "terse_write.thrift_types.MyStructWithCustomDefault": ...   # type: ignore
+    def _to_py3(self) -> MyStructWithCustomDefault: ...
+    def _to_py_deprecated(self) -> "terse_write.ttypes.MyStructWithCustomDefault": ...   # type: ignore
 
 class StructLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -151,6 +157,9 @@ class StructLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructLevelTerseStruct') -> bool: ...
     def __ge__(self, other: 'StructLevelTerseStruct') -> bool: ...
 
+    def _to_python(self) -> "terse_write.thrift_types.StructLevelTerseStruct": ...   # type: ignore
+    def _to_py3(self) -> StructLevelTerseStruct: ...
+    def _to_py_deprecated(self) -> "terse_write.ttypes.StructLevelTerseStruct": ...   # type: ignore
 
 class FieldLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -299,6 +308,9 @@ class FieldLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'FieldLevelTerseStruct') -> bool: ...
     def __ge__(self, other: 'FieldLevelTerseStruct') -> bool: ...
 
+    def _to_python(self) -> "terse_write.thrift_types.FieldLevelTerseStruct": ...   # type: ignore
+    def _to_py3(self) -> FieldLevelTerseStruct: ...
+    def _to_py_deprecated(self) -> "terse_write.ttypes.FieldLevelTerseStruct": ...   # type: ignore
 
 class TerseStructWithCustomDefault(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -377,6 +389,9 @@ class TerseStructWithCustomDefault(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'TerseStructWithCustomDefault') -> bool: ...
     def __ge__(self, other: 'TerseStructWithCustomDefault') -> bool: ...
 
+    def _to_python(self) -> "terse_write.thrift_types.TerseStructWithCustomDefault": ...   # type: ignore
+    def _to_py3(self) -> TerseStructWithCustomDefault: ...
+    def _to_py_deprecated(self) -> "terse_write.ttypes.TerseStructWithCustomDefault": ...   # type: ignore
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])
 

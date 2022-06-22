@@ -95,6 +95,9 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
+    def _to_python(self) -> "module.thrift_types.Foo": ...   # type: ignore
+    def _to_py3(self) -> Foo: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Foo": ...   # type: ignore
 
 _BazValueType = _typing.Union[None, int, _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], bytes, int]
 
@@ -145,6 +148,9 @@ class Baz(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "Baz.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.Baz": ...   # type: ignore
+    def _to_py3(self) -> Baz: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Baz": ...   # type: ignore
 
 class Bar(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -198,6 +204,9 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
+    def _to_python(self) -> "module.thrift_types.Bar": ...   # type: ignore
+    def _to_py3(self) -> Bar: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Bar": ...   # type: ignore
 
 class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -238,6 +247,9 @@ class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'StructWithFieldAdapter') -> bool: ...
     def __ge__(self, other: 'StructWithFieldAdapter') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.StructWithFieldAdapter": ...   # type: ignore
+    def _to_py3(self) -> StructWithFieldAdapter: ...
+    def _to_py_deprecated(self) -> "module.ttypes.StructWithFieldAdapter": ...   # type: ignore
 
 class TerseAdaptedFields(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -272,6 +284,9 @@ class TerseAdaptedFields(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'TerseAdaptedFields') -> bool: ...
     def __ge__(self, other: 'TerseAdaptedFields') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.TerseAdaptedFields": ...   # type: ignore
+    def _to_py3(self) -> TerseAdaptedFields: ...
+    def _to_py_deprecated(self) -> "module.ttypes.TerseAdaptedFields": ...   # type: ignore
 
 class B(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -299,6 +314,9 @@ class B(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'B') -> bool: ...
     def __ge__(self, other: 'B') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.B": ...   # type: ignore
+    def _to_py3(self) -> B: ...
+    def _to_py_deprecated(self) -> "module.ttypes.B": ...   # type: ignore
 
 class A(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -321,6 +339,9 @@ class A(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'A') -> bool: ...
     def __ge__(self, other: 'A') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.A": ...   # type: ignore
+    def _to_py3(self) -> A: ...
+    def _to_py_deprecated(self) -> "module.ttypes.A": ...   # type: ignore
 
 class Set__string(_typing.AbstractSet[str], _typing.Hashable):
     def __init__(self, items: _typing.Optional[_typing.AbstractSet[str]]=None) -> None: ...

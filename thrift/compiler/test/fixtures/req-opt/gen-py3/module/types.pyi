@@ -60,6 +60,9 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.Foo": ...   # type: ignore
+    def _to_py3(self) -> Foo: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Foo": ...   # type: ignore
 
 _List__boolT = _typing.TypeVar('_List__boolT', bound=_typing.Sequence[bool])
 

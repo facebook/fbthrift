@@ -185,7 +185,22 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "terse_write.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("terse_write.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStruct, self)
 @__cython.auto_pickle(False)
 cdef class MyStructWithCustomDefault(thrift.py3.types.Struct):
     def __init__(MyStructWithCustomDefault self, **kwargs):
@@ -285,7 +300,22 @@ cdef class MyStructWithCustomDefault(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStructWithCustomDefault](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "terse_write.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.MyStructWithCustomDefault, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("terse_write.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStructWithCustomDefault, self)
 @__cython.auto_pickle(False)
 cdef class StructLevelTerseStruct(thrift.py3.types.Struct):
     def __init__(StructLevelTerseStruct self, **kwargs):
@@ -498,7 +528,22 @@ cdef class StructLevelTerseStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructLevelTerseStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "terse_write.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.StructLevelTerseStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("terse_write.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.StructLevelTerseStruct, self)
 @__cython.auto_pickle(False)
 cdef class FieldLevelTerseStruct(thrift.py3.types.Struct):
     def __init__(FieldLevelTerseStruct self, **kwargs):
@@ -847,7 +892,22 @@ cdef class FieldLevelTerseStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFieldLevelTerseStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "terse_write.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FieldLevelTerseStruct, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("terse_write.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FieldLevelTerseStruct, self)
 @__cython.auto_pickle(False)
 cdef class TerseStructWithCustomDefault(thrift.py3.types.Struct):
     def __init__(TerseStructWithCustomDefault self, **kwargs):
@@ -1060,7 +1120,22 @@ cdef class TerseStructWithCustomDefault(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cTerseStructWithCustomDefault](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "terse_write.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.TerseStructWithCustomDefault, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("terse_write.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.TerseStructWithCustomDefault, self)
 @__cython.auto_pickle(False)
 cdef class List__i16(thrift.py3.types.List):
     def __init__(self, items=None):

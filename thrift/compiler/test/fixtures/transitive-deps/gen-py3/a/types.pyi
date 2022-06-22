@@ -52,6 +52,9 @@ class A(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'A') -> bool: ...
     def __ge__(self, other: 'A') -> bool: ...
 
+    def _to_python(self) -> "a.thrift_types.A": ...   # type: ignore
+    def _to_py3(self) -> A: ...
+    def _to_py_deprecated(self) -> "a.ttypes.A": ...   # type: ignore
 
 _List__c_CT = _typing.TypeVar('_List__c_CT', bound=_typing.Sequence[_c_types.C])
 

@@ -50,6 +50,9 @@ class MyData(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyData') -> bool: ...
     def __ge__(self, other: 'MyData') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.patch.module.thrift_types.MyData": ...   # type: ignore
+    def _to_py3(self) -> MyData: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyData": ...   # type: ignore
 
 _InnerUnionValueType = _typing.Union[None, bytes]
 
@@ -84,6 +87,9 @@ class InnerUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "InnerUnion.Type": ...
 
+    def _to_python(self) -> "test.fixtures.patch.module.thrift_types.InnerUnion": ...   # type: ignore
+    def _to_py3(self) -> InnerUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.InnerUnion": ...   # type: ignore
 
 _MyUnionValueType = _typing.Union[None, str, int, InnerUnion]
 
@@ -128,6 +134,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
+    def _to_python(self) -> "test.fixtures.patch.module.thrift_types.MyUnion": ...   # type: ignore
+    def _to_py3(self) -> MyUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -259,6 +268,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.patch.module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])
 

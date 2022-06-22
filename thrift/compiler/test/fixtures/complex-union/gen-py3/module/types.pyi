@@ -76,6 +76,9 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "ComplexUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.ComplexUnion": ...   # type: ignore
+    def _to_py3(self) -> ComplexUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ComplexUnion": ...   # type: ignore
 
 _ListUnionValueType = _typing.Union[None, _typing.Sequence[int], _typing.Sequence[str]]
 
@@ -115,6 +118,9 @@ class ListUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "ListUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.ListUnion": ...   # type: ignore
+    def _to_py3(self) -> ListUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ListUnion": ...   # type: ignore
 
 _DataUnionValueType = _typing.Union[None, bytes, str]
 
@@ -154,6 +160,9 @@ class DataUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "DataUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.DataUnion": ...   # type: ignore
+    def _to_py3(self) -> DataUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.DataUnion": ...   # type: ignore
 
 class Val(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -191,6 +200,9 @@ class Val(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Val') -> bool: ...
     def __ge__(self, other: 'Val') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.Val": ...   # type: ignore
+    def _to_py3(self) -> Val: ...
+    def _to_py_deprecated(self) -> "module.ttypes.Val": ...   # type: ignore
 
 _ValUnionValueType = _typing.Union[None, Val, Val]
 
@@ -230,6 +242,9 @@ class ValUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "ValUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.ValUnion": ...   # type: ignore
+    def _to_py3(self) -> ValUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ValUnion": ...   # type: ignore
 
 _VirtualComplexUnionValueType = _typing.Union[None, str, str]
 
@@ -269,6 +284,9 @@ class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "VirtualComplexUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.VirtualComplexUnion": ...   # type: ignore
+    def _to_py3(self) -> VirtualComplexUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.VirtualComplexUnion": ...   # type: ignore
 
 class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -296,6 +314,9 @@ class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'NonCopyableStruct') -> bool: ...
     def __ge__(self, other: 'NonCopyableStruct') -> bool: ...
 
+    def _to_python(self) -> "module.thrift_types.NonCopyableStruct": ...   # type: ignore
+    def _to_py3(self) -> NonCopyableStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NonCopyableStruct": ...   # type: ignore
 
 _NonCopyableUnionValueType = _typing.Union[None, NonCopyableStruct]
 
@@ -330,6 +351,9 @@ class NonCopyableUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "NonCopyableUnion.Type": ...
 
+    def _to_python(self) -> "module.thrift_types.NonCopyableUnion": ...   # type: ignore
+    def _to_py3(self) -> NonCopyableUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.NonCopyableUnion": ...   # type: ignore
 
 _List__i64T = _typing.TypeVar('_List__i64T', bound=_typing.Sequence[int])
 

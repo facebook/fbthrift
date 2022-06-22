@@ -395,7 +395,22 @@ cdef class Internship(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cInternship](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Internship, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Internship, self)
 @__cython.auto_pickle(False)
 cdef class Range(thrift.py3.types.Struct):
     def __init__(Range self, **kwargs):
@@ -504,7 +519,22 @@ cdef class Range(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cRange](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.Range, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.Range, self)
 @__cython.auto_pickle(False)
 cdef class struct1(thrift.py3.types.Struct):
     def __init__(struct1 self, **kwargs):
@@ -613,7 +643,22 @@ cdef class struct1(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cstruct1](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.struct1, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.struct1, self)
 @__cython.auto_pickle(False)
 cdef class struct2(thrift.py3.types.Struct):
     def __init__(struct2 self, **kwargs):
@@ -744,7 +789,22 @@ cdef class struct2(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cstruct2](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.struct2, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.struct2, self)
 @__cython.auto_pickle(False)
 cdef class struct3(thrift.py3.types.Struct):
     def __init__(struct3 self, **kwargs):
@@ -864,7 +924,22 @@ cdef class struct3(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cstruct3](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.struct3, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.struct3, self)
 @__cython.auto_pickle(False)
 cdef class struct4(thrift.py3.types.Struct):
     def __init__(struct4 self, **kwargs):
@@ -986,7 +1061,22 @@ cdef class struct4(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cstruct4](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.struct4, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.struct4, self)
 
 
 @__cython.auto_pickle(False)
@@ -1145,7 +1235,22 @@ cdef class union1(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.union1, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.union1, self)
 
 
 @__cython.auto_pickle(False)
@@ -1340,7 +1445,22 @@ cdef class union2(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.union2, self)
 
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.union2, self)
 @__cython.auto_pickle(False)
 cdef class List__i32(thrift.py3.types.List):
     def __init__(self, items=None):

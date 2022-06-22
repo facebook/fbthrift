@@ -56,6 +56,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.MyStruct": ...   # type: ignore
+    def _to_py3(self) -> MyStruct: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyStruct": ...   # type: ignore
 
 _MyUnionValueType = _typing.Union[None, MyEnum, MyStruct]
 
@@ -95,4 +98,7 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
+    def _to_python(self) -> "test.fixtures.basic.module.thrift_types.MyUnion": ...   # type: ignore
+    def _to_py3(self) -> MyUnion: ...
+    def _to_py_deprecated(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
