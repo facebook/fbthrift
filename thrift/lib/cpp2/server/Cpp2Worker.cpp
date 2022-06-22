@@ -425,7 +425,7 @@ void Cpp2Worker::dispatchRequest(
         LIKELY(found != nullptr)) {
       if (serverConfigs->resourcePoolEnabled() &&
           !serverConfigs->resourcePoolSet().empty()) {
-        if (!found->metadata.rpcKind) {
+        if (!found->metadata.isWildcard() && !found->metadata.rpcKind) {
           std::string_view methodName = cpp2ReqCtx->getMethodName();
           AsyncProcessorHelper::sendUnknownMethodError(
               std::move(request), methodName);
@@ -449,13 +449,30 @@ void Cpp2Worker::dispatchRequest(
             &found->metadata);
 
         // Once we remove the old code we'll move validateRpcKind to a helper.
-        if (!GeneratedAsyncProcessor::validateRpcKind(
+        if (!found->metadata.isWildcard() &&
+            !GeneratedAsyncProcessor::validateRpcKind(
                 serverRequest.request(), *found->metadata.rpcKind)) {
           return;
         }
 
-        auto poolResult = AsyncProcessorHelper::selectResourcePool(
-            serverRequest, found->metadata);
+        auto* maybeWildcardMetadata = found->metadata.isWildcard()
+            ? static_cast<const AsyncProcessorFactory::WildcardMethodMetadata*>(
+                  &found->metadata)
+            : nullptr;
+
+        SelectPoolResult poolResult;
+        // if this is a wildcard method enalbled for using Sync path of
+        // ResourcePool
+        if (maybeWildcardMetadata &&
+            serverConfigs->resourcePoolEnabledForWildcard() &&
+            maybeWildcardMetadata->executorType ==
+                AsyncProcessorFactory::MethodMetadata::ExecutorType::EVB) {
+          poolResult = ResourcePoolHandle::defaultSync();
+        } else {
+          poolResult = AsyncProcessorHelper::selectResourcePool(
+              serverRequest, found->metadata);
+        }
+
         if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
           auto errorCode = kAppOverloadedErrorCode;
           if (reject->applicationException().getType() ==

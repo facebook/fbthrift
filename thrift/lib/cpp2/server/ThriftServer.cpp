@@ -675,14 +675,21 @@ void ThriftServer::setupThreadManager() {
 void ThriftServer::runtimeResourcePoolsChecks() {
   // Check whether there are any wildcard services.
   auto methodMetadata = getDecoratedProcessorFactory().createMethodMetadata();
-  auto* methodMetadataMap =
-      std::get_if<AsyncProcessorFactory::MethodMetadataMap>(&methodMetadata);
-  if (!methodMetadataMap) {
-    // Only accept services with full method metadata
-    LOG(INFO) << "Resource pools disabled. Wildcard methods";
-    runtimeServerActions_.wildcardMethods = true;
-    runtimeDisableResourcePools();
-  } else {
+
+  if (auto* wildcardMap =
+          std::get_if<AsyncProcessorFactory::WildcardMethodMetadataMap>(
+              &methodMetadata)) {
+    auto metadata = wildcardMap->wildcardMetadata;
+    // wildcard methods, but ResourcePool compatible
+    if (!getRuntimeServerActions().enableResourcePoolForWildcard) {
+      LOG(INFO) << "Resource pools disabled. Wildcard methods";
+      runtimeServerActions_.wildcardMethods = true;
+      runtimeDisableResourcePools();
+    }
+  } else if (
+      auto* methodMetadataMap =
+          std::get_if<AsyncProcessorFactory::MethodMetadataMap>(
+              &methodMetadata)) {
     for (const auto& methodToMetadataPtr : *methodMetadataMap) {
       const auto& metadata = *methodToMetadataPtr.second;
       if (metadata.executorType ==
@@ -706,6 +713,11 @@ void ThriftServer::runtimeResourcePoolsChecks() {
         runtimeDisableResourcePools();
       }
     }
+  } else {
+    // unimplemented MethodMetadata
+    LOG(INFO) << "Resource pools disabled. Wildcard methods";
+    runtimeServerActions_.wildcardMethods = true;
+    runtimeDisableResourcePools();
   }
 
   if (isActiveRequestsTrackingDisabled()) {

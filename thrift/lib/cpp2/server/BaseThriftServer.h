@@ -179,6 +179,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool codelEnabled{false};
     std::string executorToThreadManagerUnexpectedFunctionName{};
 
+    bool enableResourcePoolForWildcard{false};
+
     std::string explain() const;
   };
 
@@ -187,6 +189,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   RuntimeServerActions& getRuntimeServerActions() const {
     return runtimeServerActions_;
+  }
+
+  void enableResourcePoolForWildcard() {
+    runtimeServerActions_.enableResourcePoolForWildcard = true;
+  }
+
+  bool resourcePoolEnabledForWildcard() override {
+    return runtimeServerActions_.enableResourcePoolForWildcard;
   }
 
  private:

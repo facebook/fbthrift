@@ -231,6 +231,8 @@ class ServerConfigs {
     return concurrency::ThreadManager::ExecutionScope(defaultPriority);
   }
 
+  virtual bool resourcePoolEnabledForWildcard() { return false; }
+
  private:
   folly::relaxed_atomic<int32_t> activeRequests_{0};
 
