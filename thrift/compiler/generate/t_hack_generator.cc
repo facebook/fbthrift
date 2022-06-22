@@ -15,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include <thrift/compiler/ast/t_result_struct.h>
 #include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_stream.h>
 
@@ -251,6 +252,8 @@ class t_hack_generator : public t_concat_generator {
       const std::string& prefix,
       const std::string& suffix,
       bool is_void);
+  void generate_php_struct_definition_result_helpers(
+      t_struct* result, const t_type* ttype, const t_throws* ex, bool is_void);
   void generate_php_function_args_helpers(
       const t_function* tfunction, const std::string& prefix);
   void generate_php_function_helpers(
@@ -5353,19 +5356,35 @@ void t_hack_generator::generate_php_function_result_helpers(
     const std::string& prefix,
     const std::string& suffix,
     bool is_void) {
-  t_struct result(program_, prefix + "_" + find_hack_name(tfunction) + suffix);
+  if (suffix.find("_result") != 0) {
+    t_struct result =
+        t_struct(program_, prefix + "_" + find_hack_name(tfunction) + suffix);
+
+    generate_php_struct_definition_result_helpers(&result, ttype, ex, is_void);
+  } else {
+    t_result_struct result_struct = t_result_struct(
+        program_,
+        prefix + "_" + find_hack_name(tfunction) + suffix,
+        type_to_typehint(ttype));
+    generate_php_struct_definition_result_helpers(
+        &result_struct, ttype, ex, is_void);
+  }
+}
+
+void t_hack_generator::generate_php_struct_definition_result_helpers(
+    t_struct* result, const t_type* ttype, const t_throws* ex, bool is_void) {
   if (ttype) {
     auto success = std::make_unique<t_field>(ttype, "success", 0);
     if (!is_void) {
-      result.append(std::move(success));
+      result->append(std::move(success));
     }
   }
   if (ex != nullptr) {
     for (const auto& x : ex->fields()) {
-      result.append(x.clone_DO_NOT_USE());
+      result->append(x.clone_DO_NOT_USE());
     }
   }
-  generate_php_struct_definition(f_service_, &result, ThriftStructType::RESULT);
+  generate_php_struct_definition(f_service_, result, ThriftStructType::RESULT);
 }
 
 void t_hack_generator::generate_php_function_args_helpers(
