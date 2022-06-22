@@ -1,0 +1,145 @@
+{
+  "__fbthrift": "@generated",
+  "thrift_module" : "cpp",
+  "namespaces": {
+    "go": "thrift.annotation.cpp",
+    "java": "com.facebook.thrift.annotation.cpp_deprecated",
+    "php": "facebook_thrift_annotation_cpp",
+    "py": "thrift.annotation.cpp",
+    "py.asyncio": "facebook_thrift_asyncio.annotation.cpp"
+  },
+  "enumerations" :
+  {
+      "RefType" : {
+        "name" : "RefType",
+        "constants" : {
+          "Unique" : {
+            "name" : "Unique",
+            "lineno" : 28,
+            "value" : 0
+          },
+          "Shared" : {
+            "name" : "Shared",
+            "lineno" : 29,
+            "value" : 1
+          },
+          "SharedMutable" : {
+            "name" : "SharedMutable",
+            "lineno" : 30,
+            "value" : 2
+          }
+        },
+        "lineno" : 27
+      }
+      },
+  "structs" :
+  {
+      "Ref" : {
+        "name" : "Ref",
+        "fields" : {
+          "type" : {
+            "name" : "type",
+            "key" : 1,
+            "lineno" : 35,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "enum",
+  "name" : "RefType"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 34
+      },
+      "Lazy" : {
+        "name" : "Lazy",
+        "fields" : {
+          "ref" : {
+            "name" : "ref",
+            "default_value" : 0,
+            "key" : 1,
+            "lineno" : 41,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 39
+      },
+      "DisableLazyChecksum" : {
+        "name" : "DisableLazyChecksum",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 45
+      },
+      "Adapter" : {
+        "name" : "Adapter",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "key" : 1,
+            "lineno" : 86,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "adaptedType" : {
+            "name" : "adaptedType",
+            "key" : 2,
+            "lineno" : 89,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "underlyingName" : {
+            "name" : "underlyingName",
+            "key" : 3,
+            "lineno" : 96,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "extraNamespace" : {
+            "name" : "extraNamespace",
+            "default_value" : "detail",
+            "key" : 4,
+            "lineno" : 97,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 65
+      },
+      "PackIsset" : {
+        "name" : "PackIsset",
+        "fields" : {
+          "atomic" : {
+            "name" : "atomic",
+            "default_value" : 1,
+            "key" : 1,
+            "lineno" : 102,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 101
+      },
+      "MinimizePadding" : {
+        "name" : "MinimizePadding",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 106
+      },
+      "TriviallyRelocatable" : {
+        "name" : "TriviallyRelocatable",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 111
+      }
+      },
+  "source_path" : "thrift/annotation/cpp",
+  "py_namespace" : "thrift.annotation.cpp"
+}

@@ -16,6 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/scope.thrift"
+include "thrift/annotation/cpp.thrift"
 
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
@@ -42,6 +43,11 @@ struct GeneratePatch {}
 struct GenerateOptionalPatch {}
 
 // A patch for a boolean value.
+@cpp.Adapter{
+  underlyingName = "BoolPatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::BoolPatchAdapter",
+}
 @GenerateOptionalPatch
 struct BoolPatch {
   // Assign to a given value.
@@ -51,12 +57,14 @@ struct BoolPatch {
 
   // If the bool value should be inverted.
   5: bool invert;
-} (
-  cpp.detail.underlying_name = "BoolPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
-)
+}
 
 // A patch for an 8-bit integer value.
+@cpp.Adapter{
+  underlyingName = "BytePatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct BytePatch {
   // Assign to a given value.
@@ -66,12 +74,14 @@ struct BytePatch {
 
   // Add to a given value.
   5: byte add;
-} (
-  cpp.detail.underlying_name = "BytePatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for a 16-bit integer value.
+@cpp.Adapter{
+  underlyingName = "I16PatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct I16Patch {
   // Assign to a given value.
@@ -81,12 +91,14 @@ struct I16Patch {
 
   // Add to a given value.
   5: i16 add;
-} (
-  cpp.detail.underlying_name = "I16PatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for a 32-bit integer value.
+@cpp.Adapter{
+  underlyingName = "I32PatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct I32Patch {
   // Assign to a given value.
@@ -96,12 +108,14 @@ struct I32Patch {
 
   // Add to a given value.
   5: i32 add;
-} (
-  cpp.detail.underlying_name = "I32PatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for a 64-bit integer value.
+@cpp.Adapter{
+  underlyingName = "I64PatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct I64Patch {
   // Assign to a given value.
@@ -111,12 +125,14 @@ struct I64Patch {
 
   // Add to a given value.
   5: i64 add;
-} (
-  cpp.detail.underlying_name = "I64PatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for a 32-bit floating point value.
+@cpp.Adapter{
+  underlyingName = "FloatPatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct FloatPatch {
   // Assign to a given value.
@@ -126,12 +142,14 @@ struct FloatPatch {
 
   // Add to a given value.
   5: float add;
-} (
-  cpp.detail.underlying_name = "FloatPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for an 64-bit floating point value.
+@cpp.Adapter{
+  underlyingName = "DoublePatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::NumberPatchAdapter",
+}
 @GenerateOptionalPatch
 struct DoublePatch {
   // Assign to a given value.
@@ -141,12 +159,14 @@ struct DoublePatch {
 
   // Add to a given value.
   5: double add;
-} (
-  cpp.detail.underlying_name = "DoublePatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
-)
+}
 
 // A patch for a string value.
+@cpp.Adapter{
+  underlyingName = "StringPatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::StringPatchAdapter",
+}
 @GenerateOptionalPatch
 struct StringPatch {
   // Assign to a given value.
@@ -162,19 +182,18 @@ struct StringPatch {
 
   // Append to a given value.
   5: string append;
-} (
-  cpp.detail.underlying_name = "StringPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",
-)
+}
 
 // A patch for a binary value.
 @GenerateOptionalPatch
+@cpp.Adapter{
+  underlyingName = "BinaryPatchStruct",
+  extraNamespace = "",
+  name = "::apache::thrift::op::detail::AssignPatchAdapter",
+}
 struct BinaryPatch {
   // Assign to a given value.
   //
   // If set, all other patch operations are ignored.
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
-} (
-  cpp.detail.underlying_name = "BinaryPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::AssignPatchAdapter",
-)
+}

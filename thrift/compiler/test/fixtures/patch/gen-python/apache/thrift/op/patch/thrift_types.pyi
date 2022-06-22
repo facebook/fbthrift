@@ -14,6 +14,8 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
 
+import facebook.thrift.annotation.cpp.thrift_types
+
 import facebook.thrift.annotation.scope.thrift_types
 
 import facebook.thrift.annotation.thrift.thrift_types

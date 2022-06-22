@@ -1654,11 +1654,26 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+            "underlyingName" => "MyDataPatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
         'data1' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StringPatchAdapter",
+                "underlyingName" => "StringPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -1668,6 +1683,13 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'data2' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "I32PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -1860,8 +1882,28 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+            "underlyingName" => "MyDataValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+                "underlyingName" => "MyDataPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -2085,8 +2127,40 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyDataValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "underlyingName" => "MyDataValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "underlyingName" => "MyDataValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -2224,13 +2298,28 @@ class InnerUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+            "underlyingName" => "InnerUnionPatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
         'innerOption' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
+              )
+            ),
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::AssignPatchAdapter",
+                "underlyingName" => "BinaryPatchStruct",
+                "extraNamespace" => "",
               )
             ),
           ],
@@ -2444,8 +2533,40 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+            "underlyingName" => "InnerUnionValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "underlyingName" => "InnerUnionPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "underlyingName" => "InnerUnionPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -2677,8 +2798,40 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalInnerUnionValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "InnerUnionValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "InnerUnionValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -2876,11 +3029,26 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+            "underlyingName" => "MyUnionPatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
         'option1' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StringPatchAdapter",
+                "underlyingName" => "StringPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -2890,8 +3058,27 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'option2' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "I32PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
+              )
+            ),
+          ],
+        ),
+        'option3' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "InnerUnionValuePatchStruct",
+                "extraNamespace" => "",
               )
             ),
           ],
@@ -3121,8 +3308,40 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+            "underlyingName" => "MyUnionValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "underlyingName" => "MyUnionPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "underlyingName" => "MyUnionPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -3354,8 +3573,40 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyUnionValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "MyUnionValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "MyUnionValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -4183,11 +4434,26 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+            "underlyingName" => "MyStructPatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
         'boolVal' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::BoolPatchAdapter",
+                "underlyingName" => "BoolPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4197,6 +4463,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'byteVal' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "BytePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4206,6 +4479,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'i16Val' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "I16PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4215,6 +4495,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'i32Val' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "I32PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4224,6 +4511,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'i64Val' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "I64PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4233,6 +4527,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'floatVal' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "FloatPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4242,6 +4543,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'doubleVal' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
+                "underlyingName" => "DoublePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4251,6 +4559,13 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'stringVal' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StringPatchAdapter",
+                "underlyingName" => "StringPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
               )
@@ -4262,6 +4577,193 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
               shape(
+              )
+            ),
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::AssignPatchAdapter",
+                "underlyingName" => "BinaryPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'structVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "underlyingName" => "MyDataValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optBoolVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalBoolPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optByteVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalBytePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optI16Val' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalI16PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optI32Val' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalI32PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optI64Val' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalI64PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optFloatVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalFloatPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optDoubleVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalDoublePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optStringVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalStringPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optBinaryVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalBinaryPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optStructVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalMyDataValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optListVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalMyStructField21PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optSetVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalMyStructField22PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'optMapVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+                "underlyingName" => "OptionalMyStructField23PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'unionVal' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "underlyingName" => "MyUnionValuePatchStruct",
+                "extraNamespace" => "",
               )
             ),
           ],
@@ -4684,7 +5186,15 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::ListPatchAdapter",
+            "underlyingName" => "MyStructField21PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -4953,8 +5463,40 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyStructField21PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::ListPatchAdapter",
+                "underlyingName" => "MyStructField21PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::ListPatchAdapter",
+                "underlyingName" => "MyStructField21PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -5220,7 +5762,15 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::SetPatchAdapter",
+            "underlyingName" => "MyStructField22PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -5474,8 +6024,40 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyStructField22PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::SetPatchAdapter",
+                "underlyingName" => "MyStructField22PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::SetPatchAdapter",
+                "underlyingName" => "MyStructField22PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -5714,7 +6296,15 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::MapPatchAdapter",
+            "underlyingName" => "MyStructField23PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -5965,8 +6555,40 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyStructField23PatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::MapPatchAdapter",
+                "underlyingName" => "MyStructField23PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::MapPatchAdapter",
+                "underlyingName" => "MyStructField23PatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -6171,8 +6793,28 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+            "underlyingName" => "MyStructValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+                "underlyingName" => "MyStructPatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -6396,8 +7038,40 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
+            "underlyingName" => "OptionalMyStructValuePatchStruct",
+            "extraNamespace" => "",
+          )
+        ),
+      ],
       'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "underlyingName" => "MyStructValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "underlyingName" => "MyStructValuePatchStruct",
+                "extraNamespace" => "",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }

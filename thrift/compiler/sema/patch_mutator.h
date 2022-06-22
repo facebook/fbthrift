@@ -107,6 +107,7 @@ class patch_generator {
   //
   // The resulting struct has the form:
   //
+  //   @cpp.Adapter{name = "::apache::thrift::op::detail::OptionalPatchAdapter"}
   //   struct OptionalPatch<Value, Patch> {
   //     // Clears any set value. Applies first.
   //     bool clear;
@@ -119,7 +120,7 @@ class patch_generator {
   //
   //     // Patches any set value, including newly set values. Applies fourth.
   //     Patch patchAfter;
-  //   } (cpp.adapter = "::apache::thrift::op::detail::OptionalPatchAdapter")
+  //   }
   //
   t_struct& add_optional_patch(
       const t_node& annot, t_type_ref value_type, t_struct& patch_type);

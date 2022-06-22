@@ -206,6 +206,7 @@ def _fbthrift_gen_metadata_struct_MyDataPatch(metadata_struct: _fbthrift_metadat
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::StructPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyDataPatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -235,6 +236,7 @@ def _fbthrift_gen_metadata_struct_MyDataValuePatch(metadata_struct: _fbthrift_me
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::StructValuePatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyDataValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -267,6 +269,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyDataValuePatch(metadata_struct: _fbt
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyDataValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -294,6 +297,7 @@ def _fbthrift_gen_metadata_struct_InnerUnionPatch(metadata_struct: _fbthrift_met
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::UnionPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="InnerUnionPatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -324,6 +328,7 @@ def _fbthrift_gen_metadata_struct_InnerUnionValuePatch(metadata_struct: _fbthrif
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::UnionValuePatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="InnerUnionValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -357,6 +362,7 @@ def _fbthrift_gen_metadata_struct_OptionalInnerUnionValuePatch(metadata_struct: 
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalInnerUnionValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -388,6 +394,7 @@ def _fbthrift_gen_metadata_struct_MyUnionPatch(metadata_struct: _fbthrift_metada
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::UnionPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyUnionPatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -420,6 +427,7 @@ def _fbthrift_gen_metadata_struct_MyUnionValuePatch(metadata_struct: _fbthrift_m
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::UnionValuePatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyUnionValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -453,6 +461,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyUnionValuePatch(metadata_struct: _fb
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyUnionValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -526,6 +535,7 @@ def _fbthrift_gen_metadata_struct_MyStructPatch(metadata_struct: _fbthrift_metad
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::StructPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyStructPatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -579,6 +589,7 @@ def _fbthrift_gen_metadata_struct_MyStructField21Patch(metadata_struct: _fbthrif
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::ListPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyStructField21PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -612,6 +623,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField21Patch(metadata_struct: 
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyStructField21PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -645,6 +657,7 @@ def _fbthrift_gen_metadata_struct_MyStructField22Patch(metadata_struct: _fbthrif
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::SetPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyStructField22PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -678,6 +691,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField22Patch(metadata_struct: 
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyStructField22PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -709,6 +723,7 @@ def _fbthrift_gen_metadata_struct_MyStructField23Patch(metadata_struct: _fbthrif
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::MapPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyStructField23PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -743,6 +758,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField23Patch(metadata_struct: 
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyStructField23PatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -775,6 +791,7 @@ def _fbthrift_gen_metadata_struct_MyStructValuePatch(metadata_struct: _fbthrift_
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::StructValuePatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="MyStructValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -807,6 +824,7 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructValuePatch(metadata_struct: _f
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="::apache::thrift::op::detail::OptionalPatchAdapter"), "underlyingName": _fbthrift_metadata.ThriftConstValue(cv_string="OptionalMyStructValuePatchStruct"), "extraNamespace": _fbthrift_metadata.ThriftConstValue(cv_string=""),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 

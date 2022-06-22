@@ -16,10 +16,8 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-import thrift.annotation.thrift.ttypes
 import thrift.annotation.scope.ttypes
-import thrift.annotation.cpp.ttypes
 
 
-from .ttypes import UTF8STRINGS, GeneratePatch, GenerateOptionalPatch, BoolPatch, BytePatch, I16Patch, I32Patch, I64Patch, FloatPatch, DoublePatch, StringPatch, BinaryPatch, OptionalBoolPatch, OptionalBytePatch, OptionalI16Patch, OptionalI32Patch, OptionalI64Patch, OptionalFloatPatch, OptionalDoublePatch, OptionalStringPatch, OptionalBinaryPatch
+from .ttypes import UTF8STRINGS, RefType, Ref, Lazy, DisableLazyChecksum, Adapter, PackIsset, MinimizePadding, TriviallyRelocatable
 

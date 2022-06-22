@@ -171,6 +171,7 @@ StructMetadata<::test::fixtures::patch::MyDataPatchStruct>::gen(ThriftMetadata& 
     field.structured_annotations() = f.structured_annotations;
     module_MyDataPatch.fields()->push_back(std::move(field));
   }
+  module_MyDataPatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::StructPatchAdapter)")}, {"underlyingName", cvString(R"(MyDataPatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -197,6 +198,7 @@ StructMetadata<::test::fixtures::patch::MyDataValuePatchStruct>::gen(ThriftMetad
     field.structured_annotations() = f.structured_annotations;
     module_MyDataValuePatch.fields()->push_back(std::move(field));
   }
+  module_MyDataValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::StructValuePatchAdapter)")}, {"underlyingName", cvString(R"(MyDataValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -224,6 +226,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyDataValuePatchStruct>::gen(Thr
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyDataValuePatch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyDataValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyDataValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -248,6 +251,7 @@ StructMetadata<::test::fixtures::patch::InnerUnionPatchStruct>::gen(ThriftMetada
     field.structured_annotations() = f.structured_annotations;
     module_InnerUnionPatch.fields()->push_back(std::move(field));
   }
+  module_InnerUnionPatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::UnionPatchAdapter)")}, {"underlyingName", cvString(R"(InnerUnionPatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -275,6 +279,7 @@ StructMetadata<::test::fixtures::patch::InnerUnionValuePatchStruct>::gen(ThriftM
     field.structured_annotations() = f.structured_annotations;
     module_InnerUnionValuePatch.fields()->push_back(std::move(field));
   }
+  module_InnerUnionValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::UnionValuePatchAdapter)")}, {"underlyingName", cvString(R"(InnerUnionValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -302,6 +307,7 @@ StructMetadata<::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>::gen
     field.structured_annotations() = f.structured_annotations;
     module_OptionalInnerUnionValuePatch.fields()->push_back(std::move(field));
   }
+  module_OptionalInnerUnionValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalInnerUnionValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -328,6 +334,7 @@ StructMetadata<::test::fixtures::patch::MyUnionPatchStruct>::gen(ThriftMetadata&
     field.structured_annotations() = f.structured_annotations;
     module_MyUnionPatch.fields()->push_back(std::move(field));
   }
+  module_MyUnionPatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::UnionPatchAdapter)")}, {"underlyingName", cvString(R"(MyUnionPatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -355,6 +362,7 @@ StructMetadata<::test::fixtures::patch::MyUnionValuePatchStruct>::gen(ThriftMeta
     field.structured_annotations() = f.structured_annotations;
     module_MyUnionValuePatch.fields()->push_back(std::move(field));
   }
+  module_MyUnionValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::UnionValuePatchAdapter)")}, {"underlyingName", cvString(R"(MyUnionValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -382,6 +390,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyUnionValuePatchStruct>::gen(Th
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyUnionValuePatch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyUnionValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyUnionValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -409,6 +418,7 @@ StructMetadata<::test::fixtures::patch::MyStructField21PatchStruct>::gen(ThriftM
     field.structured_annotations() = f.structured_annotations;
     module_MyStructField21Patch.fields()->push_back(std::move(field));
   }
+  module_MyStructField21Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::ListPatchAdapter)")}, {"underlyingName", cvString(R"(MyStructField21PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -436,6 +446,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyStructField21PatchStruct>::gen
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyStructField21Patch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyStructField21Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyStructField21PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -463,6 +474,7 @@ StructMetadata<::test::fixtures::patch::MyStructField22PatchStruct>::gen(ThriftM
     field.structured_annotations() = f.structured_annotations;
     module_MyStructField22Patch.fields()->push_back(std::move(field));
   }
+  module_MyStructField22Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::SetPatchAdapter)")}, {"underlyingName", cvString(R"(MyStructField22PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -490,6 +502,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyStructField22PatchStruct>::gen
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyStructField22Patch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyStructField22Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyStructField22PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -516,6 +529,7 @@ StructMetadata<::test::fixtures::patch::MyStructField23PatchStruct>::gen(ThriftM
     field.structured_annotations() = f.structured_annotations;
     module_MyStructField23Patch.fields()->push_back(std::move(field));
   }
+  module_MyStructField23Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::MapPatchAdapter)")}, {"underlyingName", cvString(R"(MyStructField23PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -543,6 +557,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyStructField23PatchStruct>::gen
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyStructField23Patch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyStructField23Patch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyStructField23PatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -590,6 +605,7 @@ StructMetadata<::test::fixtures::patch::MyStructPatchStruct>::gen(ThriftMetadata
     field.structured_annotations() = f.structured_annotations;
     module_MyStructPatch.fields()->push_back(std::move(field));
   }
+  module_MyStructPatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::StructPatchAdapter)")}, {"underlyingName", cvString(R"(MyStructPatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -616,6 +632,7 @@ StructMetadata<::test::fixtures::patch::MyStructValuePatchStruct>::gen(ThriftMet
     field.structured_annotations() = f.structured_annotations;
     module_MyStructValuePatch.fields()->push_back(std::move(field));
   }
+  module_MyStructValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::StructValuePatchAdapter)")}, {"underlyingName", cvString(R"(MyStructValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -643,6 +660,7 @@ StructMetadata<::test::fixtures::patch::OptionalMyStructValuePatchStruct>::gen(T
     field.structured_annotations() = f.structured_annotations;
     module_OptionalMyStructValuePatch.fields()->push_back(std::move(field));
   }
+  module_OptionalMyStructValuePatch.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(::apache::thrift::op::detail::OptionalPatchAdapter)")}, {"underlyingName", cvString(R"(OptionalMyStructValuePatchStruct)")}, {"extraNamespace", cvString(R"()")}}).cv_struct_ref());
   return res.first->second;
 }
 

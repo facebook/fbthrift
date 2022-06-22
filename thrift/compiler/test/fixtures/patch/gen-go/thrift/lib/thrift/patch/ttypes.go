@@ -12,6 +12,7 @@ import (
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	thrift0 "thrift/annotation/thrift"
 	scope1 "thrift/annotation/scope"
+	cpp2 "thrift/annotation/cpp"
 
 )
 
@@ -24,6 +25,7 @@ var _ = context.Background
 
 var _ = thrift0.GoUnusedProtection__
 var _ = scope1.GoUnusedProtection__
+var _ = cpp2.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 type GeneratePatch struct {

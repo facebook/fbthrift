@@ -123,11 +123,26 @@ struct StructGen {
   operator t_struct&() { return generated; }
   operator t_type_ref() { return generated; }
 
-  void set_adapter(std::string name) {
-    generated.set_annotation(
-        "cpp.adapter", "::apache::thrift::op::detail::" + std::move(name));
-    generated.set_annotation(
-        "cpp.detail.underlying_name", generated.name() + "Struct");
+  void set_adapter(std::string name, t_program& program) {
+    auto annotation = dynamic_cast<t_type const*>(program.scope()->find_def(
+        "facebook.com/thrift/annotation/cpp/Adapter"));
+    assert(annotation); // transitive include from patch.thrift
+    auto value = std::make_unique<t_const_value>();
+    value->set_map();
+    value->add_map(
+        std::make_unique<t_const_value>("name"),
+        std::make_unique<t_const_value>(
+            "::apache::thrift::op::detail::" + std::move(name)));
+    value->add_map(
+        std::make_unique<t_const_value>("underlyingName"),
+        std::make_unique<t_const_value>(generated.name() + "Struct"));
+    value->add_map(
+        std::make_unique<t_const_value>("extraNamespace"),
+        std::make_unique<t_const_value>(""));
+    value->set_ttype(*annotation);
+    auto adapter =
+        std::make_unique<t_const>(&program, annotation, "", std::move(value));
+    generated.add_structured_annotation(std::move(adapter));
   }
 };
 
@@ -316,7 +331,7 @@ t_struct& patch_generator::add_optional_patch(
   gen.patchOpt(patch_type);
   box(gen.ensure(value_type));
   gen.patchAfter(patch_type);
-  gen.set_adapter("OptionalPatchAdapter");
+  gen.set_adapter("OptionalPatchAdapter", program_);
   return gen;
 }
 
@@ -329,7 +344,7 @@ t_struct& patch_generator::add_union_value_patch(
   gen.ensure(value_type);
   // TODO(afuller): Add 'maybeEnsure'.
   gen.patchAfter(patch_type);
-  gen.set_adapter("UnionValuePatchAdapter");
+  gen.set_adapter("UnionValuePatchAdapter", program_);
   return gen;
 }
 
@@ -343,7 +358,7 @@ t_struct& patch_generator::add_structured_patch(
       ctx_.warning(field, "Could not resolve patch type for field.");
     }
   }
-  gen.set_adapter(adapter);
+  gen.set_adapter(adapter, program_);
   return gen;
 }
 
@@ -353,7 +368,7 @@ t_struct& patch_generator::add_struct_value_patch(
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
-  gen.set_adapter("StructValuePatchAdapter");
+  gen.set_adapter("StructValuePatchAdapter", program_);
   return gen;
 }
 
@@ -443,13 +458,13 @@ t_type_ref patch_generator::find_patch_type(
         // TODO(afuller): support 'removeIf' op.
         gen.prepend(field.type());
         gen.append(field.type());
-        gen.set_adapter("ListPatchAdapter");
+        gen.set_adapter("ListPatchAdapter", program_);
         break;
       case t_container::type::t_set:
         // TODO(afuller): support 'replace' op.
         gen.remove(field.type());
         gen.add(field.type());
-        gen.set_adapter("SetPatchAdapter");
+        gen.set_adapter("SetPatchAdapter", program_);
         break;
       case t_container::type::t_map:
         // TODO(afuller): support 'patch' op.
@@ -458,11 +473,11 @@ t_type_ref patch_generator::find_patch_type(
         // TODO(afuller): support 'removeIf' op.
         gen.put(field.type());
         // TODO(afuller): support 'add' op.
-        gen.set_adapter("MapPatchAdapter");
+        gen.set_adapter("MapPatchAdapter", program_);
         break;
     }
   } else {
-    gen.set_adapter("AssignPatchAdapter");
+    gen.set_adapter("AssignPatchAdapter", program_);
   }
 
   if (field.qualifier() == t_field_qualifier::optional) {

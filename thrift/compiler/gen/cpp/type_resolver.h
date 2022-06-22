@@ -122,10 +122,6 @@ class type_resolver {
                   "underlyingName")) {
         return value->get_string();
       }
-    } else if (
-        auto name =
-            node.find_annotation_or_null("cpp.detail.underlying_name")) {
-      return *name;
     }
     return namespace_resolver::get_cpp_name(node);
   }
@@ -203,8 +199,7 @@ class type_resolver {
   }
 
   static bool is_directly_adapted(const t_type& node) {
-    return find_nontransitive_adapter(node) ||
-        node.has_annotation("cpp.detail.underlying_name");
+    return find_nontransitive_adapter(node);
   }
 
  private:
