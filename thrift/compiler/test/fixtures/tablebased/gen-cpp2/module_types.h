@@ -105,7 +105,6 @@ enum class ExampleEnum {
 
 
 
-
 }}} // test::fixtures::tablebased
 
 namespace std {

@@ -833,13 +833,11 @@ enum class MyEnumA {
 
 
 
-
 enum class AnnotatedEnum : std::uint32_t {
   FIELDA = 2,
   FIELDB = 4,
   FIELDC = 9,
 };
-
 
 inline constexpr AnnotatedEnum operator&(AnnotatedEnum a, AnnotatedEnum b) {
   using E = AnnotatedEnum;
@@ -880,7 +878,6 @@ enum class AnnotatedEnum2 : short {
   FIELDC = 9,
 };
 
-
 inline constexpr AnnotatedEnum2 operator&(AnnotatedEnum2 a, AnnotatedEnum2 b) {
   using E = AnnotatedEnum2;
   using U = std::underlying_type_t<E>;
@@ -917,7 +914,6 @@ inline constexpr AnnotatedEnum2 operator~(AnnotatedEnum2 a) {
 enum class MyEnumB {
   AField = 0,
 };
-
 
 
 

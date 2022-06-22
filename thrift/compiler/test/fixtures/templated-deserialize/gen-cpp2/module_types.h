@@ -151,7 +151,6 @@ enum class MyEnumA {
 
 
 
-
 } // cpp2
 
 namespace std {

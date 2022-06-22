@@ -126,7 +126,6 @@ enum class Animal {
 
 
 
-
 } // cpp2
 
 namespace std {

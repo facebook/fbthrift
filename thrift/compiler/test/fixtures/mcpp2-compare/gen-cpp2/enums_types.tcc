@@ -11,41 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
-
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
-
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
-
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
-
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

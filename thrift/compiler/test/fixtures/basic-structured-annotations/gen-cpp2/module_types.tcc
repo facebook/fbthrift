@@ -11,13 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace test { namespace fixtures { namespace basic-structured-annotations {
-
-}}} // test::fixtures::basic-structured-annotations
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

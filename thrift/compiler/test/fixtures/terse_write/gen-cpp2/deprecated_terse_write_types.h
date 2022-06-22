@@ -241,7 +241,6 @@ enum class MyEnum {
 
 
 
-
 }}} // apache::thrift::test
 
 namespace std {

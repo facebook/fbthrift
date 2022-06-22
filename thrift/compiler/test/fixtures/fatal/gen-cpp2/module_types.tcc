@@ -11,34 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace test_cpp2 { namespace cpp_reflection {
-
-}} // test_cpp2::cpp_reflection
-namespace std {
-
-} // std
-
-namespace test_cpp2 { namespace cpp_reflection {
-
-}} // test_cpp2::cpp_reflection
-namespace std {
-
-} // std
-
-namespace test_cpp2 { namespace cpp_reflection {
-
-}} // test_cpp2::cpp_reflection
-namespace std {
-
-} // std
-
-namespace test_cpp2 { namespace cpp_reflection {
-
-}} // test_cpp2::cpp_reflection
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

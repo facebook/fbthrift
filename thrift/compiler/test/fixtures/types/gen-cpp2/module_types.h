@@ -337,7 +337,6 @@ enum class has_bitwise_ops {
   three = 8,
 };
 
-
 inline constexpr has_bitwise_ops operator&(has_bitwise_ops a, has_bitwise_ops b) {
   using E = has_bitwise_ops;
   using U = std::underlying_type_t<E>;
@@ -378,12 +377,10 @@ enum is_unscoped : int {
 
 
 
-
 enum class MyForwardRefEnum {
   ZERO = 0,
   NONZERO = 12,
 };
-
 
 
 
@@ -392,7 +389,6 @@ enum class MyEnumA {
   fieldB = 2,
   fieldC = 4,
 };
-
 
 
 

@@ -65,7 +65,6 @@ enum class MyEnum {
 
 
 
-
 } // cpp2
 
 namespace std {

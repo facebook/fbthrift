@@ -11,34 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace some { namespace valid { namespace ns {
-
-}}} // some::valid::ns
-namespace std {
-
-} // std
-
-namespace some { namespace valid { namespace ns {
-
-}}} // some::valid::ns
-namespace std {
-
-} // std
-
-namespace some { namespace valid { namespace ns {
-
-}}} // some::valid::ns
-namespace std {
-
-} // std
-
-namespace some { namespace valid { namespace ns {
-
-}}} // some::valid::ns
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

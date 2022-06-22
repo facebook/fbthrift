@@ -270,12 +270,10 @@ enum class MyEnum {
 
 
 
-
 enum class TypedEnum : short {
   VAL1 = 0,
   VAL2 = 1,
 };
-
 
 
 

@@ -112,7 +112,6 @@ enum class MyEnum {
 
 
 
-
 }}} // test::fixtures::basic-structured-annotations
 
 namespace std {

@@ -106,12 +106,10 @@ enum class MyEnum {
 
 
 
-
 enum class HackEnum {
   Value1 = 0,
   Value2 = 1,
 };
-
 
 
 

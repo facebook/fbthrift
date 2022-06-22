@@ -51,7 +51,6 @@ enum class MyEnum {
 
 
 
-
 }}} // test::fixtures::basic
 
 namespace std {

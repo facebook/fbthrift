@@ -49,7 +49,6 @@ enum class B {
 
 
 
-
 } // cpp2
 
 namespace std {

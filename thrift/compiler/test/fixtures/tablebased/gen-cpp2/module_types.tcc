@@ -11,13 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace test { namespace fixtures { namespace tablebased {
-
-}}} // test::fixtures::tablebased
-namespace std {
-
-} // std
-
 
 namespace test { namespace fixtures { namespace tablebased {
 extern const ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_TrivialTypesStruct;

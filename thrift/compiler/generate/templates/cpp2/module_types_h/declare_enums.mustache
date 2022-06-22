@@ -24,7 +24,7 @@ enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:cpp_name%><%
 <%#enum:values%>
   <%enum_value:cpp_name%> = <%enum_value:value%>,
 <%/enum:values%>
-}<% > common/semicolon_newline%>
+};
 
 <%#enum:cpp_declare_bitwise_ops%>
 <% > module_types_h/enum_bitwise_ops%>

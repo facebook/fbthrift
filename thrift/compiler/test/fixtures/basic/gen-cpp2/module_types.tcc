@@ -11,20 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace test { namespace fixtures { namespace basic {
-
-}}} // test::fixtures::basic
-namespace std {
-
-} // std
-
-namespace test { namespace fixtures { namespace basic {
-
-}}} // test::fixtures::basic
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

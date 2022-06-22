@@ -34,12 +34,10 @@ enum class AnEnumA {
 
 
 
-
 enum class AnEnumB {
   FIELDA = 0,
   FIELDB = 2,
 };
-
 
 
 
@@ -49,18 +47,15 @@ enum class AnEnumC {
 
 
 
-
 enum class AnEnumD {
   FIELDD = 0,
 };
 
 
 
-
 enum class AnEnumE {
   FIELDA = 0,
 };
-
 
 
 

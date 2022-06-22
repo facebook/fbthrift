@@ -834,7 +834,6 @@ enum class enum1 {
 
 
 
-
 enum class enum2 {
   field0_2 = 0,
   field1_2 = 1,
@@ -843,12 +842,10 @@ enum class enum2 {
 
 
 
-
 enum class enum3 {
   field0_3 = 0,
   field1_3 = 1,
 };
-
 
 
 
@@ -882,7 +879,6 @@ enum class enum_with_special_names {
   field = 26,
   fields = 27,
 };
-
 
 
 

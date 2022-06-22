@@ -138,14 +138,12 @@ enum class AnEnum {
 
 
 
-
 enum class Flags {
   flag_A = 1,
   flag_B = 2,
   flag_C = 4,
   flag_D = 8,
 };
-
 
 
 

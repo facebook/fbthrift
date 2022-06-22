@@ -11,20 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace py3 { namespace simple {
-
-}} // py3::simple
-namespace std {
-
-} // std
-
-namespace py3 { namespace simple {
-
-}} // py3::simple
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

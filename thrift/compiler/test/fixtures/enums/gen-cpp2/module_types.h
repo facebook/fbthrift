@@ -54,7 +54,6 @@ enum class Metasyntactic {
 
 
 
-
 }}} // test::fixtures::enums
 
 namespace std {

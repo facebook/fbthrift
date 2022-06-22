@@ -41,7 +41,6 @@ enum class AnEnum {
 
 
 
-
 }}} // a::different::ns
 
 namespace std {

@@ -71,7 +71,6 @@ enum class EnumB {
 
 
 
-
 }} // some::ns
 
 namespace std {

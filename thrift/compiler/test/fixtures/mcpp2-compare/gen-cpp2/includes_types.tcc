@@ -11,13 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace a { namespace different { namespace ns {
-
-}}} // a::different::ns
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

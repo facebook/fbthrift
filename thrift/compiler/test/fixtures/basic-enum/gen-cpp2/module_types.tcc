@@ -11,27 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
-namespace test { namespace fixtures { namespace enumstrict {
-
-}}} // test::fixtures::enumstrict
-namespace std {
-
-} // std
-
-namespace test { namespace fixtures { namespace enumstrict {
-
-}}} // test::fixtures::enumstrict
-namespace std {
-
-} // std
-
-namespace test { namespace fixtures { namespace enumstrict {
-
-}}} // test::fixtures::enumstrict
-namespace std {
-
-} // std
-
 
 namespace apache {
 namespace thrift {

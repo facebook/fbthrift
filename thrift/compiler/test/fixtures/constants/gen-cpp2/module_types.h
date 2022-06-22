@@ -153,7 +153,6 @@ enum class EmptyEnum {
 
 
 
-
 enum class City {
   NYC = 0,
   MPK = 1,
@@ -163,14 +162,12 @@ enum class City {
 
 
 
-
 enum class Company {
   FACEBOOK = 0,
   WHATSAPP = 1,
   OCULUS = 2,
   INSTAGRAM = 3,
 };
-
 
 
 

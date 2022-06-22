@@ -38,12 +38,10 @@ enum class EmptyEnum {
 
 
 
-
 enum class MyEnum {
   ONE = 1,
   TWO = 2,
 };
-
 
 
 
@@ -69,7 +67,6 @@ enum class MyBigEnum {
   EIGHTEEN = 18,
   NINETEEN = 19,
 };
-
 
 
 
