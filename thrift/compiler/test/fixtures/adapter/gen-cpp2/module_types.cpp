@@ -383,6 +383,90 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::detail::DirectlyAdapted>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::detail::DirectlyAdapted>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {namespace detail {
+
+
+
+DirectlyAdapted::DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :
+    __fbthrift_field_field(std::move(field__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void DirectlyAdapted::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_field = ::std::int32_t();
+  __isset = {};
+}
+
+void DirectlyAdapted::__fbthrift_clear_terse_fields() {
+}
+
+bool DirectlyAdapted::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool DirectlyAdapted::operator==(const DirectlyAdapted& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool DirectlyAdapted::operator<(const DirectlyAdapted& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
+  }
+  return false;
+}
+
+
+void swap(DirectlyAdapted& a, DirectlyAdapted& b) {
+  using ::std::swap;
+  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void DirectlyAdapted::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t DirectlyAdapted::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void DirectlyAdapted::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t DirectlyAdapted::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // namespace detail
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::Bar>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -415,10 +499,13 @@ Bar::Bar(const Bar& srcObj) {
   __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_optionalUnionField = srcObj.__fbthrift_field_optionalUnionField;
   __isset.set(5,srcObj.__isset.get(5));
+  __fbthrift_field_adaptedStructField = srcObj.__fbthrift_field_adaptedStructField;
+  __isset.set(6,srcObj.__isset.get(6));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
 }
 
 Bar& Bar::operator=(const Bar& src) {
@@ -432,6 +519,7 @@ Bar::Bar() {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
 }
 
 
@@ -444,11 +532,13 @@ Bar::Bar(Bar&& other) noexcept  :
     __fbthrift_field_optionalStructListField(std::move(other.__fbthrift_field_optionalStructListField)),
     __fbthrift_field_unionField(std::move(other.__fbthrift_field_unionField)),
     __fbthrift_field_optionalUnionField(std::move(other.__fbthrift_field_optionalUnionField)),
+    __fbthrift_field_adaptedStructField(std::move(other.__fbthrift_field_adaptedStructField)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
 }
 
 Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
@@ -458,28 +548,32 @@ Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
     this->__fbthrift_field_optionalStructListField = std::move(other.__fbthrift_field_optionalStructListField);
     this->__fbthrift_field_unionField = std::move(other.__fbthrift_field_unionField);
     this->__fbthrift_field_optionalUnionField = std::move(other.__fbthrift_field_optionalUnionField);
+    this->__fbthrift_field_adaptedStructField = std::move(other.__fbthrift_field_adaptedStructField);
     __isset = other.__isset;
     return *this;
 }
 
 
-Bar::Bar(apache::thrift::FragileConstructor, my::Cpp::Type1 structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> optionalStructListField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> unionField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> optionalUnionField__arg) :
+Bar::Bar(apache::thrift::FragileConstructor, my::Cpp::Type1 structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::FooWithAdapter>> optionalStructListField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> unionField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> optionalUnionField__arg, ::cpp2::DirectlyAdapted adaptedStructField__arg) :
     __fbthrift_field_structField(std::move(structField__arg)),
     __fbthrift_field_optionalStructField(std::move(optionalStructField__arg)),
     __fbthrift_field_structListField(std::move(structListField__arg)),
     __fbthrift_field_optionalStructListField(std::move(optionalStructListField__arg)),
     __fbthrift_field_unionField(std::move(unionField__arg)),
-    __fbthrift_field_optionalUnionField(std::move(optionalUnionField__arg)) {
+    __fbthrift_field_optionalUnionField(std::move(optionalUnionField__arg)),
+    __fbthrift_field_adaptedStructField(std::move(adaptedStructField__arg)) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
   __isset.set(folly::index_constant<3>(), true);
   __isset.set(folly::index_constant<4>(), true);
   __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
 }
 
 
@@ -491,6 +585,7 @@ void Bar::__fbthrift_clear() {
   this->__fbthrift_field_optionalStructListField.clear();
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
   __isset = {};
 }
 
@@ -523,6 +618,9 @@ bool Bar::operator==(const Bar& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref())) {
     return false;
   }
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter>(lhs.__fbthrift_field_adaptedStructField, rhs.__fbthrift_field_adaptedStructField)) {
+    return false;
+  }
   return true;
 }
 
@@ -551,6 +649,7 @@ void swap(Bar& a, Bar& b) {
   swap(a.optionalStructListField_ref().value_unchecked(), b.optionalStructListField_ref().value_unchecked());
   swap(a.unionField_ref().value(), b.unionField_ref().value());
   swap(a.optionalUnionField_ref().value_unchecked(), b.optionalUnionField_ref().value_unchecked());
+  swap(a.adaptedStructField_ref().value(), b.adaptedStructField_ref().value());
   swap(a.__isset, b.__isset);
 }
 
@@ -586,6 +685,12 @@ static_assert(
         Bar,
         ::apache::thrift::type_class::variant,
         ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        Bar,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::DirectlyAdapted>,
     "inconsistent use of json option");
 
 } // cpp2
@@ -1083,6 +1188,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::cpp2::Foo, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 5, ::cpp2::Baz, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 6, ::cpp2::Baz, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter, 7, ::cpp2::detail::DirectlyAdapted, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();

@@ -70,8 +70,7 @@ const std::string& type_resolver::get_type_name(const t_typedef& node) {
   if (type == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
-  if (auto* annotation = node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Adapter")) {
+  if (auto* annotation = find_nontransitive_adapter(node)) {
     if (auto* adaptedType =
             annotation->get_value_from_structured_annotation_or_null(
                 "adaptedType")) {
@@ -199,10 +198,6 @@ std::string type_resolver::gen_standard_type(const t_type& node) {
     return *type;
   }
 
-  if (auto name = node.find_annotation_or_null("cpp.detail.underlying_name")) {
-    return namespaces_.get_namespace(*node.program()) + "::" + *name;
-  }
-
   if (const auto* ttypedef = dynamic_cast<const t_typedef*>(&node)) {
     // Traverse the typedef.
     // TODO(afuller): Always traverse the adapter. There are some cpp.type and
@@ -214,6 +209,10 @@ std::string type_resolver::gen_standard_type(const t_type& node) {
     if (find_first_adapter(node) != nullptr) {
       return get_standard_type_name(*ttypedef->get_type());
     }
+  }
+
+  if (is_directly_adapted(node)) {
+    return get_underlying_namespaced_name(*node.get_program(), node);
   }
 
   return gen_raw_type_name(node, &type_resolver::get_standard_type_name);

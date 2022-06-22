@@ -28,11 +28,17 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
   private static final TField ADAPTED_TYPE_FIELD_DESC = new TField("adaptedType", TType.STRING, (short)2);
+  private static final TField UNDERLYING_NAME_FIELD_DESC = new TField("underlyingName", TType.STRING, (short)3);
+  private static final TField EXTRA_NAMESPACE_FIELD_DESC = new TField("extraNamespace", TType.STRING, (short)4);
 
   public String name;
   public String adaptedType;
+  public String underlyingName;
+  public String extraNamespace;
   public static final int NAME = 1;
   public static final int ADAPTEDTYPE = 2;
+  public static final int UNDERLYINGNAME = 3;
+  public static final int EXTRANAMESPACE = 4;
 
   // isset id assignments
 
@@ -44,6 +50,10 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(ADAPTEDTYPE, new FieldMetaData("adaptedType", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(UNDERLYINGNAME, new FieldMetaData("underlyingName", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(EXTRANAMESPACE, new FieldMetaData("extraNamespace", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -52,19 +62,27 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public Adapter() {
+    this.extraNamespace = "detail";
+
   }
 
   public Adapter(
       String name,
-      String adaptedType) {
+      String adaptedType,
+      String underlyingName,
+      String extraNamespace) {
     this();
     this.name = name;
     this.adaptedType = adaptedType;
+    this.underlyingName = underlyingName;
+    this.extraNamespace = extraNamespace;
   }
 
   public static class Builder {
     private String name;
     private String adaptedType;
+    private String underlyingName;
+    private String extraNamespace;
 
     public Builder() {
     }
@@ -79,10 +97,22 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       return this;
     }
 
+    public Builder setUnderlyingName(final String underlyingName) {
+      this.underlyingName = underlyingName;
+      return this;
+    }
+
+    public Builder setExtraNamespace(final String extraNamespace) {
+      this.extraNamespace = extraNamespace;
+      return this;
+    }
+
     public Adapter build() {
       Adapter result = new Adapter();
       result.setName(this.name);
       result.setAdaptedType(this.adaptedType);
+      result.setUnderlyingName(this.underlyingName);
+      result.setExtraNamespace(this.extraNamespace);
       return result;
     }
   }
@@ -100,6 +130,12 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
     if (other.isSetAdaptedType()) {
       this.adaptedType = TBaseHelper.deepCopy(other.adaptedType);
+    }
+    if (other.isSetUnderlyingName()) {
+      this.underlyingName = TBaseHelper.deepCopy(other.underlyingName);
+    }
+    if (other.isSetExtraNamespace()) {
+      this.extraNamespace = TBaseHelper.deepCopy(other.extraNamespace);
     }
   }
 
@@ -155,6 +191,54 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  public String getUnderlyingName() {
+    return this.underlyingName;
+  }
+
+  public Adapter setUnderlyingName(String underlyingName) {
+    this.underlyingName = underlyingName;
+    return this;
+  }
+
+  public void unsetUnderlyingName() {
+    this.underlyingName = null;
+  }
+
+  // Returns true if field underlyingName is set (has been assigned a value) and false otherwise
+  public boolean isSetUnderlyingName() {
+    return this.underlyingName != null;
+  }
+
+  public void setUnderlyingNameIsSet(boolean __value) {
+    if (!__value) {
+      this.underlyingName = null;
+    }
+  }
+
+  public String getExtraNamespace() {
+    return this.extraNamespace;
+  }
+
+  public Adapter setExtraNamespace(String extraNamespace) {
+    this.extraNamespace = extraNamespace;
+    return this;
+  }
+
+  public void unsetExtraNamespace() {
+    this.extraNamespace = null;
+  }
+
+  // Returns true if field extraNamespace is set (has been assigned a value) and false otherwise
+  public boolean isSetExtraNamespace() {
+    return this.extraNamespace != null;
+  }
+
+  public void setExtraNamespaceIsSet(boolean __value) {
+    if (!__value) {
+      this.extraNamespace = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case NAME:
@@ -173,6 +257,22 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       }
       break;
 
+    case UNDERLYINGNAME:
+      if (__value == null) {
+        unsetUnderlyingName();
+      } else {
+        setUnderlyingName((String)__value);
+      }
+      break;
+
+    case EXTRANAMESPACE:
+      if (__value == null) {
+        unsetExtraNamespace();
+      } else {
+        setExtraNamespace((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -185,6 +285,12 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
 
     case ADAPTEDTYPE:
       return getAdaptedType();
+
+    case UNDERLYINGNAME:
+      return getUnderlyingName();
+
+    case EXTRANAMESPACE:
+      return getExtraNamespace();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -205,12 +311,16 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
 
     if (!TBaseHelper.equalsNobinary(this.isSetAdaptedType(), that.isSetAdaptedType(), this.adaptedType, that.adaptedType)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetUnderlyingName(), that.isSetUnderlyingName(), this.underlyingName, that.underlyingName)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetExtraNamespace(), that.isSetExtraNamespace(), this.extraNamespace, that.extraNamespace)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name, adaptedType});
+    return Arrays.deepHashCode(new Object[] {name, adaptedType, underlyingName, extraNamespace});
   }
 
   @Override
@@ -238,6 +348,22 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(adaptedType, other.adaptedType);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetUnderlyingName()).compareTo(other.isSetUnderlyingName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(underlyingName, other.underlyingName);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetExtraNamespace()).compareTo(other.isSetExtraNamespace());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(extraNamespace, other.extraNamespace);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -269,6 +395,20 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case UNDERLYINGNAME:
+          if (__field.type == TType.STRING) {
+            this.underlyingName = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case EXTRANAMESPACE:
+          if (__field.type == TType.STRING) {
+            this.extraNamespace = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -294,6 +434,16 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     if (this.adaptedType != null) {
       oprot.writeFieldBegin(ADAPTED_TYPE_FIELD_DESC);
       oprot.writeString(this.adaptedType);
+      oprot.writeFieldEnd();
+    }
+    if (this.underlyingName != null) {
+      oprot.writeFieldBegin(UNDERLYING_NAME_FIELD_DESC);
+      oprot.writeString(this.underlyingName);
+      oprot.writeFieldEnd();
+    }
+    if (this.extraNamespace != null) {
+      oprot.writeFieldBegin(EXTRA_NAMESPACE_FIELD_DESC);
+      oprot.writeString(this.extraNamespace);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -335,6 +485,28 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getAdaptedType(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("underlyingName");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getUnderlyingName() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getUnderlyingName(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("extraNamespace");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getExtraNamespace() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getExtraNamespace(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

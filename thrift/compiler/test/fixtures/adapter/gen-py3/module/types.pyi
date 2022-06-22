@@ -154,6 +154,7 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
         optionalStructListField: bool
         unionField: bool
         optionalUnionField: bool
+        adaptedStructField: bool
         pass
 
     structField: Final[Foo] = ...
@@ -168,6 +169,8 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
 
     optionalUnionField: Final[_typing.Optional[Baz]] = ...
 
+    adaptedStructField: Final[DirectlyAdapted] = ...
+
     def __init__(
         self, *,
         structField: _typing.Optional[Foo]=None,
@@ -175,7 +178,8 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
         structListField: _typing.Optional[_typing.Sequence[Foo]]=None,
         optionalStructListField: _typing.Optional[_typing.Sequence[Foo]]=None,
         unionField: _typing.Optional[Baz]=None,
-        optionalUnionField: _typing.Optional[Baz]=None
+        optionalUnionField: _typing.Optional[Baz]=None,
+        adaptedStructField: _typing.Optional[DirectlyAdapted]=None
     ) -> None: ...
 
     def __call__(
@@ -185,7 +189,8 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
         structListField: _typing.Union[_typing.Sequence[Foo], '__NotSet', None]=NOTSET,
         optionalStructListField: _typing.Union[_typing.Sequence[Foo], '__NotSet', None]=NOTSET,
         unionField: _typing.Union[Baz, '__NotSet', None]=NOTSET,
-        optionalUnionField: _typing.Union[Baz, '__NotSet', None]=NOTSET
+        optionalUnionField: _typing.Union[Baz, '__NotSet', None]=NOTSET,
+        adaptedStructField: _typing.Union[DirectlyAdapted, '__NotSet', None]=NOTSET
     ) -> Bar: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Bar'], bytes]]: ...

@@ -154,6 +154,6 @@ class <%struct:cpp_name%>_struct_traits {
 } // __fbthrift_refl
 
 <%#program:structs%><%^struct:union?%>
-THRIFT_REGISTER_STRUCT_TRAITS(<%struct:cpp_name%>, __fbthrift_refl::<%struct:cpp_name%>_struct_traits);
+THRIFT_REGISTER_STRUCT_TRAITS(<%#struct:extra_namespace%><%struct:extra_namespace%>::<%/struct:extra_namespace%><%struct:cpp_name%>, __fbthrift_refl::<%struct:cpp_name%>_struct_traits);
 <%/struct:union?%><%/program:structs%>
 <% > common/namespace_cpp2_end%>

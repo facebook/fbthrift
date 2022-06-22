@@ -140,6 +140,12 @@ struct Bar {
     cpp.adapter = 'my::Adapter1',
     py.adapter = 'my.Adapter1',
   ) optionalUnionField;
+  7: DirectlyAdapted adaptedStructField;
+}
+
+@cpp.Adapter{name = "my::Adapter"}
+struct DirectlyAdapted {
+  1: i32 field;
 }
 
 struct StructWithFieldAdapter {

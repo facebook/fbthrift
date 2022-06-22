@@ -30,7 +30,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE) final List<test.fixtures.adapter.Foo> structListField,
         @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL) final List<test.fixtures.adapter.Foo> optionalStructListField,
         @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE) final test.fixtures.adapter.Baz unionField,
-        @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL) final test.fixtures.adapter.Baz optionalUnionField
+        @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL) final test.fixtures.adapter.Baz optionalUnionField,
+        @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE) final test.fixtures.adapter.DirectlyAdapted adaptedStructField
     ) {
         this.structField = structField;
         this.optionalStructField = optionalStructField;
@@ -38,6 +39,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         this.optionalStructListField = optionalStructListField;
         this.unionField = unionField;
         this.optionalUnionField = optionalUnionField;
+        this.adaptedStructField = adaptedStructField;
     }
     
     @ThriftConstructor
@@ -48,6 +50,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       this.optionalStructListField = null;
       this.unionField = null;
       this.optionalUnionField = null;
+      this.adaptedStructField = null;
     }
     
     public static class Builder {
@@ -58,6 +61,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         private List<test.fixtures.adapter.Foo> optionalStructListField = null;
         private test.fixtures.adapter.Baz unionField = null;
         private test.fixtures.adapter.Baz optionalUnionField = null;
+        private test.fixtures.adapter.DirectlyAdapted adaptedStructField = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="structField", requiredness=Requiredness.NONE)
         public Builder setStructField(test.fixtures.adapter.Foo structField) {
@@ -107,6 +111,14 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     
         public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
     
+            @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)
+        public Builder setAdaptedStructField(test.fixtures.adapter.DirectlyAdapted adaptedStructField) {
+            this.adaptedStructField = adaptedStructField;
+            return this;
+        }
+    
+        public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
+    
         public Builder() { }
         public Builder(Bar other) {
             this.structField = other.structField;
@@ -115,6 +127,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             this.optionalStructListField = other.optionalStructListField;
             this.unionField = other.unionField;
             this.optionalUnionField = other.optionalUnionField;
+            this.adaptedStructField = other.adaptedStructField;
         }
     
         @ThriftConstructor
@@ -125,12 +138,13 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
                 this.structListField,
                 this.optionalStructListField,
                 this.unionField,
-                this.optionalUnionField
+                this.optionalUnionField,
+                this.adaptedStructField
             );
             return result;
         }
     }
-                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Bar");
@@ -152,6 +166,9 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         private final test.fixtures.adapter.Baz optionalUnionField;
     public static final int _OPTIONALUNIONFIELD = 6;
     private static final TField OPTIONAL_UNION_FIELD_FIELD_DESC = new TField("optionalUnionField", TType.STRUCT, (short)6);
+        private final test.fixtures.adapter.DirectlyAdapted adaptedStructField;
+    public static final int _ADAPTEDSTRUCTFIELD = 7;
+    private static final TField ADAPTED_STRUCT_FIELD_FIELD_DESC = new TField("adaptedStructField", TType.STRUCT, (short)7);
     static {
       NAMES_TO_IDS.put("structField", 1);
       THRIFT_NAMES_TO_IDS.put("structField", 1);
@@ -171,6 +188,9 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("optionalUnionField", 6);
       THRIFT_NAMES_TO_IDS.put("optionalUnionField", 6);
       FIELD_METADATA.put(6, OPTIONAL_UNION_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("adaptedStructField", 7);
+      THRIFT_NAMES_TO_IDS.put("adaptedStructField", 7);
+      FIELD_METADATA.put(7, ADAPTED_STRUCT_FIELD_FIELD_DESC);
     }
     
     @Nullable
@@ -202,6 +222,11 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)
+    public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -211,6 +236,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         helper.add("optionalStructListField", optionalStructListField);
         helper.add("unionField", unionField);
         helper.add("optionalUnionField", optionalUnionField);
+        helper.add("adaptedStructField", adaptedStructField);
         return helper.toString();
     }
     
@@ -232,6 +258,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     Objects.equals(optionalStructListField, other.optionalStructListField) &&
     Objects.equals(unionField, other.unionField) &&
     Objects.equals(optionalUnionField, other.optionalUnionField) &&
+    Objects.equals(adaptedStructField, other.adaptedStructField) &&
             true;
     }
     
@@ -243,7 +270,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             structListField,
             optionalStructListField,
             unionField,
-            optionalUnionField
+            optionalUnionField,
+            adaptedStructField
         });
     }
     
@@ -328,6 +356,14 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _ADAPTEDSTRUCTFIELD:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.adapter.DirectlyAdapted adaptedStructField = test.fixtures.adapter.DirectlyAdapted.read0(oprot);
+            builder.setAdaptedStructField(adaptedStructField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -378,6 +414,11 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (this.optionalUnionField != null) {
         oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
         this.optionalUnionField.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.adaptedStructField != null) {
+        oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
+        this.adaptedStructField.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

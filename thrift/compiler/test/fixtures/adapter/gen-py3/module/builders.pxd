@@ -50,6 +50,7 @@ cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
     cdef public list optionalStructListField
     cdef public object unionField
     cdef public object optionalUnionField
+    cdef public object adaptedStructField
 
 
 cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):

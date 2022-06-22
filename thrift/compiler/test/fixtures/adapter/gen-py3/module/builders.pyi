@@ -55,6 +55,7 @@ class Bar_Builder(thrift.py3.builder.StructBuilder):
     optionalStructListField: _typing.Optional[list]
     unionField: _typing.Any
     optionalUnionField: _typing.Any
+    adaptedStructField: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

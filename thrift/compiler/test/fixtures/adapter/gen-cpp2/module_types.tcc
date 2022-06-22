@@ -31,6 +31,13 @@ struct TccStructTraits<::cpp2::Baz> {
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
+struct TccStructTraits<::cpp2::detail::DirectlyAdapted> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
+template <>
 struct TccStructTraits<::cpp2::Bar> {
   static void translateFieldName(
       folly::StringPiece _fname,
@@ -838,6 +845,126 @@ extern template uint32_t Baz::write<>(apache::thrift::CompactProtocolWriter*) co
 extern template uint32_t Baz::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Baz::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+namespace detail {
+
+template <class Protocol_>
+void DirectlyAdapted::readNoXfer(Protocol_* iprot) {
+  __fbthrift_clear_terse_fields();
+
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_field:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_field, _readState);
+    
+  }
+ this->__isset.set(0, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<DirectlyAdapted>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+        goto _readField_field;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t DirectlyAdapted::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("DirectlyAdapted");
+  {
+    xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t DirectlyAdapted::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("DirectlyAdapted");
+  {
+    xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t DirectlyAdapted::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("DirectlyAdapted");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void DirectlyAdapted::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t DirectlyAdapted::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void DirectlyAdapted::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t DirectlyAdapted::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+} // namespace detail
+
 
 template <class Protocol_>
 void Bar::readNoXfer(Protocol_* iprot) {
@@ -959,6 +1086,24 @@ _readField_optionalUnionField:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           6,
+          7,
+          apache::thrift::protocol::T_STRUCT))) {
+    goto _loop;
+  }
+_readField_adaptedStructField:
+  {
+    _readState.beforeSubobject(iprot);
+    ::cpp2::detail::DirectlyAdapted tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::detail::DirectlyAdapted>::readWithContext(*iprot, tvalue, _readState);
+    this->__fbthrift_field_adaptedStructField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 7>(::std::move(tvalue), *this);
+    _readState.afterSubobject(iprot);
+    
+  }
+ this->__isset.set(6, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          7,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -1027,6 +1172,14 @@ _loop:
         goto _skip;
       }
     }
+    case 7:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT))) {
+        goto _readField_adaptedStructField;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -1066,6 +1219,10 @@ uint32_t Bar::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("optionalUnionField", apache::thrift::protocol::T_STRUCT, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::Baz>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_optionalUnionField));
   }
+  {
+    xfer += prot_->serializedFieldSize("adaptedStructField", apache::thrift::protocol::T_STRUCT, 7);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::detail::DirectlyAdapted>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_adaptedStructField));
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1097,6 +1254,10 @@ uint32_t Bar::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->__isset.get(5)) {
     xfer += prot_->serializedFieldSize("optionalUnionField", apache::thrift::protocol::T_STRUCT, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::Baz>::serializedSize<true>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_optionalUnionField));
+  }
+  {
+    xfer += prot_->serializedFieldSize("adaptedStructField", apache::thrift::protocol::T_STRUCT, 7);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::detail::DirectlyAdapted>::serializedSize<true>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_adaptedStructField));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -1154,6 +1315,13 @@ uint32_t Bar::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
+  }
+  {
+    constexpr int16_t kPrevFieldId = 6;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 7, kPrevFieldId>(*prot_, "adaptedStructField", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::detail::DirectlyAdapted>::write(*prot_, my::Adapter::toThrift(this->__fbthrift_field_adaptedStructField));
+    xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

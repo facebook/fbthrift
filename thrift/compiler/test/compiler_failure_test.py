@@ -876,6 +876,11 @@ class CompilerFailureTest(unittest.TestCase):
                     3: MyI64 my_field2 (cpp.adapter="MyAdapter", hack.adapter="MyAdapter");
                 }
 
+                @cpp.Adapter{name="MyAdapter"}
+                struct Adapted {}
+
+                @cpp.Adapter{name="MyAdapter"}
+                typedef Adapted DoubleAdapted
                 """
             ),
         )
@@ -894,7 +899,9 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:14] The `@cpp.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n"
             "[FAILURE:foo.thrift:14] The `@hack.Adapter` annotation cannot be annotated more "
-            "than once in all typedef levels in `DoubleMyI64`.\n",
+            "than once in all typedef levels in `DoubleMyI64`.\n"
+            "[FAILURE:foo.thrift:26] The `@cpp.Adapter` annotation cannot be annotated more "
+            "than once in all typedef levels in `DoubleAdapted`.\n",
         )
 
     def test_mixin_nonstruct_members(self):

@@ -83,6 +83,7 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_3(self, _fbthrift_value) except *
     cdef void _set_field_4(self, _fbthrift_value) except *
     cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
 
 
 ctypedef void (*__StructWithFieldAdapter_FieldsSetterFunc)(__StructWithFieldAdapter_FieldsSetter, object) except *

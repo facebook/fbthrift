@@ -116,14 +116,31 @@ class type_resolver {
   }
 
   const std::string& get_underlying_name(const t_type& node) {
-    if (auto name =
+    if (const t_const* annotation = find_nontransitive_adapter(node)) {
+      if (const t_const_value* value =
+              annotation->get_value_from_structured_annotation_or_null(
+                  "underlyingName")) {
+        return value->get_string();
+      }
+    } else if (
+        auto name =
             node.find_annotation_or_null("cpp.detail.underlying_name")) {
       return *name;
     }
     return namespace_resolver::get_cpp_name(node);
   }
 
-  const std::string* get_extra_namespace(const t_type& /*node*/) {
+  const std::string* get_extra_namespace(const t_type& node) {
+    if (const t_const* annotation = find_nontransitive_adapter(node)) {
+      if (const t_const_value* value =
+              annotation->get_value_from_structured_annotation_or_null(
+                  "extraNamespace")) {
+        return value->get_string().empty() ? nullptr : &value->get_string();
+      }
+      // Default isn't propagated from IDL.
+      static const std::string kDefault = "detail";
+      return &kDefault;
+    }
     return nullptr;
   }
 
@@ -162,11 +179,16 @@ class type_resolver {
       const t_named& node) {
     if (const t_const* annotation = node.find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/cpp/Adapter")) {
-      for (const auto& item : annotation->value()->get_map()) {
-        if (item.first->get_string() == "name") {
-          return &item.second->get_string();
-        }
-      }
+      return &annotation->get_value_from_structured_annotation("name")
+                  .get_string();
+    }
+    return nullptr;
+  }
+  static const t_const* find_nontransitive_adapter(const t_type& node) {
+    if (!node.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/Transitive")) {
+      return node.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Adapter");
     }
     return nullptr;
   }
@@ -181,7 +203,8 @@ class type_resolver {
   }
 
   static bool is_directly_adapted(const t_type& node) {
-    return node.has_annotation("cpp.detail.underlying_name");
+    return find_nontransitive_adapter(node) ||
+        node.has_annotation("cpp.detail.underlying_name");
   }
 
  private:

@@ -91,6 +91,9 @@ void reset_field<::cpp2::Bar>(
     case 5:
       obj.optionalUnionField_ref().copy_from(default_inst<::cpp2::Bar>().optionalUnionField_ref());
       return;
+    case 6:
+      obj.adaptedStructField_ref().copy_from(default_inst<::cpp2::Bar>().adaptedStructField_ref());
+      return;
   }
 }
 

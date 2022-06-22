@@ -324,6 +324,18 @@ cdef __StructSpec get_reflection__Bar():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=7,
+            name="adaptedStructField",
+            type=_module_types.DirectlyAdapted,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__StructWithFieldAdapter():
     cdef _module_types.StructWithFieldAdapter defaults = _module_types.StructWithFieldAdapter._fbthrift_create(

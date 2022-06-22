@@ -22,42 +22,6 @@ cdef __StructSpec get_reflection__MyUnion()
 
 cdef __StructSpec get_reflection__MyStruct()
 
-cdef __StructSpec get_reflection__MyDataPatch()
-
-cdef __StructSpec get_reflection__MyDataValuePatch()
-
-cdef __StructSpec get_reflection__OptionalMyDataValuePatch()
-
-cdef __StructSpec get_reflection__InnerUnionPatch()
-
-cdef __StructSpec get_reflection__InnerUnionValuePatch()
-
-cdef __StructSpec get_reflection__OptionalInnerUnionValuePatch()
-
-cdef __StructSpec get_reflection__MyUnionPatch()
-
-cdef __StructSpec get_reflection__MyUnionValuePatch()
-
-cdef __StructSpec get_reflection__OptionalMyUnionValuePatch()
-
-cdef __StructSpec get_reflection__MyStructPatch()
-
-cdef __StructSpec get_reflection__MyStructField21Patch()
-
-cdef __StructSpec get_reflection__OptionalMyStructField21Patch()
-
-cdef __StructSpec get_reflection__MyStructField22Patch()
-
-cdef __StructSpec get_reflection__OptionalMyStructField22Patch()
-
-cdef __StructSpec get_reflection__MyStructField23Patch()
-
-cdef __StructSpec get_reflection__OptionalMyStructField23Patch()
-
-cdef __StructSpec get_reflection__MyStructValuePatch()
-
-cdef __StructSpec get_reflection__OptionalMyStructValuePatch()
-
 cdef __ListSpec get_reflection__List__i16()
 
 cdef __SetSpec get_reflection__Set__string()

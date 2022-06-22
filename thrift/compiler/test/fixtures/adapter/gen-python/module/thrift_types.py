@@ -266,6 +266,14 @@ class Bar(metaclass=_fbthrift_python_types.StructMeta):
             None,  # default value
             None,  # adapter class
         ),
+        (
+            7,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "adaptedStructField",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(DirectlyAdapted),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
     )
 
     @staticmethod
@@ -294,6 +302,46 @@ class Bar(metaclass=_fbthrift_python_types.StructMeta):
         py_deprecated_types = importlib.import_module("module.ttypes")
         import thrift.util.converter
         return thrift.util.converter.to_py_struct(py_deprecated_types.Bar, self)
+
+
+class DirectlyAdapted(metaclass=_fbthrift_python_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "field",  # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.DirectlyAdapted"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_DirectlyAdapted()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.DirectlyAdapted, self)
+
+    def _to_py_deprecated(self):
+        import importlib
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_deprecated_types.DirectlyAdapted, self)
 
 
 class StructWithFieldAdapter(metaclass=_fbthrift_python_types.StructMeta):
@@ -497,6 +545,8 @@ def _fbthrift_metadata__struct_Baz():
     return module.thrift_metadata.gen_metadata_struct_Baz()
 def _fbthrift_metadata__struct_Bar():
     return module.thrift_metadata.gen_metadata_struct_Bar()
+def _fbthrift_metadata__struct_DirectlyAdapted():
+    return module.thrift_metadata.gen_metadata_struct_DirectlyAdapted()
 def _fbthrift_metadata__struct_StructWithFieldAdapter():
     return module.thrift_metadata.gen_metadata_struct_StructWithFieldAdapter()
 def _fbthrift_metadata__struct_TerseAdaptedFields():
@@ -510,6 +560,7 @@ _fbthrift_all_structs = [
     Foo,
     Baz,
     Bar,
+    DirectlyAdapted,
     StructWithFieldAdapter,
     TerseAdaptedFields,
     B,

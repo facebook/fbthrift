@@ -545,6 +545,7 @@ cdef class Bar(thrift.py3.types.Struct):
           "optionalStructListField": deref(self._cpp_obj).optionalStructListField_ref().has_value(),
           "unionField": deref(self._cpp_obj).unionField_ref().has_value(),
           "optionalUnionField": deref(self._cpp_obj).optionalUnionField_ref().has_value(),
+          "adaptedStructField": deref(self._cpp_obj).adaptedStructField_ref().has_value(),
         })
 
     @staticmethod
@@ -619,6 +620,16 @@ cdef class Bar(thrift.py3.types.Struct):
     def optionalUnionField(self):
         return self.optionalUnionField_impl()
 
+    cdef inline adaptedStructField_impl(self):
+
+        if self.__fbthrift_cached_adaptedStructField is None:
+            self.__fbthrift_cached_adaptedStructField = DirectlyAdapted._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).adaptedStructField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_adaptedStructField
+
+    @property
+    def adaptedStructField(self):
+        return self.adaptedStructField_impl()
+
 
     def __hash__(Bar self):
         return super().__hash__()
@@ -666,7 +677,7 @@ cdef class Bar(thrift.py3.types.Struct):
 
     @classmethod
     def _fbthrift_get_struct_size(cls):
-        return 6
+        return 7
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Bar self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

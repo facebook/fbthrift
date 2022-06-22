@@ -146,7 +146,10 @@ gen_adapter_dependency_graph(
 
           // Make sure it's still a type we care about
           if (!dynamic_cast<t_typedef const*>(type) &&
-              !(dynamic_cast<t_struct const*>(type) && include_structs)) {
+              !(dynamic_cast<t_struct const*>(type) &&
+                (include_structs ||
+                 gen::cpp::type_resolver::find_first_adapter(
+                     *type->get_true_type())))) {
             return;
           }
         }
@@ -163,7 +166,8 @@ gen_adapter_dependency_graph(
     if (auto* typedf = dynamic_cast<t_typedef const*>(obj)) {
       // The adjacency list of a typedef is the list of structs and typedefs
       // named in its underlying type, but we only care about structs if the
-      // typedef has an adapter annotation without adaptedType specified.
+      // typedef or struct has an adapter annotation without adaptedType
+      // specified.
       const auto* type = &*typedf->type();
       bool has_adapter = gen::cpp::type_resolver::find_first_adapter(*typedf);
       if (has_adapter) {
@@ -176,7 +180,10 @@ gen_adapter_dependency_graph(
         }
       }
       if (dynamic_cast<t_typedef const*>(type) ||
-          (dynamic_cast<t_struct const*>(type) && has_adapter)) {
+          (dynamic_cast<t_struct const*>(type) &&
+           (has_adapter ||
+            gen::cpp::type_resolver::find_first_adapter(
+                *typedf->get_true_type())))) {
         add_dependency(type, has_adapter);
       }
     } else if (auto* strct = dynamic_cast<t_struct const*>(obj)) {

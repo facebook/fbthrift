@@ -21,6 +21,7 @@
 
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
@@ -560,6 +561,9 @@ class mstch_py3_program : public mstch_program {
       for (auto&& field : object->fields()) {
         visit_type(field.get_type());
       }
+      if (!gen::cpp::type_resolver::is_directly_adapted(*object)) {
+        objects_.push_back(object);
+      }
     }
   }
 
@@ -664,6 +668,10 @@ class mstch_py3_program : public mstch_program {
     return flatName;
   }
 
+  const std::vector<t_struct*>& get_program_objects() override {
+    return objects_;
+  }
+
   std::vector<const t_type*> containers_;
   std::map<std::string, const t_type*> moveContainers_;
   std::vector<const t_type*> customTemplates_;
@@ -675,6 +683,7 @@ class mstch_py3_program : public mstch_program {
   std::vector<const t_type*> responseAndStreamTypes_;
   std::map<std::string, const t_type*> streamTypes_;
   std::map<std::string, const t_type*> streamExceptions_;
+  std::vector<t_struct*> objects_;
 };
 
 class mstch_py3_function : public mstch_function {

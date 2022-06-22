@@ -44,6 +44,14 @@ struct ForEachField<::cpp2::Baz> {
 };
 
 template <>
+struct ForEachField<::cpp2::detail::DirectlyAdapted> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::Bar> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
@@ -53,6 +61,7 @@ struct ForEachField<::cpp2::Bar> {
     f(3, static_cast<T&&>(t).optionalStructListField_ref()...);
     f(4, static_cast<T&&>(t).unionField_ref()...);
     f(5, static_cast<T&&>(t).optionalUnionField_ref()...);
+    f(6, static_cast<T&&>(t).adaptedStructField_ref()...);
   }
 };
 

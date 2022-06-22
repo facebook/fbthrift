@@ -61,6 +61,7 @@ struct DisableLazyChecksum {} (
 // Here the field `id` has the C++ adapter `IdAdapter`.
 @scope.Field
 @scope.Typedef
+@scope.Structured
 struct Adapter {
   // The name of a C++ adapter type used to convert between Thrift and native
   // C++ representation. The Adapter either Type adapter of Field adapter that
@@ -86,6 +87,14 @@ struct Adapter {
   // It is sometimes necessary to specify AdaptedType here (in case the codegen would
   // have a circular depdenceny, which will cause the C++ build to fail).
   2: string adaptedType;
+  // When applied directly to a type (as opposed to on a typedef) the IDL name of the
+  // type will refer to the adapted type in C++ and the underlying thrift struct will be
+  // generated in a nested namespace and/or with a different name. By default the struct
+  // will be generated in a nested 'detail' namespace with the same name,
+  // but both of these can be changed by setting these fields.
+  // Empty string disables the nested namespace and uses the IDL name for the struct.
+  3: string underlyingName;
+  4: string extraNamespace = 'detail';
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
 
 @scope.Struct

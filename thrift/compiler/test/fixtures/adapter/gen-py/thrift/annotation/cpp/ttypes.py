@@ -319,6 +319,8 @@ class Adapter:
   Attributes:
    - name
    - adaptedType
+   - underlyingName
+   - extraNamespace
   """
 
   thrift_spec = None
@@ -351,6 +353,16 @@ class Adapter:
           self.adaptedType = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRING:
+          self.underlyingName = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRING:
+          self.extraNamespace = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -372,6 +384,14 @@ class Adapter:
       oprot.writeFieldBegin('adaptedType', TType.STRING, 2)
       oprot.writeString(self.adaptedType.encode('utf-8')) if UTF8STRINGS and not isinstance(self.adaptedType, bytes) else oprot.writeString(self.adaptedType)
       oprot.writeFieldEnd()
+    if self.underlyingName != None:
+      oprot.writeFieldBegin('underlyingName', TType.STRING, 3)
+      oprot.writeString(self.underlyingName.encode('utf-8')) if UTF8STRINGS and not isinstance(self.underlyingName, bytes) else oprot.writeString(self.underlyingName)
+      oprot.writeFieldEnd()
+    if self.extraNamespace != None:
+      oprot.writeFieldBegin('extraNamespace', TType.STRING, 4)
+      oprot.writeString(self.extraNamespace.encode('utf-8')) if UTF8STRINGS and not isinstance(self.extraNamespace, bytes) else oprot.writeString(self.extraNamespace)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -391,6 +411,10 @@ class Adapter:
       self.name = json_obj['name']
     if 'adaptedType' in json_obj and json_obj['adaptedType'] is not None:
       self.adaptedType = json_obj['adaptedType']
+    if 'underlyingName' in json_obj and json_obj['underlyingName'] is not None:
+      self.underlyingName = json_obj['underlyingName']
+    if 'extraNamespace' in json_obj and json_obj['extraNamespace'] is not None:
+      self.extraNamespace = json_obj['extraNamespace']
 
   def __repr__(self):
     L = []
@@ -403,6 +427,14 @@ class Adapter:
       value = pprint.pformat(self.adaptedType, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    adaptedType=%s' % (value))
+    if self.underlyingName is not None:
+      value = pprint.pformat(self.underlyingName, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    underlyingName=%s' % (value))
+    if self.extraNamespace is not None:
+      value = pprint.pformat(self.extraNamespace, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    extraNamespace=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -418,6 +450,8 @@ class Adapter:
     return (
       'name',
       'adaptedType',
+      'underlyingName',
+      'extraNamespace',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -720,6 +754,8 @@ Adapter.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'name', True, None, 2, ), # 1
   (2, TType.STRING, 'adaptedType', True, None, 2, ), # 2
+  (3, TType.STRING, 'underlyingName', True, None, 2, ), # 3
+  (4, TType.STRING, 'extraNamespace', True, "detail", 2, ), # 4
 )
 
 Adapter.thrift_struct_annotations = {
@@ -728,15 +764,19 @@ Adapter.thrift_struct_annotations = {
 Adapter.thrift_field_annotations = {
 }
 
-def Adapter__init__(self, name=None, adaptedType=None,):
+def Adapter__init__(self, name=None, adaptedType=None, underlyingName=None, extraNamespace=Adapter.thrift_spec[4][4],):
   self.name = name
   self.adaptedType = adaptedType
+  self.underlyingName = underlyingName
+  self.extraNamespace = extraNamespace
 
 Adapter.__init__ = Adapter__init__
 
 def Adapter__setstate__(self, state):
   state.setdefault('name', None)
   state.setdefault('adaptedType', None)
+  state.setdefault('underlyingName', None)
+  state.setdefault('extraNamespace', "detail")
   self.__dict__ = state
 
 Adapter.__getstate__ = lambda self: self.__dict__.copy()

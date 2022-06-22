@@ -89,27 +89,40 @@ const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Baz>::fields_typ
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 6> TStructDataStorage<::cpp2::Bar>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_types = {{
+  TType::T_I32,
+}};
+
+const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::Bar>::fields_names = {{
   "structField",
   "optionalStructField",
   "structListField",
   "optionalStructListField",
   "unionField",
   "optionalUnionField",
+  "adaptedStructField",
 }};
-const std::array<int16_t, 6> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
+const std::array<int16_t, 7> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
   1,
   2,
   3,
   4,
   5,
   6,
+  7,
 }};
-const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::Bar>::fields_types = {{
+const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::Bar>::fields_types = {{
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_LIST,
   TType::T_LIST,
+  TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,
 }};

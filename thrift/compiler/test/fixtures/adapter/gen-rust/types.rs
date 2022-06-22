@@ -67,6 +67,18 @@ pub struct Bar {
     pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::FooWithAdapter>>,
     pub unionField: crate::types::Baz,
     pub optionalUnionField: ::std::option::Option<crate::types::Baz>,
+    pub adaptedStructField: crate::types::DirectlyAdapted,
+    // This field forces `..Default::default()` when instantiating this
+    // struct, to make code future-proof against new fields added later to
+    // the definition in Thrift. If you don't want this, add the annotation
+    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+    #[doc(hidden)]
+    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct DirectlyAdapted {
+    pub field: ::std::primitive::i32,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -415,6 +427,7 @@ impl ::std::default::Default for self::Bar {
             optionalStructListField: ::std::option::Option::None,
             unionField: ::std::default::Default::default(),
             optionalUnionField: ::std::option::Option::None,
+            adaptedStructField: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         }
     }
@@ -430,6 +443,7 @@ impl ::std::fmt::Debug for self::Bar {
             .field("optionalStructListField", &self.optionalStructListField)
             .field("unionField", &self.unionField)
             .field("optionalUnionField", &self.optionalUnionField)
+            .field("adaptedStructField", &self.adaptedStructField)
             .finish()
     }
 }
@@ -471,6 +485,9 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
+        p.write_field_begin("adaptedStructField", ::fbthrift::TType::Struct, 7);
+        ::fbthrift::Serialize::write(&self.adaptedStructField, p);
+        p.write_field_end();
         p.write_field_stop();
         p.write_struct_end();
     }
@@ -482,6 +499,7 @@ where
 {
     fn read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("adaptedStructField", ::fbthrift::TType::Struct, 7),
             ::fbthrift::Field::new("optionalStructField", ::fbthrift::TType::Struct, 2),
             ::fbthrift::Field::new("optionalStructListField", ::fbthrift::TType::List, 4),
             ::fbthrift::Field::new("optionalUnionField", ::fbthrift::TType::Struct, 6),
@@ -495,6 +513,7 @@ where
         let mut field_optionalStructListField = ::std::option::Option::None;
         let mut field_unionField = ::std::option::Option::None;
         let mut field_optionalUnionField = ::std::option::Option::None;
+        let mut field_adaptedStructField = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
         loop {
             let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -506,6 +525,7 @@ where
                 (::fbthrift::TType::List, 4) => field_optionalStructListField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 5) => field_unionField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_optionalUnionField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 7) => field_adaptedStructField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -518,6 +538,75 @@ where
             optionalStructListField: field_optionalStructListField,
             unionField: field_unionField.unwrap_or_default(),
             optionalUnionField: field_optionalUnionField,
+            adaptedStructField: field_adaptedStructField.unwrap_or_default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        })
+    }
+}
+
+
+#[allow(clippy::derivable_impls)]
+impl ::std::default::Default for self::DirectlyAdapted {
+    fn default() -> Self {
+        Self {
+            field: ::std::default::Default::default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        }
+    }
+}
+
+impl ::std::fmt::Debug for self::DirectlyAdapted {
+    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        formatter
+            .debug_struct("DirectlyAdapted")
+            .field("field", &self.field)
+            .finish()
+    }
+}
+
+unsafe impl ::std::marker::Send for self::DirectlyAdapted {}
+unsafe impl ::std::marker::Sync for self::DirectlyAdapted {}
+
+impl ::fbthrift::GetTType for self::DirectlyAdapted {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl<P> ::fbthrift::Serialize<P> for self::DirectlyAdapted
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    fn write(&self, p: &mut P) {
+        p.write_struct_begin("DirectlyAdapted");
+        p.write_field_begin("field", ::fbthrift::TType::I32, 1);
+        ::fbthrift::Serialize::write(&self.field, p);
+        p.write_field_end();
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for self::DirectlyAdapted
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        static FIELDS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("field", ::fbthrift::TType::I32, 1),
+        ];
+        let mut field_field = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::I32, 1) => field_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            field: field_field.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }

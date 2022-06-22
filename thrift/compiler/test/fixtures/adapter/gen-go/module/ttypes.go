@@ -1243,6 +1243,7 @@ func (p *Baz) String() string {
 //  - OptionalStructListField
 //  - UnionField
 //  - OptionalUnionField
+//  - AdaptedStructField
 type Bar struct {
   StructField *Foo `thrift:"structField,1" db:"structField" json:"structField"`
   OptionalStructField *Foo `thrift:"optionalStructField,2,optional" db:"optionalStructField" json:"optionalStructField,omitempty"`
@@ -1250,11 +1251,13 @@ type Bar struct {
   OptionalStructListField []*FooWithAdapter `thrift:"optionalStructListField,4,optional" db:"optionalStructListField" json:"optionalStructListField,omitempty"`
   UnionField *Baz `thrift:"unionField,5" db:"unionField" json:"unionField"`
   OptionalUnionField *Baz `thrift:"optionalUnionField,6,optional" db:"optionalUnionField" json:"optionalUnionField,omitempty"`
+  AdaptedStructField *DirectlyAdapted `thrift:"adaptedStructField,7" db:"adaptedStructField" json:"adaptedStructField"`
 }
 
 func NewBar() *Bar {
   return &Bar{
     StructField: NewFoo(),
+    AdaptedStructField: NewDirectlyAdapted(),
   }
 }
 
@@ -1295,6 +1298,13 @@ func (p *Bar) GetOptionalUnionField() *Baz {
   }
 return p.OptionalUnionField
 }
+var Bar_AdaptedStructField_DEFAULT *DirectlyAdapted
+func (p *Bar) GetAdaptedStructField() *DirectlyAdapted {
+  if !p.IsSetAdaptedStructField() {
+    return Bar_AdaptedStructField_DEFAULT
+  }
+return p.AdaptedStructField
+}
 func (p *Bar) IsSetStructField() bool {
   return p != nil && p.StructField != nil
 }
@@ -1315,6 +1325,10 @@ func (p *Bar) IsSetOptionalUnionField() bool {
   return p != nil && p.OptionalUnionField != nil
 }
 
+func (p *Bar) IsSetAdaptedStructField() bool {
+  return p != nil && p.AdaptedStructField != nil
+}
+
 type BarBuilder struct {
   obj *Bar
 }
@@ -1333,6 +1347,7 @@ func (p BarBuilder) Emit() *Bar{
     OptionalStructListField: p.obj.OptionalStructListField,
     UnionField: p.obj.UnionField,
     OptionalUnionField: p.obj.OptionalUnionField,
+    AdaptedStructField: p.obj.AdaptedStructField,
   }
 }
 
@@ -1366,6 +1381,11 @@ func (b *BarBuilder) OptionalUnionField(optionalUnionField *Baz) *BarBuilder {
   return b
 }
 
+func (b *BarBuilder) AdaptedStructField(adaptedStructField *DirectlyAdapted) *BarBuilder {
+  b.obj.AdaptedStructField = adaptedStructField
+  return b
+}
+
 func (b *Bar) SetStructField(structField *Foo) *Bar {
   b.StructField = structField
   return b
@@ -1393,6 +1413,11 @@ func (b *Bar) SetUnionField(unionField *Baz) *Bar {
 
 func (b *Bar) SetOptionalUnionField(optionalUnionField *Baz) *Bar {
   b.OptionalUnionField = optionalUnionField
+  return b
+}
+
+func (b *Bar) SetAdaptedStructField(adaptedStructField *DirectlyAdapted) *Bar {
+  b.AdaptedStructField = adaptedStructField
   return b
 }
 
@@ -1431,6 +1456,10 @@ func (p *Bar) Read(iprot thrift.Protocol) error {
       }
     case 6:
       if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
         return err
       }
     default:
@@ -1520,6 +1549,14 @@ func (p *Bar)  ReadField6(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Bar)  ReadField7(iprot thrift.Protocol) error {
+  p.AdaptedStructField = NewDirectlyAdapted()
+  if err := p.AdaptedStructField.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.AdaptedStructField), err)
+  }
+  return nil
+}
+
 func (p *Bar) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Bar"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1529,6 +1566,7 @@ func (p *Bar) Write(oprot thrift.Protocol) error {
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1624,6 +1662,17 @@ func (p *Bar) writeField6(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Bar) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("adaptedStructField", thrift.STRUCT, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:adaptedStructField: ", p), err) }
+  if err := p.AdaptedStructField.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.AdaptedStructField), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:adaptedStructField: ", p), err) }
+  return err
+}
+
 func (p *Bar) String() string {
   if p == nil {
     return "<nil>"
@@ -1655,7 +1704,124 @@ func (p *Bar) String() string {
   } else {
     optionalUnionFieldVal = fmt.Sprintf("%v", p.OptionalUnionField)
   }
-  return fmt.Sprintf("Bar({StructField:%s OptionalStructField:%s StructListField:%s OptionalStructListField:%s UnionField:%s OptionalUnionField:%s})", structFieldVal, optionalStructFieldVal, structListFieldVal, optionalStructListFieldVal, unionFieldVal, optionalUnionFieldVal)
+  var adaptedStructFieldVal string
+  if p.AdaptedStructField == nil {
+    adaptedStructFieldVal = "<nil>"
+  } else {
+    adaptedStructFieldVal = fmt.Sprintf("%v", p.AdaptedStructField)
+  }
+  return fmt.Sprintf("Bar({StructField:%s OptionalStructField:%s StructListField:%s OptionalStructListField:%s UnionField:%s OptionalUnionField:%s AdaptedStructField:%s})", structFieldVal, optionalStructFieldVal, structListFieldVal, optionalStructListFieldVal, unionFieldVal, optionalUnionFieldVal, adaptedStructFieldVal)
+}
+
+// Attributes:
+//  - Field
+type DirectlyAdapted struct {
+  Field int32 `thrift:"field,1" db:"field" json:"field"`
+}
+
+func NewDirectlyAdapted() *DirectlyAdapted {
+  return &DirectlyAdapted{}
+}
+
+
+func (p *DirectlyAdapted) GetField() int32 {
+  return p.Field
+}
+type DirectlyAdaptedBuilder struct {
+  obj *DirectlyAdapted
+}
+
+func NewDirectlyAdaptedBuilder() *DirectlyAdaptedBuilder{
+  return &DirectlyAdaptedBuilder{
+    obj: NewDirectlyAdapted(),
+  }
+}
+
+func (p DirectlyAdaptedBuilder) Emit() *DirectlyAdapted{
+  return &DirectlyAdapted{
+    Field: p.obj.Field,
+  }
+}
+
+func (d *DirectlyAdaptedBuilder) Field(field int32) *DirectlyAdaptedBuilder {
+  d.obj.Field = field
+  return d
+}
+
+func (d *DirectlyAdapted) SetField(field int32) *DirectlyAdapted {
+  d.Field = field
+  return d
+}
+
+func (p *DirectlyAdapted) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *DirectlyAdapted)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Field = v
+  }
+  return nil
+}
+
+func (p *DirectlyAdapted) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("DirectlyAdapted"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *DirectlyAdapted) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("field", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Field)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:field: ", p), err) }
+  return err
+}
+
+func (p *DirectlyAdapted) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  fieldVal := fmt.Sprintf("%v", p.Field)
+  return fmt.Sprintf("DirectlyAdapted({Field:%s})", fieldVal)
 }
 
 // Attributes:

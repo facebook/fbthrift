@@ -17,39 +17,3 @@ from thrift.py3.reflection cimport (
 cdef __StructSpec get_reflection__GeneratePatch()
 
 cdef __StructSpec get_reflection__GenerateOptionalPatch()
-
-cdef __StructSpec get_reflection__BoolPatch()
-
-cdef __StructSpec get_reflection__BytePatch()
-
-cdef __StructSpec get_reflection__I16Patch()
-
-cdef __StructSpec get_reflection__I32Patch()
-
-cdef __StructSpec get_reflection__I64Patch()
-
-cdef __StructSpec get_reflection__FloatPatch()
-
-cdef __StructSpec get_reflection__DoublePatch()
-
-cdef __StructSpec get_reflection__StringPatch()
-
-cdef __StructSpec get_reflection__BinaryPatch()
-
-cdef __StructSpec get_reflection__OptionalBoolPatch()
-
-cdef __StructSpec get_reflection__OptionalBytePatch()
-
-cdef __StructSpec get_reflection__OptionalI16Patch()
-
-cdef __StructSpec get_reflection__OptionalI32Patch()
-
-cdef __StructSpec get_reflection__OptionalI64Patch()
-
-cdef __StructSpec get_reflection__OptionalFloatPatch()
-
-cdef __StructSpec get_reflection__OptionalDoublePatch()
-
-cdef __StructSpec get_reflection__OptionalStringPatch()
-
-cdef __StructSpec get_reflection__OptionalBinaryPatch()

@@ -517,21 +517,59 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
 
 TEST_F(AdapterTest, StructFieldAdaptedStruct) {
   StructFieldAdaptedStruct obj;
-  auto wrapper = Wrapper<ThriftAdaptedStruct>();
-  wrapper.value.data_ref() = 42;
-  obj.adaptedStruct_ref() = wrapper;
-  EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 42);
+  {
+    auto wrapper = Wrapper<ThriftAdaptedStruct>();
+    wrapper.value.data_ref() = 42;
+    obj.adaptedStruct_ref() = wrapper;
+    EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 42);
 
-  auto objs = CompactSerializer::serialize<std::string>(obj);
-  StructFieldAdaptedStruct objd;
-  CompactSerializer::deserialize(objs, objd);
+    auto objs = CompactSerializer::serialize<std::string>(obj);
+    StructFieldAdaptedStruct objd;
+    CompactSerializer::deserialize(objs, objd);
 
-  EXPECT_EQ(objd.adaptedStruct_ref()->value.data_ref(), 42);
-  EXPECT_EQ(obj, objd);
+    EXPECT_EQ(objd.adaptedStruct_ref()->value.data_ref(), 42);
+    EXPECT_EQ(obj, objd);
 
-  // Adapted fields reset to the intrinsic default.
-  apache::thrift::clear(obj);
-  EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 0);
+    // Adapted fields reset to the intrinsic default.
+    apache::thrift::clear(obj);
+    EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 0);
+  }
+
+  {
+    DirectlyAdaptedStruct wrapper;
+    wrapper.value.data_ref() = 42;
+    obj.directlyAdapted_ref() = wrapper;
+    EXPECT_EQ(obj.directlyAdapted_ref()->value.data_ref(), 42);
+
+    auto objs = CompactSerializer::serialize<std::string>(obj);
+    StructFieldAdaptedStruct objd;
+    CompactSerializer::deserialize(objs, objd);
+
+    EXPECT_EQ(objd.directlyAdapted_ref()->value.data_ref(), 42);
+    EXPECT_EQ(obj, objd);
+
+    // Adapted fields reset to the intrinsic default.
+    apache::thrift::clear(obj);
+    EXPECT_EQ(obj.directlyAdapted_ref()->value.data_ref(), 0);
+  }
+
+  {
+    TypedefOfDirect wrapper;
+    wrapper.value.data_ref() = 42;
+    obj.typedefOfAdapted_ref() = wrapper;
+    EXPECT_EQ(obj.typedefOfAdapted_ref()->value.data_ref(), 42);
+
+    auto objs = CompactSerializer::serialize<std::string>(obj);
+    StructFieldAdaptedStruct objd;
+    CompactSerializer::deserialize(objs, objd);
+
+    EXPECT_EQ(objd.typedefOfAdapted_ref()->value.data_ref(), 42);
+    EXPECT_EQ(obj, objd);
+
+    // Adapted fields reset to the intrinsic default.
+    apache::thrift::clear(obj);
+    EXPECT_EQ(obj.typedefOfAdapted_ref()->value.data_ref(), 0);
+  }
 }
 } // namespace basic
 
@@ -651,6 +689,18 @@ TEST_F(AdapterTest, FromThriftField) {
       decltype(adapt_detail::fromThriftField<ReferenceAdapterWithContext, 0>(
           0, obj)),
       int64_t&&>();
+}
+
+TEST_F(AdapterTest, StructAdapter) {
+  EXPECT_TRUE((std::is_same_v<
+               basic::DirectlyAdaptedStruct,
+               Wrapper<basic::detail::DirectlyAdaptedStruct>>));
+  EXPECT_TRUE((std::is_same_v<
+               basic::RenamedStruct,
+               Wrapper<basic::detail::UnderlyingRenamedStruct>>));
+  EXPECT_TRUE((std::is_same_v<
+               basic::SameNamespaceStruct,
+               Wrapper<basic::UnderlyingSameNamespaceStruct>>));
 }
 
 TEST(AdaptTest, AdapterWithContext) {

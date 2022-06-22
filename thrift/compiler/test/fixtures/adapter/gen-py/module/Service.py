@@ -16,7 +16,7 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, TerseAdaptedFields, B, A, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, ListWithElemAdapter_withAdapter, MyI64, DoubleTypedefI64, MyI32, FooWithAdapter, StructWithAdapter, UnionWithAdapter, AdaptedA
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, DirectlyAdapted, StructWithFieldAdapter, TerseAdaptedFields, B, A, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, ListWithElemAdapter_withAdapter, MyI64, DoubleTypedefI64, MyI32, FooWithAdapter, StructWithAdapter, UnionWithAdapter, AdaptedA
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes

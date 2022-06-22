@@ -68,6 +68,19 @@ struct VisitByFieldId<::cpp2::Baz> {
 };
 
 template <>
+struct VisitByFieldId<::cpp2::detail::DirectlyAdapted> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).field_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::detail::DirectlyAdapted");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::Bar> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -84,6 +97,8 @@ struct VisitByFieldId<::cpp2::Bar> {
       return f(4, static_cast<T&&>(t).unionField_ref());
     case 6:
       return f(5, static_cast<T&&>(t).optionalUnionField_ref());
+    case 7:
+      return f(6, static_cast<T&&>(t).adaptedStructField_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Bar");
     }

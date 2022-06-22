@@ -156,6 +156,7 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalStructListField")] = __Bar_FieldsSetter._set_field_3
         __fbthrift_inst._setters[__cstring_view(<const char*>"unionField")] = __Bar_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalUnionField")] = __Bar_FieldsSetter._set_field_5
+        __fbthrift_inst._setters[__cstring_view(<const char*>"adaptedStructField")] = __Bar_FieldsSetter._set_field_6
         return __fbthrift_inst
 
     cdef void set_field(__Bar_FieldsSetter self, const char* name, object value) except *:
@@ -214,6 +215,15 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.Baz):
             raise TypeError(f'optionalUnionField is not a { _module_types.Baz !r}.')
         deref(self._struct_cpp_obj).optionalUnionField_ref().assign(deref((<_module_types.Baz?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_6(self, _fbthrift_value) except *:
+        # for field adaptedStructField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cBar](deref(self._struct_cpp_obj), 6)
+            return
+        if not isinstance(_fbthrift_value, _module_types.DirectlyAdapted):
+            raise TypeError(f'adaptedStructField is not a { _module_types.DirectlyAdapted !r}.')
+        deref(self._struct_cpp_obj).adaptedStructField_ref().assign(deref((<_module_types.DirectlyAdapted?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

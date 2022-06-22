@@ -39,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'TerseAdaptedFields', 'B', 'A', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter', 'AdaptedA']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'DirectlyAdapted', 'StructWithFieldAdapter', 'TerseAdaptedFields', 'B', 'A', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter', 'AdaptedA']
 
 class Foo:
   """
@@ -725,6 +725,7 @@ class Bar:
    - optionalStructListField
    - unionField
    - optionalUnionField
+   - adaptedStructField
   """
 
   thrift_spec = None
@@ -813,6 +814,12 @@ class Bar:
           self.optionalUnionField = my.Adapter1.from_thrift(self.optionalUnionField)
         else:
           iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.STRUCT:
+          self.adaptedStructField = DirectlyAdapted()
+          self.adaptedStructField.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -862,6 +869,10 @@ class Bar:
       adpt141 = my.Adapter1.to_thrift(self.optionalUnionField)
       adpt141.write(oprot)
       oprot.writeFieldEnd()
+    if self.adaptedStructField != None:
+      oprot.writeFieldBegin('adaptedStructField', TType.STRUCT, 7)
+      self.adaptedStructField.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -901,6 +912,9 @@ class Bar:
     if 'optionalUnionField' in json_obj and json_obj['optionalUnionField'] is not None:
       self.optionalUnionField = Baz()
       self.optionalUnionField.readFromJson(json_obj['optionalUnionField'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'adaptedStructField' in json_obj and json_obj['adaptedStructField'] is not None:
+      self.adaptedStructField = DirectlyAdapted()
+      self.adaptedStructField.readFromJson(json_obj['adaptedStructField'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -929,6 +943,10 @@ class Bar:
       value = pprint.pformat(self.optionalUnionField, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    optionalUnionField=%s' % (value))
+    if self.adaptedStructField is not None:
+      value = pprint.pformat(self.adaptedStructField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    adaptedStructField=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -948,6 +966,101 @@ class Bar:
       'optionalStructListField',
       'unionField',
       'optionalUnionField',
+      'adaptedStructField',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class DirectlyAdapted:
+  """
+  Attributes:
+   - field
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('DirectlyAdapted')
+    if self.field != None:
+      oprot.writeFieldBegin('field', TType.I32, 1)
+      oprot.writeI32(self.field)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'field' in json_obj and json_obj['field'] is not None:
+      self.field = json_obj['field']
+      if self.field > 0x7fffffff or self.field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.field is not None:
+      value = pprint.pformat(self.field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    field=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'field',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -1533,6 +1646,7 @@ Bar.thrift_spec = (
   (4, TType.LIST, 'optionalStructListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False, my.Adapter1]), None, 1, ), # 4
   (5, TType.STRUCT, 'unionField', [Baz, Baz.thrift_spec, True, my.Adapter1], None, 2, ), # 5
   (6, TType.STRUCT, 'optionalUnionField', [Baz, Baz.thrift_spec, True, my.Adapter1], None, 1, ), # 6
+  (7, TType.STRUCT, 'adaptedStructField', [DirectlyAdapted, DirectlyAdapted.thrift_spec, False], None, 2, ), # 7
 )
 
 Bar.thrift_struct_annotations = {
@@ -1540,13 +1654,14 @@ Bar.thrift_struct_annotations = {
 Bar.thrift_field_annotations = {
 }
 
-def Bar__init__(self, structField=None, optionalStructField=None, structListField=None, optionalStructListField=None, unionField=None, optionalUnionField=None,):
+def Bar__init__(self, structField=None, optionalStructField=None, structListField=None, optionalStructListField=None, unionField=None, optionalUnionField=None, adaptedStructField=None,):
   self.structField = structField
   self.optionalStructField = optionalStructField
   self.structListField = structListField
   self.optionalStructListField = optionalStructListField
   self.unionField = unionField
   self.optionalUnionField = optionalUnionField
+  self.adaptedStructField = adaptedStructField
 
 Bar.__init__ = Bar__init__
 
@@ -1557,10 +1672,34 @@ def Bar__setstate__(self, state):
   state.setdefault('optionalStructListField', None)
   state.setdefault('unionField', None)
   state.setdefault('optionalUnionField', None)
+  state.setdefault('adaptedStructField', None)
   self.__dict__ = state
 
 Bar.__getstate__ = lambda self: self.__dict__.copy()
 Bar.__setstate__ = Bar__setstate__
+
+all_structs.append(DirectlyAdapted)
+DirectlyAdapted.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'field', None, None, 2, ), # 1
+)
+
+DirectlyAdapted.thrift_struct_annotations = {
+}
+DirectlyAdapted.thrift_field_annotations = {
+}
+
+def DirectlyAdapted__init__(self, field=None,):
+  self.field = field
+
+DirectlyAdapted.__init__ = DirectlyAdapted__init__
+
+def DirectlyAdapted__setstate__(self, state):
+  state.setdefault('field', None)
+  self.__dict__ = state
+
+DirectlyAdapted.__getstate__ = lambda self: self.__dict__.copy()
+DirectlyAdapted.__setstate__ = DirectlyAdapted__setstate__
 
 all_structs.append(StructWithFieldAdapter)
 StructWithFieldAdapter.thrift_spec = (

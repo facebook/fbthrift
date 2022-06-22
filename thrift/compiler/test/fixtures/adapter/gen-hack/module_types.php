@@ -1513,6 +1513,11 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'type' => \TType::STRUCT,
       'class' => Baz::class,
     ),
+    7 => shape(
+      'var' => 'adaptedStructField',
+      'type' => \TType::STRUCT,
+      'class' => DirectlyAdapted::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'structField' => 1,
@@ -1521,6 +1526,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'optionalStructListField' => 4,
     'unionField' => 5,
     'optionalUnionField' => 6,
+    'adaptedStructField' => 7,
   ];
 
   const type TConstructorShape = shape(
@@ -1530,6 +1536,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'optionalStructListField' => ?Vector<\Adapter1::THackType>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
+    ?'adaptedStructField' => ?DirectlyAdapted,
   );
 
   const type TShape = shape(
@@ -1539,8 +1546,9 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'optionalStructListField' => ?vec<\Adapter1::THackType>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
+    ?'adaptedStructField' => ?DirectlyAdapted::TShape,
   );
-  const int STRUCTURAL_ID = 7572690377543394081;
+  const int STRUCTURAL_ID = 7938871189708910014;
   /**
    * Original thrift field:-
    * 1: struct module.Foo structField
@@ -1571,14 +1579,20 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 6: struct module.Baz optionalUnionField
    */
   public ?\Adapter1::THackType $optionalUnionField;
+  /**
+   * Original thrift field:-
+   * 7: struct module.DirectlyAdapted adaptedStructField
+   */
+  public ?DirectlyAdapted $adaptedStructField;
 
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null)[] {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null, ?DirectlyAdapted $adaptedStructField = null)[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
     $this->optionalStructListField = $optionalStructListField;
     $this->unionField = $unionField;
     $this->optionalUnionField = $optionalUnionField;
+    $this->adaptedStructField = $adaptedStructField;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1593,6 +1607,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'optionalStructListField'),
       Shapes::idx($shape, 'unionField'),
       Shapes::idx($shape, 'optionalUnionField'),
+      Shapes::idx($shape, 'adaptedStructField'),
     );
   }
 
@@ -1786,6 +1801,30 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.DirectlyAdapted",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.DirectlyAdapted",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "adaptedStructField",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -1842,6 +1881,16 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ],
           'type' => dict[],
         ),
+        'adaptedStructField' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -1858,6 +1907,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       )),
       Shapes::idx($shape, 'unionField') === null ? null : (Baz::__fromShape($shape['unionField'])),
       Shapes::idx($shape, 'optionalUnionField') === null ? null : (Baz::__fromShape($shape['optionalUnionField'])),
+      Shapes::idx($shape, 'adaptedStructField') === null ? null : (DirectlyAdapted::__fromShape($shape['adaptedStructField'])),
     );
   }
 
@@ -1875,6 +1925,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         |> $$ === null ? null : vec($$),
       'unionField' => $this->unionField?->__toShape(),
       'optionalUnionField' => $this->optionalUnionField?->__toShape(),
+      'adaptedStructField' => $this->adaptedStructField?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1938,11 +1989,136 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_tmp23->readFromJson($_tmp22);
       $this->optionalUnionField = $_tmp23;
     }
+    if (idx($parsed, 'adaptedStructField') !== null) {
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, DirectlyAdapted>($parsed['adaptedStructField']));
+      $_tmp25 = DirectlyAdapted::withDefaultValues();
+      $_tmp25->readFromJson($_tmp24);
+      $this->adaptedStructField = $_tmp25;
+    }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Baz>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * DirectlyAdapted
+ */
+class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'field',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'field' => ?int,
+  );
+
+  const type TShape = shape(
+    'field' => int,
+  );
+  const int STRUCTURAL_ID = 7035499037608086885;
+  /**
+   * Original thrift field:-
+   * 1: i32 field
+   */
+  public int $field;
+
+  public function __construct(?int $field = null)[] {
+    $this->field = $field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'DirectlyAdapted';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.DirectlyAdapted",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "my::Adapter",
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'field' => $this->field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'field') !== null) {
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field']);
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->field = (int)$_tmp0;
+      }
+    }
   }
 
 }

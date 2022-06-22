@@ -597,41 +597,23 @@ class InnerUnion;
 class MyUnion;
 class MyStruct;
 class MyDataPatchStruct;
-using MyDataPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>;
 class MyDataValuePatchStruct;
-using MyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>;
 class OptionalMyDataValuePatchStruct;
-using OptionalMyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>;
 class InnerUnionPatchStruct;
-using InnerUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>;
 class InnerUnionValuePatchStruct;
-using InnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>;
 class OptionalInnerUnionValuePatchStruct;
-using OptionalInnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>;
 class MyUnionPatchStruct;
-using MyUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>;
 class MyUnionValuePatchStruct;
-using MyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>;
 class OptionalMyUnionValuePatchStruct;
-using OptionalMyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>;
 class MyStructField21PatchStruct;
-using MyStructField21Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>;
 class OptionalMyStructField21PatchStruct;
-using OptionalMyStructField21Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>;
 class MyStructField22PatchStruct;
-using MyStructField22Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>;
 class OptionalMyStructField22PatchStruct;
-using OptionalMyStructField22Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>;
 class MyStructField23PatchStruct;
-using MyStructField23Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>;
 class OptionalMyStructField23PatchStruct;
-using OptionalMyStructField23Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>;
 class MyStructPatchStruct;
-using MyStructPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>;
 class MyStructValuePatchStruct;
-using MyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>;
 class OptionalMyStructValuePatchStruct;
-using OptionalMyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>;
 }}} // test::fixtures::patch
 // END forward_declare
 // BEGIN hash_and_equal_to
@@ -3456,6 +3438,8 @@ unsigned long MyDataPatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using MyDataPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>;
+
 
 class MyDataValuePatchStruct final  {
  private:
@@ -3735,6 +3719,8 @@ unsigned long MyDataValuePatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using MyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>;
 
 
 class OptionalMyDataValuePatchStruct final  {
@@ -4069,6 +4055,8 @@ unsigned long OptionalMyDataValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using OptionalMyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>;
+
 
 class InnerUnionPatchStruct final  {
  private:
@@ -4233,6 +4221,8 @@ unsigned long InnerUnionPatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using InnerUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>;
 
 
 class InnerUnionValuePatchStruct final  {
@@ -4576,6 +4566,8 @@ unsigned long InnerUnionValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using InnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>;
+
 
 class OptionalInnerUnionValuePatchStruct final  {
  private:
@@ -4909,6 +4901,8 @@ unsigned long OptionalInnerUnionValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using OptionalInnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>;
+
 
 class MyUnionPatchStruct final  {
  private:
@@ -5179,6 +5173,8 @@ unsigned long MyUnionPatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using MyUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>;
 
 
 class MyUnionValuePatchStruct final  {
@@ -5522,6 +5518,8 @@ unsigned long MyUnionValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using MyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>;
+
 
 class OptionalMyUnionValuePatchStruct final  {
  private:
@@ -5854,6 +5852,8 @@ unsigned long OptionalMyUnionValuePatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using OptionalMyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>;
 
 
 class MyStructField21PatchStruct final  {
@@ -6215,6 +6215,8 @@ unsigned long MyStructField21PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using MyStructField21Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>;
+
 
 class OptionalMyStructField21PatchStruct final  {
  private:
@@ -6557,6 +6559,8 @@ unsigned long OptionalMyStructField21PatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using OptionalMyStructField21Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>;
 
 
 class MyStructField22PatchStruct final  {
@@ -6918,6 +6922,8 @@ unsigned long MyStructField22PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using MyStructField22Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>;
+
 
 class OptionalMyStructField22PatchStruct final  {
  private:
@@ -7261,6 +7267,8 @@ unsigned long OptionalMyStructField22PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using OptionalMyStructField22Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>;
+
 
 class MyStructField23PatchStruct final  {
  private:
@@ -7559,6 +7567,8 @@ unsigned long MyStructField23PatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using MyStructField23Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>;
 
 
 class OptionalMyStructField23PatchStruct final  {
@@ -7902,6 +7912,8 @@ unsigned long OptionalMyStructField23PatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using OptionalMyStructField23Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>;
 
 
 class MyStructPatchStruct final  {
@@ -9287,6 +9299,8 @@ unsigned long MyStructPatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+using MyStructPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>;
+
 
 class MyStructValuePatchStruct final  {
  private:
@@ -9566,6 +9580,8 @@ unsigned long MyStructValuePatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using MyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>;
 
 
 class OptionalMyStructValuePatchStruct final  {
@@ -9899,6 +9915,8 @@ unsigned long OptionalMyStructValuePatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
+using OptionalMyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>;
 
 
 }}} // test::fixtures::patch

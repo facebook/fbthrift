@@ -362,13 +362,19 @@ func (p *DisableLazyChecksum) String() string {
 // Attributes:
 //  - Name
 //  - AdaptedType
+//  - UnderlyingName
+//  - ExtraNamespace
 type Adapter struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
   AdaptedType string `thrift:"adaptedType,2" db:"adaptedType" json:"adaptedType"`
+  UnderlyingName string `thrift:"underlyingName,3" db:"underlyingName" json:"underlyingName"`
+  ExtraNamespace string `thrift:"extraNamespace,4" db:"extraNamespace" json:"extraNamespace"`
 }
 
 func NewAdapter() *Adapter {
-  return &Adapter{}
+  return &Adapter{
+    ExtraNamespace: "detail",
+  }
 }
 
 
@@ -378,6 +384,14 @@ func (p *Adapter) GetName() string {
 
 func (p *Adapter) GetAdaptedType() string {
   return p.AdaptedType
+}
+
+func (p *Adapter) GetUnderlyingName() string {
+  return p.UnderlyingName
+}
+
+func (p *Adapter) GetExtraNamespace() string {
+  return p.ExtraNamespace
 }
 type AdapterBuilder struct {
   obj *Adapter
@@ -393,6 +407,8 @@ func (p AdapterBuilder) Emit() *Adapter{
   return &Adapter{
     Name: p.obj.Name,
     AdaptedType: p.obj.AdaptedType,
+    UnderlyingName: p.obj.UnderlyingName,
+    ExtraNamespace: p.obj.ExtraNamespace,
   }
 }
 
@@ -406,6 +422,16 @@ func (a *AdapterBuilder) AdaptedType(adaptedType string) *AdapterBuilder {
   return a
 }
 
+func (a *AdapterBuilder) UnderlyingName(underlyingName string) *AdapterBuilder {
+  a.obj.UnderlyingName = underlyingName
+  return a
+}
+
+func (a *AdapterBuilder) ExtraNamespace(extraNamespace string) *AdapterBuilder {
+  a.obj.ExtraNamespace = extraNamespace
+  return a
+}
+
 func (a *Adapter) SetName(name string) *Adapter {
   a.Name = name
   return a
@@ -413,6 +439,16 @@ func (a *Adapter) SetName(name string) *Adapter {
 
 func (a *Adapter) SetAdaptedType(adaptedType string) *Adapter {
   a.AdaptedType = adaptedType
+  return a
+}
+
+func (a *Adapter) SetUnderlyingName(underlyingName string) *Adapter {
+  a.UnderlyingName = underlyingName
+  return a
+}
+
+func (a *Adapter) SetExtraNamespace(extraNamespace string) *Adapter {
+  a.ExtraNamespace = extraNamespace
   return a
 }
 
@@ -435,6 +471,14 @@ func (p *Adapter) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
         return err
       }
     default:
@@ -470,11 +514,31 @@ func (p *Adapter)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Adapter)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.UnderlyingName = v
+  }
+  return nil
+}
+
+func (p *Adapter)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.ExtraNamespace = v
+  }
+  return nil
+}
+
 func (p *Adapter) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Adapter"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -502,6 +566,26 @@ func (p *Adapter) writeField2(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Adapter) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("underlyingName", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:underlyingName: ", p), err) }
+  if err := oprot.WriteString(string(p.UnderlyingName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.underlyingName (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:underlyingName: ", p), err) }
+  return err
+}
+
+func (p *Adapter) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("extraNamespace", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:extraNamespace: ", p), err) }
+  if err := oprot.WriteString(string(p.ExtraNamespace)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.extraNamespace (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:extraNamespace: ", p), err) }
+  return err
+}
+
 func (p *Adapter) String() string {
   if p == nil {
     return "<nil>"
@@ -509,7 +593,9 @@ func (p *Adapter) String() string {
 
   nameVal := fmt.Sprintf("%v", p.Name)
   adaptedTypeVal := fmt.Sprintf("%v", p.AdaptedType)
-  return fmt.Sprintf("Adapter({Name:%s AdaptedType:%s})", nameVal, adaptedTypeVal)
+  underlyingNameVal := fmt.Sprintf("%v", p.UnderlyingName)
+  extraNamespaceVal := fmt.Sprintf("%v", p.ExtraNamespace)
+  return fmt.Sprintf("Adapter({Name:%s AdaptedType:%s UnderlyingName:%s ExtraNamespace:%s})", nameVal, adaptedTypeVal, underlyingNameVal, extraNamespaceVal)
 }
 
 // Attributes:

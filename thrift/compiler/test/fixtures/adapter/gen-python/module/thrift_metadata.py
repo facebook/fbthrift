@@ -147,6 +147,8 @@ def _fbthrift_gen_metadata_struct_Bar(metadata_struct: _fbthrift_metadata.Thrift
         _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType(name="module.Baz")), name="optionalUnionField", is_optional=False, structured_annotations=[
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="\Adapter1"),  }),
         ]),
+        _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.DirectlyAdapted")), name="adaptedStructField", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -161,10 +163,36 @@ def _fbthrift_gen_metadata_struct_Bar(metadata_struct: _fbthrift_metadata.Thrift
     new_struct = _fbthrift_gen_metadata_struct_Foo(new_struct) # optionalStructListField
     new_struct = _fbthrift_gen_metadata_struct_Baz(new_struct) # unionField
     new_struct = _fbthrift_gen_metadata_struct_Baz(new_struct) # optionalUnionField
+    new_struct = _fbthrift_gen_metadata_struct_DirectlyAdapted(new_struct) # adaptedStructField
 
     return new_struct
 def gen_metadata_struct_Bar() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_Bar(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
+def _fbthrift_gen_metadata_struct_DirectlyAdapted(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.DirectlyAdapted"
+
+    if qualified_name in metadata_struct.structs:
+        return metadata_struct
+    fields = [
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="field", is_optional=False, structured_annotations=[
+        ]),
+    ]
+    struct_dict = dict(metadata_struct.structs)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
+        is_union=False,
+        structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="my::Adapter"),  }),
+        ])
+    new_struct = metadata_struct(structs=struct_dict)
+
+     # field
+
+    return new_struct
+def gen_metadata_struct_DirectlyAdapted() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_struct_DirectlyAdapted(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
@@ -334,6 +362,7 @@ def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_gen_metadata_struct_Foo(meta)
     meta = _fbthrift_gen_metadata_struct_Baz(meta)
     meta = _fbthrift_gen_metadata_struct_Bar(meta)
+    meta = _fbthrift_gen_metadata_struct_DirectlyAdapted(meta)
     meta = _fbthrift_gen_metadata_struct_StructWithFieldAdapter(meta)
     meta = _fbthrift_gen_metadata_struct_TerseAdaptedFields(meta)
     meta = _fbthrift_gen_metadata_struct_B(meta)

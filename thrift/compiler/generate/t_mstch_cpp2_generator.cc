@@ -1712,7 +1712,8 @@ class mstch_cpp2_program : public mstch_program {
       const t_type* alias = i->get_type();
       if (alias->is_typedef() && alias->has_annotation("cpp.type")) {
         const t_type* ttype = i->get_type()->get_true_type();
-        if (ttype->is_struct() || ttype->is_xception()) {
+        if ((ttype->is_struct() || ttype->is_xception()) &&
+            !gen::cpp::type_resolver::find_first_adapter(*ttype)) {
           result.push_back(i);
         }
       }
@@ -1750,7 +1751,8 @@ class mstch_cpp2_program : public mstch_program {
   std::vector<std::string> get_fatal_struct_names() {
     std::vector<std::string> result;
     for (const auto* obj : program_->objects()) {
-      if (!obj->is_union()) {
+      if (!obj->is_union() &&
+          !gen::cpp::type_resolver::find_first_adapter(*obj)) {
         result.push_back(get_fatal_string_short_id(obj));
       }
     }

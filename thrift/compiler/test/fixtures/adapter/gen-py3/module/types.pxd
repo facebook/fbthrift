@@ -117,6 +117,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cFoo]] optionalStructListField_ref()
         __field_ref[cBaz] unionField_ref()
         __optional_field_ref[cBaz] optionalUnionField_ref()
+        __field_ref[cDirectlyAdapted] adaptedStructField_ref()
 
 
     cdef cppclass cStructWithFieldAdapter "::cpp2::StructWithFieldAdapter":
@@ -231,12 +232,14 @@ cdef class Bar(thrift.py3.types.Struct):
     cdef inline object optionalStructListField_impl(self)
     cdef inline object unionField_impl(self)
     cdef inline object optionalUnionField_impl(self)
+    cdef inline object adaptedStructField_impl(self)
     cdef Foo __fbthrift_cached_structField
     cdef Foo __fbthrift_cached_optionalStructField
     cdef List__Foo __fbthrift_cached_structListField
     cdef List__Foo __fbthrift_cached_optionalStructListField
     cdef Baz __fbthrift_cached_unionField
     cdef Baz __fbthrift_cached_optionalUnionField
+    cdef DirectlyAdapted __fbthrift_cached_adaptedStructField
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cBar])

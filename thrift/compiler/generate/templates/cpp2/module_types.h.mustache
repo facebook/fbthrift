@@ -336,6 +336,10 @@ unsigned long <%struct:cpp_underlying_name%>::read(Protocol_* iprot) {
 <%#struct:extra_namespace%>
 } // namespace <%struct:extra_namespace%>
 <%/struct:extra_namespace%>
+<%#struct:is_directly_adapted?%>
+
+using <%struct:cpp_name%> = <%struct:cpp_underlying_type%>;
+<%/struct:is_directly_adapted?%>
 
 <%/is_struct?%>
 <%/program:structs_and_typedefs%>

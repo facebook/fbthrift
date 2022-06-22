@@ -131,10 +131,19 @@ struct AdaptedStruct {
 @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
 typedef AdaptedStruct AdaptedTypedef
 
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+struct DirectlyAdaptedStruct {
+  1: i64 data;
+}
+
+typedef DirectlyAdaptedStruct TypedefOfDirect
+
 struct StructFieldAdaptedStruct {
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
   1: AdaptedStruct adaptedStruct;
   2: AdaptedTypedef adaptedTypedef;
+  3: DirectlyAdaptedStruct directlyAdapted;
+  4: TypedefOfDirect typedefOfAdapted;
 }
 
 struct CircularAdaptee {
@@ -149,3 +158,20 @@ struct CircularStruct {
   adaptedType = "::apache::thrift::test::TaggedWrapper<CircularAdaptee, CircularStruct>",
 }
 typedef CircularAdaptee AdaptedCircularAdaptee
+
+@cpp.Adapter{
+  name = "::apache::thrift::test::TemplatedTestAdapter",
+  underlyingName = "UnderlyingRenamedStruct",
+}
+struct RenamedStruct {
+  1: i64 data;
+}
+
+@cpp.Adapter{
+  name = "::apache::thrift::test::TemplatedTestAdapter",
+  underlyingName = "UnderlyingSameNamespaceStruct",
+  extraNamespace = "",
+}
+struct SameNamespaceStruct {
+  1: i64 data;
+}

@@ -40,6 +40,7 @@ cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
         yield "optionalStructListField", self.optionalStructListField
         yield "unionField", self.unionField
         yield "optionalUnionField", self.optionalUnionField
+        yield "adaptedStructField", self.adaptedStructField
 
 cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.StructWithFieldAdapter
