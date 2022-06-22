@@ -29,6 +29,7 @@
 #include <folly/Portability.h>
 #include <folly/SocketAddress.h>
 #include <folly/Synchronized.h>
+#include <folly/VirtualExecutor.h>
 #include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
@@ -164,6 +165,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     PRIORITY = 0, //! Use a PriorityThreadManager
     SIMPLE = 1, //! Use a SimpleThreadManager
     PRIORITY_QUEUE = 2, //! Use a PriorityQueueThreadManager
+    EXECUTOR_ADAPTER = 3 //! Use ThreadManagerExecutorAdapter
   };
 
   struct RuntimeServerActions {
@@ -241,6 +243,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The thread pool sizes for priority thread manager.
   std::array<size_t, concurrency::N_PRIORITIES> threadManagerPoolSizes_{
       {0, 0, 0, 0, 0}};
+
+  //! Executors to use for ThreadManagerExecutorAdapter.
+  std::array<std::shared_ptr<folly::Executor>, concurrency::N_PRIORITIES>
+      threadManagerExecutors_;
 
   //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools
   //! are enabled).
@@ -412,6 +418,24 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     CHECK(!threadManager_);
     threadManagerPoolSizes_ = poolSizes;
+  }
+
+  /**
+   * Set the executors to use for ThreadManagerType::EXECUTOR_ADAPTER
+   */
+  void setThreadManagerExecutors(
+      std::array<std::shared_ptr<folly::Executor>, concurrency::N_PRIORITIES>
+          executors) {
+    threadManagerExecutors_ = executors;
+  }
+
+  void setThreadManagerExecutor(std::shared_ptr<folly::Executor> executor) {
+    threadManagerExecutors_.fill(executor);
+  }
+
+  void setThreadManagerExecutor(folly::Executor::KeepAlive<> ka) {
+    auto executor = std::make_shared<folly::VirtualExecutor>(std::move(ka));
+    threadManagerExecutors_.fill(executor);
   }
 
   /**

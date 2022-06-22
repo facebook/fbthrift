@@ -657,6 +657,11 @@ void ThriftServer::setupThreadManager() {
         threadManager = ThreadManager::newPriorityQueueThreadManager(
             getNumCPUWorkerThreads());
         break;
+      case ThreadManagerType::EXECUTOR_ADAPTER:
+        threadManager =
+            std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
+                threadManagerExecutors_);
+        break;
     }
     threadManager->enableCodel(getEnableCodel());
     // If a thread factory has been specified, use it.
@@ -752,106 +757,152 @@ void ThriftServer::ensureResourcePools() {
     return;
   }
 
-  struct Pool {
-    std::string_view name;
-    std::string_view suffix;
-    int nicePriority;
-    size_t numThreads;
-    std::optional<ResourcePoolHandle> handle;
-    concurrency::PRIORITY priority;
-  };
-
-  std::vector<Pool> pools;
-
-  switch (threadManagerType_) {
-    case ThreadManagerType::PRIORITY: {
-      // TODO: T111371879 [thrift][resourcepools] Figure out priorities for
-      // default setup in ensureResourcePool including non-linux These priority
-      // numbers are what thrift currently derives for a nice range of 19 to
-      // -20.
-      Pool priorityPools[] = {
-          {"HIGH_IMPORTANT",
-           "HI",
-           -13,
-           2,
-           std::nullopt,
-           concurrency::HIGH_IMPORTANT},
-          {"HIGH", "H", -7, 2, std::nullopt, concurrency::HIGH},
-          {"IMPORTANT", "I", -7, 2, std::nullopt, concurrency::IMPORTANT},
-          {"NORMAL",
-           "N",
-           0,
-           getNumCPUWorkerThreads(),
-           ResourcePoolHandle::defaultAsync(),
-           concurrency::NORMAL},
-          {"BEST_EFFORT", "BE", 6, 2, std::nullopt, concurrency::BEST_EFFORT}};
-      if (std::any_of(
-              std::begin(threadManagerPoolSizes_),
-              std::end(threadManagerPoolSizes_),
-              [](std::size_t c) { return c != 0; })) {
-        // The priorities were specified using setThreadManagerPoolSizes
-        for (std::size_t i = 0; i < std::size(priorityPools); ++i) {
-          priorityPools[i].numThreads = threadManagerPoolSizes_.at(i);
-        }
+  if (threadManagerType_ == ThreadManagerType::EXECUTOR_ADAPTER) {
+    for (std::size_t i = 0; i < concurrency::N_PRIORITIES; ++i) {
+      auto executor = threadManagerExecutors_[i];
+      if (!executor) {
+        // If no executor provided for this priority create one.
+        executor = std::make_shared<folly::CPUThreadPoolExecutor>(
+            i == concurrency::PRIORITY::NORMAL
+                ? std::thread::hardware_concurrency()
+                : 2);
       }
-      std::copy(
-          std::begin(priorityPools),
-          std::end(priorityPools),
-          std::back_inserter(pools));
-      break;
+      apache::thrift::RoundRobinRequestPile::Options options;
+      auto requestPile =
+          std::make_unique<apache::thrift::RoundRobinRequestPile>(
+              std::move(options));
+      auto concurrencyController =
+          std::make_unique<apache::thrift::ParallelConcurrencyController>(
+              *requestPile.get(), *executor.get());
+      if (i == concurrency::PRIORITY::NORMAL) {
+        resourcePoolSet().setResourcePool(
+            ResourcePoolHandle::defaultAsync(),
+            std::move(requestPile),
+            executor,
+            std::move(concurrencyController),
+            concurrency::PRIORITY::NORMAL);
+      } else {
+        std::string name("EW-pri-");
+        name += std::to_string(i);
+        resourcePoolSet().addResourcePool(
+            name,
+            std::move(requestPile),
+            executor,
+            std::move(concurrencyController),
+            concurrency::PRIORITY(i));
+      }
     }
-    case ThreadManagerType::SIMPLE: {
-      pools.push_back(Pool{
-          "NORMAL",
-          "N",
-          0,
-          getNumCPUWorkerThreads(),
-          ResourcePoolHandle::defaultAsync(),
-          concurrency::NORMAL});
-      break;
+  } else {
+    struct Pool {
+      std::string_view name;
+      std::string_view suffix;
+      int nicePriority;
+      size_t numThreads;
+      std::optional<ResourcePoolHandle> handle;
+      concurrency::PRIORITY priority;
+    };
+
+    std::vector<Pool> pools;
+
+    switch (threadManagerType_) {
+      case ThreadManagerType::PRIORITY: {
+        // TODO: T111371879 [thrift][resourcepools] Figure out priorities
+        // for default setup in ensureResourcePool including non-linux
+        // These priority numbers are what thrift currently derives for a
+        // nice range of 19 to -20.
+        Pool priorityPools[] = {
+            {"HIGH_IMPORTANT",
+             "HI",
+             -13,
+             2,
+             std::nullopt,
+             concurrency::HIGH_IMPORTANT},
+            {"HIGH", "H", -7, 2, std::nullopt, concurrency::HIGH},
+            {"IMPORTANT", "I", -7, 2, std::nullopt, concurrency::IMPORTANT},
+            {"NORMAL",
+             "N",
+             0,
+             getNumCPUWorkerThreads(),
+             ResourcePoolHandle::defaultAsync(),
+             concurrency::NORMAL},
+            {"BEST_EFFORT",
+             "BE",
+             6,
+             2,
+             std::nullopt,
+             concurrency::BEST_EFFORT}};
+        if (std::any_of(
+                std::begin(threadManagerPoolSizes_),
+                std::end(threadManagerPoolSizes_),
+                [](std::size_t c) { return c != 0; })) {
+          // The priorities were specified using setThreadManagerPoolSizes
+          for (std::size_t i = 0; i < std::size(priorityPools); ++i) {
+            priorityPools[i].numThreads = threadManagerPoolSizes_.at(i);
+          }
+        }
+        std::copy(
+            std::begin(priorityPools),
+            std::end(priorityPools),
+            std::back_inserter(pools));
+        break;
+      }
+      case ThreadManagerType::SIMPLE: {
+        pools.push_back(Pool{
+            "NORMAL",
+            "N",
+            0,
+            getNumCPUWorkerThreads(),
+            ResourcePoolHandle::defaultAsync(),
+            concurrency::NORMAL});
+        break;
+      }
+      case ThreadManagerType::PRIORITY_QUEUE: {
+        pools.push_back(Pool{
+            "NORMAL",
+            "N",
+            0,
+            getNumCPUWorkerThreads(),
+            ResourcePoolHandle::defaultAsync(),
+            concurrency::NORMAL});
+        break;
+      }
+      default: {
+        LOG(FATAL) << "Unexpected ThreadMangerType:" << int(threadManagerType_);
+      }
     }
-    case ThreadManagerType::PRIORITY_QUEUE: {
-      pools.push_back(Pool{
-          "NORMAL",
-          "N",
-          0,
-          getNumCPUWorkerThreads(),
-          ResourcePoolHandle::defaultAsync(),
-          concurrency::NORMAL});
-      break;
-    }
-  }
-  for (auto const& pool : pools) {
-    std::string name =
-        fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
-    auto factory = std::make_shared<folly::PriorityThreadFactory>(
-        std::make_shared<folly::NamedThreadFactory>(name), pool.nicePriority);
-    auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
-        pool.numThreads, std::move(factory));
-    apache::thrift::RoundRobinRequestPile::Options options;
-    if (threadManagerType_ == ThreadManagerType::PRIORITY_QUEUE) {
-      options.setNumPriorities(concurrency::N_PRIORITIES);
-      options.setPileSelectionFunction(options.getDefaultPileSelectionFunc());
-    }
-    auto requestPile = std::make_unique<apache::thrift::RoundRobinRequestPile>(
-        std::move(options));
-    auto concurrencyController =
-        std::make_unique<apache::thrift::ParallelConcurrencyController>(
-            *requestPile.get(), *executor.get());
-    if (pool.handle) {
-      resourcePoolSet().setResourcePool(
-          ResourcePoolHandle::defaultAsync(),
-          std::move(requestPile),
-          executor,
-          std::move(concurrencyController),
-          pool.priority);
-    } else {
-      resourcePoolSet().addResourcePool(
-          pool.name,
-          std::move(requestPile),
-          executor,
-          std::move(concurrencyController),
-          pool.priority);
+    for (auto const& pool : pools) {
+      std::string name =
+          fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
+      auto factory = std::make_shared<folly::PriorityThreadFactory>(
+          std::make_shared<folly::NamedThreadFactory>(name), pool.nicePriority);
+      auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
+          pool.numThreads, std::move(factory));
+      apache::thrift::RoundRobinRequestPile::Options options;
+      if (threadManagerType_ == ThreadManagerType::PRIORITY_QUEUE) {
+        options.setNumPriorities(concurrency::N_PRIORITIES);
+        options.setPileSelectionFunction(options.getDefaultPileSelectionFunc());
+      }
+      auto requestPile =
+          std::make_unique<apache::thrift::RoundRobinRequestPile>(
+              std::move(options));
+      auto concurrencyController =
+          std::make_unique<apache::thrift::ParallelConcurrencyController>(
+              *requestPile.get(), *executor.get());
+      if (pool.handle) {
+        resourcePoolSet().setResourcePool(
+            ResourcePoolHandle::defaultAsync(),
+            std::move(requestPile),
+            executor,
+            std::move(concurrencyController),
+            pool.priority);
+      } else {
+        resourcePoolSet().addResourcePool(
+            pool.name,
+            std::move(requestPile),
+            executor,
+            std::move(concurrencyController),
+            pool.priority);
+      }
     }
   }
   resourcePoolSet().lock();
@@ -872,9 +923,10 @@ void ThriftServer::startDuplex() {
 
 /**
  * This method should be used to cleanly stop a ThriftServer created for
- * DuplexChannel before disposing the ThriftServer. The caller should pass in
- * a shared_ptr to this ThriftServer since the ThriftServer does not have a
- * way of getting that (does not inherit from enable_shared_from_this)
+ * DuplexChannel before disposing the ThriftServer. The caller should pass
+ * in a shared_ptr to this ThriftServer since the ThriftServer does not
+ * have a way of getting that (does not inherit from
+ * enable_shared_from_this)
  */
 void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
   DCHECK(this == thisServer.get());
@@ -895,8 +947,8 @@ void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
 void ThriftServer::serve() {
   setup();
   if (serverChannel_ != nullptr) {
-    // A duplex server (the one running on a client) doesn't uses its own EB
-    // since it reuses the client's EB
+    // A duplex server (the one running on a client) doesn't uses its own
+    // EB since it reuses the client's EB
     return;
   }
   SCOPE_EXIT { this->cleanUp(); };
@@ -912,8 +964,8 @@ void ThriftServer::serve() {
 void ThriftServer::cleanUp() {
   DCHECK(!serverChannel_);
 
-  // tlsCredWatcher_ uses a background thread that needs to be joined prior
-  // to any further writes to ThriftServer members.
+  // tlsCredWatcher_ uses a background thread that needs to be joined
+  // prior to any further writes to ThriftServer members.
   tlsCredWatcher_.withWLock([](auto& credWatcher) { credWatcher.reset(); });
 
   // It is users duty to make sure that setup() call
@@ -1081,8 +1133,9 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
         // after the timeout expires as we can't cancel the task
         folly::CPUThreadPoolExecutor dumpSnapshotExecutor{1};
         if (dumpSnapshotFlag) {
-          // The IO threads may be deadlocked in which case we won't be able to
-          // dump snapshots. It still shouldn't block shutdown indefinitely.
+          // The IO threads may be deadlocked in which case we won't be able
+          // to dump snapshots. It still shouldn't block shutdown
+          // indefinitely.
           auto dumpSnapshotResult =
               apache::thrift::detail::dumpSnapshotOnLongShutdown();
           try {
@@ -1117,12 +1170,11 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   });
 
-  // Clear the decorated processor factory so that it's re-created if the server
-  // is restarted.
-  // Note that duplex servers drain connections in the destructor so we need to
-  // keep the AsyncProcessorFactory alive until then. Duplex servers also don't
-  // support restarting the server so extending its lifetime should not cause
-  // issues.
+  // Clear the decorated processor factory so that it's re-created if the
+  // server is restarted. Note that duplex servers drain connections in the
+  // destructor so we need to keep the AsyncProcessorFactory alive until then.
+  // Duplex servers also don't support restarting the server so extending its
+  // lifetime should not cause issues.
   if (!isDuplex()) {
     decoratedProcessorFactory_.reset();
   }
@@ -1415,8 +1467,8 @@ folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
 
           std::unordered_map<folly::SocketAddress, ConnectionSnapshot>
               connectionSnapshots;
-          // ConnectionManager can be nullptr if the worker didn't have any open
-          // connections during shutdown
+          // ConnectionManager can be nullptr if the worker didn't have any
+          // open connections during shutdown
           if (auto connectionManager = worker->getConnectionManager()) {
             connectionManager->forEachConnection([&](wangle::ManagedConnection*
                                                          wangleConnection) {
@@ -1473,8 +1525,8 @@ folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
               ret.memory.egress += workerSnapshot.memory.egress;
             }
 
-            // Move all RequestSnapshots, ServerIOMemory and ConnectionSnapshots
-            // to ServerSnapshot
+            // Move all RequestSnapshots, ServerIOMemory and
+            // ConnectionSnapshots to ServerSnapshot
             ret.requests.reserve(numRequests);
             ret.connections.reserve(numConnections);
             for (auto& workerSnapshot : workerSnapshots) {
@@ -1520,8 +1572,8 @@ ThriftServer::defaultNextProtocols() {
             // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
             // may be sending it.
             "http",
-            // Many clients still send http/1.1 which is handled by the default
-            // handler.
+            // Many clients still send http/1.1 which is handled by the
+            // default handler.
             "http/1.1",
             "rs"};
       });
@@ -1539,7 +1591,8 @@ folly::observer::CallbackHandle ThriftServer::getSSLCallbackHandle() {
     // observer callback is not executing on a fork()'d child.
     //
     // The scenario this can happen is if:
-    //  1) The FlagsBackend observer implementation persists in the child. (e.g.
+    //  1) The FlagsBackend observer implementation persists in the child.
+    //  (e.g.
     //     a custom atfork handler reinitializes and resubscribes to updates)
     //  2) A thrift handler fork()s (e.g. Python thrift server which
     //     uses concurrent.futures.ProcessPoolExecutor)
