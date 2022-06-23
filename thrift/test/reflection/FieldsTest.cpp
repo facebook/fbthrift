@@ -78,25 +78,6 @@ static_assert(
                     adapted<test::TemplatedTestAdapter, i64_t>>>>>);
 
 static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{1}) == FieldOrdinal{1});
-static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{2}) == FieldOrdinal{2});
-static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{3}) == FieldOrdinal{3});
-static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{4}) == FieldOrdinal{4});
-static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{5}) == FieldOrdinal{5});
-static_assert(
-    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{6}) == FieldOrdinal{6});
-
-static_assert(
     test::same_tag<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
@@ -163,17 +144,6 @@ TEST(FieldsTest, Fields) {
       });
   EXPECT_EQ(ids, expectedIds);
   EXPECT_EQ(tags, expectedTags);
-
-  for (uint16_t idx = 0; idx < expectedIds.size(); ++idx) {
-    EXPECT_EQ(
-        ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
-            FieldId{expectedIds[idx]}),
-        static_cast<FieldOrdinal>(idx + 1));
-  }
-
-  static_assert(
-      ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
-          FieldId{19}) == FieldOrdinal{0});
 }
 
 TEST(FieldsTest, Get) {
@@ -204,37 +174,9 @@ TEST(FieldsTest, Get) {
   EXPECT_FALSE(s.fieldE()->us_ref());
 }
 
-TEST(FieldsTest, field_tag_by_id) {
-  using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  test::same_tag<field_tag_by_id<StructTag, FieldId{0}>, void>;
-  test::same_tag<
-      field_tag_by_id<StructTag, FieldId{1}>,
-      field_t<FieldId{1}, string_t>>;
-  test::same_tag<
-      field_tag_by_id<StructTag, FieldId{2}>,
-      field_t<FieldId{2}, i32_t>>;
-  test::same_tag<field_tag_by_id<StructTag, FieldId{19}>, void>;
-  test::same_tag<
-      field_tag_by_id<StructTag, FieldId{20}>,
-      field_t<FieldId{20}, map<binary_t, binary_t>>>;
-  test::same_tag<field_tag_by_id<StructTag, FieldId{21}>, void>;
-  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
-      field([](auto id, auto tag) {
-        constexpr auto Id = FieldId{decltype(id)::value};
-        using Tag = decltype(tag);
-        test::same_tag<field_tag_by_id<StructTag, Id>, field_t<Id, Tag>>;
-      });
-}
-
 TEST(FieldsTest, field_id_by_ordinal) {
   using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  test::same_tag<field_tag_by_ordinal<StructTag, FieldOrdinal{0}>, void>;
   EXPECT_EQ(field_size_v<StructTag>, 19);
-  test::same_tag<field_tag_by_ordinal<StructTag, FieldOrdinal{20}>, void>;
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, FieldOrdinal{1}>), FieldId{2});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, FieldOrdinal{2}>), FieldId{1});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, FieldOrdinal{3}>), FieldId{3});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, FieldOrdinal{19}>), FieldId{20});
 }
 
 TEST(UnionFieldsTest, Get) {

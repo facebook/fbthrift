@@ -367,25 +367,6 @@ class Foo final  {
 
   static constexpr std::size_t __fbthrift_field_size_v = 11;
 
-  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {::apache::thrift::FieldId{1}, ::apache::thrift::FieldId{2}, ::apache::thrift::FieldId{3}, ::apache::thrift::FieldId{4}, ::apache::thrift::FieldId{5}, ::apache::thrift::FieldId{6}, ::apache::thrift::FieldId{7}, ::apache::thrift::FieldId{8}, ::apache::thrift::FieldId{9}, ::apache::thrift::FieldId{10}, ::apache::thrift::FieldId{11}, };
-
-  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
-    switch (::folly::to_underlying(id)) {
-      case 1: return ::apache::thrift::FieldOrdinal{1};
-      case 2: return ::apache::thrift::FieldOrdinal{2};
-      case 3: return ::apache::thrift::FieldOrdinal{3};
-      case 4: return ::apache::thrift::FieldOrdinal{4};
-      case 5: return ::apache::thrift::FieldOrdinal{5};
-      case 6: return ::apache::thrift::FieldOrdinal{6};
-      case 7: return ::apache::thrift::FieldOrdinal{7};
-      case 8: return ::apache::thrift::FieldOrdinal{8};
-      case 9: return ::apache::thrift::FieldOrdinal{9};
-      case 10: return ::apache::thrift::FieldOrdinal{10};
-      case 11: return ::apache::thrift::FieldOrdinal{11};
-    }
-    return ::apache::thrift::FieldOrdinal{0};
-  }
-
   template<class T>
   using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                    void,

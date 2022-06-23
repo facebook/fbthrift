@@ -23,19 +23,6 @@
 
   static constexpr std::size_t __fbthrift_field_size_v = <%struct:fields_size%>;
 
-<%#struct:fields?%>
-  static constexpr ::apache::thrift::FieldId __fbthrift_field_ids[] = {<%#struct:fields%>::apache::thrift::FieldId{<%field:key%>}, <%/struct:fields%>};
-<%/struct:fields?%>
-
-  static constexpr ::apache::thrift::FieldOrdinal __fbthrift_field_id_to_ordinal(::apache::thrift::FieldId id) {
-    switch (::folly::to_underlying(id)) {
-      <%#struct:fields%>
-      case <%field:key%>: return ::apache::thrift::FieldOrdinal{<%field:ordinal%>};
-      <%/struct:fields%>
-    }
-    return ::apache::thrift::FieldOrdinal{0};
-  }
-
   template<class T>
   using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                    void<%#struct:fields%>,

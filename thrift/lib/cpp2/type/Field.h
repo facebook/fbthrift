@@ -25,14 +25,6 @@ namespace type {
 
 using detail::field_size_v;
 
-template <class StructTag>
-using ordinal_fn =
-    ::apache::thrift::detail::st::struct_private_access::ordinal_fn<
-        native_type<StructTag>>;
-
-template <class StructTag>
-FOLLY_INLINE_VARIABLE constexpr ordinal_fn<StructTag> ordinal{};
-
 // The type tag for the given type::field_t.
 template <typename FieldTag>
 using field_type_tag = typename detail::field_to_tag::apply<FieldTag>::type;
@@ -41,28 +33,6 @@ using field_type_tag = typename detail::field_to_tag::apply<FieldTag>::type;
 template <typename FieldTag>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_v =
     FieldId(detail::field_to_id::apply<FieldTag>::value);
-
-template <typename StructTag, FieldOrdinal ord>
-using field_tag_by_ordinal =
-    typename detail::field_tag_by_ord<StructTag, ord>::type;
-
-template <
-    typename StructTag,
-    FieldOrdinal ord,
-    detail::if_valid_ordinal<StructTag, ord>* = nullptr>
-FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
-    ::apache::thrift::detail::st::struct_private_access::__fbthrift_field_ids<
-        native_type<StructTag>>[folly::to_underlying(ord) - 1];
-
-template <typename Structured, FieldOrdinal ord>
-using field_type_tag_by_ordinal =
-    field_type_tag<field_tag_by_ordinal<Structured, ord>>;
-
-// field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
-// thrift struct where corresponding field id == Id, or for void if there is no
-// such field.
-template <typename StructTag, FieldId Id>
-using field_tag_by_id = field_tag_by_ordinal<StructTag, ordinal<StructTag>(Id)>;
 
 } // namespace type
 namespace field {

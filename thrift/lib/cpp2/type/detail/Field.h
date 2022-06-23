@@ -28,37 +28,10 @@ namespace thrift {
 namespace type {
 namespace detail {
 
-template <typename Fields>
-struct fields_size;
-template <template <typename...> class F, typename... Fs>
-struct fields_size<F<Fs...>> {
-  static constexpr auto value = sizeof...(Fs);
-};
-template <typename Ts, std::size_t I, bool Valid = true>
-struct field_at {
-  using type = void;
-};
-template <typename... Fs, std::size_t I>
-struct field_at<fields<Fs...>, I, true> {
-  using type = folly::type_pack_element_t<I, Fs...>;
-};
-template <typename Ts, std::size_t I>
-using field_at_t = typename field_at<Ts, I, (I < fields_size<Ts>::value)>::type;
-
-template <typename StructTag>
-using struct_fields =
-    ::apache::thrift::detail::st::struct_private_access::fields<
-        native_type<StructTag>>;
-
 template <typename StructTag>
 FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_field_size_v<native_type<StructTag>>;
-
-template <typename StructTag, FieldOrdinal ord>
-using if_valid_ordinal = std::enable_if_t<
-    ord != FieldOrdinal{0} &&
-    folly::to_underlying(ord) <= field_size_v<StructTag>>;
 
 struct field_to_id {
   template <class>
@@ -76,14 +49,6 @@ struct field_to_tag {
   struct apply<field_t<Id, Tag>> {
     using type = Tag;
   };
-};
-
-template <class StructTag, FieldOrdinal ord>
-struct field_tag_by_ord {
-  using type = field_at_t<
-      struct_fields<StructTag>,
-      ord == FieldOrdinal{0} ? static_cast<std::size_t>(-1)
-                             : folly::to_underlying(ord) - 1>;
 };
 
 } // namespace detail

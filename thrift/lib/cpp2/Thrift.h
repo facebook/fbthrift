@@ -119,8 +119,6 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(
       clear_terse_fields_fn, __fbthrift_clear_terse_fields);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
-  FOLLY_CREATE_STATIC_MEMBER_INVOKER(
-      ordinal_fn, __fbthrift_field_id_to_ordinal);
 
   template <typename T, typename Ord>
   static typename T::template __fbthrift_ident<Ord> __fbthrift_ident();
@@ -145,9 +143,6 @@ struct struct_private_access {
 
   template <typename T, typename U>
   using ordinal = decltype(__fbthrift_ordinal<T, U>());
-
-  template <typename T>
-  static constexpr auto __fbthrift_field_ids = T::__fbthrift_field_ids;
 
   template <typename T>
   static constexpr auto __fbthrift_field_size_v = T::__fbthrift_field_size_v;
