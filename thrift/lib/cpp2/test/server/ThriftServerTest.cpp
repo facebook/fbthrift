@@ -991,9 +991,10 @@ class HeaderOrRocketTest : public testing::Test {
   }
 };
 
-class OverloadTest : public HeaderOrRocketTest,
-                     public ::testing::WithParamInterface<
-                         std::tuple<TransportType, Compression, ErrorType>> {
+class OverloadTest
+    : public HeaderOrRocketTest,
+      public ::testing::WithParamInterface<
+          std::tuple<TransportType, Compression, ErrorType, bool>> {
  public:
   ErrorType errorType;
 
@@ -1001,11 +1002,50 @@ class OverloadTest : public HeaderOrRocketTest,
     return errorType == ErrorType::Client || errorType == ErrorType::Server;
   }
 
+  bool useQueueConcurrency() {
+    return useResourcePools() &&
+        THRIFT_FLAG(enforce_queue_concurrency_resource_pools);
+  }
+
+  TApplicationException::TApplicationExceptionType getShedError() {
+    if (isCustomError()) {
+      return TApplicationException::UNKNOWN;
+    } else if (
+        errorType == ErrorType::PreprocessorOverload ||
+        errorType == ErrorType::AppOverload ||
+        errorType == ErrorType::MethodOverload) {
+      return TApplicationException::LOADSHEDDING;
+    } else if (useQueueConcurrency()) {
+      return TApplicationException::TIMEOUT;
+    } else {
+      return TApplicationException::LOADSHEDDING;
+    }
+  }
+
+  std::string getShedMessage() {
+    if (isCustomError()) {
+      return "message";
+    } else if (errorType == ErrorType::PreprocessorOverload) {
+      return transport == TransportType::Header ? "preprocess load shedding"
+                                                : "loadshedding request";
+    } else if (errorType == ErrorType::AppOverload) {
+      return "loadshedding request";
+    } else if (errorType == ErrorType::MethodOverload) {
+      return "method loadshedding request";
+    } else if (useQueueConcurrency()) {
+      return "Queue Timeout";
+    } else {
+      return "loadshedding request";
+    }
+  }
+
   LatencyHeaderStatus getLatencyHeaderStatus() {
     // we currently only report latency headers for Header,
     // and only when method handler was executed started running.
-    return errorType == ErrorType::MethodOverload &&
-            transport == TransportType::Header
+    return ((getShedError() == TApplicationException::TIMEOUT &&
+             transport == TransportType::Header) ||
+            (errorType == ErrorType::MethodOverload &&
+             transport == TransportType::Header))
         ? LatencyHeaderStatus::EXPECTED
         : LatencyHeaderStatus::NOT_EXPECTED;
   }
@@ -1029,8 +1069,12 @@ class OverloadTest : public HeaderOrRocketTest,
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppOverloadedErrorCode);
       EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
       EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
-    } else if (errorType == ErrorType::Overload) {
+    } else if (errorType == ErrorType::Overload && !useQueueConcurrency()) {
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kOverloadedErrorCode);
+      EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
+      EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
+    } else if (errorType == ErrorType::Overload && useQueueConcurrency()) {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kServerQueueTimeoutErrorCode);
       EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
       EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
     } else {
@@ -1039,7 +1083,14 @@ class OverloadTest : public HeaderOrRocketTest,
   }
 
   void SetUp() override {
-    std::tie(transport, compression, errorType) = GetParam();
+    bool concurrencyFlag;
+    std::tie(transport, compression, errorType, concurrencyFlag) = GetParam();
+
+    if (concurrencyFlag) {
+      THRIFT_FLAG_SET_MOCK(enforce_queue_concurrency_resource_pools, true);
+    } else {
+      THRIFT_FLAG_SET_MOCK(enforce_queue_concurrency_resource_pools, false);
+    }
   }
 };
 
@@ -1674,7 +1725,7 @@ TEST_P(OverloadTest, Test) {
     void async_eb_eventBaseAsync(
         std::unique_ptr<HandlerCallback<std::unique_ptr<::std::string>>>
             callback) override {
-      callback->appOverloadedException("loadshedding request");
+      callback->appOverloadedException("method loadshedding request");
     }
   };
 
@@ -1697,7 +1748,7 @@ TEST_P(OverloadTest, Test) {
     } else if (errorType == ErrorType::Server) {
       return {AppServerException("name", "message")};
     } else if (errorType == ErrorType::PreprocessorOverload) {
-      return {AppOverloadedException("name", "loadshedding request")};
+      return {AppOverloadedException("name", "preprocess load shedding")};
     }
     return {};
   });
@@ -1708,6 +1759,7 @@ TEST_P(OverloadTest, Test) {
   if (errorType == ErrorType::Overload) {
     // Thrift is overloaded on max requests
     runner.getThriftServer().setMaxRequests(1);
+    runner.getThriftServer().setQueueTimeout(10ms);
     auto handler = dynamic_cast<BlockInterface*>(
         runner.getThriftServer().getProcessorFactory().get());
     client->semifuture_voidResponse();
@@ -1728,11 +1780,8 @@ TEST_P(OverloadTest, Test) {
     }
     FAIL() << "Expected that the service call throws TApplicationException";
   } catch (const apache::thrift::TApplicationException& ex) {
-    auto expectType = isCustomError() ? TApplicationException::UNKNOWN
-                                      : TApplicationException::LOADSHEDDING;
-    EXPECT_EQ(expectType, ex.getType());
-    auto expectMessage = isCustomError() ? "message" : "loadshedding request";
-    EXPECT_EQ(expectMessage, ex.getMessage());
+    EXPECT_EQ(getShedError(), ex.getType());
+    EXPECT_EQ(getShedMessage(), ex.getMessage());
 
     validateErrorHeaders(rpcOptions);
 
@@ -1758,7 +1807,8 @@ INSTANTIATE_TEST_CASE_P(
             ErrorType::AppOverload,
             ErrorType::Client,
             ErrorType::Server,
-            ErrorType::PreprocessorOverload)));
+            ErrorType::PreprocessorOverload),
+        testing::Bool()));
 
 TEST(ThriftServer, LatencyHeader_ClientTimeout) {
   ScopedServerInterfaceThread runner(

@@ -75,6 +75,7 @@ THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
 THRIFT_FLAG_DECLARE_bool(alpn_allow_mismatch);
 THRIFT_FLAG_DECLARE_bool(server_check_unimplemented_extra_interfaces);
 THRIFT_FLAG_DECLARE_bool(enable_io_queue_lag_detection);
+THRIFT_FLAG_DECLARE_bool(enforce_queue_concurrency_resource_pools);
 
 namespace apache {
 namespace thrift {
