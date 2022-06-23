@@ -27,37 +27,38 @@ namespace op {
 namespace detail {
 
 // Helpers for unpacking and folding field tags.
-template <typename Tag, FieldId Id, typename P, typename T>
+template <typename Tag, typename Id, typename P, typename T>
 void applySubPatch(const P& patch, T& val) {
-  op::getById<Tag, Id>(patch)->apply(op::getById<Tag, Id>(val));
+  op::get<Tag, Id>(patch)->apply(op::get<Tag, Id>(val));
 }
-template <typename Tag, FieldId Id, typename P1, typename P2>
+template <typename Tag, typename Id, typename P1, typename P2>
 void mergeSubPatch(P1& lhs, const P2& rhs) {
-  op::getById<Tag, Id>(lhs)->merge(*op::getById<Tag, Id>(rhs));
+  op::get<Tag, Id>(lhs)->merge(*op::get<Tag, Id>(rhs));
 }
-template <typename Tag, FieldId Id, typename P, typename T>
+template <typename Tag, typename Id, typename P, typename T>
 void forwardFromSubPatch(T&& from, P& to) {
-  *op::getById<Tag, Id>(to) = op::getById<Tag, Id>(std::forward<T>(from));
+  *op::get<Tag, Id>(to) = op::get<Tag, Id>(std::forward<T>(from));
 }
 template <
     typename Tag,
     typename T = type::native_type<Tag>,
-    typename F = thrift::detail::st::struct_private_access::fields<T>>
+    typename F = std::make_index_sequence<type::field_size_v<Tag>>>
 struct FieldPatch;
-template <typename Tag, typename T, typename... FieldTags>
-struct FieldPatch<Tag, T, type::fields<FieldTags...>> {
+template <typename Tag, typename T, std::size_t... idx>
+struct FieldPatch<Tag, T, std::integer_sequence<std::size_t, idx...>> {
   template <typename P>
   static void apply(const P& patch, T& val) {
-    (..., applySubPatch<Tag, type::field_id_v<FieldTags>>(patch, val));
+    (...,
+     applySubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(patch, val));
   }
   template <typename P1, typename P2>
   static void merge(P1& lhs, const P2& rhs) {
-    (..., mergeSubPatch<Tag, type::field_id_v<FieldTags>>(lhs, rhs));
+    (..., mergeSubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(lhs, rhs));
   }
   template <typename P>
   static void forwardFrom(T&& from, P& to) {
     (...,
-     forwardFromSubPatch<Tag, type::field_id_v<FieldTags>>(
+     forwardFromSubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(
          std::forward<T>(from), to));
   }
 };
