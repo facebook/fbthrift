@@ -351,20 +351,6 @@ class Foo final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::adapted<my::Adapter3, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::list<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::string_t>>>>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<my::Adapter3, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::list<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::string_t>>>>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 11;
 
   template<class T>

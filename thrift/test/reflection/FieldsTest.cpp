@@ -30,122 +30,6 @@
 namespace apache::thrift::type {
 using apache::thrift::detail::st::struct_private_access;
 
-// A type tag for a given field id.
-template <typename FieldTag>
-using field_id_t = FieldIdTag<type::field_id_v<FieldTag>>;
-
-// Helper for visiting field metadata.
-template <typename List>
-struct ForEach;
-template <typename... Tags>
-struct ForEach<type::fields<Tags...>> {
-  template <typename F>
-  static void id(F&& fun) {
-    (..., fun(field_id_t<Tags>{}));
-  }
-  template <typename F>
-  static void tag(F&& fun) {
-    (..., fun(type::field_type_tag<Tags>{}));
-  }
-  template <typename F>
-  static void field(F&& fun) {
-    (..., fun(field_id_t<Tags>{}, type::field_type_tag<Tags>{}));
-  }
-};
-
-static_assert(
-    test::same_tag<
-        struct_private_access::fields<
-            ::test_cpp2::cpp_reflection::StructWithAdaptedField>,
-        fields<
-            field_t<FieldId{1}, string_t>,
-            field_t<
-                FieldId{2},
-                adapted<
-                    test::TemplatedTestAdapter,
-                    struct_t<::test_cpp2::cpp_reflection::IntStruct>>>,
-            field_t<
-                FieldId{3},
-                adapted<
-                    test::AdapterWithContext,
-                    struct_t<::test_cpp2::cpp_reflection::IntStruct>>>,
-            field_t<FieldId{4}, adapted<test::TemplatedTestAdapter, i64_t>>,
-            field_t<FieldId{5}, adapted<test::TemplatedTestAdapter, i64_t>>,
-            field_t<
-                FieldId{6},
-                adapted<
-                    test::AdapterWithContext,
-                    adapted<test::TemplatedTestAdapter, i64_t>>>>>);
-
-static_assert(
-    test::same_tag<
-        struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
-        fields<
-            field_t<FieldId{2}, i32_t>,
-            field_t<FieldId{1}, string_t>,
-            field_t<FieldId{3}, enum_t<::test_cpp2::cpp_reflection::enum1>>,
-            field_t<FieldId{4}, enum_t<::test_cpp2::cpp_reflection::enum2>>,
-            field_t<FieldId{5}, union_t<::test_cpp2::cpp_reflection::union1>>,
-            field_t<FieldId{6}, union_t<::test_cpp2::cpp_reflection::union2>>,
-            field_t<FieldId{7}, struct_t<::test_cpp2::cpp_reflection::struct1>>,
-            field_t<FieldId{8}, union_t<::test_cpp2::cpp_reflection::union2>>,
-            field_t<FieldId{9}, list<i32_t>>,
-            field_t<FieldId{10}, list<string_t>>,
-            field_t<
-                FieldId{11},
-                cpp_type<std::deque<std::string>, list<string_t>>>,
-            field_t<
-                FieldId{12},
-                list<struct_t<::test_cpp2::cpp_reflection::structA>>>,
-            field_t<FieldId{13}, set<i32_t>>,
-            field_t<FieldId{14}, set<string_t>>,
-            field_t<FieldId{15}, set<string_t>>,
-            field_t<
-                FieldId{16},
-                set<struct_t<::test_cpp2::cpp_reflection::structB>>>,
-            field_t<
-                FieldId{17},
-                map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>>,
-            field_t<
-                FieldId{18},
-                map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>,
-            field_t<FieldId{20}, map<binary_t, binary_t>>>>);
-
-TEST(FieldsTest, Fields) {
-  const std::vector<type::field_id_u_t> expectedIds = {
-      2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20};
-  const std::vector<std::type_index> expectedTags = {
-      typeid(i32_t),
-      typeid(string_t),
-      typeid(enum_t<::test_cpp2::cpp_reflection::enum1>),
-      typeid(enum_t<::test_cpp2::cpp_reflection::enum2>),
-      typeid(union_t<::test_cpp2::cpp_reflection::union1>),
-      typeid(union_t<::test_cpp2::cpp_reflection::union2>),
-      typeid(struct_t<::test_cpp2::cpp_reflection::struct1>),
-      typeid(union_t<::test_cpp2::cpp_reflection::union2>),
-      typeid(list<i32_t>),
-      typeid(list<string_t>),
-      typeid(cpp_type<std::deque<std::string>, list<string_t>>),
-      typeid(list<struct_t<::test_cpp2::cpp_reflection::structA>>),
-      typeid(set<i32_t>),
-      typeid(set<string_t>),
-      typeid(set<string_t>),
-      typeid(set<struct_t<::test_cpp2::cpp_reflection::structB>>),
-      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>),
-      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>),
-      typeid(map<binary_t, binary_t>)};
-
-  std::vector<type::field_id_u_t> ids;
-  std::vector<std::type_index> tags;
-  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
-      field([&](auto id, auto tag) {
-        ids.emplace_back(id.value);
-        tags.emplace_back(typeid(tag));
-      });
-  EXPECT_EQ(ids, expectedIds);
-  EXPECT_EQ(tags, expectedTags);
-}
-
 TEST(FieldsTest, Get) {
   test_cpp2::cpp_reflection::struct3 s;
   using Tag = type::struct_t<test_cpp2::cpp_reflection::struct3>;
@@ -164,14 +48,6 @@ TEST(FieldsTest, Get) {
   EXPECT_EQ(s.fieldE()->us_ref(), "20");
   test::
       same_tag<decltype(s.fieldE()), decltype(op::getById<Tag, FieldId{5}>(s))>;
-
-  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
-      id([&](auto id) {
-        op::getById<Tag, FieldId{decltype(id)::value}>(s).emplace();
-      });
-
-  EXPECT_EQ(*s.fieldA(), 0);
-  EXPECT_FALSE(s.fieldE()->us_ref());
 }
 
 TEST(FieldsTest, field_id_by_ordinal) {

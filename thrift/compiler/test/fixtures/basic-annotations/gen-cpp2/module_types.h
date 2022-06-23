@@ -499,18 +499,6 @@ class YourStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::enum_t<::cpp2::YourEnum>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::YourUnion>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 9;
 
   template<class T>

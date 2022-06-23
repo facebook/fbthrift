@@ -228,9 +228,6 @@ class MyDataItem final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 0;
 
   template<class T>
@@ -332,18 +329,6 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::string_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 9;
 
   template<class T>
@@ -997,13 +982,6 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -1504,10 +1482,6 @@ class ReservedKeyword final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -1672,10 +1646,6 @@ class UnionToBeRenamed final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i32_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>

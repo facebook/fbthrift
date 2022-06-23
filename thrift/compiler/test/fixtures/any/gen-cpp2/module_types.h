@@ -62,10 +62,6 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -233,10 +229,6 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -490,10 +482,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>

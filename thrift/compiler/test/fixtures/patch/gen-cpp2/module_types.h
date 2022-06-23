@@ -633,11 +633,6 @@ class MyData final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   template<class T>
@@ -864,10 +859,6 @@ class InnerUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::binary_t>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -1121,12 +1112,6 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -1540,33 +1525,6 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::byte_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::i16_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::i32_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::float_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::double_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{12}, ::apache::thrift::type::byte_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{13}, ::apache::thrift::type::i16_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{14}, ::apache::thrift::type::i32_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{15}, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{16}, ::apache::thrift::type::float_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{17}, ::apache::thrift::type::double_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{18}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{19}, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{20}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{21}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{22}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 24;
 
   template<class T>
@@ -3167,11 +3125,6 @@ class MyDataPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 2;
 
   template<class T>
@@ -3377,12 +3330,6 @@ class MyDataValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -3648,13 +3595,6 @@ class OptionalMyDataValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -3971,10 +3911,6 @@ class InnerUnionPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -4129,13 +4065,6 @@ class InnerUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -4461,13 +4390,6 @@ class OptionalInnerUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -4784,12 +4706,6 @@ class MyUnionPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -5046,13 +4962,6 @@ class MyUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -5378,13 +5287,6 @@ class OptionalMyUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -5701,13 +5603,6 @@ class MyStructField21PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -6051,13 +5946,6 @@ class OptionalMyStructField21PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField21PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField21PatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -6384,13 +6272,6 @@ class MyStructField22PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -6734,13 +6615,6 @@ class OptionalMyStructField22PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField22PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField22PatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -7067,12 +6941,6 @@ class MyStructField23PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -7357,13 +7225,6 @@ class OptionalMyStructField23PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField23PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField23PatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -7690,33 +7551,6 @@ class MyStructPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BoolPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BytePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I16PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I64PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::FloatPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::DoublePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBoolPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{12}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBytePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{13}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI16PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{14}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI32PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{15}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI64PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{16}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalFloatPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{17}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalDoublePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{18}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalStringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{19}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBinaryPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{20}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyDataValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{21}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField21PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{22}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField22PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField23PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 24;
 
   template<class T>
@@ -9044,12 +8878,6 @@ class MyStructValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -9315,13 +9143,6 @@ class OptionalMyStructValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>>
-  >;
-
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
