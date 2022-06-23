@@ -32,6 +32,9 @@ const char* ValueWrapper<Base>::__fbthrift_thrift_uri() {
   static const folly::Indestructible<std::string> ret = uri<Base>();
   return ret->c_str();
 }
+
+template const char* ObjectWrapper<ObjectStruct>::__fbthrift_thrift_uri();
+template const char* ValueWrapper<ValueUnion>::__fbthrift_thrift_uri();
 } // namespace apache::thrift::protocol::detail
 
 namespace apache::thrift::conformance::register_protocol_object_and_value {
