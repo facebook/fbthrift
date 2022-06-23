@@ -72,6 +72,12 @@ struct OrdinalImpl<Tag, std::integral_constant<FieldOrdinal, Ord>> {
   // T is an ordinal, return itself
   using type = std::integral_constant<FieldOrdinal, Ord>;
 };
+
+struct MakeVoid {
+  template <class...>
+  using apply = void;
+};
+
 } // namespace detail
 } // namespace field
 } // namespace thrift

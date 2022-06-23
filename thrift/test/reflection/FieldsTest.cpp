@@ -209,7 +209,8 @@ template <
     class Id,
     class Ident,
     bool is_type_tag_unique,
-    class TypeTag>
+    class TypeTag,
+    class FieldTag>
 void checkField() {
   test::same_tag<Id, struct_private_access::field_id<Struct, Ordinal>>;
   test::same_tag<TypeTag, struct_private_access::type_tag<Struct, Ordinal>>;
@@ -227,48 +228,97 @@ void checkField() {
   test::same_tag<field::id<StructTag, Ordinal>, Id>;
   test::same_tag<field::type_tag<StructTag, Ordinal>, TypeTag>;
   test::same_tag<field::ident<StructTag, Ordinal>, Ident>;
+  test::same_tag<field::tag<StructTag, Ordinal>, FieldTag>;
 
   test::same_tag<field::ordinal<StructTag, Id>, Ordinal>;
   test::same_tag<field::id<StructTag, Id>, Id>;
   test::same_tag<field::type_tag<StructTag, Id>, TypeTag>;
   test::same_tag<field::ident<StructTag, Id>, Ident>;
+  test::same_tag<field::tag<StructTag, Id>, FieldTag>;
 
   if constexpr (is_type_tag_unique) {
     test::same_tag<field::ordinal<StructTag, TypeTag>, Ordinal>;
     test::same_tag<field::id<StructTag, TypeTag>, Id>;
     test::same_tag<field::type_tag<StructTag, TypeTag>, TypeTag>;
     test::same_tag<field::ident<StructTag, TypeTag>, Ident>;
+    test::same_tag<field::tag<StructTag, TypeTag>, FieldTag>;
   }
 
   test::same_tag<field::ordinal<StructTag, Ident>, Ordinal>;
   test::same_tag<field::id<StructTag, Ident>, Id>;
   test::same_tag<field::type_tag<StructTag, Ident>, TypeTag>;
   test::same_tag<field::ident<StructTag, Ident>, Ident>;
+  test::same_tag<field::tag<StructTag, Ident>, FieldTag>;
 }
 
 TEST(FieldsTest, UnifiedAPIs) {
-  // clang-format off
   using test_cpp2::cpp_reflection::struct3;
-  checkField<struct3, field_ordinal<0>,  void,         void,        true,  void>();
-  checkField<struct3, field_ordinal<1>,  field_id<2>,  tag::fieldA, true,  i32_t>();
-  checkField<struct3, field_ordinal<2>,  field_id<1>,  tag::fieldB, true,  string_t>();
-  checkField<struct3, field_ordinal<3>,  field_id<3>,  tag::fieldC, true,  enum_t<::test_cpp2::cpp_reflection::enum1>>();
-  checkField<struct3, field_ordinal<4>,  field_id<4>,  tag::fieldD, true,  enum_t<::test_cpp2::cpp_reflection::enum2>>();
-  checkField<struct3, field_ordinal<5>,  field_id<5>,  tag::fieldE, true,  union_t<::test_cpp2::cpp_reflection::union1>>();
-  checkField<struct3, field_ordinal<6>,  field_id<6>,  tag::fieldF, false, union_t<::test_cpp2::cpp_reflection::union2>>();
-  checkField<struct3, field_ordinal<7>,  field_id<7>,  tag::fieldG, true,  struct_t<::test_cpp2::cpp_reflection::struct1>>();
-  checkField<struct3, field_ordinal<8>,  field_id<8>,  tag::fieldH, false, union_t<::test_cpp2::cpp_reflection::union2>>();
-  checkField<struct3, field_ordinal<9>,  field_id<9>,  tag::fieldI, true,  list<i32_t>>();
-  checkField<struct3, field_ordinal<10>, field_id<10>, tag::fieldJ, true,  list<string_t>>();
-  checkField<struct3, field_ordinal<11>, field_id<11>, tag::fieldK, true,  cpp_type<std::deque<std::string>, list<string_t>>>();
-  checkField<struct3, field_ordinal<12>, field_id<12>, tag::fieldL, true,  list<struct_t<::test_cpp2::cpp_reflection::structA>>>();
-  checkField<struct3, field_ordinal<13>, field_id<13>, tag::fieldM, true,  set<i32_t>>();
-  checkField<struct3, field_ordinal<14>, field_id<14>, tag::fieldN, false, set<string_t>>();
-  checkField<struct3, field_ordinal<15>, field_id<15>, tag::fieldO, false, set<string_t>>();
-  checkField<struct3, field_ordinal<16>, field_id<16>, tag::fieldP, true,  set<struct_t<::test_cpp2::cpp_reflection::structB>>>();
-  checkField<struct3, field_ordinal<17>, field_id<17>, tag::fieldQ, true,  map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>>();
-  checkField<struct3, field_ordinal<18>, field_id<18>, tag::fieldR, true,  map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>();
-  checkField<struct3, field_ordinal<19>, field_id<20>, tag::fieldS, true,  map<binary_t, binary_t>>();
+
+  using TypeTag0 = void;
+  using TypeTag1 = i32_t;
+  using TypeTag2 = string_t;
+  using TypeTag3 = enum_t<::test_cpp2::cpp_reflection::enum1>;
+  using TypeTag4 = enum_t<::test_cpp2::cpp_reflection::enum2>;
+  using TypeTag5 = union_t<::test_cpp2::cpp_reflection::union1>;
+  using TypeTag6 = union_t<::test_cpp2::cpp_reflection::union2>;
+  using TypeTag7 = struct_t<::test_cpp2::cpp_reflection::struct1>;
+  using TypeTag8 = union_t<::test_cpp2::cpp_reflection::union2>;
+  using TypeTag9 = list<i32_t>;
+  using TypeTag10 = list<string_t>;
+  using TypeTag11 = cpp_type<std::deque<std::string>, list<string_t>>;
+  using TypeTag12 = list<struct_t<::test_cpp2::cpp_reflection::structA>>;
+  using TypeTag13 = set<i32_t>;
+  using TypeTag14 = set<string_t>;
+  using TypeTag15 = set<string_t>;
+  using TypeTag16 = set<struct_t<::test_cpp2::cpp_reflection::structB>>;
+  using TypeTag17 =
+      map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>;
+  using TypeTag18 =
+      map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>;
+  using TypeTag19 = map<binary_t, binary_t>;
+
+  using FieldTag0 = void;
+  using FieldTag1 = type::field<TypeTag1, FieldContext<struct3, 2>>;
+  using FieldTag2 = type::field<TypeTag2, FieldContext<struct3, 1>>;
+  using FieldTag3 = type::field<TypeTag3, FieldContext<struct3, 3>>;
+  using FieldTag4 = type::field<TypeTag4, FieldContext<struct3, 4>>;
+  using FieldTag5 = type::field<TypeTag5, FieldContext<struct3, 5>>;
+  using FieldTag6 = type::field<TypeTag6, FieldContext<struct3, 6>>;
+  using FieldTag7 = type::field<TypeTag7, FieldContext<struct3, 7>>;
+  using FieldTag8 = type::field<TypeTag8, FieldContext<struct3, 8>>;
+  using FieldTag9 = type::field<TypeTag9, FieldContext<struct3, 9>>;
+  using FieldTag10 = type::field<TypeTag10, FieldContext<struct3, 10>>;
+  using FieldTag11 = type::field<TypeTag11, FieldContext<struct3, 11>>;
+  using FieldTag12 = type::field<TypeTag12, FieldContext<struct3, 12>>;
+  using FieldTag13 = type::field<TypeTag13, FieldContext<struct3, 13>>;
+  using FieldTag14 = type::field<TypeTag14, FieldContext<struct3, 14>>;
+  using FieldTag15 = type::field<TypeTag15, FieldContext<struct3, 15>>;
+  using FieldTag16 = type::field<TypeTag16, FieldContext<struct3, 16>>;
+  using FieldTag17 = type::field<TypeTag17, FieldContext<struct3, 17>>;
+  using FieldTag18 = type::field<TypeTag18, FieldContext<struct3, 18>>;
+  using FieldTag19 = type::field<TypeTag19, FieldContext<struct3, 20>>;
+
+  // clang-format off
+  checkField<struct3, field_ordinal<0>,  void,         void,        true,  TypeTag0,  FieldTag0>();
+  checkField<struct3, field_ordinal<1>,  field_id<2>,  tag::fieldA, true,  TypeTag1,  FieldTag1>();
+  checkField<struct3, field_ordinal<2>,  field_id<1>,  tag::fieldB, true,  TypeTag2,  FieldTag2>();
+  checkField<struct3, field_ordinal<3>,  field_id<3>,  tag::fieldC, true,  TypeTag3,  FieldTag3>();
+  checkField<struct3, field_ordinal<4>,  field_id<4>,  tag::fieldD, true,  TypeTag4,  FieldTag4>();
+  checkField<struct3, field_ordinal<5>,  field_id<5>,  tag::fieldE, true,  TypeTag5,  FieldTag5>();
+  checkField<struct3, field_ordinal<6>,  field_id<6>,  tag::fieldF, false, TypeTag6,  FieldTag6>();
+  checkField<struct3, field_ordinal<7>,  field_id<7>,  tag::fieldG, true,  TypeTag7,  FieldTag7>();
+  checkField<struct3, field_ordinal<8>,  field_id<8>,  tag::fieldH, false, TypeTag8,  FieldTag8>();
+  checkField<struct3, field_ordinal<9>,  field_id<9>,  tag::fieldI, true,  TypeTag9,  FieldTag9>();
+  checkField<struct3, field_ordinal<10>, field_id<10>, tag::fieldJ, true,  TypeTag10, FieldTag10>();
+  checkField<struct3, field_ordinal<11>, field_id<11>, tag::fieldK, true,  TypeTag11, FieldTag11>();
+  checkField<struct3, field_ordinal<12>, field_id<12>, tag::fieldL, true,  TypeTag12, FieldTag12>();
+  checkField<struct3, field_ordinal<13>, field_id<13>, tag::fieldM, true,  TypeTag13, FieldTag13>();
+  checkField<struct3, field_ordinal<14>, field_id<14>, tag::fieldN, false, TypeTag14, FieldTag14>();
+  checkField<struct3, field_ordinal<15>, field_id<15>, tag::fieldO, false, TypeTag15, FieldTag15>();
+  checkField<struct3, field_ordinal<16>, field_id<16>, tag::fieldP, true,  TypeTag16, FieldTag16>();
+  checkField<struct3, field_ordinal<17>, field_id<17>, tag::fieldQ, true,  TypeTag17, FieldTag17>();
+  checkField<struct3, field_ordinal<18>, field_id<18>, tag::fieldR, true,  TypeTag18, FieldTag18>();
+  checkField<struct3, field_ordinal<19>, field_id<20>, tag::fieldS, true,  TypeTag19, FieldTag19>();
   // clang-format off
 }
 
@@ -280,21 +330,25 @@ TEST(FieldsTest, NotFoundFieldInfo) {
   test::same_tag<field::id<Tag, field_ordinal<0>>, void>;
   test::same_tag<field::type_tag<Tag, field_ordinal<0>>, void>;
   test::same_tag<field::ident<Tag, field_ordinal<0>>, void>;
+  test::same_tag<field::tag<Tag, field_ordinal<0>>, void>;
 
   test::same_tag<field::ordinal<Tag, field_id<200>>, field_ordinal<0>>;
   test::same_tag<field::id<Tag, field_id<200>>, void>;
   test::same_tag<field::type_tag<Tag, field_id<200>>, void>;
   test::same_tag<field::ident<Tag, field_id<200>>, void>;
+  test::same_tag<field::tag<Tag, field_id<200>>, void>;
 
   test::same_tag<field::ordinal<Tag, binary_t>, field_ordinal<0>>;
   test::same_tag<field::id<Tag, binary_t>, void>;
   test::same_tag<field::type_tag<Tag, binary_t>, void>;
   test::same_tag<field::ident<Tag, binary_t>, void>;
+  test::same_tag<field::tag<Tag, binary_t>, void>;
 
   test::same_tag<field::ordinal<Tag, tag::a>, field_ordinal<0>>;
   test::same_tag<field::id<Tag, tag::a>, void>;
   test::same_tag<field::type_tag<Tag, tag::a>, void>;
   test::same_tag<field::ident<Tag, tag::a>, void>;
+  test::same_tag<field::tag<Tag, tag::a>, void>;
 }
 
 } // namespace apache::thrift::type

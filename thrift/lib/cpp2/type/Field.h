@@ -50,6 +50,29 @@ using type_tag = ::apache::thrift::detail::st::struct_private_access::
 template <class Tag, class T>
 using ident = ::apache::thrift::detail::st::struct_private_access::
     ident<type::native_type<Tag>, ordinal<Tag, T>>;
+
+namespace detail {
+template <class Tag, class T>
+FOLLY_INLINE_VARIABLE constexpr bool exists =
+    ordinal<Tag, T>::value != FieldOrdinal{0};
+
+struct TagImpl {
+ public:
+  template <class Tag, class T>
+  using apply = ::apache::thrift::type::field<
+      type_tag<Tag, T>,
+      ::apache::thrift::FieldContext<
+          type::native_type<Tag>,
+          folly::to_underlying(id<Tag, T>::value)>>;
+};
+} // namespace detail
+
+template <class Tag, class T>
+using tag = typename std::conditional_t<
+    detail::exists<Tag, T>,
+    detail::TagImpl,
+    detail::MakeVoid>::template apply<Tag, T>;
+
 } // namespace field
 } // namespace thrift
 } // namespace apache
