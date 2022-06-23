@@ -28,7 +28,8 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
       CPUConcurrencyController::Config{});
 }
 
-THRIFT_PLUGGABLE_FUNC_REGISTER(int64_t, getCPULoadCounter, bool) {
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    int64_t, getCPULoadCounter, std::chrono::milliseconds) {
   return -1;
 }
 } // namespace detail
@@ -38,7 +39,7 @@ void CPUConcurrencyController::cycleOnce() {
     return;
   }
 
-  auto load = getLoad(true /* refreshCounters */);
+  auto load = getLoad();
   if (load >= config().cpuTarget) {
     lastOverloadStart_ = std::chrono::steady_clock::now();
     auto lim = serverConfigs_.getMaxRequests();

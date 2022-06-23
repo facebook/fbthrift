@@ -25,7 +25,8 @@
 namespace apache::thrift {
 
 namespace detail {
-THRIFT_PLUGGABLE_FUNC_DECLARE(int64_t, getCPULoadCounter, bool refreshCounters);
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    int64_t, getCPULoadCounter, std::chrono::milliseconds refreshPeriodMs);
 } // namespace detail
 
 class CPUConcurrencyController {
@@ -92,9 +93,9 @@ class CPUConcurrencyController {
         std::chrono::milliseconds(config().refractoryPeriodMs);
   }
 
-  static int64_t getLoad(bool refreshCounters = false) {
+  int64_t getLoad() const {
     return std::clamp<int64_t>(
-        detail::getCPULoadCounter(refreshCounters), 0, 100);
+        detail::getCPULoadCounter(config().refreshPeriodMs), 0, 100);
   }
 
  private:
