@@ -59,7 +59,7 @@
     template<> static constexpr int value<::apache::thrift::tag::<%field:cpp_name%>> = <%field:ordinal%>;
     <%/struct:fields%>
 #else
-<%! Build speed wise, function overload is much slower than explicit template specification %>
+<%! Build speed wise, function overload is much slower than explicit template specialization %>
 <%! TODO(ytj): Remove #else branch when gcc fixed bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85282 %>
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
     <%#struct:fields%>
