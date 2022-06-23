@@ -16,6 +16,7 @@
 
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 
 #include <folly/Traits.h>
@@ -487,9 +488,87 @@ TYPED_TEST_P(TerseWriteSerializerTests, AdaptedFields) {
   EXPECT_EQ(emptys, objs);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, AdaptedStringFields) {
+  terse_write::AdaptedStringFields obj;
+  terse_write::EmptyStruct empty;
+
+  obj.field1() = Wrapper<std::string>{"1"};
+  obj.field2() = Wrapper<std::string>{"2"};
+  obj.field3() =
+      AdaptedWithContext<std::string, terse_write::AdaptedStringFields, 3>{"3"};
+  obj.field4() = Wrapper<Wrapper<std::string>>{{"4"}};
+  obj.field5() = AdaptedWithContext<
+      Wrapper<std::string>,
+      terse_write::AdaptedStringFields,
+      5>{Wrapper<std::string>{{"5"}}};
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  EXPECT_NE(emptys, objs);
+
+  obj.field1() = Wrapper<std::string>{""};
+  obj.field2() = Wrapper<std::string>{""};
+  obj.field3() =
+      AdaptedWithContext<std::string, terse_write::AdaptedStringFields, 3>{""};
+  obj.field4() = Wrapper<Wrapper<std::string>>{{""}};
+  obj.field5() = AdaptedWithContext<
+      Wrapper<std::string>,
+      terse_write::AdaptedStringFields,
+      5>{Wrapper<std::string>{{""}}};
+
+  objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::AdaptedStringFields objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+  EXPECT_EQ(emptys, objs);
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, AdaptedListFields) {
+  terse_write::AdaptedListFields obj;
+  terse_write::EmptyStruct empty;
+
+  obj.field1() = Wrapper<std::vector<int32_t>>{{1}};
+  obj.field2() = Wrapper<std::vector<int32_t>>{{2}};
+  obj.field3() = AdaptedWithContext<
+      std::vector<int32_t>,
+      terse_write::AdaptedListFields,
+      3>{{3}};
+  obj.field4() = Wrapper<Wrapper<std::vector<int32_t>>>{{{4}}};
+  obj.field5() = AdaptedWithContext<
+      Wrapper<std::vector<int32_t>>,
+      terse_write::AdaptedListFields,
+      5>{Wrapper<std::vector<int32_t>>{{std::vector<int32_t>{5}}}};
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  EXPECT_NE(emptys, objs);
+
+  obj.field1() = Wrapper<std::vector<int32_t>>{{}};
+  obj.field2() = Wrapper<std::vector<int32_t>>{{}};
+  obj.field3() = AdaptedWithContext<
+      std::vector<int32_t>,
+      terse_write::AdaptedListFields,
+      3>{std::vector<int32_t>{}};
+  obj.field4() = Wrapper<Wrapper<std::vector<int32_t>>>{{{}}};
+  obj.field5() = AdaptedWithContext<
+      Wrapper<std::vector<int32_t>>,
+      terse_write::AdaptedListFields,
+      5>{Wrapper<std::vector<int32_t>>{{std::vector<int32_t>{}}}};
+
+  objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::AdaptedListFields objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+  EXPECT_EQ(emptys, objs);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     AdaptedFields,
+    AdaptedStringFields,
+    AdaptedListFields,
     MixedFieldsStruct,
     MixedFieldsStructWithCustomDefault,
     NestedMixedStruct,

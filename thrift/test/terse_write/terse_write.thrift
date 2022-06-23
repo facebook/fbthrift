@@ -140,6 +140,10 @@ struct TerseStructWithCustomDefault {
 
 @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
 typedef i32 AdaptedInteger
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef string AdaptedString
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef list<i32> AdaptedList
 
 @thrift.TerseWrite
 struct AdaptedFields {
@@ -152,5 +156,33 @@ struct AdaptedFields {
   4: AdaptedInteger field4 (py3.hidden);
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
   5: AdaptedInteger field5 (py3.hidden);
+  6: string meta;
+}
+
+@thrift.TerseWrite
+struct AdaptedStringFields {
+  1: AdaptedString field1 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  2: string field2 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  3: string field3 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  4: AdaptedString field4 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  5: AdaptedString field5 (py3.hidden);
+  6: string meta;
+}
+
+@thrift.TerseWrite
+struct AdaptedListFields {
+  1: AdaptedList field1 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  2: list<i32> field2 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  3: list<i32> field3 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  4: AdaptedList field4 (py3.hidden);
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  5: AdaptedList field5 (py3.hidden);
   6: string meta;
 }

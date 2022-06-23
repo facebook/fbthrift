@@ -927,8 +927,8 @@ void TerseAdaptedFields::__fbthrift_clear_terse_fields() {
 
 bool TerseAdaptedFields::__fbthrift_is_empty() const {
   return !(!(this->__fbthrift_field_int_field == ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, TerseAdaptedFields>())) &&
- !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_string_field)) &&
- !(!this->__fbthrift_field_set_field.empty());
+ !(!(this->__fbthrift_field_string_field == ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::string, TerseAdaptedFields>())) &&
+ !(!(this->__fbthrift_field_set_field == ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::set<::std::int32_t>, TerseAdaptedFields>()));
 }
 
 bool TerseAdaptedFields::operator==(const TerseAdaptedFields& rhs) const {

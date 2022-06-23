@@ -16,24 +16,24 @@
 %><%!
 // TODO(dokwon): Use apache::thrift::op::isEmpty after removing C++17 dependency in type/op library.
 %><%#field:cpp_ref?%><%!
-  %><% > field/member%><%!
+  %><% > field/member%> && <%!
 %><%/field:cpp_ref?%><%!
+%><%#field:cpp_first_adapter%><%!
+  // Must use == operator, and check against the default constructor (ignoring any IDL-specified default).
+  %>!(<% >  module_types_tcc/field_ref %> == <%field:cpp_type%>())<%!
+%><%/field:cpp_first_adapter%><%!
+%><%^field:cpp_first_adapter%><%!
 %><%#type:resolves_to_container?%><%!
-  %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!<% > field/member%><%#field:cpp_ref?%>-><%/field:cpp_ref?%><%^field:cpp_ref?%>.<%/field:cpp_ref?%>empty()<%!
+  %>!<% > field/member%><%#field:cpp_ref?%>-><%/field:cpp_ref?%><%^field:cpp_ref?%>.<%/field:cpp_ref?%>empty()<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!
-  %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!::apache::thrift::empty(<% > module_types_tcc/pm_value%>)<%!
+  %>!::apache::thrift::empty(<% > module_types_tcc/pm_value%>)<%!
 %><%/type:struct?%><%!
 %><%#type:raw_string_or_binary?%><%!
-  %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!
+  %>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!
 %><%/type:raw_string_or_binary?%><%!
 %><%^type:resolves_to_container?%><%^type:raw_string_or_binary?%><%^type:struct?%><%!
-  %><%#field:cpp_first_adapter%><%!
-    // Must use == operator, and check against the default constructor (ignoring any IDL-specified default).
-    %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!(<% >  module_types_tcc/field_ref %> == <%field:cpp_type%>())<%!
-  %><%/field:cpp_first_adapter%><%!
-  %><%^field:cpp_first_adapter%><%!
-    %><%#field:cpp_ref?%> && <%/field:cpp_ref?%><% >  module_types_tcc/field_ref %> != <% > field/intrinsic_default%><%!
-  %><%/field:cpp_first_adapter%><%!
+  %><% >  module_types_tcc/field_ref %> != <% > field/intrinsic_default%><%!
 %><%/type:struct?%><%/type:raw_string_or_binary?%><%/type:resolves_to_container?%><%!
+%><%/field:cpp_first_adapter%><%!
 %>
