@@ -38,3 +38,9 @@ def get_client(
     ssl_context: typing.Optional[SSLContext] = ...,
     ssl_timeout: float = ...,
 ) -> TAsyncClient: ...
+def install_proxy_factory(
+    factory: typing.Optional[typing.Callable[[typing.Type[AsyncClient]], ...]],
+) -> None: ...
+def get_proxy_factory() -> typing.Optional[
+    typing.Callable[[typing.Type[AsyncClient]], ...]
+]: ...

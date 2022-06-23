@@ -21,3 +21,5 @@ cdef void requestchannel_callback(
     cFollyTry[cRequestChannel_ptr]&& result,
     PyObject* userData,
 )
+
+cpdef object get_proxy_factory()

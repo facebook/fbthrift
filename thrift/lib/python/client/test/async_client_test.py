@@ -16,10 +16,17 @@
 from __future__ import annotations
 
 import asyncio
+import typing
 
 from unittest import IsolatedAsyncioTestCase
 
-from thrift.python.client import ClientType, get_client
+from thrift.python.client import (
+    ClientType,
+    get_client,
+    get_proxy_factory,
+    install_proxy_factory,
+)
+from thrift.python.client.async_client import AsyncClient
 from thrift.python.exceptions import (
     ApplicationError,
     ApplicationErrorType,
@@ -39,6 +46,19 @@ from thrift.python.test.thrift_types import (
 
 TEST_HEADER_KEY = "headerKey"
 TEST_HEADER_VALUE = "headerValue"
+
+
+class ThriftClientTestProxy:
+    inner: AsyncClient
+
+    def __init__(self, inner: AsyncClient) -> None:
+        self.inner = inner
+
+
+def test_proxy_factory(
+    client_class: typing.Type[AsyncClient],
+) -> typing.Callable[[AsyncClient], ...]:
+    return ThriftClientTestProxy
 
 
 class AsyncClientTests(IsolatedAsyncioTestCase):
@@ -243,3 +263,19 @@ class AsyncClientTests(IsolatedAsyncioTestCase):
                 with self.assertRaises(ArithmeticException) as e:
                     await client.nums(4, 2)
                 self.assertEqual(e.exception.msg, "from outside of stream")
+
+    async def test_proxy_factory(self) -> None:
+        # Should be empty before we assign it
+        self.assertEqual(get_proxy_factory(), None)
+
+        # Should be able to assign/get a test factory
+        install_proxy_factory(test_proxy_factory)
+        self.assertEqual(get_proxy_factory(), test_proxy_factory)
+        async with server_in_event_loop() as addr:
+            self.assertIsInstance(
+                get_client(TestService, host=addr.ip, port=addr.port),
+                ThriftClientTestProxy,
+            )
+        # Should be able to unhook a factory
+        install_proxy_factory(None)
+        self.assertEqual(get_proxy_factory(), None)

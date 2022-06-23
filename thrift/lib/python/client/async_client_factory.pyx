@@ -38,6 +38,18 @@ from thrift.python.client.request_channel import ClientType
 from thrift.python.serializer cimport Protocol as cProtocol
 
 
+cdef object proxy_factory = None
+
+
+cpdef object get_proxy_factory():
+    return proxy_factory
+
+
+def install_proxy_factory(factory):
+    global proxy_factory
+    proxy_factory = factory
+
+
 def get_client(
     clientKlass,
     *,
@@ -128,8 +140,9 @@ def get_client(
         )
     else:
         raise ValueError("Must set path or host/port")
-
-    return client
+    factory = get_proxy_factory()
+    proxy = factory(clientKlass.Async) if factory else None
+    return proxy(client) if proxy else client
 
 
 async def _no_op():
