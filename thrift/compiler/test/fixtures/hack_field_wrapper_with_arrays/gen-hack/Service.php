@@ -62,67 +62,6 @@ interface ServiceClientIf extends \IThriftSyncIf {
 trait ServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_func(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('func', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Service_func_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Service_func_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Service_func_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("func failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('func', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('func', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('func', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('func', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('func', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("func failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('func', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClientIf {
@@ -158,7 +97,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_func($currentseqid);
+    $response = $this->recvImplHelper(Service_func_result::class, "func", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -198,7 +137,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_func($currentseqid);
+    $response = $this->recvImplHelper(Service_func_result::class, "func", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -212,7 +151,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
     return $this->sendImplHelper($args, "func", false);
   }
   public function recv_func(?int $expectedsequenceid = null): int {
-    return $this->recvImpl_func($expectedsequenceid);
+    return $this->recvImplHelper(Service_func_result::class, "func", false, $expectedsequenceid);
   }
 }
 
@@ -363,8 +302,10 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 
 }
 
-class Service_func_result implements \IThriftSyncStruct {
+class Service_func_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -377,13 +318,13 @@ class Service_func_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?this::TResult $success;
 
-  public function __construct(?int $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

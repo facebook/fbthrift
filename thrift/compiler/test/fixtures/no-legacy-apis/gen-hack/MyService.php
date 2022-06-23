@@ -65,67 +65,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_query(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \fixtures\no-legacy-apis\MyStruct {
-    try {
-      $this->eventHandler_->preRecv('query', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\no-legacy-apis\MyService_query_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\no-legacy-apis\MyService_query_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\no-legacy-apis\MyService_query_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("query failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('query', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('query', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('query', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('query', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('query', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("query failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('query', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncClientIf {
@@ -159,7 +98,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_query($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -197,7 +136,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_query($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -210,7 +149,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     return $this->sendImplHelper($args, "query", false);
   }
   public function recv_query(?int $expectedsequenceid = null): \fixtures\no-legacy-apis\MyStruct {
-    return $this->recvImpl_query($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $expectedsequenceid);
   }
 }
 
@@ -503,8 +442,10 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
 }
 
-class MyService_query_result implements \IThriftSyncStruct {
+class MyService_query_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = \fixtures\no-legacy-apis\MyStruct;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -518,13 +459,13 @@ class MyService_query_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?\fixtures\no-legacy-apis\MyStruct,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 7307096097859369800;
-  public ?\fixtures\no-legacy-apis\MyStruct $success;
+  public ?this::TResult $success;
 
-  public function __construct(?\fixtures\no-legacy-apis\MyStruct $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

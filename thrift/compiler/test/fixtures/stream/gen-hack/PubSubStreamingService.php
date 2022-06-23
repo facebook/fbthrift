@@ -204,7 +204,6 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
-
   protected function recvImpl_streamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
@@ -293,7 +292,6 @@ trait PubSubStreamingServiceClientBase {
     $this->eventHandler_->postRecv('streamthrows', $expectedsequenceid, null);
     return;
   }
-
 
   protected function recvImpl_boththrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -388,7 +386,6 @@ trait PubSubStreamingServiceClientBase {
     $this->eventHandler_->postRecv('boththrows', $expectedsequenceid, null);
     return;
   }
-
 
   protected function recvImpl_responseandstreamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -490,7 +487,6 @@ trait PubSubStreamingServiceClientBase {
     throw $x;
   }
 
-
   protected function recvImpl_returnstreamFast_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
@@ -576,7 +572,6 @@ trait PubSubStreamingServiceClientBase {
     $this->eventHandler_->postRecv('returnstreamFast', $expectedsequenceid, null);
     return;
   }
-
 }
 
 class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements PubSubStreamingServiceAsyncClientIf {

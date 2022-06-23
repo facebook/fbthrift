@@ -126,127 +126,6 @@ trait CClientBase {
   require extends \ThriftClientBase;
 
 
-  protected function recvImpl_f(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('f', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'C_f_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'C_f_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = C_f_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("f failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('f', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('f', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('f', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('f', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('f', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_thing(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('thing', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'C_thing_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'C_thing_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = C_thing_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("thing failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('thing', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('thing', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('thing', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('thing', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('thing', $expectedsequenceid, $success);
-      return $success;
-    }
-    if ($result->bang !== null) {
-      $x = $result->bang;
-      $this->eventHandler_->recvException('thing', $expectedsequenceid, $x);
-      throw $x;
-    }
-    $x = new \TApplicationException("thing failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('thing', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
   protected function recvImpl_numbers_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
@@ -332,7 +211,6 @@ trait CClientBase {
     $this->eventHandler_->postRecv('numbers', $expectedsequenceid, null);
     return;
   }
-
 }
 
 class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
@@ -366,7 +244,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_f($currentseqid);
+    $this->recvImplHelper(C_f_result::class, "f", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -404,7 +282,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_thing($currentseqid);
+    $response = $this->recvImplHelper(C_thing_result::class, "thing", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -478,7 +356,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_f($currentseqid);
+    $this->recvImplHelper(C_f_result::class, "f", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -516,7 +394,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_thing($currentseqid);
+    $response = $this->recvImplHelper(C_thing_result::class, "thing", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -563,7 +441,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     return $this->sendImplHelper($args, "f", false);
   }
   public function recv_f(?int $expectedsequenceid = null): void {
-    $this->recvImpl_f($expectedsequenceid);
+    $this->recvImplHelper(C_f_result::class, "f", true, $expectedsequenceid);
   }
   public function send_thing(int $a, string $b, Set<int> $c): int {
     $args = C_thing_args::fromShape(shape(
@@ -574,7 +452,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     return $this->sendImplHelper($args, "thing", false);
   }
   public function recv_thing(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_thing($expectedsequenceid);
+    return $this->recvImplHelper(C_thing_result::class, "thing", false, $expectedsequenceid);
   }
 }
 
@@ -632,7 +510,7 @@ class C_f_args implements \IThriftSyncStruct {
 
 }
 
-class C_f_result implements \IThriftSyncStruct {
+class C_f_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -811,8 +689,10 @@ class C_thing_args implements \IThriftSyncStruct {
 
 }
 
-class C_thing_result implements \IThriftSyncStruct {
+class C_thing_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -831,15 +711,15 @@ class C_thing_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
     ?'bang' => ?Bang,
   );
 
   const int STRUCTURAL_ID = 8456199022957829086;
-  public ?string $success;
+  public ?this::TResult $success;
   public ?Bang $bang;
 
-  public function __construct(?string $success = null, ?Bang $bang = null)[] {
+  public function __construct(?this::TResult $success = null, ?Bang $bang = null)[] {
     $this->success = $success;
     $this->bang = $bang;
   }
@@ -908,6 +788,12 @@ class C_thing_result implements \IThriftSyncStruct {
     return \TCompactSerializer::serialize($this);
   }
 
+  public function checkForException(): ?\TException {
+    if ($this->bang !== null) {
+      return $this->bang;
+    }
+    return null;
+  }
 }
 
 class C_numbers_args implements \IThriftSyncStruct {

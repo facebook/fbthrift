@@ -518,6 +518,8 @@ class t_hack_generator : public t_concat_generator {
 
   void generate_instance_key(std::ofstream& out);
 
+  void generate_exception_method(std::ofstream& out, const t_struct* tstruct);
+
   /**
    * Helper rendering functions
    */
@@ -2675,6 +2677,11 @@ void t_hack_generator::generate_php_struct_shape_spec(
 
     std::string prefix = nullable || is_constructor_shape ? "?" : "";
 
+    if (dynamic_cast<const t_result_struct*>(tstruct) &&
+        field.name() == "success") {
+      typehint = "this::TResult";
+    }
+
     indent(out) << "  " << prefix << "'" << field.name() << "' => " << prefix
                 << typehint << ",\n";
   }
@@ -3729,6 +3736,11 @@ void t_hack_generator::generate_php_struct_fields(
         struct_class_name,
         nullable && !tstruct->is_union() /* is_field_nullable */);
 
+    if (dynamic_cast<const t_result_struct*>(tstruct) &&
+        field.name() == "success") {
+      typehint = "this::TResult";
+    }
+
     if (nullable || field_wrapper) {
       typehint = "?" + typehint;
     }
@@ -3898,6 +3910,33 @@ void t_hack_generator::generate_php_struct_methods(
   generate_instance_key(out);
   generate_json_reader(out, tstruct);
   generate_adapter_type_checks(out, tstruct);
+
+  if (dynamic_cast<const t_result_struct*>(tstruct)) {
+    generate_exception_method(out, tstruct);
+  }
+}
+
+void t_hack_generator::generate_exception_method(
+    std::ofstream& out, const t_struct* tstruct) {
+  const auto& fields = tstruct->fields();
+  if (fields.size() == 0 ||
+      (fields.size() == 1 && fields[0].name() == "success")) {
+    return;
+  }
+  auto it = fields.begin() + (fields[0].name() == "success");
+
+  indent(out) << "public function checkForException(): ?\\TException {\n";
+  indent_up();
+  for (; it != fields.end(); ++it) {
+    indent(out) << "if ($this->" << it[0].name() << " !== null) {\n";
+    indent_up();
+    indent(out) << "return $this->" << it[0].name() << ";\n";
+    indent_down();
+    indent(out) << "}\n";
+  }
+  indent(out) << "return null;\n";
+  indent_down();
+  indent(out) << "}\n";
 }
 
 void t_hack_generator::generate_php_struct_constructor_field_assignment(
@@ -4019,6 +4058,10 @@ void t_hack_generator::generate_php_struct_constructor(
       typehint = *adapter + "::THackType";
     } else {
       typehint = type_to_typehint(field.get_type());
+    }
+    if (dynamic_cast<const t_result_struct*>(tstruct) &&
+        field.name() == "success") {
+      typehint = "this::TResult";
     }
     out << delim << "?" << typehint << " $" << field.name() << " = null";
     delim = ", ";
@@ -4513,7 +4556,15 @@ void t_hack_generator::_generate_php_struct_definition(
     out << " extends \\TException";
   }
   bool is_async = is_async_struct(tstruct);
-  if (is_async) {
+  const t_result_struct* result_struct =
+      dynamic_cast<const t_result_struct*>(tstruct);
+  if (result_struct != nullptr) {
+    if (result_struct->getResultReturnType() == "void") {
+      out << " extends \\ThriftSyncStructWithoutResult";
+    } else {
+      out << " extends \\ThriftSyncStructWithResult";
+    }
+  } else if (is_async) {
     out << " implements \\IThriftAsyncStruct";
   } else {
     out << " implements \\IThriftSyncStruct";
@@ -4543,6 +4594,12 @@ void t_hack_generator::_generate_php_struct_definition(
     indent(out) << "use \\ThriftUnionSerializationTrait;\n\n";
   } else {
     indent(out) << "use \\ThriftSerializationTrait;\n\n";
+  }
+
+  if (result_struct != nullptr &&
+      result_struct->getResultReturnType() != "void") {
+    indent(out) << "const type TResult = ";
+    out << result_struct->getResultReturnType() << ";\n\n";
   }
 
   if (generateAsTrait && type == ThriftStructType::EXCEPTION) {
@@ -5320,10 +5377,10 @@ void t_hack_generator::generate_service_interactions(
       if (function->returns_sink()) {
         _generate_sink_encode_sendImpl(f_service_, interaction, function);
       }
-      if (function->qualifier() != t_function_qualifier::one_way) {
+      if (function->qualifier() != t_function_qualifier::one_way &&
+          is_client_only_function(function)) {
         _generate_recvImpl(f_service_, interaction, function);
       }
-      f_service_ << "\n";
     }
 
     indent_down();
@@ -6117,10 +6174,10 @@ void t_hack_generator::_generate_service_client(
     if (function->returns_sink()) {
       _generate_sink_encode_sendImpl(out, tservice, function);
     }
-    if (function->qualifier() != t_function_qualifier::one_way) {
+    if (function->qualifier() != t_function_qualifier::one_way &&
+        is_client_only_function(function)) {
       _generate_recvImpl(out, tservice, function);
     }
-    out << "\n";
   }
 
   // Generate factory method for interactions
@@ -6903,6 +6960,8 @@ void t_hack_generator::_generate_service_client_children(
             std::make_unique<t_paramlist>(program_));
         // Open function
         bool is_void = function->get_returntype()->is_void();
+        std::string resultname = generate_function_helper_name(
+            tservice, function, PhpFunctionNameSuffix::RESULT);
         out << indent() << "public function "
             << function_signature(
                    &recv_function,
@@ -6910,7 +6969,9 @@ void t_hack_generator::_generate_service_client_children(
                    return_typehint)
             << " {\n"
             << indent() << "  " << (is_void ? "" : "return ")
-            << "$this->recvImpl_" << funname << "($expectedsequenceid);\n"
+            << "$this->recvImplHelper(" << resultname << "::class, "
+            << "\"" << funname << "\", " << (is_void ? "true" : "false")
+            << ", $expectedsequenceid);\n"
             << indent() << "}\n";
       }
     }
@@ -6995,8 +7056,12 @@ void t_hack_generator::_generate_service_client_child_fn(
     if (!tfunction->get_returntype()->is_void()) {
       out << "$response = ";
     }
-    out << "$this->recvImpl_" << find_hack_name(tfunction) << "("
-        << "$currentseqid";
+    std::string resultname = generate_function_helper_name(
+        tservice, tfunction, PhpFunctionNameSuffix::RESULT);
+    bool is_void = tfunction->get_returntype()->is_void();
+    out << "$this->recvImplHelper(" << resultname << "::class, "
+        << "\"" << tfunction->name() << "\", " << (is_void ? "true" : "false")
+        << ", $currentseqid";
     if (legacy_arrays) {
       out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
     }

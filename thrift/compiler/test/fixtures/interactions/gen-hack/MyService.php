@@ -115,177 +115,6 @@ trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
 
-  protected function recvImpl_foo(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('foo', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_foo_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_foo_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_foo_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("foo failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('foo', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('foo', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('foo', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('foo', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('foo', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_interact(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('interact', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_interact_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_interact_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_interact_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("interact failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('interact', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('interact', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('interact', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('interact', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('interact', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_interactFast(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('interactFast', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_interactFast_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_interactFast_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_interactFast_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("interactFast failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('interactFast', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('interactFast', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('interactFast', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("interactFast failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
   protected function recvImpl_serialize_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
@@ -377,7 +206,6 @@ trait MyServiceClientBase {
     $this->eventHandler_->recvError('serialize', $expectedsequenceid, $x);
     throw $x;
   }
-
   /* interaction handlers factory methods */
   public function createMyInteraction(): MyService_MyInteraction {
     $interaction = new MyService_MyInteraction($this->input_, $this->output_, $this->channel_);
@@ -428,7 +256,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_foo($currentseqid);
+    $this->recvImplHelper(MyService_foo_result::class, "foo", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -460,7 +288,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_interact($currentseqid);
+    $this->recvImplHelper(MyService_interact_result::class, "interact", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -490,7 +318,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_interactFast($currentseqid);
+    $response = $this->recvImplHelper(MyService_interactFast_result::class, "interactFast", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -560,7 +388,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_foo($currentseqid);
+    $this->recvImplHelper(MyService_foo_result::class, "foo", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -592,7 +420,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_interact($currentseqid);
+    $this->recvImplHelper(MyService_interact_result::class, "interact", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -622,7 +450,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_interactFast($currentseqid);
+    $response = $this->recvImplHelper(MyService_interactFast_result::class, "interactFast", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -667,7 +495,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     return $this->sendImplHelper($args, "foo", false);
   }
   public function recv_foo(?int $expectedsequenceid = null): void {
-    $this->recvImpl_foo($expectedsequenceid);
+    $this->recvImplHelper(MyService_foo_result::class, "foo", true, $expectedsequenceid);
   }
   public function send_interact(int $arg): int {
     $args = MyService_interact_args::fromShape(shape(
@@ -676,14 +504,14 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     return $this->sendImplHelper($args, "interact", false);
   }
   public function recv_interact(?int $expectedsequenceid = null): void {
-    $this->recvImpl_interact($expectedsequenceid);
+    $this->recvImplHelper(MyService_interact_result::class, "interact", true, $expectedsequenceid);
   }
   public function send_interactFast(): int {
     $args = MyService_interactFast_args::withDefaultValues();
     return $this->sendImplHelper($args, "interactFast", false);
   }
   public function recv_interactFast(?int $expectedsequenceid = null): int {
-    return $this->recvImpl_interactFast($expectedsequenceid);
+    return $this->recvImplHelper(MyService_interactFast_result::class, "interactFast", false, $expectedsequenceid);
   }
 }
 
@@ -728,7 +556,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_frobnicate($currentseqid);
+    $response = $this->recvImplHelper(MyService_MyInteraction_frobnicate_result::class, "frobnicate", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -771,72 +599,6 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.frobnicate', $args, $currentseqid);
     return $currentseqid;
   }
-
-  protected function recvImpl_frobnicate(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('MyInteraction.frobnicate', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteraction_frobnicate_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteraction_frobnicate_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_MyInteraction_frobnicate_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("frobnicate failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('MyInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('MyInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('MyInteraction.frobnicate', $expectedsequenceid, $success);
-      return $success;
-    }
-    if ($result->ex !== null) {
-      $x = $result->ex;
-      $this->eventHandler_->recvException('MyInteraction.frobnicate', $expectedsequenceid, $x);
-      throw $x;
-    }
-    $x = new \TApplicationException("frobnicate failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $x);
-    throw $x;
-  }
-
   /**
    * Original thrift definition:-
    * oneway void
@@ -898,7 +660,6 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
     return $currentseqid;
   }
-
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -1057,7 +818,6 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, null);
     return;
   }
-
   /**
    * Original thrift definition:-
    * set<i32>, sink<string, binary>
@@ -1272,7 +1032,6 @@ $rpc_options->setInteractionId($this->interactionId);
     $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $x);
     throw $x;
   }
-
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -1313,7 +1072,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_frobnicate($currentseqid);
+    $response = $this->recvImplHelper(MyService_MyInteractionFast_frobnicate_result::class, "frobnicate", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -1356,67 +1115,6 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteractionFast.frobnicate', $args, $currentseqid);
     return $currentseqid;
   }
-
-  protected function recvImpl_frobnicate(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('MyInteractionFast.frobnicate', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteractionFast_frobnicate_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteractionFast_frobnicate_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_MyInteractionFast_frobnicate_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("frobnicate failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('MyInteractionFast.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('MyInteractionFast.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('MyInteractionFast.frobnicate', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('MyInteractionFast.frobnicate', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('MyInteractionFast.frobnicate', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("frobnicate failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('MyInteractionFast.frobnicate', $expectedsequenceid, $x);
-    throw $x;
-  }
-
   /**
    * Original thrift definition:-
    * oneway void
@@ -1478,7 +1176,6 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
     return $currentseqid;
   }
-
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -1637,7 +1334,6 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, null);
     return;
   }
-
   /**
    * Original thrift definition:-
    * set<i32>, sink<string, binary>
@@ -1852,7 +1548,6 @@ $rpc_options->setInteractionId($this->interactionId);
     $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $x);
     throw $x;
   }
-
 }
 
 class MyService_SerialInteraction extends \ThriftClientBase {
@@ -1893,7 +1588,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_frobnicate($currentseqid);
+    $this->recvImplHelper(MyService_SerialInteraction_frobnicate_result::class, "frobnicate", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -1935,61 +1630,6 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('SerialInteraction.frobnicate', $args, $currentseqid);
     return $currentseqid;
   }
-
-  protected function recvImpl_frobnicate(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('SerialInteraction.frobnicate', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_SerialInteraction_frobnicate_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_SerialInteraction_frobnicate_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_SerialInteraction_frobnicate_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("frobnicate failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('SerialInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('SerialInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('SerialInteraction.frobnicate', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('SerialInteraction.frobnicate', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('SerialInteraction.frobnicate', $expectedsequenceid, null);
-    return;
-  }
-
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
@@ -2046,7 +1686,7 @@ class MyService_foo_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_foo_result implements \IThriftSyncStruct {
+class MyService_foo_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2172,7 +1812,7 @@ class MyService_interact_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_interact_result implements \IThriftSyncStruct {
+class MyService_interact_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2276,8 +1916,10 @@ class MyService_interactFast_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_interactFast_result implements \IThriftSyncStruct {
+class MyService_interactFast_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -2290,13 +1932,13 @@ class MyService_interactFast_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?this::TResult $success;
 
-  public function __construct(?int $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -2602,8 +2244,10 @@ class MyService_MyInteraction_frobnicate_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_MyInteraction_frobnicate_result implements \IThriftSyncStruct {
+class MyService_MyInteraction_frobnicate_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -2622,15 +2266,15 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
     ?'ex' => ?CustomException,
   );
 
   const int STRUCTURAL_ID = 7122595353333880010;
-  public ?int $success;
+  public ?this::TResult $success;
   public ?CustomException $ex;
 
-  public function __construct(?int $success = null, ?CustomException $ex = null)[] {
+  public function __construct(?this::TResult $success = null, ?CustomException $ex = null)[] {
     $this->success = $success;
     $this->ex = $ex;
   }
@@ -2699,6 +2343,12 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftSyncStruct {
     return \TCompactSerializer::serialize($this);
   }
 
+  public function checkForException(): ?\TException {
+    if ($this->ex !== null) {
+      return $this->ex;
+    }
+    return null;
+  }
 }
 
 class MyService_MyInteraction_ping_args implements \IThriftSyncStruct {
@@ -3270,8 +2920,10 @@ class MyService_MyInteractionFast_frobnicate_args implements \IThriftSyncStruct 
 
 }
 
-class MyService_MyInteractionFast_frobnicate_result implements \IThriftSyncStruct {
+class MyService_MyInteractionFast_frobnicate_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -3284,13 +2936,13 @@ class MyService_MyInteractionFast_frobnicate_result implements \IThriftSyncStruc
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?this::TResult $success;
 
-  public function __construct(?int $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -3913,7 +3565,7 @@ class MyService_SerialInteraction_frobnicate_args implements \IThriftSyncStruct 
 
 }
 
-class MyService_SerialInteraction_frobnicate_result implements \IThriftSyncStruct {
+class MyService_SerialInteraction_frobnicate_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

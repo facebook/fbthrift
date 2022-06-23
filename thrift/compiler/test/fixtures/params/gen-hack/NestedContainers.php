@@ -143,281 +143,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
 trait NestedContainersClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_mapList(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('mapList', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapList_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapList_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = NestedContainers_mapList_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("mapList failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('mapList', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('mapList', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('mapList', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('mapList', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('mapList', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_mapSet(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('mapSet', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapSet_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapSet_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = NestedContainers_mapSet_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("mapSet failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('mapSet', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('mapSet', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('mapSet', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('mapSet', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('mapSet', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_listMap(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('listMap', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listMap_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listMap_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = NestedContainers_listMap_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("listMap failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('listMap', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('listMap', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('listMap', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('listMap', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('listMap', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_listSet(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('listSet', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listSet_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listSet_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = NestedContainers_listSet_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("listSet failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('listSet', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('listSet', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('listSet', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('listSet', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('listSet', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_turtles(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('turtles', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_turtles_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_turtles_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = NestedContainers_turtles_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("turtles failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('turtles', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('turtles', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('turtles', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('turtles', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('turtles', $expectedsequenceid, null);
-    return;
-  }
-
 }
 
 class NestedContainersAsyncClient extends \ThriftClientBase implements NestedContainersAsyncClientIf {
@@ -453,7 +178,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_mapList($currentseqid);
+    $this->recvImplHelper(NestedContainers_mapList_result::class, "mapList", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -485,7 +210,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_mapSet($currentseqid);
+    $this->recvImplHelper(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -519,7 +244,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_listMap($currentseqid);
+    $this->recvImplHelper(NestedContainers_listMap_result::class, "listMap", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -551,7 +276,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_listSet($currentseqid);
+    $this->recvImplHelper(NestedContainers_listSet_result::class, "listSet", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -589,7 +314,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_turtles($currentseqid);
+    $this->recvImplHelper(NestedContainers_turtles_result::class, "turtles", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -628,7 +353,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_mapList($currentseqid);
+    $this->recvImplHelper(NestedContainers_mapList_result::class, "mapList", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -660,7 +385,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_mapSet($currentseqid);
+    $this->recvImplHelper(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -694,7 +419,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_listMap($currentseqid);
+    $this->recvImplHelper(NestedContainers_listMap_result::class, "listMap", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -726,7 +451,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_listSet($currentseqid);
+    $this->recvImplHelper(NestedContainers_listSet_result::class, "listSet", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -764,7 +489,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_turtles($currentseqid);
+    $this->recvImplHelper(NestedContainers_turtles_result::class, "turtles", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -778,7 +503,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     return $this->sendImplHelper($args, "mapList", false);
   }
   public function recv_mapList(?int $expectedsequenceid = null): void {
-    $this->recvImpl_mapList($expectedsequenceid);
+    $this->recvImplHelper(NestedContainers_mapList_result::class, "mapList", true, $expectedsequenceid);
   }
   public function send_mapSet(KeyedContainer<int, Set<int>> $foo): int {
     $args = NestedContainers_mapSet_args::fromShape(shape(
@@ -787,7 +512,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     return $this->sendImplHelper($args, "mapSet", false);
   }
   public function recv_mapSet(?int $expectedsequenceid = null): void {
-    $this->recvImpl_mapSet($expectedsequenceid);
+    $this->recvImplHelper(NestedContainers_mapSet_result::class, "mapSet", true, $expectedsequenceid);
   }
   public function send_listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): int {
     $args = NestedContainers_listMap_args::fromShape(shape(
@@ -798,7 +523,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     return $this->sendImplHelper($args, "listMap", false);
   }
   public function recv_listMap(?int $expectedsequenceid = null): void {
-    $this->recvImpl_listMap($expectedsequenceid);
+    $this->recvImplHelper(NestedContainers_listMap_result::class, "listMap", true, $expectedsequenceid);
   }
   public function send_listSet(KeyedContainer<int, Set<int>> $foo): int {
     $args = NestedContainers_listSet_args::fromShape(shape(
@@ -807,7 +532,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     return $this->sendImplHelper($args, "listSet", false);
   }
   public function recv_listSet(?int $expectedsequenceid = null): void {
-    $this->recvImpl_listSet($expectedsequenceid);
+    $this->recvImplHelper(NestedContainers_listSet_result::class, "listSet", true, $expectedsequenceid);
   }
   public function send_turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): int {
     $args = NestedContainers_turtles_args::fromShape(shape(
@@ -822,7 +547,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     return $this->sendImplHelper($args, "turtles", false);
   }
   public function recv_turtles(?int $expectedsequenceid = null): void {
-    $this->recvImpl_turtles($expectedsequenceid);
+    $this->recvImplHelper(NestedContainers_turtles_result::class, "turtles", true, $expectedsequenceid);
   }
 }
 
@@ -1487,7 +1212,7 @@ class NestedContainers_mapList_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class NestedContainers_mapList_result implements \IThriftSyncStruct {
+class NestedContainers_mapList_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1668,7 +1393,7 @@ class NestedContainers_mapSet_args implements \IThriftSyncStruct, \IThriftShapis
 
 }
 
-class NestedContainers_mapSet_result implements \IThriftSyncStruct {
+class NestedContainers_mapSet_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1849,7 +1574,7 @@ class NestedContainers_listMap_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class NestedContainers_listMap_result implements \IThriftSyncStruct {
+class NestedContainers_listMap_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2021,7 +1746,7 @@ class NestedContainers_listSet_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class NestedContainers_listSet_result implements \IThriftSyncStruct {
+class NestedContainers_listSet_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2265,7 +1990,7 @@ class NestedContainers_turtles_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class NestedContainers_turtles_result implements \IThriftSyncStruct {
+class NestedContainers_turtles_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

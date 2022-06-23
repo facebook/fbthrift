@@ -65,67 +65,6 @@ interface TestServiceClientIf extends \FooHackServiceClientIf {
 trait TestServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('ping', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\hack_ns2\TestService_ping_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\hack_ns2\TestService_ping_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \hack_ns2\TestService_ping_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("ping failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('ping', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('ping', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('ping', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("ping failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('ping', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestServiceAsyncClientIf {
@@ -159,7 +98,7 @@ class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestS
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_ping($currentseqid);
+    $response = $this->recvImplHelper(\hack_ns2\TestService_ping_result::class, "ping", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -197,7 +136,7 @@ class TestServiceClient extends \FooHackServiceClient implements TestServiceClie
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_ping($currentseqid);
+    $response = $this->recvImplHelper(\hack_ns2\TestService_ping_result::class, "ping", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -210,7 +149,7 @@ class TestServiceClient extends \FooHackServiceClient implements TestServiceClie
     return $this->sendImplHelper($args, "ping", false);
   }
   public function recv_ping(?int $expectedsequenceid = null): int {
-    return $this->recvImpl_ping($expectedsequenceid);
+    return $this->recvImplHelper(\hack_ns2\TestService_ping_result::class, "ping", false, $expectedsequenceid);
   }
 }
 
@@ -290,8 +229,10 @@ class TestService_ping_args implements \IThriftSyncStruct {
 
 }
 
-class TestService_ping_result implements \IThriftSyncStruct {
+class TestService_ping_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -304,13 +245,13 @@ class TestService_ping_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?this::TResult $success;
 
-  public function __construct(?int $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

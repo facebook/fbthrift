@@ -140,268 +140,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
 trait RaiserClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_doBland(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('doBland', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doBland_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doBland_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Raiser_doBland_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("doBland failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('doBland', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('doBland', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('doBland', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('doBland', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('doBland', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_doRaise(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('doRaise', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doRaise_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doRaise_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Raiser_doRaise_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("doRaise failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('doRaise', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('doRaise', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('doRaise', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->b !== null) {
-      $x = $result->b;
-      $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
-      throw $x;
-    }
-    if ($result->f !== null) {
-      $x = $result->f;
-      $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
-      throw $x;
-    }
-    if ($result->s !== null) {
-      $x = $result->s;
-      $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
-      throw $x;
-    }
-    $this->eventHandler_->postRecv('doRaise', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_get200(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('get200', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get200_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get200_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Raiser_get200_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("get200 failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('get200', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('get200', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('get200', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('get200', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('get200', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("get200 failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('get200', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
-  protected function recvImpl_get500(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('get500', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get500_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get500_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Raiser_get500_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("get500 failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('get500', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('get500', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('get500', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('get500', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('get500', $expectedsequenceid, $success);
-      return $success;
-    }
-    if ($result->f !== null) {
-      $x = $result->f;
-      $this->eventHandler_->recvException('get500', $expectedsequenceid, $x);
-      throw $x;
-    }
-    if ($result->b !== null) {
-      $x = $result->b;
-      $this->eventHandler_->recvException('get500', $expectedsequenceid, $x);
-      throw $x;
-    }
-    if ($result->s !== null) {
-      $x = $result->s;
-      $this->eventHandler_->recvException('get500', $expectedsequenceid, $x);
-      throw $x;
-    }
-    $x = new \TApplicationException("get500 failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('get500', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf {
@@ -433,7 +171,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_doBland($currentseqid);
+    $this->recvImplHelper(Raiser_doBland_result::class, "doBland", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -466,7 +204,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_doRaise($currentseqid);
+    $this->recvImplHelper(Raiser_doRaise_result::class, "doRaise", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -496,7 +234,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_get200($currentseqid);
+    $response = $this->recvImplHelper(Raiser_get200_result::class, "get200", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -530,7 +268,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_get500($currentseqid);
+    $response = $this->recvImplHelper(Raiser_get500_result::class, "get500", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -566,7 +304,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_doBland($currentseqid);
+    $this->recvImplHelper(Raiser_doBland_result::class, "doBland", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -599,7 +337,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_doRaise($currentseqid);
+    $this->recvImplHelper(Raiser_doRaise_result::class, "doRaise", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -629,7 +367,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_get200($currentseqid);
+    $response = $this->recvImplHelper(Raiser_get200_result::class, "get200", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -663,7 +401,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_get500($currentseqid);
+    $response = $this->recvImplHelper(Raiser_get500_result::class, "get500", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -674,28 +412,28 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     return $this->sendImplHelper($args, "doBland", false);
   }
   public function recv_doBland(?int $expectedsequenceid = null): void {
-    $this->recvImpl_doBland($expectedsequenceid);
+    $this->recvImplHelper(Raiser_doBland_result::class, "doBland", true, $expectedsequenceid);
   }
   public function send_doRaise(): int {
     $args = Raiser_doRaise_args::withDefaultValues();
     return $this->sendImplHelper($args, "doRaise", false);
   }
   public function recv_doRaise(?int $expectedsequenceid = null): void {
-    $this->recvImpl_doRaise($expectedsequenceid);
+    $this->recvImplHelper(Raiser_doRaise_result::class, "doRaise", true, $expectedsequenceid);
   }
   public function send_get200(): int {
     $args = Raiser_get200_args::withDefaultValues();
     return $this->sendImplHelper($args, "get200", false);
   }
   public function recv_get200(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_get200($expectedsequenceid);
+    return $this->recvImplHelper(Raiser_get200_result::class, "get200", false, $expectedsequenceid);
   }
   public function send_get500(): int {
     $args = Raiser_get500_args::withDefaultValues();
     return $this->sendImplHelper($args, "get500", false);
   }
   public function recv_get500(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_get500($expectedsequenceid);
+    return $this->recvImplHelper(Raiser_get500_result::class, "get500", false, $expectedsequenceid);
   }
 }
 
@@ -753,7 +491,7 @@ class Raiser_doBland_args implements \IThriftSyncStruct {
 
 }
 
-class Raiser_doBland_result implements \IThriftSyncStruct {
+class Raiser_doBland_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -857,7 +595,7 @@ class Raiser_doRaise_args implements \IThriftSyncStruct {
 
 }
 
-class Raiser_doRaise_result implements \IThriftSyncStruct {
+class Raiser_doRaise_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -993,6 +731,18 @@ class Raiser_doRaise_result implements \IThriftSyncStruct {
     return \TCompactSerializer::serialize($this);
   }
 
+  public function checkForException(): ?\TException {
+    if ($this->b !== null) {
+      return $this->b;
+    }
+    if ($this->f !== null) {
+      return $this->f;
+    }
+    if ($this->s !== null) {
+      return $this->s;
+    }
+    return null;
+  }
 }
 
 class Raiser_get200_args implements \IThriftSyncStruct {
@@ -1047,8 +797,10 @@ class Raiser_get200_args implements \IThriftSyncStruct {
 
 }
 
-class Raiser_get200_result implements \IThriftSyncStruct {
+class Raiser_get200_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -1061,13 +813,13 @@ class Raiser_get200_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
-  public ?string $success;
+  public ?this::TResult $success;
 
-  public function __construct(?string $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -1173,8 +925,10 @@ class Raiser_get500_args implements \IThriftSyncStruct {
 
 }
 
-class Raiser_get500_result implements \IThriftSyncStruct {
+class Raiser_get500_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -1205,19 +959,19 @@ class Raiser_get500_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
     ?'f' => ?Fiery,
     ?'b' => ?Banal,
     ?'s' => ?Serious,
   );
 
   const int STRUCTURAL_ID = 6147773747560615508;
-  public ?string $success;
+  public ?this::TResult $success;
   public ?Fiery $f;
   public ?Banal $b;
   public ?Serious $s;
 
-  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null)[] {
+  public function __construct(?this::TResult $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null)[] {
     $this->success = $success;
     $this->f = $f;
     $this->b = $b;
@@ -1329,6 +1083,18 @@ class Raiser_get500_result implements \IThriftSyncStruct {
     return \TCompactSerializer::serialize($this);
   }
 
+  public function checkForException(): ?\TException {
+    if ($this->f !== null) {
+      return $this->f;
+    }
+    if ($this->b !== null) {
+      return $this->b;
+    }
+    if ($this->s !== null) {
+      return $this->s;
+    }
+    return null;
+  }
 }
 
 class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {

@@ -80,116 +80,6 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
 trait MyServicePrioParentClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('ping', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_ping_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_ping_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyServicePrioParent_ping_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("ping failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('ping', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('ping', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
-    return;
-  }
-
-
-  protected function recvImpl_pong(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('pong', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_pong_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_pong_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyServicePrioParent_pong_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("pong failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('pong', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('pong', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('pong', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('pong', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('pong', $expectedsequenceid, null);
-    return;
-  }
-
 }
 
 class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServicePrioParentAsyncClientIf {
@@ -221,7 +111,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_ping($currentseqid);
+    $this->recvImplHelper(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -251,7 +141,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_pong($currentseqid);
+    $this->recvImplHelper(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -286,7 +176,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_ping($currentseqid);
+    $this->recvImplHelper(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -316,7 +206,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_pong($currentseqid);
+    $this->recvImplHelper(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -326,14 +216,14 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     return $this->sendImplHelper($args, "ping", false);
   }
   public function recv_ping(?int $expectedsequenceid = null): void {
-    $this->recvImpl_ping($expectedsequenceid);
+    $this->recvImplHelper(MyServicePrioParent_ping_result::class, "ping", true, $expectedsequenceid);
   }
   public function send_pong(): int {
     $args = MyServicePrioParent_pong_args::withDefaultValues();
     return $this->sendImplHelper($args, "pong", false);
   }
   public function recv_pong(?int $expectedsequenceid = null): void {
-    $this->recvImpl_pong($expectedsequenceid);
+    $this->recvImplHelper(MyServicePrioParent_pong_result::class, "pong", true, $expectedsequenceid);
   }
 }
 
@@ -678,7 +568,7 @@ class MyServicePrioParent_ping_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class MyServicePrioParent_ping_result implements \IThriftSyncStruct {
+class MyServicePrioParent_ping_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -812,7 +702,7 @@ class MyServicePrioParent_pong_args implements \IThriftSyncStruct, \IThriftShapi
 
 }
 
-class MyServicePrioParent_pong_result implements \IThriftSyncStruct {
+class MyServicePrioParent_pong_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

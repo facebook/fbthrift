@@ -71,67 +71,6 @@ interface BarClientIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_baz(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('baz', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = Bar_baz_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("baz failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('baz', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('baz', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('baz', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('baz', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('baz', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("baz failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('baz', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
@@ -175,7 +114,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_baz($currentseqid);
+    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -223,7 +162,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_baz($currentseqid);
+    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -242,7 +181,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     return $this->sendImplHelper($args, "baz", false);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_baz($expectedsequenceid);
+    return $this->recvImplHelper(Bar_baz_result::class, "baz", false, $expectedsequenceid);
   }
 }
 
@@ -656,8 +595,10 @@ class Bar_baz_args implements \IThriftSyncStruct {
 
 }
 
-class Bar_baz_result implements \IThriftSyncStruct {
+class Bar_baz_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -670,13 +611,13 @@ class Bar_baz_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
-  public ?string $success;
+  public ?this::TResult $success;
 
-  public function __construct(?string $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

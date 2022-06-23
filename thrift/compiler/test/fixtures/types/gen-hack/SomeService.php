@@ -80,128 +80,6 @@ interface SomeServiceClientIf extends \IThriftSyncIf {
 trait SomeServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_bounce_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<int, string> {
-    try {
-      $this->eventHandler_->preRecv('bounce_map', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_bounce_map_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_bounce_map_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = SomeService_bounce_map_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("bounce_map failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('bounce_map', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('bounce_map', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('bounce_map', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('bounce_map', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('bounce_map', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("bounce_map failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('bounce_map', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
-  protected function recvImpl_binary_keyed_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<string, int> {
-    try {
-      $this->eventHandler_->preRecv('binary_keyed_map', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = SomeService_binary_keyed_map_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("binary_keyed_map failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('binary_keyed_map', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('binary_keyed_map', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('binary_keyed_map', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("binary_keyed_map failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsyncClientIf {
@@ -235,7 +113,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_bounce_map($currentseqid);
+    $response = $this->recvImplHelper(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -268,7 +146,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_binary_keyed_map($currentseqid);
+    $response = $this->recvImplHelper(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -306,7 +184,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_bounce_map($currentseqid);
+    $response = $this->recvImplHelper(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -339,7 +217,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_binary_keyed_map($currentseqid);
+    $response = $this->recvImplHelper(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -352,7 +230,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     return $this->sendImplHelper($args, "bounce_map", false);
   }
   public function recv_bounce_map(?int $expectedsequenceid = null): Map<int, string> {
-    return $this->recvImpl_bounce_map($expectedsequenceid);
+    return $this->recvImplHelper(SomeService_bounce_map_result::class, "bounce_map", false, $expectedsequenceid);
   }
   public function send_binary_keyed_map(KeyedContainer<int, int> $r): int {
     $args = SomeService_binary_keyed_map_args::fromShape(shape(
@@ -361,7 +239,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     return $this->sendImplHelper($args, "binary_keyed_map", false);
   }
   public function recv_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {
-    return $this->recvImpl_binary_keyed_map($expectedsequenceid);
+    return $this->recvImplHelper(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $expectedsequenceid);
   }
 }
 
@@ -491,8 +369,10 @@ class SomeService_bounce_map_args implements \IThriftSyncStruct {
 
 }
 
-class SomeService_bounce_map_result implements \IThriftSyncStruct {
+class SomeService_bounce_map_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = Map<int, string>;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -514,13 +394,13 @@ class SomeService_bounce_map_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Map<int, string>,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 390979496709511735;
-  public ?Map<int, string> $success;
+  public ?this::TResult $success;
 
-  public function __construct(?Map<int, string> $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -721,8 +601,10 @@ class SomeService_binary_keyed_map_args implements \IThriftSyncStruct {
 
 }
 
-class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
+class SomeService_binary_keyed_map_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = Map<string, int>;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -744,13 +626,13 @@ class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Map<string, int>,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Map<string, int> $success;
+  public ?this::TResult $success;
 
-  public function __construct(?Map<string, int> $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

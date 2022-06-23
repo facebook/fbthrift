@@ -86,128 +86,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_first(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('first', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic-structured-annotations\MyService_first_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic-structured-annotations\MyService_first_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic-structured-annotations\MyService_first_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("first failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('first', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('first', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('first', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('first', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('first', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("first failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('first', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
-  protected function recvImpl_second(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): bool {
-    try {
-      $this->eventHandler_->preRecv('second', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic-structured-annotations\MyService_second_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic-structured-annotations\MyService_second_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic-structured-annotations\MyService_second_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("second failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('second', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('second', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('second', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('second', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('second', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("second failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('second', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncClientIf {
@@ -239,7 +117,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_first($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -272,7 +150,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_second($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -308,7 +186,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_first($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -341,7 +219,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_second($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -352,7 +230,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     return $this->sendImplHelper($args, "first", false);
   }
   public function recv_first(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_first($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $expectedsequenceid);
   }
   public function send_second(int $count): int {
     $args = \fixtures\basic-structured-annotations\MyService_second_args::fromShape(shape(
@@ -361,7 +239,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     return $this->sendImplHelper($args, "second", false);
   }
   public function recv_second(?int $expectedsequenceid = null): bool {
-    return $this->recvImpl_second($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $expectedsequenceid);
   }
 }
 
@@ -419,8 +297,10 @@ class MyService_first_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_first_result implements \IThriftSyncStruct {
+class MyService_first_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -433,13 +313,13 @@ class MyService_first_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 8648204672360810467;
-  public ?string $success;
+  public ?this::TResult $success;
 
-  public function __construct(?string $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -601,8 +481,10 @@ class MyService_second_args implements \IThriftSyncStruct {
 
 }
 
-class MyService_second_result implements \IThriftSyncStruct {
+class MyService_second_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = bool;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -615,13 +497,13 @@ class MyService_second_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?bool,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 8594383818423018844;
-  public ?bool $success;
+  public ?this::TResult $success;
 
-  public function __construct(?bool $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

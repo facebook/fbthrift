@@ -59,67 +59,6 @@ interface BadServiceClientIf extends \IThriftSyncIf {
 trait BadServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_bar(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
-    try {
-      $this->eventHandler_->preRecv('bar', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'BadService_bar_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'BadService_bar_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = BadService_bar_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("bar failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('bar', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('bar', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('bar', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('bar', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('bar', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("bar failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('bar', $expectedsequenceid, $x);
-    throw $x;
-  }
-
   /* interaction handlers factory methods */
   public function createBadInteraction(): BadService_BadInteraction {
     $interaction = new BadService_BadInteraction($this->input_, $this->output_, $this->channel_);
@@ -158,7 +97,7 @@ class BadServiceAsyncClient extends \ThriftClientBase implements BadServiceAsync
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_bar($currentseqid);
+    $response = $this->recvImplHelper(BadService_bar_result::class, "bar", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -194,7 +133,7 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_bar($currentseqid);
+    $response = $this->recvImplHelper(BadService_bar_result::class, "bar", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -205,7 +144,7 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
     return $this->sendImplHelper($args, "bar", false);
   }
   public function recv_bar(?int $expectedsequenceid = null): int {
-    return $this->recvImpl_bar($expectedsequenceid);
+    return $this->recvImplHelper(BadService_bar_result::class, "bar", false, $expectedsequenceid);
   }
 }
 
@@ -249,7 +188,7 @@ class BadService_BadInteraction extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_foo($currentseqid);
+    $this->recvImplHelper(BadService_BadInteraction_foo_result::class, "foo", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -291,61 +230,6 @@ class BadService_BadInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('BadInteraction.foo', $args, $currentseqid);
     return $currentseqid;
   }
-
-  protected function recvImpl_foo(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('BadInteraction.foo', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'BadService_BadInteraction_foo_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'BadService_BadInteraction_foo_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = BadService_BadInteraction_foo_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("foo failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('BadInteraction.foo', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('BadInteraction.foo', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('BadInteraction.foo', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('BadInteraction.foo', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('BadInteraction.foo', $expectedsequenceid, null);
-    return;
-  }
-
 }
 
 abstract class BadServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
@@ -601,8 +485,10 @@ class BadService_bar_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
 
 }
 
-class BadService_bar_result implements \IThriftSyncStruct {
+class BadService_bar_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = int;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -615,13 +501,13 @@ class BadService_bar_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?this::TResult $success;
 
-  public function __construct(?int $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -765,7 +651,7 @@ class BadService_BadInteraction_foo_args implements \IThriftSyncStruct, \IThrift
 
 }
 
-class BadService_BadInteraction_foo_result implements \IThriftSyncStruct {
+class BadService_BadInteraction_foo_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

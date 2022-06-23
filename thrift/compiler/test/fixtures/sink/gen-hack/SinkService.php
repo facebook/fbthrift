@@ -264,7 +264,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-
   protected function sendImpl_methodAndReponse_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
     return function(
@@ -395,7 +394,6 @@ trait SinkServiceClientBase {
     throw $x;
   }
 
-
   protected function sendImpl_methodThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
     return function(
@@ -525,7 +523,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-
   protected function sendImpl_methodSinkThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
     return function(
@@ -654,7 +651,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-
   protected function sendImpl_methodFinalThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
     return function(
@@ -781,7 +777,6 @@ trait SinkServiceClientBase {
     $this->eventHandler_->postRecv('methodFinalThrow', $expectedsequenceid, null);
     return;
   }
-
 
   protected function sendImpl_methodBothThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -914,7 +909,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-
   protected function sendImpl_methodFast_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
     return function(
@@ -1038,7 +1032,6 @@ trait SinkServiceClientBase {
     $this->eventHandler_->postRecv('methodFast', $expectedsequenceid, null);
     return;
   }
-
 }
 
 class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsyncClientIf {

@@ -65,61 +65,6 @@ interface RenamedServiceClientIf extends \IThriftSyncIf {
 trait RenamedServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_simple_rpc(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
-    try {
-      $this->eventHandler_->preRecv('simple_rpc', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\RenamedService_simple_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\RenamedService_simple_rpc_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic\RenamedService_simple_rpc_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("simple_rpc failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('simple_rpc', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('simple_rpc', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('simple_rpc', $expectedsequenceid, $ex->result);
-          return;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('simple_rpc', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postRecv('simple_rpc', $expectedsequenceid, null);
-    return;
-  }
-
 }
 
 class RenamedServiceAsyncClient extends \ThriftClientBase implements RenamedServiceAsyncClientIf {
@@ -151,7 +96,7 @@ class RenamedServiceAsyncClient extends \ThriftClientBase implements RenamedServ
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_simple_rpc($currentseqid);
+    $this->recvImplHelper(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -186,7 +131,7 @@ class RenamedServiceClient extends \ThriftClientBase implements RenamedServiceCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_simple_rpc($currentseqid);
+    $this->recvImplHelper(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid);
     await $this->asyncHandler_->genAfter();
   }
 
@@ -196,7 +141,7 @@ class RenamedServiceClient extends \ThriftClientBase implements RenamedServiceCl
     return $this->sendImplHelper($args, "simple_rpc", false);
   }
   public function recv_simple_rpc(?int $expectedsequenceid = null): void {
-    $this->recvImpl_simple_rpc($expectedsequenceid);
+    $this->recvImplHelper(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $expectedsequenceid);
   }
 }
 
@@ -453,7 +398,7 @@ class FooService_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapishS
 
 }
 
-class FooService_simple_rpc_result implements \IThriftSyncStruct {
+class FooService_simple_rpc_result extends \ThriftSyncStructWithoutResult {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

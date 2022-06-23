@@ -65,67 +65,6 @@ interface FB303ServiceClientIf extends \IThriftSyncIf {
 trait FB303ServiceClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_renamed_rpc(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \fixtures\basic\MyRenamedStruct {
-    try {
-      $this->eventHandler_->preRecv('renamed_rpc', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\FB303Service_renamed_rpc_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\FB303Service_renamed_rpc_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic\FB303Service_renamed_rpc_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("renamed_rpc failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('renamed_rpc', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('renamed_rpc', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('renamed_rpc', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("renamed_rpc failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('renamed_rpc', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class FB303ServiceAsyncClient extends \ThriftClientBase implements FB303ServiceAsyncClientIf {
@@ -159,7 +98,7 @@ class FB303ServiceAsyncClient extends \ThriftClientBase implements FB303ServiceA
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_renamed_rpc($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\FB303Service_renamed_rpc_result::class, "simple_rpc", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -197,7 +136,7 @@ class FB303ServiceClient extends \ThriftClientBase implements FB303ServiceClient
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_renamed_rpc($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\FB303Service_renamed_rpc_result::class, "simple_rpc", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -210,7 +149,7 @@ class FB303ServiceClient extends \ThriftClientBase implements FB303ServiceClient
     return $this->sendImplHelper($args, "renamed_rpc", false);
   }
   public function recv_renamed_rpc(?int $expectedsequenceid = null): \fixtures\basic\MyRenamedStruct {
-    return $this->recvImpl_renamed_rpc($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\basic\FB303Service_renamed_rpc_result::class, "renamed_rpc", false, $expectedsequenceid);
   }
 }
 
@@ -510,8 +449,10 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
 
 }
 
-class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
+class FB303Service_renamed_rpc_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = \fixtures\basic\MyRenamedStruct;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -525,13 +466,13 @@ class FB303Service_renamed_rpc_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?\fixtures\basic\MyRenamedStruct,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 7443966475393398575;
-  public ?\fixtures\basic\MyRenamedStruct $success;
+  public ?this::TResult $success;
 
-  public function __construct(?\fixtures\basic\MyRenamedStruct $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 

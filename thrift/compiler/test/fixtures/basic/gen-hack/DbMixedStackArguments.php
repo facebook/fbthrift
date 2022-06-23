@@ -86,128 +86,6 @@ interface DbMixedStackArgumentsClientIf extends \IThriftSyncIf {
 trait DbMixedStackArgumentsClientBase {
   require extends \ThriftClientBase;
 
-
-  protected function recvImpl_getDataByKey0(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('getDataByKey0', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic\DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("getDataByKey0 failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('getDataByKey0', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('getDataByKey0', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('getDataByKey0', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('getDataByKey0', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('getDataByKey0', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("getDataByKey0 failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('getDataByKey0', $expectedsequenceid, $x);
-    throw $x;
-  }
-
-
-  protected function recvImpl_getDataByKey1(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
-    try {
-      $this->eventHandler_->preRecv('getDataByKey1', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = \fixtures\basic\DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("getDataByKey1 failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('getDataByKey1', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('getDataByKey1', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('getDataByKey1', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('getDataByKey1', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('getDataByKey1', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("getDataByKey1 failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('getDataByKey1', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMixedStackArgumentsAsyncClientIf {
@@ -241,7 +119,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_getDataByKey0($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -274,7 +152,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_getDataByKey1($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -312,7 +190,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_getDataByKey0($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -345,7 +223,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $response = $this->recvImpl_getDataByKey1($currentseqid);
+    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
   }
@@ -358,7 +236,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     return $this->sendImplHelper($args, "getDataByKey0", false);
   }
   public function recv_getDataByKey0(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_getDataByKey0($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $expectedsequenceid);
   }
   public function send_getDataByKey1(string $key): int {
     $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
@@ -367,7 +245,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     return $this->sendImplHelper($args, "getDataByKey1", false);
   }
   public function recv_getDataByKey1(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_getDataByKey1($expectedsequenceid);
+    return $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $expectedsequenceid);
   }
 }
 
@@ -740,8 +618,10 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
 
 }
 
-class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
+class DbMixedStackArguments_getDataByKey0_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -754,13 +634,13 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
-  public ?string $success;
+  public ?this::TResult $success;
 
-  public function __construct(?string $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
@@ -927,8 +807,10 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
 
 }
 
-class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
+class DbMixedStackArguments_getDataByKey1_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
+
+  const type TResult = string;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -941,13 +823,13 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?string,
+    ?'success' => ?this::TResult,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
-  public ?string $success;
+  public ?this::TResult $success;
 
-  public function __construct(?string $success = null)[] {
+  public function __construct(?this::TResult $success = null)[] {
     $this->success = $success;
   }
 
