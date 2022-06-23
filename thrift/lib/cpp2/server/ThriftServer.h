@@ -424,6 +424,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
  public:
   ThriftServer();
 
+  explicit ThriftServer(const ThriftServerInitialConfig& initialConfig);
+
   // NOTE: Don't use this constructor to create a regular Thrift server. This
   // constructor is used by the client to create a duplex server on an existing
   // connection.

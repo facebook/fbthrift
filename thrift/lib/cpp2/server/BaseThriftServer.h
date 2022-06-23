@@ -331,6 +331,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   folly::Function<AllocIOBufFn> allocIOBufFn_;
 
   BaseThriftServer();
+
+  explicit BaseThriftServer(const ThriftServerInitialConfig& initialConfig);
   ~BaseThriftServer() override {}
 
  public:
@@ -384,7 +386,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return true if the configuration can be modified, false otherwise
    */
-  bool configMutable() { return thriftConfig_.isFrozen(); }
+  bool configMutable() { return !thriftConfig_.isFrozen(); }
 
   /**
    * Set the ThreadFactory that will be used to create worker threads for the

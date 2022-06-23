@@ -57,7 +57,17 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 using namespace std;
 
 BaseThriftServer::BaseThriftServer()
-    : thriftConfig_{},
+    : thriftConfig_(),
+      adaptiveConcurrencyController_{
+          apache::thrift::detail::makeAdaptiveConcurrencyConfig(),
+          thriftConfig_.getMaxRequests().getObserver()},
+      cpuConcurrencyController_{
+          detail::makeCPUConcurrencyControllerConfig(), *this},
+      addresses_(1) {}
+
+BaseThriftServer::BaseThriftServer(
+    const ThriftServerInitialConfig& initialConfig)
+    : thriftConfig_(initialConfig),
       adaptiveConcurrencyController_{
           apache::thrift::detail::makeAdaptiveConcurrencyConfig(),
           thriftConfig_.getMaxRequests().getObserver()},

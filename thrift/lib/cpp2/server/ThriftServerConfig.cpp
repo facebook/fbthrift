@@ -25,6 +25,19 @@ namespace thrift {
 const size_t ThriftServerConfig::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();
 
+ThriftServerConfig::ThriftServerConfig(
+    const ThriftServerInitialConfig& initialConfig)
+    : ThriftServerConfig() {
+  if (initialConfig.maxRequests_) {
+    maxRequests_.setDefault(
+        folly::observer::makeStaticObserver(*initialConfig.maxRequests_));
+  }
+  if (initialConfig.queueTimeout_) {
+    queueTimeout_.setDefault(
+        folly::observer::makeStaticObserver(*initialConfig.queueTimeout_));
+  }
+}
+
 std::string ThriftServerConfig::getCPUWorkerThreadName() const {
   return poolThreadName_.get();
 }

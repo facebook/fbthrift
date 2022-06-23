@@ -233,6 +233,29 @@ ThriftServer::ThriftServer()
       });
 }
 
+ThriftServer::ThriftServer(const ThriftServerInitialConfig& initialConfig)
+    : BaseThriftServer(initialConfig),
+      wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
+      lastRequestTime_(
+          std::chrono::steady_clock::now().time_since_epoch().count()) {
+  if (FLAGS_thrift_ssl_policy == "required") {
+    sslPolicy_ = SSLPolicy::REQUIRED;
+  } else if (FLAGS_thrift_ssl_policy == "permitted") {
+    sslPolicy_ = SSLPolicy::PERMITTED;
+  }
+  metadata().wrapper = "ThriftServer-cpp";
+  auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
+  setMonitoringInterface(std::move(extraInterfaces.monitoring));
+  setStatusInterface(std::move(extraInterfaces.status));
+  setControlInterface(std::move(extraInterfaces.control));
+  getAdaptiveConcurrencyController().setConfigUpdateCallback(
+      [this](auto snapshot) {
+        if (snapshot->isEnabled()) {
+          THRIFT_SERVER_EVENT(ACC_enabled).log(*this);
+        }
+      });
+}
+
 ThriftServer::ThriftServer(
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : ThriftServer() {

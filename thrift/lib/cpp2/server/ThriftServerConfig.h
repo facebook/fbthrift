@@ -34,11 +34,14 @@ THRIFT_FLAG_DECLARE_int64(
 THRIFT_FLAG_DECLARE_bool(server_reject_header_connections);
 
 namespace apache::thrift {
+class ThriftServerInitialConfig;
 
 class ThriftServerConfig {
  public:
   ThriftServerConfig() = default;
   ~ThriftServerConfig() = default;
+
+  explicit ThriftServerConfig(const ThriftServerInitialConfig& initialConfig);
 
   using StaticAttributeTag = server::ServerConfigs::StaticAttributeTag;
   using DynamicAttributeTag = server::ServerConfigs::DynamicAttributeTag;
@@ -206,9 +209,9 @@ class ThriftServerConfig {
    */
   bool isFrozen() const { return frozen_; }
 
-  void freeze() { frozen_ = false; }
+  void freeze() { frozen_ = true; }
 
-  void unfreeze() { frozen_ = true; }
+  void unfreeze() { frozen_ = false; }
 
   /**
    * Set the prefix for naming the CPU (pool) threads. Not set by default.
@@ -636,14 +639,14 @@ class ThriftServerConfig {
       ServerAttributeStatic<T>& staticAttribute,
       T&& value,
       AttributeSource source) {
-    CHECK(isFrozen());
+    CHECK(!isFrozen());
     staticAttribute.set(std::move(value), source);
   }
 
   template <typename T>
   void unsetStaticAttribute(
       ServerAttributeStatic<T>& staticAttribute, AttributeSource source) {
-    CHECK(isFrozen());
+    CHECK(!isFrozen());
     staticAttribute.unset(source);
   }
 
@@ -871,6 +874,35 @@ class ThriftServerConfig {
 
   // Flag indicating whether it is safe to mutate the server config through its
   // setters.
-  std::atomic<bool> frozen_{true};
+  std::atomic<bool> frozen_{false};
+};
+
+class ThriftServerInitialConfig {
+ public:
+  FOLLY_CONSTEVAL ThriftServerInitialConfig() = default;
+
+#define THRIFT_SERVER_INITIAL_CONFIG_DEFINE(TYPE, NAME)        \
+ private:                                                      \
+  std::optional<TYPE> NAME##_;                                 \
+                                                               \
+ public:                                                       \
+  FOLLY_CONSTEVAL ThriftServerInitialConfig NAME(TYPE value) { \
+    auto initialConfig(*this);                                 \
+    initialConfig.NAME##_ = std::make_optional(value);         \
+    return initialConfig;                                      \
+  }
+
+  // replace with thrift struct if/when it becomes constexpr friendly
+
+  THRIFT_SERVER_INITIAL_CONFIG_DEFINE(uint32_t, maxRequests)
+  THRIFT_SERVER_INITIAL_CONFIG_DEFINE(std::chrono::milliseconds, queueTimeout)
+
+#undef THRIFT_SERVER_INITIAL_CONFIG_DEFINE
+
+ private:
+  friend class ThriftServerConfig;
+
+  FOLLY_CONSTEVAL ThriftServerInitialConfig(
+      ThriftServerInitialConfig const& rhs) = default;
 };
 } // namespace apache::thrift
