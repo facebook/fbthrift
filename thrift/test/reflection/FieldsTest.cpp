@@ -125,6 +125,12 @@ void checkField() {
   test::same_tag<field::type_tag<StructTag, Ident>, TypeTag>;
   test::same_tag<field::ident<StructTag, Ident>, Ident>;
   test::same_tag<field::tag<StructTag, Ident>, FieldTag>;
+
+  test::same_tag<field::ordinal<StructTag, FieldTag>, Ordinal>;
+  test::same_tag<field::id<StructTag, FieldTag>, Id>;
+  test::same_tag<field::type_tag<StructTag, FieldTag>, TypeTag>;
+  test::same_tag<field::ident<StructTag, FieldTag>, Ident>;
+  test::same_tag<field::tag<StructTag, FieldTag>, FieldTag>;
 }
 
 TEST(FieldsTest, UnifiedAPIs) {
