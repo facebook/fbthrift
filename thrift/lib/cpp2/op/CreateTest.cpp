@@ -88,8 +88,10 @@ struct TestFieldAdapter {
   }
 };
 
-template <typename T>
-using adapted_tag = adapted<TestTypeAdapter, T>;
+template <typename Tag>
+using adapted_tag = adapted<TestTypeAdapter, Tag>;
+template <typename Tag>
+using field_adapted_tag = adapted<TestFieldAdapter, Tag>;
 
 struct TestThriftType {
   std::string meta;
@@ -98,16 +100,14 @@ struct TestThriftType {
 template <typename Tag>
 void testCreateWithTag() {
   using tag = Tag;
-  using field_tag = type::field<tag, FieldContext<TestThriftType, 0>>;
-  using type_adapted_field_tag =
-      type::field<adapted_tag<tag>, FieldContext<TestThriftType, 0>>;
-  using field_adapted_field_tag = type::
-      field<adapted<TestFieldAdapter, tag>, FieldContext<TestThriftType, 0>>;
-  using double_type_adapted_field_tag = type::
-      field<adapted_tag<adapted_tag<tag>>, FieldContext<TestThriftType, 0>>;
-  using field_and_type_adapted_field_tag = type::field<
-      adapted<TestFieldAdapter, adapted_tag<tag>>,
-      FieldContext<TestThriftType, 0>>;
+  using ctx = FieldContext<TestThriftType, 0>;
+  using field_tag = type::field<tag, ctx>;
+  using type_adapted_field_tag = type::field<adapted_tag<tag>, ctx>;
+  using field_adapted_field_tag = type::field<field_adapted_tag<tag>, ctx>;
+  using double_type_adapted_field_tag =
+      type::field<adapted_tag<adapted_tag<tag>>, ctx>;
+  using field_and_type_adapted_field_tag =
+      type::field<field_adapted_tag<adapted_tag<tag>>, ctx>;
 
   TestThriftType object;
 
