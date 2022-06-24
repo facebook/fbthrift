@@ -218,3 +218,15 @@ class NoneToPyDeprecatedConverterTest(unittest.TestCase):
             to_py_struct(
                 py_deprecated_types.Simple, python_types.Nested().optionalSimple
             ).intField
+
+
+class PyDeprecatedToPyDeprecatedConverterTest(unittest.TestCase):
+    def test_should_return_self(self) -> None:
+        simple = py_deprecated_types.Simple()
+        self.assertIs(
+            simple,
+            to_py_struct(
+                py_deprecated_types.Simple,
+                simple,
+            ),
+        )
