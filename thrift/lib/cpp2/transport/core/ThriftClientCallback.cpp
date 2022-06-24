@@ -24,6 +24,36 @@
 
 namespace apache {
 namespace thrift {
+namespace {
+void processExceptionHeaders(ResponseRpcMetadata& metadata) {
+  auto otherMetadataRef = metadata.otherMetadata_ref();
+  if (!otherMetadataRef) {
+    return;
+  }
+  auto& otherMetadata = *otherMetadataRef;
+
+  if (auto anyExceptionPtr =
+          folly::get_ptr(otherMetadata, "servicerouter:sr_internal_error")) {
+    otherMetadata.insert(
+        {std::string(detail::kHeaderAnyex), std::move(*anyExceptionPtr)});
+    otherMetadata.insert(
+        {std::string(detail::kHeaderAnyexType),
+         "facebook.com/servicerouter/ServiceRouterError"});
+    otherMetadata.erase("servicerouter:sr_internal_error");
+  }
+
+  if (auto proxiedAnyExceptionPtr =
+          folly::get_ptr(otherMetadata, "servicerouter:sr_error")) {
+    otherMetadata.insert(
+        {std::string(detail::kHeaderProxiedAnyex),
+         std::move(*proxiedAnyExceptionPtr)});
+    otherMetadata.insert(
+        {std::string(detail::kHeaderProxiedAnyexType),
+         "facebook.com/servicerouter/ServiceRouterError"});
+    otherMetadata.erase("servicerouter:sr_error");
+  }
+}
+} // namespace
 
 using namespace apache::thrift::transport;
 using folly::EventBase;
@@ -70,6 +100,7 @@ void ThriftClientCallback::onThriftResponse(
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP2_CLIENT_TYPE);
+    processExceptionHeaders(metadata);
     apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
         metadata, *tHeader);
     cb_.release()->onResponse(ClientReceiveState(

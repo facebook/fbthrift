@@ -273,8 +273,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               break;
             case PayloadExceptionMetadata::DEPRECATED_proxyException:
               (*otherMetadataRef)
-                  [isProxiedResponse ? "servicerouter:sr_error"
-                                     : "servicerouter:sr_internal_error"] =
+                  [isProxiedResponse ? detail::kHeaderProxiedAnyex
+                                     : detail::kHeaderAnyex] =
                       protocol::base64Encode(payload->coalesce());
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
@@ -300,15 +300,20 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                     ? type::Protocol::get<type::StandardProtocol::Compact>()
                     : type::Protocol::get<type::StandardProtocol::Binary>();
               }
-              if (anyException.type_ref() ==
-                      type::Type(
-                          type::exception_c{},
-                          "facebook.com/servicerouter/ServiceRouterError") &&
+              auto exceptionTypeRef = anyException.type_ref()
+                                          ->toThrift()
+                                          .name_ref()
+                                          ->exceptionType_ref();
+              if (exceptionTypeRef &&
                   anyException.protocol_ref() ==
                       type::Protocol::get<type::StandardProtocol::Compact>()) {
                 (*otherMetadataRef)
-                    [isProxiedResponse ? "servicerouter:sr_error"
-                                       : "servicerouter:sr_internal_error"] =
+                    [isProxiedResponse ? detail::kHeaderProxiedAnyexType
+                                       : detail::kHeaderAnyexType] =
+                        *exceptionTypeRef->uri_ref();
+                (*otherMetadataRef)
+                    [isProxiedResponse ? detail::kHeaderProxiedAnyex
+                                       : detail::kHeaderAnyex] =
                         protocol::base64Encode(
                             anyException.data_ref()->coalesce());
               }
