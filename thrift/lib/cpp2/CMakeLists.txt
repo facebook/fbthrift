@@ -207,6 +207,7 @@ add_library(
   protocol/JSONProtocolCommon.cpp
   protocol/Serializer.cpp
   protocol/TableBasedSerializer.cpp
+  protocol/TableBasedSerializerImpl.cpp
   protocol/VirtualProtocol.cpp
 
   ../cpp/protocol/TDebugProtocol.cpp
