@@ -26,6 +26,22 @@
 
 namespace apache {
 namespace thrift {
+
+struct SerializedAuthProofs {
+  SerializedAuthProofs() = default;
+  explicit SerializedAuthProofs(std::unique_ptr<folly::IOBuf> newBuf)
+      : buf(std::move(newBuf)) {}
+
+  SerializedAuthProofs(const SerializedAuthProofs& other) {
+    buf = other.buf ? other.buf->clone() : nullptr;
+  }
+  void operator=(const SerializedAuthProofs& other) {
+    buf = other.buf ? other.buf->clone() : nullptr;
+  }
+
+  std::unique_ptr<folly::IOBuf> buf{nullptr};
+};
+
 class InteractionId;
 
 /**
@@ -141,6 +157,10 @@ class RpcOptions {
   RpcOptions& setCallerContext(std::shared_ptr<void> callerContext);
   const std::shared_ptr<void>& getCallerContext() const;
 
+  RpcOptions& setSerializedAuthProofs(
+      SerializedAuthProofs serializedAuthProofs);
+  const SerializedAuthProofs& getSerializedAuthProofs() const;
+
   void setFaultToInject(const std::string& key, const std::string& value);
   const std::optional<std::unordered_map<std::string, std::string>>&
   getFaultsToInject() const;
@@ -178,6 +198,9 @@ class RpcOptions {
   std::shared_ptr<void> routingData_;
 
   std::shared_ptr<void> callerContext_;
+
+  // Per request authentication data
+  SerializedAuthProofs serializedAuthProofs_;
 
   // Defines faults to be injected within the routing layer, if any
   std::optional<std::unordered_map<std::string, std::string>>

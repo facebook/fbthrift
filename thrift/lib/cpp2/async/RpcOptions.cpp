@@ -251,6 +251,16 @@ const std::shared_ptr<void>& RpcOptions::getCallerContext() const {
   return callerContext_;
 }
 
+RpcOptions& RpcOptions::setSerializedAuthProofs(
+    SerializedAuthProofs serializedAuthProofs) {
+  serializedAuthProofs_ = std::move(serializedAuthProofs);
+  return *this;
+}
+
+const SerializedAuthProofs& RpcOptions::getSerializedAuthProofs() const {
+  return serializedAuthProofs_;
+}
+
 void RpcOptions::setFaultToInject(
     const std::string& key, const std::string& value) {
   if (!faultsToInject_) {
