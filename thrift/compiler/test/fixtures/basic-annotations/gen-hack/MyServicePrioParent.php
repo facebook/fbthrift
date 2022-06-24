@@ -99,20 +99,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $args = MyServicePrioParent_ping_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "ping", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -129,20 +116,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $args = MyServicePrioParent_pong_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "pong", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid, $rpc_options);
   }
 
 }
@@ -164,20 +138,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $args = MyServicePrioParent_ping_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "ping", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -194,20 +155,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $args = MyServicePrioParent_pong_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "pong", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

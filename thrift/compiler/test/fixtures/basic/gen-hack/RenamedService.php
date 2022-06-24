@@ -84,20 +84,7 @@ class RenamedServiceAsyncClient extends \ThriftClientBase implements RenamedServ
     await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
     $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid, $rpc_options);
   }
 
 }
@@ -119,20 +106,7 @@ class RenamedServiceClient extends \ThriftClientBase implements RenamedServiceCl
     await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
     $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

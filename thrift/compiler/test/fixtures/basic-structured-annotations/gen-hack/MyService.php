@@ -105,21 +105,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     await $this->asyncHandler_->genBefore("MyService", "first");
     $args = \fixtures\basic-structured-annotations\MyService_first_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "first", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -138,21 +124,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       'count' => $count,
     ));
     $currentseqid = $this->sendImplHelper($args, "second", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -174,21 +146,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     await $this->asyncHandler_->genBefore("MyService", "first");
     $args = \fixtures\basic-structured-annotations\MyService_first_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "first", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic-structured-annotations\MyService_first_result::class, "first", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -207,21 +165,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       'count' => $count,
     ));
     $currentseqid = $this->sendImplHelper($args, "second", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic-structured-annotations\MyService_second_result::class, "second", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

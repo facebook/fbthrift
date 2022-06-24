@@ -102,21 +102,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
       'e' => $e === null ? null : $e,
     ));
     $currentseqid = $this->sendImplHelper($args, "baz", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -145,21 +131,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
       'e' => $e === null ? null : $e,
     ));
     $currentseqid = $this->sendImplHelper($args, "baz", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
   }
 
 }
@@ -193,21 +165,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
       'e' => $e === null ? null : $e,
     ));
     $currentseqid = $this->sendImplHelper($args, "baz", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -236,21 +194,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
       'e' => $e === null ? null : $e,
     ));
     $currentseqid = $this->sendImplHelper($args, "baz", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Bar_baz_result::class, "baz", false, $currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
   }
 
   /* send and recv functions */

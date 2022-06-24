@@ -159,20 +159,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $args = Raiser_doBland_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "doBland", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(Raiser_doBland_result::class, "doBland", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(Raiser_doBland_result::class, "doBland", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -192,20 +179,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $args = Raiser_doRaise_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "doRaise", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(Raiser_doRaise_result::class, "doRaise", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(Raiser_doRaise_result::class, "doRaise", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -222,21 +196,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $args = Raiser_get200_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "get200", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Raiser_get200_result::class, "get200", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Raiser_get200_result::class, "get200", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -256,21 +216,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $args = Raiser_get500_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "get500", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Raiser_get500_result::class, "get500", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Raiser_get500_result::class, "get500", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -292,20 +238,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $args = Raiser_doBland_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "doBland", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(Raiser_doBland_result::class, "doBland", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(Raiser_doBland_result::class, "doBland", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -325,20 +258,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $args = Raiser_doRaise_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "doRaise", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(Raiser_doRaise_result::class, "doRaise", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(Raiser_doRaise_result::class, "doRaise", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -355,21 +275,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $args = Raiser_get200_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "get200", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Raiser_get200_result::class, "get200", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Raiser_get200_result::class, "get200", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -389,21 +295,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $args = Raiser_get500_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "get500", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(Raiser_get500_result::class, "get500", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(Raiser_get500_result::class, "get500", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

@@ -85,21 +85,7 @@ class BadServiceAsyncClient extends \ThriftClientBase implements BadServiceAsync
     await $this->asyncHandler_->genBefore("BadService", "bar");
     $args = BadService_bar_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "bar", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(BadService_bar_result::class, "bar", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(BadService_bar_result::class, "bar", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -121,21 +107,7 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
     await $this->asyncHandler_->genBefore("BadService", "bar");
     $args = BadService_bar_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "bar", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(BadService_bar_result::class, "bar", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(BadService_bar_result::class, "bar", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */
@@ -176,20 +148,7 @@ class BadService_BadInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("BadService", "BadInteraction.foo");
     $currentseqid = $this->sendImpl_foo();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(BadService_BadInteraction_foo_result::class, "foo", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(BadService_BadInteraction_foo_result::class, "foo", true, $currentseqid, $rpc_options);
   }
 
   protected function sendImpl_foo(): int {

@@ -101,21 +101,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
       'm' => $m,
     ));
     $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -134,21 +120,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
       'r' => new Vector($r),
     ));
     $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -172,21 +144,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
       'm' => $m,
     ));
     $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -205,21 +163,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
       'r' => new Vector($r),
     ));
     $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

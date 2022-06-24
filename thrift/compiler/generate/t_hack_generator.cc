@@ -7035,41 +7035,21 @@ void t_hack_generator::_generate_service_client_child_fn(
   _generate_current_seq_id(out, tservice, tfunction);
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
-    out << indent() << "$channel = $this->channel_;\n"
-        << indent() << "$out_transport = $this->output_->getTransport();\n"
-        << indent() << "$in_transport = $this->input_->getTransport();\n"
-        << indent()
-        << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
-    indent_up();
-    out << indent() << "$msg = $out_transport->getBuffer();\n"
-        << indent() << "$out_transport->resetBuffer();\n"
-        << indent() << "list($result_msg, $_read_headers) = "
-        << "await $channel->genSendRequestResponse($rpc_options, $msg);\n"
-        << indent() << "$in_transport->resetBuffer();\n"
-        << indent() << "$in_transport->write($result_msg);\n";
-    indent_down();
-    indent(out) << "} else {\n";
-    indent_up();
-    indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
-    scope_down(out);
-    out << indent();
     if (!tfunction->get_returntype()->is_void()) {
-      out << "$response = ";
+      indent(out) << "return ";
+    } else {
+      indent(out);
     }
     std::string resultname = generate_function_helper_name(
         tservice, tfunction, PhpFunctionNameSuffix::RESULT);
     bool is_void = tfunction->get_returntype()->is_void();
-    out << "$this->recvImplHelper(" << resultname << "::class, "
+    out << "await $this->genAwaitResponse(" << resultname << "::class, "
         << "\"" << tfunction->name() << "\", " << (is_void ? "true" : "false")
-        << ", $currentseqid";
+        << ", $currentseqid, $rpc_options";
     if (legacy_arrays) {
       out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
     }
     out << ");\n";
-    indent(out) << "await $this->asyncHandler_->genAfter();\n";
-    if (!tfunction->get_returntype()->is_void()) {
-      indent(out) << "return $response;\n";
-    }
   } else {
     out << indent() << "$channel = $this->channel_;\n"
         << indent() << "$out_transport = $this->output_->getTransport();\n"

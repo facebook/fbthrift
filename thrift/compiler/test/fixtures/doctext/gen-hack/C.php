@@ -232,20 +232,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     await $this->asyncHandler_->genBefore("C", "f");
     $args = C_f_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "f", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(C_f_result::class, "f", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(C_f_result::class, "f", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -270,21 +257,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
       'c' => $c,
     ));
     $currentseqid = $this->sendImplHelper($args, "thing", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(C_thing_result::class, "thing", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(C_thing_result::class, "thing", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -344,20 +317,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     await $this->asyncHandler_->genBefore("C", "f");
     $args = C_f_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "f", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(C_f_result::class, "f", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(C_f_result::class, "f", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -382,21 +342,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
       'c' => $c,
     ));
     $currentseqid = $this->sendImplHelper($args, "thing", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(C_thing_result::class, "thing", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(C_thing_result::class, "thing", false, $currentseqid, $rpc_options);
   }
 
   /**

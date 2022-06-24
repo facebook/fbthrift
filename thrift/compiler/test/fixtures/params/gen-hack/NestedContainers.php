@@ -166,20 +166,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "mapList", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_mapList_result::class, "mapList", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_mapList_result::class, "mapList", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -198,20 +185,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       'foo' => new Map($foo),
     ));
     $currentseqid = $this->sendImplHelper($args, "mapSet", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -232,20 +206,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "listMap", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_listMap_result::class, "listMap", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_listMap_result::class, "listMap", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -264,20 +225,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       'foo' => new Vector($foo),
     ));
     $currentseqid = $this->sendImplHelper($args, "listSet", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_listSet_result::class, "listSet", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_listSet_result::class, "listSet", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -302,20 +250,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "turtles", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_turtles_result::class, "turtles", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_turtles_result::class, "turtles", true, $currentseqid, $rpc_options);
   }
 
 }
@@ -341,20 +276,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "mapList", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_mapList_result::class, "mapList", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_mapList_result::class, "mapList", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -373,20 +295,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       'foo' => new Map($foo),
     ));
     $currentseqid = $this->sendImplHelper($args, "mapSet", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -407,20 +316,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "listMap", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_listMap_result::class, "listMap", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_listMap_result::class, "listMap", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -439,20 +335,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       'foo' => new Vector($foo),
     ));
     $currentseqid = $this->sendImplHelper($args, "listSet", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_listSet_result::class, "listSet", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_listSet_result::class, "listSet", true, $currentseqid, $rpc_options);
   }
 
   /**
@@ -477,20 +360,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       ),
     ));
     $currentseqid = $this->sendImplHelper($args, "turtles", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImplHelper(NestedContainers_turtles_result::class, "turtles", true, $currentseqid);
-    await $this->asyncHandler_->genAfter();
+    await $this->genAwaitResponse(NestedContainers_turtles_result::class, "turtles", true, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

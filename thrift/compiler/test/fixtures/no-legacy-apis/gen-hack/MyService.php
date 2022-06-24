@@ -86,21 +86,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       'u' => $u,
     ));
     $currentseqid = $this->sendImplHelper($args, "query", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -124,21 +110,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       'u' => $u,
     ));
     $currentseqid = $this->sendImplHelper($args, "query", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */

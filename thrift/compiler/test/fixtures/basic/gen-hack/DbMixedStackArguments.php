@@ -107,21 +107,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -140,21 +126,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -178,21 +150,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic\DbMixedStackArguments_getDataByKey0_result::class, "getDataByKey0", false, $currentseqid, $rpc_options);
   }
 
   /**
@@ -211,21 +169,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImplHelper(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
+    return await $this->genAwaitResponse(\fixtures\basic\DbMixedStackArguments_getDataByKey1_result::class, "getDataByKey1", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */
