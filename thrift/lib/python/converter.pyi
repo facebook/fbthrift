@@ -15,8 +15,7 @@
 import typing
 
 from thrift.py3.types import Struct as Py3Struct
-
-from thrift.python.types import StructOrUnion
+from thrift.python.types import StructOrUnion as PythonStruct
 
 # thrift-py-deprecated struct doesn't have a base class,
 # thus this hacky way to do type checking
@@ -24,8 +23,8 @@ class PyDeprecatedStruct(typing.Protocol):
     # pyre-ignore[4]: Attribute annotation cannot be `Any`.
     thrift_spec: typing.Any
 
-T = typing.TypeVar("T", bound=StructOrUnion)
-TObj = typing.Union[Py3Struct, PyDeprecatedStruct]
+T = typing.TypeVar("T", bound=PythonStruct)
+TObj = PythonStruct | Py3Struct | PyDeprecatedStruct
 
 @typing.overload
 def to_python_struct(cls: typing.Type[T], obj: TObj) -> T: ...

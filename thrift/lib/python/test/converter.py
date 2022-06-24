@@ -249,3 +249,15 @@ class PyDeprecatedToPythonConverterTest(unittest.TestCase):
         )
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
+
+
+class PythonToPythonConverterTest(unittest.TestCase):
+    def test_should_return_self(self) -> None:
+        simple = python_types.Simple()
+        self.assertIs(
+            simple,
+            to_python_struct(
+                python_types.Simple,
+                simple,
+            ),
+        )
