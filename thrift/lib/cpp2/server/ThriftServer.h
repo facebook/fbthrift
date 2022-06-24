@@ -508,7 +508,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   // if overloaded, returns applicable overloaded exception code.
-  folly::Optional<std::string> checkOverload(
+  folly::Optional<server::ServerConfigs::ErrorCodeAndMessage> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* = nullptr) const final;
 

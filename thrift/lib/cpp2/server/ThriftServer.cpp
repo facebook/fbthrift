@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <random>
+#include <utility>
 
 #include <glog/logging.h>
 #include <folly/Conv.h>
@@ -1387,11 +1388,14 @@ PreprocessResult ThriftServer::preprocess(
   return {};
 }
 
-folly::Optional<std::string> ThriftServer::checkOverload(
+folly::Optional<server::ServerConfigs::ErrorCodeAndMessage>
+ThriftServer::checkOverload(
     const transport::THeader::StringToStringMap* readHeaders,
     const std::string* method) const {
   if (UNLIKELY(isOverloaded_ && isOverloaded_(readHeaders, method))) {
-    return kAppOverloadedErrorCode;
+    return {std::make_pair(
+        kAppOverloadedErrorCode,
+        "load shedding due to custom isOverloaded() callback")};
   }
 
   // If active request tracking is disabled or we are using resource pools,
@@ -1404,7 +1408,8 @@ folly::Optional<std::string> ThriftServer::checkOverload(
         (method == nullptr ||
          !getMethodsBypassMaxRequestsLimit().contains(*method)) &&
         static_cast<uint32_t>(getActiveRequests()) >= maxRequests) {
-      return kOverloadedErrorCode;
+      return {std::make_pair(
+          kOverloadedErrorCode, "load shedding due to max request limit")};
     }
   }
 

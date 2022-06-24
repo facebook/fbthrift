@@ -495,11 +495,12 @@ void Cpp2Connection::requestReceived(
 
   if (auto overloadResult = server->checkOverload(
           &hreq->getHeader()->getHeaders(), &methodName)) {
+    auto [errorCode, errorMessage] = overloadResult.value();
     killRequest(
         std::move(hreq),
         TApplicationException::LOADSHEDDING,
-        overloadResult.value(),
-        "loadshedding request");
+        errorCode,
+        errorMessage.c_str());
     return;
   }
 

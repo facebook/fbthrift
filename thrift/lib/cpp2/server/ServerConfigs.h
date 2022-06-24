@@ -116,7 +116,8 @@ class ServerConfigs {
       const std::string& counter = "", bool check_custom = true) const = 0;
 
   // @see ThriftServer::checkOverload function.
-  virtual folly::Optional<std::string> checkOverload(
+  using ErrorCodeAndMessage = std::pair<std::string, std::string>;
+  virtual folly::Optional<ErrorCodeAndMessage> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 
@@ -173,6 +174,7 @@ class ServerConfigs {
   int32_t getActiveRequests() const { return activeRequests_.load(); }
 
   virtual uint32_t getMaxRequests() const = 0;
+
   virtual void setMaxRequests(
       uint32_t maxRequests,
       AttributeSource source = AttributeSource::OVERRIDE,

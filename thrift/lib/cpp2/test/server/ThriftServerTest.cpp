@@ -1026,16 +1026,15 @@ class OverloadTest
     if (isCustomError()) {
       return "message";
     } else if (errorType == ErrorType::PreprocessorOverload) {
-      return transport == TransportType::Header ? "preprocess load shedding"
-                                                : "loadshedding request";
+      return "preprocess load shedding";
     } else if (errorType == ErrorType::AppOverload) {
-      return "loadshedding request";
+      return "load shedding due to custom isOverloaded() callback";
     } else if (errorType == ErrorType::MethodOverload) {
       return "method loadshedding request";
     } else if (useQueueConcurrency()) {
       return "Queue Timeout";
     } else {
-      return "loadshedding request";
+      return "load shedding due to max request limit";
     }
   }
 

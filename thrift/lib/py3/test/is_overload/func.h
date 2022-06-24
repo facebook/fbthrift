@@ -33,8 +33,7 @@ bool checkOverload(
     const std::shared_ptr<apache::thrift::ThriftServer> server,
     const std::string method_name) {
   // dummy test doesn't use the headers, so pass nullptr
-  folly::Optional<std::string> ret =
-      server->checkOverload(nullptr, &method_name);
+  auto ret = server->checkOverload(nullptr, &method_name);
   // ret will contain the error code if there is an overload
   // otherwise, it will return no value
   return ret.hasValue();
