@@ -238,6 +238,17 @@ TEST(References, type_adapter_ref_struct_fields_clear) {
 
 TEST(References, field_adapter_ref_struct_fields_clear) {
   FieldAdapterRefStruct obj;
+
+  // TODO(dokwon): Use Adapter::fromThriftField for explicitly initializing
+  // adapted fields.
+  EXPECT_EQ(obj.def_shared_field_ref()->meta, &*obj.meta());
+  EXPECT_FALSE(obj.opt_shared_field_ref());
+  EXPECT_EQ(obj.req_shared_field_ref()->meta, &*obj.meta());
+  // EXPECT_EQ(obj.def_shared_const_field_ref()->meta, &*obj.meta());
+  // EXPECT_EQ(obj.req_shared_const_field_ref()->meta, &*obj.meta());
+  EXPECT_FALSE(obj.opt_shared_const_field_ref());
+  EXPECT_FALSE(obj.opt_box_field_ref());
+
   obj.def_shared_field_ref() = std::make_shared<
       AdaptedWithContext<std::string, FieldAdapterRefStruct, 1>>("1");
   obj.opt_shared_field_ref() = std::make_shared<

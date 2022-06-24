@@ -1967,7 +1967,7 @@ class StructWithFieldAdapter final  {
       __fbthrift_field_field(),
       shared_field(std::make_shared<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>()) {
     ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
-    ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(shared_field, *this);
+    ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(*shared_field, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
