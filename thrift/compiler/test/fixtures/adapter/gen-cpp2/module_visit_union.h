@@ -15,8 +15,9 @@ namespace detail {
 
 template <>
 struct VisitUnion<::cpp2::Baz> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::intField:
@@ -29,7 +30,8 @@ struct VisitUnion<::cpp2::Baz> {
       return f(3, *static_cast<T&&>(t).binaryField_ref());
     case Union::Type::longField:
       return f(4, *static_cast<T&&>(t).longField_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).intField_ref()))();
     }
   }
 };

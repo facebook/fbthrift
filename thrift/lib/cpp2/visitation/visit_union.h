@@ -45,7 +45,7 @@ struct VisitUnion {
  * @param f a callable that accepts all member types from union
  */
 template <typename T, typename F>
-void visit_union(T&& t, F f) {
+decltype(auto) visit_union(T&& t, F f) {
   return apache::thrift::detail::VisitUnion<folly::remove_cvref_t<T>>()(
       detail::MetadataForwarder<T, F>{std::move(f)}, static_cast<T&&>(t));
 }

@@ -15,20 +15,23 @@ namespace detail {
 
 template <>
 struct VisitUnion<::test::fixtures::patch::InnerUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::innerOption:
       return f(0, *static_cast<T&&>(t).innerOption_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).innerOption_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::test::fixtures::patch::MyUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::option1:
@@ -37,7 +40,8 @@ struct VisitUnion<::test::fixtures::patch::MyUnion> {
       return f(1, *static_cast<T&&>(t).option2_ref());
     case Union::Type::option3:
       return f(2, *static_cast<T&&>(t).option3_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).option1_ref()))();
     }
   }
 };

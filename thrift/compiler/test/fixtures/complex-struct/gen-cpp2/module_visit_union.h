@@ -15,8 +15,9 @@ namespace detail {
 
 template <>
 struct VisitUnion<::cpp2::MyUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::myEnum:
@@ -31,14 +32,16 @@ struct VisitUnion<::cpp2::MyUnion> {
       return f(4, *static_cast<T&&>(t).longValue_ref());
     case Union::Type::intValue:
       return f(5, *static_cast<T&&>(t).intValue_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).myEnum_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::cpp2::MyUnionFloatFieldThrowExp> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::myEnum:
@@ -49,7 +52,8 @@ struct VisitUnion<::cpp2::MyUnionFloatFieldThrowExp> {
       return f(2, *static_cast<T&&>(t).myDataItem_ref());
     case Union::Type::complexNestedStruct:
       return f(3, *static_cast<T&&>(t).complexNestedStruct_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).myEnum_ref()))();
     }
   }
 };

@@ -15,15 +15,17 @@ namespace detail {
 
 template <>
 struct VisitUnion<::test::fixtures::tablebased::ExampleUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::fieldA:
       return f(0, *static_cast<T&&>(t).fieldA_ref());
     case Union::Type::fieldB:
       return f(1, *static_cast<T&&>(t).fieldB_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).fieldA_ref()))();
     }
   }
 };

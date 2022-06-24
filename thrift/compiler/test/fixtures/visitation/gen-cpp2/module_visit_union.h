@@ -15,8 +15,9 @@ namespace detail {
 
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union1> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::ui:
@@ -27,14 +28,16 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union1> {
       return f(2, *static_cast<T&&>(t).us_ref());
     case Union::Type::ue:
       return f(3, *static_cast<T&&>(t).ue_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).ui_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union2> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::ui_2:
@@ -45,14 +48,16 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union2> {
       return f(2, *static_cast<T&&>(t).us_2_ref());
     case Union::Type::ue_2:
       return f(3, *static_cast<T&&>(t).ue_2_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).ui_2_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union3> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::ui_3:
@@ -63,14 +68,16 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union3> {
       return f(2, *static_cast<T&&>(t).us_3_ref());
     case Union::Type::ue_3:
       return f(3, *static_cast<T&&>(t).ue_3_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).ui_3_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::unionA> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::i:
@@ -83,14 +90,16 @@ struct VisitUnion<::test_cpp2::cpp_reflection::unionA> {
       return f(3, *static_cast<T&&>(t).e_ref());
     case Union::Type::a:
       return f(4, *static_cast<T&&>(t).a_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).i_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union_with_special_names> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::get:
@@ -149,7 +158,8 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union_with_special_names> {
       return f(26, *static_cast<T&&>(t).field_ref());
     case Union::Type::fields:
       return f(27, *static_cast<T&&>(t).fields_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).get_ref()))();
     }
   }
 };

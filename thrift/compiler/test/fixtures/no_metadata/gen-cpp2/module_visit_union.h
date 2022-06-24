@@ -15,8 +15,9 @@ namespace detail {
 
 template <>
 struct VisitUnion<::cpp2::MyUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::myEnum:
@@ -25,7 +26,8 @@ struct VisitUnion<::cpp2::MyUnion> {
       return f(1, *static_cast<T&&>(t).myStruct_ref());
     case Union::Type::myDataItem:
       return f(2, *static_cast<T&&>(t).myDataItem_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).myEnum_ref()))();
     }
   }
 };

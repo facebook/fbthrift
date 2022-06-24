@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -175,6 +175,20 @@ TEST(VisitUnionTest, CppRef) {
     }
   });
   EXPECT_TRUE(typeMatches);
+}
+
+TEST(VisitUnionTest, NonVoid) {
+  DuplicateType r;
+  r.set_str1("boo");
+  auto callable = [](auto&&, auto&& r2) {
+    if constexpr (std::is_same_v<
+                      folly::remove_cvref_t<decltype(r2)>,
+                      std::string>) {
+      return std::move(r2);
+    }
+    return std::string("list");
+  };
+  EXPECT_EQ(apache::thrift::visit_union(r, callable), "boo");
 }
 
 } // namespace

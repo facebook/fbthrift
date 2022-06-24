@@ -37,9 +37,10 @@ struct MetadataForwarder {
   const bool kHasMetadata = !meta.fields()->empty();
 
   template <class... Args>
-  FOLLY_ERASE void operator()(size_t idx, Args&&... args) {
-    f(kHasMetadata ? meta.fields()[idx] : empty_thrift_field(),
-      std::forward<Args>(args)...);
+  FOLLY_ERASE decltype(auto) operator()(size_t idx, Args&&... args) {
+    return f(
+        kHasMetadata ? meta.fields()[idx] : empty_thrift_field(),
+        std::forward<Args>(args)...);
   }
 };
 

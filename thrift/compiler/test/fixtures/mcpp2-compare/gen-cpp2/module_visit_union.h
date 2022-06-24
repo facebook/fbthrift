@@ -15,22 +15,25 @@ namespace detail {
 
 template <>
 struct VisitUnion<::some::valid::ns::SimpleUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::intValue:
       return f(0, *static_cast<T&&>(t).intValue_ref());
     case Union::Type::stringValue:
       return f(1, *static_cast<T&&>(t).stringValue_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).intValue_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::some::valid::ns::ComplexUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::intValue:
@@ -89,21 +92,24 @@ struct VisitUnion<::some::valid::ns::ComplexUnion> {
       return f(26, *static_cast<T&&>(t).excp_field_ref());
     case Union::Type::MyCustomField:
       return f(27, *static_cast<T&&>(t).MyCustomField_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).intValue_ref()))();
     }
   }
 };
 template <>
 struct VisitUnion<::some::valid::ns::FloatUnion> {
+
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+  decltype(auto) operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::floatSide:
       return f(0, *static_cast<T&&>(t).floatSide_ref());
     case Union::Type::doubleSide:
       return f(1, *static_cast<T&&>(t).doubleSide_ref());
-    case Union::Type::__EMPTY__: ;
+    case Union::Type::__EMPTY__:
+      return decltype(f(0, *static_cast<T&&>(t).floatSide_ref()))();
     }
   }
 };
