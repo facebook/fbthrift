@@ -74,9 +74,7 @@ struct OrdinalImpl<Tag, std::integral_constant<FieldOrdinal, Ord>> {
 };
 
 template <class Tag, class TypeTag, class Struct, int16_t Id>
-struct OrdinalImpl<
-    Tag,
-    ::apache::thrift::type::field<TypeTag, FieldContext<Struct, Id>>>
+struct OrdinalImpl<Tag, type::field<TypeTag, FieldContext<Struct, Id>>>
     : OrdinalImpl<Tag, field_id<Id>> {};
 
 struct MakeVoid {

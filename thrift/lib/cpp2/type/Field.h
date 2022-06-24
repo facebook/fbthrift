@@ -59,9 +59,9 @@ FOLLY_INLINE_VARIABLE constexpr bool exists =
 struct TagImpl {
  public:
   template <class Tag, class T>
-  using apply = ::apache::thrift::type::field<
+  using apply = type::field<
       type_tag<Tag, T>,
-      ::apache::thrift::FieldContext<
+      FieldContext<
           type::native_type<Tag>,
           folly::to_underlying(id<Tag, T>::value)>>;
 };
