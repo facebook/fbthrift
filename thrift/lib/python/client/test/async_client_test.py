@@ -279,3 +279,25 @@ class AsyncClientTests(IsolatedAsyncioTestCase):
         # Should be able to unhook a factory
         install_proxy_factory(None)
         self.assertEqual(get_proxy_factory(), None)
+
+    async def test_exit_callback(self) -> None:
+        class Callback:
+            def __init__(self):
+                self.triggered = False
+
+            def trigger(self):
+                self.triggered = True
+
+            async def async_trigger(self):
+                self.triggered = True
+
+        cb1 = Callback()
+        cb2 = Callback()
+
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                client._at_aexit(cb1.trigger)
+                client._at_aexit(cb2.async_trigger)
+
+        self.assertTrue(cb1.triggered)
+        self.assertTrue(cb2.triggered)
