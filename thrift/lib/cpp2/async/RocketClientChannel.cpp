@@ -304,7 +304,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                                           ->toThrift()
                                           .name_ref()
                                           ->exceptionType_ref();
-              if (exceptionTypeRef &&
+              if (exceptionTypeRef && exceptionTypeRef->uri_ref() &&
                   anyException.protocol_ref() ==
                       type::Protocol::get<type::StandardProtocol::Compact>()) {
                 (*otherMetadataRef)
