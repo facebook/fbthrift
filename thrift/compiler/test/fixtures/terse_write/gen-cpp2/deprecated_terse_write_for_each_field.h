@@ -14,14 +14,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::apache::thrift::test::MyStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::deprecated::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::StructLevelTerseStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).bool_field_ref()...);
@@ -42,7 +42,7 @@ struct ForEachField<::apache::thrift::test::StructLevelTerseStruct> {
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::FieldLevelTerseStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).terse_bool_field_ref()...);

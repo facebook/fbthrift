@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/terse_write/gen-cpp2/terse_write_types.h"
+#include "thrift/annotation/gen-cpp2/cpp_metadata.h"
 #include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 
@@ -19,32 +20,37 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::apache::thrift::test::MyEnum> {
+class EnumMetadata<::facebook::thrift::test::terse_write::MyEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::MyStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::MyStructWithCustomDefault> {
+class StructMetadata<::facebook::thrift::test::terse_write::MyStructWithCustomDefault> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::StructLevelTerseStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::StructLevelTerseStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::FieldLevelTerseStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::FieldLevelTerseStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::TerseStructWithCustomDefault> {
+class StructMetadata<::facebook::thrift::test::terse_write::TerseStructWithCustomDefault> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::facebook::thrift::test::terse_write::AdaptedFields> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

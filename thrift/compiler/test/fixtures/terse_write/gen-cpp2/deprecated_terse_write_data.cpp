@@ -12,23 +12,23 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::apache::thrift::test::MyEnum, 2> TEnumDataStorage<::apache::thrift::test::MyEnum>::values = {{
+const std::array<::facebook::thrift::test::terse_write::deprecated::MyEnum, 2> TEnumDataStorage<::facebook::thrift::test::terse_write::deprecated::MyEnum>::values = {{
   type::ME0,
   type::ME1,
 }};
-const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::test::MyEnum>::names = {{
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::facebook::thrift::test::terse_write::deprecated::MyEnum>::names = {{
   "ME0",
   "ME1",
 }};
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::apache::thrift::test::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::MyStruct>::fields_names = {{
 }};
-const std::array<int16_t, 0> TStructDataStorage<::apache::thrift::test::MyStruct>::fields_ids = {{
+const std::array<int16_t, 0> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::MyStruct>::fields_ids = {{
 }};
-const std::array<protocol::TType, 0> TStructDataStorage<::apache::thrift::test::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 0> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::MyStruct>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 14> TStructDataStorage<::apache::thrift::test::StructLevelTerseStruct>::fields_names = {{
+const std::array<folly::StringPiece, 14> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct>::fields_names = {{
   "bool_field",
   "byte_field",
   "short_field",
@@ -44,7 +44,7 @@ const std::array<folly::StringPiece, 14> TStructDataStorage<::apache::thrift::te
   "map_field",
   "struct_field",
 }};
-const std::array<int16_t, 14> TStructDataStorage<::apache::thrift::test::StructLevelTerseStruct>::fields_ids = {{
+const std::array<int16_t, 14> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -60,7 +60,7 @@ const std::array<int16_t, 14> TStructDataStorage<::apache::thrift::test::StructL
   13,
   14,
 }};
-const std::array<protocol::TType, 14> TStructDataStorage<::apache::thrift::test::StructLevelTerseStruct>::fields_types = {{
+const std::array<protocol::TType, 14> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_BYTE,
   TType::T_I16,
@@ -77,7 +77,7 @@ const std::array<protocol::TType, 14> TStructDataStorage<::apache::thrift::test:
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 28> TStructDataStorage<::apache::thrift::test::FieldLevelTerseStruct>::fields_names = {{
+const std::array<folly::StringPiece, 28> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct>::fields_names = {{
   "terse_bool_field",
   "terse_byte_field",
   "terse_short_field",
@@ -107,7 +107,7 @@ const std::array<folly::StringPiece, 28> TStructDataStorage<::apache::thrift::te
   "map_field",
   "struct_field",
 }};
-const std::array<int16_t, 28> TStructDataStorage<::apache::thrift::test::FieldLevelTerseStruct>::fields_ids = {{
+const std::array<int16_t, 28> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -137,7 +137,7 @@ const std::array<int16_t, 28> TStructDataStorage<::apache::thrift::test::FieldLe
   27,
   28,
 }};
-const std::array<protocol::TType, 28> TStructDataStorage<::apache::thrift::test::FieldLevelTerseStruct>::fields_types = {{
+const std::array<protocol::TType, 28> TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_BYTE,
   TType::T_I16,

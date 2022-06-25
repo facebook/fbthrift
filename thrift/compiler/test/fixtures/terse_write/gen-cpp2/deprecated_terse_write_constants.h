@@ -10,10 +10,10 @@
 
 #include "thrift/compiler/test/fixtures/terse_write/gen-cpp2/deprecated_terse_write_types.h"
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated {
 
 struct deprecated_terse_write_constants {
 
 };
 
-}}} // apache::thrift::test
+}}}}} // facebook::thrift::test::terse_write::deprecated

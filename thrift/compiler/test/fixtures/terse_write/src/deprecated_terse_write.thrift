@@ -16,7 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 
-namespace cpp2 apache.thrift.test
+package "facebook.com/thrift/test/terse_write/deprecated"
 
 enum MyEnum {
   ME0 = 0,

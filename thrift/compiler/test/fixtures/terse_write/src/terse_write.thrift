@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
-namespace cpp2 apache.thrift.test
-namespace java2 apache.thrift.test
-namespace java.swift apache.thrift.test
+package "facebook.com/thrift/test/terse_write"
 
 enum MyEnum {
   ME0 = 0,
@@ -113,4 +112,16 @@ struct TerseStructWithCustomDefault {
   12: set<i16> set_field = [1];
   13: map<i16, i16> map_field = {1: 1};
   14: MyStructWithCustomDefault struct_field;
+}
+
+@cpp.Adapter{name = "my::Adapter"}
+typedef i32 MyInteger
+
+@thrift.TerseWrite
+struct AdaptedFields {
+  1: MyInteger field1;
+  @cpp.Adapter{name = "my::Adapter"}
+  2: i32 field2;
+  @cpp.Adapter{name = "my::Adapter"}
+  3: MyInteger field3;
 }

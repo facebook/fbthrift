@@ -7,9 +7,10 @@
 
 #include "src/gen-py3/terse_write/metadata.h"
 
-namespace apache {
+namespace facebook {
 namespace thrift {
 namespace test {
+namespace terse_write {
 ::apache::thrift::metadata::ThriftMetadata terse_write_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
@@ -19,8 +20,10 @@ namespace test {
   ::apache::thrift::detail::md::StructMetadata<StructLevelTerseStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FieldLevelTerseStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<TerseStructWithCustomDefault>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<AdaptedFields>::gen(metadata);
   return metadata;
 }
-} // namespace apache
+} // namespace facebook
 } // namespace thrift
 } // namespace test
+} // namespace terse_write

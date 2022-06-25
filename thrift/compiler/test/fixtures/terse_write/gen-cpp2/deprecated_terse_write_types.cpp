@@ -14,21 +14,21 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::apache::thrift::test::MyEnum>::size;
-folly::Range<::apache::thrift::test::MyEnum const*> const TEnumTraits<::apache::thrift::test::MyEnum>::values = folly::range(TEnumDataStorage<::apache::thrift::test::MyEnum>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::test::MyEnum>::names = folly::range(TEnumDataStorage<::apache::thrift::test::MyEnum>::names);
+constexpr std::size_t const TEnumTraits<::facebook::thrift::test::terse_write::deprecated::MyEnum>::size;
+folly::Range<::facebook::thrift::test::terse_write::deprecated::MyEnum const*> const TEnumTraits<::facebook::thrift::test::terse_write::deprecated::MyEnum>::values = folly::range(TEnumDataStorage<::facebook::thrift::test::terse_write::deprecated::MyEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::thrift::test::terse_write::deprecated::MyEnum>::names = folly::range(TEnumDataStorage<::facebook::thrift::test::terse_write::deprecated::MyEnum>::names);
 
-bool TEnumTraits<::apache::thrift::test::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::facebook::thrift::test::terse_write::deprecated::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::apache::thrift::test::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::facebook::thrift::test::terse_write::deprecated::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated {
 #ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
@@ -36,17 +36,17 @@ const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _My
 const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = _MyEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 #endif
-}}} // apache::thrift::test
+}}}}} // facebook::thrift::test::terse_write::deprecated
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::apache::thrift::test::MyStruct>::translateFieldName(
+void TccStructTraits<::facebook::thrift::test::terse_write::deprecated::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::apache::thrift::test::MyStruct>;
+  using data = apache::thrift::TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::MyStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -59,7 +59,11 @@ void TccStructTraits<::apache::thrift::test::MyStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated {
+
+const char* MyStruct::__fbthrift_thrift_uri() {
+  return "facebook.com/thrift/test/terse_write/deprecated/MyStruct";
+}
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor) {}
@@ -107,17 +111,17 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-}}} // apache::thrift::test
+}}}}} // facebook::thrift::test::terse_write::deprecated
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::apache::thrift::test::StructLevelTerseStruct>::translateFieldName(
+void TccStructTraits<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::apache::thrift::test::StructLevelTerseStruct>;
+  using data = apache::thrift::TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -130,7 +134,11 @@ void TccStructTraits<::apache::thrift::test::StructLevelTerseStruct>::translateF
 } // namespace thrift
 } // namespace apache
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated {
+
+const char* StructLevelTerseStruct::__fbthrift_thrift_uri() {
+  return "facebook.com/thrift/test/terse_write/deprecated/StructLevelTerseStruct";
+}
 
 StructLevelTerseStruct::StructLevelTerseStruct(const StructLevelTerseStruct&) = default;
 StructLevelTerseStruct& StructLevelTerseStruct::operator=(const StructLevelTerseStruct&) = default;
@@ -184,7 +192,7 @@ StructLevelTerseStruct& StructLevelTerseStruct::operator=(FOLLY_MAYBE_UNUSED Str
 }
 
 
-StructLevelTerseStruct::StructLevelTerseStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
+StructLevelTerseStruct::StructLevelTerseStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyStruct struct_field__arg) :
     __fbthrift_field_bool_field(std::move(bool_field__arg)),
     __fbthrift_field_byte_field(std::move(byte_field__arg)),
     __fbthrift_field_short_field(std::move(short_field__arg)),
@@ -213,7 +221,7 @@ void StructLevelTerseStruct::__fbthrift_clear() {
   this->__fbthrift_field_double_field = double();
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_enum_field = ::facebook::thrift::test::terse_write::deprecated::MyEnum();
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
@@ -229,7 +237,7 @@ void StructLevelTerseStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_double_field = double();
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_enum_field = ::facebook::thrift::test::terse_write::deprecated::MyEnum();
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
@@ -245,7 +253,7 @@ bool StructLevelTerseStruct::__fbthrift_is_empty() const {
  !(this->__fbthrift_field_double_field != double()) &&
  !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_string_field)) &&
  !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_binary_field)) &&
- !(this->__fbthrift_field_enum_field != ::apache::thrift::test::MyEnum()) &&
+ !(this->__fbthrift_field_enum_field != ::facebook::thrift::test::terse_write::deprecated::MyEnum()) &&
  !(!this->__fbthrift_field_list_field.empty()) &&
  !(!this->__fbthrift_field_set_field.empty()) &&
  !(!this->__fbthrift_field_map_field.empty()) &&
@@ -374,11 +382,11 @@ const ::std::map<::std::int16_t, ::std::int16_t>& StructLevelTerseStruct::get_ma
   return std::move(__fbthrift_field_map_field);
 }
 
-const ::apache::thrift::test::MyStruct& StructLevelTerseStruct::get_struct_field() const& {
+const ::facebook::thrift::test::terse_write::deprecated::MyStruct& StructLevelTerseStruct::get_struct_field() const& {
   return __fbthrift_field_struct_field;
 }
 
-::apache::thrift::test::MyStruct StructLevelTerseStruct::get_struct_field() && {
+::facebook::thrift::test::terse_write::deprecated::MyStruct StructLevelTerseStruct::get_struct_field() && {
   return std::move(__fbthrift_field_struct_field);
 }
 
@@ -414,20 +422,20 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructLevelTerseStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
+        ::facebook::thrift::test::terse_write::deprecated::MyStruct>,
     "inconsistent use of json option");
 
-}}} // apache::thrift::test
+}}}}} // facebook::thrift::test::terse_write::deprecated
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::apache::thrift::test::FieldLevelTerseStruct>::translateFieldName(
+void TccStructTraits<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::apache::thrift::test::FieldLevelTerseStruct>;
+  using data = apache::thrift::TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -440,7 +448,11 @@ void TccStructTraits<::apache::thrift::test::FieldLevelTerseStruct>::translateFi
 } // namespace thrift
 } // namespace apache
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated {
+
+const char* FieldLevelTerseStruct::__fbthrift_thrift_uri() {
+  return "facebook.com/thrift/test/terse_write/deprecated/FieldLevelTerseStruct";
+}
 
 FieldLevelTerseStruct::FieldLevelTerseStruct(const FieldLevelTerseStruct&) = default;
 FieldLevelTerseStruct& FieldLevelTerseStruct::operator=(const FieldLevelTerseStruct&) = default;
@@ -532,7 +544,7 @@ FieldLevelTerseStruct& FieldLevelTerseStruct::operator=(FOLLY_MAYBE_UNUSED Field
 }
 
 
-FieldLevelTerseStruct::FieldLevelTerseStruct(apache::thrift::FragileConstructor, bool terse_bool_field__arg, ::std::int8_t terse_byte_field__arg, ::std::int16_t terse_short_field__arg, ::std::int32_t terse_int_field__arg, ::std::int64_t terse_long_field__arg, float terse_float_field__arg, double terse_double_field__arg, ::std::string terse_string_field__arg, ::std::string terse_binary_field__arg, ::apache::thrift::test::MyEnum terse_enum_field__arg, ::std::vector<::std::int16_t> terse_list_field__arg, ::std::set<::std::int16_t> terse_set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> terse_map_field__arg, ::apache::thrift::test::MyStruct terse_struct_field__arg, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
+FieldLevelTerseStruct::FieldLevelTerseStruct(apache::thrift::FragileConstructor, bool terse_bool_field__arg, ::std::int8_t terse_byte_field__arg, ::std::int16_t terse_short_field__arg, ::std::int32_t terse_int_field__arg, ::std::int64_t terse_long_field__arg, float terse_float_field__arg, double terse_double_field__arg, ::std::string terse_string_field__arg, ::std::string terse_binary_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyEnum terse_enum_field__arg, ::std::vector<::std::int16_t> terse_list_field__arg, ::std::set<::std::int16_t> terse_set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> terse_map_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyStruct terse_struct_field__arg, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::terse_write::deprecated::MyStruct struct_field__arg) :
     __fbthrift_field_terse_bool_field(std::move(terse_bool_field__arg)),
     __fbthrift_field_terse_byte_field(std::move(terse_byte_field__arg)),
     __fbthrift_field_terse_short_field(std::move(terse_short_field__arg)),
@@ -589,7 +601,7 @@ void FieldLevelTerseStruct::__fbthrift_clear() {
   this->__fbthrift_field_terse_double_field = double();
   this->__fbthrift_field_terse_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_terse_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_terse_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_terse_enum_field = ::facebook::thrift::test::terse_write::deprecated::MyEnum();
   this->__fbthrift_field_terse_list_field.clear();
   this->__fbthrift_field_terse_set_field.clear();
   this->__fbthrift_field_terse_map_field.clear();
@@ -602,7 +614,7 @@ void FieldLevelTerseStruct::__fbthrift_clear() {
   this->__fbthrift_field_double_field = double();
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_enum_field = ::facebook::thrift::test::terse_write::deprecated::MyEnum();
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
@@ -619,7 +631,7 @@ void FieldLevelTerseStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_terse_double_field = double();
   this->__fbthrift_field_terse_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_terse_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_terse_enum_field = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_terse_enum_field = ::facebook::thrift::test::terse_write::deprecated::MyEnum();
   this->__fbthrift_field_terse_list_field.clear();
   this->__fbthrift_field_terse_set_field.clear();
   this->__fbthrift_field_terse_map_field.clear();
@@ -835,11 +847,11 @@ const ::std::map<::std::int16_t, ::std::int16_t>& FieldLevelTerseStruct::get_ter
   return std::move(__fbthrift_field_terse_map_field);
 }
 
-const ::apache::thrift::test::MyStruct& FieldLevelTerseStruct::get_terse_struct_field() const& {
+const ::facebook::thrift::test::terse_write::deprecated::MyStruct& FieldLevelTerseStruct::get_terse_struct_field() const& {
   return __fbthrift_field_terse_struct_field;
 }
 
-::apache::thrift::test::MyStruct FieldLevelTerseStruct::get_terse_struct_field() && {
+::facebook::thrift::test::terse_write::deprecated::MyStruct FieldLevelTerseStruct::get_terse_struct_field() && {
   return std::move(__fbthrift_field_terse_struct_field);
 }
 
@@ -867,11 +879,11 @@ const ::std::map<::std::int16_t, ::std::int16_t>& FieldLevelTerseStruct::get_map
   return std::move(__fbthrift_field_map_field);
 }
 
-const ::apache::thrift::test::MyStruct& FieldLevelTerseStruct::get_struct_field() const& {
+const ::facebook::thrift::test::terse_write::deprecated::MyStruct& FieldLevelTerseStruct::get_struct_field() const& {
   return __fbthrift_field_struct_field;
 }
 
-::apache::thrift::test::MyStruct FieldLevelTerseStruct::get_struct_field() && {
+::facebook::thrift::test::terse_write::deprecated::MyStruct FieldLevelTerseStruct::get_struct_field() && {
   return std::move(__fbthrift_field_struct_field);
 }
 
@@ -922,18 +934,18 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         FieldLevelTerseStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
+        ::facebook::thrift::test::terse_write::deprecated::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         FieldLevelTerseStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
+        ::facebook::thrift::test::terse_write::deprecated::MyStruct>,
     "inconsistent use of json option");
 
-}}} // apache::thrift::test
+}}}}} // facebook::thrift::test::terse_write::deprecated
 
-namespace apache { namespace thrift { namespace test { namespace {
+namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace deprecated { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}}}} // apache::thrift::test
+}}}}}} // facebook::thrift::test::terse_write::deprecated

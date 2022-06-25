@@ -19,22 +19,22 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::apache::thrift::test::MyEnum> {
+class EnumMetadata<::facebook::thrift::test::terse_write::deprecated::MyEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::MyStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::deprecated::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::StructLevelTerseStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::apache::thrift::test::FieldLevelTerseStruct> {
+class StructMetadata<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

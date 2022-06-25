@@ -14,18 +14,18 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByFieldId<::apache::thrift::test::MyStruct> {
+struct VisitByFieldId<::facebook::thrift::test::terse_write::deprecated::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     default:
-      throwInvalidThriftId(fieldId, "::apache::thrift::test::MyStruct");
+      throwInvalidThriftId(fieldId, "::facebook::thrift::test::terse_write::deprecated::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::apache::thrift::test::StructLevelTerseStruct> {
+struct VisitByFieldId<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -58,13 +58,13 @@ struct VisitByFieldId<::apache::thrift::test::StructLevelTerseStruct> {
     case 14:
       return f(13, static_cast<T&&>(t).struct_field_ref());
     default:
-      throwInvalidThriftId(fieldId, "::apache::thrift::test::StructLevelTerseStruct");
+      throwInvalidThriftId(fieldId, "::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::apache::thrift::test::FieldLevelTerseStruct> {
+struct VisitByFieldId<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -125,7 +125,7 @@ struct VisitByFieldId<::apache::thrift::test::FieldLevelTerseStruct> {
     case 28:
       return f(27, static_cast<T&&>(t).struct_field_ref());
     default:
-      throwInvalidThriftId(fieldId, "::apache::thrift::test::FieldLevelTerseStruct");
+      throwInvalidThriftId(fieldId, "::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct");
     }
   }
 };

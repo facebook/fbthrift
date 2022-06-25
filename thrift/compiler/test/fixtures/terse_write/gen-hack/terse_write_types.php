@@ -6,10 +6,13 @@
  *  @generated
  */
 
+namespace thrift\test\terse_write;
+
 /**
  * Original thrift enum:-
  * MyEnum
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/MyEnum'))>>
 enum MyEnum: int {
   ME0 = 0;
   ME1 = 1;
@@ -17,7 +20,7 @@ enum MyEnum: int {
 
 class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
-    return tmeta_ThriftEnum::fromShape(
+    return \tmeta_ThriftEnum::fromShape(
       shape(
         "name" => "terse_write.MyEnum",
         "elements" => dict[
@@ -41,6 +44,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * MyStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/MyStruct'))>>
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -74,7 +78,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "terse_write.MyStruct",
         "is_union" => false,
@@ -118,6 +122,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyStructWithCustomDefault
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/MyStructWithCustomDefault'))>>
 class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -165,16 +170,16 @@ class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSy
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "terse_write.MyStructWithCustomDefault",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "field1",
@@ -227,6 +232,7 @@ class MyStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSy
  * Original thrift struct:-
  * StructLevelTerseStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/StructLevelTerseStruct'))>>
 class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -270,7 +276,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     10 => shape(
       'var' => 'enum_field',
       'type' => \TType::I32,
-      'enum' => MyEnum::class,
+      'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'list_field',
@@ -306,7 +312,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     14 => shape(
       'var' => 'struct_field',
       'type' => \TType::STRUCT,
-      'class' => MyStruct::class,
+      'class' => \thrift\test\terse_write\MyStruct::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -336,11 +342,11 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     ?'double_field' => ?float,
     ?'string_field' => ?string,
     ?'binary_field' => ?string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     ?'list_field' => ?Vector<int>,
     ?'set_field' => ?Set<int>,
     ?'map_field' => ?Map<int, int>,
-    ?'struct_field' => ?MyStruct,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStruct,
   );
 
   const type TShape = shape(
@@ -353,11 +359,11 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     'double_field' => float,
     'string_field' => string,
     'binary_field' => string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     'list_field' => vec<int>,
     'set_field' => dict<int, bool>,
     'map_field' => dict<int, int>,
-    ?'struct_field' => ?MyStruct::TShape,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStruct::TShape,
     ...
   );
   const int STRUCTURAL_ID = 6198803146818252405;
@@ -410,7 +416,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
    * Original thrift field:-
    * 10: enum terse_write.MyEnum enum_field
    */
-  public ?MyEnum $enum_field;
+  public ?\thrift\test\terse_write\MyEnum $enum_field;
   /**
    * Original thrift field:-
    * 11: list<i16> list_field
@@ -430,9 +436,9 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
    * Original thrift field:-
    * 14: struct terse_write.MyStruct struct_field
    */
-  public ?MyStruct $struct_field;
+  public ?\thrift\test\terse_write\MyStruct $struct_field;
 
-  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null)[] {
+  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?\thrift\test\terse_write\MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?\thrift\test\terse_write\MyStruct $struct_field = null)[] {
     $this->bool_field = $bool_field ?? false;
     $this->byte_field = $byte_field ?? 0;
     $this->short_field = $short_field ?? 0;
@@ -477,115 +483,115 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "terse_write.StructLevelTerseStruct",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "bool_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
                 )
               ),
               "name" => "byte_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                 )
               ),
               "name" => "short_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "int_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "long_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
                 )
               ),
               "name" => "float_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 7,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
                 )
               ),
               "name" => "double_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "string_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 9,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "binary_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 10,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
                     shape(
                       "name" => "terse_write.MyEnum",
                     )
@@ -595,16 +601,16 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
               "name" => "enum_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 11,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -614,16 +620,16 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
               "name" => "list_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 12,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -633,21 +639,21 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
               "name" => "set_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 13,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -657,12 +663,12 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
               "name" => "map_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 14,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "terse_write.MyStruct",
                     )
@@ -681,7 +687,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
           shape(
           )
         ),
@@ -706,7 +712,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       (new Vector($shape['list_field'])),
       new Set(Keyset\keys($shape['set_field'])),
       (new Map($shape['map_field'])),
-      Shapes::idx($shape, 'struct_field') === null ? null : (MyStruct::__fromShape($shape['struct_field'])),
+      Shapes::idx($shape, 'struct_field') === null ? null : (\thrift\test\terse_write\MyStruct::__fromShape($shape['struct_field'])),
     );
   }
 
@@ -782,7 +788,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
+      $this->enum_field = \thrift\test\terse_write\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
       $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
@@ -830,8 +836,8 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['struct_field']));
-      $_tmp25 = MyStruct::withDefaultValues();
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
+      $_tmp25 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
     }
@@ -843,6 +849,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
  * Original thrift struct:-
  * FieldLevelTerseStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/FieldLevelTerseStruct'))>>
 class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -886,7 +893,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     10 => shape(
       'var' => 'terse_enum_field',
       'type' => \TType::I32,
-      'enum' => MyEnum::class,
+      'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'terse_list_field',
@@ -922,7 +929,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     14 => shape(
       'var' => 'terse_struct_field',
       'type' => \TType::STRUCT,
-      'class' => MyStruct::class,
+      'class' => \thrift\test\terse_write\MyStruct::class,
     ),
     15 => shape(
       'var' => 'bool_field',
@@ -963,7 +970,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     24 => shape(
       'var' => 'enum_field',
       'type' => \TType::I32,
-      'enum' => MyEnum::class,
+      'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     25 => shape(
       'var' => 'list_field',
@@ -999,7 +1006,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     28 => shape(
       'var' => 'struct_field',
       'type' => \TType::STRUCT,
-      'class' => MyStruct::class,
+      'class' => \thrift\test\terse_write\MyStruct::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1043,11 +1050,11 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     ?'terse_double_field' => ?float,
     ?'terse_string_field' => ?string,
     ?'terse_binary_field' => ?string,
-    ?'terse_enum_field' => ?MyEnum,
+    ?'terse_enum_field' => ?\thrift\test\terse_write\MyEnum,
     ?'terse_list_field' => ?Vector<int>,
     ?'terse_set_field' => ?Set<int>,
     ?'terse_map_field' => ?Map<int, int>,
-    ?'terse_struct_field' => ?MyStruct,
+    ?'terse_struct_field' => ?\thrift\test\terse_write\MyStruct,
     ?'bool_field' => ?bool,
     ?'byte_field' => ?int,
     ?'short_field' => ?int,
@@ -1057,11 +1064,11 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     ?'double_field' => ?float,
     ?'string_field' => ?string,
     ?'binary_field' => ?string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     ?'list_field' => ?Vector<int>,
     ?'set_field' => ?Set<int>,
     ?'map_field' => ?Map<int, int>,
-    ?'struct_field' => ?MyStruct,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStruct,
   );
 
   const type TShape = shape(
@@ -1074,11 +1081,11 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     'terse_double_field' => float,
     'terse_string_field' => string,
     'terse_binary_field' => string,
-    ?'terse_enum_field' => ?MyEnum,
+    ?'terse_enum_field' => ?\thrift\test\terse_write\MyEnum,
     'terse_list_field' => vec<int>,
     'terse_set_field' => dict<int, bool>,
     'terse_map_field' => dict<int, int>,
-    ?'terse_struct_field' => ?MyStruct::TShape,
+    ?'terse_struct_field' => ?\thrift\test\terse_write\MyStruct::TShape,
     'bool_field' => bool,
     'byte_field' => int,
     'short_field' => int,
@@ -1088,11 +1095,11 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     'double_field' => float,
     'string_field' => string,
     'binary_field' => string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     'list_field' => vec<int>,
     'set_field' => dict<int, bool>,
     'map_field' => dict<int, int>,
-    ?'struct_field' => ?MyStruct::TShape,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStruct::TShape,
     ...
   );
   const int STRUCTURAL_ID = 8880319429198147538;
@@ -1145,7 +1152,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
    * Original thrift field:-
    * 10: enum terse_write.MyEnum terse_enum_field
    */
-  public ?MyEnum $terse_enum_field;
+  public ?\thrift\test\terse_write\MyEnum $terse_enum_field;
   /**
    * Original thrift field:-
    * 11: list<i16> terse_list_field
@@ -1165,7 +1172,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
    * Original thrift field:-
    * 14: struct terse_write.MyStruct terse_struct_field
    */
-  public ?MyStruct $terse_struct_field;
+  public ?\thrift\test\terse_write\MyStruct $terse_struct_field;
   /**
    * Original thrift field:-
    * 15: bool bool_field
@@ -1215,7 +1222,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
    * Original thrift field:-
    * 24: enum terse_write.MyEnum enum_field
    */
-  public ?MyEnum $enum_field;
+  public ?\thrift\test\terse_write\MyEnum $enum_field;
   /**
    * Original thrift field:-
    * 25: list<i16> list_field
@@ -1235,9 +1242,9 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
    * Original thrift field:-
    * 28: struct terse_write.MyStruct struct_field
    */
-  public ?MyStruct $struct_field;
+  public ?\thrift\test\terse_write\MyStruct $struct_field;
 
-  public function __construct(?bool $terse_bool_field = null, ?int $terse_byte_field = null, ?int $terse_short_field = null, ?int $terse_int_field = null, ?int $terse_long_field = null, ?float $terse_float_field = null, ?float $terse_double_field = null, ?string $terse_string_field = null, ?string $terse_binary_field = null, ?MyEnum $terse_enum_field = null, ?Vector<int> $terse_list_field = null, ?Set<int> $terse_set_field = null, ?Map<int, int> $terse_map_field = null, ?MyStruct $terse_struct_field = null, ?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStruct $struct_field = null)[] {
+  public function __construct(?bool $terse_bool_field = null, ?int $terse_byte_field = null, ?int $terse_short_field = null, ?int $terse_int_field = null, ?int $terse_long_field = null, ?float $terse_float_field = null, ?float $terse_double_field = null, ?string $terse_string_field = null, ?string $terse_binary_field = null, ?\thrift\test\terse_write\MyEnum $terse_enum_field = null, ?Vector<int> $terse_list_field = null, ?Set<int> $terse_set_field = null, ?Map<int, int> $terse_map_field = null, ?\thrift\test\terse_write\MyStruct $terse_struct_field = null, ?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?\thrift\test\terse_write\MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?\thrift\test\terse_write\MyStruct $struct_field = null)[] {
     $this->terse_bool_field = $terse_bool_field ?? false;
     $this->terse_byte_field = $terse_byte_field ?? 0;
     $this->terse_short_field = $terse_short_field ?? 0;
@@ -1310,115 +1317,115 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "terse_write.FieldLevelTerseStruct",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "terse_bool_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
                 )
               ),
               "name" => "terse_byte_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                 )
               ),
               "name" => "terse_short_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "terse_int_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "terse_long_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
                 )
               ),
               "name" => "terse_float_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 7,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
                 )
               ),
               "name" => "terse_double_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "terse_string_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 9,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "terse_binary_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 10,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
                     shape(
                       "name" => "terse_write.MyEnum",
                     )
@@ -1428,16 +1435,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "terse_enum_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 11,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1447,16 +1454,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "terse_list_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 12,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1466,21 +1473,21 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "terse_set_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 13,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1490,12 +1497,12 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "terse_map_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 14,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "terse_write.MyStruct",
                     )
@@ -1505,111 +1512,111 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "terse_struct_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 15,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "bool_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 16,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
                 )
               ),
               "name" => "byte_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 17,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                 )
               ),
               "name" => "short_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 18,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "int_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 19,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "long_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 20,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
                 )
               ),
               "name" => "float_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 21,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
                 )
               ),
               "name" => "double_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 22,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "string_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 23,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "binary_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 24,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
                     shape(
                       "name" => "terse_write.MyEnum",
                     )
@@ -1619,16 +1626,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "enum_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 25,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1638,16 +1645,16 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "list_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 26,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1657,21 +1664,21 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "set_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 27,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -1681,12 +1688,12 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
               "name" => "map_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 28,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "terse_write.MyStruct",
                     )
@@ -1708,7 +1715,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       'fields' => dict[
         'terse_bool_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1717,7 +1724,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_byte_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1726,7 +1733,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_short_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1735,7 +1742,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_int_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1744,7 +1751,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_long_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1753,7 +1760,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_float_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1762,7 +1769,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_double_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1771,7 +1778,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_string_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1780,7 +1787,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_binary_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1789,7 +1796,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_enum_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1798,7 +1805,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_list_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1807,7 +1814,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_set_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1816,7 +1823,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_map_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1825,7 +1832,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_struct_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1851,7 +1858,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       (new Vector($shape['terse_list_field'])),
       new Set(Keyset\keys($shape['terse_set_field'])),
       (new Map($shape['terse_map_field'])),
-      Shapes::idx($shape, 'terse_struct_field') === null ? null : (MyStruct::__fromShape($shape['terse_struct_field'])),
+      Shapes::idx($shape, 'terse_struct_field') === null ? null : (\thrift\test\terse_write\MyStruct::__fromShape($shape['terse_struct_field'])),
       $shape['bool_field'],
       $shape['byte_field'],
       $shape['short_field'],
@@ -1865,7 +1872,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       (new Vector($shape['list_field'])),
       new Set(Keyset\keys($shape['set_field'])),
       (new Map($shape['map_field'])),
-      Shapes::idx($shape, 'struct_field') === null ? null : (MyStruct::__fromShape($shape['struct_field'])),
+      Shapes::idx($shape, 'struct_field') === null ? null : (\thrift\test\terse_write\MyStruct::__fromShape($shape['struct_field'])),
     );
   }
 
@@ -1955,7 +1962,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['terse_binary_field']);
     }
     if (idx($parsed, 'terse_enum_field') !== null) {
-      $this->terse_enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['terse_enum_field']));
+      $this->terse_enum_field = \thrift\test\terse_write\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyEnum>($parsed['terse_enum_field']));
     }
     if (idx($parsed, 'terse_list_field') !== null) {
       $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['terse_list_field']);
@@ -2003,8 +2010,8 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_map_field = $_container21;
     }
     if (idx($parsed, 'terse_struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['terse_struct_field']));
-      $_tmp25 = MyStruct::withDefaultValues();
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['terse_struct_field']));
+      $_tmp25 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->terse_struct_field = $_tmp25;
     }
@@ -2051,7 +2058,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
+      $this->enum_field = \thrift\test\terse_write\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
       $_json32 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
@@ -2099,8 +2106,8 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->map_field = $_container47;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp50 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['struct_field']));
-      $_tmp51 = MyStruct::withDefaultValues();
+      $_tmp50 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
+      $_tmp51 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp51->readFromJson($_tmp50);
       $this->struct_field = $_tmp51;
     }
@@ -2112,6 +2119,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
  * Original thrift struct:-
  * TerseStructWithCustomDefault
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/TerseStructWithCustomDefault'))>>
 class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2155,7 +2163,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     10 => shape(
       'var' => 'enum_field',
       'type' => \TType::I32,
-      'enum' => MyEnum::class,
+      'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'list_field',
@@ -2191,7 +2199,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     14 => shape(
       'var' => 'struct_field',
       'type' => \TType::STRUCT,
-      'class' => MyStructWithCustomDefault::class,
+      'class' => \thrift\test\terse_write\MyStructWithCustomDefault::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -2221,11 +2229,11 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     ?'double_field' => ?float,
     ?'string_field' => ?string,
     ?'binary_field' => ?string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     ?'list_field' => ?Vector<int>,
     ?'set_field' => ?Set<int>,
     ?'map_field' => ?Map<int, int>,
-    ?'struct_field' => ?MyStructWithCustomDefault,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStructWithCustomDefault,
   );
 
   const type TShape = shape(
@@ -2238,11 +2246,11 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     'double_field' => float,
     'string_field' => string,
     'binary_field' => string,
-    ?'enum_field' => ?MyEnum,
+    ?'enum_field' => ?\thrift\test\terse_write\MyEnum,
     'list_field' => vec<int>,
     'set_field' => dict<int, bool>,
     'map_field' => dict<int, int>,
-    ?'struct_field' => ?MyStructWithCustomDefault::TShape,
+    ?'struct_field' => ?\thrift\test\terse_write\MyStructWithCustomDefault::TShape,
     ...
   );
   const int STRUCTURAL_ID = 3545739898930729460;
@@ -2295,7 +2303,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
    * Original thrift field:-
    * 10: enum terse_write.MyEnum enum_field
    */
-  public ?MyEnum $enum_field;
+  public ?\thrift\test\terse_write\MyEnum $enum_field;
   /**
    * Original thrift field:-
    * 11: list<i16> list_field
@@ -2315,9 +2323,9 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
    * Original thrift field:-
    * 14: struct terse_write.MyStructWithCustomDefault struct_field
    */
-  public ?MyStructWithCustomDefault $struct_field;
+  public ?\thrift\test\terse_write\MyStructWithCustomDefault $struct_field;
 
-  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?MyStructWithCustomDefault $struct_field = null)[] {
+  public function __construct(?bool $bool_field = null, ?int $byte_field = null, ?int $short_field = null, ?int $int_field = null, ?int $long_field = null, ?float $float_field = null, ?float $double_field = null, ?string $string_field = null, ?string $binary_field = null, ?\thrift\test\terse_write\MyEnum $enum_field = null, ?Vector<int> $list_field = null, ?Set<int> $set_field = null, ?Map<int, int> $map_field = null, ?\thrift\test\terse_write\MyStructWithCustomDefault $struct_field = null)[] {
     $this->bool_field = $bool_field ?? true;
     $this->byte_field = $byte_field ?? 1;
     $this->short_field = $short_field ?? 2;
@@ -2327,7 +2335,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     $this->double_field = $double_field ?? 6.0;
     $this->string_field = $string_field ?? "7";
     $this->binary_field = $binary_field ?? "8";
-    $this->enum_field = $enum_field ?? MyEnum::ME1;
+    $this->enum_field = $enum_field ?? \thrift\test\terse_write\MyEnum::ME1;
     $this->list_field = $list_field ?? Vector {
       1,
     };
@@ -2368,115 +2376,115 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "terse_write.TerseStructWithCustomDefault",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "bool_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
                 )
               ),
               "name" => "byte_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                 )
               ),
               "name" => "short_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "int_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "long_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
                 )
               ),
               "name" => "float_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 7,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
                 )
               ),
               "name" => "double_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "string_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 9,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "binary_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 10,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
                     shape(
                       "name" => "terse_write.MyEnum",
                     )
@@ -2486,16 +2494,16 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
               "name" => "enum_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 11,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -2505,16 +2513,16 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
               "name" => "list_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 12,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -2524,21 +2532,21 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
               "name" => "set_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 13,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
                         )
                       ),
                     )
@@ -2548,12 +2556,12 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
               "name" => "map_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 14,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "terse_write.MyStructWithCustomDefault",
                     )
@@ -2572,7 +2580,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
           shape(
           )
         ),
@@ -2597,7 +2605,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       (new Vector($shape['list_field'])),
       new Set(Keyset\keys($shape['set_field'])),
       (new Map($shape['map_field'])),
-      Shapes::idx($shape, 'struct_field') === null ? null : (MyStructWithCustomDefault::__fromShape($shape['struct_field'])),
+      Shapes::idx($shape, 'struct_field') === null ? null : (\thrift\test\terse_write\MyStructWithCustomDefault::__fromShape($shape['struct_field'])),
     );
   }
 
@@ -2673,7 +2681,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->binary_field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binary_field']);
     }
     if (idx($parsed, 'enum_field') !== null) {
-      $this->enum_field = MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, MyEnum>($parsed['enum_field']));
+      $this->enum_field = \thrift\test\terse_write\MyEnum::coerce(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyEnum>($parsed['enum_field']));
     }
     if (idx($parsed, 'list_field') !== null) {
       $_json6 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['list_field']);
@@ -2721,10 +2729,254 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStructWithCustomDefault>($parsed['struct_field']));
-      $_tmp25 = MyStructWithCustomDefault::withDefaultValues();
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStructWithCustomDefault>($parsed['struct_field']));
+      $_tmp25 = \thrift\test\terse_write\MyStructWithCustomDefault::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * AdaptedFields
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/AdaptedFields'))>>
+class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'field1',
+      'type' => \TType::I32,
+    ),
+    2 => shape(
+      'var' => 'field2',
+      'type' => \TType::I32,
+    ),
+    3 => shape(
+      'var' => 'field3',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field1' => 1,
+    'field2' => 2,
+    'field3' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'field1' => ?int,
+    ?'field2' => ?int,
+    ?'field3' => ?int,
+  );
+
+  const type TShape = shape(
+    'field1' => int,
+    'field2' => int,
+    'field3' => int,
+    ...
+  );
+  const int STRUCTURAL_ID = 8495441692096133093;
+  /**
+   * Original thrift field:-
+   * 1: i32 field1
+   */
+  public int $field1;
+  /**
+   * Original thrift field:-
+   * 2: i32 field2
+   */
+  public int $field2;
+  /**
+   * Original thrift field:-
+   * 3: i32 field3
+   */
+  public int $field3;
+
+  public function __construct(?int $field1 = null, ?int $field2 = null, ?int $field3 = null)[] {
+    $this->field1 = $field1 ?? 0;
+    $this->field2 = $field2 ?? 0;
+    $this->field3 = $field3 ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'field1'),
+      Shapes::idx($shape, 'field2'),
+      Shapes::idx($shape, 'field3'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'AdaptedFields';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "terse_write.AdaptedFields",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "terse_write.MyInteger",
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "field1",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "field2",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "terse_write.MyInteger",
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "field3",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+        'field1' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+        ),
+        'field2' => shape(
+          'field' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'field3' => shape(
+          'field' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+          'type' => dict[
+            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['field1'],
+      $shape['field2'],
+      $shape['field3'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'field1' => $this->field1,
+      'field2' => $this->field2,
+      'field3' => $this->field3,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'field1') !== null) {
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field1']);
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->field1 = (int)$_tmp0;
+      }
+    }
+    if (idx($parsed, 'field2') !== null) {
+      $_tmp1 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field2']);
+      if ($_tmp1 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->field2 = (int)$_tmp1;
+      }
+    }
+    if (idx($parsed, 'field3') !== null) {
+      $_tmp2 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field3']);
+      if ($_tmp2 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->field3 = (int)$_tmp2;
+      }
     }
   }
 

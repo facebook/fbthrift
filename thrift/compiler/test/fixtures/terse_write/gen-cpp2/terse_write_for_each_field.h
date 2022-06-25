@@ -14,14 +14,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::apache::thrift::test::MyStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::MyStructWithCustomDefault> {
+struct ForEachField<::facebook::thrift::test::terse_write::MyStructWithCustomDefault> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).field1_ref()...);
@@ -29,7 +29,7 @@ struct ForEachField<::apache::thrift::test::MyStructWithCustomDefault> {
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::StructLevelTerseStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::StructLevelTerseStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).bool_field_ref()...);
@@ -50,7 +50,7 @@ struct ForEachField<::apache::thrift::test::StructLevelTerseStruct> {
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::FieldLevelTerseStruct> {
+struct ForEachField<::facebook::thrift::test::terse_write::FieldLevelTerseStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).terse_bool_field_ref()...);
@@ -85,7 +85,7 @@ struct ForEachField<::apache::thrift::test::FieldLevelTerseStruct> {
 };
 
 template <>
-struct ForEachField<::apache::thrift::test::TerseStructWithCustomDefault> {
+struct ForEachField<::facebook::thrift::test::terse_write::TerseStructWithCustomDefault> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).bool_field_ref()...);
@@ -102,6 +102,16 @@ struct ForEachField<::apache::thrift::test::TerseStructWithCustomDefault> {
     f(11, static_cast<T&&>(t).set_field_ref()...);
     f(12, static_cast<T&&>(t).map_field_ref()...);
     f(13, static_cast<T&&>(t).struct_field_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::facebook::thrift::test::terse_write::AdaptedFields> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field1_ref()...);
+    f(1, static_cast<T&&>(t).field2_ref()...);
+    f(2, static_cast<T&&>(t).field3_ref()...);
   }
 };
 } // namespace detail

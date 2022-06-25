@@ -6,6 +6,8 @@
 #![allow(clippy::redundant_closure)]
 
 
+pub type MyInteger = ::std::primitive::i32;
+
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MyStruct {
     // This field forces `..Default::default()` when instantiating this
@@ -105,6 +107,19 @@ pub struct TerseStructWithCustomDefault {
     pub set_field: ::std::collections::BTreeSet<::std::primitive::i16>,
     pub map_field: ::std::collections::BTreeMap<::std::primitive::i16, ::std::primitive::i16>,
     pub struct_field: crate::types::MyStructWithCustomDefault,
+    // This field forces `..Default::default()` when instantiating this
+    // struct, to make code future-proof against new fields added later to
+    // the definition in Thrift. If you don't want this, add the annotation
+    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+    #[doc(hidden)]
+    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct AdaptedFields {
+    pub field1: crate::types::MyInteger,
+    pub field2: ::std::primitive::i32,
+    pub field3: crate::types::MyInteger,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -222,6 +237,7 @@ where
         ::std::result::Result::Ok(MyEnum::from(p.read_i32()?))
     }
 }
+
 
 #[allow(clippy::derivable_impls)]
 impl ::std::default::Default for self::MyStruct {
@@ -1045,6 +1061,92 @@ where
                     map
                 }),
             struct_field: field_struct_field.unwrap_or_default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        })
+    }
+}
+
+
+#[allow(clippy::derivable_impls)]
+impl ::std::default::Default for self::AdaptedFields {
+    fn default() -> Self {
+        Self {
+            field1: ::std::default::Default::default(),
+            field2: ::std::default::Default::default(),
+            field3: ::std::default::Default::default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        }
+    }
+}
+
+impl ::std::fmt::Debug for self::AdaptedFields {
+    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        formatter
+            .debug_struct("AdaptedFields")
+            .field("field1", &self.field1)
+            .field("field2", &self.field2)
+            .field("field3", &self.field3)
+            .finish()
+    }
+}
+
+unsafe impl ::std::marker::Send for self::AdaptedFields {}
+unsafe impl ::std::marker::Sync for self::AdaptedFields {}
+
+impl ::fbthrift::GetTType for self::AdaptedFields {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl<P> ::fbthrift::Serialize<P> for self::AdaptedFields
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    fn write(&self, p: &mut P) {
+        p.write_struct_begin("AdaptedFields");
+        p.write_field_begin("field1", ::fbthrift::TType::I32, 1);
+        ::fbthrift::Serialize::write(&self.field1, p);
+        p.write_field_end();
+        p.write_field_begin("field2", ::fbthrift::TType::I32, 2);
+        ::fbthrift::Serialize::write(&self.field2, p);
+        p.write_field_end();
+        p.write_field_begin("field3", ::fbthrift::TType::I32, 3);
+        ::fbthrift::Serialize::write(&self.field3, p);
+        p.write_field_end();
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for self::AdaptedFields
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        static FIELDS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("field1", ::fbthrift::TType::I32, 1),
+            ::fbthrift::Field::new("field2", ::fbthrift::TType::I32, 2),
+            ::fbthrift::Field::new("field3", ::fbthrift::TType::I32, 3),
+        ];
+        let mut field_field1 = ::std::option::Option::None;
+        let mut field_field2 = ::std::option::Option::None;
+        let mut field_field3 = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::I32, 1) => field_field1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::I32, 2) => field_field2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::I32, 3) => field_field3 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            field1: field_field1.unwrap_or_default(),
+            field2: field_field2.unwrap_or_default(),
+            field3: field_field3.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }

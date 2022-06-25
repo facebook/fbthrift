@@ -12,28 +12,28 @@
 
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage<::apache::thrift::test::MyEnum> {
-  using type = ::apache::thrift::test::MyEnum;
+template <> struct TEnumDataStorage<::facebook::thrift::test::terse_write::deprecated::MyEnum> {
+  using type = ::facebook::thrift::test::terse_write::deprecated::MyEnum;
   static constexpr const std::size_t size = 2;
   static const std::array<type, size> values;
   static const std::array<folly::StringPiece, size> names;
 };
 
-template <> struct TStructDataStorage<::apache::thrift::test::MyStruct> {
+template <> struct TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::MyStruct> {
   static constexpr const std::size_t fields_size = 0;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::apache::thrift::test::StructLevelTerseStruct> {
+template <> struct TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::StructLevelTerseStruct> {
   static constexpr const std::size_t fields_size = 14;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::apache::thrift::test::FieldLevelTerseStruct> {
+template <> struct TStructDataStorage<::facebook::thrift::test::terse_write::deprecated::FieldLevelTerseStruct> {
   static constexpr const std::size_t fields_size = 28;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

@@ -11,10 +11,12 @@
 
 #include "src/gen-cpp2/terse_write_metadata.h"
 
-namespace apache {
+namespace facebook {
 namespace thrift {
 namespace test {
+namespace terse_write {
 ::apache::thrift::metadata::ThriftMetadata terse_write_getThriftModuleMetadata();
-} // namespace apache
+} // namespace facebook
 } // namespace thrift
 } // namespace test
+} // namespace terse_write

@@ -10,10 +10,10 @@
 
 #include "thrift/compiler/test/fixtures/terse_write/gen-cpp2/terse_write_types.h"
 
-namespace apache { namespace thrift { namespace test {
+namespace facebook { namespace thrift { namespace test { namespace terse_write {
 
 struct terse_write_constants {
 
 };
 
-}}} // apache::thrift::test
+}}}} // facebook::thrift::test::terse_write
