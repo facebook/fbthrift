@@ -18,6 +18,7 @@
 
 include "thrift/lib/thrift/protocol_detail.thrift"
 include "thrift/lib/thrift/id.thrift"
+cpp_include "folly/container/F14Map.h"
 
 package "facebook.com/thrift/protocol"
 
@@ -32,9 +33,16 @@ namespace py thrift.lib.thrift.protocol
 
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
+typedef map<i16, Mask> (cpp.template = "folly::F14VectorMap") FieldIdToMask
 
 typedef id.ExternId PathSegmentId // TODO(ytj): add adapter
 
 struct Path {
   1: list<PathSegmentId> path;
+}
+
+// Inclusive fields should always be an even number.
+union Mask {
+  1: FieldIdToMask exclusive; // Fields that will be excluded.
+  2: FieldIdToMask inclusive; // Fields that will be included.
 }
