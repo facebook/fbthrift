@@ -1070,13 +1070,13 @@ class MyUnion final  {
   } ;
 
   MyUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   MyUnion(MyUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(std::move(rhs.value_.myEnum));
@@ -1107,10 +1107,10 @@ class MyUnion final  {
   }
 
   MyUnion(const MyUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(rhs.value_.myEnum);
@@ -1142,8 +1142,8 @@ class MyUnion final  {
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(std::move(rhs.value_.myEnum));
@@ -1177,8 +1177,8 @@ class MyUnion final  {
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(rhs.value_.myEnum);
@@ -1227,217 +1227,217 @@ class MyUnion final  {
 
   ::test::fixtures::basic::MyEnum& set_myEnum(::test::fixtures::basic::MyEnum t = ::test::fixtures::basic::MyEnum()) {
     __fbthrift_clear();
-    type_ = Type::myEnum;
+    type_ = folly::to_underlying(Type::myEnum);
     ::new (std::addressof(value_.myEnum)) ::test::fixtures::basic::MyEnum(t);
     return value_.myEnum;
   }
 
   ::test::fixtures::basic::MyStruct& set_myStruct(::test::fixtures::basic::MyStruct const &t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::test::fixtures::basic::MyStruct(t);
     return value_.myStruct;
   }
 
   ::test::fixtures::basic::MyStruct& set_myStruct(::test::fixtures::basic::MyStruct&& t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::test::fixtures::basic::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic::MyStruct, T...>> ::test::fixtures::basic::MyStruct& set_myStruct(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::test::fixtures::basic::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
   ::test::fixtures::basic::MyDataItem& set_myDataItem(::test::fixtures::basic::MyDataItem const &t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::test::fixtures::basic::MyDataItem& set_myDataItem(::test::fixtures::basic::MyDataItem&& t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic::MyDataItem, T...>> ::test::fixtures::basic::MyDataItem& set_myDataItem(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::std::set<float>& set_floatSet(::std::set<float> const &t) {
     __fbthrift_clear();
-    type_ = Type::floatSet;
+    type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) ::std::set<float>(t);
     return value_.floatSet;
   }
 
   ::std::set<float>& set_floatSet(::std::set<float>&& t) {
     __fbthrift_clear();
-    type_ = Type::floatSet;
+    type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) ::std::set<float>(std::move(t));
     return value_.floatSet;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<float>, T...>> ::std::set<float>& set_floatSet(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::floatSet;
+    type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) ::std::set<float>(std::forward<T>(t)...);
     return value_.floatSet;
   }
 
   ::test::fixtures::basic::MyEnum const& get_myEnum() const {
-    if (type_ != Type::myEnum) {
+    if (getType() != Type::myEnum) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myEnum;
   }
 
   ::test::fixtures::basic::MyStruct const& get_myStruct() const {
-    if (type_ != Type::myStruct) {
+    if (getType() != Type::myStruct) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myStruct;
   }
 
   ::test::fixtures::basic::MyDataItem const& get_myDataItem() const {
-    if (type_ != Type::myDataItem) {
+    if (getType() != Type::myDataItem) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myDataItem;
   }
 
   ::std::set<float> const& get_floatSet() const {
-    if (type_ != Type::floatSet) {
+    if (getType() != Type::floatSet) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.floatSet;
   }
 
   ::test::fixtures::basic::MyEnum& mutable_myEnum() {
-    assert(type_ == Type::myEnum);
+    assert(getType() == Type::myEnum);
     return value_.myEnum;
   }
 
   ::test::fixtures::basic::MyStruct& mutable_myStruct() {
-    assert(type_ == Type::myStruct);
+    assert(getType() == Type::myStruct);
     return value_.myStruct;
   }
 
   ::test::fixtures::basic::MyDataItem& mutable_myDataItem() {
-    assert(type_ == Type::myDataItem);
+    assert(getType() == Type::myDataItem);
     return value_.myDataItem;
   }
 
   ::std::set<float>& mutable_floatSet() {
-    assert(type_ == Type::floatSet);
+    assert(getType() == Type::floatSet);
     return value_.floatSet;
   }
 
   ::test::fixtures::basic::MyEnum move_myEnum() {
-    assert(type_ == Type::myEnum);
+    assert(getType() == Type::myEnum);
     return std::move(value_.myEnum);
   }
 
   ::test::fixtures::basic::MyStruct move_myStruct() {
-    assert(type_ == Type::myStruct);
+    assert(getType() == Type::myStruct);
     return std::move(value_.myStruct);
   }
 
   ::test::fixtures::basic::MyDataItem move_myDataItem() {
-    assert(type_ == Type::myDataItem);
+    assert(getType() == Type::myDataItem);
     return std::move(value_.myDataItem);
   }
 
   ::std::set<float> move_floatSet() {
-    assert(type_ == Type::floatSet);
+    assert(getType() == Type::floatSet);
     return std::move(value_.floatSet);
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myEnum, type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
-    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myEnum_ref() & {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myEnum, type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
-    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::test::fixtures::basic::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myStruct, type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
-    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myStruct_ref() & {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myStruct, type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
-    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::test::fixtures::basic::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myDataItem, type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
-    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myDataItem_ref() & {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myDataItem, type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
-    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::set<float>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> floatSet_ref() const& {
-    return {value_.floatSet, type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.floatSet, type_, folly::to_underlying(Type::floatSet), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::set<float>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> floatSet_ref() const&& {
-    return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.floatSet), type_, folly::to_underlying(Type::floatSet), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::set<float>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> floatSet_ref() & {
-    return {value_.floatSet, type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.floatSet, type_, folly::to_underlying(Type::floatSet), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::set<float>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> floatSet_ref() && {
-    return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.floatSet), type_, folly::to_underlying(Type::floatSet), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -1707,13 +1707,13 @@ class UnionToBeRenamed final  {
   } ;
 
   UnionToBeRenamed()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   UnionToBeRenamed(UnionToBeRenamed&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::reserved_field:
       {
         set_reserved_field(std::move(rhs.value_.reserved_field));
@@ -1729,10 +1729,10 @@ class UnionToBeRenamed final  {
   }
 
   UnionToBeRenamed(const UnionToBeRenamed& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::reserved_field:
       {
         set_reserved_field(rhs.value_.reserved_field);
@@ -1749,8 +1749,8 @@ class UnionToBeRenamed final  {
   UnionToBeRenamed& operator=(UnionToBeRenamed&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::reserved_field:
       {
         set_reserved_field(std::move(rhs.value_.reserved_field));
@@ -1769,8 +1769,8 @@ class UnionToBeRenamed final  {
   UnionToBeRenamed& operator=(const UnionToBeRenamed& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::reserved_field:
       {
         set_reserved_field(rhs.value_.reserved_field);
@@ -1801,46 +1801,46 @@ class UnionToBeRenamed final  {
 
   ::std::int32_t& set_reserved_field(::std::int32_t t = ::std::int32_t()) {
     __fbthrift_clear();
-    type_ = Type::reserved_field;
+    type_ = folly::to_underlying(Type::reserved_field);
     ::new (std::addressof(value_.reserved_field)) ::std::int32_t(t);
     return value_.reserved_field;
   }
 
   ::std::int32_t const& get_reserved_field() const {
-    if (type_ != Type::reserved_field) {
+    if (getType() != Type::reserved_field) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.reserved_field;
   }
 
   ::std::int32_t& mutable_reserved_field() {
-    assert(type_ == Type::reserved_field);
+    assert(getType() == Type::reserved_field);
     return value_.reserved_field;
   }
 
   ::std::int32_t move_reserved_field() {
-    assert(type_ == Type::reserved_field);
+    assert(getType() == Type::reserved_field);
     return std::move(value_.reserved_field);
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> reserved_field_ref() const& {
-    return {value_.reserved_field, type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.reserved_field, type_, folly::to_underlying(Type::reserved_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> reserved_field_ref() const&& {
-    return {std::move(value_.reserved_field), type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.reserved_field), type_, folly::to_underlying(Type::reserved_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> reserved_field_ref() & {
-    return {value_.reserved_field, type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.reserved_field, type_, folly::to_underlying(Type::reserved_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> reserved_field_ref() && {
-    return {std::move(value_.reserved_field), type_, reserved_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.reserved_field), type_, folly::to_underlying(Type::reserved_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

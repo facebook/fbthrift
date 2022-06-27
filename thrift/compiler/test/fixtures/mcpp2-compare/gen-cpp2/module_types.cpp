@@ -674,8 +674,8 @@ namespace some { namespace valid { namespace ns {
 
 void SimpleUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::intValue:
       destruct(value_.intValue);
       break;
@@ -686,16 +686,16 @@ void SimpleUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool SimpleUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::intValue:
       return value_.intValue == rhs.value_.intValue;
     case Type::stringValue:
@@ -709,10 +709,10 @@ bool SimpleUnion::operator<(const SimpleUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::intValue:
       return lhs.value_.intValue < rhs.value_.intValue;
     case Type::stringValue:
@@ -783,8 +783,8 @@ namespace some { namespace valid { namespace ns {
 
 void ComplexUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::intValue:
       destruct(value_.intValue);
       break;
@@ -873,16 +873,16 @@ void ComplexUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool ComplexUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::intValue:
       return value_.intValue == rhs.value_.intValue;
     case Type::opt_intValue:
@@ -952,10 +952,10 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::intValue:
       return lhs.value_.intValue < rhs.value_.intValue;
     case Type::opt_intValue:
@@ -1021,28 +1021,28 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
   __fbthrift_clear();
-  type_ = Type::ref_field;
+  type_ = folly::to_underlying(Type::ref_field);
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field;
 }
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
   __fbthrift_clear();
-  type_ = Type::ref_field;
+  type_ = folly::to_underlying(Type::ref_field);
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
   __fbthrift_clear();
-  type_ = Type::ref_field2;
+  type_ = folly::to_underlying(Type::ref_field2);
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field2;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
   __fbthrift_clear();
-  type_ = Type::ref_field2;
+  type_ = folly::to_underlying(Type::ref_field2);
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field2;
 }
@@ -3605,8 +3605,8 @@ namespace some { namespace valid { namespace ns {
 
 void FloatUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::floatSide:
       destruct(value_.floatSide);
       break;
@@ -3617,16 +3617,16 @@ void FloatUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool FloatUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool FloatUnion::operator==(const FloatUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::floatSide:
       return value_.floatSide == rhs.value_.floatSide;
     case Type::doubleSide:
@@ -3640,10 +3640,10 @@ bool FloatUnion::operator<(const FloatUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::floatSide:
       return lhs.value_.floatSide < rhs.value_.floatSide;
     case Type::doubleSide:

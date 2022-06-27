@@ -144,7 +144,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_unde
 
 
   <%struct:cpp_underlying_name%>()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
 <% > module_types_h/union_copy_ctor%>
 

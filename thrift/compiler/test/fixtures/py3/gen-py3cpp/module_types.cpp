@@ -716,8 +716,8 @@ namespace py3 { namespace simple {
 
 void BinaryUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::iobuf_val:
       destruct(value_.iobuf_val);
       break;
@@ -725,11 +725,11 @@ void BinaryUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool BinaryUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 

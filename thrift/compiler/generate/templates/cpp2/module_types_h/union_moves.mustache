@@ -16,7 +16,7 @@
 
 %><%#struct:legacy_api?%><%#struct:fields%>
   <%field:cpp_deprecated_accessor_type%> move_<%field:cpp_name%>() {
-    assert(type_ == Type::<%field:cpp_name%>);
+    assert(getType() == Type::<%field:cpp_name%>);
     return std::move(value_.<%field:cpp_name%>);
   }
 

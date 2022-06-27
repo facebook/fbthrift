@@ -290,13 +290,13 @@ class MyUnion final  {
   } ;
 
   MyUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   MyUnion(MyUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myString:
       {
         set_myString(std::move(rhs.value_.myString));
@@ -312,10 +312,10 @@ class MyUnion final  {
   }
 
   MyUnion(const MyUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myString:
       {
         set_myString(rhs.value_.myString);
@@ -332,8 +332,8 @@ class MyUnion final  {
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myString:
       {
         set_myString(std::move(rhs.value_.myString));
@@ -352,8 +352,8 @@ class MyUnion final  {
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myString:
       {
         set_myString(rhs.value_.myString);
@@ -384,60 +384,60 @@ class MyUnion final  {
 
   ::std::string& set_myString(::std::string const &t) {
     __fbthrift_clear();
-    type_ = Type::myString;
+    type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) ::std::string(t);
     return value_.myString;
   }
 
   ::std::string& set_myString(::std::string&& t) {
     __fbthrift_clear();
-    type_ = Type::myString;
+    type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) ::std::string(std::move(t));
     return value_.myString;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_myString(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::myString;
+    type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) ::std::string(std::forward<T>(t)...);
     return value_.myString;
   }
 
   ::std::string const& get_myString() const {
-    if (type_ != Type::myString) {
+    if (getType() != Type::myString) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myString;
   }
 
   ::std::string& mutable_myString() {
-    assert(type_ == Type::myString);
+    assert(getType() == Type::myString);
     return value_.myString;
   }
 
   ::std::string move_myString() {
-    assert(type_ == Type::myString);
+    assert(getType() == Type::myString);
     return std::move(value_.myString);
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myString_ref() const& {
-    return {value_.myString, type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myString, type_, folly::to_underlying(Type::myString), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myString_ref() const&& {
-    return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myString), type_, folly::to_underlying(Type::myString), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myString_ref() & {
-    return {value_.myString, type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myString, type_, folly::to_underlying(Type::myString), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myString_ref() && {
-    return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myString), type_, folly::to_underlying(Type::myString), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

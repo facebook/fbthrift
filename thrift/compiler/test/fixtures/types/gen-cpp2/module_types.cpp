@@ -2418,8 +2418,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 void NoExceptMoveUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::string_field:
       destruct(value_.string_field);
       break;
@@ -2430,16 +2430,16 @@ void NoExceptMoveUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool NoExceptMoveUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool NoExceptMoveUnion::operator==(const NoExceptMoveUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::string_field:
       return value_.string_field == rhs.value_.string_field;
     case Type::i32_field:
@@ -2453,10 +2453,10 @@ bool NoExceptMoveUnion::operator<(const NoExceptMoveUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::string_field:
       return lhs.value_.string_field < rhs.value_.string_field;
     case Type::i32_field:

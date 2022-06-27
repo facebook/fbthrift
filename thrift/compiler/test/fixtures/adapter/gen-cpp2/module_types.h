@@ -1026,13 +1026,13 @@ class Baz final  {
   } ;
 
   Baz()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   Baz(Baz&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::intField:
       {
         set_intField(std::move(rhs.value_.intField));
@@ -1068,10 +1068,10 @@ class Baz final  {
   }
 
   Baz(const Baz& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::intField:
       {
         set_intField(rhs.value_.intField);
@@ -1108,8 +1108,8 @@ class Baz final  {
   Baz& operator=(Baz&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::intField:
       {
         set_intField(std::move(rhs.value_.intField));
@@ -1148,8 +1148,8 @@ class Baz final  {
   Baz& operator=(const Baz& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::intField:
       {
         set_intField(rhs.value_.intField);
@@ -1204,260 +1204,260 @@ class Baz final  {
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> t = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>()) {
     __fbthrift_clear();
-    type_ = Type::intField;
+    type_ = folly::to_underlying(Type::intField);
     ::new (std::addressof(value_.intField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>(t);
     return value_.intField;
   }
 
   ::cpp2::SetWithAdapter& set_setField(::cpp2::SetWithAdapter const &t) {
     __fbthrift_clear();
-    type_ = Type::setField;
+    type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(t);
     return value_.setField;
   }
 
   ::cpp2::SetWithAdapter& set_setField(::cpp2::SetWithAdapter&& t) {
     __fbthrift_clear();
-    type_ = Type::setField;
+    type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(std::move(t));
     return value_.setField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::SetWithAdapter, T...>> ::cpp2::SetWithAdapter& set_setField(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::setField;
+    type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(std::forward<T>(t)...);
     return value_.setField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>& set_mapField(::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>> const &t) {
     __fbthrift_clear();
-    type_ = Type::mapField;
+    type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>(t);
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>& set_mapField(::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>&& t) {
     __fbthrift_clear();
-    type_ = Type::mapField;
+    type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>(std::move(t));
     return value_.mapField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>, T...>> ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>& set_mapField(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::mapField;
+    type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>(std::forward<T>(t)...);
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> const &t) {
     __fbthrift_clear();
-    type_ = Type::binaryField;
+    type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(t);
     return value_.binaryField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>&& t) {
     __fbthrift_clear();
-    type_ = Type::binaryField;
+    type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(std::move(t));
     return value_.binaryField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>, T...>> ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::binaryField;
+    type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(std::forward<T>(t)...);
     return value_.binaryField;
   }
 
   ::cpp2::MyI64& set_longField(::cpp2::MyI64 t = ::cpp2::MyI64()) {
     __fbthrift_clear();
-    type_ = Type::longField;
+    type_ = folly::to_underlying(Type::longField);
     ::new (std::addressof(value_.longField)) ::cpp2::MyI64(t);
     return value_.longField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& get_intField() const {
-    if (type_ != Type::intField) {
+    if (getType() != Type::intField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.intField;
   }
 
   ::cpp2::SetWithAdapter const& get_setField() const {
-    if (type_ != Type::setField) {
+    if (getType() != Type::setField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.setField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>> const& get_mapField() const {
-    if (type_ != Type::mapField) {
+    if (getType() != Type::mapField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> const& get_binaryField() const {
-    if (type_ != Type::binaryField) {
+    if (getType() != Type::binaryField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.binaryField;
   }
 
   ::cpp2::MyI64 const& get_longField() const {
-    if (type_ != Type::longField) {
+    if (getType() != Type::longField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.longField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& mutable_intField() {
-    assert(type_ == Type::intField);
+    assert(getType() == Type::intField);
     return value_.intField;
   }
 
   ::cpp2::SetWithAdapter& mutable_setField() {
-    assert(type_ == Type::setField);
+    assert(getType() == Type::setField);
     return value_.setField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>& mutable_mapField() {
-    assert(type_ == Type::mapField);
+    assert(getType() == Type::mapField);
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& mutable_binaryField() {
-    assert(type_ == Type::binaryField);
+    assert(getType() == Type::binaryField);
     return value_.binaryField;
   }
 
   ::cpp2::MyI64& mutable_longField() {
-    assert(type_ == Type::longField);
+    assert(getType() == Type::longField);
     return value_.longField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> move_intField() {
-    assert(type_ == Type::intField);
+    assert(getType() == Type::intField);
     return std::move(value_.intField);
   }
 
   ::cpp2::SetWithAdapter move_setField() {
-    assert(type_ == Type::setField);
+    assert(getType() == Type::setField);
     return std::move(value_.setField);
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>> move_mapField() {
-    assert(type_ == Type::mapField);
+    assert(getType() == Type::mapField);
     return std::move(value_.mapField);
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> move_binaryField() {
-    assert(type_ == Type::binaryField);
+    assert(getType() == Type::binaryField);
     return std::move(value_.binaryField);
   }
 
   ::cpp2::MyI64 move_longField() {
-    assert(type_ == Type::longField);
+    assert(getType() == Type::longField);
     return std::move(value_.longField);
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intField_ref() const& {
-    return {value_.intField, type_, intField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.intField, type_, folly::to_underlying(Type::intField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intField_ref() const&& {
-    return {std::move(value_.intField), type_, intField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intField), type_, folly::to_underlying(Type::intField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intField_ref() & {
-    return {value_.intField, type_, intField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.intField, type_, folly::to_underlying(Type::intField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intField_ref() && {
-    return {std::move(value_.intField), type_, intField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intField), type_, folly::to_underlying(Type::intField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> setField_ref() const& {
-    return {value_.setField, type_, setField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.setField, type_, folly::to_underlying(Type::setField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> setField_ref() const&& {
-    return {std::move(value_.setField), type_, setField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.setField), type_, folly::to_underlying(Type::setField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> setField_ref() & {
-    return {value_.setField, type_, setField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.setField, type_, folly::to_underlying(Type::setField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> setField_ref() && {
-    return {std::move(value_.setField), type_, setField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.setField), type_, folly::to_underlying(Type::setField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> mapField_ref() const& {
-    return {value_.mapField, type_, mapField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.mapField, type_, folly::to_underlying(Type::mapField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> mapField_ref() const&& {
-    return {std::move(value_.mapField), type_, mapField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.mapField), type_, folly::to_underlying(Type::mapField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> mapField_ref() & {
-    return {value_.mapField, type_, mapField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.mapField, type_, folly::to_underlying(Type::mapField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter_withAdapter>>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> mapField_ref() && {
-    return {std::move(value_.mapField), type_, mapField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.mapField), type_, folly::to_underlying(Type::mapField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> binaryField_ref() const& {
-    return {value_.binaryField, type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.binaryField, type_, folly::to_underlying(Type::binaryField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> binaryField_ref() const&& {
-    return {std::move(value_.binaryField), type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.binaryField), type_, folly::to_underlying(Type::binaryField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> binaryField_ref() & {
-    return {value_.binaryField, type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.binaryField, type_, folly::to_underlying(Type::binaryField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> binaryField_ref() && {
-    return {std::move(value_.binaryField), type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.binaryField), type_, folly::to_underlying(Type::binaryField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> longField_ref() const& {
-    return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.longField, type_, folly::to_underlying(Type::longField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> longField_ref() const&& {
-    return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.longField), type_, folly::to_underlying(Type::longField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> longField_ref() & {
-    return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.longField, type_, folly::to_underlying(Type::longField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> longField_ref() && {
-    return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.longField), type_, folly::to_underlying(Type::longField), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

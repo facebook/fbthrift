@@ -159,8 +159,8 @@ namespace cpp2 {
 
 void U::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::i:
       destruct(value_.i);
       break;
@@ -171,16 +171,16 @@ void U::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool U::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool U::operator==(const U& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::i:
       return value_.i == rhs.value_.i;
     case Type::s:
@@ -194,10 +194,10 @@ bool U::operator<(const U& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::i:
       return lhs.value_.i < rhs.value_.i;
     case Type::s:

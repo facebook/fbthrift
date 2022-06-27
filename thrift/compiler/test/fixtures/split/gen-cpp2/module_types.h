@@ -677,13 +677,13 @@ class MyUnion final  {
   } ;
 
   MyUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   MyUnion(MyUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(std::move(rhs.value_.myEnum));
@@ -709,10 +709,10 @@ class MyUnion final  {
   }
 
   MyUnion(const MyUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(rhs.value_.myEnum);
@@ -739,8 +739,8 @@ class MyUnion final  {
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(std::move(rhs.value_.myEnum));
@@ -769,8 +769,8 @@ class MyUnion final  {
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::myEnum:
       {
         set_myEnum(rhs.value_.myEnum);
@@ -813,160 +813,160 @@ class MyUnion final  {
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __fbthrift_clear();
-    type_ = Type::myEnum;
+    type_ = folly::to_underlying(Type::myEnum);
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::myStruct;
+    type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::myDataItem;
+    type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::cpp2::MyEnum const& get_myEnum() const {
-    if (type_ != Type::myEnum) {
+    if (getType() != Type::myEnum) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct const& get_myStruct() const {
-    if (type_ != Type::myStruct) {
+    if (getType() != Type::myStruct) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem const& get_myDataItem() const {
-    if (type_ != Type::myDataItem) {
+    if (getType() != Type::myDataItem) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myDataItem;
   }
 
   ::cpp2::MyEnum& mutable_myEnum() {
-    assert(type_ == Type::myEnum);
+    assert(getType() == Type::myEnum);
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct& mutable_myStruct() {
-    assert(type_ == Type::myStruct);
+    assert(getType() == Type::myStruct);
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem& mutable_myDataItem() {
-    assert(type_ == Type::myDataItem);
+    assert(getType() == Type::myDataItem);
     return value_.myDataItem;
   }
 
   ::cpp2::MyEnum move_myEnum() {
-    assert(type_ == Type::myEnum);
+    assert(getType() == Type::myEnum);
     return std::move(value_.myEnum);
   }
 
   ::cpp2::MyStruct move_myStruct() {
-    assert(type_ == Type::myStruct);
+    assert(getType() == Type::myStruct);
     return std::move(value_.myStruct);
   }
 
   ::cpp2::MyDataItem move_myDataItem() {
-    assert(type_ == Type::myDataItem);
+    assert(getType() == Type::myDataItem);
     return std::move(value_.myDataItem);
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myEnum, type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
-    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myEnum_ref() & {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myEnum, type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
-    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, folly::to_underlying(Type::myEnum), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myStruct, type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
-    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myStruct_ref() & {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myStruct, type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
-    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, folly::to_underlying(Type::myStruct), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myDataItem, type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
-    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myDataItem_ref() & {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.myDataItem, type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
-    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, folly::to_underlying(Type::myDataItem), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

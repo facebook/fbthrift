@@ -1567,13 +1567,13 @@ class BinaryUnion final  {
   } ;
 
   BinaryUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   BinaryUnion(BinaryUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::iobuf_val:
       {
         set_iobuf_val(std::move(rhs.value_.iobuf_val));
@@ -1589,10 +1589,10 @@ class BinaryUnion final  {
   }
 
   BinaryUnion(const BinaryUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::iobuf_val:
       {
         set_iobuf_val(rhs.value_.iobuf_val);
@@ -1609,8 +1609,8 @@ class BinaryUnion final  {
   BinaryUnion& operator=(BinaryUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::iobuf_val:
       {
         set_iobuf_val(std::move(rhs.value_.iobuf_val));
@@ -1629,8 +1629,8 @@ class BinaryUnion final  {
   BinaryUnion& operator=(const BinaryUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::iobuf_val:
       {
         set_iobuf_val(rhs.value_.iobuf_val);
@@ -1658,60 +1658,60 @@ class BinaryUnion final  {
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf const &t) {
     __fbthrift_clear();
-    type_ = Type::iobuf_val;
+    type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(t);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf&& t) {
     __fbthrift_clear();
-    type_ = Type::iobuf_val;
+    type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::move(t));
     return value_.iobuf_val;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::py3::simple::IOBuf, T...>> ::py3::simple::IOBuf& set_iobuf_val(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::iobuf_val;
+    type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::forward<T>(t)...);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf const& get_iobuf_val() const {
-    if (type_ != Type::iobuf_val) {
+    if (getType() != Type::iobuf_val) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf& mutable_iobuf_val() {
-    assert(type_ == Type::iobuf_val);
+    assert(getType() == Type::iobuf_val);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf move_iobuf_val() {
-    assert(type_ == Type::iobuf_val);
+    assert(getType() == Type::iobuf_val);
     return std::move(value_.iobuf_val);
   }
 
   template <typename..., typename T = ::py3::simple::IOBuf>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> iobuf_val_ref() const& {
-    return {value_.iobuf_val, type_, iobuf_val, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.iobuf_val, type_, folly::to_underlying(Type::iobuf_val), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::py3::simple::IOBuf>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> iobuf_val_ref() const&& {
-    return {std::move(value_.iobuf_val), type_, iobuf_val, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.iobuf_val), type_, folly::to_underlying(Type::iobuf_val), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::py3::simple::IOBuf>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> iobuf_val_ref() & {
-    return {value_.iobuf_val, type_, iobuf_val, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.iobuf_val, type_, folly::to_underlying(Type::iobuf_val), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::py3::simple::IOBuf>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> iobuf_val_ref() && {
-    return {std::move(value_.iobuf_val), type_, iobuf_val, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.iobuf_val), type_, folly::to_underlying(Type::iobuf_val), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

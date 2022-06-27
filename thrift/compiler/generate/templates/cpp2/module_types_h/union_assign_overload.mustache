@@ -17,8 +17,8 @@
 %>  <%struct:cpp_underlying_name%>& operator=(<%struct:cpp_underlying_name%>&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
 <%#struct:fields%>
       case Type::<%field:cpp_name%>:
       {
@@ -45,8 +45,8 @@
   <%struct:cpp_underlying_name%>& operator=(const <%struct:cpp_underlying_name%>& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
 <%#struct:fields%>
       case Type::<%field:cpp_name%>:
       {

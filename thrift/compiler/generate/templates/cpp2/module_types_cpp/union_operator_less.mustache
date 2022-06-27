@@ -19,10 +19,10 @@ bool <%struct:cpp_underlying_name%>::operator<(const <%struct:cpp_underlying_nam
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
 <%#struct:fields%>
     case Type::<%field:cpp_name%>:
 <%#field:type%>

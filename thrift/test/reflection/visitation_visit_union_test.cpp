@@ -40,7 +40,7 @@ struct ForEachFieldAdapter {
   void operator()(T&& t, F f) const {
     apache::thrift::for_each_field(
         std::forward<T>(t), [&](auto&& meta, auto&& ref) {
-          if (t.getType() == meta.id_ref()) {
+          if (folly::to_underlying(t.getType()) == meta.id_ref()) {
             f(meta, *ref);
           }
         });

@@ -179,8 +179,8 @@ const char* MyUnion::__fbthrift_thrift_uri() {
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::myString:
       destruct(value_.myString);
       break;
@@ -188,16 +188,16 @@ void MyUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool MyUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool MyUnion::operator==(const MyUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::myString:
       return value_.myString == rhs.value_.myString;
     default:
@@ -209,10 +209,10 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::myString:
       return lhs.value_.myString < rhs.value_.myString;
     default:

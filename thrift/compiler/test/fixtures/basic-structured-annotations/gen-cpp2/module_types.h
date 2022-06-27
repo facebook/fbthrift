@@ -1872,13 +1872,13 @@ class MyUnion final  {
   } ;
 
   MyUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   MyUnion(MyUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::first:
       {
         set_first(std::move(rhs.value_.first));
@@ -1899,10 +1899,10 @@ class MyUnion final  {
   }
 
   MyUnion(const MyUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::first:
       {
         set_first(rhs.value_.first);
@@ -1924,8 +1924,8 @@ class MyUnion final  {
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::first:
       {
         set_first(std::move(rhs.value_.first));
@@ -1949,8 +1949,8 @@ class MyUnion final  {
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::first:
       {
         set_first(rhs.value_.first);
@@ -1987,103 +1987,103 @@ class MyUnion final  {
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(::test::fixtures::basic-structured-annotations::annotated_inline_string const &t) {
     __fbthrift_clear();
-    type_ = Type::first;
+    type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(t);
     return value_.first;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(::test::fixtures::basic-structured-annotations::annotated_inline_string&& t) {
     __fbthrift_clear();
-    type_ = Type::first;
+    type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(std::move(t));
     return value_.first;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic-structured-annotations::annotated_inline_string, T...>> ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::first;
+    type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(std::forward<T>(t)...);
     return value_.first;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_i64& set_second(::test::fixtures::basic-structured-annotations::annotated_inline_i64 t = ::test::fixtures::basic-structured-annotations::annotated_inline_i64()) {
     __fbthrift_clear();
-    type_ = Type::second;
+    type_ = folly::to_underlying(Type::second);
     ::new (std::addressof(value_.second)) ::test::fixtures::basic-structured-annotations::annotated_inline_i64(t);
     return value_.second;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_string const& get_first() const {
-    if (type_ != Type::first) {
+    if (getType() != Type::first) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.first;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_i64 const& get_second() const {
-    if (type_ != Type::second) {
+    if (getType() != Type::second) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.second;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_string& mutable_first() {
-    assert(type_ == Type::first);
+    assert(getType() == Type::first);
     return value_.first;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_i64& mutable_second() {
-    assert(type_ == Type::second);
+    assert(getType() == Type::second);
     return value_.second;
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_string move_first() {
-    assert(type_ == Type::first);
+    assert(getType() == Type::first);
     return std::move(value_.first);
   }
 
   ::test::fixtures::basic-structured-annotations::annotated_inline_i64 move_second() {
-    assert(type_ == Type::second);
+    assert(getType() == Type::second);
     return std::move(value_.second);
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> first_ref() const& {
-    return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.first, type_, folly::to_underlying(Type::first), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> first_ref() const&& {
-    return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.first), type_, folly::to_underlying(Type::first), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> first_ref() & {
-    return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.first, type_, folly::to_underlying(Type::first), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> first_ref() && {
-    return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.first), type_, folly::to_underlying(Type::first), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> second_ref() const& {
-    return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.second, type_, folly::to_underlying(Type::second), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> second_ref() const&& {
-    return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.second), type_, folly::to_underlying(Type::second), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> second_ref() & {
-    return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.second, type_, folly::to_underlying(Type::second), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> second_ref() && {
-    return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.second), type_, folly::to_underlying(Type::second), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

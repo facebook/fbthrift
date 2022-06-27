@@ -4411,13 +4411,13 @@ class NoExceptMoveUnion final  {
   } ;
 
   NoExceptMoveUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   NoExceptMoveUnion(NoExceptMoveUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::string_field:
       {
         set_string_field(std::move(rhs.value_.string_field));
@@ -4438,10 +4438,10 @@ class NoExceptMoveUnion final  {
   }
 
   NoExceptMoveUnion(const NoExceptMoveUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::string_field:
       {
         set_string_field(rhs.value_.string_field);
@@ -4463,8 +4463,8 @@ class NoExceptMoveUnion final  {
   NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::string_field:
       {
         set_string_field(std::move(rhs.value_.string_field));
@@ -4488,8 +4488,8 @@ class NoExceptMoveUnion final  {
   NoExceptMoveUnion& operator=(const NoExceptMoveUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::string_field:
       {
         set_string_field(rhs.value_.string_field);
@@ -4526,103 +4526,103 @@ class NoExceptMoveUnion final  {
 
   ::std::string& set_string_field(::std::string const &t) {
     __fbthrift_clear();
-    type_ = Type::string_field;
+    type_ = folly::to_underlying(Type::string_field);
     ::new (std::addressof(value_.string_field)) ::std::string(t);
     return value_.string_field;
   }
 
   ::std::string& set_string_field(::std::string&& t) {
     __fbthrift_clear();
-    type_ = Type::string_field;
+    type_ = folly::to_underlying(Type::string_field);
     ::new (std::addressof(value_.string_field)) ::std::string(std::move(t));
     return value_.string_field;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_field(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::string_field;
+    type_ = folly::to_underlying(Type::string_field);
     ::new (std::addressof(value_.string_field)) ::std::string(std::forward<T>(t)...);
     return value_.string_field;
   }
 
   ::std::int32_t& set_i32_field(::std::int32_t t = ::std::int32_t()) {
     __fbthrift_clear();
-    type_ = Type::i32_field;
+    type_ = folly::to_underlying(Type::i32_field);
     ::new (std::addressof(value_.i32_field)) ::std::int32_t(t);
     return value_.i32_field;
   }
 
   ::std::string const& get_string_field() const {
-    if (type_ != Type::string_field) {
+    if (getType() != Type::string_field) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.string_field;
   }
 
   ::std::int32_t const& get_i32_field() const {
-    if (type_ != Type::i32_field) {
+    if (getType() != Type::i32_field) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.i32_field;
   }
 
   ::std::string& mutable_string_field() {
-    assert(type_ == Type::string_field);
+    assert(getType() == Type::string_field);
     return value_.string_field;
   }
 
   ::std::int32_t& mutable_i32_field() {
-    assert(type_ == Type::i32_field);
+    assert(getType() == Type::i32_field);
     return value_.i32_field;
   }
 
   ::std::string move_string_field() {
-    assert(type_ == Type::string_field);
+    assert(getType() == Type::string_field);
     return std::move(value_.string_field);
   }
 
   ::std::int32_t move_i32_field() {
-    assert(type_ == Type::i32_field);
+    assert(getType() == Type::i32_field);
     return std::move(value_.i32_field);
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> string_field_ref() const& {
-    return {value_.string_field, type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.string_field, type_, folly::to_underlying(Type::string_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> string_field_ref() const&& {
-    return {std::move(value_.string_field), type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.string_field), type_, folly::to_underlying(Type::string_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> string_field_ref() & {
-    return {value_.string_field, type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.string_field, type_, folly::to_underlying(Type::string_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> string_field_ref() && {
-    return {std::move(value_.string_field), type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.string_field), type_, folly::to_underlying(Type::string_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> i32_field_ref() const& {
-    return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.i32_field, type_, folly::to_underlying(Type::i32_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> i32_field_ref() const&& {
-    return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.i32_field), type_, folly::to_underlying(Type::i32_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> i32_field_ref() & {
-    return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.i32_field, type_, folly::to_underlying(Type::i32_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> i32_field_ref() && {
-    return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.i32_field), type_, folly::to_underlying(Type::i32_field), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

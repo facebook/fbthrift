@@ -351,7 +351,7 @@ struct populator_methods<type_class::variant, Union> {
   static void populate(Rng& rng, populator_opts const& opts, Union& out) {
     DVLOG(3) << "begin writing union: "
              << fatal::z_data<typename traits::name>()
-             << ", type: " << out.getType();
+             << ", type: " << folly::to_underlying(out.getType());
 
     // array of all possible FIDs of this union
     using fids_seq = fatal::sort<fatal::as_sequence<

@@ -163,8 +163,8 @@ const char* InnerUnion::__fbthrift_thrift_uri() {
 
 void InnerUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::innerOption:
       destruct(value_.innerOption);
       break;
@@ -172,16 +172,16 @@ void InnerUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool InnerUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool InnerUnion::operator==(const InnerUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::innerOption:
       return apache::thrift::StringTraits<std::string>::isEqual(
           value_.innerOption,
@@ -195,10 +195,10 @@ bool InnerUnion::operator<(const InnerUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::innerOption:
     return !apache::thrift::StringTraits<std::string>::isEqual(value_.innerOption, rhs.value_.innerOption) &&
       apache::thrift::StringTraits<std::string>::isLess(value_.innerOption, rhs.value_.innerOption);
@@ -268,8 +268,8 @@ const char* MyUnion::__fbthrift_thrift_uri() {
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::option1:
       destruct(value_.option1);
       break;
@@ -283,16 +283,16 @@ void MyUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool MyUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool MyUnion::operator==(const MyUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::option1:
       return value_.option1 == rhs.value_.option1;
     case Type::option2:
@@ -308,10 +308,10 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::option1:
       return lhs.value_.option1 < rhs.value_.option1;
     case Type::option2:

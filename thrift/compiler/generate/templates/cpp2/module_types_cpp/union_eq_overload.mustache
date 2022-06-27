@@ -17,8 +17,8 @@
 %>
 
 bool <%struct:cpp_underlying_name%>::operator==(const <%struct:cpp_underlying_name%>& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
 <%#struct:fields%>
     case Type::<%field:cpp_name%>:
 <%#field:cpp_ref?%>

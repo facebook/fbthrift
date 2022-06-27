@@ -1577,8 +1577,8 @@ namespace cpp2 {
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::myEnum:
       destruct(value_.myEnum);
       break;
@@ -1601,16 +1601,16 @@ void MyUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool MyUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool MyUnion::operator==(const MyUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::myEnum:
       return value_.myEnum == rhs.value_.myEnum;
     case Type::myStruct:
@@ -1632,10 +1632,10 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::myEnum:
       return lhs.value_.myEnum < rhs.value_.myEnum;
     case Type::myStruct:
@@ -2471,8 +2471,8 @@ namespace cpp2 {
 
 void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::myEnum:
       destruct(value_.myEnum);
       break;
@@ -2489,16 +2489,16 @@ void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool MyUnionFloatFieldThrowExp::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool MyUnionFloatFieldThrowExp::operator==(const MyUnionFloatFieldThrowExp& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::myEnum:
       return value_.myEnum == rhs.value_.myEnum;
     case Type::setFloat:
@@ -2516,10 +2516,10 @@ bool MyUnionFloatFieldThrowExp::operator<(const MyUnionFloatFieldThrowExp& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::myEnum:
       return lhs.value_.myEnum < rhs.value_.myEnum;
     case Type::setFloat:

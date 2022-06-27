@@ -1012,13 +1012,13 @@ class ExampleUnion final  {
   } ;
 
   ExampleUnion()
-      : type_(Type::__EMPTY__) {}
+      : type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   ExampleUnion(ExampleUnion&& rhs) noexcept
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::fieldA:
       {
         set_fieldA(std::move(rhs.value_.fieldA));
@@ -1039,10 +1039,10 @@ class ExampleUnion final  {
   }
 
   ExampleUnion(const ExampleUnion& rhs)
-      : type_(Type::__EMPTY__) {
+      : type_(folly::to_underlying(Type::__EMPTY__)) {
     if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return; }
+    switch (rhs.getType()) {
       case Type::fieldA:
       {
         set_fieldA(rhs.value_.fieldA);
@@ -1064,8 +1064,8 @@ class ExampleUnion final  {
   ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::fieldA:
       {
         set_fieldA(std::move(rhs.value_.fieldA));
@@ -1089,8 +1089,8 @@ class ExampleUnion final  {
   ExampleUnion& operator=(const ExampleUnion& rhs) {
     if (this == &rhs) { return *this; }
     __fbthrift_clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
+    if (rhs.getType() == Type::__EMPTY__) { return *this; }
+    switch (rhs.getType()) {
       case Type::fieldA:
       {
         set_fieldA(rhs.value_.fieldA);
@@ -1127,117 +1127,117 @@ class ExampleUnion final  {
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
     __fbthrift_clear();
-    type_ = Type::fieldA;
+    type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(t);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct&& t) {
     __fbthrift_clear();
-    type_ = Type::fieldA;
+    type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::move(t));
     return value_.fieldA;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::ContainerStruct, T...>> ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::fieldA;
+    type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct const &t) {
     __fbthrift_clear();
-    type_ = Type::fieldB;
+    type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(t);
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct&& t) {
     __fbthrift_clear();
-    type_ = Type::fieldB;
+    type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::move(t));
     return value_.fieldB;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::TrivialTypesStruct, T...>> ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
     __fbthrift_clear();
-    type_ = Type::fieldB;
+    type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::ContainerStruct const& get_fieldA() const {
-    if (type_ != Type::fieldA) {
+    if (getType() != Type::fieldA) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct const& get_fieldB() const {
-    if (type_ != Type::fieldB) {
+    if (getType() != Type::fieldB) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::ContainerStruct& mutable_fieldA() {
-    assert(type_ == Type::fieldA);
+    assert(getType() == Type::fieldA);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& mutable_fieldB() {
-    assert(type_ == Type::fieldB);
+    assert(getType() == Type::fieldB);
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::ContainerStruct move_fieldA() {
-    assert(type_ == Type::fieldA);
+    assert(getType() == Type::fieldA);
     return std::move(value_.fieldA);
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct move_fieldB() {
-    assert(type_ == Type::fieldB);
+    assert(getType() == Type::fieldB);
     return std::move(value_.fieldB);
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> fieldA_ref() const& {
-    return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.fieldA, type_, folly::to_underlying(Type::fieldA), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldA_ref() const&& {
-    return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldA), type_, folly::to_underlying(Type::fieldA), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> fieldA_ref() & {
-    return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.fieldA, type_, folly::to_underlying(Type::fieldA), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldA_ref() && {
-    return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldA), type_, folly::to_underlying(Type::fieldA), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> fieldB_ref() const& {
-    return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.fieldB, type_, folly::to_underlying(Type::fieldB), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldB_ref() const&& {
-    return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldB), type_, folly::to_underlying(Type::fieldB), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> fieldB_ref() & {
-    return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {value_.fieldB, type_, folly::to_underlying(Type::fieldB), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldB_ref() && {
-    return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldB), type_, folly::to_underlying(Type::fieldB), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

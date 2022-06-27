@@ -51,8 +51,8 @@ namespace cpp2 {
 
 void ComplexUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::intValue:
       destruct(value_.intValue);
       break;
@@ -75,16 +75,16 @@ void ComplexUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool ComplexUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::intValue:
       return value_.intValue == rhs.value_.intValue;
     case Type::stringValue:
@@ -106,10 +106,10 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::intValue:
       return lhs.value_.intValue < rhs.value_.intValue;
     case Type::stringValue:
@@ -184,8 +184,8 @@ namespace cpp2 {
 
 void ListUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::intListValue:
       destruct(value_.intListValue);
       break;
@@ -196,16 +196,16 @@ void ListUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool ListUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool ListUnion::operator==(const ListUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::intListValue:
       return value_.intListValue == rhs.value_.intListValue;
     case Type::stringListValue:
@@ -219,10 +219,10 @@ bool ListUnion::operator<(const ListUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::intListValue:
       return lhs.value_.intListValue < rhs.value_.intListValue;
     case Type::stringListValue:
@@ -289,8 +289,8 @@ namespace cpp2 {
 
 void DataUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::binaryData:
       destruct(value_.binaryData);
       break;
@@ -301,16 +301,16 @@ void DataUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool DataUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool DataUnion::operator==(const DataUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::binaryData:
       return apache::thrift::StringTraits<std::string>::isEqual(
           value_.binaryData,
@@ -326,10 +326,10 @@ bool DataUnion::operator<(const DataUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::binaryData:
     return !apache::thrift::StringTraits<std::string>::isEqual(value_.binaryData, rhs.value_.binaryData) &&
       apache::thrift::StringTraits<std::string>::isLess(value_.binaryData, rhs.value_.binaryData);
@@ -524,8 +524,8 @@ namespace cpp2 {
 
 void ValUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::v1:
       destruct(value_.v1);
       break;
@@ -536,16 +536,16 @@ void ValUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool ValUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool ValUnion::operator==(const ValUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::v1:
       return value_.v1 == rhs.value_.v1;
     case Type::v2:
@@ -559,10 +559,10 @@ bool ValUnion::operator<(const ValUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::v1:
       return lhs.value_.v1 < rhs.value_.v1;
     case Type::v2:
@@ -641,8 +641,8 @@ namespace cpp2 {
 
 void VirtualComplexUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::thingOne:
       destruct(value_.thingOne);
       break;
@@ -653,16 +653,16 @@ void VirtualComplexUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool VirtualComplexUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::thingOne:
       return value_.thingOne == rhs.value_.thingOne;
     case Type::thingTwo:
@@ -676,10 +676,10 @@ bool VirtualComplexUnion::operator<(const VirtualComplexUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::thingOne:
       return lhs.value_.thingOne < rhs.value_.thingOne;
     case Type::thingTwo:
@@ -828,8 +828,8 @@ namespace cpp2 {
 
 void NonCopyableUnion::__fbthrift_clear() {
   // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
+  if (getType() == Type::__EMPTY__) { return; }
+  switch(getType()) {
     case Type::s:
       destruct(value_.s);
       break;
@@ -837,16 +837,16 @@ void NonCopyableUnion::__fbthrift_clear() {
       assert(false);
       break;
   }
-  type_ = Type::__EMPTY__;
+  type_ = folly::to_underlying(Type::__EMPTY__);
 }
 
 bool NonCopyableUnion::__fbthrift_is_empty() const {
-  return type_ == Type::__EMPTY__;
+  return getType() == Type::__EMPTY__;
 }
 
 bool NonCopyableUnion::operator==(const NonCopyableUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
+  if (getType() != rhs.getType()) { return false; }
+  switch(getType()) {
     case Type::s:
       return value_.s == rhs.value_.s;
     default:
@@ -858,10 +858,10 @@ bool NonCopyableUnion::operator<(const NonCopyableUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
+  if (lhs.getType() != rhs.getType()) {
+    return lhs.getType() < rhs.getType();
   }
-  switch (lhs.type_) {
+  switch (lhs.getType()) {
     case Type::s:
       return lhs.value_.s < rhs.value_.s;
     default:
