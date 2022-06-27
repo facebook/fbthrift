@@ -61,9 +61,34 @@ struct Path {
  *  struct, it excludes the nested fields that are included in the nested mask.
  *  Inclusive works similarly by including the fields specified by the map.
  *
+ *  Usage
+ *  --------------
+ *  // In thrift file
+ *  struct Nested {
+ *    1: i32 field_1;
+ *    2: i32 field_2;
+ *  }
+ *
+ *  struct Foo {
+ *    10: Nested nested;
+ *    20: i32 field_3;
+ *  }
+ *
+ *  // Masks field_2 and field_3 of Foo in C++
+ *  Mask mask1;
+ *  mask1.inclusive_ref().ensure()[10].inclusive_ref().ensure()[2] = allMask;
+ *  mask1.inclusive_ref().ensure()[20] = allMask;
+ *
+ *  // Alternatively we can exclude field_1 in Foo
+ *  Mask mask2;
+ *  mask2.exclusive_ref().ensure()[10].inclusive_ref().ensure()[1] = allMask;
+ *
  */
 // Inclusive fields should always be an even number.
 union Mask {
   1: FieldIdToMask exclusive; // Fields that will be excluded.
   2: FieldIdToMask inclusive; // Fields that will be included.
 }
+
+const Mask allMask = {"exclusive": {}}; // Masks all fields.
+const Mask noneMask = {"inclusive": {}}; // Masks no fields.
