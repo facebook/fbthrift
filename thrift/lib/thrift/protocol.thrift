@@ -41,6 +41,27 @@ struct Path {
   1: list<PathSegmentId> path;
 }
 
+/**
+ *  Overview
+ *  --------
+ *  Field Mask is a data structure that represents a subset of fields and
+ *  nested fields of a thrift struct. The purpose is to provide utilities
+ *  to manipulate these fields such as copying certain fields and nested fields
+ *  from one struct instance to another.
+ *
+ *  The concept is similar to GraphQL’s field selectors, JSON:API’s Sparse
+ *  Fieldsets and Protobuf’s FieldMask.
+ *
+ *  Implementation
+ *  --------------
+ *  It is a union data structure, which can represent the map of exclusive
+ *  fields or the map of inclusive fields. The map maps from field id to the
+ *  mask for the nested thrift struct. If it is set to exclusive, the mask
+ *  works by excluding all fields in the map. If the field is another thrift
+ *  struct, it excludes the nested fields that are included in the nested mask.
+ *  Inclusive works similarly by including the fields specified by the map.
+ *
+ */
 // Inclusive fields should always be an even number.
 union Mask {
   1: FieldIdToMask exclusive; // Fields that will be excluded.
