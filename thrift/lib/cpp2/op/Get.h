@@ -25,11 +25,6 @@ namespace op {
 template <typename Tag, class T>
 FOLLY_INLINE_VARIABLE constexpr auto get = access_field<field::ident<Tag, T>>;
 
-// Gets a field by FieldId.
-template <typename Tag, FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr auto getById =
-    get<Tag, std::integral_constant<FieldId, Id>>;
-
 } // namespace op
 } // namespace thrift
 } // namespace apache
