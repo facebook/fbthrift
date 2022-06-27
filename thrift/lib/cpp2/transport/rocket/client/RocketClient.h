@@ -210,9 +210,12 @@ class RocketClient : public virtual folly::DelayedDestruction,
    */
   void setFlushList(FlushList* flushList) { flushList_ = flushList; }
 
-  class FlushManager : private folly::EventBase::LoopCallback {
+  class FlushManager : private folly::EventBase::LoopCallback,
+                       public folly::AsyncTimeout {
    public:
-    explicit FlushManager(folly::EventBase& evb) : evb_(evb) {}
+    explicit FlushManager(folly::EventBase& evb) : evb_(evb) {
+      attachEventBase(&evb_);
+    }
     static FlushManager& getInstance(folly::EventBase& evb) {
       return getEventBaseLocal().try_emplace(evb, evb);
     }
@@ -220,12 +223,41 @@ class RocketClient : public virtual folly::DelayedDestruction,
     // has time complexity linear to number of elements in flush list
     size_t getNumPendingClients() const { return flushList_.size(); }
 
+    void timeoutExpired() noexcept override;
+
+    /*
+     * When not using setFlushList to manage flushes, this sets the flush
+     * policy for the FlushManager. maxPendingFlushes is the number of client
+     * flushes which will be batched before scheduling a flush in the next
+     * loop callback. maxFlushLatency is the amount of time to wait for
+     * maxPendingFlushes before scheduling a loop callback. I.e., it is the
+     * latency tolerance for a RocketClient's flush.
+     */
+    void setFlushPolicy(
+        size_t maxPendingFlushes, std::chrono::microseconds maxFlushLatency) {
+      flushPolicy_.emplace(maxPendingFlushes, maxFlushLatency);
+    }
+
+    /*
+     * Reset the flush policy to no policy. Also act as if the timeout elapsed
+     * immediately.
+     */
+    void resetFlushPolicy();
+
    private:
     void runLoopCallback() noexcept override final;
 
     folly::EventBase& evb_;
     FlushList flushList_;
     bool rescheduled_{false};
+    size_t pendingFlushes_{0};
+    struct FlushPolicy {
+      FlushPolicy(size_t m, std::chrono::microseconds f)
+          : maxPendingFlushes(m), maxFlushLatency(f) {}
+      size_t maxPendingFlushes{0};
+      std::chrono::microseconds maxFlushLatency{0};
+    };
+    std::optional<FlushPolicy> flushPolicy_;
   };
 
   void scheduleTimeout(

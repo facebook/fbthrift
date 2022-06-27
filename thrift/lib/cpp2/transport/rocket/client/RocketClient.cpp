@@ -1095,13 +1095,34 @@ void RocketClient::FlushManager::runLoopCallback() noexcept {
     cbs.pop_front();
     callback->runLoopCallback();
   }
+  pendingFlushes_ = 0;
+}
+
+void RocketClient::FlushManager::timeoutExpired() noexcept {
+  if (!isLoopCallbackScheduled()) {
+    evb_.runInLoop(this);
+  }
+}
+
+void RocketClient::FlushManager::resetFlushPolicy() {
+  flushPolicy_.reset();
+  cancelTimeout();
+  timeoutExpired();
 }
 
 void RocketClient::FlushManager::enqueueFlush(RocketClient& client) {
   // add write callback to flush list and schedule flush manager callback
   flushList_.push_back(client.writeLoopCallback_);
-  if (!isLoopCallbackScheduled()) {
+  pendingFlushes_++;
+  if (!isLoopCallbackScheduled() &&
+      (!flushPolicy_.has_value() ||
+       pendingFlushes_ > flushPolicy_->maxPendingFlushes)) {
     evb_.runInLoop(this);
+    cancelTimeout();
+  }
+  if (flushPolicy_.has_value() && !isLoopCallbackScheduled() &&
+      !isScheduled()) {
+    evb_.scheduleTimeoutHighRes(this, flushPolicy_->maxFlushLatency);
   }
 }
 

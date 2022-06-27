@@ -173,6 +173,161 @@ TEST_F(RocketNetworkTest, FlushManager) {
         EXPECT_EQ(flushManager->getNumPendingClients(), 2);
         EXPECT_FALSE(onWriteSuccess1.writeSuccess);
         EXPECT_FALSE(onWriteSuccess2.writeSuccess);
+        ASSERT_FALSE(flushManager->isScheduled());
+
+        auto reply1 = std::move(reply1Fut).getTry();
+        auto reply2 = std::move(reply2Fut).getTry();
+        EXPECT_TRUE(reply1.hasValue());
+        EXPECT_TRUE(reply2.hasValue());
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 0);
+      }).get();
+  });
+}
+
+TEST_F(RocketNetworkTest, FlushManagerLowMaxPendingFlushPolicy) {
+  this->withClients([](RocketTestClient& client, RocketClient& client2) {
+    constexpr folly::StringPiece kMetadata1("metadata1");
+    constexpr folly::StringPiece kData1("test_request1");
+    constexpr folly::StringPiece kMetadata2("metadata2");
+    constexpr folly::StringPiece kData2("test_request2");
+
+    auto& client1 = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+    RocketClient::FlushManager* flushManager{nullptr};
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+    // FlushPolicy of 1 basically means immediate flushes.
+    client.getEventBase().runInEventBaseThreadAndWait([&] {
+      flushManager = &RocketClient::FlushManager::getInstance(eventBase);
+      flushManager->setFlushPolicy(1, std::chrono::milliseconds(1));
+    });
+
+    OnWriteSuccess onWriteSuccess1, onWriteSuccess2;
+    // Add a task that would initiate sending the requests from 2 clients
+    fm.addTaskRemoteFuture([&] {
+        auto reply1Fut = fm.addTaskEagerFuture([&] {
+          return client1.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata1, kData1),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess1);
+        });
+
+        auto reply2Fut = fm.addTaskEagerFuture([&] {
+          return client2.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata2, kData2),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess2);
+        });
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 2);
+        EXPECT_FALSE(flushManager->isScheduled());
+        EXPECT_FALSE(onWriteSuccess1.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess2.writeSuccess);
+
+        auto reply1 = std::move(reply1Fut).getTry();
+        auto reply2 = std::move(reply2Fut).getTry();
+        EXPECT_TRUE(reply1.hasValue());
+        EXPECT_TRUE(reply2.hasValue());
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 0);
+      }).get();
+  });
+}
+
+TEST_F(RocketNetworkTest, FlushManagerHighMaxPendingFlushPolicy) {
+  this->withClients([](RocketTestClient& client, RocketClient& client2) {
+    constexpr folly::StringPiece kMetadata1("metadata1");
+    constexpr folly::StringPiece kData1("test_request1");
+    constexpr folly::StringPiece kMetadata2("metadata2");
+    constexpr folly::StringPiece kData2("test_request2");
+
+    auto& client1 = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+    RocketClient::FlushManager* flushManager{nullptr};
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+    // FlushPolicy of 1000 to force the timeout to trigger flushes.
+    client.getEventBase().runInEventBaseThreadAndWait([&] {
+      flushManager = &RocketClient::FlushManager::getInstance(eventBase);
+      flushManager->setFlushPolicy(1000, std::chrono::milliseconds(1));
+    });
+
+    OnWriteSuccess onWriteSuccess1, onWriteSuccess2;
+    // Add a task that would initiate sending the requests from 2 clients
+    fm.addTaskRemoteFuture([&] {
+        auto reply1Fut = fm.addTaskEagerFuture([&] {
+          return client1.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata1, kData1),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess1);
+        });
+
+        auto reply2Fut = fm.addTaskEagerFuture([&] {
+          return client2.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata2, kData2),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess2);
+        });
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 2);
+        EXPECT_TRUE(flushManager->isScheduled());
+        EXPECT_FALSE(onWriteSuccess1.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess2.writeSuccess);
+
+        auto reply1 = std::move(reply1Fut).getTry();
+        auto reply2 = std::move(reply2Fut).getTry();
+        EXPECT_TRUE(reply1.hasValue());
+        EXPECT_TRUE(reply2.hasValue());
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 0);
+      }).get();
+  });
+}
+
+TEST_F(RocketNetworkTest, FlushManagerHighMaxPendingFlushPolicyResetPolicy) {
+  this->withClients([](RocketTestClient& client, RocketClient& client2) {
+    constexpr folly::StringPiece kMetadata1("metadata1");
+    constexpr folly::StringPiece kData1("test_request1");
+    constexpr folly::StringPiece kMetadata2("metadata2");
+    constexpr folly::StringPiece kData2("test_request2");
+
+    auto& client1 = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+    RocketClient::FlushManager* flushManager{nullptr};
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+    // FlushPolicy of 1000 to force the timeout to trigger flushes.
+    client.getEventBase().runInEventBaseThreadAndWait([&] {
+      flushManager = &RocketClient::FlushManager::getInstance(eventBase);
+      flushManager->setFlushPolicy(1000, std::chrono::milliseconds(1));
+    });
+
+    OnWriteSuccess onWriteSuccess1, onWriteSuccess2;
+    // Add a task that would initiate sending the requests from 2 clients
+    fm.addTaskRemoteFuture([&] {
+        auto reply1Fut = fm.addTaskEagerFuture([&] {
+          return client1.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata1, kData1),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess1);
+        });
+
+        auto reply2Fut = fm.addTaskEagerFuture([&] {
+          return client2.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata2, kData2),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess2);
+        });
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 2);
+        EXPECT_TRUE(flushManager->isScheduled());
+        EXPECT_FALSE(onWriteSuccess1.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess2.writeSuccess);
+        flushManager->resetFlushPolicy();
+        EXPECT_FALSE(flushManager->isScheduled());
+        EXPECT_FALSE(onWriteSuccess1.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess2.writeSuccess);
 
         auto reply1 = std::move(reply1Fut).getTry();
         auto reply2 = std::move(reply2Fut).getTry();
@@ -213,6 +368,63 @@ TEST_F(RocketNetworkTest, FlushList) {
     // performed, then flushes the list.
     fm.addTaskRemoteFuture([&] {
         EXPECT_FALSE(onWriteSuccess.writeSuccess);
+
+        auto cbs = std::move(flushList);
+        while (!cbs.empty()) {
+          auto* callback = &cbs.front();
+          cbs.pop_front();
+          callback->runLoopCallback();
+        }
+
+        EXPECT_TRUE(onWriteSuccess.writeSuccess);
+      }).wait();
+
+    auto reply = std::move(sendFuture).get();
+
+    EXPECT_TRUE(onWriteSuccess.writeSuccess);
+    auto dam = splitMetadataAndData(reply);
+    EXPECT_EQ(kData, getRange(*dam.second));
+    EXPECT_TRUE(reply.hasNonemptyMetadata());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+  });
+}
+
+TEST_F(RocketNetworkTest, FlushListFlushPolicyNoop) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr folly::StringPiece kMetadata("metadata");
+    constexpr folly::StringPiece kData("test_request");
+
+    RocketClient::FlushList flushList;
+    auto& rawClient = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+    RocketClient::FlushManager* flushManager{nullptr};
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+
+    client.getEventBase().runInEventBaseThreadAndWait([&] {
+      flushManager = &RocketClient::FlushManager::getInstance(eventBase);
+      flushManager->setFlushPolicy(1000, std::chrono::milliseconds(1));
+    });
+
+    OnWriteSuccess onWriteSuccess;
+    // Add a task that would initiate sending the request.
+    auto sendFuture = fm.addTaskRemoteFuture([&] {
+      rawClient.setFlushList(&flushList);
+
+      auto reply = rawClient.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kMetadata, kData),
+          std::chrono::milliseconds(250),
+          &onWriteSuccess);
+
+      EXPECT_TRUE(reply.hasValue());
+      return std::move(reply.value());
+    });
+
+    // Add another task that would ensure several event base loops are
+    // performed, then flushes the list.
+    fm.addTaskRemoteFuture([&] {
+        EXPECT_FALSE(onWriteSuccess.writeSuccess);
+        EXPECT_FALSE(flushManager->isScheduled());
 
         auto cbs = std::move(flushList);
         while (!cbs.empty()) {
