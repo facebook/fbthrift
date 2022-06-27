@@ -176,15 +176,38 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool activeRequestTrackingDisabled{false};
     bool setPreprocess{false};
     bool setIsOverloaded{false};
-    bool resourcePoolEnabled{false};
     bool resourcePoolFlagSet{false};
     bool codelEnabled{false};
     std::string executorToThreadManagerUnexpectedFunctionName{};
 
     bool enableResourcePoolForWildcard{false};
 
+    bool resourcePoolEnablementLocked{false};
+    bool resourcePoolRuntimeRequested{false};
+    bool resourcePoolRuntimeDisabled{false};
+    bool resourcePoolEnabled{false};
+
     std::string explain() const;
   };
+
+  // used to disable resource pool at run time
+  // should only be used by thrift team
+  void runtimeDisableResourcePoolsDeprecated() {
+    if (runtimeServerActions_.resourcePoolEnablementLocked) {
+      LOG(FATAL) << "Trying to disable ResourcePool after it's locked";
+      return;
+    }
+    runtimeServerActions_.resourcePoolRuntimeDisabled = true;
+  }
+
+  // used to enable resource pool at run time
+  void requireResourcePools() {
+    if (runtimeServerActions_.resourcePoolEnablementLocked) {
+      LOG(FATAL) << "Trying to enable ResourcePool after it's locked";
+      return;
+    }
+    runtimeServerActions_.resourcePoolRuntimeRequested = true;
+  }
 
   /**
    * Get the flags used to support migrations and rollouts.
@@ -199,6 +222,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   bool resourcePoolEnabledForWildcard() override {
     return runtimeServerActions_.enableResourcePoolForWildcard;
+  }
+
+ protected:
+  bool useResourcePools() {
+    if (!runtimeServerActions_.resourcePoolEnablementLocked) {
+      runtimeServerActions_.resourcePoolEnablementLocked = true;
+      bool flagSet = useResourcePoolsFlagsSet();
+      bool runtimeRequested =
+          runtimeServerActions_.resourcePoolRuntimeRequested;
+      bool runtimeDisabled = runtimeServerActions_.resourcePoolRuntimeDisabled;
+      runtimeServerActions_.resourcePoolEnabled =
+          (flagSet || runtimeRequested) && !runtimeDisabled;
+    }
+
+    return runtimeServerActions_.resourcePoolEnabled;
   }
 
  private:
@@ -472,7 +510,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
           threadManager) {
     setThreadManagerInternal(threadManager);
-    runtimeDisableResourcePools();
+    runtimeDisableResourcePoolsDeprecated();
     runtimeServerActions_.userSuppliedThreadManager = true;
   }
 
@@ -487,7 +525,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     setThreadManagerInternal(
         std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
             folly::getKeepAliveToken(executor), std::move(opts)));
-    runtimeDisableResourcePools();
+    runtimeDisableResourcePoolsDeprecated();
     runtimeServerActions_.userSuppliedThreadManager = true;
   }
 

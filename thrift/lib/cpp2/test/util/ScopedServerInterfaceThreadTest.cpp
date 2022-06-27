@@ -509,9 +509,8 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
     return;
   }
 
-  auto ts = make_shared<ThriftServer>();
-
   for (size_t i = 0; i < 2; ++i) {
+    auto ts = make_shared<ThriftServer>();
     auto tf = make_shared<apache::thrift::concurrency::PosixThreadFactory>(
         apache::thrift::concurrency::PosixThreadFactory::ATTACHED);
     auto tm =

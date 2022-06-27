@@ -503,7 +503,7 @@ void doLoadHeaderTest(bool isRocket) {
               tae.getType());
         });
 
-    if (!useResourcePools(/* no isOverloaded with resource pools*/)) {
+    if (!useResourcePoolsFlagsSet(/* no isOverloaded with resource pools*/)) {
       ASSERT_TRUE(matched);
     }
     checkLoadHeader(header, kLoadMetric);
@@ -1003,7 +1003,7 @@ class OverloadTest
   }
 
   bool useQueueConcurrency() {
-    return useResourcePools() &&
+    return useResourcePoolsFlagsSet() &&
         THRIFT_FLAG(enforce_queue_concurrency_resource_pools);
   }
 
@@ -1360,25 +1360,25 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
       callCount_++;
       EXPECT_THAT(
           *folly::getCurrentThreadName(),
-          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][0]));
+          testing::StartsWith(prefixes[useResourcePoolsFlagsSet() ? 1 : 0][0]));
     }
     void priorityBestEffort() override {
       callCount_++;
       EXPECT_THAT(
           *folly::getCurrentThreadName(),
-          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][1]));
+          testing::StartsWith(prefixes[useResourcePoolsFlagsSet() ? 1 : 0][1]));
     }
     void voidResponse() override {
       callCount_++;
       EXPECT_THAT(
           *folly::getCurrentThreadName(),
-          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][2]));
+          testing::StartsWith(prefixes[useResourcePoolsFlagsSet() ? 1 : 0][2]));
     }
   };
 
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
-        if (!useResourcePools()) {
+        if (!useResourcePoolsFlagsSet()) {
           auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
               new ThreadManagerExecutorAdapter(
                   {nullptr,
@@ -1418,26 +1418,26 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
     void priorityHigh() override {
       callCount_++;
       EXPECT_EQ(
-          threadNames[useResourcePools() ? 1 : 0],
+          threadNames[useResourcePoolsFlagsSet() ? 1 : 0],
           *folly::getCurrentThreadName());
     }
     void priorityBestEffort() override {
       callCount_++;
       EXPECT_EQ(
-          threadNames[useResourcePools() ? 1 : 0],
+          threadNames[useResourcePoolsFlagsSet() ? 1 : 0],
           *folly::getCurrentThreadName());
     }
     void voidResponse() override {
       callCount_++;
       EXPECT_EQ(
-          threadNames[useResourcePools() ? 1 : 0],
+          threadNames[useResourcePoolsFlagsSet() ? 1 : 0],
           *folly::getCurrentThreadName());
     }
   };
 
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
-        if (!useResourcePools()) {
+        if (!useResourcePoolsFlagsSet()) {
           auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
               new ThreadManagerExecutorAdapter(
                   std::make_shared<folly::CPUThreadPoolExecutor>(
@@ -1643,7 +1643,7 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
 
   auto blockIf = std::make_shared<BlockInterface>();
   auto runner = std::make_unique<ScopedServerInterfaceThread>(blockIf);
-  if (useResourcePools()) {
+  if (useResourcePoolsFlagsSet()) {
     // Limit active requests to 1 for this test and ensure we have two threads
     // in the worker pool.
     auto& resourcePool =

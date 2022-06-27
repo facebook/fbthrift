@@ -26,49 +26,10 @@ DEFINE_bool(
 
 namespace apache::thrift {
 
-namespace {
-folly::relaxed_atomic<bool>& getResourcePoolsRuntimeDisabled() {
-  static folly::relaxed_atomic<bool> resourcePoolsRuntimeDisabled{false};
-  return resourcePoolsRuntimeDisabled;
-}
-
-folly::relaxed_atomic<bool>& getResourcePoolsRuntimeRequested() {
-  static folly::relaxed_atomic<bool> resourcePoolsRuntimeRequested{false};
-  return resourcePoolsRuntimeRequested;
-}
-
-} // namespace
-
-void runtimeDisableResourcePools() {
-  getResourcePoolsRuntimeDisabled().store(true);
-}
-
-void requireResourcePools() {
-  getResourcePoolsRuntimeRequested().store(true);
-  // Call this to ensure setting is fixed and we detect conflicts going forward.
-  CHECK_EQ(useResourcePools(), true);
-}
-
-bool useResourcePools() {
+bool useResourcePoolsFlagsSet() {
   static bool gFlag = FLAGS_thrift_experimental_use_resource_pools;
   static bool thriftFlag = THRIFT_FLAG(experimental_use_resource_pools);
-  static bool firstResult =
-      (gFlag || thriftFlag || getResourcePoolsRuntimeRequested().load()) &&
-      !getResourcePoolsRuntimeDisabled().load();
-  bool result =
-      (gFlag || thriftFlag || getResourcePoolsRuntimeRequested().load()) &&
-      !getResourcePoolsRuntimeDisabled().load();
-  if (result == firstResult) {
-    return result;
-  }
-
-  LOG(ERROR) << "Inconsistent results from useResourcePools";
-  // when seeing inconsistency we should always disable
-  return false;
-}
-
-bool useResourcePoolsFlagsSet() {
-  return useResourcePools();
+  return gFlag || thriftFlag;
 }
 
 } // namespace apache::thrift

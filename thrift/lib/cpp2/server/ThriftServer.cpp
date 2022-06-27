@@ -477,7 +477,6 @@ void ThriftServer::setup() {
       }
     } else {
       LOG(INFO) << "Using resource pools";
-      runtimeServerActions_.resourcePoolEnabled = true;
       DCHECK(!threadManager_);
       ensureResourcePools();
       // Keep concurrency controller in sync with max requests for now.
@@ -720,7 +719,7 @@ void ThriftServer::runtimeResourcePoolsChecks() {
     if (!getRuntimeServerActions().enableResourcePoolForWildcard) {
       LOG(INFO) << "Resource pools disabled. Wildcard methods";
       runtimeServerActions_.wildcardMethods = true;
-      runtimeDisableResourcePools();
+      runtimeDisableResourcePoolsDeprecated();
     }
   } else if (
       auto* methodMetadataMap =
@@ -736,7 +735,7 @@ void ThriftServer::runtimeResourcePoolsChecks() {
         // Disable resource pools if there is no service request info
         LOG(INFO) << "Resource pools disabled. Incomplete metadata";
         runtimeServerActions_.noServiceRequestInfo = true;
-        runtimeDisableResourcePools();
+        runtimeDisableResourcePoolsDeprecated();
       }
       if (metadata.interactionType ==
           AsyncProcessorFactory::MethodMetadata::InteractionType::
@@ -746,27 +745,27 @@ void ThriftServer::runtimeResourcePoolsChecks() {
         LOG(INFO) << "Resource pools disabled. Interaction on request "
                   << methodToMetadataPtr.first;
         runtimeServerActions_.interactionInService = true;
-        runtimeDisableResourcePools();
+        runtimeDisableResourcePoolsDeprecated();
       }
     }
   } else {
     // unimplemented MethodMetadata
     LOG(INFO) << "Resource pools disabled. Wildcard methods";
     runtimeServerActions_.wildcardMethods = true;
-    runtimeDisableResourcePools();
+    runtimeDisableResourcePoolsDeprecated();
   }
 
   if (isActiveRequestsTrackingDisabled()) {
     LOG(INFO) << "Resource pools disabled. Active request tracking disabled";
     runtimeServerActions_.activeRequestTrackingDisabled = true;
-    runtimeDisableResourcePools();
+    runtimeDisableResourcePoolsDeprecated();
   }
 
   if (getEnableCodel() || FLAGS_codel_enabled ||
       (threadManager_ && threadManager_->codelEnabled())) {
     LOG(INFO) << "Resource pools disabled. Codel enabled";
     runtimeServerActions_.codelEnabled = true;
-    runtimeDisableResourcePools();
+    runtimeDisableResourcePoolsDeprecated();
   }
 }
 
