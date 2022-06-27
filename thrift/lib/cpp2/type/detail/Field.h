@@ -33,24 +33,6 @@ FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_field_size_v<native_type<StructTag>>;
 
-struct field_to_id {
-  template <class>
-  struct apply;
-  template <FieldId Id, class Tag>
-  struct apply<field_t<Id, Tag>> {
-    static constexpr auto value = static_cast<field_id_u_t>(Id);
-  };
-};
-
-struct field_to_tag {
-  template <class>
-  struct apply;
-  template <FieldId Id, class Tag>
-  struct apply<field_t<Id, Tag>> {
-    using type = Tag;
-  };
-};
-
 } // namespace detail
 } // namespace type
 namespace field {

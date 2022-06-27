@@ -25,15 +25,6 @@ namespace type {
 
 using detail::field_size_v;
 
-// The type tag for the given type::field_t.
-template <typename FieldTag>
-using field_type_tag = typename detail::field_to_tag::apply<FieldTag>::type;
-
-// The FieldId for the given type::field_t
-template <typename FieldTag>
-FOLLY_INLINE_VARIABLE constexpr FieldId field_id_v =
-    FieldId(detail::field_to_id::apply<FieldTag>::value);
-
 } // namespace type
 namespace field {
 template <class Tag, class T>
