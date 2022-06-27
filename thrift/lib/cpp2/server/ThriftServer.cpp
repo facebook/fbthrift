@@ -505,6 +505,11 @@ void ThriftServer::setup() {
       THRIFT_SERVER_EVENT(resourcepoolsenabled).log(*this);
     }
 
+    // After this point there should be no further changes to resource pools. We
+    // lock whether or not we are actually using them so that the checks on
+    // resourcePoolSet().empty() can be efficient.
+    resourcePoolSet().lock();
+
     if (!serverChannel_) {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
       ServerBootstrap::socketConfig.maxNumPendingConnectionsPerWorker =
@@ -779,7 +784,6 @@ void ThriftServer::ensureResourcePools() {
 
   // The user provided the resource pool. Use it as is.
   if (resourcePoolSupplied) {
-    resourcePoolSet().lock();
     return;
   }
 
@@ -931,7 +935,6 @@ void ThriftServer::ensureResourcePools() {
       }
     }
   }
-  resourcePoolSet().lock();
 }
 
 /**

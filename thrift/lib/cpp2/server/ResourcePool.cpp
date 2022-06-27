@@ -140,7 +140,11 @@ ResourcePoolHandle ResourcePoolSet::addResourcePool(
 void ResourcePoolSet::lock() {
   std::lock_guard<std::mutex> lock(mutex_);
   locked_ = true;
-  calculatePriorityMapping();
+  // Whilst we still have ThreadManager we may lock an empty ResourcePoolSet.
+  // Eventually we should make that a fatal error.
+  if (!empty()) {
+    calculatePriorityMapping();
+  }
 }
 
 size_t ResourcePoolSet::numQueued() const {
