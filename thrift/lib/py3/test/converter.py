@@ -267,3 +267,15 @@ class PythontoPy3ConverterTest(unittest.TestCase):
             to_py3_struct(
                 py3_types.Simple, python_types.Nested().optionalSimple
             ).intField
+
+
+class Py3ToPy3ConverterTest(unittest.TestCase):
+    def test_should_return_self(self) -> None:
+        simple = py3_types.Simple()
+        self.assertIs(
+            simple,
+            to_py3_struct(
+                py3_types.Simple,
+                simple,
+            ),
+        )

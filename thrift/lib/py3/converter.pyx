@@ -20,11 +20,13 @@ from thrift.py3.reflection import inspect
 from libcpp cimport bool
 from thrift.py3.reflection cimport FieldSpec, MapSpec, Qualifier, StructType
 from thrift.py3.types cimport CompiledEnum, Container, Struct
-from thrift.python.types cimport Struct as lite_Struct, Union as lite_Union
+from thrift.python.types cimport Struct as PythonStruct, Union as PythonUnion
 
 def to_py3_struct(cls, obj):
     if obj is None:
         return None
+    if isinstance(obj, cls):
+        return obj
     return _to_py3_struct(cls, obj)
 
 
@@ -54,13 +56,13 @@ cdef object _to_py3_struct(object cls, object obj):
 
 
 cdef object _get_src_field(object obj, FieldSpec field_spec):
-    if isinstance(obj, lite_Struct):
+    if isinstance(obj, PythonStruct):
         return getattr(obj, _py3_field_name(field_spec))
     return getattr(obj, field_spec.name)
 
 
 cdef object _get_src_union_field(object obj, FieldSpec field_spec):
-    if isinstance(obj, lite_Union):
+    if isinstance(obj, PythonUnion):
         return getattr(obj, _py3_field_name(field_spec))
     return getattr(obj, "get_" + field_spec.name)()
 
