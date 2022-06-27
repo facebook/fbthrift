@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
-#include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 
@@ -89,13 +88,11 @@ class ServerConfigsMock : public ServerConfigs {
     return cpuConcurrencyController_;
   }
 
-  uint32_t getMaxRequests() const { return **oMaxRequests_.getObserver(); }
+  uint32_t getMaxRequests() const override {
+    return **oMaxRequests_.getObserver();
+  }
 
-  void setMaxRequests(
-      uint32_t maxRequests,
-      apache::thrift::AttributeSource =
-          apache::thrift::AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) {
+  void setMaxRequests(uint32_t maxRequests) override {
     oMaxRequests_.setValue(maxRequests);
   }
 

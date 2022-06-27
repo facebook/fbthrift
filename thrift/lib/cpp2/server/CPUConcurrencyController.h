@@ -19,6 +19,7 @@
 #include <chrono>
 
 #include <folly/experimental/FunctionScheduler.h>
+#include <folly/experimental/observer/Observer.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 

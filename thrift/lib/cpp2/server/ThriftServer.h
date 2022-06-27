@@ -889,26 +889,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   void stopDuplex(std::shared_ptr<ThriftServer> thisServer);
 
-  void setEnableCodel(
-      bool enableCodel,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      ThriftServerConfig::DynamicAttributeTag =
-          ThriftServerConfig::DynamicAttributeTag{}) override final {
+  void setEnableCodel(bool enableCodel) override final {
     THRIFT_SERVER_EVENT(call.setEnableCodel).log(*this, [enableCodel]() {
       return folly::dynamic::object("enableCodel", enableCodel);
     });
-    BaseThriftServer::setEnableCodel(enableCodel, source);
+    BaseThriftServer::setEnableCodel(enableCodel);
   }
 
-  void setQueueTimeout(
-      std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      ThriftServerConfig::DynamicAttributeTag =
-          ThriftServerConfig::DynamicAttributeTag{}) override final {
+  void setQueueTimeout(std::chrono::milliseconds timeout) override final {
     THRIFT_SERVER_EVENT(call.setQueueTimeout).log(*this, [timeout]() {
       return folly::dynamic::object("timeout_ms", timeout.count());
     });
-    BaseThriftServer::setQueueTimeout(timeout, source);
+    BaseThriftServer::setQueueTimeout(timeout);
   }
 
   [[deprecated("Use setPreprocess instead")]] void setIsOverloaded(

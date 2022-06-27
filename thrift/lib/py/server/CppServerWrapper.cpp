@@ -617,12 +617,12 @@ class CppServerWrapper : public ThriftServer {
 
   void setIdleTimeout(int timeout) {
     std::chrono::milliseconds ms(timeout);
-    ThriftServer::setIdleTimeout(ms, AttributeSource::OVERRIDE);
+    ThriftServer::setIdleTimeout(ms);
   }
 
   void setTaskExpireTime(int timeout) {
     std::chrono::milliseconds ms(timeout);
-    ThriftServer::setTaskExpireTime(ms, AttributeSource::OVERRIDE);
+    ThriftServer::setTaskExpireTime(ms);
   }
 
   void setCppServerEventHandler(object serverEventHandler) {
@@ -689,23 +689,19 @@ class CppServerWrapper : public ThriftServer {
   }
 
   void setNumIOWorkerThreads(size_t numIOWorkerThreads) {
-    BaseThriftServer::setNumIOWorkerThreads(
-        numIOWorkerThreads, AttributeSource::OVERRIDE);
+    BaseThriftServer::setNumIOWorkerThreads(numIOWorkerThreads);
   }
 
   void setListenBacklog(int listenBacklog) {
-    BaseThriftServer::setListenBacklog(
-        listenBacklog, AttributeSource::OVERRIDE);
+    BaseThriftServer::setListenBacklog(listenBacklog);
   }
 
   void setMaxConnections(uint32_t maxConnections) {
-    BaseThriftServer::setMaxConnections(
-        maxConnections, AttributeSource::OVERRIDE);
+    BaseThriftServer::setMaxConnections(maxConnections);
   }
 
   void setNumCPUWorkerThreads(size_t numCPUWorkerThreads) {
-    BaseThriftServer::setNumCPUWorkerThreads(
-        numCPUWorkerThreads, AttributeSource::OVERRIDE);
+    BaseThriftServer::setNumCPUWorkerThreads(numCPUWorkerThreads);
   }
 
   void setWrapperName(object wrapperName) {

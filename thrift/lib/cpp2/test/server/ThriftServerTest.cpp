@@ -3281,6 +3281,8 @@ TEST(ThriftServer, SocketQueueTimeout) {
 
   ScopedServerThread st(baseServer);
 
+  auto& serverConfig =
+      apache::thrift::detail::getThriftServerConfig(*baseServer);
   // Debug mode does not follow the default Thrift flag and socket queue timeout
   // should always be disabled here
   checkSocketQueueTimeout(folly::kIsDebug ? 0ms : kDefaultTimeout);
@@ -3288,7 +3290,7 @@ TEST(ThriftServer, SocketQueueTimeout) {
   folly::observer::SimpleObservable<std::chrono::nanoseconds> baseline{
       kBaselineTimeout};
   // Should trigger value to change
-  baseServer->setSocketQueueTimeout(
+  serverConfig.setSocketQueueTimeout(
       baseline.getObserver(), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kBaselineTimeout);
@@ -3298,16 +3300,18 @@ TEST(ThriftServer, SocketQueueTimeout) {
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kBaselineTimeoutUpdated);
 
+  folly::observer::SimpleObservable<std::chrono::nanoseconds>
+      overrideTimeoutObs{kOverrideTimeout};
   // Should use override instead of config
-  baseServer->setSocketQueueTimeout(kOverrideTimeout);
+  serverConfig.setSocketQueueTimeout(overrideTimeoutObs.getObserver());
   checkSocketQueueTimeout(kOverrideTimeout);
 
   // Should go back to baseline instead of override
-  baseServer->setSocketQueueTimeout(folly::none);
+  serverConfig.unsetSocketQueueTimeout(AttributeSource::OVERRIDE);
   checkSocketQueueTimeout(kBaselineTimeoutUpdated);
 
   // Should go back to using disabled
-  baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
+  serverConfig.unsetSocketQueueTimeout(AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(folly::kIsDebug ? 0ms : kDefaultTimeout);
 }

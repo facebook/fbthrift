@@ -146,9 +146,6 @@ struct ServerAttributeObservable {
       folly::observer_detail::ObserverManager::waitForAllUpdates();
     }
   }
-  void set(T value, AttributeSource source) {
-    set(folly::observer::makeStaticObserver<T>(std::move(value)), source);
-  }
 
   void unset(AttributeSource source) {
     rawValues_.choose(source).setValue(folly::none);

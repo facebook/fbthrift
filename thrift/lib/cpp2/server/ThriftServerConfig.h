@@ -43,8 +43,6 @@ class ThriftServerConfig {
 
   explicit ThriftServerConfig(const ThriftServerInitialConfig& initialConfig);
 
-  using StaticAttributeTag = server::ServerConfigs::StaticAttributeTag;
-  using DynamicAttributeTag = server::ServerConfigs::DynamicAttributeTag;
   /**
    * Get the prefix for naming the CPU (pool) threads.
    *
@@ -222,12 +220,10 @@ class ThriftServerConfig {
    */
   void setCPUWorkerThreadName(
       const std::string& cpuWorkerThreadName,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetCPUWorkerThreadName(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Sets the timeout for joining workers
@@ -235,12 +231,10 @@ class ThriftServerConfig {
    */
   void setWorkersJoinTimeout(
       std::chrono::seconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetWorkersJoinTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum number of pending connections each io worker thread can
@@ -249,13 +243,10 @@ class ThriftServerConfig {
    * every io worker thread's queue is full the connection will be dropped.
    */
   void setMaxNumPendingConnectionsPerWorker(
-      uint32_t num,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      uint32_t num, AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMaxNumPendingConnectionsPerWorker(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
@@ -264,12 +255,9 @@ class ThriftServerConfig {
    */
   void setIdleTimeout(
       std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetIdleTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+  void unsetIdleTimeout(AttributeSource source = AttributeSource::OVERRIDE);
   /**
    * Set the number of IO worker threads
    *
@@ -277,12 +265,10 @@ class ThriftServerConfig {
    */
   void setNumIOWorkerThreads(
       size_t numIOWorkerThreads,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetNumIOWorkerThreads(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the number of CPU (pool) threads.
@@ -296,72 +282,55 @@ class ThriftServerConfig {
    */
   void setNumCPUWorkerThreads(
       size_t numCPUWorkerThreads,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetNumCPUWorkerThreads(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum memory usage by each debug payload.
    */
   void setMaxDebugPayloadMemoryPerRequest(
-      uint64_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      uint64_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMaxDebugPayloadMemoryPerRequest(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum memory usage by each worker to keep track of debug
    * payloads.
    */
   void setMaxDebugPayloadMemoryPerWorker(
-      uint64_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      uint64_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMaxDebugPayloadMemoryPerWorker(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum memory usage by each worker to keep track of debug
    * payloads.
    */
   void setMaxFinishedDebugPayloadsPerWorker(
-      uint16_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      uint16_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMaxFinishedDebugPayloadsPerWorker(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for
    * details.
    */
   void setListenBacklog(
-      int listenBacklog,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      int listenBacklog, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetListenBacklog(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+  void unsetListenBacklog(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setMethodsBypassMaxRequestsLimit(
       const std::vector<std::string>& methods,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMethodsBypassMaxRequestsLimit(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum # of connections allowed before overload.
@@ -369,13 +338,10 @@ class ThriftServerConfig {
    * @param maxConnections new setting for maximum # of connections.
    */
   void setMaxConnections(
-      uint32_t maxConnections,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<uint32_t> maxConnections,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxConnections(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetMaxConnections(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
@@ -383,70 +349,54 @@ class ThriftServerConfig {
    * @param maxRequests new setting for maximum # of active requests.
    */
   void setMaxRequests(
-      uint32_t maxRequests,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<uint32_t> maxRequests,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxRequests(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetMaxRequests(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setMaxResponseSize(
-      uint64_t size,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<uint64_t> size,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxResponseSize(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetMaxResponseSize(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setUseClientTimeout(
-      bool useClientTimeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<bool> useClientTimeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetUseClientTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Codel queuing timeout - limit queueing time before overload
    * http://en.wikipedia.org/wiki/CoDel
    */
   void setEnableCodel(
-      bool enableCodel,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<bool> enableCodel,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetEnableCodel(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetEnableCodel(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the task expire time
    *
    */
   void setTaskExpireTime(
-      std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetTaskExpireTime(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetTaskExpireTime(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the stream starvation time
    *
    */
   void setStreamExpireTime(
-      std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetStreamExpireTime(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the time requests are allowed to stay on the queue.
@@ -455,13 +405,10 @@ class ThriftServerConfig {
    * override this if you do heavily batched requests.
    */
   void setQueueTimeout(
-      std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetQueueTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+  void unsetQueueTimeout(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Sets the duration before which new connections waiting on a socket's queue
@@ -470,17 +417,10 @@ class ThriftServerConfig {
    */
   void setSocketQueueTimeout(
       folly::observer::Observer<std::chrono::nanoseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
-
-  void setSocketQueueTimeout(
-      std::chrono::nanoseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetSocketQueueTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * How long a socket with outbound data will tolerate read inactivity from a
@@ -489,13 +429,11 @@ class ThriftServerConfig {
    * read by the client is irrelevant. Zero disables the timeout.
    */
   void setSocketWriteTimeout(
-      std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetSocketWriteTimeout(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Ingress memory is the total memory used for receiving inflight requests.
@@ -503,13 +441,11 @@ class ThriftServerConfig {
    * will be closed
    */
   void setIngressMemoryLimit(
-      size_t ingressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t> ingressMemoryLimit,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetIngressMemoryLimit(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Limit the amount of memory available for inflight responses, meaning
@@ -520,26 +456,23 @@ class ThriftServerConfig {
    * discarded.
    */
   void setEgressMemoryLimit(
-      size_t max,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t> max,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetEgressMemoryLimit(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Connection close will only be enforced and triggered on those requests with
    * size greater or equal than this attribute
    */
   void setMinPayloadSizeToEnforceIngressMemoryLimit(
-      size_t minPayloadSizeToEnforceIngressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t>
+          minPayloadSizeToEnforceIngressMemoryLimit,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMinPayloadSizeToEnforceIngressMemoryLimit(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Apply backpressure to all stream generators of a connection when combined
@@ -547,91 +480,75 @@ class ThriftServerConfig {
    * threshold.
    */
   void setEgressBufferBackpressureThreshold(
-      size_t thresholdInBytes,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t> thresholdInBytes,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetEgressBufferBackpressureThreshold(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * When egress buffer backpressure is enabled, resume normal operation once
    * egress buffer size falls below this factor of the threshold.
    */
   void setEgressBufferRecoveryFactor(
-      double recoveryFactor,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<double> recoveryFactor,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetEgressBufferRecoveryFactor(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void setPolledServiceHealthLiveness(
-      std::chrono::milliseconds liveness,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> liveness,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetPolledServiceHealthLiveness(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   // Rejects all header-backed connections to this server
   void disableLegacyTransports(
-      bool value = true,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<bool> value,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetdisableLegacyTransports(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void setPerConnectionSocketOptions(
-      folly::SocketOptionMap options,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<folly::SocketOptionMap> options,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetPerConnectionSocketOptions(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set write batching interval
    */
   void setWriteBatchingInterval(
-      std::chrono::milliseconds interval,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<std::chrono::milliseconds> interval,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetWriteBatchingInterval(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set write batching size. Ignored if write batching interval is not set.
    */
   void setWriteBatchingSize(
-      size_t batchingSize,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t> batchingSize,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetWriteBatchingSize(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set write batching byte size. Ignored if write batching interval is not
    * set.
    */
   void setWriteBatchingByteSize(
-      size_t batchingByteSize,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      folly::observer::Observer<size_t> batchingByteSize,
+      AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetWriteBatchingByteSize(
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{});
+      AttributeSource source = AttributeSource::OVERRIDE);
 
  private:
   template <typename T>

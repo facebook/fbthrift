@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 
+#include <folly/experimental/observer/Observer.h>
 #include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
@@ -24,10 +25,10 @@ TEST(ServerAttributeDynamic, BaselineFirst) {
   ServerAttributeDynamic<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
-  a.set(1, AttributeSource::BASELINE);
+  a.set(folly::observer::makeStaticObserver(1), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), 1);
-  a.set(2, AttributeSource::OVERRIDE);
+  a.set(folly::observer::makeStaticObserver(2), AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 2);
 
   a.unset(AttributeSource::OVERRIDE);
@@ -41,9 +42,9 @@ TEST(ServerAttributeDynamic, OverrideFirst) {
   ServerAttributeDynamic<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
-  a.set(2, AttributeSource::OVERRIDE);
+  a.set(folly::observer::makeStaticObserver(2), AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 2);
-  a.set(1, AttributeSource::BASELINE);
+  a.set(folly::observer::makeStaticObserver(1), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), 2);
@@ -60,10 +61,14 @@ TEST(ServerAttributeDynamic, StringBaselineFirst) {
   ServerAttributeDynamic<std::string> a{"a"};
   EXPECT_EQ(a.get(), "a");
 
-  a.set("b", AttributeSource::BASELINE);
+  a.set(
+      folly::observer::makeStaticObserver<std::string>("b"),
+      AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), "b");
-  a.set("c", AttributeSource::OVERRIDE);
+  a.set(
+      folly::observer::makeStaticObserver<std::string>("c"),
+      AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "c");
 
   a.unset(AttributeSource::OVERRIDE);
@@ -77,9 +82,13 @@ TEST(ServerAttributeDynamic, StringOverrideFirst) {
   ServerAttributeDynamic<std::string> a{"a"};
   EXPECT_EQ(a.get(), "a");
 
-  a.set("c", AttributeSource::OVERRIDE);
+  a.set(
+      folly::observer::makeStaticObserver<std::string>("c"),
+      AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "c");
-  a.set("b", AttributeSource::BASELINE);
+  a.set(
+      folly::observer::makeStaticObserver<std::string>("b"),
+      AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), "c");
@@ -96,10 +105,10 @@ TEST(ServerAttributeDynamic, setDefault) {
   ServerAttributeDynamic<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
-  a.set(1, AttributeSource::BASELINE);
+  a.set(folly::observer::makeStaticObserver(1), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), 1);
-  a.set(2, AttributeSource::OVERRIDE);
+  a.set(folly::observer::makeStaticObserver(2), AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 2);
 
   // update the default to 3 instead of 0
@@ -140,7 +149,9 @@ TEST(ServerAttributeDynamic, Observable) {
   attr.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(**observer, "baseline 2");
 
-  attr.set("baseline 3", AttributeSource::BASELINE);
+  attr.set(
+      folly::observer::makeStaticObserver<std::string>("baseline 3"),
+      AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, "baseline 3");
 
@@ -156,11 +167,11 @@ TEST(ServerAttributeDynamic, Atomic) {
   auto observer = attr.getAtomicObserver();
   EXPECT_EQ(*observer, 42);
 
-  attr.set(24, AttributeSource::BASELINE);
+  attr.set(folly::observer::makeStaticObserver(24), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(*observer, 24);
 
-  attr.set(12, AttributeSource::OVERRIDE);
+  attr.set(folly::observer::makeStaticObserver(12), AttributeSource::OVERRIDE);
   EXPECT_EQ(*observer, 12);
 
   attr.unset(AttributeSource::OVERRIDE);
@@ -172,11 +183,11 @@ TEST(ServerAttributeDynamic, ThreadLocal) {
   auto observer = attr.getTLObserver();
   EXPECT_EQ(**observer, 42);
 
-  attr.set(24, AttributeSource::BASELINE);
+  attr.set(folly::observer::makeStaticObserver(24), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, 24);
 
-  attr.set(12, AttributeSource::OVERRIDE);
+  attr.set(folly::observer::makeStaticObserver(12), AttributeSource::OVERRIDE);
   EXPECT_EQ(**observer, 12);
 
   attr.unset(AttributeSource::OVERRIDE);

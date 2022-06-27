@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// TODO (malbashir): remove include when Static and dynamic tag types are
-// removed
-#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/server/ThriftServerConfig.h>
 
 namespace apache {
@@ -189,84 +186,72 @@ ThriftServerConfig::getPerConnectionSocketOptions() const {
 }
 
 void ThriftServerConfig::setCPUWorkerThreadName(
-    const std::string& cpuWorkerThreadName,
-    AttributeSource source,
-    StaticAttributeTag) {
+    const std::string& cpuWorkerThreadName, AttributeSource source) {
   setStaticAttribute(poolThreadName_, std::string{cpuWorkerThreadName}, source);
 }
 
-void ThriftServerConfig::unsetCPUWorkerThreadName(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetCPUWorkerThreadName(AttributeSource source) {
   unsetStaticAttribute(poolThreadName_, source);
 }
 
 void ThriftServerConfig::setWorkersJoinTimeout(
-    std::chrono::seconds timeout, AttributeSource source, StaticAttributeTag) {
+    std::chrono::seconds timeout, AttributeSource source) {
   setStaticAttribute(workersJoinTimeout_, std::move(timeout), source);
 }
 
-void ThriftServerConfig::unsetWorkersJoinTimeout(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetWorkersJoinTimeout(AttributeSource source) {
   unsetStaticAttribute(workersJoinTimeout_, source);
 }
 
 void ThriftServerConfig::setMaxNumPendingConnectionsPerWorker(
-    uint32_t num, AttributeSource source, StaticAttributeTag) {
+    uint32_t num, AttributeSource source) {
   setStaticAttribute(
       maxNumPendingConnectionsPerWorker_, std::move(num), source);
 }
 
 void ThriftServerConfig::unsetMaxNumPendingConnectionsPerWorker(
-    AttributeSource source, StaticAttributeTag) {
+    AttributeSource source) {
   unsetStaticAttribute(maxNumPendingConnectionsPerWorker_, source);
 }
 
 void ThriftServerConfig::setIdleTimeout(
-    std::chrono::milliseconds timeout,
-    AttributeSource source,
-    StaticAttributeTag) {
+    std::chrono::milliseconds timeout, AttributeSource source) {
   setStaticAttribute(timeout_, std::move(timeout), source);
 }
 
-void ThriftServerConfig::unsetIdleTimeout(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetIdleTimeout(AttributeSource source) {
   unsetStaticAttribute(timeout_, source);
 }
 
 void ThriftServerConfig::setNumIOWorkerThreads(
-    size_t numIOWorkerThreads, AttributeSource source, StaticAttributeTag) {
+    size_t numIOWorkerThreads, AttributeSource source) {
   setStaticAttribute(nWorkers_, std::move(numIOWorkerThreads), source);
 }
 
-void ThriftServerConfig::unsetNumIOWorkerThreads(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetNumIOWorkerThreads(AttributeSource source) {
   unsetStaticAttribute(nWorkers_, source);
 }
 
 void ThriftServerConfig::setNumCPUWorkerThreads(
-    size_t numCPUWorkerThreads, AttributeSource source, StaticAttributeTag) {
+    size_t numCPUWorkerThreads, AttributeSource source) {
   setStaticAttribute(nPoolThreads_, std::move(numCPUWorkerThreads), source);
 }
 
-void ThriftServerConfig::unsetNumCPUWorkerThreads(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetNumCPUWorkerThreads(AttributeSource source) {
   unsetStaticAttribute(nPoolThreads_, source);
 }
 
 void ThriftServerConfig::setListenBacklog(
-    int listenBacklog, AttributeSource source, StaticAttributeTag) {
+    int listenBacklog, AttributeSource source) {
   setStaticAttribute(listenBacklog_, std::move(listenBacklog), source);
 }
 
-void ThriftServerConfig::unsetListenBacklog(
-    AttributeSource source, StaticAttributeTag) {
+void ThriftServerConfig::unsetListenBacklog(AttributeSource source) {
   unsetStaticAttribute(listenBacklog_, source);
 }
 
 void ThriftServerConfig::setMethodsBypassMaxRequestsLimit(
-    const std::vector<std::string>& methods,
-    AttributeSource source,
-    StaticAttributeTag) {
+    const std::vector<std::string>& methods, AttributeSource source) {
   setStaticAttribute(
       methodsBypassMaxRequestsLimit_,
       folly::sorted_vector_set<std::string>{methods.begin(), methods.end()},
@@ -274,276 +259,249 @@ void ThriftServerConfig::setMethodsBypassMaxRequestsLimit(
 }
 
 void ThriftServerConfig::unsetMethodsBypassMaxRequestsLimit(
-    AttributeSource source, StaticAttributeTag) {
+    AttributeSource source) {
   unsetStaticAttribute(methodsBypassMaxRequestsLimit_, source);
 }
 
 void ThriftServerConfig::setMaxDebugPayloadMemoryPerRequest(
-    uint64_t limit, AttributeSource source, StaticAttributeTag) {
+    uint64_t limit, AttributeSource source) {
   setStaticAttribute(
       maxDebugPayloadMemoryPerRequest_, std::move(limit), source);
 }
 
 void ThriftServerConfig::unsetMaxDebugPayloadMemoryPerRequest(
-    AttributeSource source, StaticAttributeTag) {
+    AttributeSource source) {
   unsetStaticAttribute(maxDebugPayloadMemoryPerRequest_, source);
 }
 
 void ThriftServerConfig::setMaxDebugPayloadMemoryPerWorker(
-    uint64_t limit, AttributeSource source, StaticAttributeTag) {
+    uint64_t limit, AttributeSource source) {
   setStaticAttribute(maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
 }
 
 void ThriftServerConfig::unsetMaxDebugPayloadMemoryPerWorker(
-    AttributeSource source, StaticAttributeTag) {
+    AttributeSource source) {
   unsetStaticAttribute(maxDebugPayloadMemoryPerWorker_, source);
 }
 
 void ThriftServerConfig::setMaxFinishedDebugPayloadsPerWorker(
-    uint16_t limit, AttributeSource source, StaticAttributeTag) {
+    uint16_t limit, AttributeSource source) {
   setStaticAttribute(
       maxFinishedDebugPayloadsPerWorker_, std::move(limit), source);
 }
 
 void ThriftServerConfig::unsetMaxFinishedDebugPayloadsPerWorker(
-    AttributeSource source, StaticAttributeTag) {
+    AttributeSource source) {
   unsetStaticAttribute(maxFinishedDebugPayloadsPerWorker_, source);
 }
 
 void ThriftServerConfig::setMaxConnections(
-    uint32_t maxConnections, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<uint32_t> maxConnections,
+    AttributeSource source) {
   maxConnections_.set(maxConnections, source);
 }
 
-void ThriftServerConfig::unsetMaxConnections(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetMaxConnections(AttributeSource source) {
   maxConnections_.unset(source);
 }
 
 void ThriftServerConfig::setMaxRequests(
-    uint32_t maxRequests, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<uint32_t> maxRequests, AttributeSource source) {
   maxRequests_.set(maxRequests, source);
 }
 
-void ThriftServerConfig::unsetMaxRequests(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetMaxRequests(AttributeSource source) {
   maxRequests_.unset(source);
 }
 
 void ThriftServerConfig::setMaxResponseSize(
-    uint64_t size, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<uint64_t> size, AttributeSource source) {
   maxResponseSize_.set(size, source);
 }
 
-void ThriftServerConfig::unsetMaxResponseSize(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetMaxResponseSize(AttributeSource source) {
   maxResponseSize_.unset(source);
 }
 
 void ThriftServerConfig::setUseClientTimeout(
-    bool useClientTimeout, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<bool> useClientTimeout, AttributeSource source) {
   useClientTimeout_.set(useClientTimeout, source);
 }
 
-void ThriftServerConfig::unsetUseClientTimeout(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetUseClientTimeout(AttributeSource source) {
   useClientTimeout_.unset(source);
 }
 
 void ThriftServerConfig::setWriteBatchingInterval(
-    std::chrono::milliseconds interval,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> interval,
+    AttributeSource source) {
   writeBatchingInterval_.set(interval, source);
 }
 
-void ThriftServerConfig::unsetWriteBatchingInterval(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetWriteBatchingInterval(AttributeSource source) {
   writeBatchingInterval_.unset(source);
 }
 
 void ThriftServerConfig::setWriteBatchingSize(
-    size_t batchingSize, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<size_t> batchingSize, AttributeSource source) {
   writeBatchingSize_.set(batchingSize, source);
 }
 
-void ThriftServerConfig::unsetWriteBatchingSize(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetWriteBatchingSize(AttributeSource source) {
   writeBatchingSize_.unset(source);
 }
 
 void ThriftServerConfig::setWriteBatchingByteSize(
-    size_t batchingByteSize, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<size_t> batchingByteSize,
+    AttributeSource source) {
   writeBatchingByteSize_.set(batchingByteSize, source);
 }
 
-void ThriftServerConfig::unsetWriteBatchingByteSize(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetWriteBatchingByteSize(AttributeSource source) {
   writeBatchingByteSize_.unset(source);
 }
 
 void ThriftServerConfig::setEnableCodel(
-    bool enableCodel, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<bool> enableCodel, AttributeSource source) {
   enableCodel_.set(enableCodel, source);
 }
 
-void ThriftServerConfig::unsetEnableCodel(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetEnableCodel(AttributeSource source) {
   enableCodel_.unset(source);
 }
 
 void ThriftServerConfig::setTaskExpireTime(
-    std::chrono::milliseconds timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    AttributeSource source) {
   taskExpireTime_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetTaskExpireTime(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetTaskExpireTime(AttributeSource source) {
   taskExpireTime_.unset(source);
 }
 
 void ThriftServerConfig::setStreamExpireTime(
-    std::chrono::milliseconds timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    AttributeSource source) {
   streamExpireTime_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetStreamExpireTime(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetStreamExpireTime(AttributeSource source) {
   streamExpireTime_.unset(source);
 }
 
 void ThriftServerConfig::setQueueTimeout(
-    std::chrono::milliseconds timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    AttributeSource source) {
   queueTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetQueueTimeout(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetQueueTimeout(AttributeSource source) {
   queueTimeout_.unset(source);
 }
 
 void ThriftServerConfig::setSocketQueueTimeout(
     folly::observer::Observer<std::chrono::nanoseconds> timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    AttributeSource source) {
   socketQueueTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::setSocketQueueTimeout(
-    std::chrono::nanoseconds timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
-  socketQueueTimeout_.set(timeout, source);
-}
-
-void ThriftServerConfig::unsetSocketQueueTimeout(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetSocketQueueTimeout(AttributeSource source) {
   socketQueueTimeout_.unset(source);
 }
 
 void ThriftServerConfig::setSocketWriteTimeout(
-    std::chrono::milliseconds timeout,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    AttributeSource source) {
   socketWriteTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetSocketWriteTimeout(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetSocketWriteTimeout(AttributeSource source) {
   socketWriteTimeout_.unset(source);
 }
 
 void ThriftServerConfig::setIngressMemoryLimit(
-    size_t ingressMemoryLimit, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<size_t> ingressMemoryLimit,
+    AttributeSource source) {
   ingressMemoryLimit_.set(ingressMemoryLimit, source);
 }
 
-void ThriftServerConfig::unsetIngressMemoryLimit(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetIngressMemoryLimit(AttributeSource source) {
   ingressMemoryLimit_.unset(source);
 }
 
 void ThriftServerConfig::setEgressMemoryLimit(
-    size_t max, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<size_t> max, AttributeSource source) {
   egressMemoryLimit_.set(max, source);
 }
 
-void ThriftServerConfig::unsetEgressMemoryLimit(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetEgressMemoryLimit(AttributeSource source) {
   egressMemoryLimit_.unset(source);
 }
 
 void ThriftServerConfig::setMinPayloadSizeToEnforceIngressMemoryLimit(
-    size_t minPayloadSizeToEnforceIngressMemoryLimit,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<size_t> minPayloadSizeToEnforceIngressMemoryLimit,
+    AttributeSource source) {
   minPayloadSizeToEnforceIngressMemoryLimit_.set(
       minPayloadSizeToEnforceIngressMemoryLimit, source);
 }
 
 void ThriftServerConfig::unsetMinPayloadSizeToEnforceIngressMemoryLimit(
-    AttributeSource source, DynamicAttributeTag) {
+    AttributeSource source) {
   minPayloadSizeToEnforceIngressMemoryLimit_.unset(source);
 }
 
 void ThriftServerConfig::setEgressBufferBackpressureThreshold(
-    size_t thresholdInBytes, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<size_t> thresholdInBytes,
+    AttributeSource source) {
   egressBufferBackpressureThreshold_.set(thresholdInBytes, source);
 }
 
 void ThriftServerConfig::unsetEgressBufferBackpressureThreshold(
-    AttributeSource source, DynamicAttributeTag) {
+    AttributeSource source) {
   egressBufferBackpressureThreshold_.unset(source);
 }
 
 void ThriftServerConfig::setEgressBufferRecoveryFactor(
-    double recoveryFactor, AttributeSource source, DynamicAttributeTag) {
-  recoveryFactor = std::max(0.0, std::min(1.0, recoveryFactor));
-  egressBufferRecoveryFactor_.set(recoveryFactor, source);
+    folly::observer::Observer<double> recoveryFactor, AttributeSource source) {
+  auto clampedRecoveryFactor = folly::observer::makeStaticObserver(
+      std::clamp(**recoveryFactor, 0.0, 1.0));
+  egressBufferRecoveryFactor_.set(clampedRecoveryFactor, source);
 }
 
 void ThriftServerConfig::unsetEgressBufferRecoveryFactor(
-    AttributeSource source, DynamicAttributeTag) {
+    AttributeSource source) {
   egressBufferRecoveryFactor_.unset(source);
 }
 
 void ThriftServerConfig::setPolledServiceHealthLiveness(
-    std::chrono::milliseconds liveness,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<std::chrono::milliseconds> liveness,
+    AttributeSource source) {
   polledServiceHealthLiveness_.set(liveness, source);
 }
 
 void ThriftServerConfig::unsetPolledServiceHealthLiveness(
-    AttributeSource source, DynamicAttributeTag) {
+    AttributeSource source) {
   polledServiceHealthLiveness_.unset(source);
 }
 
 void ThriftServerConfig::disableLegacyTransports(
-    bool value, AttributeSource source, DynamicAttributeTag) {
+    folly::observer::Observer<bool> value, AttributeSource source) {
   disableHeaderTransport_.set(value, source);
 }
 
-void ThriftServerConfig::unsetdisableLegacyTransports(
-    AttributeSource source, DynamicAttributeTag) {
+void ThriftServerConfig::unsetdisableLegacyTransports(AttributeSource source) {
   disableHeaderTransport_.unset(source);
 }
 
 void ThriftServerConfig::setPerConnectionSocketOptions(
-    folly::SocketOptionMap options,
-    AttributeSource source,
-    DynamicAttributeTag) {
+    folly::observer::Observer<folly::SocketOptionMap> options,
+    AttributeSource source) {
   perConnectionSocketOptions_.set(std::move(options), source);
 }
 
 void ThriftServerConfig::unsetPerConnectionSocketOptions(
-    AttributeSource source, DynamicAttributeTag) {
+    AttributeSource source) {
   perConnectionSocketOptions_.unset(source);
 }
 
