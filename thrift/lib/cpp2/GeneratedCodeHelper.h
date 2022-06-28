@@ -1021,6 +1021,32 @@ inline void processViaExecuteRequest(
   }
 }
 
+// Generated AsyncProcessor::processSerializedCompressedRequest just calls
+// this
+template <class Processor>
+void process(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    protocol::PROTOCOL_TYPES protType,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      return recursiveProcess<BinaryProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    }
+    case protocol::T_COMPACT_PROTOCOL: {
+      return recursiveProcess<CompactProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    }
+    default:
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+      return;
+  }
+}
+
 // Generated AsyncProcessor::processSerializedCompressedRequestWithMetadata just
 // calls this
 template <class Processor>
@@ -1034,6 +1060,18 @@ void process(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
+  if (methodMetadata.isWildcard()) {
+    process(
+        processor,
+        std::move(req),
+        std::move(serializedRequest),
+        protType,
+        ctx,
+        eb,
+        tm);
+    return;
+  }
+
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
   AsyncProcessorHelper::expectMetadataOfType<Metadata>(methodMetadata);
@@ -1078,32 +1116,6 @@ void process(
           ctx,
           eb,
           tm);
-    }
-    default:
-      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
-      return;
-  }
-}
-
-// Generated AsyncProcessor::processSerializedCompressedRequest just calls
-// this
-template <class Processor>
-void process(
-    Processor* processor,
-    ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedCompressedRequest&& serializedRequest,
-    protocol::PROTOCOL_TYPES protType,
-    Cpp2RequestContext* ctx,
-    folly::EventBase* eb,
-    concurrency::ThreadManager* tm) {
-  switch (protType) {
-    case protocol::T_BINARY_PROTOCOL: {
-      return recursiveProcess<BinaryProtocolReader>(
-          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
-    }
-    case protocol::T_COMPACT_PROTOCOL: {
-      return recursiveProcess<CompactProtocolReader>(
-          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
     }
     default:
       LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
