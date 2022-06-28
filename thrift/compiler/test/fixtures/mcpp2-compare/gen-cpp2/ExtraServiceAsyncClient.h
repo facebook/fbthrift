@@ -9,7 +9,11 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
+#if __has_include("thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamServiceAsyncClient.h")
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamServiceAsyncClient.h"
+#else
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_clients.h"
+#endif
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 
 namespace apache { namespace thrift {

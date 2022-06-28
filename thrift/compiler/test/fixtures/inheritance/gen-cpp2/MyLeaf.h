@@ -10,7 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyLeafAsyncClient.h"
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.h")
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.h"
+#else
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_handlers.h"
+#endif
 
 namespace folly {
   class IOBuf;

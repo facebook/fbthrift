@@ -9,7 +9,11 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRootAsyncClient.h")
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRootAsyncClient.h"
+#else
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_clients.h"
+#endif
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;

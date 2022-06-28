@@ -10,7 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/MyServicePrioChildAsyncClient.h"
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/MyServicePrioParent.h")
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/MyServicePrioParent.h"
+#else
+#include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_handlers.h"
+#endif
 
 namespace folly {
   class IOBuf;

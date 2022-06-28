@@ -10,7 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/DerivedServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/py3/gen-py3cpp/SimpleService.h")
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/SimpleService.h"
+#else
+#include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_handlers.h"
+#endif
 
 namespace folly {
   class IOBuf;

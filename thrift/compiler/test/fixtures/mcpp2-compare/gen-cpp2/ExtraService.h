@@ -10,7 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
+#if __has_include("thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.h")
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.h"
+#else
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_handlers.h"
+#endif
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 
 namespace folly {

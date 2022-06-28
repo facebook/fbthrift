@@ -9,7 +9,11 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/py3/gen-py3cpp/SimpleServiceAsyncClient.h")
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/SimpleServiceAsyncClient.h"
+#else
+#include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_clients.h"
+#endif
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
