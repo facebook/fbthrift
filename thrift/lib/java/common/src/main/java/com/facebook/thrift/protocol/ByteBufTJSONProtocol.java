@@ -80,6 +80,8 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
 
   private static final TStruct ANONYMOUS_STRUCT = new TStruct();
 
+  private static final int EMPTY_STRUCT_SIZE = 2;
+
   private static final byte[] getTypeNameForTypeID(byte typeID) throws TException {
     switch (typeID) {
       case TType.BOOL:
@@ -953,5 +955,9 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
   public final ByteBuf readBinaryAsSlice() throws TException {
     throw new UnsupportedOperationException(
         "JSON protocols do not support direct memory operations");
+  }
+
+  public int getEmptyStructSize() {
+    return EMPTY_STRUCT_SIZE;
   }
 }

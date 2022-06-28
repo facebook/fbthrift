@@ -21,6 +21,9 @@ import java.nio.charset.StandardCharsets;
 import org.apache.thrift.TException;
 
 public class ByteBufDefaultTSimpleJSONProtocol extends ByteBufAbstractTSimpleJSONProtocol {
+
+  private static final int EMPTY_STRUCT_SIZE = 3;
+
   @Override
   public void writeBinary(ByteBuffer bin) throws TException {
     String data;
@@ -42,5 +45,9 @@ public class ByteBufDefaultTSimpleJSONProtocol extends ByteBufAbstractTSimpleJSO
   @Override
   public ByteBuffer readBinary() throws TException {
     return ByteBuffer.wrap(readString().getBytes(StandardCharsets.UTF_8));
+  }
+
+  public int getEmptyStructSize() {
+    return EMPTY_STRUCT_SIZE;
   }
 }

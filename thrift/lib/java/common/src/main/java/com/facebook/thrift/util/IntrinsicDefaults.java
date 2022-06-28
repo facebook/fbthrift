@@ -53,6 +53,10 @@ public final class IntrinsicDefaults {
     return 0;
   }
 
+  public static int defaultEnum() {
+    return 0;
+  }
+
   public static boolean isDefault(byte b) {
     return b == defaultByte();
   }
@@ -77,12 +81,24 @@ public final class IntrinsicDefaults {
     return 0;
   }
 
+  public static long defaultLong() {
+    return 0;
+  }
+
   public static boolean isDefault(int i) {
     return i == defaultInt();
   }
 
   public static boolean isDefault(Integer i) {
     return i != null && isDefault(i.intValue());
+  }
+
+  public static boolean isDefault(long l) {
+    return l == defaultLong();
+  }
+
+  public static boolean isDefault(Long l) {
+    return l != null && isDefault(l.longValue());
   }
 
   public static float defaultFloat() {

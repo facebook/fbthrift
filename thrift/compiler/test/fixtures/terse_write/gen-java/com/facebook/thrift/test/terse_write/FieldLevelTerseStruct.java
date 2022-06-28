@@ -119,19 +119,19 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     public static class Builder {
     
         private boolean terseBoolField = false;
-        private byte terseByteField = 0;
-        private short terseShortField = 0;
+        private byte terseByteField = (byte)0;
+        private short terseShortField = (short)0;
         private int terseIntField = 0;
         private long terseLongField = 0L;
         private float terseFloatField = 0.f;
         private double terseDoubleField = 0.;
-        private String terseStringField = null;
-        private byte[] terseBinaryField = null;
+        private String terseStringField = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
+        private byte[] terseBinaryField = com.facebook.thrift.util.IntrinsicDefaults.defaultByteArray();
         private com.facebook.thrift.test.terse_write.MyEnum terseEnumField = com.facebook.thrift.test.terse_write.MyEnum.fromInteger(0);
-        private List<Short> terseListField = null;
-        private Set<Short> terseSetField = null;
-        private Map<Short, Short> terseMapField = null;
-        private com.facebook.thrift.test.terse_write.MyStruct terseStructField = null;
+        private List<Short> terseListField = com.facebook.thrift.util.IntrinsicDefaults.defaultList();
+        private Set<Short> terseSetField = com.facebook.thrift.util.IntrinsicDefaults.defaultSet();
+        private Map<Short, Short> terseMapField = com.facebook.thrift.util.IntrinsicDefaults.defaultMap();
+        private com.facebook.thrift.test.terse_write.MyStruct terseStructField = ;
         private boolean boolField = false;
         private byte byteField = 0;
         private short shortField = 0;
@@ -1177,41 +1177,63 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(TERSE_BOOL_FIELD_FIELD_DESC);
-      oprot.writeBool(this.terseBoolField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(this.terseByteField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_SHORT_FIELD_FIELD_DESC);
-      oprot.writeI16(this.terseShortField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_INT_FIELD_FIELD_DESC);
-      oprot.writeI32(this.terseIntField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(this.terseLongField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_FLOAT_FIELD_FIELD_DESC);
-      oprot.writeFloat(this.terseFloatField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(TERSE_DOUBLE_FIELD_FIELD_DESC);
-      oprot.writeDouble(this.terseDoubleField);
-      oprot.writeFieldEnd();
-      if (this.terseStringField != null) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseBoolField)) {
+        oprot.writeFieldBegin(TERSE_BOOL_FIELD_FIELD_DESC);
+        oprot.writeBool(this.terseBoolField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseByteField)) {
+        oprot.writeFieldBegin(TERSE_BYTE_FIELD_FIELD_DESC);
+        oprot.writeByte(this.terseByteField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseShortField)) {
+        oprot.writeFieldBegin(TERSE_SHORT_FIELD_FIELD_DESC);
+        oprot.writeI16(this.terseShortField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseIntField)) {
+        oprot.writeFieldBegin(TERSE_INT_FIELD_FIELD_DESC);
+        oprot.writeI32(this.terseIntField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseLongField)) {
+        oprot.writeFieldBegin(TERSE_LONG_FIELD_FIELD_DESC);
+        oprot.writeI64(this.terseLongField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseFloatField)) {
+        oprot.writeFieldBegin(TERSE_FLOAT_FIELD_FIELD_DESC);
+        oprot.writeFloat(this.terseFloatField);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseDoubleField)) {
+        oprot.writeFieldBegin(TERSE_DOUBLE_FIELD_FIELD_DESC);
+        oprot.writeDouble(this.terseDoubleField);
+        oprot.writeFieldEnd();
+      };
+      java.util.Objects.requireNonNull(this.terseStringField, "terseStringField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseStringField)) {
         oprot.writeFieldBegin(TERSE_STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.terseStringField);
         oprot.writeFieldEnd();
       }
-      if (this.terseBinaryField != null) {
+      java.util.Objects.requireNonNull(this.terseBinaryField, "terseBinaryField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseBinaryField)) {
         oprot.writeFieldBegin(TERSE_BINARY_FIELD_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.terseBinaryField));
         oprot.writeFieldEnd();
       }
-      oprot.writeFieldBegin(TERSE_ENUM_FIELD_FIELD_DESC);
-      oprot.writeI32(this.terseEnumField == null ? 0 : this.terseEnumField.getValue());
-      oprot.writeFieldEnd();
-      if (this.terseListField != null) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseEnumField)) {
+        oprot.writeFieldBegin(TERSE_ENUM_FIELD_FIELD_DESC);
+        oprot.writeI32(this.terseEnumField == null ? 0 : this.terseEnumField.getValue());
+        oprot.writeFieldEnd();
+      };
+      java.util.Objects.requireNonNull(this.terseListField, "terseListField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseListField)) {
         oprot.writeFieldBegin(TERSE_LIST_FIELD_FIELD_DESC);
         List<Short> _iter0 = this.terseListField;
         oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
@@ -1221,7 +1243,9 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
-      if (this.terseSetField != null) {
+      java.util.Objects.requireNonNull(this.terseSetField, "terseSetField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseSetField)) {
         oprot.writeFieldBegin(TERSE_SET_FIELD_FIELD_DESC);
         Set<Short> _iter0 = this.terseSetField;
         oprot.writeSetBegin(new TSet(TType.I16, _iter0.size()));
@@ -1231,7 +1255,9 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
-      if (this.terseMapField != null) {
+      java.util.Objects.requireNonNull(this.terseMapField, "terseMapField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseMapField)) {
         oprot.writeFieldBegin(TERSE_MAP_FIELD_FIELD_DESC);
         Map<Short, Short> _iter0 = this.terseMapField;
         oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _iter0.size()));
@@ -1242,7 +1268,9 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
-      if (this.terseStructField != null) {
+      java.util.Objects.requireNonNull(this.terseStructField, "terseStructField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseStructField)) {
         oprot.writeFieldBegin(TERSE_STRUCT_FIELD_FIELD_DESC);
         this.terseStructField.write0(oprot);
         oprot.writeFieldEnd();

@@ -107,15 +107,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static class Builder {
     
         private boolean boolVal = false;
-        private byte byteVal = 0;
-        private short i16Val = 0;
+        private byte byteVal = (byte)0;
+        private short i16Val = (short)0;
         private int i32Val = 0;
         private long i64Val = 0L;
         private float floatVal = 0.f;
         private double doubleVal = 0.;
-        private String stringVal = null;
-        private byte[] binaryVal = null;
-        private test.fixtures.patch.MyData structVal = null;
+        private String stringVal = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
+        private byte[] binaryVal = com.facebook.thrift.util.IntrinsicDefaults.defaultByteArray();
+        private test.fixtures.patch.MyData structVal = ;
         private Boolean optBoolVal = null;
         private Byte optByteVal = null;
         private Short optI16Val = null;
@@ -129,7 +129,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private List<Short> optListVal = null;
         private Set<String> optSetVal = null;
         private Map<String, String> optMapVal = null;
-        private test.fixtures.patch.MyUnion unionVal = null;
+        private test.fixtures.patch.MyUnion unionVal = ;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(boolean boolVal) {
@@ -1002,38 +1002,58 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(BOOL_VAL_FIELD_DESC);
-      oprot.writeBool(this.boolVal);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(BYTE_VAL_FIELD_DESC);
-      oprot.writeByte(this.byteVal);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(I16_VAL_FIELD_DESC);
-      oprot.writeI16(this.i16Val);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(I32_VAL_FIELD_DESC);
-      oprot.writeI32(this.i32Val);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(I64_VAL_FIELD_DESC);
-      oprot.writeI64(this.i64Val);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(FLOAT_VAL_FIELD_DESC);
-      oprot.writeFloat(this.floatVal);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(DOUBLE_VAL_FIELD_DESC);
-      oprot.writeDouble(this.doubleVal);
-      oprot.writeFieldEnd();
-      if (this.stringVal != null) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.boolVal)) {
+        oprot.writeFieldBegin(BOOL_VAL_FIELD_DESC);
+        oprot.writeBool(this.boolVal);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.byteVal)) {
+        oprot.writeFieldBegin(BYTE_VAL_FIELD_DESC);
+        oprot.writeByte(this.byteVal);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.i16Val)) {
+        oprot.writeFieldBegin(I16_VAL_FIELD_DESC);
+        oprot.writeI16(this.i16Val);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.i32Val)) {
+        oprot.writeFieldBegin(I32_VAL_FIELD_DESC);
+        oprot.writeI32(this.i32Val);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.i64Val)) {
+        oprot.writeFieldBegin(I64_VAL_FIELD_DESC);
+        oprot.writeI64(this.i64Val);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.floatVal)) {
+        oprot.writeFieldBegin(FLOAT_VAL_FIELD_DESC);
+        oprot.writeFloat(this.floatVal);
+        oprot.writeFieldEnd();
+      };
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.doubleVal)) {
+        oprot.writeFieldBegin(DOUBLE_VAL_FIELD_DESC);
+        oprot.writeDouble(this.doubleVal);
+        oprot.writeFieldEnd();
+      };
+      java.util.Objects.requireNonNull(this.stringVal, "stringVal must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.stringVal)) {
         oprot.writeFieldBegin(STRING_VAL_FIELD_DESC);
         oprot.writeString(this.stringVal);
         oprot.writeFieldEnd();
       }
-      if (this.binaryVal != null) {
+      java.util.Objects.requireNonNull(this.binaryVal, "binaryVal must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.binaryVal)) {
         oprot.writeFieldBegin(BINARY_VAL_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryVal));
         oprot.writeFieldEnd();
       }
-      if (this.structVal != null) {
+      java.util.Objects.requireNonNull(this.structVal, "structVal must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.structVal)) {
         oprot.writeFieldBegin(STRUCT_VAL_FIELD_DESC);
         this.structVal.write0(oprot);
         oprot.writeFieldEnd();
@@ -1119,7 +1139,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
-      if (this.unionVal != null) {
+      java.util.Objects.requireNonNull(this.unionVal, "unionVal must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.unionVal)) {
         oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
         this.unionVal.write0(oprot);
         oprot.writeFieldEnd();

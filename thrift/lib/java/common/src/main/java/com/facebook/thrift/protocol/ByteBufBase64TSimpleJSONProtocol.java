@@ -23,6 +23,9 @@ import java.util.Base64;
 import org.apache.thrift.TException;
 
 public class ByteBufBase64TSimpleJSONProtocol extends ByteBufAbstractTSimpleJSONProtocol {
+
+  private static final int EMPTY_STRUCT_SIZE = 3;
+
   @Override
   public void writeBinary(ByteBuffer bin) throws TException {
     ByteBuffer encode = Base64.getEncoder().encode(bin);
@@ -34,5 +37,9 @@ public class ByteBufBase64TSimpleJSONProtocol extends ByteBufAbstractTSimpleJSON
   public ByteBuffer readBinary() throws TException {
     byte[] decode = Base64.getDecoder().decode(readString());
     return ByteBuffer.wrap(decode);
+  }
+
+  public int getEmptyStructSize() {
+    return EMPTY_STRUCT_SIZE;
   }
 }

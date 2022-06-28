@@ -438,6 +438,7 @@ class mstch_java2_struct : public mstch_struct {
             {"struct:needsExceptionMessage?",
              &mstch_java2_struct::needs_exception_message},
             {"struct:enableIsSet?", &mstch_java2_struct::enable_is_set},
+            {"struct:hasTerseField?", &mstch_java2_struct::has_terse_field},
         });
   }
   mstch::node java_package() {
@@ -456,6 +457,14 @@ class mstch_java2_struct : public mstch_struct {
       }
     }
     return true;
+  }
+  mstch::node has_terse_field() {
+    for (const auto& field : strct_->fields()) {
+      if (field.qualifier() == t_field_qualifier::terse) {
+        return true;
+      }
+    }
+    return false;
   }
   mstch::node is_as_bean() {
     if (!strct_->is_xception() && !strct_->is_union()) {
@@ -668,6 +677,9 @@ class mstch_java2_field : public mstch_field {
          {"field:javaTFieldName", &mstch_java2_field::java_tfield_name},
          {"field:isNullableOrOptionalNotEnum?",
           &mstch_java2_field::is_nullable_or_optional_not_enum},
+         {"field:isEnum?", &mstch_java2_field::is_enum},
+         {"field:isObject?", &mstch_java2_field::is_object},
+         {"field:isUnion?", &mstch_java2_field::is_union},
          {"field:nestedDepth", &mstch_java2_field::get_nested_depth},
          {"field:nestedDepth++", &mstch_java2_field::increment_nested_depth},
          {"field:nestedDepth--", &mstch_java2_field::decrement_nested_depth},
@@ -763,6 +775,22 @@ class mstch_java2_field : public mstch_field {
         field_type->is_float() || field_type->is_i16() ||
         field_type->is_i32() || field_type->is_i64() ||
         field_type->is_double() || field_type->is_enum());
+  }
+
+  mstch::node is_enum() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_enum();
+  }
+
+  mstch::node is_object() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_struct() || field_type->is_exception() ||
+        field_type->is_union();
+  }
+
+  mstch::node is_union() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_union();
   }
 
   mstch::node is_container() {

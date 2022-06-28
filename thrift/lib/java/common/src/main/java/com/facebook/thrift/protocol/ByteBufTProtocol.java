@@ -79,4 +79,28 @@ public abstract class ByteBufTProtocol extends TProtocol {
    * @throws TException
    */
   public abstract ByteBuf readBinaryAsSlice() throws TException;
+
+  /** @return Returns the current writer index of the ByteBuf */
+  public int mark() {
+    return this.byteBuf.writerIndex();
+  }
+
+  /**
+   * Rollback the ByteBuf to a previous position which is returned by the {@link #mark() mark} call.
+   *
+   * @param pos pos should be between 0 and writer index
+   */
+  public void rollback(int pos) {
+    this.byteBuf.writerIndex(pos);
+  }
+
+  /**
+   * Returns the empty struct size when serialized. For most protocols, this is 1 byte. Other
+   * protocols, having more than 1 byte must override this method.
+   *
+   * @return empty struct size
+   */
+  public int getEmptyStructSize() {
+    return 1;
+  };
 }

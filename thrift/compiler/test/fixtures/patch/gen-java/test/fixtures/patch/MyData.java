@@ -40,7 +40,7 @@ public final class MyData implements com.facebook.thrift.payload.ThriftSerializa
     
     public static class Builder {
     
-        private String data1 = null;
+        private String data1 = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
         private int data2 = 0;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
@@ -179,14 +179,18 @@ public final class MyData implements com.facebook.thrift.payload.ThriftSerializa
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.data1 != null) {
+      java.util.Objects.requireNonNull(this.data1, "data1 must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.data1)) {
         oprot.writeFieldBegin(DATA1_FIELD_DESC);
         oprot.writeString(this.data1);
         oprot.writeFieldEnd();
       }
-      oprot.writeFieldBegin(DATA2_FIELD_DESC);
-      oprot.writeI32(this.data2);
-      oprot.writeFieldEnd();
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.data2)) {
+        oprot.writeFieldBegin(DATA2_FIELD_DESC);
+        oprot.writeI32(this.data2);
+        oprot.writeFieldEnd();
+      };
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

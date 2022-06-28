@@ -20,7 +20,12 @@
 public {{struct:javaCapitalName}}() {
   {{#struct:fields}}
   {{^field:value}}
+  {{#field:hasAdapter?}}
+  this.{{field:javaName}} = Builder.{{field:javaAllCapsName}}_INTRINSIC_DEFAULT;
+  {{/field:hasAdapter?}}
+  {{^field:hasAdapter?}}
   this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/field:hasAdapter?}}
   {{/field:value}}{{!
   }}{{#field:value}}
   this.{{field:javaName}} = {{#field:hasInitialValue?}}{{#field:type}}{{field:nestedDepth++}}{{> DefaultValue}}{{field:nestedDepth--}}{{/field:type}}{{/field:hasInitialValue?}}{{^field:hasInitialValue?}}{{field:javaDefaultValue}}{{/field:hasInitialValue?}};
@@ -47,7 +52,17 @@ public {{struct:javaCapitalName}}(
 protected {{struct:javaCapitalName}}() {
   {{#struct:fields}}
   {{^field:value}}
+  {{#field:terse?}}
+  {{#field:hasAdapter?}}
+  this.{{field:javaName}} = Builder.{{field:javaAllCapsName}}_INTRINSIC_DEFAULT;
+  {{/field:hasAdapter?}}
+  {{^field:hasAdapter?}}
   this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/field:hasAdapter?}}
+  {{/field:terse?}}
+  {{^field:terse?}}
+  this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/field:terse?}}
   {{/field:value}}{{!
   }}{{#field:value}}
   this.{{field:javaName}} = {{#field:hasInitialValue?}}{{#field:type}}{{field:nestedDepth++}}{{> DefaultValue}}{{field:nestedDepth--}}{{/field:type}}{{/field:hasInitialValue?}}{{^field:hasInitialValue?}}{{field:javaDefaultValue}}{{/field:hasInitialValue?}};

@@ -44,8 +44,8 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
     public static class Builder {
     
         private int intField = 0;
-        private String stringField = null;
-        private Set<Integer> setField = null;
+        private String stringField = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
+        private Set<Integer> setField = com.facebook.thrift.util.IntrinsicDefaults.defaultSet();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="int_field", requiredness=Requiredness.NONE)
         public Builder setIntField(int intField) {
@@ -222,15 +222,21 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-      oprot.writeI32(this.intField);
-      oprot.writeFieldEnd();
-      if (this.stringField != null) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.intField)) {
+        oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
+        oprot.writeI32(this.intField);
+        oprot.writeFieldEnd();
+      };
+      java.util.Objects.requireNonNull(this.stringField, "stringField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.stringField)) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.stringField);
         oprot.writeFieldEnd();
       }
-      if (this.setField != null) {
+      java.util.Objects.requireNonNull(this.setField, "setField must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.setField)) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
         Set<Integer> _iter0 = this.setField;
         oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));

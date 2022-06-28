@@ -28,6 +28,8 @@ import org.apache.thrift.protocol.TSet;
 import org.apache.thrift.protocol.TStruct;
 
 public class ByteBufTSimpleJSONProtocol extends ByteBufTProtocol {
+  private static final int EMPTY_STRUCT_SIZE = 2;
+
   private final ByteBufAbstractTSimpleJSONProtocol delegate;
 
   ByteBufTSimpleJSONProtocol(boolean useBase64) {
@@ -331,5 +333,9 @@ public class ByteBufTSimpleJSONProtocol extends ByteBufTProtocol {
   public final ByteBuf readBinaryAsSlice() throws TException {
     throw new UnsupportedOperationException(
         "JSON protocols do not support direct memory operations");
+  }
+
+  public int getEmptyStructSize() {
+    return EMPTY_STRUCT_SIZE;
   }
 }

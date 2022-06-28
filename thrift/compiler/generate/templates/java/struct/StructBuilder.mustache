@@ -22,7 +22,24 @@ public static class Builder {
 
     {{#struct:fields}}
     {{^field:value}}
+    {{#field:terse?}}
+    {{#field:hasAdapter?}}
+    private {{> FieldType}} {{field:javaName}} = _{{field:javaName}}_Adapter.fromThrift(com.facebook.thrift.protocol.ByteBufIntrinsicDefaultTProtocol.getInstance());
+    private static {{> FieldType}} {{field:javaAllCapsName}}_INTRINSIC_DEFAULT = _{{field:javaName}}_Adapter.fromThrift(com.facebook.thrift.protocol.ByteBufIntrinsicDefaultTProtocol.getInstance());
+    {{/field:hasAdapter?}}
+    {{^field:hasAdapter?}}
+    {{#field:isObject?}}
+    {{#field:isUnion?}}private {{> FieldType}} {{field:javaName}} = null;{{/field:isUnion?}}
+    {{^field:isUnion?}}private {{> FieldType}} {{field:javaName}} = {{> FieldType}}.defaultInstance();{{/field:isUnion?}}
+    {{/field:isObject?}}
+    {{^field:isObject?}}
+    private {{> FieldType}} {{field:javaName}} = {{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}};
+    {{/field:isObject?}}
+    {{/field:hasAdapter?}}
+    {{/field:terse?}}
+    {{^field:terse?}}
     private {{> FieldType}} {{field:javaName}} = {{field:javaDefaultValue}};
+    {{/field:terse?}}
     {{/field:value}}{{!
     }}{{#field:value}}
     private {{> FieldType}} {{field:javaName}} = {{#field:hasInitialValue?}}{{#field:type}}{{field:nestedDepth++}}{{> DefaultValue}}{{field:nestedDepth--}}{{/field:type}}{{/field:hasInitialValue?}}{{^field:hasInitialValue?}}{{field:javaDefaultValue}}{{/field:hasInitialValue?}};
