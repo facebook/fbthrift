@@ -214,7 +214,7 @@ struct FOLLY_EXPORT EncodedStreamError : std::exception {
   const char* what() const noexcept override {
     if (encoded.metadata.payloadMetadata().has_value()) {
       auto& md = *encoded.metadata.payloadMetadata();
-      if (md.getType() == PayloadMetadata::exceptionMetadata &&
+      if (md.getType() == PayloadMetadata::Type::exceptionMetadata &&
           md.exceptionMetadata_ref()->what_utf8().has_value()) {
         return md.exceptionMetadata_ref()->what_utf8()->c_str();
       }

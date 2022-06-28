@@ -84,10 +84,10 @@ void setCompressionCodec(
         static_cast<size_t>(
             compressionConfig.compressionSizeLimit_ref().value_or(0))) {
       switch (codecRef->getType()) {
-        case CodecConfig::zlibConfig:
+        case CodecConfig::Type::zlibConfig:
           metadata.compression_ref() = CompressionAlgorithm::ZLIB;
           break;
-        case CodecConfig::zstdConfig:
+        case CodecConfig::Type::zstdConfig:
           metadata.compression_ref() = CompressionAlgorithm::ZSTD;
           break;
         default:

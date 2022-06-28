@@ -422,12 +422,12 @@ void RocketServerConnection::handleUntrackedFrame(
         return;
       }
       switch (clientMeta.getType()) {
-        case ClientPushMetadata::interactionTerminate: {
+        case ClientPushMetadata::Type::interactionTerminate: {
           frameHandler_->terminateInteraction(
               *clientMeta.interactionTerminate_ref()->interactionId_ref());
           break;
         }
-        case ClientPushMetadata::streamHeadersPush: {
+        case ClientPushMetadata::Type::streamHeadersPush: {
           StreamId sid(
               clientMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
           auto it = streams_.find(sid);
@@ -563,7 +563,7 @@ void RocketServerConnection::handleSinkFrame(
               streamPayload->metadata.payloadMetadata_ref();
           if (payloadMetadataRef &&
               payloadMetadataRef->getType() ==
-                  PayloadMetadata::exceptionMetadata) {
+                  PayloadMetadata::Type::exceptionMetadata) {
             notViolateContract = clientCallback.onSinkError(
                 apache::thrift::detail::EncodedStreamError(
                     std::move(streamPayload.value())));

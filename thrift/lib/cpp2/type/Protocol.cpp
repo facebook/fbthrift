@@ -45,12 +45,12 @@ std::string_view Protocol::name() const noexcept {
 
 void Protocol::normalize() {
   switch (data_.getType()) {
-    case ProtocolUnion::standard:
+    case ProtocolUnion::Type::standard:
       if (data_.standard_ref() == StandardProtocol::Custom) {
         reset();
       }
       break;
-    case ProtocolUnion::custom:
+    case ProtocolUnion::Type::custom:
       if (data_.custom_ref()->empty()) {
         reset();
       }

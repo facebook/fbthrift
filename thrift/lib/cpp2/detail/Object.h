@@ -130,11 +130,11 @@ class ObjectWriter : public BaseObjectAdapter {
     beginValue().objectValue_ref().ensure();
     return 0;
   }
-  uint32_t writeStructEnd() { return endValue(Value::objectValue); }
+  uint32_t writeStructEnd() { return endValue(Value::Type::objectValue); }
 
   uint32_t writeFieldBegin(
       const char* /*name*/, TType /*fieldType*/, int16_t fieldId) {
-    auto result = cur(Value::objectValue)
+    auto result = cur(Value::Type::objectValue)
                       .mutable_objectValue()
                       .members()
                       ->emplace(fieldId, Value());
@@ -164,7 +164,7 @@ class ObjectWriter : public BaseObjectAdapter {
       mapVal.emplace(
           std::move(mapKeyAndValues[i]), std::move(mapKeyAndValues[i + 1]));
     }
-    return endValue(Value::mapValue);
+    return endValue(Value::Type::mapValue);
   }
 
   uint32_t writeListBegin(TType /*elemType*/, uint32_t size) {
@@ -172,7 +172,7 @@ class ObjectWriter : public BaseObjectAdapter {
     return 0;
   }
 
-  uint32_t writeListEnd() { return endValue(Value::listValue); }
+  uint32_t writeListEnd() { return endValue(Value::Type::listValue); }
 
   uint32_t writeSetBegin(TType /*elemType*/, uint32_t size) {
     // We cannot push reference to set elements on stack without first inserting
@@ -188,42 +188,42 @@ class ObjectWriter : public BaseObjectAdapter {
     for (size_t i = 0; i < setValues.size(); i++) {
       setVal.emplace(std::move(setValues[i]));
     }
-    return endValue(Value::setValue);
+    return endValue(Value::Type::setValue);
   }
 
   uint32_t writeBool(bool value) {
     ValueHelper<type::bool_t>::set(beginValue(), value);
-    return endValue(Value::boolValue);
+    return endValue(Value::Type::boolValue);
   }
 
   uint32_t writeByte(int8_t value) {
     ValueHelper<type::byte_t>::set(beginValue(), value);
-    return endValue(Value::byteValue);
+    return endValue(Value::Type::byteValue);
   }
 
   uint32_t writeI16(int16_t value) {
     ValueHelper<type::i16_t>::set(beginValue(), value);
-    return endValue(Value::i16Value);
+    return endValue(Value::Type::i16Value);
   }
 
   uint32_t writeI32(int32_t value) {
     ValueHelper<type::i32_t>::set(beginValue(), value);
-    return endValue(Value::i32Value);
+    return endValue(Value::Type::i32Value);
   }
 
   uint32_t writeI64(int64_t value) {
     ValueHelper<type::i64_t>::set(beginValue(), value);
-    return endValue(Value::i64Value);
+    return endValue(Value::Type::i64Value);
   }
 
   uint32_t writeFloat(float value) {
     ValueHelper<type::float_t>::set(beginValue(), value);
-    return endValue(Value::floatValue);
+    return endValue(Value::Type::floatValue);
   }
 
   int32_t writeDouble(double value) {
     ValueHelper<type::double_t>::set(beginValue(), value);
-    return endValue(Value::doubleValue);
+    return endValue(Value::Type::doubleValue);
   }
 
   uint32_t writeString(folly::StringPiece value) {
@@ -233,12 +233,12 @@ class ObjectWriter : public BaseObjectAdapter {
 
   uint32_t writeBinary(folly::ByteRange value) {
     ValueHelper<type::binary_t>::set(beginValue(), value);
-    return endValue(Value::binaryValue);
+    return endValue(Value::Type::binaryValue);
   }
 
   uint32_t writeBinary(const folly::IOBuf& value) {
     ValueHelper<type::binary_t>::set(beginValue(), value);
-    return endValue(Value::binaryValue);
+    return endValue(Value::Type::binaryValue);
   }
 
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str) {
@@ -272,7 +272,7 @@ class ObjectWriter : public BaseObjectAdapter {
   }
 
   Value& beginValue() {
-    checkCur(Value::__EMPTY__);
+    checkCur(Value::Type::__EMPTY__);
     return cur();
   }
 
@@ -294,7 +294,7 @@ class ObjectWriter : public BaseObjectAdapter {
 
   // Get temporary buffer from cur()
   std::vector<Value> getBufferFromStack() {
-    return std::move(*cur(Value::listValue).listValue_ref());
+    return std::move(*cur(Value::Type::listValue).listValue_ref());
   }
 };
 

@@ -237,10 +237,10 @@ void HeaderClientChannel::setRequestHeaderOptions(
       if (payloadSize >
           compressionConfig->compressionSizeLimit_ref().value_or(0)) {
         switch (codecRef->getType()) {
-          case CodecConfig::zlibConfig:
+          case CodecConfig::Type::zlibConfig:
             header->setTransform(THeader::ZLIB_TRANSFORM);
             break;
-          case CodecConfig::zstdConfig:
+          case CodecConfig::Type::zstdConfig:
             header->setTransform(THeader::ZSTD_TRANSFORM);
             break;
           default:

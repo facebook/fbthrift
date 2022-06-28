@@ -1360,12 +1360,12 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
         DCHECK_EQ(payload.metadata.payloadMetadata().has_value(), true);
         DCHECK_EQ(
             payload.metadata.payloadMetadata()->getType(),
-            PayloadMetadata::exceptionMetadata);
+            PayloadMetadata::Type::exceptionMetadata);
         auto& exceptionMetadataBase =
             payload.metadata.payloadMetadata()->get_exceptionMetadata();
         if (auto exceptionMetadataRef = exceptionMetadataBase.metadata()) {
           if (exceptionMetadataRef->getType() ==
-              PayloadExceptionMetadata::declaredException) {
+              PayloadExceptionMetadata::Type::declaredException) {
             PResult result;
             T res{};
             Protocol prot;

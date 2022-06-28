@@ -159,7 +159,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       return;
     }
     switch (serverMeta.getType()) {
-      case ServerPushMetadata::setupResponse: {
+      case ServerPushMetadata::Type::setupResponse: {
         setServerVersion(std::min(
             serverMeta.setupResponse_ref()->version_ref().value_or(0),
             (int32_t)std::numeric_limits<int16_t>::max()));
@@ -167,7 +167,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
             serverMeta.setupResponse_ref()->zstdSupported_ref().value_or(false);
         break;
       }
-      case ServerPushMetadata::streamHeadersPush: {
+      case ServerPushMetadata::Type::streamHeadersPush: {
         StreamId sid(
             serverMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
         auto it = streams_.find(sid);
@@ -186,7 +186,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         }
         return;
       }
-      case ServerPushMetadata::drainCompletePush: {
+      case ServerPushMetadata::Type::drainCompletePush: {
         auto drainCode =
             serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
         if (drainCode &&
@@ -371,7 +371,8 @@ StreamChannelStatusResponse RocketClient::handleStreamResponse(
     streamPayload->isOrderedHeader = true;
     auto payloadMetadataRef = streamPayload->metadata.payloadMetadata_ref();
     if (payloadMetadataRef &&
-        payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata) {
+        payloadMetadataRef->getType() ==
+            PayloadMetadata::Type::exceptionMetadata) {
       return serverCallback.onStreamError(
           apache::thrift::detail::EncodedStreamError(
               std::move(streamPayload.value())));
@@ -408,7 +409,8 @@ StreamChannelStatusResponse RocketClient::handleSinkResponse(
     }
     auto payloadMetadataRef = streamPayload->metadata.payloadMetadata_ref();
     if (payloadMetadataRef &&
-        payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata) {
+        payloadMetadataRef->getType() ==
+            PayloadMetadata::Type::exceptionMetadata) {
       return serverCallback.onFinalResponseError(
           apache::thrift::detail::EncodedStreamError(
               std::move(streamPayload.value())));

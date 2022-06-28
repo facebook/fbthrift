@@ -237,10 +237,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         metadata.proxiedPayloadMetadata_ref().has_value();
 
     switch (payloadMetadataRef->getType()) {
-      case PayloadMetadata::responseMetadata:
+      case PayloadMetadata::Type::responseMetadata:
         payload = handler.handleReply(std::move(payload));
         break;
-      case PayloadMetadata::exceptionMetadata: {
+      case PayloadMetadata::Type::exceptionMetadata: {
         auto& exceptionMetadataBase =
             payloadMetadataRef->get_exceptionMetadata();
         auto otherMetadataRef = metadata.otherMetadata_ref();
@@ -252,7 +252,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
           auto metaType = exceptionMetadataRef->getType();
           switch (metaType) {
-            case PayloadExceptionMetadata::declaredException:
+            case PayloadExceptionMetadata::Type::declaredException:
               if (exceptionNameRef) {
                 (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
                     *exceptionNameRef;
@@ -271,7 +271,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               }
               payload = handler.handleReply(std::move(payload));
               break;
-            case PayloadExceptionMetadata::DEPRECATED_proxyException:
+            case PayloadExceptionMetadata::Type::DEPRECATED_proxyException:
               (*otherMetadataRef)
                   [isProxiedResponse ? detail::kHeaderProxiedAnyex
                                      : detail::kHeaderAnyex] =
@@ -280,7 +280,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                   TApplicationException(exceptionWhatRef.value_or("")));
               break;
 #ifdef THRIFT_ANY_AVAILABLE
-            case PayloadExceptionMetadata::anyException: {
+            case PayloadExceptionMetadata::Type::anyException: {
               type::SemiAnyStruct anyException;
               try {
                 if (protocolId == protocol::T_COMPACT_PROTOCOL) {
@@ -324,7 +324,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
 #endif
             default:
               switch (metaType) {
-                case PayloadExceptionMetadata::appUnknownException:
+                case PayloadExceptionMetadata::Type::appUnknownException:
                   if (auto ec = exceptionMetadataRef->appUnknownException_ref()
                                     ->errorClassification_ref()) {
                     if (ec->blame_ref() &&
@@ -526,7 +526,8 @@ void RocketClientChannel::setCompression(
     RequestRpcMetadata& metadata, ssize_t payloadSize) {
   if (auto compressionConfig = metadata.compressionConfig_ref()) {
     if (auto codecRef = compressionConfig->codecConfig_ref()) {
-      if (codecRef->getType() == apache::thrift::CodecConfig::zlibConfig &&
+      if (codecRef->getType() ==
+              apache::thrift::CodecConfig::Type::zlibConfig &&
           getServerZstdSupported() &&
           THRIFT_FLAG(rocket_client_upgrade_zlib_to_zstd_v2)) {
         codecRef->set_zstdConfig({});
@@ -534,10 +535,10 @@ void RocketClientChannel::setCompression(
       if (payloadSize >
           compressionConfig->compressionSizeLimit_ref().value_or(0)) {
         switch (codecRef->getType()) {
-          case CodecConfig::zlibConfig:
+          case CodecConfig::Type::zlibConfig:
             metadata.compression_ref() = CompressionAlgorithm::ZLIB;
             break;
-          case CodecConfig::zstdConfig:
+          case CodecConfig::Type::zstdConfig:
             metadata.compression_ref() = CompressionAlgorithm::ZSTD;
             break;
           default:

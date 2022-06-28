@@ -91,87 +91,87 @@ TEST(ObjectTest, TypeEnforced) {
   // Always a bool when bool_t is used, without ambiguity.
   // Pointers implicitly converts to bools.
   Value value = asValueStruct<type::bool_t>("");
-  ASSERT_EQ(value.getType(), Value::boolValue);
+  ASSERT_EQ(value.getType(), Value::Type::boolValue);
   EXPECT_TRUE(value.get_boolValue());
 }
 
 TEST(ObjectTest, Bool) {
   Value value = asValueStruct<type::bool_t>(20);
-  ASSERT_EQ(value.getType(), Value::boolValue);
+  ASSERT_EQ(value.getType(), Value::Type::boolValue);
   EXPECT_TRUE(value.get_boolValue());
 
   value = asValueStruct<type::bool_t>(0);
-  ASSERT_EQ(value.getType(), Value::boolValue);
+  ASSERT_EQ(value.getType(), Value::Type::boolValue);
   EXPECT_FALSE(value.get_boolValue());
 }
 
 TEST(ObjectTest, Byte) {
   Value value = asValueStruct<type::byte_t>(7u);
-  ASSERT_EQ(value.getType(), Value::byteValue);
+  ASSERT_EQ(value.getType(), Value::Type::byteValue);
   EXPECT_EQ(value.get_byteValue(), 7);
 }
 
 TEST(ObjectTest, I16) {
   Value value = asValueStruct<type::i16_t>(7u);
-  ASSERT_EQ(value.getType(), Value::i16Value);
+  ASSERT_EQ(value.getType(), Value::Type::i16Value);
   EXPECT_EQ(value.get_i16Value(), 7);
 }
 
 TEST(ObjectTest, I32) {
   Value value = asValueStruct<type::i32_t>(7u);
-  ASSERT_EQ(value.getType(), Value::i32Value);
+  ASSERT_EQ(value.getType(), Value::Type::i32Value);
   EXPECT_EQ(value.get_i32Value(), 7);
 }
 
 TEST(ObjectTest, I64) {
   Value value = asValueStruct<type::i64_t>(7u);
-  ASSERT_EQ(value.getType(), Value::i64Value);
+  ASSERT_EQ(value.getType(), Value::Type::i64Value);
   EXPECT_EQ(value.get_i64Value(), 7);
 }
 
 TEST(ObjectTest, Enum) {
   enum class MyEnum { kValue = 7 };
   Value value = asValueStruct<type::enum_c>(MyEnum::kValue);
-  ASSERT_EQ(value.getType(), Value::i32Value);
+  ASSERT_EQ(value.getType(), Value::Type::i32Value);
   EXPECT_EQ(value.get_i32Value(), 7);
 
   value = asValueStruct<type::enum_c>(static_cast<MyEnum>(2));
-  ASSERT_EQ(value.getType(), Value::i32Value);
+  ASSERT_EQ(value.getType(), Value::Type::i32Value);
   EXPECT_EQ(value.get_i32Value(), 2);
 
   value = asValueStruct<type::enum_c>(21u);
-  ASSERT_EQ(value.getType(), Value::i32Value);
+  ASSERT_EQ(value.getType(), Value::Type::i32Value);
   EXPECT_EQ(value.get_i32Value(), 21);
 }
 
 TEST(ObjectTest, Float) {
   Value value = asValueStruct<type::float_t>(1.5);
-  ASSERT_EQ(value.getType(), Value::floatValue);
+  ASSERT_EQ(value.getType(), Value::Type::floatValue);
   EXPECT_EQ(value.get_floatValue(), 1.5f);
 }
 
 TEST(ObjectTest, Double) {
   Value value = asValueStruct<type::double_t>(1.5f);
-  ASSERT_EQ(value.getType(), Value::doubleValue);
+  ASSERT_EQ(value.getType(), Value::Type::doubleValue);
   EXPECT_EQ(value.get_doubleValue(), 1.5);
 }
 
 TEST(ObjectTest, String) {
   Value value = asValueStruct<type::string_t>("hi");
-  ASSERT_EQ(value.getType(), Value::stringValue);
+  ASSERT_EQ(value.getType(), Value::Type::stringValue);
   EXPECT_EQ(value.get_stringValue(), "hi");
 }
 
 TEST(ObjectTest, Binary) {
   Value value = asValueStruct<type::binary_t>("hi");
-  ASSERT_EQ(value.getType(), Value::binaryValue);
+  ASSERT_EQ(value.getType(), Value::Type::binaryValue);
   EXPECT_EQ(toString(value.get_binaryValue()), "hi");
 }
 
 TEST(ObjectTest, List) {
   std::vector<int> data = {1, 4, 2};
   Value value = asValueStruct<type::list<type::i16_t>>(data);
-  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.getType(), Value::Type::listValue);
   ASSERT_EQ(value.get_listValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
@@ -181,7 +181,7 @@ TEST(ObjectTest, List) {
   value = asValueStruct<type::list<type::i16_t>>(
       std::set<int>(data.begin(), data.end()));
   std::sort(data.begin(), data.end());
-  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.getType(), Value::Type::listValue);
   ASSERT_EQ(value.get_listValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
@@ -202,7 +202,7 @@ TEST(ObjectTest, List_Move) {
   Value value = asValueStruct<type::list<type::string_t>>(data);
   // The strings are unchanged
   EXPECT_THAT(data, ::testing::ElementsAre("hi", "bye"));
-  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.getType(), Value::Type::listValue);
   ASSERT_EQ(value.get_listValue().size(), 2);
   EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
   EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
@@ -211,7 +211,7 @@ TEST(ObjectTest, List_Move) {
 
   // The strings have been moved.
   EXPECT_THAT(data, ::testing::ElementsAre("", ""));
-  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.getType(), Value::Type::listValue);
   ASSERT_EQ(value.get_listValue().size(), 2);
   EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
   EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
@@ -220,7 +220,7 @@ TEST(ObjectTest, List_Move) {
 TEST(ObjectTest, Set) {
   std::set<int> data = {1, 4, 2};
   Value value = asValueStruct<type::set<type::i16_t>>(data);
-  ASSERT_EQ(value.getType(), Value::setValue);
+  ASSERT_EQ(value.getType(), Value::Type::setValue);
   ASSERT_EQ(value.get_setValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(
@@ -230,7 +230,7 @@ TEST(ObjectTest, Set) {
   // Works with other containers
   value = asValueStruct<type::set<type::i16_t>>(
       std::vector<int>(data.begin(), data.end()));
-  ASSERT_EQ(value.getType(), Value::setValue);
+  ASSERT_EQ(value.getType(), Value::Type::setValue);
   ASSERT_EQ(value.get_setValue().size(), data.size());
   for (size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(
@@ -241,7 +241,7 @@ TEST(ObjectTest, Set) {
 TEST(ObjectTest, Map) {
   std::map<std::string, int> data = {{"one", 1}, {"four", 4}, {"two", 2}};
   Value value = asValueStruct<type::map<type::string_t, type::byte_t>>(data);
-  ASSERT_EQ(value.getType(), Value::mapValue);
+  ASSERT_EQ(value.getType(), Value::Type::mapValue);
   ASSERT_EQ(value.get_mapValue().size(), data.size());
   for (const auto& entry : data) {
     auto itr =
@@ -253,7 +253,7 @@ TEST(ObjectTest, Map) {
   // Works with other containers.
   std::vector<std::pair<std::string, int>> otherData(data.begin(), data.end());
   value = asValueStruct<type::map<type::string_t, type::byte_t>>(otherData);
-  ASSERT_EQ(value.getType(), Value::mapValue);
+  ASSERT_EQ(value.getType(), Value::Type::mapValue);
   ASSERT_EQ(value.get_mapValue().size(), data.size());
   for (const auto& entry : data) {
     auto itr =
@@ -267,7 +267,7 @@ TEST(ObjectTest, Struct) {
   // TODO(afuller): Use a struct that covers more cases.
   auto protocol = ::apache::thrift::conformance::Protocol("hi").asStruct();
   Value value = asValueStruct<type::union_c>(protocol);
-  ASSERT_EQ(value.getType(), Value::objectValue);
+  ASSERT_EQ(value.getType(), Value::Type::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 2);
   EXPECT_EQ(
@@ -282,7 +282,7 @@ TEST(ObjectTest, StructWithList) {
   std::vector<int> listValues = {1, 2, 3};
   s.field_1_ref() = listValues;
   Value value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), Value::objectValue);
+  ASSERT_EQ(value.getType(), Value::Type::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   EXPECT_EQ(
@@ -295,7 +295,7 @@ TEST(ObjectTest, StructWithMap) {
   std::map<std::string, int> mapValues = {{"one", 1}, {"four", 4}, {"two", 2}};
   s.field_1_ref() = mapValues;
   Value value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), Value::objectValue);
+  ASSERT_EQ(value.getType(), Value::Type::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   auto val = asValueStruct<type::map<type::binary_t, type::i32_t>>(mapValues);
@@ -307,7 +307,7 @@ TEST(ObjectTest, StructWithSet) {
   std::set<long> setValues = {1, 2, 3};
   s.field_1_ref() = setValues;
   Value value = asValueStruct<type::struct_c>(s);
-  ASSERT_EQ(value.getType(), Value::objectValue);
+  ASSERT_EQ(value.getType(), Value::Type::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
   EXPECT_EQ(

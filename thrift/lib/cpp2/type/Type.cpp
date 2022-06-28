@@ -23,18 +23,18 @@ namespace thrift {
 namespace type {
 
 bool Type::isFull(const TypeUri& typeUri) {
-  return typeUri.getType() == TypeUri::uri;
+  return typeUri.getType() == TypeUri::Type::uri;
 }
 
 bool Type::isFull(const TypeName& typeName) {
   switch (typeName.getType()) {
-    case TypeName::enumType:
+    case TypeName::Type::enumType:
       return isFull(*typeName.enumType_ref());
-    case TypeName::structType:
+    case TypeName::Type::structType:
       return isFull(*typeName.structType_ref());
-    case TypeName::unionType:
+    case TypeName::Type::unionType:
       return isFull(*typeName.unionType_ref());
-    case TypeName::exceptionType:
+    case TypeName::Type::exceptionType:
       return isFull(*typeName.exceptionType_ref());
     default:
       return true;
