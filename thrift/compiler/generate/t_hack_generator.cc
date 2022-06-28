@@ -539,6 +539,7 @@ class t_hack_generator : public t_concat_generator {
     IS_ANY_SHAPE = 2,
     IMMUTABLE_COLLECTIONS = 3,
     IGNORE_ADAPTER = 4,
+    IGNORE_TYPEDEF = 5,
   };
 
   std::string declare_field(
@@ -592,7 +593,8 @@ class t_hack_generator : public t_concat_generator {
           {TypeToTypehintVariations::IS_SHAPE, false},
           {TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, false},
           {TypeToTypehintVariations::IGNORE_ADAPTER, false},
-          {TypeToTypehintVariations::IS_ANY_SHAPE, false}});
+          {TypeToTypehintVariations::IS_ANY_SHAPE, false},
+          {TypeToTypehintVariations::IGNORE_TYPEDEF, false}});
   std::string type_to_param_typehint(
       const t_type* ttype, bool nullable = false);
 
@@ -1375,7 +1377,10 @@ void t_hack_generator::close_generator() {
 void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
   if (typedef_) {
     f_types_ << "type " << ttypedef->get_name() << " = "
-             << type_to_typehint(ttypedef) << ";\n";
+             << type_to_typehint(
+                    ttypedef,
+                    {{TypeToTypehintVariations::IGNORE_TYPEDEF, true}})
+             << ";\n";
   }
 }
 
@@ -5864,6 +5869,18 @@ void t_hack_generator::generate_php_docstring_stream_exceptions(
  */
 std::string t_hack_generator::type_to_typehint(
     const t_type* ttype, std::map<TypeToTypehintVariations, bool> variations) {
+  if (!variations[TypeToTypehintVariations::IGNORE_TYPEDEF] && typedef_) {
+    if (ttype->is_typedef()) {
+      bool is_typedef = true;
+      if (const auto* ttypedef =
+              dynamic_cast<const t_placeholder_typedef*>(ttype)) {
+        is_typedef = ttypedef->get_true_type()->is_typedef();
+      }
+      if (is_typedef) {
+        return hack_name(ttype);
+      }
+    }
+  }
   if (!variations[TypeToTypehintVariations::IGNORE_ADAPTER]) {
     // Check the adapter before resolving typedefs.
     if (const auto* adapter = find_hack_adapter(ttype)) {
@@ -5922,6 +5939,7 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
+    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     return prefix + "<" + type_to_typehint(tlist->get_elem_type(), variations) +
         ">";
   } else if (const auto* tmap = dynamic_cast<const t_map*>(ttype)) {
@@ -5942,6 +5960,7 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
+    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     std::string key_type = type_to_typehint(tmap->get_key_type(), variations);
     if (variations[TypeToTypehintVariations::IS_SHAPE] && shape_arraykeys_ &&
         key_type == "string") {
@@ -5974,6 +5993,7 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
+    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     std::string key_type = !is_type_arraykey(tset->get_elem_type())
         ? "arraykey"
         : type_to_typehint(tset->get_elem_type(), variations);

@@ -1,0 +1,2 @@
+hack:typedef src/module.thrift
+hack:typedef src/include.thrift

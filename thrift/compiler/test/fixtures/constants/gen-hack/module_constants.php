@@ -80,26 +80,26 @@ multi line string.
    * Original thrift constant:-
    * enum module.Company my_company
    */
-  const Company my_company = Company::FACEBOOK;
+  const MyCompany my_company = Company::FACEBOOK;
 
   /**
    * Original thrift constant:-
    * string foo
    */
-  const string foo = "foo";
+  const MyStringIdentifier foo = "foo";
 
   /**
    * Original thrift constant:-
    * i32 bar
    */
-  const int bar = 42;
+  const MyIntIdentifier bar = 42;
 
   /**
    * Original thrift constant:-
    * map<string, string> mymap
    */
   <<__Memoize>>
-  public static function mymap()[]: \ConstMap<string, string>{
+  public static function mymap()[]: MyMapIdentifier{
     return ImmMap {
       "keys" => "values",
     };

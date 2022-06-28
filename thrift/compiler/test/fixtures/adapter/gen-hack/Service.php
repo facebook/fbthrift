@@ -18,7 +18,7 @@ interface ServiceAsyncIf extends \IThriftAsyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
+  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32>;
 }
 
 /**
@@ -33,7 +33,7 @@ interface ServiceIf extends \IThriftSyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): \Adapter1::THackType;
+  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): MyI32;
 }
 
 /**
@@ -55,7 +55,7 @@ interface ServiceClientIf extends \IThriftSyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
+  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32>;
 }
 
 /**
@@ -77,7 +77,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public async function func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
+  public async function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -105,7 +105,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public async function func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
+  public async function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -122,7 +122,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
   }
 
   /* send and recv functions */
-  public function send_func(\Adapter1::THackType $arg1, string $arg2, ?Foo $arg3): int {
+  public function send_func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): int {
     $args = Service_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
@@ -130,7 +130,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
     ));
     return $this->sendImplHelper($args, "func", false);
   }
-  public function recv_func(?int $expectedsequenceid = null): \Adapter1::THackType {
+  public function recv_func(?int $expectedsequenceid = null): MyI32 {
     return $this->recvImplHelper(Service_func_result::class, "func", false, $expectedsequenceid);
   }
 }
@@ -163,22 +163,22 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   ];
 
   const type TConstructorShape = shape(
-    ?'arg1' => ?\Adapter1::THackType,
+    ?'arg1' => ?StringWithAdapter,
     ?'arg2' => ?string,
     ?'arg3' => ?Foo,
   );
 
   const type TShape = shape(
-    'arg1' => \Adapter1::THackType,
+    'arg1' => StringWithAdapter,
     'arg2' => string,
     ?'arg3' => ?Foo::TShape,
   );
   const int STRUCTURAL_ID = 4977133747708930688;
-  public \Adapter1::THackType $arg1;
+  public StringWithAdapter $arg1;
   public string $arg2;
   public ?Foo $arg3;
 
-  public function __construct(?\Adapter1::THackType $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null)[] {
+  public function __construct(?StringWithAdapter $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null)[] {
     $this->arg1 = $arg1 ?? \Adapter1::fromThrift('');
     $this->arg2 = $arg2 ?? '';
     $this->arg3 = $arg3;
@@ -311,7 +311,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     }
 
     if (idx($parsed, 'arg1') !== null) {
-      $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, \Adapter1::THackType>($parsed['arg1']);
+      $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, StringWithAdapter>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
       $this->arg2 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg2']);
@@ -325,7 +325,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
   }
 
 }
@@ -333,7 +333,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 class Service_func_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
 
-  const type TResult = \Adapter1::THackType;
+  const type TResult = MyI32;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -431,7 +431,7 @@ class Service_func_result extends \ThriftSyncStructWithResult {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, \Adapter1::THackType>($parsed['success']);
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, MyI32>($parsed['success']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -441,7 +441,7 @@ class Service_func_result extends \ThriftSyncStructWithResult {
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, MyI32>();
   }
 
 }

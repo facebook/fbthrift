@@ -8,7 +8,7 @@
 
 type SetWithAdapter = \Adapter2::THackType;
 type StringWithAdapter = \Adapter1::THackType;
-type ListWithElemAdapter = Vector<\Adapter1::THackType>;
+type ListWithElemAdapter = Vector<StringWithAdapter>;
 type ListWithElemAdapter_withAdapter = \Adapter2::THackType;
 type MyI64 = int;
 type DoubleTypedefI64 = int;
@@ -139,28 +139,28 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'intField' => ?\Adapter1::THackType,
     ?'optionalIntField' => ?\Adapter1::THackType,
     ?'intFieldWithDefault' => ?\Adapter1::THackType,
-    ?'setField' => ?\Adapter2::THackType,
-    ?'optionalSetField' => ?\Adapter2::THackType,
+    ?'setField' => ?SetWithAdapter,
+    ?'optionalSetField' => ?SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?int,
-    ?'adaptedLongField' => ?int,
-    ?'doubleAdaptedField' => ?int,
+    ?'longField' => ?MyI64,
+    ?'adaptedLongField' => ?MyI64,
+    ?'doubleAdaptedField' => ?DoubleTypedefI64,
   );
 
   const type TShape = shape(
     'intField' => \Adapter1::THackType,
     ?'optionalIntField' => ?\Adapter1::THackType,
     'intFieldWithDefault' => \Adapter1::THackType,
-    'setField' => \Adapter2::THackType,
-    ?'optionalSetField' => ?\Adapter2::THackType,
+    'setField' => SetWithAdapter,
+    ?'optionalSetField' => ?SetWithAdapter,
     'mapField' => \Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     'binaryField' => \Adapter1::THackType,
-    'longField' => int,
-    'adaptedLongField' => int,
-    'doubleAdaptedField' => int,
+    'longField' => MyI64,
+    'adaptedLongField' => MyI64,
+    'doubleAdaptedField' => DoubleTypedefI64,
   );
   const int STRUCTURAL_ID = 5127579417322622320;
   /**
@@ -182,12 +182,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 4: set<string> setField
    */
-  public \Adapter2::THackType $setField;
+  public SetWithAdapter $setField;
   /**
    * Original thrift field:-
    * 5: set<string> optionalSetField
    */
-  public ?\Adapter2::THackType $optionalSetField;
+  public ?SetWithAdapter $optionalSetField;
   /**
    * Original thrift field:-
    * 6: map<string, list<string>> mapField
@@ -207,19 +207,19 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 9: i64 longField
    */
-  public int $longField;
+  public MyI64 $longField;
   /**
    * Original thrift field:-
    * 10: i64 adaptedLongField
    */
-  public int $adaptedLongField;
+  public MyI64 $adaptedLongField;
   /**
    * Original thrift field:-
    * 11: i64 doubleAdaptedField
    */
-  public int $doubleAdaptedField;
+  public DoubleTypedefI64 $doubleAdaptedField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null, ?int $adaptedLongField = null, ?int $doubleAdaptedField = null)[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?SetWithAdapter $setField = null, ?SetWithAdapter $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?MyI64 $longField = null, ?MyI64 $adaptedLongField = null, ?DoubleTypedefI64 $doubleAdaptedField = null)[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -786,7 +786,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'setField') !== null) {
-      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, \Adapter2::THackType>($parsed['setField']);
+      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['setField']);
       $_container7 = Set {};
       foreach($_json6 as $_key4 => $_value5) {
         $_elem8 = '';
@@ -796,7 +796,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->setField = $_container7;
     }
     if (idx($parsed, 'optionalSetField') !== null) {
-      $_json12 = HH\FIXME\UNSAFE_CAST<mixed, \Adapter2::THackType>($parsed['optionalSetField']);
+      $_json12 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['optionalSetField']);
       $_container13 = Set {};
       foreach($_json12 as $_key10 => $_value11) {
         $_elem14 = '';
@@ -806,7 +806,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optionalSetField = $_container13;
     }
     if (idx($parsed, 'mapField') !== null) {
-      $_json18 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \Adapter2::THackType>>($parsed['mapField']);
+      $_json18 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['mapField']);
       $_container19 = Map {};
       foreach($_json18 as $_key16 => $_value17) {
         $_value20 = Vector {};
@@ -823,7 +823,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->mapField = $_container19;
     }
     if (idx($parsed, 'optionalMapField') !== null) {
-      $_json30 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \Adapter2::THackType>>($parsed['optionalMapField']);
+      $_json30 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['optionalMapField']);
       $_container31 = Map {};
       foreach($_json30 as $_key28 => $_value29) {
         $_value32 = Vector {};
@@ -843,22 +843,23 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->binaryField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binaryField']);
     }
     if (idx($parsed, 'longField') !== null) {
-      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['longField']);
+      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['longField']);
     }
     if (idx($parsed, 'adaptedLongField') !== null) {
-      $this->adaptedLongField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['adaptedLongField']);
+      $this->adaptedLongField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['adaptedLongField']);
     }
     if (idx($parsed, 'doubleAdaptedField') !== null) {
-      $this->doubleAdaptedField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['doubleAdaptedField']);
+      $this->doubleAdaptedField = HH\FIXME\UNSAFE_CAST<mixed, DoubleTypedefI64>($parsed['doubleAdaptedField']);
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Set<string>>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Vector<\Adapter1::THackType>>();
-    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \Adapter2::THackType>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, ListWithElemAdapter_withAdapter>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, SetWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, ListWithElemAdapter_withAdapter>>();
   }
 
 }
@@ -941,18 +942,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   const type TConstructorShape = shape(
     ?'intField' => ?\Adapter1::THackType,
-    ?'setField' => ?\Adapter2::THackType,
+    ?'setField' => ?SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?int,
+    ?'longField' => ?MyI64,
   );
 
   const type TShape = shape(
     ?'intField' => ?\Adapter1::THackType,
-    ?'setField' => ?\Adapter2::THackType,
+    ?'setField' => ?SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?int,
+    ?'longField' => ?MyI64,
   );
   const int STRUCTURAL_ID = 8924052603013047554;
   /**
@@ -964,7 +965,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
    * Original thrift field:-
    * 4: set<string> setField
    */
-  public ?\Adapter2::THackType $setField;
+  public ?SetWithAdapter $setField;
   /**
    * Original thrift field:-
    * 6: map<string, list<string>> mapField
@@ -979,10 +980,10 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
    * Original thrift field:-
    * 9: i64 longField
    */
-  public ?int $longField;
+  public ?MyI64 $longField;
   protected BazEnum $_type = BazEnum::_EMPTY_;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null)[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?SetWithAdapter $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?MyI64 $longField = null)[] {
     $this->_type = BazEnum::_EMPTY_;
     if ($intField !== null) {
       $this->intField = $intField;
@@ -1071,18 +1072,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     return $this->intField as nonnull;
   }
 
-  public function set_setField(\Adapter2::THackType $setField)[write_props]: this {
+  public function set_setField(SetWithAdapter $setField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::setField;
     $this->setField = $setField;
     return $this;
   }
 
-  public function get_setField()[]: ?\Adapter2::THackType {
+  public function get_setField()[]: ?SetWithAdapter {
     return $this->setField;
   }
 
-  public function getx_setField()[]: \Adapter2::THackType {
+  public function getx_setField()[]: SetWithAdapter {
     invariant(
       $this->_type === BazEnum::setField,
       'get_setField called on an instance of Baz whose current type is %s',
@@ -1131,18 +1132,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     return $this->binaryField as nonnull;
   }
 
-  public function set_longField(int $longField)[write_props]: this {
+  public function set_longField(MyI64 $longField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::longField;
     $this->longField = $longField;
     return $this;
   }
 
-  public function get_longField()[]: ?int {
+  public function get_longField()[]: ?MyI64 {
     return $this->longField;
   }
 
-  public function getx_longField()[]: int {
+  public function getx_longField()[]: MyI64 {
     invariant(
       $this->_type === BazEnum::longField,
       'get_longField called on an instance of Baz whose current type is %s',
@@ -1411,7 +1412,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       $this->_type = BazEnum::intField;
     }
     if (idx($parsed, 'setField') !== null) {
-      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, \Adapter2::THackType>($parsed['setField']);
+      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['setField']);
       $_container5 = Set {};
       foreach($_json4 as $_key2 => $_value3) {
         $_elem6 = '';
@@ -1422,7 +1423,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       $this->_type = BazEnum::setField;
     }
     if (idx($parsed, 'mapField') !== null) {
-      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \Adapter2::THackType>>($parsed['mapField']);
+      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['mapField']);
       $_container11 = Map {};
       foreach($_json10 as $_key8 => $_value9) {
         $_value12 = Vector {};
@@ -1444,17 +1445,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       $this->_type = BazEnum::binaryField;
     }
     if (idx($parsed, 'longField') !== null) {
-      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['longField']);
+      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['longField']);
       $this->_type = BazEnum::longField;
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Set<string>>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Vector<\Adapter1::THackType>>();
-    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \Adapter2::THackType>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, ListWithElemAdapter_withAdapter>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, SetWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, ListWithElemAdapter_withAdapter>>();
   }
 
 }
@@ -1532,8 +1534,8 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   const type TConstructorShape = shape(
     ?'structField' => ?\Adapter1::THackType,
     ?'optionalStructField' => ?\Adapter1::THackType,
-    ?'structListField' => ?Vector<\Adapter1::THackType>,
-    ?'optionalStructListField' => ?Vector<\Adapter1::THackType>,
+    ?'structListField' => ?Vector<FooWithAdapter>,
+    ?'optionalStructListField' => ?Vector<FooWithAdapter>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
     ?'adaptedStructField' => ?DirectlyAdapted,
@@ -1542,8 +1544,8 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   const type TShape = shape(
     ?'structField' => ?\Adapter1::THackType,
     ?'optionalStructField' => ?\Adapter1::THackType,
-    'structListField' => vec<\Adapter1::THackType>,
-    ?'optionalStructListField' => ?vec<\Adapter1::THackType>,
+    'structListField' => vec<FooWithAdapter>,
+    ?'optionalStructListField' => ?vec<FooWithAdapter>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
     ?'adaptedStructField' => ?DirectlyAdapted::TShape,
@@ -1563,12 +1565,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 3: list<struct module.Foo> structListField
    */
-  public Vector<\Adapter1::THackType> $structListField;
+  public Vector<FooWithAdapter> $structListField;
   /**
    * Original thrift field:-
    * 4: list<struct module.Foo> optionalStructListField
    */
-  public ?Vector<\Adapter1::THackType> $optionalStructListField;
+  public ?Vector<FooWithAdapter> $optionalStructListField;
   /**
    * Original thrift field:-
    * 5: struct module.Baz unionField
@@ -1585,7 +1587,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public ?DirectlyAdapted $adaptedStructField;
 
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null, ?DirectlyAdapted $adaptedStructField = null)[] {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<FooWithAdapter> $structListField = null, ?Vector<FooWithAdapter> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null, ?DirectlyAdapted $adaptedStructField = null)[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
@@ -1952,7 +1954,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optionalStructField = $_tmp3;
     }
     if (idx($parsed, 'structListField') !== null) {
-      $_json7 = HH\FIXME\UNSAFE_CAST<mixed, Vector<\Adapter1::THackType>>($parsed['structListField']);
+      $_json7 = HH\FIXME\UNSAFE_CAST<mixed, Vector<FooWithAdapter>>($parsed['structListField']);
       $_container8 = Vector {};
       foreach($_json7 as $_key5 => $_value6) {
         $_elem9 = Foo::withDefaultValues();
@@ -1965,7 +1967,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->structListField = $_container8;
     }
     if (idx($parsed, 'optionalStructListField') !== null) {
-      $_json15 = HH\FIXME\UNSAFE_CAST<mixed, Vector<\Adapter1::THackType>>($parsed['optionalStructListField']);
+      $_json15 = HH\FIXME\UNSAFE_CAST<mixed, Vector<FooWithAdapter>>($parsed['optionalStructListField']);
       $_container16 = Vector {};
       foreach($_json15 as $_key13 => $_value14) {
         $_elem17 = Foo::withDefaultValues();
@@ -2000,6 +2002,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   private static function __hackAdapterTypeChecks()[]: void {
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Baz>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, FooWithAdapter>();
   }
 
 }
