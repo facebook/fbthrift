@@ -109,8 +109,8 @@ std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
         AnyRegistry::generated().store(def, protocol);
 
     TestCase testCase;
-    testCase.name() =
-        fmt::format("testset.{}/RemoveField", type::getName<TT>());
+    testCase.name() = fmt::format(
+        "testset.{}/RemoveField/{}", type::getName<TT>(), value.name);
     testCase.test()->roundTrip_ref() = std::move(roundTrip);
     ret.push_back(std::move(testCase));
   }
