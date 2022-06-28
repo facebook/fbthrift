@@ -16,10 +16,12 @@
 
 // TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
 
+include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/protocol_detail.thrift"
 include "thrift/lib/thrift/id.thrift"
 cpp_include "folly/container/F14Map.h"
 
+@thrift.v1alpha
 package "facebook.com/thrift/protocol"
 
 namespace cpp2 apache.thrift.protocol
