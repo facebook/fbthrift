@@ -28,15 +28,10 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include <thrift/lib/cpp2/test/gen-cpp2/Conflicts.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/ConflictsInteraction1.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/First.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/FirstAsyncClient.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Interaction1.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Interaction2.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Second.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/SomeService.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Third.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/MultiplexAsyncProcessor2_clients.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/MultiplexAsyncProcessor2_handlers.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/MultiplexAsyncProcessor_clients.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/MultiplexAsyncProcessor_handlers.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types_custom_protocol.h>
 
 namespace apache::thrift::test {
