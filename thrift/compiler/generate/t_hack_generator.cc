@@ -533,6 +533,14 @@ class t_hack_generator : public t_concat_generator {
     SINK_FINAL_RESPONSE = 5,
   };
 
+  enum class TypeToTypehintVariations {
+    NULLABLE = 0,
+    IS_SHAPE = 1,
+    IS_ANY_SHAPE = 2,
+    IMMUTABLE_COLLECTIONS = 3,
+    IGNORE_ADAPTER = 4,
+  };
+
   std::string declare_field(
       const t_field* tfield,
       bool init = false,
@@ -579,11 +587,12 @@ class t_hack_generator : public t_concat_generator {
 
   std::string type_to_typehint(
       const t_type* ttype,
-      bool nullable = false,
-      bool shape = false,
-      bool immutable_collections = false,
-      bool ignore_adapter = false,
-      bool is_any_shape = false);
+      std::map<TypeToTypehintVariations, bool> variations = {
+          {TypeToTypehintVariations::NULLABLE, false},
+          {TypeToTypehintVariations::IS_SHAPE, false},
+          {TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, false},
+          {TypeToTypehintVariations::IGNORE_ADAPTER, false},
+          {TypeToTypehintVariations::IS_ANY_SHAPE, false}});
   std::string type_to_param_typehint(
       const t_type* ttype, bool nullable = false);
 
@@ -1498,8 +1507,10 @@ void t_hack_generator::generate_const(const t_const* tconst) {
     // cannot use const for objects (incl arrays). use static
   } else {
     f_consts_ << "<<__Memoize>>\n"
-              << indent() << "public static function " << name
-              << "()[]: " << type_to_typehint(type, false, false, true)
+              << indent() << "public static function " << name << "()[]: "
+              << type_to_typehint(
+                     type,
+                     {{TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, true}})
               << "{\n";
     indent_up();
     consts_out << indent() << "return ";
@@ -2657,11 +2668,8 @@ void t_hack_generator::generate_php_struct_shape_spec(
     } else {
       typehint = type_to_typehint(
           t,
-          false,
-          !is_constructor_shape,
-          false,
-          false,
-          true /* is_any_shape */);
+          {{TypeToTypehintVariations::IS_SHAPE, !is_constructor_shape},
+           {TypeToTypehintVariations::IS_ANY_SHAPE, true}});
     }
 
     std::string dval = "";
@@ -2700,7 +2708,8 @@ void t_hack_generator::generate_php_struct_shape_spec(
  *
  * Then our __toShape() routine results in:
  *
- *   'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
+ *   'map_of_string_to_list_of_i32' =>
+ * $this->map_of_string_to_list_of_i32->map(
  *     $_val0 ==> $_val0->toVArray(),
  *   )
  *     |> ThriftUtil::toDArray($$),
@@ -3963,7 +3972,7 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
   } else {
     hack_typehint = type_to_typehint(field.get_type());
   }
-  type_to_typehint(field.type().get_type(), false, false, false, false);
+  type_to_typehint(field.type().get_type());
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -4494,7 +4503,8 @@ void t_hack_generator::generate_adapter_type_checks(
     if (const auto* adapter = find_hack_adapter(t)) {
       adapter_types_.emplace(
           *adapter,
-          type_to_typehint(t, false, false, false, /* ignore_adapter */ true));
+          type_to_typehint(
+              t, {{TypeToTypehintVariations::IGNORE_ADAPTER, true}}));
     }
   }
 
@@ -4507,10 +4517,7 @@ void t_hack_generator::generate_adapter_type_checks(
           *adapter,
           type_to_typehint(
               field.get_type(),
-              false,
-              false,
-              false,
-              /* ignore_adapter */ true));
+              {{TypeToTypehintVariations::IGNORE_ADAPTER, true}}));
     }
   }
 
@@ -5856,20 +5863,18 @@ void t_hack_generator::generate_php_docstring_stream_exceptions(
  * Generate an appropriate string for a php typehint
  */
 std::string t_hack_generator::type_to_typehint(
-    const t_type* ttype,
-    bool nullable,
-    bool shape,
-    bool immutable_collections,
-    bool ignore_adapter,
-    bool is_any_shape) {
-  if (!ignore_adapter) {
+    const t_type* ttype, std::map<TypeToTypehintVariations, bool> variations) {
+  if (!variations[TypeToTypehintVariations::IGNORE_ADAPTER]) {
     // Check the adapter before resolving typedefs.
     if (const auto* adapter = find_hack_adapter(ttype)) {
       return *adapter + "::THackType";
     }
   }
   ttype = ttype->get_true_type();
-  immutable_collections = immutable_collections || const_collections_;
+  bool immutable_collections =
+      variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] ||
+      const_collections_;
+  bool nullable = variations[TypeToTypehintVariations::NULLABLE];
   if (ttype->is_base_type()) {
     switch (((t_base_type*)ttype)->get_base()) {
       case t_base_type::TYPE_VOID:
@@ -5897,60 +5902,60 @@ std::string t_hack_generator::type_to_typehint(
       return (nullable ? "?" : "") + hack_name(ttype);
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
-    return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
+    return (nullable ? "?" : "") + hack_name(ttype) +
+        (variations[TypeToTypehintVariations::IS_SHAPE] ? "::TShape" : "");
   } else if (const auto* tlist = dynamic_cast<const t_list*>(ttype)) {
     std::string prefix;
-    if (is_any_shape && !arrays_ &&
-        (no_use_hack_collections_ || (shape && array_migration_))) {
+    if (variations[TypeToTypehintVariations::IS_ANY_SHAPE] && !arrays_ &&
+        (no_use_hack_collections_ ||
+         (variations[TypeToTypehintVariations::IS_SHAPE] &&
+          array_migration_))) {
       prefix = "varray";
-    } else if (arrays_ || no_use_hack_collections_ || shape) {
+    } else if (
+        arrays_ || no_use_hack_collections_ ||
+        variations[TypeToTypehintVariations::IS_SHAPE]) {
       prefix = "vec";
     } else {
       prefix = immutable_collections ? "\\ConstVector" : "Vector";
     }
-    return prefix + "<" +
-        type_to_typehint(
-               tlist->get_elem_type(),
-               false,
-               shape,
-               immutable_collections,
-               false,
-               is_any_shape) +
+    variations[TypeToTypehintVariations::NULLABLE] = false;
+    variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
+    variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
+        immutable_collections;
+    return prefix + "<" + type_to_typehint(tlist->get_elem_type(), variations) +
         ">";
   } else if (const auto* tmap = dynamic_cast<const t_map*>(ttype)) {
     std::string prefix;
-    if (is_any_shape && !arrays_ &&
-        (no_use_hack_collections_ || (shape && array_migration_))) {
+    if (variations[TypeToTypehintVariations::IS_ANY_SHAPE] && !arrays_ &&
+        (no_use_hack_collections_ ||
+         (variations[TypeToTypehintVariations::IS_SHAPE] &&
+          array_migration_))) {
       prefix = no_use_hack_collections_ ? "darray" : array_keyword_;
-    } else if (arrays_ || no_use_hack_collections_ || shape) {
+    } else if (
+        arrays_ || no_use_hack_collections_ ||
+        variations[TypeToTypehintVariations::IS_SHAPE]) {
       prefix = "dict";
     } else {
       prefix = immutable_collections ? "\\ConstMap" : "Map";
     }
-    std::string key_type = type_to_typehint(
-        tmap->get_key_type(),
-        false,
-        shape,
-        immutable_collections,
-        false,
-        is_any_shape);
-    if (shape && shape_arraykeys_ && key_type == "string") {
+    variations[TypeToTypehintVariations::NULLABLE] = false;
+    variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
+    variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
+        immutable_collections;
+    std::string key_type = type_to_typehint(tmap->get_key_type(), variations);
+    if (variations[TypeToTypehintVariations::IS_SHAPE] && shape_arraykeys_ &&
+        key_type == "string") {
       key_type = "arraykey";
     } else if (!is_type_arraykey(tmap->get_key_type())) {
       key_type = "arraykey";
     }
     return prefix + "<" + key_type + ", " +
-        type_to_typehint(
-               tmap->get_val_type(),
-               false,
-               shape,
-               immutable_collections,
-               false,
-               is_any_shape) +
-        ">";
+        type_to_typehint(tmap->get_val_type(), variations) + ">";
   } else if (const auto* tset = dynamic_cast<const t_set*>(ttype)) {
     std::string prefix;
-    if (is_any_shape && (arraysets_ || (!arrays_ && shape))) {
+    if (variations[TypeToTypehintVariations::IS_ANY_SHAPE] &&
+        (arraysets_ ||
+         (!arrays_ && variations[TypeToTypehintVariations::IS_SHAPE]))) {
       prefix = array_keyword_;
     } else if (arraysets_) {
       prefix = "dict";
@@ -5959,16 +5964,19 @@ std::string t_hack_generator::type_to_typehint(
     } else {
       prefix = immutable_collections ? "\\ConstSet" : "Set";
     }
-    std::string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
+    std::string suffix =
+        (arraysets_ ||
+         (variations[TypeToTypehintVariations::IS_SHAPE] && !arrays_))
+        ? ", bool>"
+        : ">";
+
+    variations[TypeToTypehintVariations::NULLABLE] = false;
+    variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
+    variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
+        immutable_collections;
     std::string key_type = !is_type_arraykey(tset->get_elem_type())
         ? "arraykey"
-        : type_to_typehint(
-              tset->get_elem_type(),
-              false,
-              shape,
-              immutable_collections,
-              false,
-              is_any_shape);
+        : type_to_typehint(tset->get_elem_type(), variations);
     return prefix + "<" + key_type + suffix;
   } else {
     return "mixed";
@@ -6039,14 +6047,16 @@ std::string t_hack_generator::type_to_param_typehint(
     const t_type* ttype, bool nullable) {
   if (const auto* tlist = dynamic_cast<const t_list*>(ttype)) {
     if (strict_types_) {
-      return type_to_typehint(ttype, nullable);
+      return type_to_typehint(
+          ttype, {{TypeToTypehintVariations::NULLABLE, nullable}});
     } else {
       return "KeyedContainer<int, " +
           type_to_param_typehint(tlist->get_elem_type()) + ">";
     }
   } else if (const auto* tmap = dynamic_cast<const t_map*>(ttype)) {
     if (strict_types_) {
-      return type_to_typehint(ttype, nullable);
+      return type_to_typehint(
+          ttype, {{TypeToTypehintVariations::NULLABLE, nullable}});
     } else {
       const auto* key_type = tmap->get_key_type();
       return "KeyedContainer<" +
@@ -6055,7 +6065,8 @@ std::string t_hack_generator::type_to_param_typehint(
           ", " + type_to_param_typehint(tmap->get_val_type()) + ">";
     }
   } else {
-    return type_to_typehint(ttype, nullable);
+    return type_to_typehint(
+        ttype, {{TypeToTypehintVariations::NULLABLE, nullable}});
   }
 }
 
