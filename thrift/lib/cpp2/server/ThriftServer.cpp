@@ -1067,6 +1067,7 @@ void ThriftServer::stopListening() {
 #if FOLLY_HAS_COROUTINES
   asyncScope_->requestCancellation();
 #endif
+  callOnStopRequested();
 
   {
     auto sockets = getSockets();
@@ -1116,8 +1117,6 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
       return;
     }
   }
-
-  callOnStopRequested();
 
   internalStatus_.store(
       ServerStatus::DRAINING_UNTIL_STOPPED, std::memory_order_release);

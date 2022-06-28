@@ -3692,6 +3692,15 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
   // Wait for onStopRequested()
   EXPECT_TRUE(testIf->stopEnter.try_wait_for(2s));
   client.semifuture_voidResponse().get();
+  // New client for creating a new connection
+  TestServiceAsyncClient client2(
+      apache::thrift::PooledRequestChannel::newSyncChannel(
+          clientEvbThread,
+          [address = preStartHandler->address,
+           this](folly::EventBase& eb) mutable {
+            return makeChannel(folly::AsyncSocket::newSocket(&eb, address));
+          }));
+  client2.semifuture_voidResponse().get();
   testIf->stopExit.post();
 }
 
@@ -3778,7 +3787,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   EXPECT_TRUE(handler->onStopRequestedCalled.try_wait_for(2s));
   EXPECT_EQ(
       client.semifuture_getStatus().get(),
-      static_cast<std::int64_t>(ThriftServer::ServerStatus::STOPPING));
+      static_cast<std::int64_t>(ThriftServer::ServerStatus::PRE_STOPPING));
   handler->stopping.post();
 }
 

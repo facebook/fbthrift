@@ -323,17 +323,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
      */
     RUNNING,
     /**
-     * The server is preparing to stop. No new connections are accepted.
-     * Existing connections are unaffected.
+     * The server is preparing to stop and
+     * ServiceHandler::semifuture_onStopRequested hooks are still executing.
      */
     PRE_STOPPING,
     /**
-     * The server is about to stop and
-     * ServiceHandler::semifuture_onStopRequested hooks are still executing.
+     * The server is about to stop and no new connections are accepted.
+     * Existing connections are unaffected.
+     * ServiceHandler::semifuture_onStopRequested hooks have finished executing.
      */
     STOPPING,
     /**
-     * ServiceHandler::semifuture_onStopRequested hooks have finished executing.
      * Outstanding requests are being joined. New requests are rejected.
      */
     DRAINING_UNTIL_STOPPED,
