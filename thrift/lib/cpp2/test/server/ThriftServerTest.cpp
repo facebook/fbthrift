@@ -1649,9 +1649,13 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
     auto& resourcePool =
         runner->getThriftServer().resourcePoolSet().resourcePool(
             ResourcePoolHandle::defaultAsync());
-    resourcePool.concurrencyController().value()->setExecutionLimitRequests(1);
-    dynamic_cast<folly::ThreadPoolExecutor*>(resourcePool.executor().value())
-        ->setNumThreads(2);
+    resourcePool.concurrencyController()
+        .value()
+        .get()
+        .setExecutionLimitRequests(1);
+    dynamic_cast<folly::ThreadPoolExecutor&>(
+        resourcePool.executor().value().get())
+        .setNumThreads(2);
   }
 
   auto client = runner->newStickyClient<TestServiceAsyncClient>(

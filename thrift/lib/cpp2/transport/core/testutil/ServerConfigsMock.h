@@ -107,6 +107,11 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
+  std::shared_ptr<folly::Executor> getHandlerExecutor_deprecated()
+      const override {
+    return {};
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

@@ -546,17 +546,29 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * Get the executor for the general pool of async CPUWorkerThreads.
+   * Get the executor for the default executor used to execute requests.
    *
-   * @return a pointer to the executor
+   * @return a shared pointer to the executor
    */
-
-  folly::Executor* getExecutor() const {
+  std::shared_ptr<folly::Executor> getHandlerExecutor_deprecated()
+      const override {
     if (!resourcePoolSet().empty()) {
       return resourcePoolSet()
           .resourcePool(ResourcePoolHandle::defaultAsync())
-          .executor()
+          .sharedPtrExecutor()
           .value();
+    }
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    return threadManager_;
+  }
+
+  folly::Executor::KeepAlive<> getHandlerExecutorKeepAlive() const override {
+    if (!resourcePoolSet().empty()) {
+      return resourcePoolSet()
+          .resourcePool(ResourcePoolHandle::defaultAsync())
+          .sharedPtrExecutor()
+          .value()
+          .get();
     }
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     return threadManager_.get();
@@ -627,7 +639,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
         resourcePoolSet_.resourcePool(ResourcePoolHandle::defaultAsync())
             .concurrencyController()
             .value()
-            ->setExecutionLimitRequests(
+            .get()
+            .setExecutionLimitRequests(
                 maxRequests != 0 ? maxRequests
                                  : std::numeric_limits<uint32_t>::max());
       }

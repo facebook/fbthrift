@@ -157,7 +157,7 @@ Cpp2Connection::Cpp2Connection(
           worker_->getServer()->getClientIdentityHook(),
           worker_.get()),
       transport_(transport),
-      executor_(worker_->getServer()->getExecutor()) {
+      executor_(worker_->getServer()->getHandlerExecutor_deprecated().get()) {
   if (worker_->getServer()->resourcePoolSet().empty()) {
     threadManager_ = worker_->getServer()->getThreadManager_deprecated();
   }

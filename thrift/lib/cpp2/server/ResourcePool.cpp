@@ -154,7 +154,7 @@ size_t ResourcePoolSet::numQueued() const {
   size_t sum = 0;
   for (auto& pool : resourcePools_) {
     if (auto rp = pool->requestPile()) {
-      sum += rp.value()->requestCount();
+      sum += rp.value().get().requestCount();
     }
   }
   return sum;
@@ -167,7 +167,7 @@ size_t ResourcePoolSet::numInExecution() const {
   size_t sum = 0;
   for (auto& pool : resourcePools_) {
     if (auto cc = pool->concurrencyController()) {
-      sum += cc.value()->requestCount();
+      sum += cc.value().get().requestCount();
     }
   }
   return sum;
@@ -180,7 +180,7 @@ size_t ResourcePoolSet::numPendingDeque() const {
   size_t sum = 0;
   for (auto& pool : resourcePools_) {
     if (auto cc = pool->concurrencyController()) {
-      sum += cc.value()->numPendingDequeRequest();
+      sum += cc.value().get().numPendingDequeRequest();
     }
   }
   return sum;

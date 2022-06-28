@@ -500,8 +500,10 @@ void Cpp2Worker::dispatchRequest(
           resourcePool = &serverConfigs->resourcePoolSet()
                               .resourcePoolByPriority_deprecated(priority);
         }
+
+        auto executor = resourcePool->executor();
         apache::thrift::detail::ServerRequestHelper::setExecutor(
-            serverRequest, resourcePool->executor().value_or(nullptr));
+            serverRequest, executor ? &executor.value().get() : nullptr);
         auto result = resourcePool->accept(std::move(serverRequest));
         if (result) {
           auto errorCode = kQueueOverloadedErrorCode;

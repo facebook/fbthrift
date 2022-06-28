@@ -44,28 +44,37 @@ class ResourcePool {
   ~ResourcePool();
 
   // Access to the request pile if it exists.
-  std::optional<RequestPileInterface*> requestPile() {
+  std::optional<std::reference_wrapper<RequestPileInterface>> requestPile() {
     auto result = requestPile_.get();
     if (result) {
-      return result;
+      return std::ref(*result);
     }
     return std::nullopt;
   }
 
   // Access to executor if it exists.
-  std::optional<folly::Executor*> executor() {
+  std::optional<std::reference_wrapper<folly::Executor>> executor() {
     auto result = executor_.get();
     if (result) {
-      return result;
+      return std::ref(*result);
+    }
+    return std::nullopt;
+  }
+
+  // Access tp executor as shared pointer if it exists.
+  std::optional<std::shared_ptr<folly::Executor>> sharedPtrExecutor() {
+    if (executor_) {
+      return executor_;
     }
     return std::nullopt;
   }
 
   // Access to concurrency controller if it exists.
-  std::optional<ConcurrencyControllerInterface*> concurrencyController() {
+  std::optional<std::reference_wrapper<ConcurrencyControllerInterface>>
+  concurrencyController() {
     auto result = concurrencyController_.get();
     if (result) {
-      return result;
+      return std::ref(*result);
     }
     return std::nullopt;
   }

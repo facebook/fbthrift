@@ -485,17 +485,19 @@ void ThriftServer::setup() {
           .resourcePool(ResourcePoolHandle::defaultAsync())
           .concurrencyController()
           .value()
-          ->setExecutionLimitRequests(
+          .get()
+          .setExecutionLimitRequests(
               maxRequests != 0 ? maxRequests
                                : std::numeric_limits<uint32_t>::max());
 
       if (resourcePoolSet().hasResourcePool(
               ResourcePoolHandle::defaultAsync())) {
-        auto exPtr = resourcePoolSet()
-                         .resourcePool(ResourcePoolHandle::defaultAsync())
-                         .executor()
-                         .value();
-        auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(*exPtr);
+        auto& executor = resourcePoolSet()
+                             .resourcePool(ResourcePoolHandle::defaultAsync())
+                             .executor()
+                             .value()
+                             .get();
+        auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(executor);
         setThreadManagerInternal(extm);
       }
 
@@ -636,7 +638,8 @@ void ThriftServer::setup() {
                 cachedServiceHealth_.store(*value, std::memory_order_relaxed);
               }
             });
-        asyncScope_->add(std::move(loop).scheduleOn(getExecutor()));
+        asyncScope_->add(
+            std::move(loop).scheduleOn(getHandlerExecutorKeepAlive()));
       }
     }
 #endif
@@ -1234,7 +1237,7 @@ void ThriftServer::callOnStartServing() {
           return handler->semifuture_onStartServing();
         }));
   }
-  folly::collectAll(futures).via(getExecutor()).get();
+  folly::collectAll(futures).via(getHandlerExecutorKeepAlive()).get();
 }
 
 void ThriftServer::callOnStopRequested() {
@@ -1249,7 +1252,8 @@ void ThriftServer::callOnStopRequested() {
               })
             : handler->semifuture_onStopRequested());
   }
-  auto results = folly::collectAll(futures).via(getExecutor()).get();
+  auto results =
+      folly::collectAll(futures).via(getHandlerExecutorKeepAlive()).get();
   for (auto& result : results) {
     if (result.hasException()) {
       LOG(FATAL) << "Exception thrown by onStopRequested(): "
