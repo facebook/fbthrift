@@ -15,6 +15,17 @@ import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
+class FooStreamEx(_fbthrift_python_exceptions.GeneratedError):
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+    def _to_python(self) -> FooStreamEx: ...
+    def _to_py3(self) -> "module.types.FooStreamEx": ...  # type: ignore
+    def _to_py_deprecated(self) -> "module.ttypes.FooStreamEx": ...  # type: ignore
+
+
 class FooEx(_fbthrift_python_exceptions.GeneratedError):
     def __init__(
         self,
@@ -96,17 +107,59 @@ class _fbthrift_PubSubStreamingService_streamthrows_result(_fbthrift_python_type
 
 
 class _fbthrift_PubSubStreamingService_streamthrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
-    e: _typing.Final[FooEx]
+    e: _typing.Final[FooStreamEx]
 
     def __init__(
-        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooEx]=...
+        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooStreamEx]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[
             int,
+            FooStreamEx,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_servicethrows_args(_fbthrift_python_types.Struct):
+    foo: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        foo: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_servicethrows_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[None]
+    e: _typing.Final[FooEx]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., e: _typing.Optional[FooEx]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
             FooEx,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_servicethrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
         ]]]: ...
 
 
@@ -140,21 +193,21 @@ class _fbthrift_PubSubStreamingService_boththrows_result(_fbthrift_python_types.
 
 
 class _fbthrift_PubSubStreamingService_boththrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
-    e: _typing.Final[FooEx]
+    e: _typing.Final[FooStreamEx]
 
     def __init__(
-        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooEx]=...
+        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooStreamEx]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[
             int,
-            FooEx,
+            FooStreamEx,
         ]]]: ...
 
 
-class _fbthrift_PubSubStreamingService_responseandstreamthrows_args(_fbthrift_python_types.Struct):
+class _fbthrift_PubSubStreamingService_responseandstreamstreamthrows_args(_fbthrift_python_types.Struct):
     foo: _typing.Final[int] = ...
 
     def __init__(
@@ -167,7 +220,49 @@ class _fbthrift_PubSubStreamingService_responseandstreamthrows_args(_fbthrift_py
         _typing.Union[None, int]]]: ...
 
 
-class _fbthrift_PubSubStreamingService_responseandstreamthrows_result(_fbthrift_python_types.Struct):
+class _fbthrift_PubSubStreamingService_responseandstreamstreamthrows_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[int]
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamstreamthrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
+    e: _typing.Final[FooStreamEx]
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooStreamEx]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
+            FooStreamEx,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamservicethrows_args(_fbthrift_python_types.Struct):
+    foo: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        foo: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamservicethrows_result(_fbthrift_python_types.Struct):
     success: _typing.Final[int]
     e: _typing.Final[FooEx]
 
@@ -183,7 +278,34 @@ class _fbthrift_PubSubStreamingService_responseandstreamthrows_result(_fbthrift_
         ]]]: ...
 
 
-class _fbthrift_PubSubStreamingService_responseandstreamthrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
+class _fbthrift_PubSubStreamingService_responseandstreamservicethrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamboththrows_args(_fbthrift_python_types.Struct):
+    foo: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        foo: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamboththrows_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[int]
     e: _typing.Final[FooEx]
 
     def __init__(
@@ -195,6 +317,21 @@ class _fbthrift_PubSubStreamingService_responseandstreamthrows_result_stream(_fb
         _typing.Union[
             int,
             FooEx,
+        ]]]: ...
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamboththrows_result_stream(_fbthrift_python_types._fbthrift_ResponseStreamResult[int]):
+    e: _typing.Final[FooStreamEx]
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ..., e: _typing.Optional[FooStreamEx]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
+            FooStreamEx,
         ]]]: ...
 
 

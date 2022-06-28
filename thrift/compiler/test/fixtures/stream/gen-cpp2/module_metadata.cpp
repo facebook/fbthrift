@@ -27,6 +27,17 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::FooStreamEx>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.FooStreamEx", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_FooStreamEx = res.first->second;
+  module_FooStreamEx.name() = "module.FooStreamEx";
+  module_FooStreamEx.is_union() = false;
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.FooEx", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
@@ -38,6 +49,14 @@ StructMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
+void ExceptionMetadata<::cpp2::FooStreamEx>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions()->emplace("module.FooStreamEx", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_FooStreamEx = res.first->second;
+  module_FooStreamEx.name() = "module.FooStreamEx";
+}
 void ExceptionMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
   auto res = metadata.exceptions()->emplace("module.FooEx", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
@@ -85,6 +104,30 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingSer
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_servicethrows(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "servicethrows";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_servicethrows_foo_1;
+  module_PubSubStreamingService_servicethrows_foo_1.id() = 1;
+  module_PubSubStreamingService_servicethrows_foo_1.name() = "foo";
+  module_PubSubStreamingService_servicethrows_foo_1.is_optional() = false;
+  auto module_PubSubStreamingService_servicethrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_servicethrows_foo_1_type->writeAndGenType(*module_PubSubStreamingService_servicethrows_foo_1.type(), metadata);
+  func.arguments()->push_back(std::move(module_PubSubStreamingService_servicethrows_foo_1));
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_servicethrows_e_1;
+  module_PubSubStreamingService_servicethrows_e_1.id() = 1;
+  module_PubSubStreamingService_servicethrows_e_1.name() = "e";
+  module_PubSubStreamingService_servicethrows_e_1.is_optional() = false;
+  auto module_PubSubStreamingService_servicethrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
+  module_PubSubStreamingService_servicethrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_servicethrows_e_1.type(), metadata);
+  func.exceptions()->push_back(std::move(module_PubSubStreamingService_servicethrows_e_1));
+  ExceptionMetadata<::cpp2::FooEx>::gen(metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
+}
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_boththrows(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
@@ -109,26 +152,66 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingSer
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamstreamthrows(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name() = "responseandstreamthrows";
+  func.name() = "responseandstreamstreamthrows";
   auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
-  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamthrows_foo_1;
-  module_PubSubStreamingService_responseandstreamthrows_foo_1.id() = 1;
-  module_PubSubStreamingService_responseandstreamthrows_foo_1.name() = "foo";
-  module_PubSubStreamingService_responseandstreamthrows_foo_1.is_optional() = false;
-  auto module_PubSubStreamingService_responseandstreamthrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
-  module_PubSubStreamingService_responseandstreamthrows_foo_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamthrows_foo_1.type(), metadata);
-  func.arguments()->push_back(std::move(module_PubSubStreamingService_responseandstreamthrows_foo_1));
-  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamthrows_e_1;
-  module_PubSubStreamingService_responseandstreamthrows_e_1.id() = 1;
-  module_PubSubStreamingService_responseandstreamthrows_e_1.name() = "e";
-  module_PubSubStreamingService_responseandstreamthrows_e_1.is_optional() = false;
-  auto module_PubSubStreamingService_responseandstreamthrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
-  module_PubSubStreamingService_responseandstreamthrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamthrows_e_1.type(), metadata);
-  func.exceptions()->push_back(std::move(module_PubSubStreamingService_responseandstreamthrows_e_1));
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamstreamthrows_foo_1;
+  module_PubSubStreamingService_responseandstreamstreamthrows_foo_1.id() = 1;
+  module_PubSubStreamingService_responseandstreamstreamthrows_foo_1.name() = "foo";
+  module_PubSubStreamingService_responseandstreamstreamthrows_foo_1.is_optional() = false;
+  auto module_PubSubStreamingService_responseandstreamstreamthrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_responseandstreamstreamthrows_foo_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamstreamthrows_foo_1.type(), metadata);
+  func.arguments()->push_back(std::move(module_PubSubStreamingService_responseandstreamstreamthrows_foo_1));
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
+}
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamservicethrows(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "responseandstreamservicethrows";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamservicethrows_foo_1;
+  module_PubSubStreamingService_responseandstreamservicethrows_foo_1.id() = 1;
+  module_PubSubStreamingService_responseandstreamservicethrows_foo_1.name() = "foo";
+  module_PubSubStreamingService_responseandstreamservicethrows_foo_1.is_optional() = false;
+  auto module_PubSubStreamingService_responseandstreamservicethrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_responseandstreamservicethrows_foo_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamservicethrows_foo_1.type(), metadata);
+  func.arguments()->push_back(std::move(module_PubSubStreamingService_responseandstreamservicethrows_foo_1));
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamservicethrows_e_1;
+  module_PubSubStreamingService_responseandstreamservicethrows_e_1.id() = 1;
+  module_PubSubStreamingService_responseandstreamservicethrows_e_1.name() = "e";
+  module_PubSubStreamingService_responseandstreamservicethrows_e_1.is_optional() = false;
+  auto module_PubSubStreamingService_responseandstreamservicethrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
+  module_PubSubStreamingService_responseandstreamservicethrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamservicethrows_e_1.type(), metadata);
+  func.exceptions()->push_back(std::move(module_PubSubStreamingService_responseandstreamservicethrows_e_1));
+  ExceptionMetadata<::cpp2::FooEx>::gen(metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
+}
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamboththrows(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "responseandstreamboththrows";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamboththrows_foo_1;
+  module_PubSubStreamingService_responseandstreamboththrows_foo_1.id() = 1;
+  module_PubSubStreamingService_responseandstreamboththrows_foo_1.name() = "foo";
+  module_PubSubStreamingService_responseandstreamboththrows_foo_1.is_optional() = false;
+  auto module_PubSubStreamingService_responseandstreamboththrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_responseandstreamboththrows_foo_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamboththrows_foo_1.type(), metadata);
+  func.arguments()->push_back(std::move(module_PubSubStreamingService_responseandstreamboththrows_foo_1));
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamboththrows_e_1;
+  module_PubSubStreamingService_responseandstreamboththrows_e_1.id() = 1;
+  module_PubSubStreamingService_responseandstreamboththrows_e_1.name() = "e";
+  module_PubSubStreamingService_responseandstreamboththrows_e_1.is_optional() = false;
+  auto module_PubSubStreamingService_responseandstreamboththrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
+  module_PubSubStreamingService_responseandstreamboththrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamboththrows_e_1.type(), metadata);
+  func.exceptions()->push_back(std::move(module_PubSubStreamingService_responseandstreamboththrows_e_1));
   ExceptionMetadata<::cpp2::FooEx>::gen(metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
@@ -174,8 +257,11 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstream,
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_streamthrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_servicethrows,
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_boththrows,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamthrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamstreamthrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamservicethrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamboththrows,
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstreamFast,
   };
   for (auto& function_gen : functions) {

@@ -66,6 +66,17 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
 
+    cdef cppclass cFooStreamEx "::cpp2::FooStreamEx"(cTException):
+        cFooStreamEx() except +
+        cFooStreamEx(const cFooStreamEx&) except +
+        bint operator==(cFooStreamEx&)
+        bint operator!=(cFooStreamEx&)
+        bint operator<(cFooStreamEx&)
+        bint operator>(cFooStreamEx&)
+        bint operator<=(cFooStreamEx&)
+        bint operator>=(cFooStreamEx&)
+
+
     cdef cppclass cFooEx "::cpp2::FooEx"(cTException):
         cFooEx() except +
         cFooEx(const cFooEx&) except +
@@ -76,6 +87,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFooEx&)
         bint operator>=(cFooEx&)
 
+
+
+
+cdef class FooStreamEx(thrift.py3.exceptions.GeneratedError):
+    cdef shared_ptr[cFooStreamEx] _cpp_obj
+    cdef _fbthrift_types_fields.__FooStreamEx_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cFooStreamEx])
 
 
 

@@ -11,6 +11,7 @@ namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
+  ::apache::thrift::detail::md::ExceptionMetadata<FooStreamEx>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<FooEx>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen(response);
   return metadata;

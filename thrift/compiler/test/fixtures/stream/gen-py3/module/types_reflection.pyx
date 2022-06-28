@@ -23,6 +23,19 @@ from thrift.py3.types cimport (
 )
 
 
+cdef __StructSpec get_reflection__FooStreamEx():
+    cdef _module_types.FooStreamEx defaults = _module_types.FooStreamEx._fbthrift_create(
+        constant_shared_ptr[_module_types.cFooStreamEx](
+            default_inst[_module_types.cFooStreamEx]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="FooStreamEx",
+        kind=__StructType.EXCEPTION,
+        annotations={
+        },
+    )
+    return spec
 cdef __StructSpec get_reflection__FooEx():
     cdef _module_types.FooEx defaults = _module_types.FooEx._fbthrift_create(
         constant_shared_ptr[_module_types.cFooEx](

@@ -61,6 +61,103 @@ cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
+cdef class FooStreamEx(thrift.py3.exceptions.GeneratedError):
+    def __init__(FooStreamEx self, *args, **kwargs):
+        self._cpp_obj = make_shared[cFooStreamEx]()
+        self._fields_setter = _fbthrift_types_fields.__FooStreamEx_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("FooStreamEx", {
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cFooStreamEx] cpp_obj):
+        __fbthrift_inst = <FooStreamEx>FooStreamEx.__new__(FooStreamEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+
+    def __hash__(FooStreamEx self):
+        return super().__hash__()
+
+    def __repr__(FooStreamEx self):
+        return super().__repr__()
+
+    def __str__(FooStreamEx self):
+        return super().__str__()
+
+
+    def __copy__(FooStreamEx self):
+        cdef shared_ptr[cFooStreamEx] cpp_obj = make_shared[cFooStreamEx](
+            deref(self._cpp_obj)
+        )
+        return FooStreamEx._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cFooStreamEx](
+            self._cpp_obj,
+            (<FooStreamEx>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__FooStreamEx()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cFooStreamEx].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.FooStreamEx"
+
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cFooStreamEx](idx))
+
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 0
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FooStreamEx self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cFooStreamEx](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(FooStreamEx self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cFooStreamEx]()
+        with nogil:
+            needed = serializer.cdeserialize[cFooStreamEx](buf, self._cpp_obj.get(), proto)
+        return needed
+
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.FooStreamEx, self)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.FooStreamEx, self)
+@__cython.auto_pickle(False)
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __init__(FooEx self, *args, **kwargs):
         self._cpp_obj = make_shared[cFooEx]()
@@ -174,8 +271,8 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         cdef __cOptional[cint32_t] opt_val
         cdef cint32_t _value
         stream, pyfuture, rpc_options = <object> userdata
-        if result.hasException[cFooEx]():
-            pyfuture.set_exception(FooEx._fbthrift_create(thrift.py3.exceptions.try_make_shared_exception[cFooEx](result.exception())))
+        if result.hasException[cFooStreamEx]():
+            pyfuture.set_exception(FooStreamEx._fbthrift_create(thrift.py3.exceptions.try_make_shared_exception[cFooStreamEx](result.exception())))
         elif result.hasException():
             pyfuture.set_exception(
                 thrift.py3.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)

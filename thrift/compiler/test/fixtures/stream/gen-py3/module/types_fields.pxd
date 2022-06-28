@@ -44,6 +44,16 @@ cimport module.types as _module_types
 
 
 
+ctypedef void (*__FooStreamEx_FieldsSetterFunc)(__FooStreamEx_FieldsSetter, object) except *
+
+cdef class __FooStreamEx_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cFooStreamEx* _struct_cpp_obj
+    cdef cumap[__cstring_view, __FooStreamEx_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __FooStreamEx_FieldsSetter _fbthrift_create(_module_types.cFooStreamEx* struct_cpp_obj)
+
+
 ctypedef void (*__FooEx_FieldsSetterFunc)(__FooEx_FieldsSetter, object) except *
 
 cdef class __FooEx_FieldsSetter(__StructFieldsSetter):

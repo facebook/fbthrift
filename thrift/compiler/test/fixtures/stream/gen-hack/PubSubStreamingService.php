@@ -35,14 +35,22 @@ interface PubSubStreamingServiceAsyncClientIf extends PubSubStreamingServiceAsyn
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   streamthrows(1: i32 foo);
    */
   public function streamthrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32>
+   *   servicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public function servicethrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
+
+  /**
+   * Original thrift definition:-
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   boththrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
@@ -50,11 +58,26 @@ interface PubSubStreamingServiceAsyncClientIf extends PubSubStreamingServiceAsyn
 
   /**
    * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamstreamthrows(1: i32 foo);
+   */
+  public function responseandstreamstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   responseandstreamservicethrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
-  public function responseandstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+  public function responseandstreamservicethrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamboththrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public function responseandstreamboththrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
 
   /**
    * Original thrift definition:-
@@ -80,14 +103,22 @@ interface PubSubStreamingServiceClientIf extends \IThriftSyncIf {
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   streamthrows(1: i32 foo);
    */
   public function streamthrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32>
+   *   servicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public function servicethrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
+
+  /**
+   * Original thrift definition:-
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   boththrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
@@ -95,11 +126,26 @@ interface PubSubStreamingServiceClientIf extends \IThriftSyncIf {
 
   /**
    * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamstreamthrows(1: i32 foo);
+   */
+  public function responseandstreamstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   responseandstreamservicethrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
-  public function responseandstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+  public function responseandstreamservicethrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamboththrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public function responseandstreamboththrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
 
   /**
    * Original thrift definition:-
@@ -293,6 +339,97 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
+  protected function recvImpl_servicethrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = PubSubStreamingService_servicethrows_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("servicethrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_servicethrows_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('servicethrows', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'PubSubStreamingService_servicethrows_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'PubSubStreamingService_servicethrows_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = PubSubStreamingService_servicethrows_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("servicethrows failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('servicethrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('servicethrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('servicethrows', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('servicethrows', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->e !== null) {
+      $x = $result->e;
+      $this->eventHandler_->recvException('servicethrows', $expectedsequenceid, $x);
+      throw $x;
+    }
+    $this->eventHandler_->postRecv('servicethrows', $expectedsequenceid, null);
+    return;
+  }
+
   protected function recvImpl_boththrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
@@ -387,7 +524,7 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
-  protected function recvImpl_responseandstreamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
+  protected function recvImpl_responseandstreamstreamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
     return function(
       ?string $stream_payload, ?\Exception $ex
@@ -406,7 +543,7 @@ trait PubSubStreamingServiceClientBase {
 
         $transport->resetBuffer();
         $transport->write($stream_payload as nonnull);
-        $result = PubSubStreamingService_responseandstreamthrows_StreamResponse::withDefaultValues();
+        $result = PubSubStreamingService_responseandstreamstreamthrows_StreamResponse::withDefaultValues();
         $result->read($protocol);
         $protocol->readMessageEnd();
       } catch (\THandlerShortCircuitException $ex) {
@@ -418,18 +555,18 @@ trait PubSubStreamingServiceClientBase {
       if ($result->e !== null) {
         throw $result->e;
       }
-      throw new \TApplicationException("responseandstreamthrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+      throw new \TApplicationException("responseandstreamstreamthrows failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 
-  protected function recvImpl_responseandstreamthrows_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+  protected function recvImpl_responseandstreamstreamthrows_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
-      $this->eventHandler_->preRecv('responseandstreamthrows', $expectedsequenceid);
+      $this->eventHandler_->preRecv('responseandstreamstreamthrows', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'PubSubStreamingService_responseandstreamthrows_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, 'PubSubStreamingService_responseandstreamstreamthrows_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'PubSubStreamingService_responseandstreamthrows_FirstResponse', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, 'PubSubStreamingService_responseandstreamstreamthrows_FirstResponse', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -448,42 +585,234 @@ trait PubSubStreamingServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = PubSubStreamingService_responseandstreamthrows_FirstResponse::withDefaultValues();
+        $result = PubSubStreamingService_responseandstreamstreamthrows_FirstResponse::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("responseandstreamthrows failed: sequence id is out of order");
+          throw new \TProtocolException("responseandstreamstreamthrows failed: sequence id is out of order");
         }
       }
     } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
         case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('responseandstreamthrows', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvException('responseandstreamstreamthrows', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('responseandstreamthrows', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvError('responseandstreamstreamthrows', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_SUCCESS:
         default:
-          $this->eventHandler_->postRecv('responseandstreamthrows', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->postRecv('responseandstreamstreamthrows', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
     } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('responseandstreamthrows', $expectedsequenceid, $ex);
+      $this->eventHandler_->recvError('responseandstreamstreamthrows', $expectedsequenceid, $ex);
       throw $ex;
     }
     if ($result->success !== null) {
       $success = $result->success;
-      $this->eventHandler_->postRecv('responseandstreamthrows', $expectedsequenceid, $success);
+      $this->eventHandler_->postRecv('responseandstreamstreamthrows', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("responseandstreamstreamthrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('responseandstreamstreamthrows', $expectedsequenceid, $x);
+    throw $x;
+  }
+
+  protected function recvImpl_responseandstreamservicethrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = PubSubStreamingService_responseandstreamservicethrows_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("responseandstreamservicethrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_responseandstreamservicethrows_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+    try {
+      $this->eventHandler_->preRecv('responseandstreamservicethrows', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'PubSubStreamingService_responseandstreamservicethrows_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'PubSubStreamingService_responseandstreamservicethrows_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = PubSubStreamingService_responseandstreamservicethrows_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("responseandstreamservicethrows failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('responseandstreamservicethrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('responseandstreamservicethrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('responseandstreamservicethrows', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('responseandstreamservicethrows', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('responseandstreamservicethrows', $expectedsequenceid, $success);
       return $success;
     }
     if ($result->e !== null) {
       $x = $result->e;
-      $this->eventHandler_->recvException('responseandstreamthrows', $expectedsequenceid, $x);
+      $this->eventHandler_->recvException('responseandstreamservicethrows', $expectedsequenceid, $x);
       throw $x;
     }
-    $x = new \TApplicationException("responseandstreamthrows failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('responseandstreamthrows', $expectedsequenceid, $x);
+    $x = new \TApplicationException("responseandstreamservicethrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('responseandstreamservicethrows', $expectedsequenceid, $x);
+    throw $x;
+  }
+
+  protected function recvImpl_responseandstreamboththrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = PubSubStreamingService_responseandstreamboththrows_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      if ($result->e !== null) {
+        throw $result->e;
+      }
+      throw new \TApplicationException("responseandstreamboththrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_responseandstreamboththrows_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+    try {
+      $this->eventHandler_->preRecv('responseandstreamboththrows', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'PubSubStreamingService_responseandstreamboththrows_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'PubSubStreamingService_responseandstreamboththrows_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = PubSubStreamingService_responseandstreamboththrows_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("responseandstreamboththrows failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('responseandstreamboththrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('responseandstreamboththrows', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('responseandstreamboththrows', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('responseandstreamboththrows', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('responseandstreamboththrows', $expectedsequenceid, $success);
+      return $success;
+    }
+    if ($result->e !== null) {
+      $x = $result->e;
+      $this->eventHandler_->recvException('responseandstreamboththrows', $expectedsequenceid, $x);
+      throw $x;
+    }
+    $x = new \TApplicationException("responseandstreamboththrows failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('responseandstreamboththrows', $expectedsequenceid, $x);
     throw $x;
   }
 
@@ -617,7 +946,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   streamthrows(1: i32 foo);
    */
   public async function streamthrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
@@ -653,7 +982,44 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32>
+   *   servicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function servicethrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows");
+    $args = PubSubStreamingService_servicethrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "servicethrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_servicethrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_servicethrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   boththrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
@@ -690,11 +1056,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
 
   /**
    * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
-   *   throws (1: FooEx e);
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamstreamthrows(1: i32 foo);
    */
-  public async function responseandstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+  public async function responseandstreamstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -708,19 +1073,93 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamthrows");
-    $args = PubSubStreamingService_responseandstreamthrows_args::fromShape(shape(
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows");
+    $args = PubSubStreamingService_responseandstreamstreamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
-    $currentseqid = $this->sendImplHelper($args, "responseandstreamthrows", false);
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
-    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamthrows_StreamDecode());
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamstreamthrows_StreamDecode());
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
-    $first_response = $this->recvImpl_responseandstreamthrows_FirstResponse($currentseqid);
+    $first_response = $this->recvImpl_responseandstreamstreamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   responseandstreamservicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function responseandstreamservicethrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows");
+    $args = PubSubStreamingService_responseandstreamservicethrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamservicethrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamservicethrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_responseandstreamservicethrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamboththrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function responseandstreamboththrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows");
+    $args = PubSubStreamingService_responseandstreamboththrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamboththrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamboththrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_responseandstreamboththrows_FirstResponse($currentseqid);
     await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
   }
@@ -808,7 +1247,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   streamthrows(1: i32 foo);
    */
   public async function streamthrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
@@ -844,7 +1283,44 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
 
   /**
    * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
+   * void, stream<i32>
+   *   servicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function servicethrows(int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows");
+    $args = PubSubStreamingService_servicethrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "servicethrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_servicethrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_servicethrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void, stream<i32, throws (1: FooStreamEx e)>
    *   boththrows(1: i32 foo)
    *   throws (1: FooEx e);
    */
@@ -881,11 +1357,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
 
   /**
    * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
-   *   throws (1: FooEx e);
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamstreamthrows(1: i32 foo);
    */
-  public async function responseandstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+  public async function responseandstreamstreamthrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -899,19 +1374,93 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamthrows");
-    $args = PubSubStreamingService_responseandstreamthrows_args::fromShape(shape(
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows");
+    $args = PubSubStreamingService_responseandstreamstreamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
-    $currentseqid = $this->sendImplHelper($args, "responseandstreamthrows", false);
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
-    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamthrows_StreamDecode());
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamstreamthrows_StreamDecode());
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
-    $first_response = $this->recvImpl_responseandstreamthrows_FirstResponse($currentseqid);
+    $first_response = $this->recvImpl_responseandstreamstreamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   responseandstreamservicethrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function responseandstreamservicethrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows");
+    $args = PubSubStreamingService_responseandstreamservicethrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamservicethrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamservicethrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_responseandstreamservicethrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32, throws (1: FooStreamEx e)>
+   *   responseandstreamboththrows(1: i32 foo)
+   *   throws (1: FooEx e);
+   */
+  public async function responseandstreamboththrows(int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows");
+    $args = PubSubStreamingService_responseandstreamboththrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamboththrows", false);
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamboththrows_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_responseandstreamboththrows_FirstResponse($currentseqid);
     await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
   }
@@ -1264,7 +1813,7 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
     1 => shape(
       'var' => 'e',
       'type' => \TType::STRUCT,
-      'class' => FooEx::class,
+      'class' => FooStreamEx::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1274,14 +1823,14 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
 
   const type TConstructorShape = shape(
     ?'success' => ?int,
-    ?'e' => ?FooEx,
+    ?'e' => ?FooStreamEx,
   );
 
-  const int STRUCTURAL_ID = 7792945036684644137;
+  const int STRUCTURAL_ID = 7900894693871902695;
   public ?int $success;
-  public ?FooEx $e;
+  public ?FooStreamEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null)[] {
+  public function __construct(?int $success = null, ?FooStreamEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1324,7 +1873,7 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
                     shape(
-                      "name" => "module.FooEx",
+                      "name" => "module.FooStreamEx",
                     )
                   ),
                 )
@@ -1385,6 +1934,233 @@ class PubSubStreamingService_streamthrows_FirstResponse implements \IThriftSyncS
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.PubSubStreamingService_streamthrows_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_servicethrows_args implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 4302560019326481254;
+  public int $foo;
+
+  public function __construct(?int $foo = null)[] {
+    $this->foo = $foo ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_servicethrows_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.servicethrows_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_servicethrows_StreamResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null)[] {
+    $this->success = $success;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_servicethrows_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_servicethrows_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_servicethrows_FirstResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'e',
+      'type' => \TType::STRUCT,
+      'class' => FooEx::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'e' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'e' => ?FooEx,
+  );
+
+  const int STRUCTURAL_ID = 1166333131961181261;
+  public ?FooEx $e;
+
+  public function __construct(?FooEx $e = null)[] {
+    $this->e = $e;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'e'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_servicethrows_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_servicethrows_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FooEx",
+                    )
+                  ),
+                )
+              ),
+              "name" => "e",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -1489,7 +2265,7 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
     1 => shape(
       'var' => 'e',
       'type' => \TType::STRUCT,
-      'class' => FooEx::class,
+      'class' => FooStreamEx::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1499,14 +2275,14 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
 
   const type TConstructorShape = shape(
     ?'success' => ?int,
-    ?'e' => ?FooEx,
+    ?'e' => ?FooStreamEx,
   );
 
-  const int STRUCTURAL_ID = 7792945036684644137;
+  const int STRUCTURAL_ID = 7900894693871902695;
   public ?int $success;
-  public ?FooEx $e;
+  public ?FooStreamEx $e;
 
-  public function __construct(?int $success = null, ?FooEx $e = null)[] {
+  public function __construct(?int $success = null, ?FooStreamEx $e = null)[] {
     $this->success = $success;
     $this->e = $e;
   }
@@ -1549,7 +2325,7 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
                     shape(
-                      "name" => "module.FooEx",
+                      "name" => "module.FooStreamEx",
                     )
                   ),
                 )
@@ -1656,7 +2432,7 @@ class PubSubStreamingService_boththrows_FirstResponse implements \IThriftSyncStr
 
 }
 
-class PubSubStreamingService_responseandstreamthrows_args implements \IThriftSyncStruct {
+class PubSubStreamingService_responseandstreamstreamthrows_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1691,13 +2467,13 @@ class PubSubStreamingService_responseandstreamthrows_args implements \IThriftSyn
   }
 
   public function getName()[]: string {
-    return 'PubSubStreamingService_responseandstreamthrows_args';
+    return 'PubSubStreamingService_responseandstreamstreamthrows_args';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "module.responseandstreamthrows_args",
+        "name" => "module.responseandstreamstreamthrows_args",
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(
@@ -1730,7 +2506,328 @@ class PubSubStreamingService_responseandstreamthrows_args implements \IThriftSyn
 
 }
 
-class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \IThriftSyncStruct {
+class PubSubStreamingService_responseandstreamstreamthrows_StreamResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+    1 => shape(
+      'var' => 'e',
+      'type' => \TType::STRUCT,
+      'class' => FooStreamEx::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'e' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+    ?'e' => ?FooStreamEx,
+  );
+
+  const int STRUCTURAL_ID = 7900894693871902695;
+  public ?int $success;
+  public ?FooStreamEx $e;
+
+  public function __construct(?int $success = null, ?FooStreamEx $e = null)[] {
+    $this->success = $success;
+    $this->e = $e;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'e'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamstreamthrows_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_responseandstreamstreamthrows_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FooStreamEx",
+                    )
+                  ),
+                )
+              ),
+              "name" => "e",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamstreamthrows_FirstResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null)[] {
+    $this->success = $success;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamstreamthrows_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_responseandstreamstreamthrows_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamservicethrows_args implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 4302560019326481254;
+  public int $foo;
+
+  public function __construct(?int $foo = null)[] {
+    $this->foo = $foo ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamservicethrows_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.responseandstreamservicethrows_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamservicethrows_StreamResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null)[] {
+    $this->success = $success;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamservicethrows_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_responseandstreamservicethrows_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamservicethrows_FirstResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1775,13 +2872,13 @@ class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \
   }
 
   public function getName()[]: string {
-    return 'PubSubStreamingService_responseandstreamthrows_StreamResponse';
+    return 'PubSubStreamingService_responseandstreamservicethrows_FirstResponse';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "module.PubSubStreamingService_responseandstreamthrows_StreamResponse",
+        "name" => "module.PubSubStreamingService_responseandstreamservicethrows_FirstResponse",
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(
@@ -1829,7 +2926,180 @@ class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \
 
 }
 
-class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \IThriftSyncStruct {
+class PubSubStreamingService_responseandstreamboththrows_args implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 4302560019326481254;
+  public int $foo;
+
+  public function __construct(?int $foo = null)[] {
+    $this->foo = $foo ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamboththrows_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.responseandstreamboththrows_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamboththrows_StreamResponse implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+    1 => shape(
+      'var' => 'e',
+      'type' => \TType::STRUCT,
+      'class' => FooStreamEx::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'e' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+    ?'e' => ?FooStreamEx,
+  );
+
+  const int STRUCTURAL_ID = 7900894693871902695;
+  public ?int $success;
+  public ?FooStreamEx $e;
+
+  public function __construct(?int $success = null, ?FooStreamEx $e = null)[] {
+    $this->success = $success;
+    $this->e = $e;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'e'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'PubSubStreamingService_responseandstreamboththrows_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.PubSubStreamingService_responseandstreamboththrows_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FooStreamEx",
+                    )
+                  ),
+                )
+              ),
+              "name" => "e",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class PubSubStreamingService_responseandstreamboththrows_FirstResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1874,13 +3144,13 @@ class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \I
   }
 
   public function getName()[]: string {
-    return 'PubSubStreamingService_responseandstreamthrows_FirstResponse';
+    return 'PubSubStreamingService_responseandstreamboththrows_FirstResponse';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "module.PubSubStreamingService_responseandstreamthrows_FirstResponse",
+        "name" => "module.PubSubStreamingService_responseandstreamboththrows_FirstResponse",
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(
@@ -2239,6 +3509,59 @@ class PubSubStreamingServiceStaticMetadata implements \IThriftServiceStaticMetad
           ),
           tmeta_ThriftFunction::fromShape(
             shape(
+              "name" => "servicethrows",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_stream" => tmeta_ThriftStreamType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+              "exceptions" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.FooEx",
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "e",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
               "name" => "boththrows",
               "return_type" => tmeta_ThriftType::fromShape(
                 shape(
@@ -2292,7 +3615,96 @@ class PubSubStreamingServiceStaticMetadata implements \IThriftServiceStaticMetad
           ),
           tmeta_ThriftFunction::fromShape(
             shape(
-              "name" => "responseandstreamthrows",
+              "name" => "responseandstreamstreamthrows",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_stream" => tmeta_ThriftStreamType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "responseandstreamservicethrows",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_stream" => tmeta_ThriftStreamType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+              "exceptions" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.FooEx",
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "e",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "responseandstreamboththrows",
               "return_type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_stream" => tmeta_ThriftStreamType::fromShape(

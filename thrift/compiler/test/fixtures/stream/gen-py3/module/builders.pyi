@@ -14,6 +14,11 @@ import thrift.py3.builder
 import module.types as _module_types
 
 
+class FooStreamEx_Builder(thrift.py3.builder.StructBuilder):
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class FooEx_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...

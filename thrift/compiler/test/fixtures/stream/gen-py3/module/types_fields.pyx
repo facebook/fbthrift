@@ -19,6 +19,23 @@ from thrift.py3.types cimport const_pointer_cast
 
 
 @__cython.auto_pickle(False)
+cdef class __FooStreamEx_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __FooStreamEx_FieldsSetter _fbthrift_create(_module_types.cFooStreamEx* struct_cpp_obj):
+        cdef __FooStreamEx_FieldsSetter __fbthrift_inst = __FooStreamEx_FieldsSetter.__new__(__FooStreamEx_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        return __fbthrift_inst
+
+    cdef void set_field(__FooStreamEx_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __FooStreamEx_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+
+@__cython.auto_pickle(False)
 cdef class __FooEx_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod

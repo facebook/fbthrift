@@ -48,6 +48,19 @@ class PubSubStreamingServiceInterface(
     ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
+    def createPublisher_servicethrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+
+    @abstractmethod
+    def servicethrows(
+        self,
+        foo: int
+    ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
+
+    @staticmethod
     def createPublisher_boththrows(callback=None) -> _typing.Tuple[
         _typing.AsyncGenerator[int, None],
         _module_types.ServerPublisher_cint32_t
@@ -61,14 +74,40 @@ class PubSubStreamingServiceInterface(
     ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
-    def createPublisher_responseandstreamthrows(callback=None) -> _typing.Tuple[
+    def createPublisher_responseandstreamstreamthrows(callback=None) -> _typing.Tuple[
         _typing.AsyncGenerator[int, None],
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
 
     @abstractmethod
-    async def responseandstreamthrows(
+    async def responseandstreamstreamthrows(
+        self,
+        foo: int
+    ) -> _typing.Tuple[int, _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]]: ...
+
+    @staticmethod
+    def createPublisher_responseandstreamservicethrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+
+    @abstractmethod
+    async def responseandstreamservicethrows(
+        self,
+        foo: int
+    ) -> _typing.Tuple[int, _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]]: ...
+
+    @staticmethod
+    def createPublisher_responseandstreamboththrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+
+    @abstractmethod
+    async def responseandstreamboththrows(
         self,
         foo: int
     ) -> _typing.Tuple[int, _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]]: ...

@@ -82,6 +82,26 @@ cdef void PubSubStreamingService_streamthrows_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void PubSubStreamingService_servicethrows_callback(
+    cFollyTry[cClientBufferedStream[cint32_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException[_module_types.cFooEx]():
+        try:
+            exc = _module_types.FooEx._fbthrift_create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+    elif result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32._fbthrift_create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void PubSubStreamingService_boththrows_callback(
     cFollyTry[cClientBufferedStream[cint32_t]]&& result,
     PyObject* userdata
@@ -102,7 +122,40 @@ cdef void PubSubStreamingService_boththrows_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
-cdef void PubSubStreamingService_responseandstreamthrows_callback(
+cdef void PubSubStreamingService_responseandstreamstreamthrows_callback(
+    cFollyTry[cResponseAndClientBufferedStream[cint32_t,cint32_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.ResponseAndClientBufferedStream__i32_i32._fbthrift_create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void PubSubStreamingService_responseandstreamservicethrows_callback(
+    cFollyTry[cResponseAndClientBufferedStream[cint32_t,cint32_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException[_module_types.cFooEx]():
+        try:
+            exc = _module_types.FooEx._fbthrift_create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+    elif result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.ResponseAndClientBufferedStream__i32_i32._fbthrift_create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void PubSubStreamingService_responseandstreamboththrows_callback(
     cFollyTry[cResponseAndClientBufferedStream[cint32_t,cint32_t]]&& result,
     PyObject* userdata
 ):
@@ -211,6 +264,32 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
     @cython.always_allow_keywords(True)
+    def servicethrows(
+            PubSubStreamingService self,
+            foo not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(foo, int):
+            raise TypeError(f'foo is not a {int !r}.')
+        else:
+            foo = <cint32_t> foo
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
+            self._executor,
+            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).servicethrows(rpc_options._cpp_obj, 
+                foo,
+            ),
+            PubSubStreamingService_servicethrows_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
     def boththrows(
             PubSubStreamingService self,
             foo not None,
@@ -237,7 +316,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
     @cython.always_allow_keywords(True)
-    def responseandstreamthrows(
+    def responseandstreamstreamthrows(
             PubSubStreamingService self,
             foo not None,
             __RpcOptions rpc_options=None
@@ -254,10 +333,62 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
             self._executor,
-            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamthrows(rpc_options._cpp_obj, 
+            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamstreamthrows(rpc_options._cpp_obj, 
                 foo,
             ),
-            PubSubStreamingService_responseandstreamthrows_callback,
+            PubSubStreamingService_responseandstreamstreamthrows_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def responseandstreamservicethrows(
+            PubSubStreamingService self,
+            foo not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(foo, int):
+            raise TypeError(f'foo is not a {int !r}.')
+        else:
+            foo = <cint32_t> foo
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
+            self._executor,
+            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamservicethrows(rpc_options._cpp_obj, 
+                foo,
+            ),
+            PubSubStreamingService_responseandstreamservicethrows_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def responseandstreamboththrows(
+            PubSubStreamingService self,
+            foo not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(foo, int):
+            raise TypeError(f'foo is not a {int !r}.')
+        else:
+            foo = <cint32_t> foo
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
+            self._executor,
+            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamboththrows(rpc_options._cpp_obj, 
+                foo,
+            ),
+            PubSubStreamingService_responseandstreamboththrows_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

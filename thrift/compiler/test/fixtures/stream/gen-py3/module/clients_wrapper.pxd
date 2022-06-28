@@ -49,9 +49,15 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
       cint32_t arg_i32_to,)
     cFollyFuture[cClientBufferedStream[cint32_t]] streamthrows(cRpcOptions, 
       cint32_t arg_foo,)
+    cFollyFuture[cClientBufferedStream[cint32_t]] servicethrows(cRpcOptions, 
+      cint32_t arg_foo,)
     cFollyFuture[cClientBufferedStream[cint32_t]] boththrows(cRpcOptions, 
       cint32_t arg_foo,)
-    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamthrows(cRpcOptions, 
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamstreamthrows(cRpcOptions, 
+      cint32_t arg_foo,)
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamservicethrows(cRpcOptions, 
+      cint32_t arg_foo,)
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamboththrows(cRpcOptions, 
       cint32_t arg_foo,)
     cFollyFuture[cClientBufferedStream[cint32_t]] returnstreamFast(cRpcOptions, 
       cint32_t arg_i32_from,

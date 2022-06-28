@@ -13,6 +13,10 @@ cimport thrift.py3.builder
 
 cimport module.types as _module_types
 
+cdef class FooStreamEx_Builder(thrift.py3.builder.StructBuilder):
+    pass
+
+
 cdef class FooEx_Builder(thrift.py3.builder.StructBuilder):
     pass
 

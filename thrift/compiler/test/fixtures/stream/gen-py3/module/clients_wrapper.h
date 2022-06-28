@@ -34,10 +34,19 @@ class PubSubStreamingServiceClientWrapper : public ::thrift::py3::ClientWrapper 
     folly::Future<apache::thrift::ClientBufferedStream<int32_t>> streamthrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
+    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> servicethrows(
+      apache::thrift::RpcOptions& rpcOptions,
+      int32_t arg_foo);
     folly::Future<apache::thrift::ClientBufferedStream<int32_t>> boththrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
-    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamthrows(
+    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamstreamthrows(
+      apache::thrift::RpcOptions& rpcOptions,
+      int32_t arg_foo);
+    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamservicethrows(
+      apache::thrift::RpcOptions& rpcOptions,
+      int32_t arg_foo);
+    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamboththrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
     folly::Future<apache::thrift::ClientBufferedStream<int32_t>> returnstreamFast(

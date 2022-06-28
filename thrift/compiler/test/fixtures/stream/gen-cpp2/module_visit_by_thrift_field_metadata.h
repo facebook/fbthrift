@@ -14,6 +14,17 @@ namespace thrift {
 namespace detail {
 
 template <>
+struct VisitByFieldId<::cpp2::FooStreamEx> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::FooStreamEx");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::FooEx> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {

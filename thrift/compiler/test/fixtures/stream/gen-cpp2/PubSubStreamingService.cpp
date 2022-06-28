@@ -139,6 +139,63 @@ void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_st
   }
 }
 
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::servicethrows(::std::int32_t /*foo*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("servicethrows");
+}
+
+folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_servicethrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_servicethrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return servicethrows(p_foo);
+}
+
+folly::Future<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_servicethrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_servicethrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_servicethrows(p_foo), getInternalKeepAlive());
+}
+
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_servicethrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_servicethrows.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_servicethrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_servicethrows(p_foo);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_servicethrows(p_foo);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(servicethrows(p_foo));
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
 ::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::boththrows(::std::int32_t /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("boththrows");
 }
@@ -196,51 +253,165 @@ void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_bo
   }
 }
 
-::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::responseandstreamthrows(::std::int32_t /*foo*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamthrows");
+::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::responseandstreamstreamthrows(::std::int32_t /*foo*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamstreamthrows");
 }
 
-folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_responseandstreamthrows(::std::int32_t p_foo) {
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_responseandstreamstreamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
-  __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return responseandstreamthrows(p_foo);
+  __fbthrift_invocation_responseandstreamstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return responseandstreamstreamthrows(p_foo);
 }
 
-folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_responseandstreamthrows(::std::int32_t p_foo) {
+folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_responseandstreamstreamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
-  __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(p_foo), getInternalKeepAlive());
+  __fbthrift_invocation_responseandstreamstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_responseandstreamstreamthrows(p_foo), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_responseandstreamstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
-  auto invocationType = __fbthrift_invocation_responseandstreamthrows.load(std::memory_order_relaxed);
+  auto invocationType = __fbthrift_invocation_responseandstreamstreamthrows.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
       case apache::thrift::detail::si::InvocationType::AsyncTm:
       {
-        __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        __fbthrift_invocation_responseandstreamstreamthrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
         FOLLY_FALLTHROUGH;
       }
       case apache::thrift::detail::si::InvocationType::Future:
       {
-        auto fut = future_responseandstreamthrows(p_foo);
+        auto fut = future_responseandstreamstreamthrows(p_foo);
         apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
         return;
       }
       case apache::thrift::detail::si::InvocationType::SemiFuture:
       {
-        auto fut = semifuture_responseandstreamthrows(p_foo);
+        auto fut = semifuture_responseandstreamstreamthrows(p_foo);
         apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
         return;
       }
       case apache::thrift::detail::si::InvocationType::Sync:
       {
-        callback->result(responseandstreamthrows(p_foo));
+        callback->result(responseandstreamstreamthrows(p_foo));
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
+::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::responseandstreamservicethrows(::std::int32_t /*foo*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamservicethrows");
+}
+
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_responseandstreamservicethrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_responseandstreamservicethrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return responseandstreamservicethrows(p_foo);
+}
+
+folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_responseandstreamservicethrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_responseandstreamservicethrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_responseandstreamservicethrows(p_foo), getInternalKeepAlive());
+}
+
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_responseandstreamservicethrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_responseandstreamservicethrows.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_responseandstreamservicethrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_responseandstreamservicethrows(p_foo);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_responseandstreamservicethrows(p_foo);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(responseandstreamservicethrows(p_foo));
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
+::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::responseandstreamboththrows(::std::int32_t /*foo*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamboththrows");
+}
+
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_responseandstreamboththrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_responseandstreamboththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return responseandstreamboththrows(p_foo);
+}
+
+folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_responseandstreamboththrows(::std::int32_t p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_responseandstreamboththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_responseandstreamboththrows(p_foo), getInternalKeepAlive());
+}
+
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_responseandstreamboththrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_responseandstreamboththrows.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_responseandstreamboththrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_responseandstreamboththrows(p_foo);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_responseandstreamboththrows(p_foo);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(responseandstreamboththrows(p_foo));
         return;
       }
       default:
@@ -296,16 +467,31 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsy
      &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"servicethrows",
+    {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"boththrows",
     {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"responseandstreamthrows",
-    {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"responseandstreamstreamthrows",
+    {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"responseandstreamservicethrows",
+    {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamservicethrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamservicethrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamservicethrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamservicethrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"responseandstreamboththrows",
+    {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamboththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamboththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamboththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamboththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"returnstreamFast",
     {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
@@ -332,16 +518,34 @@ apache::thrift::ServiceRequestInfoMap PubSubStreamingServiceServiceInfoHolder::s
      "PubSubStreamingService.streamthrows",
      std::nullopt,
      apache::thrift::concurrency::NORMAL}},
+  {"servicethrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.servicethrows",
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"boththrows",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.boththrows",
      std::nullopt,
      apache::thrift::concurrency::NORMAL}},
-  {"responseandstreamthrows",
+  {"responseandstreamstreamthrows",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-     "PubSubStreamingService.responseandstreamthrows",
+     "PubSubStreamingService.responseandstreamstreamthrows",
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
+  {"responseandstreamservicethrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.responseandstreamservicethrows",
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
+  {"responseandstreamboththrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.responseandstreamboththrows",
      std::nullopt,
      apache::thrift::concurrency::NORMAL}},
   {"returnstreamFast",

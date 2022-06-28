@@ -14,6 +14,13 @@ namespace thrift {
 namespace detail {
 
 template <>
+struct ForEachField<::cpp2::FooStreamEx> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::FooEx> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {

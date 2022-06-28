@@ -12,8 +12,11 @@ cdef class PubSubStreamingServiceInterface(ServiceInterface):
     # these are to avoid weird Cython multiple inheritance issue
     cdef bint _for_cython_returnstream
     cdef bint _for_cython_streamthrows
+    cdef bint _for_cython_servicethrows
     cdef bint _for_cython_boththrows
-    cdef bint _for_cython_responseandstreamthrows
+    cdef bint _for_cython_responseandstreamstreamthrows
+    cdef bint _for_cython_responseandstreamservicethrows
+    cdef bint _for_cython_responseandstreamboththrows
     cdef bint _for_cython_returnstreamFast
     pass
 

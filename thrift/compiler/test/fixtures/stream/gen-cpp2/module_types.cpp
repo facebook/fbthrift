@@ -16,6 +16,90 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::FooStreamEx>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::FooStreamEx>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+FooStreamEx::FooStreamEx(const FooStreamEx&) = default;
+FooStreamEx& FooStreamEx::operator=(const FooStreamEx&) = default;
+FooStreamEx::FooStreamEx() {
+}
+
+
+FooStreamEx::~FooStreamEx() {}
+
+FooStreamEx::FooStreamEx(FooStreamEx&& other) noexcept { (void)other; }
+FooStreamEx& FooStreamEx::operator=(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept {
+    return *this;
+}
+
+
+FooStreamEx::FooStreamEx(apache::thrift::FragileConstructor) {}
+
+
+void FooStreamEx::__fbthrift_clear() {
+  // clear all fields
+}
+
+void FooStreamEx::__fbthrift_clear_terse_fields() {
+}
+
+bool FooStreamEx::__fbthrift_is_empty() const {
+  return true;
+}
+
+bool FooStreamEx::operator==(const FooStreamEx& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return true;
+}
+
+bool FooStreamEx::operator<(const FooStreamEx& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return false;
+}
+
+
+void swap(FooStreamEx& a, FooStreamEx& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void FooStreamEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t FooStreamEx::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t FooStreamEx::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FooStreamEx::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void FooStreamEx::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t FooStreamEx::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t FooStreamEx::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FooStreamEx::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::FooEx>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,

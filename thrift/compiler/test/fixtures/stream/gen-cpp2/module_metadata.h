@@ -21,9 +21,19 @@ namespace detail {
 namespace md {
 
 template <>
+class StructMetadata<::cpp2::FooStreamEx> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::cpp2::FooEx> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::FooStreamEx> {
+ public:
+  static void gen(ThriftMetadata& metadata);
 };
 template <>
 class ExceptionMetadata<::cpp2::FooEx> {
@@ -42,8 +52,11 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingSe
 
   static void gen_returnstream(ThriftMetadata& metadata, ThriftService& context);
   static void gen_streamthrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_servicethrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_boththrows(ThriftMetadata& metadata, ThriftService& context);
-  static void gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_responseandstreamstreamthrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_responseandstreamservicethrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_responseandstreamboththrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md

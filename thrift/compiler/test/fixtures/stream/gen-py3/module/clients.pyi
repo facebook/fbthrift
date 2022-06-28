@@ -33,13 +33,31 @@ class PubSubStreamingService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.ClientBufferedStream__i32: ...
 
+    async def servicethrows(
+        self,
+        foo: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _module_types.ClientBufferedStream__i32: ...
+
     async def boththrows(
         self,
         foo: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.ClientBufferedStream__i32: ...
 
-    async def responseandstreamthrows(
+    async def responseandstreamstreamthrows(
+        self,
+        foo: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _module_types.ResponseAndClientBufferedStream__i32_i32: ...
+
+    async def responseandstreamservicethrows(
+        self,
+        foo: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _module_types.ResponseAndClientBufferedStream__i32_i32: ...
+
+    async def responseandstreamboththrows(
         self,
         foo: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None

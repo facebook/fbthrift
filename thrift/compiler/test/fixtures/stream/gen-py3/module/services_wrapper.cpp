@@ -65,6 +65,28 @@ foo    ]() mutable {
         });
     });
 }
+void PubSubStreamingServiceWrapper::async_tm_servicethrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
+    , int32_t foo
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ServerStream<int32_t>>();
+        call_cy_PubSubStreamingService_servicethrows(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ServerStream<int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
 void PubSubStreamingServiceWrapper::async_tm_boththrows(
   std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
     , int32_t foo
@@ -87,7 +109,7 @@ foo    ]() mutable {
         });
     });
 }
-void PubSubStreamingServiceWrapper::async_tm_responseandstreamthrows(
+void PubSubStreamingServiceWrapper::async_tm_responseandstreamstreamthrows(
   std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
     , int32_t foo
 ) {
@@ -98,7 +120,51 @@ void PubSubStreamingServiceWrapper::async_tm_responseandstreamthrows(
      callback = std::move(callback),
 foo    ]() mutable {
         auto [promise, future] = folly::makePromiseContract<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>();
-        call_cy_PubSubStreamingService_responseandstreamthrows(
+        call_cy_PubSubStreamingService_responseandstreamstreamthrows(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+void PubSubStreamingServiceWrapper::async_tm_responseandstreamservicethrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
+    , int32_t foo
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>();
+        call_cy_PubSubStreamingService_responseandstreamservicethrows(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+void PubSubStreamingServiceWrapper::async_tm_responseandstreamboththrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
+    , int32_t foo
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>();
+        call_cy_PubSubStreamingService_responseandstreamboththrows(
             this->if_object,
             ctx,
             std::move(promise),

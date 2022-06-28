@@ -14,4 +14,6 @@ from thrift.py3.reflection cimport (
     FieldSpec as __FieldSpec,
 )
 
+cdef __StructSpec get_reflection__FooStreamEx()
+
 cdef __StructSpec get_reflection__FooEx()

@@ -131,8 +131,8 @@ async def runGenerator_PubSubStreamingService_streamthrows(object generator, Pro
         item = await generator.asend(None)
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
-    except _module_types.FooEx as ex:
-        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except _module_types.FooStreamEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooStreamEx> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -163,13 +163,48 @@ cdef void getNextGenerator_PubSubStreamingService_streamthrows(object generator,
             __promise
         )
     )
+async def runGenerator_PubSubStreamingService_servicethrows(object generator, Promise_cint32_t_Stream promise):
+    try:
+        item = await generator.asend(None)
+    except StopAsyncIteration:
+        promise.cPromise.setValue(optional[cint32_t]())
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in servicethrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler servicethrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
+
+cdef void getNextGenerator_PubSubStreamingService_servicethrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        runGenerator_PubSubStreamingService_servicethrows(
+            generator,
+            __promise
+        )
+    )
 async def runGenerator_PubSubStreamingService_boththrows(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
-    except _module_types.FooEx as ex:
-        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except _module_types.FooStreamEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooStreamEx> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -200,13 +235,13 @@ cdef void getNextGenerator_PubSubStreamingService_boththrows(object generator, c
             __promise
         )
     )
-async def runGenerator_PubSubStreamingService_responseandstreamthrows(object generator, Promise_cint32_t_Stream promise):
+async def runGenerator_PubSubStreamingService_responseandstreamstreamthrows(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
-    except _module_types.FooEx as ex:
-        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except _module_types.FooStreamEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooStreamEx> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -214,14 +249,14 @@ async def runGenerator_PubSubStreamingService_responseandstreamthrows(object gen
         ))
     except Exception as ex:
         print(
-            "Unexpected error in responseandstreamthrows:",
+            "Unexpected error in responseandstreamstreamthrows:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     except asyncio.CancelledError as ex:
-        print("Coroutine was cancelled in service handler responseandstreamthrows:", file=sys.stderr)
+        print("Coroutine was cancelled in service handler responseandstreamstreamthrows:", file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
@@ -229,10 +264,82 @@ async def runGenerator_PubSubStreamingService_responseandstreamthrows(object gen
     else:
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
-cdef void getNextGenerator_PubSubStreamingService_responseandstreamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
+cdef void getNextGenerator_PubSubStreamingService_responseandstreamstreamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
-        runGenerator_PubSubStreamingService_responseandstreamthrows(
+        runGenerator_PubSubStreamingService_responseandstreamstreamthrows(
+            generator,
+            __promise
+        )
+    )
+async def runGenerator_PubSubStreamingService_responseandstreamservicethrows(object generator, Promise_cint32_t_Stream promise):
+    try:
+        item = await generator.asend(None)
+    except StopAsyncIteration:
+        promise.cPromise.setValue(optional[cint32_t]())
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in responseandstreamservicethrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler responseandstreamservicethrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
+
+cdef void getNextGenerator_PubSubStreamingService_responseandstreamservicethrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        runGenerator_PubSubStreamingService_responseandstreamservicethrows(
+            generator,
+            __promise
+        )
+    )
+async def runGenerator_PubSubStreamingService_responseandstreamboththrows(object generator, Promise_cint32_t_Stream promise):
+    try:
+        item = await generator.asend(None)
+    except StopAsyncIteration:
+        promise.cPromise.setValue(optional[cint32_t]())
+    except _module_types.FooStreamEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooStreamEx> ex)._cpp_obj))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in responseandstreamboththrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler responseandstreamboththrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
+
+cdef void getNextGenerator_PubSubStreamingService_responseandstreamboththrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        runGenerator_PubSubStreamingService_responseandstreamboththrows(
             generator,
             __promise
         )
@@ -371,6 +478,17 @@ cdef class PubSubStreamingServiceInterface(
 
         return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
+    async def servicethrows(
+            self,
+            foo):
+        raise NotImplementedError("async def servicethrows is not implemented")
+
+    @staticmethod
+    def createPublisher_servicethrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
+
     async def boththrows(
             self,
             foo):
@@ -382,13 +500,35 @@ cdef class PubSubStreamingServiceInterface(
 
         return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
-    async def responseandstreamthrows(
+    async def responseandstreamstreamthrows(
             self,
             foo):
-        raise NotImplementedError("async def responseandstreamthrows is not implemented")
+        raise NotImplementedError("async def responseandstreamstreamthrows is not implemented")
 
     @staticmethod
-    def createPublisher_responseandstreamthrows(callback=None):
+    def createPublisher_responseandstreamstreamthrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
+
+    async def responseandstreamservicethrows(
+            self,
+            foo):
+        raise NotImplementedError("async def responseandstreamservicethrows is not implemented")
+
+    @staticmethod
+    def createPublisher_responseandstreamservicethrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
+
+    async def responseandstreamboththrows(
+            self,
+            foo):
+        raise NotImplementedError("async def responseandstreamboththrows is not implemented")
+
+    @staticmethod
+    def createPublisher_responseandstreamboththrows(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
         return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
@@ -460,6 +600,24 @@ cdef api void call_cy_PubSubStreamingService_streamthrows(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_servicethrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cServerStream[cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_servicethrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 cdef api void call_cy_PubSubStreamingService_boththrows(
     object self,
     Cpp2RequestContext* ctx,
@@ -478,7 +636,7 @@ cdef api void call_cy_PubSubStreamingService_boththrows(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
+cdef api void call_cy_PubSubStreamingService_responseandstreamstreamthrows(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
@@ -489,7 +647,43 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
-        PubSubStreamingService_responseandstreamthrows_coro(
+        PubSubStreamingService_responseandstreamstreamthrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_responseandstreamservicethrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_responseandstreamservicethrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_responseandstreamboththrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_responseandstreamboththrows_coro(
             self,
             __promise,
             arg_foo
@@ -609,6 +803,42 @@ async def PubSubStreamingService_streamthrows_coro(
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
+async def PubSubStreamingService_servicethrows_coro(
+    object self,
+    Promise_cServerStream__cint32_t promise,
+    foo
+):
+    try:
+        result = self.servicethrows(
+                    foo)
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_servicethrows)))
+    except _module_types.FooEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler servicethrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler servicethrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
+
 async def PubSubStreamingService_boththrows_coro(
     object self,
     Promise_cServerStream__cint32_t promise,
@@ -645,20 +875,56 @@ async def PubSubStreamingService_boththrows_coro(
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
-async def PubSubStreamingService_responseandstreamthrows_coro(
+async def PubSubStreamingService_responseandstreamstreamthrows_coro(
     object self,
     Promise_cResponseAndServerStream__cint32_t_cint32_t promise,
     foo
 ):
     try:
-        result = self.responseandstreamthrows(
+        result = self.responseandstreamstreamthrows(
                     foo)
         result = await result
         item, result = result
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamstreamthrows)))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler responseandstreamstreamthrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler responseandstreamstreamthrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(createResponseAndServerStream[cint32_t,cint32_t]((<cint32_t?> item), cmove(deref((<ServerStream_cint32_t?>result).cStream))))
+
+async def PubSubStreamingService_responseandstreamservicethrows_coro(
+    object self,
+    Promise_cResponseAndServerStream__cint32_t_cint32_t promise,
+    foo
+):
+    try:
+        result = self.responseandstreamservicethrows(
+                    foo)
+        result = await result
+        item, result = result
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamservicethrows)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -668,14 +934,52 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
         ))
     except Exception as ex:
         print(
-            "Unexpected error in service handler responseandstreamthrows:",
+            "Unexpected error in service handler responseandstreamservicethrows:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     except asyncio.CancelledError as ex:
-        print("Coroutine was cancelled in service handler responseandstreamthrows:", file=sys.stderr)
+        print("Coroutine was cancelled in service handler responseandstreamservicethrows:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(createResponseAndServerStream[cint32_t,cint32_t]((<cint32_t?> item), cmove(deref((<ServerStream_cint32_t?>result).cStream))))
+
+async def PubSubStreamingService_responseandstreamboththrows_coro(
+    object self,
+    Promise_cResponseAndServerStream__cint32_t_cint32_t promise,
+    foo
+):
+    try:
+        result = self.responseandstreamboththrows(
+                    foo)
+        result = await result
+        item, result = result
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamboththrows)))
+    except _module_types.FooEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler responseandstreamboththrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler responseandstreamboththrows:", file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
