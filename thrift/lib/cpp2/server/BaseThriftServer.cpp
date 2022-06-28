@@ -169,7 +169,7 @@ int64_t BaseThriftServer::getLoad(
 
 std::string BaseThriftServer::getLoadInfo(int64_t load) const {
   std::stringstream stream;
-  stream << "Load is: " << load << "% requests";
+  stream << "Load is: " << load << " active requests";
   return stream.str();
 }
 
