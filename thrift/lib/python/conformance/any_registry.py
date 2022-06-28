@@ -73,6 +73,7 @@ class AnyRegistry:
         hash_prefix = get_universal_hash_prefix(hash, 16)
         serializer_protocol = _to_serializer_protocol(protocol)
         return Any(
+            type=uri,
             typeHashPrefixSha2_256=hash_prefix,
             protocol=protocol,
             data=serialize_iobuf(obj, protocol=serializer_protocol),
