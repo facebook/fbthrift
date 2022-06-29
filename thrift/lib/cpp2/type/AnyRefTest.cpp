@@ -59,12 +59,11 @@ TEST(AnyRefTest, List) {
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("field1"), std::runtime_error);
-  int index = 0;
-  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
-  index = 1;
-  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+  int i;
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(i = 0)), std::runtime_error);
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(i = 1)), std::runtime_error);
   EXPECT_THROW(ref.add(AnyRef::create<string_t>(value[0])), std::runtime_error);
-  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(index)), std::runtime_error);
+  EXPECT_THROW(ref.get(AnyRef::create<i32_t>(i)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -83,6 +82,31 @@ TEST(AnyRefTest, Set) {
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("hi"), std::runtime_error);
   EXPECT_THROW(ref.get(AnyRef::create<string_t>(key)), std::runtime_error);
+
+  ref.clear();
+  EXPECT_TRUE(ref.empty());
+  EXPECT_TRUE(value.empty());
+}
+
+TEST(AnyRefTest, Map) {
+  std::map<std::string, int> value;
+  std::string one = "one";
+  int v;
+  auto ref = AnyRef::create<map<string_t, i32_t>>(value);
+  EXPECT_TRUE(ref.empty());
+  EXPECT_FALSE(
+      ref.put(AnyRef::create<string_t>(one), AnyRef::create<i32_t>(v = 1)));
+  EXPECT_EQ(value["one"], 1);
+
+  EXPECT_TRUE(ref.put("one", AnyRef::create<i32_t>(v = 2)));
+  EXPECT_EQ(value["one"], 2);
+
+  EXPECT_FALSE(ref.empty());
+  EXPECT_THROW(
+      ref.put(FieldId{1}, AnyRef::create<i32_t>(v = 2)), std::logic_error);
+  EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
+  EXPECT_THROW(ref.get("one"), std::runtime_error);
+  EXPECT_THROW(ref.get(AnyRef::create<string_t>(one)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());

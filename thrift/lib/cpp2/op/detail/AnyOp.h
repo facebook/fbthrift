@@ -107,6 +107,45 @@ struct AnyOp<type::set<KeyTag>, T> : BaseAnyOp<type::set<KeyTag>, T> {
   }
 };
 
+template <typename KeyTag, typename ValTag, typename T>
+struct AnyOp<type::map<KeyTag, ValTag>, T>
+    : BaseAnyOp<type::map<KeyTag, ValTag>, T> {
+  using Tag = type::map<KeyTag, ValTag>;
+  using Base = BaseAnyOp<Tag, T>;
+  using Base::bad_op;
+  using Base::ref;
+  using Base::unimplemented;
+
+  constexpr static decltype(auto) key(const Ptr& ptr) {
+    return Base::template ref<KeyTag>(ptr);
+  }
+  constexpr static decltype(auto) val(const Ptr& ptr) {
+    return Base::template ref<ValTag>(ptr);
+  }
+
+  static bool put(void* self, FieldId, const Ptr* k, const Ptr& v) {
+    if (k == nullptr) {
+      bad_op();
+    }
+    auto itr = ref(self).find(key(*k));
+    if (itr == ref(self).end()) {
+      ref(self).emplace(key(*k), val(v));
+      return false; // new entry.
+    }
+    itr->second = val(v);
+    return true; // replacing existing.
+  }
+
+  [[noreturn]] static bool add(void*, const Ptr&) {
+    // TODO(afuller): Add key/value pair, if key not already present.
+    unimplemented();
+  }
+
+  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) {
+    unimplemented(); // TODO(afuller): Get by key.
+  }
+};
+
 // Create a AnyOp-based Thrift pointer.
 template <typename Tag, typename T = type::native_type<Tag>>
 Ptr createAnyPtr(T&& val) {
