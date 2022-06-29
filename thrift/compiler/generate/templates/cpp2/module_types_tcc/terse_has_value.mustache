@@ -29,11 +29,11 @@
 %><%#type:struct?%><%!
   %>!::apache::thrift::empty(<% > module_types_tcc/pm_value%>)<%!
 %><%/type:struct?%><%!
-%><%#type:raw_string_or_binary?%><%!
+%><%#field:raw_string_or_binary?%><%!
   %>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!
-%><%/type:raw_string_or_binary?%><%!
-%><%^type:resolves_to_container?%><%^type:raw_string_or_binary?%><%^type:struct?%><%!
+%><%/field:raw_string_or_binary?%><%!
+%><%^type:resolves_to_container?%><%^field:raw_string_or_binary?%><%^type:struct?%><%!
   %><% >  module_types_tcc/field_ref %> != <% > field/intrinsic_default%><%!
-%><%/type:struct?%><%/type:raw_string_or_binary?%><%/type:resolves_to_container?%><%!
+%><%/type:struct?%><%/field:raw_string_or_binary?%><%/type:resolves_to_container?%><%!
 %><%/field:cpp_first_adapter%><%!
 %>

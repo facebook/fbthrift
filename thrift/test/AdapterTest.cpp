@@ -718,18 +718,22 @@ TEST(AdaptTest, AdapterWithContext) {
   auto obj = basic::AdaptTestStruct();
   EXPECT_EQ(obj.data()->meta, &*obj.meta());
   EXPECT_EQ(obj.string_data()->meta, &*obj.meta());
+  EXPECT_EQ(obj.binary_data()->meta, &*obj.meta());
 
   auto copy = basic::AdaptTestStruct(obj);
   EXPECT_EQ(copy.data()->meta, &*copy.meta());
   EXPECT_EQ(copy.string_data()->meta, &*copy.meta());
+  EXPECT_EQ(copy.binary_data()->meta, &*copy.meta());
 
   auto move = basic::AdaptTestStruct(std::move(copy));
   EXPECT_EQ(move.data()->meta, &*move.meta());
   EXPECT_EQ(move.string_data()->meta, &*move.meta());
+  EXPECT_EQ(move.binary_data()->meta, &*move.meta());
 
   obj.data()->value = 42;
   obj.meta() = "foo";
   obj.string_data()->value = "42";
+  obj.binary_data()->value = "100";
 
   EXPECT_EQ(obj.data()->value, 42);
   EXPECT_EQ(obj.data()->fieldId, 4);
@@ -737,6 +741,9 @@ TEST(AdaptTest, AdapterWithContext) {
   EXPECT_EQ(obj.string_data()->value, "42");
   EXPECT_EQ(obj.string_data()->fieldId, 7);
   EXPECT_EQ(*obj.string_data()->meta, "foo");
+  EXPECT_EQ(obj.binary_data()->value, "100");
+  EXPECT_EQ(obj.binary_data()->fieldId, 10);
+  EXPECT_EQ(*obj.binary_data()->meta, "foo");
 
   auto serialized = CompactSerializer::serialize<std::string>(obj);
   auto obj2 = basic::AdaptTestStruct();
@@ -748,6 +755,9 @@ TEST(AdaptTest, AdapterWithContext) {
   EXPECT_EQ(obj2.string_data()->value, "42");
   EXPECT_EQ(obj2.string_data()->fieldId, 7);
   EXPECT_EQ(*obj2.string_data()->meta, "foo");
+  EXPECT_EQ(obj2.binary_data()->value, "100");
+  EXPECT_EQ(obj2.binary_data()->fieldId, 10);
+  EXPECT_EQ(*obj2.binary_data()->meta, "foo");
 }
 
 TEST(AdaptTest, ComposedAdapter) {

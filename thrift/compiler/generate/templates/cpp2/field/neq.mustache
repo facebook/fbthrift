@@ -20,7 +20,7 @@
   %>(!::apache::thrift::detail::pointer_equal(lhs.<%field:cpp_name%>_ref(), rhs.<%field:cpp_name%>_ref()))<%
 %><%/field:cpp_ref?%><%
 %><%^field:cpp_ref?%><%
-  %><%#type:raw_binary?%><%
+  %><%#field:raw_binary?%><%
     // Not all standard binary types define equality operators, so we forward the check to StringTraits.
     // TODO(afuller): Move this to a shared helper function in the runtime.
     %><%#field:optional?%><%
@@ -28,8 +28,8 @@
     %><%/field:optional?%><%
     %>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(<% > types/apply_indirection_pre%>lhs.<%field:cpp_storage_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_storage_name%><% > types/apply_indirection_post%>)<%
     %><%#field:optional?%>)<%/field:optional?%><%
-  %><%/type:raw_binary?%><%
-  %><%^type:raw_binary?%><%
+  %><%/field:raw_binary?%><%
+  %><%^field:raw_binary?%><%
     %><%#field:cpp_first_adapter%><%
       %><%#field:optional?%><%
         %>::apache::thrift::adapt_detail::not_equal_opt<<%field:cpp_first_adapter%>>(lhs.<%field:cpp_name%>_ref(), rhs.<%field:cpp_name%>_ref())<%
@@ -43,5 +43,5 @@
       // We only require that types define the == operator, so avoid using != directly.
       %>!(lhs.<%field:cpp_name%>_ref() == rhs.<%field:cpp_name%>_ref())<%
     %><%/field:cpp_first_adapter%><%
-  %><%/type:raw_binary?%><%
+  %><%/field:raw_binary?%><%
 %><%/field:cpp_ref?%>

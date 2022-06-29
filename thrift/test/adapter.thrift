@@ -73,6 +73,9 @@ struct AdaptTestStruct {
 
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
   9: AdaptedInteger double_wrapped_integer;
+
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  10: binary binary_data;
 }
 
 enum ThriftAdaptedEnum {

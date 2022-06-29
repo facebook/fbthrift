@@ -447,9 +447,6 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
-            {"type:raw_binary?", &mstch_cpp2_type::raw_binary},
-            {"type:raw_string_or_binary?",
-             &mstch_cpp2_type::raw_string_or_binary},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
@@ -550,12 +547,6 @@ class mstch_cpp2_type : public mstch_type {
     }
     return {};
   }
-  mstch::node raw_binary() {
-    return resolved_type_->is_binary() && !is_adapted();
-  }
-  mstch::node raw_string_or_binary() {
-    return resolved_type_->is_string_or_binary() && !is_adapted();
-  }
   mstch::node resolved_cpp_type() {
     return fmt::to_string(cpp2::get_type(resolved_type_));
   }
@@ -600,10 +591,6 @@ class mstch_cpp2_type : public mstch_type {
 
  private:
   std::shared_ptr<cpp2_generator_context> context_;
-
-  bool is_adapted() const {
-    return gen::cpp::type_resolver::find_first_adapter(*type_) != nullptr;
-  }
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -679,6 +666,9 @@ class mstch_cpp2_field : public mstch_field {
             {"field:type_tag", &mstch_cpp2_field::type_tag},
             {"field:tablebased_qualifier",
              &mstch_cpp2_field::tablebased_qualifier},
+            {"field:raw_binary?", &mstch_cpp2_field::raw_binary},
+            {"field:raw_string_or_binary?",
+             &mstch_cpp2_field::raw_string_or_binary},
         });
     register_has_option("field:deprecated_clear?", "deprecated_clear");
   }
@@ -889,6 +879,16 @@ class mstch_cpp2_field : public mstch_field {
   }
 
   mstch::node type_tag() { return context_->resolver().get_type_tag(*field_); }
+
+  mstch::node raw_binary() {
+    return field_->type()->get_true_type()->is_binary() &&
+        !gen::cpp::type_resolver::find_first_adapter(*field_);
+  }
+
+  mstch::node raw_string_or_binary() {
+    return field_->type()->get_true_type()->is_string_or_binary() &&
+        !gen::cpp::type_resolver::find_first_adapter(*field_);
+  }
 
  private:
   bool is_private() const {

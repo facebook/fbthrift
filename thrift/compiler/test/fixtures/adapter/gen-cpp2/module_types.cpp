@@ -232,7 +232,7 @@ bool Foo::operator==(const Foo& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binaryField, rhs.__fbthrift_field_binaryField)) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter3>(lhs.__fbthrift_field_binaryField, rhs.__fbthrift_field_binaryField)) {
     return false;
   }
   if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_longField, rhs.__fbthrift_field_longField)) {
@@ -353,9 +353,7 @@ bool Baz::operator==(const Baz& rhs) const {
     case Type::mapField:
       return value_.mapField == rhs.value_.mapField;
     case Type::binaryField:
-      return apache::thrift::StringTraits<std::string>::isEqual(
-          value_.binaryField,
-          rhs.value_.binaryField);
+      return value_.binaryField == rhs.value_.binaryField;
     case Type::longField:
       return value_.longField == rhs.value_.longField;
     default:
