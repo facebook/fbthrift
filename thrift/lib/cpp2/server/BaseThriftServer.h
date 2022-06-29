@@ -193,6 +193,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // used to disable resource pool at run time
   // should only be used by thrift team
   void runtimeDisableResourcePoolsDeprecated() {
+    if (runtimeServerActions_.resourcePoolRuntimeDisabled) {
+      return;
+    }
     if (runtimeServerActions_.resourcePoolEnablementLocked) {
       LOG(FATAL) << "Trying to disable ResourcePool after it's locked";
       return;
@@ -202,6 +205,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // used to enable resource pool at run time
   void requireResourcePools() {
+    if (runtimeServerActions_.resourcePoolRuntimeRequested) {
+      return;
+    }
     if (runtimeServerActions_.resourcePoolEnablementLocked) {
       LOG(FATAL) << "Trying to enable ResourcePool after it's locked";
       return;
