@@ -50,7 +50,27 @@
             ))
         }
     {{/function:returns_streams?}}{{#function:returns_streams?}}
-        // {{function:rust_name}}: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn {{function:rust_name}}(
+            &self,{{!
+            }}{{#service:requestContext?}}
+            _request_context: &Self::RequestContext,{{!
+            }}{{/service:requestContext?}}{{!
+            }}{{#function:args}}
+            _{{field:name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            }}{{/function:args}}
+        ) -> ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn{{!
+        }}> {
+            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "{{service:name}}",
+                    "{{function:name}}",
+                ),
+            ))
+        }
     {{/function:returns_streams?}}
     {{/function:starts_interaction?}}{{#function:starts_interaction?}}
         {{#function:docs?}}
@@ -95,7 +115,29 @@
             ).await
         }
     {{/function:returns_streams?}}{{#function:returns_streams?}}
-        // {{function:rust_name}}: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn {{function:rust_name}}(
+            &self,{{!
+            }}{{#service:requestContext?}}
+            request_context: &Self::RequestContext,{{!
+            }}{{/service:requestContext?}}{{!
+            }}{{#function:args}}
+            {{field:rust_name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            }}{{/function:args}}
+        ) -> ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn{{!
+        }}> {
+            (**self).{{function:rust_name}}({{!
+                }}{{#service:requestContext?}}
+                request_context, {{!
+                }}{{/service:requestContext?}}{{!
+                }}{{#function:args}}
+                {{field:rust_name}}, {{!
+                }}{{/function:args}}
+            ).await
+        }
     {{/function:returns_streams?}}
     {{/function:starts_interaction?}}{{#function:starts_interaction?}}
         fn {{function:rust_name}}(

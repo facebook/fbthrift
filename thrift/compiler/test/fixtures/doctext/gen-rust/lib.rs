@@ -939,7 +939,18 @@ pub mod server {
                 ),
             ))
         }
-        // numbers: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn numbers(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersStreamExn> {
+            ::std::result::Result::Err(crate::services::c::NumbersStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "C",
+                    "numbers",
+                ),
+            ))
+        }
         #[doc = ""]
         async fn thing(
             &self,
@@ -967,7 +978,14 @@ pub mod server {
             (**self).f(
             ).await
         }
-        // numbers: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn numbers(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersStreamExn> {
+            (**self).numbers(
+            ).await
+        }
         async fn thing(
             &self,
             a: ::std::primitive::i32,

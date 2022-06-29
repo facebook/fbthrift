@@ -2595,14 +2595,112 @@ pub mod client {
 pub mod server {
     #[::async_trait::async_trait]
     pub trait PubSubStreamingService: ::std::marker::Send + ::std::marker::Sync + 'static {
-        // returnstream: server-side streaming not yet implemented
-        // streamthrows: server-side streaming not yet implemented
-        // servicethrows: server-side streaming not yet implemented
-        // boththrows: server-side streaming not yet implemented
-        // responseandstreamstreamthrows: server-side streaming not yet implemented
-        // responseandstreamservicethrows: server-side streaming not yet implemented
-        // responseandstreamboththrows: server-side streaming not yet implemented
-        // returnstreamFast: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn returnstream(
+            &self,
+            _i32_from: ::std::primitive::i32,
+            _i32_to: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamStreamExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "returnstream",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamthrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::StreamthrowsStreamExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "streamthrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn servicethrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ServicethrowsStreamExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "servicethrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn boththrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::BoththrowsStreamExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "boththrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamstreamthrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "responseandstreamstreamthrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamservicethrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "responseandstreamservicethrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamboththrows(
+            &self,
+            _foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "responseandstreamboththrows",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn returnstreamFast(
+            &self,
+            _i32_from: ::std::primitive::i32,
+            _i32_to: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn> {
+            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "PubSubStreamingService",
+                    "returnstreamFast",
+                ),
+            ))
+        }
     }
 
     #[::async_trait::async_trait]
@@ -2610,14 +2708,90 @@ pub mod server {
     where
         T: PubSubStreamingService + Send + Sync + ?Sized,
     {
-        // returnstream: server-side streaming not yet implemented
-        // streamthrows: server-side streaming not yet implemented
-        // servicethrows: server-side streaming not yet implemented
-        // boththrows: server-side streaming not yet implemented
-        // responseandstreamstreamthrows: server-side streaming not yet implemented
-        // responseandstreamservicethrows: server-side streaming not yet implemented
-        // responseandstreamboththrows: server-side streaming not yet implemented
-        // returnstreamFast: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn returnstream(
+            &self,
+            i32_from: ::std::primitive::i32,
+            i32_to: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamStreamExn> {
+            (**self).returnstream(
+                i32_from, 
+                i32_to, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamthrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::StreamthrowsStreamExn> {
+            (**self).streamthrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn servicethrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ServicethrowsStreamExn> {
+            (**self).servicethrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn boththrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::BoththrowsStreamExn> {
+            (**self).boththrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamstreamthrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+            (**self).responseandstreamstreamthrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamservicethrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+            (**self).responseandstreamservicethrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn responseandstreamboththrows(
+            &self,
+            foo: ::std::primitive::i32,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+            (**self).responseandstreamboththrows(
+                foo, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn returnstreamFast(
+            &self,
+            i32_from: ::std::primitive::i32,
+            i32_to: ::std::primitive::i32,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn> {
+            (**self).returnstreamFast(
+                i32_from, 
+                i32_to, 
+            ).await
+        }
     }
 
     /// Processor for PubSubStreamingService's methods.

@@ -3160,9 +3160,48 @@ pub mod server {
                 ),
             ))
         }
-        // streamById: server-side streaming not yet implemented
-        // streamByIdWithException: server-side streaming not yet implemented
-        // streamByIdWithResponse: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamById(
+            &self,
+            _request_context: &Self::RequestContext,
+            _id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdStreamExn> {
+            ::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "streamById",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamByIdWithException(
+            &self,
+            _request_context: &Self::RequestContext,
+            _id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionStreamExn> {
+            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "streamByIdWithException",
+                ),
+            ))
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamByIdWithResponse(
+            &self,
+            _request_context: &Self::RequestContext,
+            _id: ::std::primitive::i64,
+        ) -> ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::StreamByIdWithResponseExn> {
+            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "streamByIdWithResponse",
+                ),
+            ))
+        }
         fn createMyInteraction(
             &self,
         ) -> ::anyhow::Result<::std::boxed::Box<dyn MyInteraction>> {
@@ -3235,9 +3274,42 @@ pub mod server {
                 data, 
             ).await
         }
-        // streamById: server-side streaming not yet implemented
-        // streamByIdWithException: server-side streaming not yet implemented
-        // streamByIdWithResponse: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamById(
+            &self,
+            request_context: &Self::RequestContext,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdStreamExn> {
+            (**self).streamById(
+                request_context, 
+                id, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamByIdWithException(
+            &self,
+            request_context: &Self::RequestContext,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionStreamExn> {
+            (**self).streamByIdWithException(
+                request_context, 
+                id, 
+            ).await
+        }
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn streamByIdWithResponse(
+            &self,
+            request_context: &Self::RequestContext,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::StreamByIdWithResponseExn> {
+            (**self).streamByIdWithResponse(
+                request_context, 
+                id, 
+            ).await
+        }
         fn createMyInteraction(
             &self,
         ) -> ::anyhow::Result<::std::boxed::Box<dyn MyInteraction>> {

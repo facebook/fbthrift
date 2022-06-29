@@ -3722,7 +3722,18 @@ pub mod server {
                 ),
             ))
         }
-        // truthify: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn truthify(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyStreamExn> {
+            ::std::result::Result::Err(crate::services::my_interaction::TruthifyStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyInteraction",
+                    "truthify",
+                ),
+            ))
+        }
         async fn encode(
             &self,
         ) -> ::std::result::Result<, crate::services::my_interaction::EncodeExn> {
@@ -3752,7 +3763,14 @@ pub mod server {
             (**self).ping(
             ).await
         }
-        // truthify: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn truthify(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyStreamExn> {
+            (**self).truthify(
+            ).await
+        }
         async fn encode(
             &self,
         ) -> ::std::result::Result<, crate::services::my_interaction::EncodeExn> {
@@ -4245,7 +4263,18 @@ pub mod server {
                 ),
             ))
         }
-        // truthify: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn truthify(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyStreamExn> {
+            ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyStreamExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyInteractionFast",
+                    "truthify",
+                ),
+            ))
+        }
         async fn encode(
             &self,
         ) -> ::std::result::Result<, crate::services::my_interaction_fast::EncodeExn> {
@@ -4275,7 +4304,14 @@ pub mod server {
             (**self).ping(
             ).await
         }
-        // truthify: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn truthify(
+            &self,
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyStreamExn> {
+            (**self).truthify(
+            ).await
+        }
         async fn encode(
             &self,
         ) -> ::std::result::Result<, crate::services::my_interaction_fast::EncodeExn> {
@@ -5079,7 +5115,18 @@ pub mod server {
                 ),
             ))
         }
-        // serialize: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn serialize(
+            &self,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::SerializeExn> {
+            ::std::result::Result::Err(crate::services::my_service::SerializeExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "serialize",
+                ),
+            ))
+        }
     }
 
     #[::async_trait::async_trait]
@@ -5122,7 +5169,14 @@ pub mod server {
             (**self).interactFast(
             ).await
         }
-        // serialize: server-side streaming not yet implemented
+        // T115701914: server-side streaming is currently a WIP. Do not use.
+        #[doc(hidden)]
+        async fn serialize(
+            &self,
+        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::SerializeExn> {
+            (**self).serialize(
+            ).await
+        }
     }
 
     /// Processor for MyService's methods.
