@@ -214,7 +214,7 @@ folly::Try<FirstResponsePayload> decodeResponseError(
   ResponseRpcMetadata metadata;
   if (exCode) {
     metadata.otherMetadata_ref().emplace();
-    (*metadata.otherMetadata_ref())["ex"] = *exCode;
+    (*metadata.otherMetadata_ref())[detail::kHeaderEx] = *exCode;
   }
   if (auto loadRef = responseError.load_ref()) {
     metadata.load_ref() = *loadRef;
@@ -254,12 +254,16 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
           switch (metaType) {
             case PayloadExceptionMetadata::Type::declaredException:
               if (exceptionNameRef) {
-                (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
-                    *exceptionNameRef;
+                (*otherMetadataRef)
+                    [isProxiedResponse ? detail::kHeaderProxiedUex
+                                       : detail::kHeaderUex] =
+                        *exceptionNameRef;
               }
               if (exceptionWhatRef) {
-                (*otherMetadataRef)[isProxiedResponse ? "puexw" : "uexw"] =
-                    *exceptionWhatRef;
+                (*otherMetadataRef)
+                    [isProxiedResponse ? detail::kHeaderProxiedUexw
+                                       : detail::kHeaderUexw] =
+                        *exceptionWhatRef;
               }
               if (auto dExClass = exceptionMetadataRef->declaredException_ref()
                                       ->errorClassification_ref()) {
@@ -329,8 +333,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                                     ->errorClassification_ref()) {
                     if (ec->blame_ref() &&
                         *ec->blame_ref() == ErrorBlame::CLIENT) {
-                      (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
-                          kAppClientErrorCode;
+                      (*otherMetadataRef)
+                          [isProxiedResponse ? detail::kHeaderProxiedEx
+                                             : detail::kHeaderEx] =
+                              kAppClientErrorCode;
                     }
                   }
                   break;
@@ -338,12 +344,16 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               }
 
               if (exceptionNameRef) {
-                (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
-                    *exceptionNameRef;
+                (*otherMetadataRef)
+                    [isProxiedResponse ? detail::kHeaderProxiedUex
+                                       : detail::kHeaderUex] =
+                        *exceptionNameRef;
               }
               if (exceptionWhatRef) {
-                (*otherMetadataRef)[isProxiedResponse ? "puexw" : "uexw"] =
-                    *exceptionWhatRef;
+                (*otherMetadataRef)
+                    [isProxiedResponse ? detail::kHeaderProxiedUexw
+                                       : detail::kHeaderUexw] =
+                        *exceptionWhatRef;
               }
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));

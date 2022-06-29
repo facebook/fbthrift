@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 
 namespace apache {
@@ -84,42 +85,59 @@ SingleRpcChannel::~SingleRpcChannel() {
 }
 
 namespace {
-void preprocessProxiedExceptionHeaders(ResponseRpcMetadata& metadata) {
-  if (!metadata.proxiedPayloadMetadata_ref()) {
-    return;
+
+template <typename HeaderMap>
+bool renameHeader(
+    HeaderMap& headers, std::string_view from, std::string_view to) {
+  if (auto headerPtr = folly::get_ptr(headers, from)) {
+    headers.insert({std::string(to), std::move(*headerPtr)});
+    headers.erase(from);
+    return true;
   }
+  return false;
+}
+
+void preprocessExceptionHeaders(ResponseRpcMetadata& metadata) {
   auto otherMetadataRef = metadata.otherMetadata_ref();
   if (!otherMetadataRef) {
     return;
   }
   auto& otherMetadata = *otherMetadataRef;
+  const bool isProxied = (bool)metadata.proxiedPayloadMetadata_ref();
 
-  if (auto puexPtr = folly::get_ptr(otherMetadata, "uex")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
+  auto anyexPtr =
+      folly::get_ptr(otherMetadata, apache::thrift::detail::kHeaderAnyex);
+  auto anyexTypePtr =
+      folly::get_ptr(otherMetadata, apache::thrift::detail::kHeaderAnyexType);
 
-    otherMetadata.insert({"puex", std::move(*puexPtr)});
-    otherMetadata.erase("uex");
-    if (auto puexwPtr = folly::get_ptr(otherMetadata, "uexw")) {
-      otherMetadata.insert({"puexw", std::move(*puexwPtr)});
-      otherMetadata.erase("uexw");
-    }
-  }
-
-  if (auto pexPtr = folly::get_ptr(otherMetadata, "ex")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
-
-    otherMetadata.insert({"pex", std::move(*pexPtr)});
-    otherMetadata.erase("ex");
-  }
-
-  if (auto proxiedErrorPtr =
-          folly::get_ptr(otherMetadata, "servicerouter:sr_internal_error")) {
-    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
-
+  if (anyexPtr && anyexTypePtr &&
+      *anyexTypePtr == "facebook.com/servicerouter/ServiceRouterError") {
     otherMetadata.insert(
-        {"servicerouter:sr_error", std::move(*proxiedErrorPtr)});
-    otherMetadata.erase("servicerouter:sr_internal_error");
+        {isProxied ? "servicerouter:sr_error"
+                   : "servicerouter:sr_internal_error",
+         std::move(*anyexPtr)});
+    otherMetadata.erase(apache::thrift::detail::kHeaderAnyex);
+    otherMetadata.erase(apache::thrift::detail::kHeaderAnyexType);
   }
+
+  if (!isProxied) {
+    return;
+  }
+
+  if (renameHeader(
+          otherMetadata,
+          apache::thrift::detail::kHeaderUex,
+          apache::thrift::detail::kHeaderProxiedUex)) {
+    renameHeader(
+        otherMetadata,
+        apache::thrift::detail::kHeaderUexw,
+        apache::thrift::detail::kHeaderProxiedUexw);
+  }
+
+  renameHeader(
+      otherMetadata,
+      apache::thrift::detail::kHeaderEx,
+      apache::thrift::detail::kHeaderProxiedEx);
 }
 } // namespace
 
@@ -128,7 +146,7 @@ void SingleRpcChannel::sendThriftResponse(
   DCHECK(evb_->isInEventBaseThread());
   VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
-  preprocessProxiedExceptionHeaders(metadata);
+  preprocessExceptionHeaders(metadata);
   if (httpTransaction_) {
     HTTPMessage msg;
     msg.setStatusCode(200);

@@ -40,7 +40,7 @@ inline constexpr std::string_view kHeaderUexw = "uexw";
 inline constexpr std::string_view kHeaderProxiedUexw = "puexw";
 // Server exception (code defined in ResponseChannel.h)
 inline constexpr std::string_view kHeaderEx = "ex";
-inline constexpr std::string_view kHeaderProxiedEx = "ex";
+inline constexpr std::string_view kHeaderProxiedEx = "pex";
 // Exception metadata (base64-encoded compact-serialized ErrorClassification)
 inline constexpr std::string_view kHeaderExMeta = "exm";
 // Any exception data (base64-encoded compact-serialized data without wrapping

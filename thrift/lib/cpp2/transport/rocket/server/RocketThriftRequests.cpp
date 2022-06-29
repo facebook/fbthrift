@@ -183,50 +183,64 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         auto otherMetadataRef = metadata.otherMetadata_ref();
         DCHECK(
             !otherMetadataRef ||
-            !folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error"));
-        if (auto proxyErrorPtr = otherMetadataRef
-                ? folly::get_ptr(
-                      *otherMetadataRef, "servicerouter:sr_internal_error")
-                : nullptr) {
+            !folly::get_ptr(
+                *otherMetadataRef,
+                apache::thrift::detail::kHeaderProxiedAnyex) ||
+            !folly::get_ptr(
+                *otherMetadataRef,
+                apache::thrift::detail::kHeaderProxiedAnyexType));
+
+        auto anyexPtr = otherMetadataRef
+            ? folly::get_ptr(
+                  *otherMetadataRef, apache::thrift::detail::kHeaderAnyex)
+            : nullptr;
+        auto anyexTypePtr = otherMetadataRef
+            ? folly::get_ptr(
+                  *otherMetadataRef, apache::thrift::detail::kHeaderAnyexType)
+            : nullptr;
+
+        if (anyexPtr && anyexTypePtr) {
           if (version < 10) {
-            exceptionMetadataBase.name_utf8_ref() = "ProxyException";
+            exceptionMetadataBase.name_utf8_ref() = *anyexTypePtr;
             PayloadExceptionMetadata exceptionMetadata;
             exceptionMetadata.set_DEPRECATED_proxyException(
                 PayloadProxyExceptionMetadata());
             exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
 
-            payload = protocol::base64Decode(*proxyErrorPtr);
+            payload = protocol::base64Decode(*anyexPtr);
           } else {
 #ifdef THRIFT_ANY_AVAILABLE
-            exceptionMetadataBase.name_utf8_ref() = "ServiceRouterError";
+            exceptionMetadataBase.name_utf8_ref() = *anyexTypePtr;
             exceptionMetadataBase.metadata_ref()
                 .ensure()
                 .anyException_ref()
                 .ensure();
 
             type::SemiAnyStruct anyException;
-            anyException.type_ref() = type::Type(
-                type::exception_c{},
-                "facebook.com/servicerouter/ServiceRouterError");
+            anyException.type_ref() =
+                type::Type(type::exception_c{}, *anyexTypePtr);
             if (!std::is_same_v<Serializer, CompactSerializer>) {
               anyException.protocol_ref() = type::StandardProtocol::Compact;
             }
             anyException.data_ref() =
-                std::move(*protocol::base64Decode(*proxyErrorPtr));
+                std::move(*protocol::base64Decode(*anyexPtr));
             folly::IOBufQueue payloadQueue;
             Serializer::serialize(anyException, &payloadQueue);
             payload = payloadQueue.move();
 #endif
           }
 
-          otherMetadataRef->erase("servicerouter:sr_internal_error");
-          otherMetadataRef->erase("ex");
+          otherMetadataRef->erase(apache::thrift::detail::kHeaderAnyexType);
+          otherMetadataRef->erase(apache::thrift::detail::kHeaderAnyex);
+          otherMetadataRef->erase(apache::thrift::detail::kHeaderEx);
         } else {
           auto exPtr = otherMetadataRef
-              ? folly::get_ptr(*otherMetadataRef, "ex")
+              ? folly::get_ptr(
+                    *otherMetadataRef, apache::thrift::detail::kHeaderEx)
               : nullptr;
           auto uexPtr = otherMetadataRef
-              ? folly::get_ptr(*otherMetadataRef, "uex")
+              ? folly::get_ptr(
+                    *otherMetadataRef, apache::thrift::detail::kHeaderUex)
               : nullptr;
           if (auto errorCode = [&]() -> folly::Optional<ResponseRpcErrorCode> {
                 if (exPtr) {
@@ -279,7 +293,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           }
           if (uexPtr) {
             exceptionMetadataBase.name_utf8_ref() = *uexPtr;
-            otherMetadataRef->erase("uex");
+            otherMetadataRef->erase(apache::thrift::detail::kHeaderUex);
           }
 
           const auto isClientError = exPtr && *exPtr == kAppClientErrorCode;
@@ -295,8 +309,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           payload->clear();
 
           if (otherMetadataRef) {
-            otherMetadataRef->erase("ex");
-            otherMetadataRef->erase("uexw");
+            otherMetadataRef->erase(apache::thrift::detail::kHeaderEx);
+            otherMetadataRef->erase(apache::thrift::detail::kHeaderUexw);
           }
         }
 

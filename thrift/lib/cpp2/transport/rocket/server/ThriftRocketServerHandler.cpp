@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 #include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -657,11 +658,9 @@ void ThriftRocketServerHandler::handleAppError(
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }
-  static const std::string headerEx = "uex";
-  static const std::string headerExWhat = "uexw";
   auto header = request->getRequestContext()->getHeader();
-  header->setHeader(headerEx, name);
-  header->setHeader(headerExWhat, message);
+  header->setHeader(std::string(apache::thrift::detail::kHeaderUex), name);
+  header->setHeader(std::string(apache::thrift::detail::kHeaderUexw), message);
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNKNOWN, std::move(message)),
