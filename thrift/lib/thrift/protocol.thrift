@@ -19,6 +19,7 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/protocol_detail.thrift"
 include "thrift/lib/thrift/id.thrift"
+include "thrift/annotation/cpp.thrift"
 cpp_include "folly/container/F14Map.h"
 
 @thrift.v1alpha
@@ -87,6 +88,7 @@ struct Path {
  *
  */
 // Inclusive fields should always be an even number.
+@cpp.ScopedEnumAsUnionType
 union Mask {
   1: FieldIdToMask exclusive; // Fields that will be excluded.
   2: FieldIdToMask inclusive; // Fields that will be included.

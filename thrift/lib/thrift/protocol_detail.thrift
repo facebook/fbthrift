@@ -18,6 +18,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/standard.thrift"
+include "thrift/annotation/cpp.thrift"
 cpp_include "thrift/lib/thrift/detail/protocol.h"
 
 @thrift.v1alpha
@@ -57,6 +58,7 @@ struct ObjectStruct {
 )
 
 // A dynamic value.
+@cpp.ScopedEnumAsUnionType
 union ValueUnion {
   // Integers.
   1: bool boolValue;
