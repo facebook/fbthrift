@@ -296,11 +296,14 @@ TEST_F(UtilTest, is_custom_type) {
   {
     auto cppAdapter = i32;
     auto typeDef = t_typedef(&p, "Type", cppAdapter);
+    auto typeDef2 = t_typedef(&p, "TypeDef", typeDef);
     EXPECT_FALSE(cpp2::is_custom_type(cppAdapter));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    cppAdapter.set_annotation("cpp.adapter", "Adapter");
-    EXPECT_TRUE(cpp2::is_custom_type(cppAdapter));
+    typeDef.set_annotation("cpp.adapter", "Adapter");
+    auto adapter = gen::adapter_builder(p, "cpp");
+    typeDef.add_structured_annotation(adapter.make("MyAdapter"));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef2));
   }
 }
 

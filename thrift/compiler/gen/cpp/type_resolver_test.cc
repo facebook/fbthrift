@@ -115,31 +115,25 @@ TEST_F(TypeResolverTest, BaseTypes) {
       "::apache::thrift::type::double_t");
 }
 
-TEST_F(TypeResolverTest, BaseTypes_Adapter) {
-  t_base_type dbl(t_base_type::t_double());
-  dbl.set_annotation("cpp.adapter", "DblAdapter");
-  // The standard type is the default, double.
-  EXPECT_EQ(get_standard_type_name(dbl), "double");
+TEST_F(TypeResolverTest, Struct_Adapter) {
+  t_struct strct(&program_, "Foo");
+  strct.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("FooAdapter"));
+  // The standard type is the default.
+  EXPECT_EQ(get_standard_type_name(strct), "::path::to::detail::Foo");
   // The c++ type is adapted.
-  EXPECT_EQ(
-      get_type_name(dbl),
-      "::apache::thrift::adapt_detail::adapted_t<DblAdapter, double>");
-  EXPECT_TRUE(can_resolve_to_scalar(dbl));
+  EXPECT_EQ(get_type_name(strct), "::path::to::Foo");
 
-  // cpp.type overrides the 'default' standard type.
-  t_base_type ui64(t_base_type::t_i64());
-  ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
-  EXPECT_EQ(get_standard_type_name(ui64), "uint64_t");
-  EXPECT_EQ(
-      get_type_name(ui64),
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
-  EXPECT_TRUE(can_resolve_to_scalar(ui64));
+  // cpp.name overrides the 'default' standard type.
+  t_struct strct2(&program_, "Foo");
+  strct2.set_annotation("cpp.name", "Bar");
+  strct2.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("FooAdapter"));
+  EXPECT_EQ(get_standard_type_name(strct2), "::path::to::detail::Bar");
+  EXPECT_EQ(get_type_name(strct2), "::path::to::Bar");
 
   // cpp.adapter could resolve to a scalar.
-  t_base_type str(t_base_type::t_string());
-  str.set_annotation("cpp.adapter", "HashAdapter");
-  EXPECT_TRUE(can_resolve_to_scalar(str));
+  EXPECT_TRUE(can_resolve_to_scalar(strct));
 }
 
 TEST_F(TypeResolverTest, CppName) {
@@ -183,45 +177,32 @@ TEST_F(TypeResolverTest, Containers_CustomTemplate) {
 
 TEST_F(TypeResolverTest, Containers_Adapter) {
   // cpp.adapter could resolve to a scalar.
-  t_base_type ui64(t_base_type::t_i64());
-  ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
-  EXPECT_TRUE(can_resolve_to_scalar(ui64));
+  t_struct strct(&program_, "Foo");
+  strct.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("HashAdapter"));
+  EXPECT_TRUE(can_resolve_to_scalar(strct));
 
   // Adapters work on container type arguments.
-  t_map tmap(t_base_type::t_i16(), ui64);
-  tmap.set_annotation("cpp.adapter", "MapAdapter");
+  t_map tmap(t_base_type::t_i16(), strct);
   EXPECT_EQ(
-      get_standard_type_name(tmap), "::std::map<::std::int16_t, uint64_t>");
-  EXPECT_EQ(
-      get_type_name(tmap),
-      "::apache::thrift::adapt_detail::adapted_t<"
-      "MapAdapter, "
-      "::std::map<::std::int16_t, ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
-  EXPECT_TRUE(can_resolve_to_scalar(tmap));
+      get_standard_type_name(tmap),
+      "::std::map<::std::int16_t, ::path::to::detail::Foo>");
+  EXPECT_EQ(get_type_name(tmap), "::std::map<::std::int16_t, ::path::to::Foo>");
 
   // The container can also be addapted.
-  t_set tset(ui64);
-  tset.set_annotation("cpp.adapter", "SetAdapter");
+  t_set tset(strct);
   tset.set_annotation("cpp.template", "std::unordered_set");
   // The template argument is respected for both standard and adapted types.
-  EXPECT_EQ(get_standard_type_name(tset), "std::unordered_set<uint64_t>");
   EXPECT_EQ(
-      get_type_name(tset),
-      "::apache::thrift::adapt_detail::adapted_t<"
-      "SetAdapter, "
-      "std::unordered_set<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
-  EXPECT_TRUE(can_resolve_to_scalar(tset));
+      get_standard_type_name(tset),
+      "std::unordered_set<::path::to::detail::Foo>");
+  EXPECT_EQ(get_type_name(tset), "std::unordered_set<::path::to::Foo>");
 
   // cpp.type on the container overrides the 'default' standard type.
-  t_list tlist(ui64);
-  tlist.set_annotation("cpp.adapter", "ListAdapter");
+  t_list tlist(strct);
   tlist.set_annotation("cpp.type", "MyList");
   EXPECT_EQ(get_standard_type_name(tlist), "MyList");
-  EXPECT_EQ(
-      get_type_name(tlist),
-      "::apache::thrift::adapt_detail::adapted_t<ListAdapter, MyList>");
-  EXPECT_TRUE(can_resolve_to_scalar(tlist));
+  EXPECT_EQ(get_type_name(tlist), "MyList");
 }
 
 TEST_F(TypeResolverTest, Structs) {
@@ -265,30 +246,27 @@ TEST_F(TypeResolverTest, TypeDefs_Nested) {
 }
 
 TEST_F(TypeResolverTest, TypeDefs_Adapter) {
-  t_base_type ui64(t_base_type::t_i64());
-  ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
+  t_struct strct(&program_, "Foo");
+  strct.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("HashAdapter"));
 
   // Type defs can refer to adatped types.
-  t_typedef ttypedef1(&program_, "MyHash", ui64);
+  t_typedef ttypedef1(&program_, "MyHash", strct);
   // It does not affect the type name.
-  EXPECT_EQ(get_standard_type_name(ttypedef1), "uint64_t");
+  EXPECT_EQ(get_standard_type_name(ttypedef1), "::path::to::detail::Foo");
   EXPECT_EQ(get_type_name(ttypedef1), "::path::to::MyHash");
   // It is the refered to type that has the adapter.
-  EXPECT_EQ(
-      get_type_name(*ttypedef1.type()),
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+  EXPECT_EQ(get_type_name(*ttypedef1.type()), "::path::to::Foo");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
   ASSERT_TRUE(resolver_.find_first_adapter(ttypedef1));
   EXPECT_EQ(*resolver_.find_first_adapter(ttypedef1), "HashAdapter");
 
   // Type defs can also be adapted.
   t_typedef ttypedef2(ttypedef1);
-  ttypedef2.set_annotation("cpp.adapter", "TypeDefAdapter");
-  EXPECT_EQ(get_standard_type_name(ttypedef2), "uint64_t");
-  EXPECT_EQ(
-      get_type_name(ttypedef2),
-      "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
+  ttypedef2.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("TypeDefAdapter"));
+  EXPECT_EQ(get_standard_type_name(ttypedef2), "::path::to::detail::Foo");
+  EXPECT_EQ(get_type_name(ttypedef2), "::path::to::MyHash");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
   ASSERT_TRUE(resolver_.find_first_adapter(ttypedef2));
   EXPECT_EQ(*resolver_.find_first_adapter(ttypedef2), "TypeDefAdapter");
@@ -347,14 +325,11 @@ TEST_F(TypeResolverTest, CustomType) {
 TEST_F(TypeResolverTest, StreamingRes) {
   t_base_type ui64(t_base_type::t_i64());
   ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
 
   t_stream_response res1(ui64);
   EXPECT_EQ(
       get_standard_type_name(res1), "::apache::thrift::ServerStream<uint64_t>");
-  EXPECT_EQ(
-      get_type_name(res1),
-      "::apache::thrift::ServerStream<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  EXPECT_EQ(get_type_name(res1), "::apache::thrift::ServerStream<uint64_t>");
 
   t_stream_response res2(ui64);
   res2.set_first_response_type(t_type_ref(ui64));
@@ -363,118 +338,117 @@ TEST_F(TypeResolverTest, StreamingRes) {
       "::apache::thrift::ResponseAndServerStream<uint64_t, uint64_t>");
   EXPECT_EQ(
       get_type_name(res2),
-      "::apache::thrift::ResponseAndServerStream<"
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+      "::apache::thrift::ResponseAndServerStream<uint64_t, uint64_t>");
 }
 
 TEST_F(TypeResolverTest, StreamingSink) {
-  t_base_type ui64(t_base_type::t_i64());
-  ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
+  t_struct tstruct(&program_, "Foo");
+  tstruct.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("HashAdapter"));
 
-  t_sink req1(ui64, ui64);
+  t_sink req1(tstruct, tstruct);
   EXPECT_EQ(
       get_standard_type_name(req1),
-      "::apache::thrift::SinkConsumer<uint64_t, uint64_t>");
+      "::apache::thrift::SinkConsumer<::path::to::detail::Foo, ::path::to::detail::Foo>");
   EXPECT_EQ(
       get_type_name(req1),
       "::apache::thrift::SinkConsumer<"
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+      "::path::to::Foo, "
+      "::path::to::Foo>");
 
-  t_sink req2(ui64, ui64);
-  req2.set_first_response_type(t_type_ref(ui64));
+  t_sink req2(tstruct, tstruct);
+  req2.set_first_response_type(t_type_ref(tstruct));
   EXPECT_EQ(
       get_standard_type_name(req2),
-      "::apache::thrift::ResponseAndSinkConsumer<uint64_t, uint64_t, uint64_t>");
+      "::apache::thrift::ResponseAndSinkConsumer<"
+      "::path::to::detail::Foo, "
+      "::path::to::detail::Foo, "
+      "::path::to::detail::Foo>");
   EXPECT_EQ(
       get_type_name(req2),
       "::apache::thrift::ResponseAndSinkConsumer<"
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
-      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+      "::path::to::Foo, "
+      "::path::to::Foo, "
+      "::path::to::Foo>");
 }
 
 TEST_F(TypeResolverTest, StorageType) {
-  t_base_type ui64(t_base_type::t_i64());
-  ui64.set_annotation("cpp.type", "uint64_t");
-  ui64.set_annotation("cpp.adapter", "HashAdapter");
+  t_struct strct(&program_, "Foo");
+  strct.add_structured_annotation(
+      adapter_builder(program_, "cpp").make("HashAdapter"));
   {
-    t_field ui64_field(ui64, "hash", 1);
-    EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+    t_field strct_field(strct, "hash", 1);
+    EXPECT_EQ(get_storage_type_name(strct_field), "::path::to::Foo");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp.ref", "");
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp.ref", "");
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::unique_ptr<::path::to::Foo>");
   }
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp2.ref", ""); // Works with cpp2.
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp2.ref", ""); // Works with cpp2.
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
-  }
-
-  {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp.ref_type", "unique");
-    EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::unique_ptr<::path::to::Foo>");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp2.ref_type", "shared"); // Works with cpp2.
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp.ref_type", "unique");
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::unique_ptr<::path::to::Foo>");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp.ref_type", "shared_mutable");
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp2.ref_type", "shared"); // Works with cpp2.
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::shared_ptr<::path::to::Foo>");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp.ref_type", "shared_const");
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp.ref_type", "shared_mutable");
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::shared_ptr<::path::to::Foo>");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("thrift.box", "");
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp.ref_type", "shared_const");
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::std::shared_ptr<const ::path::to::Foo>");
   }
 
   {
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.add_structured_annotation(
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("thrift.box", "");
+    EXPECT_EQ(
+        get_storage_type_name(strct_field),
+        "::apache::thrift::detail::boxed_value_ptr<::path::to::Foo>");
+  }
+
+  {
+    t_field strct_field(strct, "hash", 1);
+    strct_field.add_structured_annotation(
         thrift_annotation_builder::box(program_).make());
     EXPECT_EQ(
-        get_storage_type_name(ui64_field),
-        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        get_storage_type_name(strct_field),
+        "::apache::thrift::detail::boxed_value_ptr<::path::to::Foo>");
   }
 
   { // Unrecognized throws an exception.
-    t_field ui64_field(ui64, "hash", 1);
-    ui64_field.set_annotation("cpp.ref_type", "blah");
-    EXPECT_THROW(get_storage_type_name(ui64_field), std::runtime_error);
+    t_field strct_field(strct, "hash", 1);
+    strct_field.set_annotation("cpp.ref_type", "blah");
+    EXPECT_THROW(get_storage_type_name(strct_field), std::runtime_error);
   }
 }
 
@@ -533,67 +507,6 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
   EXPECT_EQ(get_type_name(tiumap), "::path::to::tiumap");
   EXPECT_EQ(get_standard_type_name(tiumap), "::path::to::tiumap");
   EXPECT_TRUE(can_resolve_to_scalar(tiumap));
-}
-
-TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
-  // cpp.type sets the 'standard' type.
-  // cpp.adapter adapts the 'standard' type.
-
-  // Switch the standard type to IOBuf:
-  //   iobuf_type = binary (cpp.type="folly::IOBuf")
-  t_base_type iobuf_type = t_base_type::t_binary();
-  iobuf_type.set_annotation("cpp.type", "folly::IOBuf");
-  EXPECT_EQ(get_type_name(iobuf_type), "folly::IOBuf");
-  EXPECT_EQ(get_standard_type_name(iobuf_type), "folly::IOBuf");
-  EXPECT_TRUE(can_resolve_to_scalar(iobuf_type));
-
-  // Then adapt it:
-  //   binary (cpp.type="folly::IOBuf", cpp.adapter="MyAdapter1")
-  t_base_type adapated_type = iobuf_type;
-  adapated_type.set_annotation("cpp.adapter", "MyAdapter1");
-  EXPECT_EQ(
-      get_type_name(adapated_type),
-      "::apache::thrift::adapt_detail::adapted_t<MyAdapter1, folly::IOBuf>");
-  EXPECT_EQ(get_standard_type_name(adapated_type), "folly::IOBuf");
-  EXPECT_TRUE(can_resolve_to_scalar(adapated_type));
-
-  // Give the adapated type an alias:
-  //   typedef binary (cpp.type="folly::IOBuf", cpp.adapter="MyAdapter2")
-  //       AdaptedTypeTypeDef
-  t_typedef adapted_type_typedef(
-      &program_, "AdaptedTypeTypeDef", adapated_type);
-  EXPECT_EQ(
-      get_type_name(adapted_type_typedef), "::path::to::AdaptedTypeTypeDef");
-  EXPECT_EQ(get_standard_type_name(adapted_type_typedef), "folly::IOBuf");
-  EXPECT_TRUE(can_resolve_to_scalar(adapted_type_typedef));
-
-  // Use the alias for the adapted type for field 1.
-  // 1: AdaptedTypeTypeDef field1
-  t_field field1(adapted_type_typedef, "field1", 1);
-  EXPECT_EQ(get_storage_type_name(field1), "::path::to::AdaptedTypeTypeDef");
-  EXPECT_TRUE(can_resolve_to_scalar(*field1.type()));
-
-  // Give the type an alias, then adapt the alias:
-  //   typedef binary (cpp.type="folly::IOBuf") AdaptedTypeDef
-  //       (cpp.adapter="MyAdapter")
-  //
-  // Moving the adapter annotation to the typedef itself (or any user defined
-  // type), is somewhat nonsensical and means the type should be defined
-  // normally, but all uses of the type should be adapted.
-  t_typedef adapted_typedef(&program_, "AdaptedTypeDef", iobuf_type);
-  adapted_typedef.set_annotation("cpp.adapter", "MyAdapter2");
-  EXPECT_EQ(
-      get_type_name(adapted_typedef),
-      "::apache::thrift::adapt_detail::adapted_t<MyAdapter2, ::path::to::AdaptedTypeDef>");
-  EXPECT_EQ(get_standard_type_name(adapted_typedef), "folly::IOBuf");
-  EXPECT_TRUE(can_resolve_to_scalar(adapted_typedef));
-
-  // 2: AdaptedTypeDef field2
-  t_field field2(adapted_typedef, "field2", 2);
-  EXPECT_EQ(
-      get_storage_type_name(field2),
-      "::apache::thrift::adapt_detail::adapted_t<MyAdapter2, ::path::to::AdaptedTypeDef>");
-  EXPECT_TRUE(can_resolve_to_scalar(*field2.type()));
 }
 
 TEST_F(TypeResolverTest, AdaptedFieldType) {

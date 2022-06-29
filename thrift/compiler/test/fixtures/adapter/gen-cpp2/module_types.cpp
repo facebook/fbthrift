@@ -247,46 +247,6 @@ bool Foo::operator==(const Foo& rhs) const {
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_intField, rhs.__fbthrift_field_intField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_intField, rhs.__fbthrift_field_intField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalIntField_ref(), rhs.optionalIntField_ref())) {
-    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalIntField_ref(), rhs.optionalIntField_ref());
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_intFieldWithDefault, rhs.__fbthrift_field_intFieldWithDefault)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_intFieldWithDefault, rhs.__fbthrift_field_intFieldWithDefault);
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.__fbthrift_field_setField, rhs.__fbthrift_field_setField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter2>(lhs.__fbthrift_field_setField, rhs.__fbthrift_field_setField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter2>(lhs.optionalSetField_ref(), rhs.optionalSetField_ref())) {
-    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter2>(lhs.optionalSetField_ref(), rhs.optionalSetField_ref());
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter3>(lhs.__fbthrift_field_mapField, rhs.__fbthrift_field_mapField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter3>(lhs.__fbthrift_field_mapField, rhs.__fbthrift_field_mapField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref())) {
-    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref());
-  }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binaryField, rhs.__fbthrift_field_binaryField)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_binaryField, rhs.__fbthrift_field_binaryField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_longField, rhs.__fbthrift_field_longField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_longField, rhs.__fbthrift_field_longField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.__fbthrift_field_adaptedLongField, rhs.__fbthrift_field_adaptedLongField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter2>(lhs.__fbthrift_field_adaptedLongField, rhs.__fbthrift_field_adaptedLongField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_doubleAdaptedField, rhs.__fbthrift_field_doubleAdaptedField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_doubleAdaptedField, rhs.__fbthrift_field_doubleAdaptedField);
-  }
-  return false;
-}
-
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
@@ -400,30 +360,6 @@ bool Baz::operator==(const Baz& rhs) const {
       return value_.longField == rhs.value_.longField;
     default:
       return true;
-  }
-}
-
-bool Baz::operator<(const Baz& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.getType() != rhs.getType()) {
-    return lhs.getType() < rhs.getType();
-  }
-  switch (lhs.getType()) {
-    case Type::intField:
-      return lhs.value_.intField < rhs.value_.intField;
-    case Type::setField:
-      return lhs.value_.setField < rhs.value_.setField;
-    case Type::mapField:
-      return lhs.value_.mapField < rhs.value_.mapField;
-    case Type::binaryField:
-    return !apache::thrift::StringTraits<std::string>::isEqual(value_.binaryField, rhs.value_.binaryField) &&
-      apache::thrift::StringTraits<std::string>::isLess(value_.binaryField, rhs.value_.binaryField);
-    case Type::longField:
-      return lhs.value_.longField < rhs.value_.longField;
-    default:
-      return false;
   }
 }
 
@@ -688,34 +624,6 @@ bool Bar::operator==(const Bar& rhs) const {
     return false;
   }
   return true;
-}
-
-bool Bar::operator<(const Bar& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_structField, rhs.__fbthrift_field_structField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_structField, rhs.__fbthrift_field_structField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalStructField_ref(), rhs.optionalStructField_ref())) {
-    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalStructField_ref(), rhs.optionalStructField_ref());
-  }
-  if (!(lhs.structListField_ref() == rhs.structListField_ref())) {
-    return lhs.structListField_ref() < rhs.structListField_ref();
-  }
-  if (!(lhs.optionalStructListField_ref() == rhs.optionalStructListField_ref())) {
-    return lhs.optionalStructListField_ref() < rhs.optionalStructListField_ref();
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_unionField, rhs.__fbthrift_field_unionField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_unionField, rhs.__fbthrift_field_unionField);
-  }
-  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref())) {
-    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref());
-  }
-  if (::apache::thrift::adapt_detail::not_equal<my::Adapter>(lhs.__fbthrift_field_adaptedStructField, rhs.__fbthrift_field_adaptedStructField)) {
-    return ::apache::thrift::adapt_detail::less<my::Adapter>(lhs.__fbthrift_field_adaptedStructField, rhs.__fbthrift_field_adaptedStructField);
-  }
-  return false;
 }
 
 const ::std::vector<::cpp2::FooWithAdapter>& Bar::get_structListField() const& {

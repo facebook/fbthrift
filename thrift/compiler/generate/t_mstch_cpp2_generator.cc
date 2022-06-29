@@ -404,7 +404,7 @@ class mstch_cpp2_typedef : public mstch_typedef {
         });
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_type_name(*typedf_);
+    return context_->resolver().get_underlying_type_name(*typedf_);
   }
 
  private:
@@ -1068,8 +1068,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node cpp_name() { return cpp2::get_name(strct_); }
   mstch::node cpp_fullname() {
-    return context_->resolver().get_underlying_namespaced_name(
-        *strct_->get_program(), *strct_);
+    return context_->resolver().get_underlying_namespaced_name(*strct_);
   }
   mstch::node cpp_underlying_name() {
     return context_->resolver().get_underlying_name(*strct_);

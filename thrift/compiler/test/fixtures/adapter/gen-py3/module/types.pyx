@@ -260,13 +260,15 @@ cdef class Foo(thrift.py3.types.Struct):
         )
         return Foo._fbthrift_create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cFoo](
-            self._cpp_obj,
-            (<Foo>other)._cpp_obj,
-            op,
-        ) if r is None else r
+    def __eq__(Foo self, other):
+        if not isinstance(other, Foo):
+            return False
+        return deref(self._cpp_obj.get()) == deref((<Foo>other)._cpp_obj.get())
+
+    def __ne__(Foo self, other):
+        if not isinstance(other, Foo):
+            return True
+        return deref(self._cpp_obj) != deref((<Foo>other)._cpp_obj)
 
     @staticmethod
     def __get_reflection__():
@@ -482,13 +484,15 @@ cdef class Baz(thrift.py3.types.Union):
         )
         return Baz._fbthrift_create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cBaz](
-            self._cpp_obj,
-            (<Baz>other)._cpp_obj,
-            op,
-        ) if r is None else r
+    def __eq__(Baz self, other):
+        if not isinstance(other, Baz):
+            return False
+        return deref(self._cpp_obj.get()) == deref((<Baz>other)._cpp_obj.get())
+
+    def __ne__(Baz self, other):
+        if not isinstance(other, Baz):
+            return True
+        return deref(self._cpp_obj) != deref((<Baz>other)._cpp_obj)
 
     @staticmethod
     def __get_reflection__():
@@ -673,13 +677,15 @@ cdef class Bar(thrift.py3.types.Struct):
         )
         return Bar._fbthrift_create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cBar](
-            self._cpp_obj,
-            (<Bar>other)._cpp_obj,
-            op,
-        ) if r is None else r
+    def __eq__(Bar self, other):
+        if not isinstance(other, Bar):
+            return False
+        return deref(self._cpp_obj.get()) == deref((<Bar>other)._cpp_obj.get())
+
+    def __ne__(Bar self, other):
+        if not isinstance(other, Bar):
+            return True
+        return deref(self._cpp_obj) != deref((<Bar>other)._cpp_obj)
 
     @staticmethod
     def __get_reflection__():

@@ -49,30 +49,21 @@ class type_resolver {
  public:
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type& node) {
-    if (is_directly_adapted(node)) {
-      return detail::get_or_gen(
-          type_cache_, &node, [&]() { return gen_type(node, nullptr); });
-    }
-
-    return detail::get_or_gen(type_cache_, &node, [&]() {
-      return gen_type(node, find_adapter(node));
-    });
+    return detail::get_or_gen(
+        type_cache_, &node, [&]() { return gen_type(node); });
   }
 
   const std::string& get_underlying_type_name(const t_type& node) {
     if (is_directly_adapted(node)) {
       return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
         auto adapter = find_structured_adapter_annotation(node);
-        if (!adapter) {
-          adapter = find_adapter(node);
-        }
-        return gen_adapted_type(
-            adapter, get_underlying_namespaced_name(*node.get_program(), node));
+        return gen_adapted_type(adapter, get_underlying_namespaced_name(node));
       });
     }
 
     return get_type_name(node);
   }
+  const std::string& get_underlying_type_name(const t_typedef& node);
 
   const std::string& get_type_name(const t_typedef& node);
 
@@ -103,15 +94,18 @@ class type_resolver {
     return namespaces_.get_namespaced_name(program, node);
   }
 
-  const std::string& get_underlying_namespaced_name(
-      const t_program& program, const t_type& node) {
+  const std::string& get_underlying_namespaced_name(const t_type& node) {
     return detail::get_or_gen(underlying_namespaced_name_cache_, &node, [&] {
-      auto extra = get_extra_namespace(node);
-      return fmt::format(
-          "{}::{}{}",
-          namespaces_.get_namespace(program),
-          (extra ? *extra + "::" : ""),
-          get_underlying_name(node));
+      if (auto program = node.get_program()) {
+        auto extra = get_extra_namespace(node);
+        return fmt::format(
+            "{}::{}{}",
+            namespaces_.get_namespace(*program),
+            (extra ? *extra + "::" : ""),
+            get_underlying_name(node));
+      }
+      return gen_raw_type_name(
+          node, &type_resolver::get_underlying_namespaced_name);
     });
   }
 
@@ -168,9 +162,6 @@ class type_resolver {
   static const std::string* find_type(const t_type& node) {
     return node.find_annotation_or_null({"cpp.type", "cpp2.type"});
   }
-  static const std::string* find_adapter(const t_type& node) {
-    return node.find_annotation_or_null("cpp.adapter");
-  }
   static const std::string* find_structured_adapter_annotation(
       const t_named& node) {
     if (const t_const* annotation = node.find_structured_annotation_or_null(
@@ -208,7 +199,6 @@ class type_resolver {
 
   namespace_resolver namespaces_;
   std::unordered_map<const t_type*, std::string> type_cache_;
-  std::unordered_map<const t_type*, std::string> typedef_cache_;
   std::unordered_map<const t_field*, std::string> field_type_cache_;
   std::unordered_map<const t_type*, std::string> standard_type_cache_;
   std::unordered_map<const t_type*, std::string> underlying_type_cache_;
@@ -228,9 +218,6 @@ class type_resolver {
 
   // Generatating functions.
   std::string gen_type(const t_type& node);
-  std::string gen_type(const t_type& node, const std::string* adapter) {
-    return gen_adapted_type(adapter, gen_type(node));
-  }
   std::string gen_field_type(
       int16_t field_id,
       const t_type& type,

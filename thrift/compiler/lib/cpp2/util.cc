@@ -64,17 +64,17 @@ int checked_stoi(const std::string& s, std::string msg) {
 
 } // namespace
 
-// TODO: check @cpp.Adapter
 bool is_custom_type(const t_type& type) {
   return t_typedef::get_first_annotation_or_null(
-      &type,
-      {
-          "cpp.template",
-          "cpp2.template",
-          "cpp.type",
-          "cpp2.type",
-          "cpp.adapter",
-      });
+             &type,
+             {
+                 "cpp.template",
+                 "cpp2.template",
+                 "cpp.type",
+                 "cpp2.type",
+             }) ||
+      t_typedef::get_first_structured_annotation_or_null(
+             &type, "facebook.com/thrift/annotation/cpp/Adapter");
 }
 
 std::unordered_map<t_struct*, std::vector<t_struct*>>

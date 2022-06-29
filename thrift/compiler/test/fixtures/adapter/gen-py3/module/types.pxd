@@ -68,10 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cFoo(const cFoo&) except +
         bint operator==(cFoo&)
         bint operator!=(cFoo&)
-        bint operator<(cFoo&)
-        bint operator>(cFoo&)
-        bint operator<=(cFoo&)
-        bint operator>=(cFoo&)
         __field_ref[cint32_t] intField_ref()
         __optional_field_ref[cint32_t] optionalIntField_ref()
         __field_ref[cint32_t] intFieldWithDefault_ref()
@@ -97,10 +93,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cBaz(const cBaz&) except +
         bint operator==(cBaz&)
         bint operator!=(cBaz&)
-        bint operator<(cBaz&)
-        bint operator>(cBaz&)
-        bint operator<=(cBaz&)
-        bint operator>=(cBaz&)
         cBaz__type getType() const
         const cint32_t& get_intField() const
         cint32_t& set_intField(const cint32_t&)
@@ -119,10 +111,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cBar(const cBar&) except +
         bint operator==(cBar&)
         bint operator!=(cBar&)
-        bint operator<(cBar&)
-        bint operator>(cBar&)
-        bint operator<=(cBar&)
-        bint operator>=(cBar&)
         __field_ref[cFoo] structField_ref()
         __optional_field_ref[cFoo] optionalStructField_ref()
         __field_ref[vector[cFoo]] structListField_ref()

@@ -75,13 +75,14 @@ struct AdaptTestStruct {
   9: AdaptedInteger double_wrapped_integer;
 }
 
-enum AdaptedEnum {
+enum ThriftAdaptedEnum {
   Zero = 0,
   One = 1,
-} (
-  cpp.name = "ThriftAdaptedEnum",
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::test::basic::AdaptedEnum, ::apache::thrift::test::basic::ThriftAdaptedEnum>",
-)
+}
+@cpp.Adapter{
+  name = "::apache::thrift::StaticCastAdapter<::apache::thrift::test::basic::AdaptedEnum, ::apache::thrift::test::basic::ThriftAdaptedEnum>",
+}
+typedef ThriftAdaptedEnum AdaptedEnum
 
 struct AdaptTemplatedTestStruct {
   1: AdaptedBool adaptedBool;
@@ -104,7 +105,7 @@ struct AdaptTemplatedTestStruct {
   15: AdaptedLong adaptedLongDefault = 4;
   16: AdaptedDouble adaptedDoubleDefault = 5;
   17: AdaptedString adaptedStringDefault = "6";
-  18: AdaptedEnum adaptedEnum = AdaptedEnum.One;
+  18: AdaptedEnum adaptedEnum = ThriftAdaptedEnum.One;
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
   19: list<i64> adaptedListDefault = [1];
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}

@@ -61,7 +61,8 @@ const std::string& type_resolver::get_type_name(
   return get_type_name(type);
 }
 
-const std::string& type_resolver::get_type_name(const t_typedef& node) {
+const std::string& type_resolver::get_underlying_type_name(
+    const t_typedef& node) {
   // When `t_placeholder_typedef` is used, `t_type_ref::deref` will
   // automatically dereference `t_placeholder_typedef` as well. Since
   // unstructured annotations are stored in `t_placeholder_typedef`, we can't
@@ -70,6 +71,7 @@ const std::string& type_resolver::get_type_name(const t_typedef& node) {
   if (type == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
+
   if (auto* annotation = find_nontransitive_adapter(node)) {
     if (auto* adaptedType =
             annotation->get_value_from_structured_annotation_or_null(
@@ -78,8 +80,9 @@ const std::string& type_resolver::get_type_name(const t_typedef& node) {
     }
     const auto& adapter =
         annotation->get_value_from_structured_annotation("name").get_string();
-    return detail::get_or_gen(
-        typedef_cache_, &node, [&]() { return gen_type(*type, &adapter); });
+    return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
+      return gen_adapted_type(&adapter, get_type_name(*type));
+    });
   }
   return get_type_name(*type);
 }
@@ -102,7 +105,7 @@ const std::string* type_resolver::find_first_adapter(const t_type& node) {
     return &annotation->get_value_from_structured_annotation("name")
                 .get_string();
   }
-  return t_typedef::get_first_annotation_or_null(&node, {"cpp.adapter"});
+  return nullptr;
 }
 
 const std::string* type_resolver::find_first_adapter(const t_field& field) {
@@ -212,7 +215,7 @@ std::string type_resolver::gen_standard_type(const t_type& node) {
   }
 
   if (is_directly_adapted(node)) {
-    return get_underlying_namespaced_name(*node.get_program(), node);
+    return get_underlying_namespaced_name(node);
   }
 
   return gen_raw_type_name(node, &type_resolver::get_standard_type_name);
