@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	cpp0 "thrift/annotation/cpp"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = cpp0.GoUnusedProtection__
 type MyServicePrioChild interface {
 MyServicePrioParent
 
@@ -160,10 +163,10 @@ type MyServicePrioChildProcessor struct {
 }
 
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
-  self5 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
-  self5.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
-  self5.AddToFunctionServiceMap("pang", "MyServicePrioChild")
-  return self5
+  self6 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
+  self6.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  self6.AddToFunctionServiceMap("pang", "MyServicePrioChild")
+  return self6
 }
 
 type myServicePrioChildProcessorPang struct {

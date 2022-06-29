@@ -18,23 +18,25 @@ namespace java test.fixtures.basicannotations
 namespace java2 test.fixtures.basicannotations
 namespace java.swift test.fixtures.basicannotations
 
+include "thrift/annotation/cpp.thrift"
+
 enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
   DOMAIN = 2 (cpp.name = 'REALM'),
-} (cpp.name = "YourEnum", cpp.adapter = "StaticCast")
+} (cpp.name = "YourEnum")
 
 struct MyStructNestedAnnotation {
   1: string name;
 }
 
-union MyUnion {} (cpp.name = "YourUnion", cpp.adapter = "StaticCast")
-safe exception MyException {} (
-  cpp.name = "YourException",
-  cpp.adapter = "StaticCast",
-)
+@cpp.Adapter{name = 'StaticCast'}
+union MyUnion {} (cpp.name = "YourUnion")
+@cpp.Adapter{name = 'StaticCast'}
+safe exception MyException {} (cpp.name = "YourException")
 
 # We intentionally keep field IDs out of order to check whether this case is handled correctly
+@cpp.Adapter{name = 'StaticCast'}
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
   2: i64 major (cpp.name = 'majorVer');
@@ -50,7 +52,6 @@ struct MyStruct {
   9: MyUnion my_union;
 } (
   cpp.name = "YourStruct",
-  cpp.adapter = "StaticCast",
   android.generate_builder,
   cpp.internal.deprecated._data.method,
   thrift.uri = "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",

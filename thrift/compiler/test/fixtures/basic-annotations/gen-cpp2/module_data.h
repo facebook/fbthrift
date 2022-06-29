@@ -19,8 +19,8 @@ template <> struct TEnumDataStorage<::cpp2::YourEnum> {
   static const std::array<folly::StringPiece, size> names;
 };
 
-template <> struct TEnumDataStorage<::cpp2::YourUnion::Type> {
-  using type = ::cpp2::YourUnion::Type;
+template <> struct TEnumDataStorage<::cpp2::detail::YourUnion::Type> {
+  using type = ::cpp2::detail::YourUnion::Type;
   static constexpr const std::size_t size = 0;
   static const std::array<type, size> values;
   static const std::array<folly::StringPiece, size> names;
@@ -33,21 +33,21 @@ template <> struct TStructDataStorage<::cpp2::MyStructNestedAnnotation> {
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::YourUnion> {
+template <> struct TStructDataStorage<::cpp2::detail::YourUnion> {
   static constexpr const std::size_t fields_size = 0;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::YourException> {
+template <> struct TStructDataStorage<::cpp2::detail::YourException> {
   static constexpr const std::size_t fields_size = 0;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::YourStruct> {
+template <> struct TStructDataStorage<::cpp2::detail::YourStruct> {
   static constexpr const std::size_t fields_size = 9;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

@@ -16,3 +16,4 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ReturnService.tcc"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types_custom_protocol.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types_custom_protocol.h"
+#include "thrift/annotation/gen-cpp2/cpp_types_custom_protocol.h"

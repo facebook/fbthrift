@@ -50,10 +50,10 @@ class ServiceHandler<::cpp2::Service> : public apache::thrift::ServerInterface {
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
 
-  virtual ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32> func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/);
-  virtual folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>> future_func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
-  virtual folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>> semifuture_func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
-  virtual void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>>> callback, std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
+  virtual ::cpp2::MyI32 func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/);
+  virtual folly::Future<::cpp2::MyI32> future_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
+  virtual folly::SemiFuture<::cpp2::MyI32> semifuture_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
+  virtual void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::cpp2::MyI32>> callback, std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
  private:
   static ::cpp2::ServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_func{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -67,7 +67,7 @@ using ServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<Service> inst
 namespace cpp2 {
 class ServiceSvNull : public ServiceSvIf {
  public:
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32> func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) override;
+  ::cpp2::MyI32 func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) override;
 };
 
 class ServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -96,7 +96,7 @@ class ServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <typename ProtocolIn_, typename ProtocolOut_>
   void executeRequest_func(apache::thrift::ServerRequest&& serverRequest);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::SerializedResponse return_func(apache::thrift::ContextStack* ctx, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32> const& _return);
+  static apache::thrift::SerializedResponse return_func(apache::thrift::ContextStack* ctx, ::cpp2::MyI32 const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_func(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

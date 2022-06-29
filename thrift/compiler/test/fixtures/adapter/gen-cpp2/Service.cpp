@@ -25,23 +25,23 @@ std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const
 ::cpp2::ServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::Service>::__fbthrift_serviceInfoHolder;
 
 
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32> apache::thrift::ServiceHandler<::cpp2::Service>::func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
+::cpp2::MyI32 apache::thrift::ServiceHandler<::cpp2::Service>::func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("func");
 }
 
-folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>> apache::thrift::ServiceHandler<::cpp2::Service>::semifuture_func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+folly::SemiFuture<::cpp2::MyI32> apache::thrift::ServiceHandler<::cpp2::Service>::semifuture_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_func.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return func(std::move(p_arg1), std::move(p_arg2), std::move(p_arg3));
 }
 
-folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>> apache::thrift::ServiceHandler<::cpp2::Service>::future_func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+folly::Future<::cpp2::MyI32> apache::thrift::ServiceHandler<::cpp2::Service>::future_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_func.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_func(std::move(p_arg1), std::move(p_arg2), std::move(p_arg3)), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::Service>::async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32>>> callback, std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+void apache::thrift::ServiceHandler<::cpp2::Service>::async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::cpp2::MyI32>> callback, std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,7 +85,7 @@ void apache::thrift::ServiceHandler<::cpp2::Service>::async_tm_func(std::unique_
 
 namespace cpp2 {
 
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::MyI32> ServiceSvNull::func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::StringWithAdapter>> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
+::cpp2::MyI32 ServiceSvNull::func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
   return 0;
 }
 

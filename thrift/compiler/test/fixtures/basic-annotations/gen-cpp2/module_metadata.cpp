@@ -66,11 +66,11 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
   StructMetadata::unstructured_annotations(module_MyStructNestedAnnotation);
   return res.first->second;
 }
-void StructMetadata<::cpp2::YourUnion>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+void StructMetadata<::cpp2::detail::YourUnion>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   (void)thriftStruct;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::YourUnion>::gen(ThriftMetadata& metadata) {
+StructMetadata<::cpp2::detail::YourUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -78,13 +78,14 @@ StructMetadata<::cpp2::YourUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
   module_MyUnion.name() = "module.MyUnion";
   module_MyUnion.is_union() = true;
+  module_MyUnion.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(StaticCast)")}}).cv_struct_ref());
   return res.first->second;
 }
-void StructMetadata<::cpp2::YourException>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+void StructMetadata<::cpp2::detail::YourException>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   (void)thriftStruct;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::YourException>::gen(ThriftMetadata& metadata) {
+StructMetadata<::cpp2::detail::YourException>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -92,9 +93,10 @@ StructMetadata<::cpp2::YourException>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyException = res.first->second;
   module_MyException.name() = "module.MyException";
   module_MyException.is_union() = false;
+  module_MyException.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(StaticCast)")}}).cv_struct_ref());
   return res.first->second;
 }
-void StructMetadata<::cpp2::YourStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+void StructMetadata<::cpp2::detail::YourStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   thriftStruct.fields()[0].unstructured_annotations() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(cpp.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(majorVer)THRIFT_CODEGEN"},};
   thriftStruct.fields()[1].unstructured_annotations() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(java.swift.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(_package)THRIFT_CODEGEN"},};
   thriftStruct.fields()[2].unstructured_annotations() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(go.tag)THRIFT_CODEGEN", R"THRIFT_CODEGEN(tag:"somevalue")THRIFT_CODEGEN"},};
@@ -106,7 +108,7 @@ void StructMetadata<::cpp2::YourStruct>::unstructured_annotations(::apache::thri
   thriftStruct.fields()[8].unstructured_annotations() = std::map<std::string, std::string>{};
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::YourStruct>::gen(ThriftMetadata& metadata) {
+StructMetadata<::cpp2::detail::YourStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -124,7 +126,7 @@ StructMetadata<::cpp2::YourStruct>::gen(ThriftMetadata& metadata) {
     {6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "my_enum", false, std::make_unique<Enum<::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {8, "cpp_type_annotation", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {9, "my_union", false, std::make_unique<Union<::cpp2::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
+    {9, "my_union", false, std::make_unique<Union<::cpp2::detail::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -136,6 +138,7 @@ StructMetadata<::cpp2::YourStruct>::gen(ThriftMetadata& metadata) {
     module_MyStruct.fields()->push_back(std::move(field));
   }
   StructMetadata::unstructured_annotations(module_MyStruct);
+  module_MyStruct.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(StaticCast)")}}).cv_struct_ref());
   return res.first->second;
 }
 void StructMetadata<::cpp2::SecretStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
@@ -169,13 +172,14 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
-void ExceptionMetadata<::cpp2::YourException>::gen(ThriftMetadata& metadata) {
+void ExceptionMetadata<::cpp2::detail::YourException>::gen(ThriftMetadata& metadata) {
   auto res = metadata.exceptions()->emplace("module.MyException", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_MyException = res.first->second;
   module_MyException.name() = "module.MyException";
+  module_MyException.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(StaticCast)")}}).cv_struct_ref());
 }
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -187,7 +191,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_p
   module_MyService_ping_myExcept_1.id() = 1;
   module_MyService_ping_myExcept_1.name() = "myExcept";
   module_MyService_ping_myExcept_1.is_optional() = false;
-  auto module_MyService_ping_myExcept_1_type = std::make_unique<Struct<::cpp2::YourException>>("module.MyException");
+  auto module_MyService_ping_myExcept_1_type = std::make_unique<Struct<::cpp2::detail::YourException>>("module.MyException");
   module_MyService_ping_myExcept_1_type->writeAndGenType(*module_MyService_ping_myExcept_1.type(), metadata);
   func.exceptions()->push_back(std::move(module_MyService_ping_myExcept_1));
   ExceptionMetadata<::cpp2::YourException>::gen(metadata);

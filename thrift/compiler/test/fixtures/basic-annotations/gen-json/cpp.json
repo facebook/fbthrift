@@ -1,0 +1,384 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "cpp",
+  "enumerations" : {
+    "RefType" : {
+      "lineno" : 27,
+      "constants" : {
+        "Unique" : 0,
+        "Shared" : 1,
+        "SharedMutable" : 2
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 27,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 31,
+          "column" : 2
+        }
+      }
+    }
+  },
+  "structs" : {
+    "Ref" : {
+      "lineno" : 34,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/Ref",
+          "source_range" : {
+            "begin" : {
+              "line" : 36,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 36,
+              "column" : 57
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Field" : {  }
+      },
+      "fields" : {
+        "type" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "RefType",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 35,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 35,
+              "column" : 18
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 33,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 36,
+          "column" : 58
+        }
+      }
+    },
+    "Lazy" : {
+      "lineno" : 39,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/Lazy",
+          "source_range" : {
+            "begin" : {
+              "line" : 42,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 42,
+              "column" : 58
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Field" : {  }
+      },
+      "fields" : {
+        "ref" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 41,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 41,
+              "column" : 22
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 38,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 42,
+          "column" : 59
+        }
+      }
+    },
+    "DisableLazyChecksum" : {
+      "lineno" : 45,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/DisableLazyChecksum",
+          "source_range" : {
+            "begin" : {
+              "line" : 46,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 46,
+              "column" : 72
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Struct" : {  }
+      },
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 44,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 47,
+          "column" : 2
+        }
+      }
+    },
+    "Adapter" : {
+      "lineno" : 65,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/Adapter",
+          "source_range" : {
+            "begin" : {
+              "line" : 98,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 98,
+              "column" : 61
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Field" : {  },
+        "scope.Typedef" : {  },
+        "scope.Structured" : {  }
+      },
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 86,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 86,
+              "column" : 17
+            }
+          }
+        },
+        "adaptedType" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 89,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 89,
+              "column" : 24
+            }
+          }
+        },
+        "underlyingName" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 96,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 96,
+              "column" : 27
+            }
+          }
+        },
+        "extraNamespace" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : "detail",
+          "source_range" : {
+            "begin" : {
+              "line" : 97,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 97,
+              "column" : 38
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 62,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 98,
+          "column" : 62
+        }
+      }
+    },
+    "PackIsset" : {
+      "lineno" : 101,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/PackIsset",
+          "source_range" : {
+            "begin" : {
+              "line" : 103,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 103,
+              "column" : 63
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Struct" : {  }
+      },
+      "fields" : {
+        "atomic" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 102,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 102,
+              "column" : 24
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 100,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 103,
+          "column" : 64
+        }
+      }
+    },
+    "MinimizePadding" : {
+      "lineno" : 106,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/MinimizePadding",
+          "source_range" : {
+            "begin" : {
+              "line" : 107,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 107,
+              "column" : 68
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Struct" : {  }
+      },
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 105,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 108,
+          "column" : 2
+        }
+      }
+    },
+    "TriviallyRelocatable" : {
+      "lineno" : 111,
+      "is_exception" : false,
+      "is_union" : false,
+      "annotations" : {
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
+          "source_range" : {
+            "begin" : {
+              "line" : 112,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 112,
+              "column" : 73
+            }
+          }
+        }
+      },
+      "structured_annotations" : {
+        "scope.Struct" : {  }
+      },
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 110,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 113,
+          "column" : 2
+        }
+      }
+    }
+  }
+}

@@ -10,32 +10,6 @@ cdef class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "name", self.name
 
-cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyUnion
-
-    def __iter__(self):
-        pass
-
-cdef class MyException_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyException
-
-    def __iter__(self):
-        pass
-
-cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyStruct
-
-    def __iter__(self):
-        yield "major", self.major
-        yield "package", self.package
-        yield "annotation_with_quote", self.annotation_with_quote
-        yield "class_", self.class_
-        yield "annotation_with_trailing_comma", self.annotation_with_trailing_comma
-        yield "empty_annotations", self.empty_annotations
-        yield "my_enum", self.my_enum
-        yield "cpp_type_annotation", self.cpp_type_annotation
-        yield "my_union", self.my_union
-
 cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.SecretStruct
 

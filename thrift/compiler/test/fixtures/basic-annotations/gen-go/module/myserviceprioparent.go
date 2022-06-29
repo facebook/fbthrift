@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	cpp0 "thrift/annotation/cpp"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = cpp0.GoUnusedProtection__
 type MyServicePrioParent interface {
   Ping() (err error)
   Pong() (err error)
@@ -224,12 +227,12 @@ func (p *MyServicePrioParentProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-  self3 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self3.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
-  self3.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
-  self3.functionServiceMap["ping"] = "MyServicePrioParent"
-  self3.functionServiceMap["pong"] = "MyServicePrioParent"
-  return self3
+  self4 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self4.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
+  self4.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
+  self4.functionServiceMap["ping"] = "MyServicePrioParent"
+  self4.functionServiceMap["pong"] = "MyServicePrioParent"
+  return self4
 }
 
 type myServicePrioParentProcessorPing struct {

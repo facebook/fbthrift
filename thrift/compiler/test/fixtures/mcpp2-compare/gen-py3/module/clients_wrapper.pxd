@@ -26,6 +26,7 @@ from thrift.py3.client cimport cClientWrapper
 
 cimport module.types as _module_types
 
+cimport facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
 cimport includes.types as _includes_types
 
 cdef extern from "src/gen-cpp2/EmptyService.h" namespace "::some::valid::ns":

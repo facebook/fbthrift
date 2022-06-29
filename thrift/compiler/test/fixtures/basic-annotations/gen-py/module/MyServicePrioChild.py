@@ -18,6 +18,8 @@ if sys.version_info[0] >= 3:
 
 import module.MyServicePrioParent
 from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyUnion, MyException, MyStruct, SecretStruct
+import thrift.annotation.cpp.ttypes
+
 from thrift.Thrift import TProcessor
 import pprint
 import warnings

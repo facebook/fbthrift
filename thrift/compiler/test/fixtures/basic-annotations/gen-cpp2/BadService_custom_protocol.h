@@ -15,3 +15,4 @@
 
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/BadService.tcc"
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types_custom_protocol.h"
+#include "thrift/annotation/gen-cpp2/cpp_types_custom_protocol.h"

@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
+#include "thrift/annotation/gen-cpp2/cpp_types.h"
 
 namespace apache {
 namespace thrift {
@@ -146,9 +147,15 @@ extern const _YourEnum_EnumMapFactory::NamesToValuesMapType _YourEnum_NAMES_TO_V
 // BEGIN forward_declare
 namespace cpp2 {
 class MyStructNestedAnnotation;
+namespace detail {
 class YourUnion;
+} // namespace detail
+namespace detail {
 class YourException;
+} // namespace detail
+namespace detail {
 class YourStruct;
+} // namespace detail
 class SecretStruct;
 } // cpp2
 // END forward_declare
@@ -284,6 +291,7 @@ unsigned long MyStructNestedAnnotation::read(Protocol_* iprot) {
 }
 
 
+namespace detail {
 class YourUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -412,8 +420,12 @@ unsigned long YourUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+} // namespace detail
+
+using YourUnion = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::detail::YourUnion>;
 
 
+namespace detail {
 class FOLLY_EXPORT YourException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -472,7 +484,7 @@ class FOLLY_EXPORT YourException : public apache::thrift::TException {
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return "::cpp2::YourException";
+    return "::cpp2::detail::YourException";
   }
 
  private:
@@ -489,8 +501,12 @@ unsigned long YourException::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+} // namespace detail
+
+using YourException = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::detail::YourException>;
 
 
+namespace detail {
 class YourStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -523,9 +539,9 @@ class YourStruct final  {
                                                          ::apache::thrift::type::string_t,
                                                          ::apache::thrift::type::string_t,
                                                          ::apache::thrift::type::string_t,
-                                                         ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::enum_t<::cpp2::YourEnum>>,
+                                                         ::apache::thrift::type::enum_t<::cpp2::YourEnum>,
                                                          ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>,
-                                                         ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::YourUnion>>>;
+                                                         ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -593,9 +609,9 @@ class YourStruct final  {
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -5>> { static constexpr int value = 5; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -6>> { static constexpr int value = 6; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::enum_t<::cpp2::YourEnum>>, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
+    template<class T> struct Impl<::apache::thrift::type::enum_t<::cpp2::YourEnum>, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
     template<class T> struct Impl<::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>, T, std::enable_if_t<sizeof(T) != -8>> { static constexpr int value = 8; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::YourUnion>>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
     
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -629,7 +645,7 @@ class YourStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion> my_union__arg);
+  YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::YourEnum my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::cpp2::YourUnion my_union__arg);
 
   YourStruct(YourStruct&&) noexcept;
   YourStruct(const YourStruct& src);
@@ -653,11 +669,11 @@ class YourStruct final  {
  private:
   ::std::string __fbthrift_field_empty_annotations;
  private:
-  ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> __fbthrift_field_my_enum;
+  ::cpp2::YourEnum __fbthrift_field_my_enum;
  private:
   std::deque<std::string> __fbthrift_field_cpp_type_annotation;
  private:
-  ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion> __fbthrift_field_my_union;
+  ::cpp2::YourUnion __fbthrift_field_my_union;
  private:
   apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -906,42 +922,42 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_empty_annotations), __isset.at(5), __isset.bit(5)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_enum_ref() const& {
     return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_enum_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> my_enum_ref() & {
     return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_enum() const& {
     return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_enum() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> my_enum() & {
     return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>
+  template <typename..., typename T = ::cpp2::YourEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
@@ -986,42 +1002,42 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_cpp_type_annotation), __isset.at(7), __isset.bit(7)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_union_ref() const& {
     return {this->__fbthrift_field_my_union, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_union_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> my_union_ref() & {
     return {this->__fbthrift_field_my_union, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_union_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_union() const& {
     return {this->__fbthrift_field_my_union, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_union() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> my_union() & {
     return {this->__fbthrift_field_my_union, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>
+  template <typename..., typename T = ::cpp2::YourUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_union() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
@@ -1110,6 +1126,16 @@ class YourStruct final  {
     empty_annotations_ref() = std::forward<T_YourStruct_empty_annotations_struct_setter>(empty_annotations_);
     return __fbthrift_field_empty_annotations;
   }
+
+  ::cpp2::YourEnum get_my_enum() const {
+    return __fbthrift_field_my_enum;
+  }
+
+  [[deprecated("Use `FOO.my_enum_ref() = BAR;` instead of `FOO.set_my_enum(BAR);`")]]
+  ::cpp2::YourEnum& set_my_enum(::cpp2::YourEnum my_enum_) {
+    my_enum_ref() = my_enum_;
+    return __fbthrift_field_my_enum;
+  }
   const std::deque<std::string>& get_cpp_type_annotation() const&;
   std::deque<std::string> get_cpp_type_annotation() &&;
 
@@ -1143,6 +1169,9 @@ unsigned long YourStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+} // namespace detail
+
+using YourStruct = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::detail::YourStruct>;
 
 
 class SecretStruct final  {
@@ -1325,10 +1354,10 @@ unsigned long SecretStruct::read(Protocol_* iprot) {
 
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage<::cpp2::YourUnion::Type>;
+template <> struct TEnumDataStorage<::cpp2::detail::YourUnion::Type>;
 
-template <> struct TEnumTraits<::cpp2::YourUnion::Type> {
-  using type = ::cpp2::YourUnion::Type;
+template <> struct TEnumTraits<::cpp2::detail::YourUnion::Type> {
+  using type = ::cpp2::detail::YourUnion::Type;
 
   static constexpr std::size_t const size = 0;
   static folly::Range<type const*> const values;

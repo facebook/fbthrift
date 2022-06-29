@@ -16,6 +16,8 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
+import thrift.annotation.cpp.ttypes
+
 
 import pprint
 import warnings
@@ -684,7 +686,6 @@ MyUnion.thrift_spec = (
 )
 
 MyUnion.thrift_struct_annotations = {
-  "cpp.adapter": "StaticCast",
   "cpp.name": "YourUnion",
 }
 MyUnion.thrift_field_annotations = {
@@ -695,7 +696,6 @@ MyException.thrift_spec = (
 )
 
 MyException.thrift_struct_annotations = {
-  "cpp.adapter": "StaticCast",
   "cpp.name": "YourException",
 }
 MyException.thrift_field_annotations = {
@@ -717,7 +717,6 @@ MyStruct.thrift_spec = (
 
 MyStruct.thrift_struct_annotations = {
   "android.generate_builder": "1",
-  "cpp.adapter": "StaticCast",
   "cpp.internal.deprecated._data.method": "1",
   "cpp.name": "YourStruct",
   "hack.attributes": "\\SomeClass(\\AnotherClass::class)",

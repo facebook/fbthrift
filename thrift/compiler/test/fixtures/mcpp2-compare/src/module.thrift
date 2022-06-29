@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
  */
 
 include "includes.thrift"
+include "thrift/annotation/cpp.thrift"
 cpp_include "<folly/small_vector.h>"
 
 namespace cpp2 some.valid.ns
 
 typedef includes.AStruct AStruct
 
-typedef binary (
-  cpp.type = "::folly::IOBuf",
-  cpp.adapter = "CustomProtocolAdapter",
-) CustomProtocolType
+@cpp.Adapter{name = 'CustomProtocolAdapter'}
+typedef binary (cpp.type = "::folly::IOBuf") CustomProtocolType
 
 // Generate base consts
 const bool aBool = true;

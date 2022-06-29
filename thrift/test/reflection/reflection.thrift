@@ -36,10 +36,6 @@ cpp_include "<unordered_map>"
 @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
 typedef i64 MyI64
 
-typedef i64 (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-) DeprecatedMyI64
-
 enum enum1 {
   field0 = 0,
   field1 = 1,
@@ -574,9 +570,8 @@ struct StructWithAdaptedField {
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
   3: IntStruct fieldAdapted;
   4: MyI64 typeAdapted2;
-  5: DeprecatedMyI64 typeAdapted3;
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
-  6: MyI64 DoubleAdapted;
+  5: MyI64 DoubleAdapted;
 } (
   thrift.uri = "facebook.com/thrift/test/reflection/reflection/StructWithAdaptedField",
 )

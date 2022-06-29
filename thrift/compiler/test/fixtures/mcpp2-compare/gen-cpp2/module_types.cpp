@@ -3765,6 +3765,5 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<CustomProtocolAdapter, 27, ::folly::IOBuf, ::some::valid::ns::ComplexUnion>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<CustomProtocolAdapter, 20, ::folly::IOBuf, ::some::valid::ns::AnException>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<CustomProtocolAdapter, 21, ::folly::IOBuf, ::some::valid::ns::AnException>();
-  ::apache::thrift::adapt_detail::validateAdapter<CustomProtocolAdapter, ::folly::IOBuf>();
 }
 }}}} // some::valid::ns

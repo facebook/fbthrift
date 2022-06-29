@@ -29,16 +29,6 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
 }
 
 
-template<>
-const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
-    ::cpp2::MyUnion::Type>::namesmap() {
-  static const folly::Indestructible<NamesMap> pairs {
-    {
-    }
-  };
-  return *pairs;
-}
-
 
 template<>
 void reset_field<::cpp2::MyStructNestedAnnotation>(
@@ -46,47 +36,6 @@ void reset_field<::cpp2::MyStructNestedAnnotation>(
   switch (index) {
     case 0:
       obj.name_ref().copy_from(default_inst<::cpp2::MyStructNestedAnnotation>().name_ref());
-      return;
-  }
-}
-
-template<>
-void reset_field<::cpp2::MyException>(
-    ::cpp2::MyException& obj, uint16_t index) {
-  switch (index) {
-  }
-}
-
-template<>
-void reset_field<::cpp2::MyStruct>(
-    ::cpp2::MyStruct& obj, uint16_t index) {
-  switch (index) {
-    case 0:
-      obj.majorVer_ref().copy_from(default_inst<::cpp2::MyStruct>().majorVer_ref());
-      return;
-    case 1:
-      obj.package_ref().copy_from(default_inst<::cpp2::MyStruct>().package_ref());
-      return;
-    case 2:
-      obj.annotation_with_quote_ref().copy_from(default_inst<::cpp2::MyStruct>().annotation_with_quote_ref());
-      return;
-    case 3:
-      obj.class__ref().copy_from(default_inst<::cpp2::MyStruct>().class__ref());
-      return;
-    case 4:
-      obj.annotation_with_trailing_comma_ref().copy_from(default_inst<::cpp2::MyStruct>().annotation_with_trailing_comma_ref());
-      return;
-    case 5:
-      obj.empty_annotations_ref().copy_from(default_inst<::cpp2::MyStruct>().empty_annotations_ref());
-      return;
-    case 6:
-      obj.my_enum_ref().copy_from(default_inst<::cpp2::MyStruct>().my_enum_ref());
-      return;
-    case 7:
-      obj.cpp_type_annotation_ref().copy_from(default_inst<::cpp2::MyStruct>().cpp_type_annotation_ref());
-      return;
-    case 8:
-      obj.my_union_ref().copy_from(default_inst<::cpp2::MyStruct>().my_union_ref());
       return;
   }
 }
@@ -107,36 +56,6 @@ void reset_field<::cpp2::SecretStruct>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyStructNestedAnnotation>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
-}
-
-template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyUnion>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
-}
-
-template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyException>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
-}
-
-template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

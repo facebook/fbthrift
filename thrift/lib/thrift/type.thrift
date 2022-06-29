@@ -45,7 +45,11 @@ namespace py thrift.lib.thrift.type
 //
 // Similar to lib/cpp/protocol/TType.h, but IDL concepts instead of protocol
 // concepts.
-enum BaseType {
+@cpp.Adapter{
+  name = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::BaseType, ::apache::thrift::type::BaseTypeEnum>",
+}
+typedef BaseTypeEnum BaseType
+enum BaseTypeEnum {
   Void = 0,
 
   // Integer types.
@@ -75,18 +79,18 @@ enum BaseType {
   List = 14,
   Set = 15,
   Map = 16,
-} (
-  cpp.name = "BaseTypeEnum",
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::BaseType, ::apache::thrift::type::BaseTypeEnum>",
-)
+}
 
 // The hash algorithms that can be used with type names.
-enum UniversalHashAlgorithm {
+@cpp.Adapter{
+  name = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
+  extraNamespace = "",
+  underlyingName = "UniversalHashAlgorithmEnum",
+}
+typedef UniversalHashAlgorithmEnum UniversalHashAlgorithm
+enum UniversalHashAlgorithmEnum {
   Sha2_256 = 2, // = getFieldId(TypeUri::typeHashPrefixSha2_256).
-} (
-  cpp.name = "UniversalHashAlgorithmEnum",
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
-)
+}
 
 // A 'normal' Duration.
 //

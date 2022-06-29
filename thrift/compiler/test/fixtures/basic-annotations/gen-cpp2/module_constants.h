@@ -14,7 +14,7 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourStruct> const& myStruct();
+  static ::cpp2::YourStruct const& myStruct();
 
 };
 

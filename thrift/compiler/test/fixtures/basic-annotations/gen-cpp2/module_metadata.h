@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/cpp_metadata.h"
 
 namespace cpp2 {
 class MyService;
@@ -42,21 +43,21 @@ class StructMetadata<::cpp2::MyStructNestedAnnotation> {
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
-class StructMetadata<::cpp2::YourUnion> {
+class StructMetadata<::cpp2::detail::YourUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  private:
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
-class StructMetadata<::cpp2::YourException> {
+class StructMetadata<::cpp2::detail::YourException> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  private:
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
-class StructMetadata<::cpp2::YourStruct> {
+class StructMetadata<::cpp2::detail::YourStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  private:
@@ -70,7 +71,7 @@ class StructMetadata<::cpp2::SecretStruct> {
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
-class ExceptionMetadata<::cpp2::YourException> {
+class ExceptionMetadata<::cpp2::detail::YourException> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

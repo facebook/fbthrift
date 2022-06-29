@@ -13,9 +13,6 @@ namespace cpp2 {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<YourEnum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructNestedAnnotation>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<MyUnion>::gen(metadata);
-  ::apache::thrift::detail::md::ExceptionMetadata<MyException>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SecretStruct>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(response);
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>>::gen(response);

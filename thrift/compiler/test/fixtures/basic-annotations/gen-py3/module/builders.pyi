@@ -10,36 +10,14 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
+import facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
+import facebook.thrift.annotation.cpp.builders as _facebook_thrift_annotation_cpp_builders
 
 import module.types as _module_types
 
 
 class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     name: _typing.Optional[str]
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
-class MyUnion_Builder(thrift.py3.builder.StructBuilder):
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
-class MyException_Builder(thrift.py3.builder.StructBuilder):
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
-class MyStruct_Builder(thrift.py3.builder.StructBuilder):
-    major: _typing.Optional[int]
-    package: _typing.Optional[str]
-    annotation_with_quote: _typing.Optional[str]
-    class_: _typing.Optional[str]
-    annotation_with_trailing_comma: _typing.Optional[str]
-    empty_annotations: _typing.Optional[str]
-    my_enum: _typing.Optional[_module_types.MyEnum]
-    cpp_type_annotation: _typing.Optional[list]
-    my_union: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -27,29 +27,29 @@ struct VisitByFieldId<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct VisitByFieldId<::cpp2::YourUnion> {
+struct VisitByFieldId<::cpp2::detail::YourUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::YourUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::detail::YourUnion");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::cpp2::YourException> {
+struct VisitByFieldId<::cpp2::detail::YourException> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::YourException");
+      throwInvalidThriftId(fieldId, "::cpp2::detail::YourException");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::cpp2::YourStruct> {
+struct VisitByFieldId<::cpp2::detail::YourStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -72,7 +72,7 @@ struct VisitByFieldId<::cpp2::YourStruct> {
     case 9:
       return f(8, static_cast<T&&>(t).my_union_ref());
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::YourStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::detail::YourStruct");
     }
   }
 };

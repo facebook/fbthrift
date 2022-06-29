@@ -22,21 +22,21 @@ struct ForEachField<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct ForEachField<::cpp2::YourUnion> {
+struct ForEachField<::cpp2::detail::YourUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::cpp2::YourException> {
+struct ForEachField<::cpp2::detail::YourException> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::cpp2::YourStruct> {
+struct ForEachField<::cpp2::detail::YourStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).majorVer_ref()...);

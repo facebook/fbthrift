@@ -46,14 +46,13 @@ typedef string AdaptedString
 
 typedef AdaptedBool DoubleTypedefBool
 
-typedef binary (
-  cpp.type = "::folly::IOBuf",
-  cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
-) CustomProtocolType
+@cpp.Adapter{name = "::apache::thrift::test::CustomProtocolAdapter"}
+typedef binary (cpp.type = "::folly::IOBuf") CustomProtocolType
 
-typedef string (
-  cpp.adapter = "::apache::thrift::IndirectionAdapter<::apache::thrift::test::IndirectionString>",
-) IndirectionString
+@cpp.Adapter{
+  name = "::apache::thrift::IndirectionAdapter<::apache::thrift::test::IndirectionString>",
+}
+typedef string IndirectionString
 
 struct AdaptTestStruct {
   1: DurationMs delay;

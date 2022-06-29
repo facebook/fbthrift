@@ -16,12 +16,6 @@ from thrift.py3.reflection cimport (
 
 cdef __StructSpec get_reflection__MyStructNestedAnnotation()
 
-cdef __StructSpec get_reflection__MyUnion()
-
-cdef __StructSpec get_reflection__MyException()
-
-cdef __StructSpec get_reflection__MyStruct()
-
 cdef __StructSpec get_reflection__SecretStruct()
 
 cdef __ListSpec get_reflection__std_deque_std_string__List__string()

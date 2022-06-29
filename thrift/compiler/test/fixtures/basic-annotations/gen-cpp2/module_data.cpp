@@ -23,9 +23,9 @@ const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::YourEnum>::name
   "DOMAIN",
 }};
 
-const std::array<::cpp2::YourUnion::Type, 0> TEnumDataStorage<::cpp2::YourUnion::Type>::values = {{
+const std::array<::cpp2::detail::YourUnion::Type, 0> TEnumDataStorage<::cpp2::detail::YourUnion::Type>::values = {{
 }};
-const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::YourUnion::Type>::names = {{
+const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::detail::YourUnion::Type>::names = {{
 }};
 
 const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyStructNestedAnnotation>::fields_names = {{
@@ -38,21 +38,21 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructNestedAn
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::YourUnion>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::detail::YourUnion>::fields_names = {{
 }};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::YourUnion>::fields_ids = {{
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::detail::YourUnion>::fields_ids = {{
 }};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::YourUnion>::fields_types = {{
-}};
-
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::YourException>::fields_names = {{
-}};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::YourException>::fields_ids = {{
-}};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::YourException>::fields_types = {{
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::detail::YourUnion>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::YourStruct>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::detail::YourException>::fields_names = {{
+}};
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::detail::YourException>::fields_ids = {{
+}};
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::detail::YourException>::fields_types = {{
+}};
+
+const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_names = {{
   "major",
   "package",
   "annotation_with_quote",
@@ -63,7 +63,7 @@ const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::YourStruct>::
   "cpp_type_annotation",
   "my_union",
 }};
-const std::array<int16_t, 9> TStructDataStorage<::cpp2::YourStruct>::fields_ids = {{
+const std::array<int16_t, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_ids = {{
   2,
   1,
   3,
@@ -74,7 +74,7 @@ const std::array<int16_t, 9> TStructDataStorage<::cpp2::YourStruct>::fields_ids 
   8,
   9,
 }};
-const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::YourStruct>::fields_types = {{
+const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRING,

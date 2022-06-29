@@ -137,11 +137,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::YourUnion>::translateFieldName(
+void TccStructTraits<::cpp2::detail::YourUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::YourUnion>;
+  using data = apache::thrift::TStructDataStorage<::cpp2::detail::YourUnion>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -156,19 +156,20 @@ void TccStructTraits<::cpp2::YourUnion>::translateFieldName(
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::YourUnion::Type>::size;
-folly::Range<::cpp2::YourUnion::Type const*> const TEnumTraits<::cpp2::YourUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::YourUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::YourUnion::Type>::names);
+constexpr std::size_t const TEnumTraits<::cpp2::detail::YourUnion::Type>::size;
+folly::Range<::cpp2::detail::YourUnion::Type const*> const TEnumTraits<::cpp2::detail::YourUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::detail::YourUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::detail::YourUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::detail::YourUnion::Type>::names);
 
-bool TEnumTraits<::cpp2::YourUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::cpp2::detail::YourUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::YourUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::cpp2::detail::YourUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
-namespace cpp2 {
+namespace cpp2 {namespace detail {
+
 
 void YourUnion::__fbthrift_clear() {
   // clear all fields
@@ -222,17 +223,18 @@ template uint32_t YourUnion::serializedSize<>(apache::thrift::CompactProtocolWri
 template uint32_t YourUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
+} // namespace detail
 } // cpp2
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::YourException>::translateFieldName(
+void TccStructTraits<::cpp2::detail::YourException>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::YourException>;
+  using data = apache::thrift::TStructDataStorage<::cpp2::detail::YourException>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -245,7 +247,8 @@ void TccStructTraits<::cpp2::YourException>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace cpp2 {namespace detail {
+
 
 YourException::YourException(const YourException&) = default;
 YourException& YourException::operator=(const YourException&) = default;
@@ -306,17 +309,18 @@ template uint32_t YourException::serializedSize<>(apache::thrift::CompactProtoco
 template uint32_t YourException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
+} // namespace detail
 } // cpp2
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::YourStruct>::translateFieldName(
+void TccStructTraits<::cpp2::detail::YourStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::YourStruct>;
+  using data = apache::thrift::TStructDataStorage<::cpp2::detail::YourStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -329,7 +333,8 @@ void TccStructTraits<::cpp2::YourStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace cpp2 {namespace detail {
+
 
 const char* YourStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct";
@@ -354,7 +359,6 @@ YourStruct::YourStruct(const YourStruct& srcObj) {
   __isset.set(7,srcObj.__isset.get(7));
   __fbthrift_field_my_union = srcObj.__fbthrift_field_my_union;
   __isset.set(8,srcObj.__isset.get(8));
-  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   ::apache::thrift::adapt_detail::construct<StaticCast, 9>(__fbthrift_field_my_union, *this);
 }
 
@@ -367,7 +371,6 @@ YourStruct& YourStruct::operator=(const YourStruct& src) {
 YourStruct::YourStruct() :
       __fbthrift_field_majorVer(),
       __fbthrift_field_my_enum() {
-  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   ::apache::thrift::adapt_detail::construct<StaticCast, 9>(__fbthrift_field_my_union, *this);
 }
 
@@ -385,7 +388,6 @@ YourStruct::YourStruct(YourStruct&& other) noexcept  :
     __fbthrift_field_cpp_type_annotation(std::move(other.__fbthrift_field_cpp_type_annotation)),
     __fbthrift_field_my_union(std::move(other.__fbthrift_field_my_union)),
     __isset(other.__isset) {
-  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   ::apache::thrift::adapt_detail::construct<StaticCast, 9>(__fbthrift_field_my_union, *this);
 }
 
@@ -404,7 +406,7 @@ YourStruct& YourStruct::operator=(FOLLY_MAYBE_UNUSED YourStruct&& other) noexcep
 }
 
 
-YourStruct::YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion> my_union__arg) :
+YourStruct::YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::YourEnum my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::cpp2::YourUnion my_union__arg) :
     __fbthrift_field_majorVer(std::move(majorVer__arg)),
     __fbthrift_field_package(std::move(package__arg)),
     __fbthrift_field_annotation_with_quote(std::move(annotation_with_quote__arg)),
@@ -414,7 +416,6 @@ YourStruct::YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorV
     __fbthrift_field_my_enum(std::move(my_enum__arg)),
     __fbthrift_field_cpp_type_annotation(std::move(cpp_type_annotation__arg)),
     __fbthrift_field_my_union(std::move(my_union__arg)) {
-  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   ::apache::thrift::adapt_detail::construct<StaticCast, 9>(__fbthrift_field_my_union, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
@@ -436,7 +437,7 @@ void YourStruct::__fbthrift_clear() {
   this->__fbthrift_field_class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  ::apache::thrift::adapt_detail::clear<StaticCast, 7>(__fbthrift_field_my_enum, *this);
+  this->__fbthrift_field_my_enum = ::cpp2::YourEnum();
   this->__fbthrift_field_cpp_type_annotation.clear();
   __isset = {};
 }
@@ -470,7 +471,7 @@ bool YourStruct::operator==(const YourStruct& rhs) const {
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return false;
   }
-  if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
+  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
     return false;
   }
   if (!(lhs.cpp_type_annotation_ref() == rhs.cpp_type_annotation_ref())) {
@@ -504,8 +505,8 @@ bool YourStruct::operator<(const YourStruct& rhs) const {
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return lhs.empty_annotations_ref() < rhs.empty_annotations_ref();
   }
-  if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
-    return ::apache::thrift::adapt_detail::less<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum);
+  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
+    return lhs.my_enum_ref() < rhs.my_enum_ref();
   }
   if (!(lhs.cpp_type_annotation_ref() == rhs.cpp_type_annotation_ref())) {
     return lhs.cpp_type_annotation_ref() < rhs.cpp_type_annotation_ref();
@@ -552,9 +553,10 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         YourStruct,
         ::apache::thrift::type_class::variant,
-        ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>,
+        ::cpp2::YourUnion>,
     "inconsistent use of json option");
 
+} // namespace detail
 } // cpp2
 
 namespace apache {
@@ -666,7 +668,6 @@ template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
-  ::apache::thrift::adapt_detail::validateFieldAdapter<StaticCast, 7, ::cpp2::YourEnum, ::cpp2::YourStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<StaticCast, 9, ::cpp2::YourUnion, ::cpp2::YourStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<StaticCast, 9, ::cpp2::detail::YourUnion, ::cpp2::detail::YourStruct>();
 }
 }} // cpp2

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/any.thrift"
 include "thrift/lib/thrift/id.thrift"
@@ -123,9 +124,11 @@ struct Enum {
 }
 
 // A field id is a signed 16-bit integer.
-typedef i16 (
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::FieldId, int16_t>",
-) FieldId
+
+@cpp.Adapter{
+  name = "::apache::thrift::StaticCastAdapter<::apache::thrift::FieldId, int16_t>",
+}
+typedef i16 FieldId
 
 // The field qualifier.
 enum FieldQualifier {

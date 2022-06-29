@@ -22,10 +22,8 @@ cpp_include "thrift/test/AdapterTest.h"
 @cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
 typedef i64 DurationMs
 
-typedef binary (
-  cpp.type = "::folly::IOBuf",
-  cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
-) CustomProtocolType
+@cpp.Adapter{name = "::apache::thrift::test::CustomProtocolAdapter"}
+typedef binary (cpp.type = "::folly::IOBuf") CustomProtocolType
 
 struct AdaptTestStruct {
   1: DurationMs delay;

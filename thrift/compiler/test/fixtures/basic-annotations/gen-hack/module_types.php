@@ -213,7 +213,13 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "StaticCast",
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -288,7 +294,13 @@ class MyException extends \TException implements \IThriftSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "StaticCast",
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -607,8 +619,24 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+          shape(
+            "name" => "StaticCast",
+          )
+        ),
+      ],
       'fields' => dict[
+        'my_union' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "StaticCast",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
