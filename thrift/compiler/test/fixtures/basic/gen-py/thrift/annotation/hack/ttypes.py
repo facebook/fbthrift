@@ -128,6 +128,21 @@ class FieldWrapper:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.hack.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.FieldWrapper, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.hack.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.FieldWrapper, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Adapter:
   """
   Attributes:
@@ -220,6 +235,21 @@ class Adapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.hack.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Adapter, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.hack.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Adapter, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class SkipCodegen:
   """
   Attributes:
@@ -311,6 +341,21 @@ class SkipCodegen:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.hack.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.SkipCodegen, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.hack.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.SkipCodegen, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class Name:
   """
@@ -420,6 +465,21 @@ class Name:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.hack.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Name, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.hack.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Name, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 all_structs.append(FieldWrapper)
 FieldWrapper.thrift_spec = (

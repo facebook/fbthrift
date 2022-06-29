@@ -159,6 +159,21 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("test.fixtures.basic.module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("test.fixtures.basic.module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class MyUnion(object):
   """
   Attributes:
@@ -304,6 +319,21 @@ class MyUnion(object):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("test.fixtures.basic.module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.MyUnion, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("test.fixtures.basic.module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.MyUnion, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (

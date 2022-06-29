@@ -122,34 +122,18 @@ class Py3ToPythonConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
 
-    def test_optional_type(self) -> None:
-        self.assertIsNone(to_python_struct(python_types.Simple, None))
-        self.assertIsNone(
-            to_python_struct(python_types.Simple, py3_types.Nested().optionalSimple)
-        )
-
-        with self.assertRaises(AttributeError):
-            # make sure pyre complains
-            # pyre-ignore[16]: Optional type has no attribute `intField`.
-            to_python_struct(
-                python_types.Simple, py3_types.Nested().optionalSimple
-            ).intField
-
 
 class PyDeprecatedToPythonConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
-        simple = to_python_struct(
-            python_types.Simple,
-            py_deprecated_types.Simple(
-                intField=42,
-                strField="simple",
-                intList=[1, 2, 3],
-                strSet={"hello", "world"},
-                strToIntMap={"one": 1, "two": 2},
-                color=py_deprecated_types.Color.GREEN,
-                name="myname",
-            ),
-        )
+        simple = py_deprecated_types.Simple(
+            intField=42,
+            strField="simple",
+            intList=[1, 2, 3],
+            strSet={"hello", "world"},
+            strToIntMap={"one": 1, "two": 2},
+            color=py_deprecated_types.Color.GREEN,
+            name="myname",
+        )._to_python()
         self.assertEqual(simple.intField, 42)
         self.assertEqual(simple.strField, "simple")
         self.assertEqual(simple.intList, [1, 2, 3])
@@ -159,51 +143,48 @@ class PyDeprecatedToPythonConverterTest(unittest.TestCase):
         self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
-        nested = to_python_struct(
-            python_types.Nested,
-            py_deprecated_types.Nested(
-                simpleField=py_deprecated_types.Simple(
-                    intField=42,
-                    strField="simple",
-                    intList=[1, 2, 3],
-                    strSet={"hello", "world"},
-                    strToIntMap={"one": 1, "two": 2},
-                    color=py_deprecated_types.Color.NONE,
+        nested = py_deprecated_types.Nested(
+            simpleField=py_deprecated_types.Simple(
+                intField=42,
+                strField="simple",
+                intList=[1, 2, 3],
+                strSet={"hello", "world"},
+                strToIntMap={"one": 1, "two": 2},
+                color=py_deprecated_types.Color.NONE,
+                name="myname",
+            ),
+            simpleList=[
+                py_deprecated_types.Simple(
+                    intField=200,
+                    strField="face",
+                    intList=[4, 5, 6],
+                    strSet={"keep", "calm"},
+                    strToIntMap={"three": 3, "four": 4},
+                    color=py_deprecated_types.Color.RED,
                     name="myname",
                 ),
-                simpleList=[
-                    py_deprecated_types.Simple(
-                        intField=200,
-                        strField="face",
-                        intList=[4, 5, 6],
-                        strSet={"keep", "calm"},
-                        strToIntMap={"three": 3, "four": 4},
-                        color=py_deprecated_types.Color.RED,
-                        name="myname",
-                    ),
-                    py_deprecated_types.Simple(
-                        intField=404,
-                        strField="b00k",
-                        intList=[7, 8, 9],
-                        strSet={"carry", "on"},
-                        strToIntMap={"five": 5, "six": 6},
-                        color=py_deprecated_types.Color.GREEN,
-                        name="myname",
-                    ),
-                ],
-                colorToSimpleMap={
-                    py_deprecated_types.Color.BLUE: py_deprecated_types.Simple(
-                        intField=500,
-                        strField="internal",
-                        intList=[10],
-                        strSet={"server", "error"},
-                        strToIntMap={"seven": 7, "eight": 8, "nine": 9},
-                        color=py_deprecated_types.Color.BLUE,
-                        name="myname",
-                    )
-                },
-            ),
-        )
+                py_deprecated_types.Simple(
+                    intField=404,
+                    strField="b00k",
+                    intList=[7, 8, 9],
+                    strSet={"carry", "on"},
+                    strToIntMap={"five": 5, "six": 6},
+                    color=py_deprecated_types.Color.GREEN,
+                    name="myname",
+                ),
+            ],
+            colorToSimpleMap={
+                py_deprecated_types.Color.BLUE: py_deprecated_types.Simple(
+                    intField=500,
+                    strField="internal",
+                    intList=[10],
+                    strSet={"server", "error"},
+                    strToIntMap={"seven": 7, "eight": 8, "nine": 9},
+                    color=py_deprecated_types.Color.BLUE,
+                    name="myname",
+                )
+            },
+        )._to_python()
         self.assertEqual(nested.simpleField.intField, 42)
         self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
         self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
@@ -213,40 +194,31 @@ class PyDeprecatedToPythonConverterTest(unittest.TestCase):
         )
 
     def test_simple_union(self) -> None:
-        simple_union = to_python_struct(
-            python_types.Union, py_deprecated_types.Union(intField=42)
-        )
+        simple_union = py_deprecated_types.Union(intField=42)._to_python()
         self.assertEqual(simple_union.type, python_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        simple_union = to_python_struct(
-            python_types.Union, py_deprecated_types.Union(name="myname")
-        )
+        simple_union = py_deprecated_types.Union(name="myname")._to_python()
         self.assertEqual(simple_union.type, python_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
-        union_with_list = to_python_struct(
-            python_types.Union, py_deprecated_types.Union(intList=[1, 2, 3])
-        )
+        union_with_list = py_deprecated_types.Union(intList=[1, 2, 3])._to_python()
         self.assertEqual(union_with_list.type, python_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
 
     def test_complex_union(self) -> None:
-        complex_union = to_python_struct(
-            python_types.Union,
-            py_deprecated_types.Union(
-                simpleField=py_deprecated_types.Simple(
-                    intField=42,
-                    strField="simple",
-                    intList=[1, 2, 3],
-                    strSet={"hello", "world"},
-                    strToIntMap={"one": 1, "two": 2},
-                    color=py_deprecated_types.Color.NONE,
-                )
-            ),
-        )
+        complex_union = py_deprecated_types.Union(
+            simpleField=py_deprecated_types.Simple(
+                intField=42,
+                strField="simple",
+                intList=[1, 2, 3],
+                strSet={"hello", "world"},
+                strToIntMap={"one": 1, "two": 2},
+                color=py_deprecated_types.Color.NONE,
+            )
+        )._to_python()
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
 
@@ -261,3 +233,18 @@ class PythonToPythonConverterTest(unittest.TestCase):
                 simple,
             ),
         )
+
+
+class NoneToPythonConverterTest(unittest.TestCase):
+    def test_optional_type(self) -> None:
+        self.assertIsNone(to_python_struct(python_types.Simple, None))
+        self.assertIsNone(
+            to_python_struct(python_types.Simple, py3_types.Nested().optionalSimple)
+        )
+
+        with self.assertRaises(AttributeError):
+            # make sure pyre complains
+            # pyre-ignore[16]: Optional type has no attribute `intField`.
+            to_python_struct(
+                python_types.Simple, py3_types.Nested().optionalSimple
+            ).intField

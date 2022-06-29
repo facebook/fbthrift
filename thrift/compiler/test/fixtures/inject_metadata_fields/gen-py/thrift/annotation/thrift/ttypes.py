@@ -93,6 +93,21 @@ class Beta:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Beta, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Beta, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Experimental:
   """
   Indicates a definition/feature should only be used with permission, may only
@@ -154,6 +169,21 @@ class Experimental:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Experimental, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Experimental, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class Deprecated:
   """
@@ -233,6 +263,21 @@ class Deprecated:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Deprecated, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Deprecated, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class Legacy:
   """
@@ -315,6 +360,21 @@ class Legacy:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Legacy, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Legacy, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class RequiresBackwardCompatibility:
   """
   Indicates additional backward compatibility restrictions, beyond the
@@ -395,6 +455,21 @@ class RequiresBackwardCompatibility:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.RequiresBackwardCompatibility, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.RequiresBackwardCompatibility, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class NoExperimental:
   """
   Best-effort disables experimental features.
@@ -455,6 +530,21 @@ class NoExperimental:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.NoExperimental, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.NoExperimental, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class NoBeta:
   """
@@ -517,6 +607,21 @@ class NoBeta:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.NoBeta, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.NoBeta, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class NoLegacy:
   """
   Best-effort disables @Legacy features.
@@ -577,6 +682,21 @@ class NoLegacy:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.NoLegacy, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.NoLegacy, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class NoDeprecated:
   """
@@ -643,6 +763,21 @@ class NoDeprecated:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.NoDeprecated, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.NoDeprecated, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class TerseWrite:
 
   thrift_spec = None
@@ -700,6 +835,21 @@ class TerseWrite:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.TerseWrite, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.TerseWrite, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class Box:
 
@@ -759,6 +909,21 @@ class Box:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Box, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Box, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Mixin:
 
   thrift_spec = None
@@ -816,6 +981,21 @@ class Mixin:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Mixin, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Mixin, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class SerializeInFieldIdOrder:
   """
@@ -880,6 +1060,21 @@ class SerializeInFieldIdOrder:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.SerializeInFieldIdOrder, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.SerializeInFieldIdOrder, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class GenDefaultEnumValue:
   """
@@ -974,6 +1169,21 @@ class GenDefaultEnumValue:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.GenDefaultEnumValue, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.GenDefaultEnumValue, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class v1:
   """
   Enables all released v1 features.
@@ -1034,6 +1244,21 @@ class v1:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.v1, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.v1, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class v1beta:
   """
@@ -1100,6 +1325,21 @@ class v1beta:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.v1beta, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.v1beta, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class v1alpha:
   """
   Enables all experimental v1 features.
@@ -1165,6 +1405,21 @@ class v1alpha:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.v1alpha, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.v1alpha, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class v1test:
   """
   Enables experimental features, even those that are known to break common
@@ -1227,6 +1482,21 @@ class v1test:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.v1test, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.v1test, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class NoLegacyAPIs:
 
   thrift_spec = None
@@ -1284,6 +1554,21 @@ class NoLegacyAPIs:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.NoLegacyAPIs, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.NoLegacyAPIs, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 all_structs.append(Beta)
 Beta.thrift_spec = (

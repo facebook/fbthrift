@@ -109,6 +109,21 @@ class GeneratePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.GeneratePatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.GeneratePatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class GenerateOptionalPatch:
 
   thrift_spec = None
@@ -179,6 +194,21 @@ class GenerateOptionalPatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.GenerateOptionalPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.GenerateOptionalPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class BoolPatch:
   """
@@ -288,6 +318,21 @@ class BoolPatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.BoolPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.BoolPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class BytePatch:
   """
@@ -402,6 +447,21 @@ class BytePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.BytePatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.BytePatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class I16Patch:
   """
   Attributes:
@@ -514,6 +574,21 @@ class I16Patch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.I16Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.I16Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class I32Patch:
   """
@@ -628,6 +703,21 @@ class I32Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.I32Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.I32Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class I64Patch:
   """
   Attributes:
@@ -736,6 +826,21 @@ class I64Patch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.I64Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.I64Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class FloatPatch:
   """
@@ -846,6 +951,21 @@ class FloatPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.FloatPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.FloatPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class DoublePatch:
   """
   Attributes:
@@ -954,6 +1074,21 @@ class DoublePatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.DoublePatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.DoublePatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class StringPatch:
   """
@@ -1098,6 +1233,21 @@ class StringPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.StringPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.StringPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class BinaryPatch:
   """
   Attributes:
@@ -1189,6 +1339,21 @@ class BinaryPatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.BinaryPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.BinaryPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class OptionalBoolPatch:
   """
@@ -1336,6 +1501,21 @@ class OptionalBoolPatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalBoolPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalBoolPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class OptionalBytePatch:
   """
@@ -1486,6 +1666,21 @@ class OptionalBytePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalBytePatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalBytePatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class OptionalI16Patch:
   """
   Attributes:
@@ -1634,6 +1829,21 @@ class OptionalI16Patch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalI16Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalI16Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class OptionalI32Patch:
   """
@@ -1784,6 +1994,21 @@ class OptionalI32Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalI32Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalI32Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class OptionalI64Patch:
   """
   Attributes:
@@ -1930,6 +2155,21 @@ class OptionalI64Patch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalI64Patch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalI64Patch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class OptionalFloatPatch:
   """
@@ -2078,6 +2318,21 @@ class OptionalFloatPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalFloatPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalFloatPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class OptionalDoublePatch:
   """
   Attributes:
@@ -2224,6 +2479,21 @@ class OptionalDoublePatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalDoublePatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalDoublePatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class OptionalStringPatch:
   """
@@ -2372,6 +2642,21 @@ class OptionalStringPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalStringPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalStringPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class OptionalBinaryPatch:
   """
   Attributes:
@@ -2518,6 +2803,21 @@ class OptionalBinaryPatch:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("apache.thrift.op.patch.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.OptionalBinaryPatch, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("apache.thrift.op.patch.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.OptionalBinaryPatch, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 all_structs.append(GeneratePatch)
 GeneratePatch.thrift_spec = (

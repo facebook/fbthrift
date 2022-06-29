@@ -159,6 +159,8 @@ class t_py_generator : public t_concat_generator {
   void generate_py_struct_reader(std::ofstream& out, const t_struct* tstruct);
   void generate_py_struct_writer(std::ofstream& out, const t_struct* tstruct);
   void generate_py_function_helpers(const t_function* tfunction);
+  void generate_py_converter_helpers(
+      std::ofstream& out, const t_struct* tstruct);
 
   /**
    * Service-level generation functions
@@ -1241,6 +1243,7 @@ void t_py_generator::generate_xception(const t_struct* txception) {
 void t_py_generator::generate_py_struct(
     const t_struct* tstruct, bool is_exception) {
   generate_py_struct_definition(f_types_, tstruct, is_exception);
+  generate_py_converter_helpers(f_types_, tstruct);
 }
 
 /**
@@ -1451,6 +1454,7 @@ void t_py_generator::generate_py_union(ofstream& out, const t_struct* tstruct) {
   out << endl;
 
   indent_down();
+  generate_py_converter_helpers(out, tstruct);
 }
 
 void t_py_generator::generate_py_thrift_spec(
@@ -2171,6 +2175,44 @@ void t_py_generator::generate_py_function_helpers(const t_function* tfunction) {
     generate_py_struct_definition(f_service_, &result, false, true);
     generate_py_thrift_spec(f_service_, &result, false);
   }
+}
+
+void t_py_generator::generate_py_converter_helpers(
+    std::ofstream& out, const t_struct* tstruct) {
+  indent_up();
+  // TODO: accommodate root_module_prefix
+  auto python_namespace = get_py3_namespace_with_name_and_prefix(program_, "");
+  out << indent() << "def _to_python(self):" << endl;
+  indent_up();
+  out << indent() << "import importlib" << endl
+      << indent() << "import thrift.python.converter" << endl
+      << indent() << "python_types = importlib.import_module(\""
+      << python_namespace << ".thrift_types\")" << endl
+      << indent()
+      << "return thrift.python.converter.to_python_struct(python_types."
+      << rename_reserved_keywords(tstruct->get_name()) << ", self"
+      << ")" << endl
+      << endl;
+  indent_down();
+
+  auto py3_namespace = get_py3_namespace_with_name_and_prefix(program_, "");
+  out << indent() << "def _to_py3(self):" << endl;
+  indent_up();
+  out << indent() << "import importlib" << endl
+      << indent() << "import thrift.py3.converter" << endl
+      << indent() << "py3_types = importlib.import_module(\"" << py3_namespace
+      << ".types\")" << endl
+      << indent() << "return thrift.py3.converter.to_py3_struct(py3_types."
+      << rename_reserved_keywords(tstruct->get_name()) << ", self"
+      << ")" << endl
+      << endl;
+  indent_down();
+
+  out << indent() << "def _to_py_deprecated(self):" << endl
+      << indent() << "  return self" << endl
+      << endl;
+
+  indent_down();
 }
 
 /**

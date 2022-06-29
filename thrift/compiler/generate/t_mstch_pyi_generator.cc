@@ -25,6 +25,7 @@
 #include <string>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/lib/py3/util.h>
 
 using namespace std;
 
@@ -90,6 +91,8 @@ class t_mstch_pyi_generator : public t_mstch_generator {
       const t_program&, const string& tail = "");
   mstch::array get_py_namespace(const t_program&, const string& tail = "");
   std::string flatten_type_name(const t_type&) const;
+  mstch::array get_python_namespace(const t_program&);
+  mstch::array get_py3_namespace(const t_program&);
 
  private:
   void load_container_type(
@@ -100,6 +103,8 @@ class t_mstch_pyi_generator : public t_mstch_generator {
 
 mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
   const auto pyNamespaces = get_py_namespace(program, "");
+  const auto pythonNamespaces = get_python_namespace(program);
+  const auto py3Namespaces = get_py3_namespace(program);
   mstch::array importModules;
   for (const auto included_program : program.get_included_programs()) {
     if (included_program->path() == program.path()) {
@@ -135,6 +140,8 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
   mstch::map result{
       {"returnTypes", get_return_types(program)},
       {"pyNamespaces", pyNamespaces},
+      {"pythonNamespaces", pythonNamespaces},
+      {"py3Namespaces", py3Namespaces},
       {"importModules", importModules},
       {"asyncio?", has_option("asyncio")},
       {"cpp_transport?", has_option("cpp_transport")},
@@ -407,6 +414,17 @@ vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
 mstch::array t_mstch_pyi_generator::get_py_namespace(
     const t_program& program, const string& tail) {
   return dump_elems(get_py_namespace_raw(program, tail));
+}
+
+mstch::array t_mstch_pyi_generator::get_python_namespace(
+    const t_program& program) {
+  // TODO: take root_module_prefix into account
+  return dump_elems(::apache::thrift::compiler::get_py3_namespace(&program));
+}
+
+mstch::array t_mstch_pyi_generator::get_py3_namespace(
+    const t_program& program) {
+  return dump_elems(::apache::thrift::compiler::get_py3_namespace(&program));
 }
 
 void t_mstch_pyi_generator::generate_program() {

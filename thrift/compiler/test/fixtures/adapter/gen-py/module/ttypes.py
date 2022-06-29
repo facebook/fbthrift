@@ -429,6 +429,21 @@ class Foo:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Foo, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Foo, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Baz(object):
   """
   Attributes:
@@ -716,6 +731,21 @@ class Baz(object):
   def __ne__(self, other):
     return not (self == other)
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Baz, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Baz, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Bar:
   """
   Attributes:
@@ -972,6 +1002,21 @@ class Bar:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.Bar, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.Bar, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class DirectlyAdapted:
   """
   Attributes:
@@ -1065,6 +1110,21 @@ class DirectlyAdapted:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.DirectlyAdapted, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.DirectlyAdapted, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class StructWithFieldAdapter:
   """
@@ -1217,6 +1277,21 @@ class StructWithFieldAdapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.StructWithFieldAdapter, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.StructWithFieldAdapter, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class TerseAdaptedFields:
   """
   Attributes:
@@ -1362,6 +1437,21 @@ class TerseAdaptedFields:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.TerseAdaptedFields, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.TerseAdaptedFields, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class B:
   """
   Attributes:
@@ -1456,6 +1546,21 @@ class B:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.B, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.B, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class A:
 
   thrift_spec = None
@@ -1526,6 +1631,21 @@ class A:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.A, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.A, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 SetWithAdapter = UnimplementedTypedef()
 StringWithAdapter = UnimplementedTypedef()

@@ -319,6 +319,21 @@ class def_PY_RESERVED_KEYWORD:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("test.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.def_PY_RESERVED_KEYWORD, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("test.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.def_PY_RESERVED_KEYWORD, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 all_structs.append(def_PY_RESERVED_KEYWORD)
 def_PY_RESERVED_KEYWORD.thrift_spec = (
   None, # 0

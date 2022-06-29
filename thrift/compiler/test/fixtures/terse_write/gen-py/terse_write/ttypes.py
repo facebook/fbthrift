@@ -122,6 +122,21 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class MyStructWithCustomDefault:
   """
   Attributes:
@@ -213,6 +228,21 @@ class MyStructWithCustomDefault:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.MyStructWithCustomDefault, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.MyStructWithCustomDefault, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class StructLevelTerseStruct:
   """
@@ -597,6 +627,21 @@ class StructLevelTerseStruct:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.StructLevelTerseStruct, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.StructLevelTerseStruct, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class FieldLevelTerseStruct:
   """
@@ -1291,6 +1336,21 @@ class FieldLevelTerseStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.FieldLevelTerseStruct, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.FieldLevelTerseStruct, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class TerseStructWithCustomDefault:
   """
   Attributes:
@@ -1675,6 +1735,21 @@ class TerseStructWithCustomDefault:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.TerseStructWithCustomDefault, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.TerseStructWithCustomDefault, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class AdaptedFields:
   """
   Attributes:
@@ -1806,6 +1881,21 @@ class AdaptedFields:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.AdaptedFields, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.AdaptedFields, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 MyInteger = UnimplementedTypedef()
 all_structs.append(MyStruct)

@@ -126,6 +126,21 @@ class InitialResponse:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.InitialResponse, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.InitialResponse, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class FinalResponse:
   """
   Attributes:
@@ -217,6 +232,21 @@ class FinalResponse:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.FinalResponse, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.FinalResponse, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class SinkPayload:
   """
@@ -310,6 +340,21 @@ class SinkPayload:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.SinkPayload, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.SinkPayload, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class CompatibleWithKeywordSink:
   """
   Attributes:
@@ -401,6 +446,21 @@ class CompatibleWithKeywordSink:
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.CompatibleWithKeywordSink, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.CompatibleWithKeywordSink, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 class InitialException(TException):
   """
@@ -501,6 +561,21 @@ class InitialException(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.InitialException, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.InitialException, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class SinkException1(TException):
   """
   Attributes:
@@ -600,6 +675,21 @@ class SinkException1(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.SinkException1, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.SinkException1, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class SinkException2(TException):
   """
   Attributes:
@@ -698,6 +788,21 @@ class SinkException2(TException):
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.SinkException2, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.SinkException2, self)
+
+  def _to_py_deprecated(self):
+    return self
 
 all_structs.append(InitialResponse)
 InitialResponse.thrift_spec = (
