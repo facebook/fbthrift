@@ -190,6 +190,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
         // Allow no thread manager if resource pools in use
         valid &=
             (!!(threadManager_ = std::move(processorInfo->threadManager_)) ||
+             processorInfo->useResourcePool_ ||
              !worker_->getServer()->resourcePoolSet().empty());
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
         requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
