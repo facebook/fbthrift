@@ -57,11 +57,11 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_Program' => \facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        '\facebook_thrift_annotation_Structured' => \facebook_thrift_annotation_Structured::fromShape(
+        '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
           shape(
           )
         ),
@@ -144,7 +144,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_Struct' => \facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
@@ -280,7 +280,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::BoolPatchAdapter",
             "underlyingName" => "BoolPatchStruct",
@@ -433,7 +433,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "BytePatchStruct",
@@ -596,7 +596,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "I16PatchStruct",
@@ -759,7 +759,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "I32PatchStruct",
@@ -922,7 +922,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "I64PatchStruct",
@@ -1075,7 +1075,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "FloatPatchStruct",
@@ -1228,7 +1228,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
             "underlyingName" => "DoublePatchStruct",
@@ -1431,7 +1431,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::StringPatchAdapter",
             "underlyingName" => "StringPatchStruct",
@@ -1573,7 +1573,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::AssignPatchAdapter",
             "underlyingName" => "BinaryPatchStruct",
@@ -1785,7 +1785,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalBoolPatchStruct",
@@ -1797,7 +1797,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::BoolPatchAdapter",
                 "underlyingName" => "BoolPatchStruct",
@@ -1813,7 +1813,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::BoolPatchAdapter",
                 "underlyingName" => "BoolPatchStruct",
@@ -2050,7 +2050,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalBytePatchStruct",
@@ -2062,7 +2062,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "BytePatchStruct",
@@ -2078,7 +2078,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "BytePatchStruct",
@@ -2320,7 +2320,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalI16PatchStruct",
@@ -2332,7 +2332,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I16PatchStruct",
@@ -2348,7 +2348,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I16PatchStruct",
@@ -2590,7 +2590,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalI32PatchStruct",
@@ -2602,7 +2602,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I32PatchStruct",
@@ -2618,7 +2618,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I32PatchStruct",
@@ -2860,7 +2860,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalI64PatchStruct",
@@ -2872,7 +2872,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I64PatchStruct",
@@ -2888,7 +2888,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "I64PatchStruct",
@@ -3125,7 +3125,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalFloatPatchStruct",
@@ -3137,7 +3137,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "FloatPatchStruct",
@@ -3153,7 +3153,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "FloatPatchStruct",
@@ -3390,7 +3390,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalDoublePatchStruct",
@@ -3402,7 +3402,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "DoublePatchStruct",
@@ -3418,7 +3418,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::NumberPatchAdapter",
                 "underlyingName" => "DoublePatchStruct",
@@ -3655,7 +3655,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalStringPatchStruct",
@@ -3667,7 +3667,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
         'patch' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::StringPatchAdapter",
                 "underlyingName" => "StringPatchStruct",
@@ -3683,7 +3683,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
         'patchAfter' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::StringPatchAdapter",
                 "underlyingName" => "StringPatchStruct",
@@ -3920,7 +3920,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "::apache::thrift::op::detail::OptionalPatchAdapter",
             "underlyingName" => "OptionalBinaryPatchStruct",
@@ -3936,7 +3936,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::AssignPatchAdapter",
                 "underlyingName" => "BinaryPatchStruct",
@@ -3952,7 +3952,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "::apache::thrift::op::detail::AssignPatchAdapter",
                 "underlyingName" => "BinaryPatchStruct",

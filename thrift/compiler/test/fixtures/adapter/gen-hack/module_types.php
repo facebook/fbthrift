@@ -582,7 +582,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'fields' => dict[
         'intField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -597,7 +597,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'optionalIntField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -612,7 +612,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'intFieldWithDefault' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -628,7 +628,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'setField' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter2",
               )
@@ -643,7 +643,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'optionalSetField' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter2",
               )
@@ -657,7 +657,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'mapField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter3",
               )
@@ -672,7 +672,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'optionalMapField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter3",
               )
@@ -687,7 +687,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'binaryField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -703,12 +703,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'longField' => shape(
           'field' => dict[],
           'type' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
               shape(
                 "name" => "my.module.Adapter2",
                 "typeHint" => "my.another.module.AdaptedType2",
@@ -718,12 +718,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'adaptedLongField' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter2",
               )
             ),
-            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
               shape(
                 "name" => "my.Adapter3",
                 "typeHint" => "my.AdaptedType3",
@@ -731,12 +731,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
             ),
           ],
           'type' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
               shape(
                 "name" => "my.module.Adapter2",
                 "typeHint" => "my.another.module.AdaptedType2",
@@ -1347,7 +1347,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       'fields' => dict[
         'intField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -1363,7 +1363,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         'setField' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter2",
               )
@@ -1377,7 +1377,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         ),
         'mapField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter3",
               )
@@ -1392,7 +1392,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         ),
         'binaryField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -1408,12 +1408,12 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         'longField' => shape(
           'field' => dict[],
           'type' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
               shape(
                 "name" => "my.module.Adapter2",
                 "typeHint" => "my.another.module.AdaptedType2",
@@ -1899,12 +1899,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'fields' => dict[
         'structField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
             ),
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
                 "adaptedType" => "my::Cpp::Type1",
@@ -1915,7 +1915,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'optionalStructField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -1930,7 +1930,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'unionField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -1945,7 +1945,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'optionalUnionField' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\Adapter1",
               )
@@ -1961,7 +1961,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'adaptedStructField' => shape(
           'field' => dict[],
           'type' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )
@@ -2156,7 +2156,7 @@ class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "my::Adapter",
           )
@@ -2355,12 +2355,12 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
       'fields' => dict[
         'field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
               shape(
                 "name" => "my.Adapter1",
                 "typeHint" => "my.AdaptedType1",
@@ -2371,14 +2371,14 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
         ),
         'shared_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_cpp_Ref' => facebook_thrift_annotation_cpp_Ref::fromShape(
+            '\thrift\annotation\cpp\Ref' => \thrift\annotation\cpp\Ref::fromShape(
               shape(
-                "type" => facebook_thrift_annotation_cpp_RefType::Shared,
+                "type" => \thrift\annotation\cpp\RefType::Shared,
               )
             ),
           ],
@@ -2386,14 +2386,14 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
         ),
         'opt_shared_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_cpp_Ref' => facebook_thrift_annotation_cpp_Ref::fromShape(
+            '\thrift\annotation\cpp\Ref' => \thrift\annotation\cpp\Ref::fromShape(
               shape(
-                "type" => facebook_thrift_annotation_cpp_RefType::Shared,
+                "type" => \thrift\annotation\cpp\RefType::Shared,
               )
             ),
           ],
@@ -2401,12 +2401,12 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
         ),
         'opt_boxed_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_Box' => facebook_thrift_annotation_Box::fromShape(
+            '\thrift\annotation\Box' => \thrift\annotation\Box::fromShape(
               shape(
               )
             ),
@@ -2621,12 +2621,12 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       'fields' => dict[
         'int_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -2635,12 +2635,12 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
         ),
         'string_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -2649,12 +2649,12 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
         ),
         'set_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )
             ),
-            'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -2831,7 +2831,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'a' => shape(
           'field' => dict[],
           'type' => dict[
-            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )

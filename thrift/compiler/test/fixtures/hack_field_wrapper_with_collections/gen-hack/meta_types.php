@@ -6,12 +6,14 @@
  *  @generated
  */
 
+namespace thrift\annotation\deprecated;
+
 /**
  * Original thrift struct:-
  * SetGenerated
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/SetGenerated'))>>
-class facebook_thrift_annotation_deprecated_SetGenerated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class SetGenerated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -43,7 +45,7 @@ class facebook_thrift_annotation_deprecated_SetGenerated implements \IThriftSync
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "meta.SetGenerated",
         "is_union" => false,
@@ -54,11 +56,11 @@ class facebook_thrift_annotation_deprecated_SetGenerated implements \IThriftSync
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
@@ -105,7 +107,7 @@ class facebook_thrift_annotation_deprecated_SetGenerated implements \IThriftSync
  * Transitive
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Transitive'))>>
-class facebook_thrift_annotation_deprecated_Transitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class Transitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -137,7 +139,7 @@ class facebook_thrift_annotation_deprecated_Transitive implements \IThriftSyncSt
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "meta.Transitive",
         "is_union" => false,
@@ -148,11 +150,11 @@ class facebook_thrift_annotation_deprecated_Transitive implements \IThriftSyncSt
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Deprecated' => facebook_thrift_annotation_Deprecated::fromShape(
+        '\thrift\annotation\Deprecated' => \thrift\annotation\Deprecated::fromShape(
           shape(
           )
         ),

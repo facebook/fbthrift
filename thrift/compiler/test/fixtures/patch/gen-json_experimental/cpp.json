@@ -4,7 +4,6 @@
   "namespaces": {
     "go": "thrift.annotation.cpp",
     "java": "com.facebook.thrift.annotation.cpp_deprecated",
-    "php": "facebook_thrift_annotation_cpp",
     "py": "thrift.annotation.cpp",
     "py.asyncio": "facebook_thrift_asyncio.annotation.cpp"
   },
@@ -15,21 +14,21 @@
         "constants" : {
           "Unique" : {
             "name" : "Unique",
-            "lineno" : 28,
+            "lineno" : 27,
             "value" : 0
           },
           "Shared" : {
             "name" : "Shared",
-            "lineno" : 29,
+            "lineno" : 28,
             "value" : 1
           },
           "SharedMutable" : {
             "name" : "SharedMutable",
-            "lineno" : 30,
+            "lineno" : 29,
             "value" : 2
           }
         },
-        "lineno" : 27
+        "lineno" : 26
       }
       },
   "structs" :
@@ -40,7 +39,7 @@
           "type" : {
             "name" : "type",
             "key" : 1,
-            "lineno" : 35,
+            "lineno" : 34,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -50,7 +49,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 33
       },
       "Lazy" : {
         "name" : "Lazy",
@@ -59,20 +58,20 @@
             "name" : "ref",
             "default_value" : 0,
             "key" : 1,
-            "lineno" : 41,
+            "lineno" : 40,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 39
+        "lineno" : 38
       },
       "DisableLazyChecksum" : {
         "name" : "DisableLazyChecksum",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 45
+        "lineno" : 44
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -80,21 +79,21 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 86,
+            "lineno" : 85,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "adaptedType" : {
             "name" : "adaptedType",
             "key" : 2,
-            "lineno" : 89,
+            "lineno" : 88,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "underlyingName" : {
             "name" : "underlyingName",
             "key" : 3,
-            "lineno" : 96,
+            "lineno" : 95,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -102,14 +101,14 @@
             "name" : "extraNamespace",
             "default_value" : "detail",
             "key" : 4,
-            "lineno" : 97,
+            "lineno" : 96,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 65
+        "lineno" : 64
       },
       "PackIsset" : {
         "name" : "PackIsset",
@@ -118,32 +117,32 @@
             "name" : "atomic",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 102,
+            "lineno" : 101,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 101
+        "lineno" : 100
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 106
+        "lineno" : 105
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 111
+        "lineno" : 110
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 116
+        "lineno" : 115
       }
       },
   "source_path" : "thrift/annotation/cpp",

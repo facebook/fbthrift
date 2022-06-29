@@ -66,7 +66,7 @@ class RenamedEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[
-        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+        '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
           shape(
             "name" => "RenamedEnum",
           )
@@ -74,7 +74,7 @@ class RenamedEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
       ],
       'constants' => dict[
         'Value2' => dict[
-          '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+          '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
             shape(
               "name" => "renamedValue",
             )
@@ -848,7 +848,7 @@ class MyRenamedStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+        '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
           shape(
             "name" => "MyRenamedStruct",
           )
@@ -857,7 +857,7 @@ class MyRenamedStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'fields' => dict[
         'reserved_field' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+            '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
               shape(
                 "name" => "renamed_field",
               )
@@ -1025,7 +1025,7 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+        '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
           shape(
             "name" => "MyRenamedUnion",
           )
@@ -1034,7 +1034,7 @@ class MyRenamedUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basi
       'fields' => dict[
         'reserved_field' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+            '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
               shape(
                 "name" => "renamed_field",
               )

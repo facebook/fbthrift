@@ -58,11 +58,11 @@ class AnnotationStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_deprecated_Transitive' => facebook_thrift_annotation_deprecated_Transitive::fromShape(
+        '\thrift\annotation\deprecated\Transitive' => \thrift\annotation\deprecated\Transitive::fromShape(
           shape(
           )
         ),
-        '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+        '\thrift\annotation\hack\FieldWrapper' => \thrift\annotation\hack\FieldWrapper::fromShape(
           shape(
             "name" => "\MyFieldWrapper",
           )
@@ -498,7 +498,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
       'fields' => dict[
         'wrapped_field' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+            '\thrift\annotation\hack\FieldWrapper' => \thrift\annotation\hack\FieldWrapper::fromShape(
               shape(
                 "name" => "\MyFieldWrapper",
               )
@@ -517,7 +517,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
         ),
         'adapted_type' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\MyAdapter1",
               )
@@ -527,12 +527,12 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
         ),
         'adapted__and_wrapped_type' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+            '\thrift\annotation\hack\FieldWrapper' => \thrift\annotation\hack\FieldWrapper::fromShape(
               shape(
                 "name" => "\MyFieldWrapper",
               )
             ),
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\MyAdapter1",
               )
@@ -542,14 +542,14 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
         ),
         'optional_adapted_and_wrapped_type' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+            '\thrift\annotation\hack\FieldWrapper' => \thrift\annotation\hack\FieldWrapper::fromShape(
               shape(
                 "name" => "\MyFieldWrapper",
               )
             ),
           ],
           'type' => dict[
-            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
               shape(
                 "name" => "\MyAdapter1",
               )

@@ -40,7 +40,7 @@ class Metasyntactic_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[
-        '\facebook_thrift_annotation_GenDefaultEnumValue' => \facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
+        '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
           shape(
           )
         ),
@@ -235,7 +235,7 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'reasonable' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_GenDefaultEnumValue' => \facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
+            '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
               shape(
               )
             ),
@@ -244,7 +244,7 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'fine' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_GenDefaultEnumValue' => \facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
+            '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
               shape(
               )
             ),
@@ -253,7 +253,7 @@ class SomeStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'questionable' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_GenDefaultEnumValue' => \facebook_thrift_annotation_GenDefaultEnumValue::fromShape(
+            '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
               shape(
               )
             ),

@@ -375,7 +375,7 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
       'fields' => dict[
         'int_parameter' => shape(
           'field' => dict[
-            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+            '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
               shape(
                 "name" => "renamed_parameter",
               )
@@ -495,7 +495,7 @@ class FB303Service_renamed_rpc_result extends \ThriftSyncStructWithResult {
         'success' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+            '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
               shape(
                 "name" => "MyRenamedStruct",
               )
@@ -600,7 +600,7 @@ class FB303ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       'service' => dict[],
       'functions' => dict[
         'renamed_rpc' => dict[
-          '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+          '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
             shape(
               "name" => "renamed_rpc",
             )

@@ -18,7 +18,6 @@ include "thrift/annotation/scope.thrift"
 
 package "facebook.com/thrift/annotation/java"
 
-namespace php facebook_thrift_annotation_java
 namespace java com.facebook.thrift.annotation.java_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.java
 namespace go thrift.annotation.java

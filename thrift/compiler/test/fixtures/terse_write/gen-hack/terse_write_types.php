@@ -687,7 +687,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
           shape(
           )
         ),
@@ -1715,7 +1715,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       'fields' => dict[
         'terse_bool_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1724,7 +1724,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_byte_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1733,7 +1733,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_short_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1742,7 +1742,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_int_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1751,7 +1751,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_long_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1760,7 +1760,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_float_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1769,7 +1769,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_double_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1778,7 +1778,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_string_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1787,7 +1787,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_binary_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1796,7 +1796,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_enum_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1805,7 +1805,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_list_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1814,7 +1814,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_set_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1823,7 +1823,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_map_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -1832,7 +1832,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
         ),
         'terse_struct_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+            '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
               shape(
               )
             ),
@@ -2580,7 +2580,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
           shape(
           )
         ),
@@ -2882,7 +2882,7 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\facebook_thrift_annotation_TerseWrite' => \facebook_thrift_annotation_TerseWrite::fromShape(
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
           shape(
           )
         ),
@@ -2891,7 +2891,7 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         'field1' => shape(
           'field' => dict[],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )
@@ -2900,7 +2900,7 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'field2' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )
@@ -2910,14 +2910,14 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         ),
         'field3' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )
             ),
           ],
           'type' => dict[
-            '\facebook_thrift_annotation_cpp_Adapter' => \facebook_thrift_annotation_cpp_Adapter::fromShape(
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
                 "name" => "my::Adapter",
               )

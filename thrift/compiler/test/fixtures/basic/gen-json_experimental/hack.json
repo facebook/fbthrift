@@ -3,7 +3,6 @@
   "thrift_module" : "hack",
   "namespaces": {
     "go": "thrift.annotation.hack",
-    "hack": "facebook.thrift.annotation",
     "hs2": "facebook.thrift.annotation.hack",
     "java": "com.facebook.thrift.annotation.java_deprecated",
     "py": "thrift.annotation.hack",
@@ -16,14 +15,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 39,
+            "lineno" : 38,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 37
+        "lineno" : 36
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -31,14 +30,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 55,
+            "lineno" : 54,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 53
+        "lineno" : 52
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -46,14 +45,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 61,
+            "lineno" : 60,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 60
+        "lineno" : 59
       },
       "Name" : {
         "name" : "Name",
@@ -61,21 +60,21 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 69,
+            "lineno" : 68,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "reason" : {
             "name" : "reason",
             "key" : 2,
-            "lineno" : 70,
+            "lineno" : 69,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 68
+        "lineno" : 67
       }
       },
   "source_path" : "thrift/annotation/hack",

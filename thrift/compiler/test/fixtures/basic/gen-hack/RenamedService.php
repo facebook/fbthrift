@@ -486,7 +486,7 @@ class RenamedServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[
-        '\facebook\thrift\annotation\Name' => \facebook\thrift\annotation\Name::fromShape(
+        '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(
           shape(
             "name" => "RenamedService",
           )
