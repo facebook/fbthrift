@@ -62,7 +62,7 @@ class ServiceHandler<::test::namespace_from_package_without_module_name::TestSer
 } // namespace apache::thrift
 
 namespace test { namespace namespace_from_package_without_module_name {
-using TestServiceSvIf = ::apache::thrift::ServiceHandler<TestService>;
+using TestServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<TestService> instead")]] = ::apache::thrift::ServiceHandler<TestService>;
 }} // test::namespace_from_package_without_module_name
 namespace test { namespace namespace_from_package_without_module_name {
 class TestServiceSvNull : public TestServiceSvIf {

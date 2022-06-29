@@ -86,7 +86,7 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service1> : public apache::thr
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-using service1SvIf = ::apache::thrift::ServiceHandler<service1>;
+using service1SvIf [[deprecated("Use apache::thrift::ServiceHandler<service1> instead")]] = ::apache::thrift::ServiceHandler<service1>;
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class service1SvNull : public service1SvIf {

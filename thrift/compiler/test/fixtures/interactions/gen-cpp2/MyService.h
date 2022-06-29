@@ -194,7 +194,7 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
 } // namespace apache::thrift
 
 namespace cpp2 {
-using MyServiceSvIf = ::apache::thrift::ServiceHandler<MyService>;
+using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 } // cpp2
 namespace cpp2 {
 class MyServiceSvNull : public MyServiceSvIf {

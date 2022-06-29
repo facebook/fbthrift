@@ -73,7 +73,7 @@ class ServiceHandler<::cpp2::Raiser> : public apache::thrift::ServerInterface {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using RaiserSvIf = ::apache::thrift::ServiceHandler<Raiser>;
+using RaiserSvIf [[deprecated("Use apache::thrift::ServiceHandler<Raiser> instead")]] = ::apache::thrift::ServiceHandler<Raiser>;
 } // cpp2
 namespace cpp2 {
 class RaiserSvNull : public RaiserSvIf {

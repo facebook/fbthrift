@@ -54,5 +54,5 @@ class ServiceHandler<<%service:qualified_name%>> : <%#service:extends%>virtual p
 
 <% > common/namespace_cpp2_begin%>
 
-using <%service:cpp_name%>SvIf = ::apache::thrift::ServiceHandler<<%service:cpp_name%>>;
+using <%service:cpp_name%>SvIf [[deprecated("Use apache::thrift::ServiceHandler<<%service:cpp_name%>> instead")]] = ::apache::thrift::ServiceHandler<<%service:cpp_name%>>;
 <% > common/namespace_cpp2_end%>

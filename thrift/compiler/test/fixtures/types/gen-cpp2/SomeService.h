@@ -64,7 +64,7 @@ class ServiceHandler<::apache::thrift::fixtures::types::SomeService> : public ap
 } // namespace apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-using SomeServiceSvIf = ::apache::thrift::ServiceHandler<SomeService>;
+using SomeServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<SomeService> instead")]] = ::apache::thrift::ServiceHandler<SomeService>;
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class SomeServiceSvNull : public SomeServiceSvIf {

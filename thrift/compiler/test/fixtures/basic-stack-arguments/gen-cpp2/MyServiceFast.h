@@ -57,7 +57,7 @@ class ServiceHandler<::cpp2::MyServiceFast> : public apache::thrift::ServerInter
 } // namespace apache::thrift
 
 namespace cpp2 {
-using MyServiceFastSvIf = ::apache::thrift::ServiceHandler<MyServiceFast>;
+using MyServiceFastSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyServiceFast> instead")]] = ::apache::thrift::ServiceHandler<MyServiceFast>;
 } // cpp2
 namespace cpp2 {
 class MyServiceFastSvNull : public MyServiceFastSvIf {

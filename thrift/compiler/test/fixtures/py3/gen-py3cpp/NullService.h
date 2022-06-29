@@ -53,7 +53,7 @@ class ServiceHandler<::cpp2::NullService> : public apache::thrift::ServerInterfa
 } // namespace apache::thrift
 
 namespace cpp2 {
-using NullServiceSvIf = ::apache::thrift::ServiceHandler<NullService>;
+using NullServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<NullService> instead")]] = ::apache::thrift::ServiceHandler<NullService>;
 } // cpp2
 namespace cpp2 {
 class NullServiceSvNull : public NullServiceSvIf {

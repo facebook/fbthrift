@@ -99,7 +99,7 @@ class IIf : public apache::thrift::Tile, public apache::thrift::ServerInterface 
 } // namespace apache::thrift
 
 namespace cpp2 {
-using ASvIf = ::apache::thrift::ServiceHandler<A>;
+using ASvIf [[deprecated("Use apache::thrift::ServiceHandler<A> instead")]] = ::apache::thrift::ServiceHandler<A>;
 } // cpp2
 namespace cpp2 {
 class ASvNull : public ASvIf {
@@ -206,7 +206,7 @@ class ServiceHandler<::cpp2::B> : virtual public ::cpp2::ASvIf {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using BSvIf = ::apache::thrift::ServiceHandler<B>;
+using BSvIf [[deprecated("Use apache::thrift::ServiceHandler<B> instead")]] = ::apache::thrift::ServiceHandler<B>;
 } // cpp2
 namespace cpp2 {
 class BSvNull : public BSvIf, virtual public ::cpp2::ASvIf {
@@ -329,7 +329,7 @@ class IIf : public apache::thrift::Tile, public apache::thrift::ServerInterface 
 } // namespace apache::thrift
 
 namespace cpp2 {
-using CSvIf = ::apache::thrift::ServiceHandler<C>;
+using CSvIf [[deprecated("Use apache::thrift::ServiceHandler<C> instead")]] = ::apache::thrift::ServiceHandler<C>;
 } // cpp2
 namespace cpp2 {
 class CSvNull : public CSvIf {

@@ -136,7 +136,7 @@ class ServiceHandler<::some::valid::ns::ReturnService> : public apache::thrift::
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-using ReturnServiceSvIf = ::apache::thrift::ServiceHandler<ReturnService>;
+using ReturnServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<ReturnService> instead")]] = ::apache::thrift::ServiceHandler<ReturnService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ReturnServiceSvNull : public ReturnServiceSvIf {
