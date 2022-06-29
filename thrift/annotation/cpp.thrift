@@ -111,3 +111,8 @@ struct MinimizePadding {} (
 struct TriviallyRelocatable {} (
   thrift.uri = "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
 )
+
+@scope.Union
+struct ScopedEnumAsUnionType {} (
+  thrift.uri = "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType",
+)

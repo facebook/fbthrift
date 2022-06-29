@@ -138,6 +138,12 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 111
+      },
+      "ScopedEnumAsUnionType" : {
+        "name" : "ScopedEnumAsUnionType",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 116
       }
       },
   "source_path" : "thrift/annotation/cpp",

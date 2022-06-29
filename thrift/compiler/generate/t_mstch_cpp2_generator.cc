@@ -994,6 +994,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:has_non_optional_and_non_terse_field?",
              &mstch_cpp2_struct::has_non_optional_and_non_terse_field},
             {"struct:any?", &mstch_cpp2_struct::any},
+            {"struct:scoped_enum_as_union_type?",
+             &mstch_cpp2_struct::scoped_enum_as_union_type},
             {"struct:extra_namespace", &mstch_cpp2_struct::extra_namespace},
         });
     register_has_option(
@@ -1285,6 +1287,11 @@ class mstch_cpp2_struct : public mstch_struct {
               field.get_req() != t_field::e_req::optional &&
               field.get_req() != t_field::e_req::terse;
         });
+  }
+
+  mstch::node scoped_enum_as_union_type() {
+    return strct_->find_structured_annotation_or_null(
+        "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType");
   }
 
   mstch::node extra_namespace() {
