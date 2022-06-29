@@ -33,14 +33,12 @@ public enum TProtocolType implements Function<ByteBuf, ByteBufTProtocol> {
   TCompact(2) {
     @Override
     public ByteBufTProtocol apply(final ByteBuf byteBuf) {
-      final ByteBufTProtocol protocol =
-          SUPPORT_COMPACT_V2 ? new ByteBufTCompactV2Protocol() : new ByteBufTCompactProtocol();
+      final ByteBufTProtocol protocol = new ByteBufTCompactProtocol();
       protocol.wrap(byteBuf);
       return protocol;
     }
   };
 
-  private static final boolean SUPPORT_COMPACT_V2 = Boolean.getBoolean("thrift.enableCompactV2");
   private final int protocolId;
 
   TProtocolType(final int protocolId) {
