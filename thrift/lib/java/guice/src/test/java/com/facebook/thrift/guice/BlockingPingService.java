@@ -20,6 +20,7 @@ import com.facebook.thrift.example.ping.CustomException;
 import com.facebook.thrift.example.ping.PingRequest;
 import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.thrift.TException;
 
@@ -34,6 +35,11 @@ public class BlockingPingService implements PingService {
     return new PingResponse.Builder()
         .setResponse(pingRequest.getRequest() + "_pong_" + counter.getAndIncrement())
         .build();
+  }
+
+  @Override
+  public byte[] pingBinary(PingRequest pingRequest) throws TException {
+    return "hello!".getBytes(StandardCharsets.UTF_8);
   }
 
   @Override

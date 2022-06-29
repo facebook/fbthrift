@@ -20,6 +20,7 @@ import com.facebook.thrift.example.ping.CustomException;
 import com.facebook.thrift.example.ping.PingRequest;
 import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +36,11 @@ public class ReactivePingService implements PingService.Reactive {
         new PingResponse.Builder()
             .setResponse(pingRequest.getRequest() + "_pong_" + counter.getAndIncrement())
             .build());
+  }
+
+  @Override
+  public Mono<byte[]> pingBinary(PingRequest pingRequest) {
+    return Mono.just("hello!".getBytes(StandardCharsets.UTF_8));
   }
 
   @Override

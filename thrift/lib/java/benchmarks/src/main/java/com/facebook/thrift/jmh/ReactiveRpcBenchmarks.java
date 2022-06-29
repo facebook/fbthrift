@@ -29,6 +29,7 @@ import com.facebook.thrift.util.resources.RpcResources;
 import io.netty.channel.unix.DomainSocketAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import org.apache.thrift.ProtocolId;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -122,6 +123,11 @@ public class ReactiveRpcBenchmarks {
     @Override
     public Mono<PingResponse> ping(PingRequest pingRequest) {
       return Mono.just(new PingResponse.Builder().setResponse("pong").build());
+    }
+
+    @Override
+    public Mono<byte[]> pingBinary(PingRequest pingRequest) {
+      return Mono.just("hello!".getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

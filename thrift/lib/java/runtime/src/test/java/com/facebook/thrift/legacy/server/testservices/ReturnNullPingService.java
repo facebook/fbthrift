@@ -31,6 +31,11 @@ public class ReturnNullPingService implements PingService {
   }
 
   @Override
+  public byte[] pingBinary(PingRequest pingRequest) throws TException {
+    return null;
+  }
+
+  @Override
   public PingResponse pingException(PingRequest pingRequest) throws TException {
     return null;
   }

@@ -20,6 +20,7 @@ import com.facebook.thrift.example.ping.CustomException;
 import com.facebook.thrift.example.ping.PingRequest;
 import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
+import java.nio.charset.StandardCharsets;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,12 @@ public class PingImpl implements PingService {
   public PingResponse ping(PingRequest request) throws TException {
     LOG.info("Get Request: " + request.toString() + " for PingImpl.ping()");
     return new PingResponse("Hello!! " + request.getRequest());
+  }
+
+  @Override
+  public byte[] pingBinary(PingRequest request) throws TException {
+    LOG.info("Get Request: " + request.toString() + " for PingImpl.pingBinary()");
+    return "Hello!".getBytes(StandardCharsets.UTF_8);
   }
 
   @Override

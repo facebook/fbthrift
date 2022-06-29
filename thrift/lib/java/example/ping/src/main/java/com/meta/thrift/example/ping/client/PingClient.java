@@ -23,6 +23,7 @@ import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
 import com.facebook.thrift.legacy.client.LegacyRpcClientFactory;
 import com.facebook.thrift.rsocket.client.RSocketRpcClientFactory;
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -144,6 +145,11 @@ public class PingClient {
       if ("ping".equals(config.getMethod())) {
         PingResponse response = client.ping(request);
         LOG.info("Response: " + response.getResponse());
+      } else if ("pingBinary".equals(config.getMethod())) {
+        LOG.info("calling pingBinary");
+        byte[] response = client.pingBinary(request);
+        LOG.info("response length = " + response.length);
+        LOG.info("response: " + new String(response, Charsets.UTF_8));
       } else if ("pingException".equals(config.getMethod())) {
         PingResponse response = client.ping(request);
         LOG.info("Response: " + response.getResponse());

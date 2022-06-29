@@ -33,6 +33,7 @@ import com.facebook.thrift.util.SPINiftyMetrics;
 import com.google.common.util.concurrent.ListenableFuture;
 import io.airlift.units.Duration;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import org.apache.thrift.ProtocolId;
@@ -135,6 +136,36 @@ public class SimpleThriftClientTest {
             .setProtocolId(ProtocolId.BINARY)
             .build(factory, address);
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build()).block();
+  }
+
+  @Test
+  public void testPingBinary() {
+    System.out.println("create server handler");
+    RpcServerHandler serverHandler =
+        new PingServiceRpcServerHandler(new BlockingPingService(), Collections.emptyList());
+
+    System.out.println("starting server");
+    LegacyServerTransportFactory transportFactory =
+        new LegacyServerTransportFactory(new ThriftServerConfig().setEnableJdkSsl(false));
+    LegacyServerTransport transport = transportFactory.createServerTransport(serverHandler).block();
+    InetSocketAddress address = (InetSocketAddress) transport.getAddress();
+
+    LOG.info("creating client");
+
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
+
+    PingService client =
+        PingService.clientBuilder().setProtocolId(ProtocolId.BINARY).build(factory, address);
+
+    byte[] result = client.pingBinary(new PingRequest.Builder().setRequest("ping").build());
+    assertEquals("hello!", new String(result, StandardCharsets.UTF_8));
   }
 
   @Test

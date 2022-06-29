@@ -30,6 +30,7 @@ exception CustomException {
 
 service PingService {
   PingResponse ping(1: PingRequest key);
+  binary pingBinary(1: PingRequest key);
   PingResponse pingException(1: PingRequest key) throws (1: CustomException ex);
   void pingVoid(1: PingRequest key);
 }

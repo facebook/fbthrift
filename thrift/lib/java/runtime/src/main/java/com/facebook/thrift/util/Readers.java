@@ -48,7 +48,7 @@ public final class Readers {
             // NOTE: in most TProtocol implementations, getBinary() is simply implemented as
             // ByteBuf.wrap()
             if (offset == 0 && remaining == buf.capacity()) {
-              return iprot.readBinary().array();
+              return buf.array();
             } else {
               byte[] copy = new byte[remaining];
               buf.get(copy, offset, copy.length);

@@ -22,6 +22,7 @@ import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AsyncPingService implements PingService.Async {
@@ -36,6 +37,11 @@ public class AsyncPingService implements PingService.Async {
         new PingResponse.Builder()
             .setResponse(pingRequest.getRequest() + "_pong_" + counter.getAndIncrement())
             .build());
+  }
+
+  @Override
+  public ListenableFuture<byte[]> pingBinary(PingRequest pingRequest) {
+    return Futures.immediateFuture("Hello!".getBytes(StandardCharsets.UTF_8));
   }
 
   @Override
