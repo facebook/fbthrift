@@ -3,7 +3,7 @@
   "thrift_module" : "cpp",
   "enumerations" : {
     "RefType" : {
-      "lineno" : 27,
+      "lineno" : 26,
       "constants" : {
         "Unique" : 0,
         "Shared" : 1,
@@ -11,11 +11,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 27,
+          "line" : 26,
           "column" : 1
         },
         "end" : {
-          "line" : 31,
+          "line" : 30,
           "column" : 2
         }
       }
@@ -23,7 +23,7 @@
   },
   "structs" : {
     "Ref" : {
-      "lineno" : 34,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -31,11 +31,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/Ref",
           "source_range" : {
             "begin" : {
-              "line" : 36,
+              "line" : 35,
               "column" : 4
             },
             "end" : {
-              "line" : 36,
+              "line" : 35,
               "column" : 57
             }
           }
@@ -51,11 +51,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 35,
+              "line" : 34,
               "column" : 3
             },
             "end" : {
-              "line" : 35,
+              "line" : 34,
               "column" : 18
             }
           }
@@ -63,17 +63,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 33,
+          "line" : 32,
           "column" : 1
         },
         "end" : {
-          "line" : 36,
+          "line" : 35,
           "column" : 58
         }
       }
     },
     "Lazy" : {
-      "lineno" : 39,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -81,11 +81,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/Lazy",
           "source_range" : {
             "begin" : {
-              "line" : 42,
+              "line" : 41,
               "column" : 4
             },
             "end" : {
-              "line" : 42,
+              "line" : 41,
               "column" : 58
             }
           }
@@ -102,11 +102,11 @@
           "default_value" : false,
           "source_range" : {
             "begin" : {
-              "line" : 41,
+              "line" : 40,
               "column" : 3
             },
             "end" : {
-              "line" : 41,
+              "line" : 40,
               "column" : 22
             }
           }
@@ -114,17 +114,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 38,
+          "line" : 37,
           "column" : 1
         },
         "end" : {
-          "line" : 42,
+          "line" : 41,
           "column" : 59
         }
       }
     },
     "DisableLazyChecksum" : {
-      "lineno" : 45,
+      "lineno" : 44,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -132,11 +132,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/DisableLazyChecksum",
           "source_range" : {
             "begin" : {
-              "line" : 46,
+              "line" : 45,
               "column" : 3
             },
             "end" : {
-              "line" : 46,
+              "line" : 45,
               "column" : 72
             }
           }
@@ -150,17 +150,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 44,
+          "line" : 43,
           "column" : 1
         },
         "end" : {
-          "line" : 47,
+          "line" : 46,
           "column" : 2
         }
       }
     },
     "Adapter" : {
-      "lineno" : 65,
+      "lineno" : 64,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -168,11 +168,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/Adapter",
           "source_range" : {
             "begin" : {
-              "line" : 98,
+              "line" : 97,
               "column" : 4
             },
             "end" : {
-              "line" : 98,
+              "line" : 97,
               "column" : 61
             }
           }
@@ -190,11 +190,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 86,
+              "line" : 85,
               "column" : 3
             },
             "end" : {
-              "line" : 86,
+              "line" : 85,
               "column" : 17
             }
           }
@@ -205,11 +205,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 89,
+              "line" : 88,
               "column" : 3
             },
             "end" : {
-              "line" : 89,
+              "line" : 88,
               "column" : 24
             }
           }
@@ -220,11 +220,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 96,
+              "line" : 95,
               "column" : 3
             },
             "end" : {
-              "line" : 96,
+              "line" : 95,
               "column" : 27
             }
           }
@@ -236,11 +236,11 @@
           "default_value" : "detail",
           "source_range" : {
             "begin" : {
-              "line" : 97,
+              "line" : 96,
               "column" : 3
             },
             "end" : {
-              "line" : 97,
+              "line" : 96,
               "column" : 38
             }
           }
@@ -248,17 +248,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 62,
+          "line" : 61,
           "column" : 1
         },
         "end" : {
-          "line" : 98,
+          "line" : 97,
           "column" : 62
         }
       }
     },
     "PackIsset" : {
-      "lineno" : 101,
+      "lineno" : 100,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -266,11 +266,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/PackIsset",
           "source_range" : {
             "begin" : {
-              "line" : 103,
+              "line" : 102,
               "column" : 4
             },
             "end" : {
-              "line" : 103,
+              "line" : 102,
               "column" : 63
             }
           }
@@ -287,11 +287,11 @@
           "default_value" : true,
           "source_range" : {
             "begin" : {
-              "line" : 102,
+              "line" : 101,
               "column" : 3
             },
             "end" : {
-              "line" : 102,
+              "line" : 101,
               "column" : 24
             }
           }
@@ -299,17 +299,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 100,
+          "line" : 99,
           "column" : 1
         },
         "end" : {
-          "line" : 103,
+          "line" : 102,
           "column" : 64
         }
       }
     },
     "MinimizePadding" : {
-      "lineno" : 106,
+      "lineno" : 105,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -317,11 +317,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/MinimizePadding",
           "source_range" : {
             "begin" : {
-              "line" : 107,
+              "line" : 106,
               "column" : 3
             },
             "end" : {
-              "line" : 107,
+              "line" : 106,
               "column" : 68
             }
           }
@@ -335,17 +335,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 105,
+          "line" : 104,
           "column" : 1
         },
         "end" : {
-          "line" : 108,
+          "line" : 107,
           "column" : 2
         }
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 111,
+      "lineno" : 110,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -353,11 +353,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
           "source_range" : {
             "begin" : {
-              "line" : 112,
+              "line" : 111,
               "column" : 3
             },
             "end" : {
-              "line" : 112,
+              "line" : 111,
               "column" : 73
             }
           }
@@ -371,17 +371,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 110,
+          "line" : 109,
           "column" : 1
         },
         "end" : {
-          "line" : 113,
+          "line" : 112,
           "column" : 2
         }
       }
     },
     "ScopedEnumAsUnionType" : {
-      "lineno" : 116,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -389,11 +389,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType",
           "source_range" : {
             "begin" : {
-              "line" : 117,
+              "line" : 116,
               "column" : 3
             },
             "end" : {
-              "line" : 117,
+              "line" : 116,
               "column" : 74
             }
           }
@@ -407,11 +407,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 115,
+          "line" : 114,
           "column" : 1
         },
         "end" : {
-          "line" : 118,
+          "line" : 117,
           "column" : 2
         }
       }
