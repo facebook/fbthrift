@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport emptyns.types as _emptyns_types
 
 
-cdef extern from "src/gen-cpp2/TestService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/emptyns_clients.h" namespace "::cpp2":
   cdef cppclass cTestServiceAsyncClient "::cpp2::TestServiceAsyncClient":
       pass
 

@@ -6,9 +6,21 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-py3cpp/SimpleService.h>)
 #include <src/gen-py3cpp/SimpleService.h>
+#else
+#include <src/gen-py3cpp/module_handlers.h>
+#endif
+#if __has_include(<src/gen-py3cpp/DerivedService.h>)
 #include <src/gen-py3cpp/DerivedService.h>
+#else
+#include <src/gen-py3cpp/module_handlers.h>
+#endif
+#if __has_include(<src/gen-py3cpp/RederivedService.h>)
 #include <src/gen-py3cpp/RederivedService.h>
+#else
+#include <src/gen-py3cpp/module_handlers.h>
+#endif
 #include <folly/python/futures.h>
 #include <Python.h>
 

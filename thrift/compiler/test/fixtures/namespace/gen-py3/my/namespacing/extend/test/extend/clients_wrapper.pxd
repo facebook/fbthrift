@@ -29,7 +29,7 @@ cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_e
 cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 cimport my.namespacing.test.hsmodule.clients_wrapper as _my_namespacing_test_hsmodule_clients_wrapper
 
-cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/extend_clients.h" namespace "::cpp2":
   cdef cppclass cExtendTestServiceAsyncClient "::cpp2::ExtendTestServiceAsyncClient":
       pass
 

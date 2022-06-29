@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport test.namespace_from_package_without_module_name.module.types as _test_namespace_from_package_without_module_name_module_types
 
 
-cdef extern from "src/gen-cpp2/TestService.h" namespace "::test::namespace_from_package_without_module_name":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::test::namespace_from_package_without_module_name":
   cdef cppclass cTestServiceAsyncClient "::test::namespace_from_package_without_module_name::TestServiceAsyncClient":
       pass
 

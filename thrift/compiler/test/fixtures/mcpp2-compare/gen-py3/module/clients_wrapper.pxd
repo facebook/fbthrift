@@ -29,21 +29,21 @@ cimport module.types as _module_types
 cimport facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
 cimport includes.types as _includes_types
 
-cdef extern from "src/gen-cpp2/EmptyService.h" namespace "::some::valid::ns":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::some::valid::ns":
   cdef cppclass cEmptyServiceAsyncClient "::some::valid::ns::EmptyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cEmptyServiceClientWrapper] move(unique_ptr[cEmptyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/ReturnService.h" namespace "::some::valid::ns":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::some::valid::ns":
   cdef cppclass cReturnServiceAsyncClient "::some::valid::ns::ReturnServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cReturnServiceClientWrapper] move(unique_ptr[cReturnServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/ParamService.h" namespace "::some::valid::ns":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::some::valid::ns":
   cdef cppclass cParamServiceAsyncClient "::some::valid::ns::ParamServiceAsyncClient":
       pass
 

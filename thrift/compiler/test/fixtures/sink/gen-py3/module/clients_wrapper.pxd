@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/SinkService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cSinkServiceAsyncClient "::cpp2::SinkServiceAsyncClient":
       pass
 

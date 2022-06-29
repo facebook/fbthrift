@@ -6,7 +6,11 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/MyService.h>)
 #include <src/gen-cpp2/MyService.h>
+#else
+#include <src/gen-cpp2/service_handlers.h>
+#endif
 #include <folly/python/futures.h>
 #include <Python.h>
 

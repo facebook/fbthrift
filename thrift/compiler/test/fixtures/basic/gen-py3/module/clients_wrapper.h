@@ -6,10 +6,26 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/FooService.h>)
 #include <src/gen-cpp2/FooService.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/FB303Service.h>)
 #include <src/gen-cpp2/FB303Service.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/MyService.h>)
 #include <src/gen-cpp2/MyService.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/DbMixedStackArguments.h>)
 #include <src/gen-cpp2/DbMixedStackArguments.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>

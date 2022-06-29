@@ -6,9 +6,21 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/MyRoot.h>)
 #include <src/gen-cpp2/MyRoot.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/MyNode.h>)
 #include <src/gen-cpp2/MyNode.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/MyLeaf.h>)
 #include <src/gen-cpp2/MyLeaf.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>

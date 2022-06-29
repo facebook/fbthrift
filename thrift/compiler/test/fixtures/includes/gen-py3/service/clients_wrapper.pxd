@@ -30,7 +30,7 @@ cimport includes.types as _includes_types
 cimport module.types as _module_types
 cimport transitive.types as _transitive_types
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/service_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 

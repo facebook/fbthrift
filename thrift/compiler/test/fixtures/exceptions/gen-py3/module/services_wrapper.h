@@ -6,7 +6,11 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/Raiser.h>)
 #include <src/gen-cpp2/Raiser.h>
+#else
+#include <src/gen-cpp2/module_handlers.h>
+#endif
 #include <folly/python/futures.h>
 #include <Python.h>
 

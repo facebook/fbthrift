@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
 
-cdef extern from "src/gen-cpp2/TestService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cTestServiceAsyncClient "::cpp2::TestServiceAsyncClient":
       pass
 

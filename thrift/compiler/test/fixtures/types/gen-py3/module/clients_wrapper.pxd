@@ -28,7 +28,7 @@ cimport module.types as _module_types
 
 cimport include.types as _include_types
 
-cdef extern from "src/gen-cpp2/SomeService.h" namespace "::apache::thrift::fixtures::types":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::apache::thrift::fixtures::types":
   cdef cppclass cSomeServiceAsyncClient "::apache::thrift::fixtures::types::SomeServiceAsyncClient":
       pass
 

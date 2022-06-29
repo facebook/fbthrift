@@ -28,28 +28,28 @@ cimport test.fixtures.basic.module.types as _test_fixtures_basic_module_types
 
 cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
-cdef extern from "src/gen-cpp2/FooService.h" namespace "::test::fixtures::basic":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::test::fixtures::basic":
   cdef cppclass cFooServiceAsyncClient "::test::fixtures::basic::FooServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cFooServiceClientWrapper] move(unique_ptr[cFooServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/FB303Service.h" namespace "::test::fixtures::basic":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::test::fixtures::basic":
   cdef cppclass cFB303ServiceAsyncClient "::test::fixtures::basic::FB303ServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cFB303ServiceClientWrapper] move(unique_ptr[cFB303ServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::test::fixtures::basic":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::test::fixtures::basic":
   cdef cppclass cMyServiceAsyncClient "::test::fixtures::basic::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/DbMixedStackArguments.h" namespace "::test::fixtures::basic":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::test::fixtures::basic":
   cdef cppclass cDbMixedStackArgumentsAsyncClient "::test::fixtures::basic::DbMixedStackArgumentsAsyncClient":
       pass
 

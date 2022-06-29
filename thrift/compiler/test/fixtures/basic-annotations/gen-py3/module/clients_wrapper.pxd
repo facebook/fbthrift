@@ -28,32 +28,32 @@ cimport module.types as _module_types
 
 cimport facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyServicePrioParent.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServicePrioParentAsyncClient "::cpp2::MyServicePrioParentAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServicePrioParentClientWrapper] move(unique_ptr[cMyServicePrioParentClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServicePrioChildAsyncClient "::cpp2::MyServicePrioChildAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServicePrioChildClientWrapper] move(unique_ptr[cMyServicePrioChildClientWrapper])
 
-cdef extern from "src/gen-cpp2/BadService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cBadServiceAsyncClient "::cpp2::GoodServiceAsyncClient":
       pass
 
-cdef extern from "src/gen-cpp2/BadService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cBadServiceAsyncClient_BadInteraction "::cpp2::BadServiceAsyncClient::BadInteraction":
       pass
 

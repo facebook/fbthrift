@@ -6,7 +6,11 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/ExtendTestService.h>)
 #include <src/gen-cpp2/ExtendTestService.h>
+#else
+#include <src/gen-cpp2/extend_clients.h>
+#endif
 #include <gen-py3/hsmodule/clients_wrapper.h>
 
 #include <folly/futures/Future.h>

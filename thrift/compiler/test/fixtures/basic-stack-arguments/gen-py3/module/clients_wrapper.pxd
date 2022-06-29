@@ -27,21 +27,21 @@ from thrift.py3.client cimport cClientWrapper
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceFastAsyncClient "::cpp2::MyServiceFastAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceFastClientWrapper] move(unique_ptr[cMyServiceFastClientWrapper])
 
-cdef extern from "src/gen-cpp2/DbMixedStackArguments.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cDbMixedStackArgumentsAsyncClient "::cpp2::DbMixedStackArgumentsAsyncClient":
       pass
 

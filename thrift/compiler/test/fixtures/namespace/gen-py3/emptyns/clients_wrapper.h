@@ -6,7 +6,11 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/TestService.h>)
 #include <src/gen-cpp2/TestService.h>
+#else
+#include <src/gen-cpp2/emptyns_clients.h>
+#endif
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>

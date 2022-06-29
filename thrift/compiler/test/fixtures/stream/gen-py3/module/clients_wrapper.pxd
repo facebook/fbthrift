@@ -28,7 +28,7 @@ cimport module.types as _module_types
 from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
 
 
-cdef extern from "src/gen-cpp2/PubSubStreamingService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cPubSubStreamingServiceAsyncClient "::cpp2::PubSubStreamingServiceAsyncClient":
       pass
 

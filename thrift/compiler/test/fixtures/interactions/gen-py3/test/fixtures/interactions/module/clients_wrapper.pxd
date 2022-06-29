@@ -28,19 +28,19 @@ cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_m
 from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
 
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient_MyInteraction "::cpp2::MyServiceAsyncClient::MyInteraction":
       pass
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient_MyInteractionFast "::cpp2::MyServiceAsyncClient::MyInteractionFast":
       pass
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient_SerialInteraction "::cpp2::MyServiceAsyncClient::SerialInteraction":
       pass
 

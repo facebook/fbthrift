@@ -31,7 +31,7 @@ cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hac
 cimport facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
-cdef extern from "src/gen-cpp2/Service.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cServiceAsyncClient "::cpp2::ServiceAsyncClient":
       pass
 

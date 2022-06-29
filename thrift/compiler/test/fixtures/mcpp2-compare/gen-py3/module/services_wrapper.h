@@ -6,9 +6,21 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/EmptyService.h>)
 #include <src/gen-cpp2/EmptyService.h>
+#else
+#include <src/gen-cpp2/module_handlers.h>
+#endif
+#if __has_include(<src/gen-cpp2/ReturnService.h>)
 #include <src/gen-cpp2/ReturnService.h>
+#else
+#include <src/gen-cpp2/module_handlers.h>
+#endif
+#if __has_include(<src/gen-cpp2/ParamService.h>)
 #include <src/gen-cpp2/ParamService.h>
+#else
+#include <src/gen-cpp2/module_handlers.h>
+#endif
 #include <folly/python/futures.h>
 #include <Python.h>
 

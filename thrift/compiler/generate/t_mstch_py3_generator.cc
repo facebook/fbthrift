@@ -1499,9 +1499,11 @@ void t_mstch_py3_generator::generate_types() {
 }
 
 void t_mstch_py3_generator::generate_services() {
-  if (get_program()->services().empty()) {
+  if (get_program()->services().empty() && !has_option("single_file_service")) {
     // There is no need to generate empty / broken code for non existent
-    // services.
+    // services. However, in single_file_service mode, the build system may not
+    // know ahead of time if these files can exist - so we should always
+    // generate them.
     return;
   }
 

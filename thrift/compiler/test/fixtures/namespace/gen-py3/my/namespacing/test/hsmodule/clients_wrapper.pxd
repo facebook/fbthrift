@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
-cdef extern from "gen-cpp2/HsTestService.h" namespace "::cpp2":
+cdef extern from "gen-cpp2/hsmodule_clients.h" namespace "::cpp2":
   cdef cppclass cHsTestServiceAsyncClient "::cpp2::HsTestServiceAsyncClient":
       pass
 

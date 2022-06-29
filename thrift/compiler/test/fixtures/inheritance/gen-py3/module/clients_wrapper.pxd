@@ -27,21 +27,21 @@ from thrift.py3.client cimport cClientWrapper
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/MyRoot.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyRootAsyncClient "::cpp2::MyRootAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyRootClientWrapper] move(unique_ptr[cMyRootClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyNode.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyNodeAsyncClient "::cpp2::MyNodeAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyNodeClientWrapper] move(unique_ptr[cMyNodeClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyLeaf.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_clients.h" namespace "::cpp2":
   cdef cppclass cMyLeafAsyncClient "::cpp2::MyLeafAsyncClient":
       pass
 

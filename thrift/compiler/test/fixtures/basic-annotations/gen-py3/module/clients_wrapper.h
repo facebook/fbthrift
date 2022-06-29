@@ -6,10 +6,26 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-cpp2/MyService.h>)
 #include <src/gen-cpp2/MyService.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/MyServicePrioParent.h>)
 #include <src/gen-cpp2/MyServicePrioParent.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/MyServicePrioChild.h>)
 #include <src/gen-cpp2/MyServicePrioChild.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
+#if __has_include(<src/gen-cpp2/BadService.h>)
 #include <src/gen-cpp2/BadService.h>
+#else
+#include <src/gen-cpp2/module_clients.h>
+#endif
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>

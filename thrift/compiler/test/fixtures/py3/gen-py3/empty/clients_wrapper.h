@@ -6,7 +6,11 @@
  */
 
 #pragma once
+#if __has_include(<src/gen-py3cpp/NullService.h>)
 #include <src/gen-py3cpp/NullService.h>
+#else
+#include <src/gen-py3cpp/empty_clients.h>
+#endif
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
