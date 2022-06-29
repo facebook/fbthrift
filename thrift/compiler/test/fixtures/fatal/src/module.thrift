@@ -53,6 +53,7 @@ enum enum3 {
   _now.with.an.underscore = "_now.with.an.underscore",
 )
 
+@cpp.ScopedEnumAsUnionType
 union union1 {
   1: i32 ui;
   3: double ud;

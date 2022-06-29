@@ -1116,7 +1116,7 @@ class union1 final  {
 
 
  public:
-  enum Type : int {
+  enum class Type : int {
     __EMPTY__ = 0,
     ui = 1,
     ud = 3,

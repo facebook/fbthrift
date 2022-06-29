@@ -99,6 +99,7 @@ StructMetadata<::test_cpp2::cpp_reflection::union1>::gen(ThriftMetadata& metadat
     field.structured_annotations() = f.structured_annotations;
     module_union1.fields()->push_back(std::move(field));
   }
+  module_union1.structured_annotations()->push_back(*cvStruct("cpp.ScopedEnumAsUnionType", {}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
