@@ -18,7 +18,12 @@
 
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 
-namespace apache::thrift::protocol::detail {
+namespace apache::thrift::protocol {
+// Removes masked fields in schemaless Thrift Object (Protocol Object).
+// Throws a runtime exception if the mask and object don't match.
+void clear(const Mask& mask, protocol::Object& t);
+
+namespace detail {
 
 // MaskRef struct represents the Field Mask and whether the mask is coming from
 // exclusive mask. MaskRef is used for inputs and outputs for Field Mask
@@ -38,6 +43,10 @@ struct MaskRef {
 
   // Returns whether the ref includes no fields.
   bool isNoneMask() const;
-};
 
-} // namespace apache::thrift::protocol::detail
+  // Removes masked fields in schemaless Thrift Object (Protocol Object).
+  // Throws a runtime exception if the mask and object are incompatible.
+  void clear(protocol::Object& t) const;
+};
+} // namespace detail
+} // namespace apache::thrift::protocol

@@ -20,7 +20,13 @@
 
 using apache::thrift::protocol::FieldIdToMask;
 
-namespace apache::thrift::protocol::detail {
+namespace apache::thrift::protocol {
+
+void clear(const Mask& mask, protocol::Object& obj) {
+  (detail::MaskRef{mask, false}).clear(obj);
+}
+
+namespace detail {
 
 // Gets the mask of the given field id if it exists in the map, otherwise,
 // returns noneMask.
@@ -48,4 +54,24 @@ bool MaskRef::isNoneMask() const {
       (!is_exclusion && mask == protocol_constants::noneMask());
 }
 
-} // namespace apache::thrift::protocol::detail
+void MaskRef::clear(protocol::Object& obj) const {
+  for (auto& [id, value] : obj) {
+    MaskRef ref = get(FieldId{id});
+    // Id doesn't exist in field mask, skip.
+    if (ref.isNoneMask()) {
+      continue;
+    }
+    // Id that we want to clear.
+    if (ref.isAllMask()) {
+      obj.erase(FieldId(id));
+      continue;
+    }
+    // If it is not a dynamic object value, throw an error.
+    if (!value.objectValue_ref()) {
+      throw std::runtime_error("The field mask and object are incompatible.");
+    }
+    ref.clear(value.objectValue_ref().value());
+  }
+}
+} // namespace detail
+} // namespace apache::thrift::protocol
