@@ -1376,7 +1376,7 @@ void t_hack_generator::close_generator() {
  */
 void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
   if (typedef_) {
-    f_types_ << "type " << ttypedef->get_name() << " = "
+    f_types_ << "type " << hack_name(ttypedef, true) << " = "
              << type_to_typehint(
                     ttypedef,
                     {{TypeToTypehintVariations::IGNORE_TYPEDEF, true}})
