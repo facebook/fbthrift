@@ -429,6 +429,12 @@ inline TType getTType(const Value& val) {
   return toTType(static_cast<type::BaseType>(val.getType()));
 }
 
+inline void ensureSameType(const Value& a, TType b) {
+  if (getTType(a) != b) {
+    TProtocolException::throwInvalidFieldData();
+  }
+}
+
 template <class Protocol>
 void serializeValue(Protocol& prot, const Value& value) {
   switch (value.getType()) {
@@ -466,8 +472,9 @@ void serializeValue(Protocol& prot, const Value& value) {
         elemType = getTType(value.listValue_ref()->at(0));
       }
       prot.writeListBegin(elemType, size);
-      for (uint32_t i = 0; i < size; i++) {
-        serializeValue(prot, value.listValue_ref()->at(i));
+      for (const auto& val : *value.listValue_ref()) {
+        ensureSameType(val, elemType);
+        serializeValue(prot, val);
       }
       prot.writeListEnd();
       return;
@@ -482,6 +489,8 @@ void serializeValue(Protocol& prot, const Value& value) {
       }
       prot.writeMapBegin(keyType, valueType, size);
       for (auto const& [key, val] : *value.mapValue_ref()) {
+        ensureSameType(key, keyType);
+        ensureSameType(val, valueType);
         serializeValue(prot, key);
         serializeValue(prot, val);
       }
@@ -496,6 +505,7 @@ void serializeValue(Protocol& prot, const Value& value) {
       }
       prot.writeSetBegin(elemType, size);
       for (auto const& val : *value.setValue_ref()) {
+        ensureSameType(val, elemType);
         serializeValue(prot, val);
       }
       prot.writeSetEnd();

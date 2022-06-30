@@ -557,6 +557,43 @@ TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerializationAny) {
       testset::union_with<TypeParam>>();
 }
 
+TEST(Object, invalid_object) {
+  {
+    Object obj;
+    obj[FieldId{0}].emplace_list() = {
+        asValueStruct<type::i32_t>(1), asValueStruct<type::i64_t>(1)};
+    EXPECT_THROW(
+        serializeObject<CompactSerializer::ProtocolWriter>(obj),
+        TProtocolException);
+  }
+  {
+    Object obj;
+    obj[FieldId{0}].emplace_set() = {
+        asValueStruct<type::i32_t>(1), asValueStruct<type::i64_t>(1)};
+    EXPECT_THROW(
+        serializeObject<CompactSerializer::ProtocolWriter>(obj),
+        TProtocolException);
+  }
+  {
+    Object obj;
+    obj[FieldId{0}].emplace_map() = {
+        {asValueStruct<type::i32_t>(1), asValueStruct<type::i32_t>(1)},
+        {asValueStruct<type::i32_t>(2), asValueStruct<type::i64_t>(1)}};
+    EXPECT_THROW(
+        serializeObject<CompactSerializer::ProtocolWriter>(obj),
+        TProtocolException);
+  }
+  {
+    Object obj;
+    obj[FieldId{0}].emplace_map() = {
+        {asValueStruct<type::i32_t>(1), asValueStruct<type::i32_t>(1)},
+        {asValueStruct<type::i64_t>(1), asValueStruct<type::i32_t>(1)}};
+    EXPECT_THROW(
+        serializeObject<CompactSerializer::ProtocolWriter>(obj),
+        TProtocolException);
+  }
+}
+
 TEST(Object, uri) {
   EXPECT_EQ(uri<Object>(), "facebook.com/thrift/protocol/Object");
   EXPECT_EQ(uri<Value>(), "facebook.com/thrift/protocol/Value");
