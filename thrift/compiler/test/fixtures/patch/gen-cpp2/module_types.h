@@ -674,7 +674,7 @@ class MyData final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::i32_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -892,7 +892,7 @@ class InnerUnion final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::binary_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1161,7 +1161,7 @@ class MyUnion final  {
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::i32_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1742,7 +1742,7 @@ class MyStruct final  {
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -22>> { static constexpr int value = 22; };
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -23>> { static constexpr int value = 23; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>, T, std::enable_if_t<sizeof(T) != -24>> { static constexpr int value = 24; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -3166,7 +3166,7 @@ class MyDataPatchStruct final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -3379,7 +3379,7 @@ class MyDataValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -3652,7 +3652,7 @@ class OptionalMyDataValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -3944,7 +3944,7 @@ class InnerUnionPatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -4122,7 +4122,7 @@ class InnerUnionValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -4447,7 +4447,7 @@ class OptionalInnerUnionValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -4755,7 +4755,7 @@ class MyUnionPatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -5019,7 +5019,7 @@ class MyUnionValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -5344,7 +5344,7 @@ class OptionalMyUnionValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -5660,7 +5660,7 @@ class MyStructField21PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::list<::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::list<::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -6003,7 +6003,7 @@ class OptionalMyStructField21PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField21PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::list<::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField21PatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -6329,7 +6329,7 @@ class MyStructField22PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -6672,7 +6672,7 @@ class OptionalMyStructField22PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField22PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField22PatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -6990,7 +6990,7 @@ class MyStructField23PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -7282,7 +7282,7 @@ class OptionalMyStructField23PatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField23PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructField23PatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -7768,7 +7768,7 @@ class MyStructPatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField22PatchStruct>>, T, std::enable_if_t<sizeof(T) != -22>> { static constexpr int value = 22; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField23PatchStruct>>, T, std::enable_if_t<sizeof(T) != -23>> { static constexpr int value = 23; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -24>> { static constexpr int value = 24; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -8927,7 +8927,7 @@ class MyStructValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -9200,7 +9200,7 @@ class OptionalMyStructValuePatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructValuePatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

@@ -253,7 +253,7 @@ class MyDataItem final  {
 
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -426,7 +426,7 @@ class MyStruct final  {
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::float_t>, T, std::enable_if_t<sizeof(T) != -8>> { static constexpr int value = 8; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1039,7 +1039,7 @@ class MyUnion final  {
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::float_t>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1515,7 +1515,7 @@ class ReservedKeyword final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::i32_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1679,7 +1679,7 @@ class UnionToBeRenamed final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::i32_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

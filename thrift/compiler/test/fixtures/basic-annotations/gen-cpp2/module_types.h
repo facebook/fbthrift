@@ -612,7 +612,7 @@ class YourStruct final  {
     template<class T> struct Impl<::apache::thrift::type::enum_t<::cpp2::YourEnum>, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
     template<class T> struct Impl<::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>, T, std::enable_if_t<sizeof(T) != -8>> { static constexpr int value = 8; };
     template<class T> struct Impl<::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

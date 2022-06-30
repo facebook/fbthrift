@@ -71,8 +71,8 @@ void MyData::__fbthrift_clear_terse_fields() {
 }
 
 bool MyData::__fbthrift_is_empty() const {
-  return !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_data1)) &&
- !(this->__fbthrift_field_data2 != ::std::int32_t());
+  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_data1)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_data2));
 }
 
 bool MyData::operator==(const MyData& rhs) const {
@@ -539,16 +539,16 @@ void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
-  return !(this->__fbthrift_field_boolVal != bool()) &&
- !(this->__fbthrift_field_byteVal != ::std::int8_t()) &&
- !(this->__fbthrift_field_i16Val != ::std::int16_t()) &&
- !(this->__fbthrift_field_i32Val != ::std::int32_t()) &&
- !(this->__fbthrift_field_i64Val != ::std::int64_t()) &&
- !(this->__fbthrift_field_floatVal != float()) &&
- !(this->__fbthrift_field_doubleVal != double()) &&
- !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_stringVal)) &&
- !(!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->__fbthrift_field_binaryVal)) &&
- !(!::apache::thrift::empty(this->__fbthrift_field_structVal)) &&
+  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::bool_t>(this->__fbthrift_field_boolVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::byte_t>(this->__fbthrift_field_byteVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i16_t>(this->__fbthrift_field_i16Val)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_i32Val)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i64_t>(this->__fbthrift_field_i64Val)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::float_t>(this->__fbthrift_field_floatVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::double_t>(this->__fbthrift_field_doubleVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_stringVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_binaryVal)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>>(this->__fbthrift_field_structVal)) &&
  !(this->__isset.get(0)) &&
  !(this->__isset.get(1)) &&
  !(this->__isset.get(2)) &&
@@ -562,7 +562,7 @@ bool MyStruct::__fbthrift_is_empty() const {
  !(this->__isset.get(10)) &&
  !(this->__isset.get(11)) &&
  !(this->__isset.get(12)) &&
- !(!::apache::thrift::empty(this->__fbthrift_field_unionVal));
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>(this->__fbthrift_field_unionVal));
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {

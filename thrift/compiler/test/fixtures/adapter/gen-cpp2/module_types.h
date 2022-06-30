@@ -339,7 +339,7 @@ class Foo final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
     template<class T> struct Impl<::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>, T, std::enable_if_t<sizeof(T) != -10>> { static constexpr int value = 10; };
     template<class T> struct Impl<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>, T, std::enable_if_t<sizeof(T) != -11>> { static constexpr int value = 11; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

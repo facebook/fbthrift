@@ -342,7 +342,7 @@ class MyStruct final  {
 
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -555,7 +555,7 @@ class StructLevelTerseStruct final  {
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -12>> { static constexpr int value = 12; };
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -13>> { static constexpr int value = 13; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::deprecated::MyStruct>, T, std::enable_if_t<sizeof(T) != -14>> { static constexpr int value = 14; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1616,7 +1616,7 @@ class FieldLevelTerseStruct final  {
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -26>> { static constexpr int value = 26; };
     template<class T> struct Impl<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>, T, std::enable_if_t<sizeof(T) != -27>> { static constexpr int value = 27; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::deprecated::MyStruct>, T, std::enable_if_t<sizeof(T) != -28>> { static constexpr int value = 28; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

@@ -185,7 +185,7 @@ class SomeStruct final  {
     template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::Metasyntactic>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::set<::apache::thrift::type::i32_t>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

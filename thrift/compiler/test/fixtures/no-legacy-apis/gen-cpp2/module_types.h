@@ -167,7 +167,7 @@ class MyStruct final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::i64_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -395,7 +395,7 @@ class MyUnion final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

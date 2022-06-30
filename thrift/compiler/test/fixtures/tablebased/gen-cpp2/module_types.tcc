@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 #include <thrift/lib/cpp2/op/Clear.h>
+#include <thrift/lib/cpp2/type/Field.h>
 
 
 namespace test { namespace fixtures { namespace tablebased {

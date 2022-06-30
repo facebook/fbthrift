@@ -997,6 +997,9 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:scoped_enum_as_union_type?",
              &mstch_cpp2_struct::scoped_enum_as_union_type},
             {"struct:extra_namespace", &mstch_cpp2_struct::extra_namespace},
+            {"struct:type_tag", &mstch_cpp2_struct::type_tag},
+            {"struct:no_deprecated_tag_incompatible_and_thrift_uri?",
+             &mstch_cpp2_struct::no_deprecated_tag_incompatible_and_thrift_uri},
         });
     register_has_option(
         "struct:deprecated_tag_incompatible?", "deprecated_tag_incompatible");
@@ -1296,6 +1299,12 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node extra_namespace() {
     auto* extra = context_->resolver().get_extra_namespace(*strct_);
     return extra ? *extra : mstch::node{};
+  }
+
+  mstch::node type_tag() { return context_->resolver().get_type_tag(*strct_); }
+
+  mstch::node no_deprecated_tag_incompatible_and_thrift_uri() {
+    return !has_option("deprecated_tag_incompatible") && !strct_->uri().empty();
   }
 
  protected:

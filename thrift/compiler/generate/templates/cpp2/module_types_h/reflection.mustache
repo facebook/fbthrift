@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
+%><%#struct:no_deprecated_tag_incompatible_and_thrift_uri?%>
   static constexpr std::size_t __fbthrift_field_size_v = <%struct:fields_size%>;
 
   template<class T>
@@ -61,7 +61,7 @@
     <%#struct:fields%>
     template<class T> struct Impl<<%field:type_tag%>, T, std::enable_if_t<sizeof(T) != -<%field:ordinal%>>> { static constexpr int value = <%field:ordinal%>; };
     <%/struct:fields%>
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -71,4 +71,4 @@
         __fbthrift_ordinal_impl,
         __fbthrift_ordinal_impl_for_non_unique_type>::template value<T>
   >;
-<%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>
+<%/struct:no_deprecated_tag_incompatible_and_thrift_uri?%>

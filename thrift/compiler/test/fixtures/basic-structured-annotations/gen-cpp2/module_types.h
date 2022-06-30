@@ -237,7 +237,7 @@ class structured_annotation_inline final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::i64_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -458,7 +458,7 @@ class structured_annotation_with_default final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -626,7 +626,7 @@ class structured_annotation_forward final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::i64_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -806,7 +806,7 @@ class structured_annotation_recursive final  {
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_forward>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1083,7 +1083,7 @@ class structured_annotation_nested final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1325,7 +1325,7 @@ class MyStruct final  {
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
     template<class T> struct Impl<::apache::thrift::type::i64_t, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1655,7 +1655,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 
@@ -1843,7 +1843,7 @@ class MyUnion final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::string_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::i64_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    
+
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
 

@@ -44,8 +44,8 @@ using ident = ::apache::thrift::detail::st::struct_private_access::
 
 namespace detail {
 template <class Tag, class T>
-FOLLY_INLINE_VARIABLE constexpr bool exists =
-    ordinal<Tag, T>::value != FieldOrdinal{0};
+FOLLY_INLINE_VARIABLE constexpr bool exists = ordinal<Tag, T>::value !=
+    static_cast<FieldOrdinal>(0);
 
 struct TagImpl {
  public:
