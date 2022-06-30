@@ -26,12 +26,12 @@ void clear(const Mask& mask, protocol::Object& t);
 namespace detail {
 
 // MaskRef struct represents the Field Mask and whether the mask is coming from
-// exclusive mask. MaskRef is used for inputs and outputs for Field Mask
+// excludes mask. MaskRef is used for inputs and outputs for Field Mask
 // methods to determine the status of the mask, because if the mask is coming
-// from exclusive mask, the mask actually represents the complement set.
+// from excludes mask, the mask actually represents the complement set.
 struct MaskRef {
   const Mask& mask;
-  bool is_exclusion = false; // Whether the mask comes from exclusive mask
+  bool is_exclusion = false; // Whether the mask comes from excludes mask
 
   // Get nested MaskRef with the given field id. If the id does not exist in the
   // map, it returns noneMask or fullMask depending on whether the field should

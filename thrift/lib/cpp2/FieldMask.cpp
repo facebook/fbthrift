@@ -37,11 +37,10 @@ const Mask& getMask(const FieldIdToMask& map, int16_t fieldId) {
 
 MaskRef MaskRef::get(FieldId id) const {
   int16_t fieldId = static_cast<int16_t>(id);
-  if (mask.inclusive_ref()) {
-    return MaskRef{
-        getMask(mask.inclusive_ref().value(), fieldId), is_exclusion};
+  if (mask.includes_ref()) {
+    return MaskRef{getMask(mask.includes_ref().value(), fieldId), is_exclusion};
   }
-  return MaskRef{getMask(mask.exclusive_ref().value(), fieldId), !is_exclusion};
+  return MaskRef{getMask(mask.excludes_ref().value(), fieldId), !is_exclusion};
 }
 
 bool MaskRef::isAllMask() const {

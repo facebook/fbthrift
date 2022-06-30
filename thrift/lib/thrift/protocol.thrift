@@ -59,10 +59,10 @@ struct Path {
  *  --------------
  *  It is a union data structure, which can represent the map of exclusive
  *  fields or the map of inclusive fields. The map maps from field id to the
- *  mask for the nested thrift struct. If it is set to exclusive, the mask
+ *  mask for the nested thrift struct. If it is set to excludes, the mask
  *  works by excluding all fields in the map. If the field is another thrift
  *  struct, it excludes the nested fields that are included in the nested mask.
- *  Inclusive works similarly by including the fields specified by the map.
+ *  Includes works similarly by including the fields specified by the map.
  *
  *  Usage
  *  --------------
@@ -79,20 +79,20 @@ struct Path {
  *
  *  // Masks field_2 and field_3 of Foo in C++
  *  Mask mask1;
- *  mask1.inclusive_ref().ensure()[10].inclusive_ref().ensure()[2] = allMask;
- *  mask1.inclusive_ref().ensure()[20] = allMask;
+ *  mask1.includes_ref().ensure()[10].includes_ref().ensure()[2] = allMask;
+ *  mask1.includes_ref().ensure()[20] = allMask;
  *
  *  // Alternatively we can exclude field_1 in Foo
  *  Mask mask2;
- *  mask2.exclusive_ref().ensure()[10].inclusive_ref().ensure()[1] = allMask;
+ *  mask2.excludes_ref().ensure()[10].includes_ref().ensure()[1] = allMask;
  *
  */
 // Inclusive fields should always be an even number.
 @cpp.ScopedEnumAsUnionType
 union Mask {
-  1: FieldIdToMask exclusive; // Fields that will be excluded.
-  2: FieldIdToMask inclusive; // Fields that will be included.
+  1: FieldIdToMask excludes; // Fields that will be excluded.
+  2: FieldIdToMask includes; // Fields that will be included.
 }
 
-const Mask allMask = {"exclusive": {}}; // Masks all fields.
-const Mask noneMask = {"inclusive": {}}; // Masks no fields.
+const Mask allMask = {"excludes": {}}; // Masks all fields.
+const Mask noneMask = {"includes": {}}; // Masks no fields.
