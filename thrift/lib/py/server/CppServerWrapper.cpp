@@ -233,15 +233,17 @@ class PythonAsyncProcessor : public AsyncProcessor {
     getPythonOnewayMethods();
   }
 
-  // Create a task and add it to thread manager's queue. Essentially the same
-  // as GeneratedAsyncProcessor's processInThread method.
-  void processSerializedRequest(
-      ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedRequest&& serializedRequest,
+  void processSerializedCompressedRequestWithMetadata(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedCompressedRequest&& serializedCompressedRequest,
+      const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
-      Cpp2RequestContext* context,
+      apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
+    auto serializedRequest =
+        std::move(serializedCompressedRequest).uncompress();
+
     auto fname = context->getMethodName();
     bool oneway = isOnewayMethod(fname);
 
@@ -398,6 +400,26 @@ class PythonAsyncProcessor : public AsyncProcessor {
       return;
     }
     tm->add(std::move(task));
+  }
+
+  // Create a task and add it to thread manager's queue. Essentially the same
+  // as GeneratedAsyncProcessor's processInThread method.
+  void processSerializedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedRequest&& serializedRequest,
+      apache::thrift::protocol::PROTOCOL_TYPES protType,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm) override {
+    processSerializedCompressedRequestWithMetadata(
+        std::move(req),
+        apache::thrift::SerializedCompressedRequest(
+            std::move(serializedRequest)),
+        apache::thrift::AsyncProcessorFactory::MethodMetadata(),
+        protType,
+        context,
+        eb,
+        tm);
   }
 
   /**
