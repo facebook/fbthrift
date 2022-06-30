@@ -18,9 +18,15 @@
 
 #include <cmath>
 
+#include <folly/CPortability.h>
 #include <folly/Overload.h>
+#include <folly/Portability.h>
+#if FOLLY_LIBRARY_SANITIZE_ADDRESS
+#include <sanitizer/lsan_interface.h>
+#endif
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
+#include <thrift/lib/cpp2/op/Create.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
@@ -31,29 +37,80 @@ namespace detail {
 
 // C++'s intrinsic default for the underlying native type, is the intrisitic
 // default for for all unstructured types.
+template <typename Tag>
+struct GetIntrinsicDefault {
+  static_assert(type::is_concrete_v<Tag>, "");
+  using T = type::native_type<Tag>;
+
+  template <typename TagT = Tag>
+  constexpr type::if_is_a<TagT, type::string_c, T> operator()() const {
+    return StringTraits<T>::fromStringLiteral("");
+  }
+
+  template <typename TagT = Tag>
+  FOLLY_EXPORT type::if_is_a<TagT, type::structured_c, const T&> operator()()
+      const {
+    static const T& kDefault = *[]() {
+      auto* value = new T{};
+      // The default construct respects 'custom' defaults on fields, but
+      // clearing any instance of a structured type, sets it to the
+      // 'intrinsic' default.
+      apache::thrift::clear(*value);
+      return value;
+    }();
+    return kDefault;
+  }
+
+  // For rest of type tag, value initialize its native type.
+  template <typename TagT = Tag>
+  constexpr std::enable_if_t<
+      !type::is_a_v<TagT, type::string_c> &&
+          !type::is_a_v<TagT, type::structured_c>,
+      T>
+  operator()() const {
+    return T{};
+  }
+};
+
+template <typename Adapter, typename Tag>
+struct GetIntrinsicDefault<type::adapted<Adapter, Tag>> {
+  using adapted_tag = type::adapted<Adapter, Tag>;
+  using T = type::native_type<adapted_tag>;
+  static_assert(type::is_concrete_v<adapted_tag>, "");
+  FOLLY_EXPORT const T& operator()() const {
+    static const T& kDefault = *new T(op::create<adapted_tag>());
+    return kDefault;
+  }
+};
+
 // TODO(dokwon): Support field_ref types.
-template <typename T>
-constexpr T getIntrinsicDefault(type::all_c) {
-  return T{};
-}
+template <typename Tag, typename Context>
+struct GetIntrinsicDefault<type::field<Tag, Context>>
+    : GetIntrinsicDefault<Tag> {};
 
-template <typename T>
-constexpr T getIntrinsicDefault(type::string_c) {
-  return StringTraits<T>::fromStringLiteral("");
-}
+template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
+struct GetIntrinsicDefault<
+    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>> {
+  using field_adapted_tag =
+      type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
+  using T = type::native_type<field_adapted_tag>;
+  static_assert(type::is_concrete_v<field_adapted_tag>, "");
 
-template <typename T>
-FOLLY_EXPORT const T& getIntrinsicDefault(type::structured_c) noexcept {
-  const static T* kDefault = []() {
-    auto* value = new T{};
-    // The default construct respects 'custom' defaults on fields, but
-    // clearing any instance of a structured type, sets it to the
-    // 'intrinsic' default.
-    apache::thrift::clear(*value);
-    return value;
-  }();
-  return *kDefault;
-}
+  FOLLY_EXPORT const T& operator()() const {
+    static const T& kDefault = *[]() {
+      // Note, this is a separate leaky singleton instance from
+      // 'op::getIntrinsicDefault<struct_t<Struct>>'.
+      auto& obj = *new Struct{};
+#if FOLLY_LIBRARY_SANITIZE_ADDRESS
+      __lsan_ignore_object(&obj);
+#endif
+      apache::thrift::clear(obj);
+      auto* value = new T(op::create<field_adapted_tag>(obj));
+      return value;
+    }();
+    return kDefault;
+  }
+};
 
 template <typename Tag>
 struct Clear {
@@ -66,7 +123,7 @@ struct Clear {
         [](auto& v, type::all_c) {
           // All unstructured types can be cleared by assigning to the intrinsic
           // default.
-          v = getIntrinsicDefault<T>(Tag{});
+          v = GetIntrinsicDefault<Tag>{}();
         })(value, Tag{});
   }
 };
@@ -113,7 +170,7 @@ struct Empty {
         [](const auto& v, type::all_c) {
           // All unstructured values are 'empty' if they are identical to their
           // intrinsic default.
-          return op::identical<Tag>(v, getIntrinsicDefault<T>(Tag{}));
+          return op::identical<Tag>(v, GetIntrinsicDefault<Tag>{}());
         })(value, Tag{});
   }
 };
@@ -125,7 +182,7 @@ struct Empty<type::adapted<Adapter, Tag>> {
   template <typename T>
   constexpr bool operator()(const T& value) const {
     return op::identical<adapted_tag>(
-        value, getIntrinsicDefault<T>(adapted_tag{}));
+        value, GetIntrinsicDefault<adapted_tag>{}());
   }
 };
 
@@ -133,6 +190,18 @@ struct Empty<type::adapted<Adapter, Tag>> {
 template <typename Tag, typename Context>
 struct Empty<type::field<Tag, Context>> : Empty<Tag> {};
 
+template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
+struct Empty<
+    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>> {
+  using field_adapted_tag =
+      type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
+  static_assert(type::is_concrete_v<field_adapted_tag>, "");
+  template <typename T>
+  constexpr bool operator()(const T& value) const {
+    return op::identical<field_adapted_tag>(
+        value, GetIntrinsicDefault<field_adapted_tag>{}());
+  }
+};
 } // namespace detail
 } // namespace op
 } // namespace thrift

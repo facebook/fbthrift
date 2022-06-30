@@ -114,15 +114,20 @@ struct MapTestCase : BaseDefaultTestCase<map_type_tag<KTagCase, VTagCase>, T> {
 using OpTestCases = ::testing::Types<
     NumericTestCase<type::byte_t>,
     NumericTestCase<type::i16_t>,
-    NumericTestCase<type::i16_t, uint16_t>,
+    // TODO(dokwon): Add support to cpp_type
+    // NumericTestCase<type::i16_t, uint16_t>,
     NumericTestCase<type::i32_t>,
-    NumericTestCase<type::i32_t, uint32_t>,
+    // TODO(dokwon): Add support to cpp_type
+    // NumericTestCase<type::i32_t, uint32_t>,
     NumericTestCase<type::i64_t>,
-    NumericTestCase<type::i64_t, uint64_t>,
+    // TODO(dokwon): Add support to cpp_type
+    // NumericTestCase<type::i64_t, uint64_t>,
     NumericTestCase<type::float_t>,
     NumericTestCase<type::double_t>,
     StringTestCase<type::string_t>,
-    StringTestCase<type::binary_t, folly::IOBuf>,
+    // TODO(dokwon): Add support to cpp_type
+    // StringTestCase<type::binary_t, folly::IOBuf>,
+    StringTestCase<type::binary_t>,
     // TODO(afuller): Fix 'copyability' for this type, so we can test this case.
     // StringTestCase<type::binary_t, std::unique_ptr<folly::IOBuf>>,
     ListTestCase<NumericTestCase<type::byte_t>>,

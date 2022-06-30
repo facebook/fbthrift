@@ -82,7 +82,9 @@ struct FieldAdapter {
   }
 };
 
-struct TestStruct {};
+struct TestStruct {
+  void __fbthrift_clear() {}
+};
 
 // Creates a custom protocol, skipping validation.
 inline type::Protocol makeProtocol(std::string name) {

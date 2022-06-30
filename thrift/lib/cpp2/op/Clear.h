@@ -48,11 +48,8 @@ constexpr detail::Empty<Tag> isEmpty{};
 //   getDefault<type::i32_t>() -> 0
 //   getDefault<type::set<type::i32_t>>() -> {}
 //   getDefault<type::string_t>() -> ""
-template <typename Tag, typename T = type::native_type<Tag>>
-constexpr decltype(auto) getIntrinsicDefault() {
-  static_assert(type::is_concrete_v<Tag>, "");
-  return detail::getIntrinsicDefault<T>(Tag{});
-}
+template <typename Tag>
+constexpr detail::GetIntrinsicDefault<Tag> getIntrinsicDefault{};
 
 // Clears the given value, leaving it equal to its intrinsic default.
 // For example:
