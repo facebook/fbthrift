@@ -23,16 +23,23 @@ namespace py.asyncio facebook_thrift_asyncio.annotation.api
 namespace go thrift.annotation.api
 namespace py thrift.annotation.api
 
-// Indicates a field will be ignored if sent as input.
-//
-// For example, life-cycle timestamps fields like `createTime` and `modifyTime`
-// should always be Output only, as they are set as side-effects of CRUD operations.
+/**
+ * Indicates a field is ignored if sent as input.
+ *
+ * For example, life-cycle timestamps fields like `createTime` and `modifyTime`
+ * should always be output-only, as they are set as side-effects of CRUD
+ * operations.
+ */
 @scope.Field
 struct OutputOnly {}
 
-// Indicates a field cannot be changed after creations.
-//
-// For example, the name or id of a resource can never be changed after
-// creation.
+/**
+ * Indicates a field cannot change after creation.
+ *
+ * For example, the name or id of a REST 'resource' and the primary-key of a
+ * database 'row', cannot be changed after creation, as that would indicate a
+ * different 'resource' or 'row'. Thus the only way to change such a field is
+ * to delete and re-create the 'resource' or 'row' itself.
+ */
 @scope.Field
 struct Immutable {}

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/api.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/any.thrift"
@@ -61,6 +62,7 @@ struct Definition {
    *  - Protocols deprecated in v1+, e.g. JSON and SimpleJson.
    */
   // TODO(afuller): Support aliases to help with renaming.
+  @api.Immutable
   1: string name;
 
   /**
@@ -162,6 +164,7 @@ struct Field {
    *
    * Changing the field ID is always backward *incompatible*.
    */
+  @api.Immutable
   1: FieldId id;
 
   /** The qualifier for the field. */
