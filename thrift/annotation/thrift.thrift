@@ -50,6 +50,31 @@ struct Deprecated {
   1: string message;
 }
 
+// Annotate a thrift structured or enum to indicate if ids should not be
+// used. For example, you may want to mark ids as deprecated, or these ids
+// might be reserved for other use cases or annotations.
+//
+// The resolved set of disallowed ids is the union of the values in `ids` and
+// the range of values represented in `id_ranges`. Example:
+//
+//  // These ids are not allowed: 3, 8, half-open ranges [10, 15), [20, 30)
+//  @thrift.ReservedIds{ids = [3, 8], id_ranges = {10: 15, 20: 30}}
+//  struct Foo {
+//    ...
+//    3: i64 f;       // Build failure: 3 cannot be used
+//  }
+@scope.Structured
+@scope.FbthriftInternalEnum
+struct ReservedIds {
+  // Individual ids that cannot be used
+  1: list<i32> ids;
+  // Represents ranges of ids that cannot be used. Each (key: value) pair
+  // represents the half-open range [key, value) -- key is included and
+  // value is not.
+  // Example: {10: 15, 20: 30} represents the range [10, 15) and [20, 30)
+  2: map<i32, i32> id_ranges;
+}
+
 /**
  * Indicates  a definition/feature will be removed in the next release.
  *

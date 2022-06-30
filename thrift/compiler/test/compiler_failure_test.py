@@ -2009,3 +2009,68 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
         )
+
+    def test_reserved_ids(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/thrift.thrift"
+
+                @thrift.ReservedIds{ids = [3, 8]}
+                struct IdList {
+                  1: i64 a;
+                  3: string bad_field;
+                }
+
+                @thrift.ReservedIds{ids = [2], id_ranges = {5: 10, 15: 20}}
+                struct IdRanges {
+                  1: i64 a;
+                  10: string bad_field;
+                }
+
+                @thrift.ReservedIds{ids = [3, 8]}
+                enum EnumWithBadId {
+                  A = 0,
+                  B = 3,
+                }
+
+                @thrift.ReservedIds{ids = [3, 8]}
+                union UnionWithBadId {
+                  1: i64 a;
+                  3: string bad_field;
+                }
+
+                @thrift.ReservedIds{ids = [3, 8]}
+                safe exception ExceptionWithBadId {
+                  1: i64 a;
+                  3: string bad_field;
+                }
+
+                @thrift.ReservedIds{id_ranges = {5: 3}}
+                struct InvalidIdRange {
+                  1: i64 a;
+                  3: string bad_field;
+                }
+
+                @thrift.ReservedIds{id_ranges = {5: 10}}
+                struct OkStruct {
+                  1: i64 a;
+                  12: string b;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:3] Fields in IdList cannot use reserved ids: 3\n"
+            "[FAILURE:foo.thrift:9] Fields in IdRanges cannot use reserved ids: 10\n"
+            "[FAILURE:foo.thrift:21] Fields in UnionWithBadId cannot use reserved ids: 3\n"
+            "[FAILURE:foo.thrift:33] For each (start: end) in id_ranges, we must have start < end. Got (5: 3), annotated on InvalidIdRange\n"
+            "[FAILURE:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
+            "[FAILURE:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
+        )

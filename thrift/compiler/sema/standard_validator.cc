@@ -51,6 +51,7 @@ namespace {
 constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
 constexpr auto kHackAdapterUri = "facebook.com/thrift/annotation/hack/Adapter";
+constexpr auto kReservedIdsUri = "facebook.com/thrift/annotation/ReservedIds";
 constexpr auto kCppUnstructuredAdapter = "cpp.adapter";
 constexpr auto kHackUnstructuredAdapter = "hack.adapter";
 
@@ -735,6 +736,104 @@ void validate_hack_field_adapter_annotation(
       "@hack.Adapter",
       true /* disallow_structured_annotations_on_both_field_and_typedef */);
 }
+
+class reserved_ids_checker {
+ public:
+  explicit reserved_ids_checker(diagnostic_context& ctx) : ctx_(ctx) {}
+
+  void check(const t_structured& node) {
+    auto reserved_ids = get_reserved_ids(node);
+    for (const auto& field : node.fields()) {
+      ctx_.check(
+          reserved_ids.count(field.id()) == 0,
+          "Fields in {} cannot use reserved ids: {}",
+          node.name(),
+          field.id());
+    }
+  }
+
+  void check(const t_enum& node) {
+    auto reserved_ids = get_reserved_ids(node);
+    for (const auto& enum_value : node.values()) {
+      ctx_.check(
+          reserved_ids.count(enum_value.get_value()) == 0,
+          "Enum values in {} cannot use reserved ids: {}",
+          node.name(),
+          enum_value.get_value());
+    }
+  }
+
+ private:
+  diagnostic_context& ctx_;
+
+  // Gets all the reserved ids annotated on this node. Returns
+  // empty set if the annotation is not present.
+  std::unordered_set<int32_t> get_reserved_ids(const t_type& node) {
+    std::unordered_set<int32_t> reserved_ids;
+
+    auto* annotation = node.find_structured_annotation_or_null(kReservedIdsUri);
+    if (annotation == nullptr) {
+      return reserved_ids;
+    }
+
+    // Take the union of the list of tag values in `ids` and the range of
+    // of values from `id_ranges`
+    if (auto ids =
+            annotation->get_value_from_structured_annotation_or_null("ids");
+        ids != nullptr) {
+      ctx_.check(
+          ids->get_type() == t_const_value::t_const_value_type::CV_LIST,
+          "Field ids must be a list of integers, annotated on {}",
+          node.name());
+      for (const auto* id : ids->get_list()) {
+        ctx_.check(
+            id->get_type() == t_const_value::t_const_value_type::CV_INTEGER,
+            "Field ids must be a list of integers, annotated on {}",
+            node.name());
+        reserved_ids.insert(id->get_integer());
+      }
+    }
+    if (auto id_ranges =
+            annotation->get_value_from_structured_annotation_or_null(
+                "id_ranges");
+        id_ranges != nullptr) {
+      ctx_.check(
+          id_ranges->get_type() == t_const_value::t_const_value_type::CV_MAP,
+          "Field id_ranges must be a map of integer to integer, annotated on {}",
+          node.name());
+      for (const auto& [id_range_begin, id_range_end] : id_ranges->get_map()) {
+        ctx_.check(
+            id_range_begin->get_type() ==
+                    t_const_value::t_const_value_type::CV_INTEGER &&
+                id_range_begin->get_type() ==
+                    t_const_value::t_const_value_type::CV_INTEGER,
+            "Field id_ranges must be a map of integer to integer, annotated on {}",
+            node.name());
+        ctx_.check(
+            id_range_begin->get_integer() < id_range_end->get_integer(),
+            "For each (start: end) in id_ranges, we must have start < end. Got ({}: {}), annotated on {}",
+            id_range_begin->get_integer(),
+            id_range_end->get_integer(),
+            node.name());
+        for (int i = id_range_begin->get_integer();
+             i <= id_range_end->get_integer();
+             ++i) {
+          reserved_ids.insert(i);
+        }
+      }
+    }
+    return reserved_ids;
+  }
+};
+
+void validate_reserved_ids_structured(
+    diagnostic_context& ctx, const t_structured& node) {
+  reserved_ids_checker(ctx).check(node);
+}
+
+void validate_reserved_ids_enum(diagnostic_context& ctx, const t_enum& node) {
+  reserved_ids_checker(ctx).check(node);
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -753,6 +852,8 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(
       &validate_compatibility_with_lazy_field);
   validator.add_structured_definition_visitor(&validate_box_annotation);
+  validator.add_structured_definition_visitor(
+      &validate_reserved_ids_structured);
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_exception_visitor(&validate_exception_php_annotations);
   validator.add_field_visitor(&validate_field_id);
@@ -767,6 +868,7 @@ ast_validator standard_validator() {
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
+  validator.add_enum_visitor(&validate_reserved_ids_enum);
   validator.add_enum_value_visitor(&validate_enum_value);
 
   validator.add_definition_visitor(&validate_structured_annotation);

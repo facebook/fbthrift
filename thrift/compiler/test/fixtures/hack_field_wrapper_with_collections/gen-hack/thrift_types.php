@@ -334,6 +334,221 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * Original thrift struct:-
+ * ReservedIds
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/ReservedIds'))>>
+class ReservedIds implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'ids',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+    2 => shape(
+      'var' => 'id_ranges',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::I32,
+      'key' => shape(
+        'type' => \TType::I32,
+      ),
+      'val' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'ids' => 1,
+    'id_ranges' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'ids' => ?Vector<int>,
+    ?'id_ranges' => ?Map<int, int>,
+  );
+
+  const type TShape = shape(
+    'ids' => vec<int>,
+    'id_ranges' => dict<int, int>,
+  );
+  const int STRUCTURAL_ID = 4105998268635615653;
+  /**
+   * Original thrift field:-
+   * 1: list<i32> ids
+   */
+  public Vector<int> $ids;
+  /**
+   * Original thrift field:-
+   * 2: map<i32, i32> id_ranges
+   */
+  public Map<int, int> $id_ranges;
+
+  public function __construct(?Vector<int> $ids = null, ?Map<int, int> $id_ranges = null)[] {
+    $this->ids = $ids ?? Vector {};
+    $this->id_ranges = $id_ranges ?? Map {};
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'ids'),
+      Shapes::idx($shape, 'id_ranges'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ReservedIds';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.ReservedIds",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "ids",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "id_ranges",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\FbthriftInternalEnum' => \thrift\annotation\FbthriftInternalEnum::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Vector($shape['ids'])),
+      (new Map($shape['id_ranges'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'ids' => vec($this->ids),
+      'id_ranges' => dict($this->id_ranges),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'ids') !== null) {
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<int>>($parsed['ids']);
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = 0;
+        $_tmp6 = (int)$_value2;
+        if ($_tmp6 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_elem5 = (int)$_tmp6;
+        }
+        $_container4 []= $_elem5;
+      }
+      $this->ids = $_container4;
+    }
+    if (idx($parsed, 'id_ranges') !== null) {
+      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Map<int, int>>($parsed['id_ranges']);
+      $_container11 = Map {};
+      foreach($_json10 as $_key8 => $_value9) {
+        $_value12 = 0;
+        $_tmp13 = (int)$_value9;
+        if ($_tmp13 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_value12 = (int)$_tmp13;
+        }
+        $_container11[$_key8] = $_value12;
+      }
+      $this->id_ranges = $_container11;
+    }
+  }
+
+}
+
+/**
  * Indicates  a definition/feature will be removed in the next release.
  * 
  * Pleased migrate off of all @Legacy as soon as possible.

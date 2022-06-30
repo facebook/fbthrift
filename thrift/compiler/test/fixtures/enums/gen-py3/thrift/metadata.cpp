@@ -16,6 +16,7 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<Beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Experimental>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Deprecated>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<ReservedIds>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Legacy>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<RequiresBackwardCompatibility>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<NoExperimental>::gen(metadata);

@@ -30,7 +30,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Deprecated', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'GenDefaultEnumValue', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
+__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Deprecated', 'ReservedIds', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'GenDefaultEnumValue', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
 
 class Beta:
   """
@@ -275,6 +275,142 @@ class Deprecated:
     import thrift.py3.converter
     py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
     return thrift.py3.converter.to_py3_struct(py3_types.Deprecated, self)
+
+  def _to_py_deprecated(self):
+    return self
+
+class ReservedIds:
+  """
+  Attributes:
+   - ids
+   - id_ranges
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.LIST:
+          self.ids = []
+          (_etype3, _size0) = iprot.readListBegin()
+          if _size0 >= 0:
+            for _i4 in range(_size0):
+              _elem5 = iprot.readI32()
+              self.ids.append(_elem5)
+          else: 
+            while iprot.peekList():
+              _elem6 = iprot.readI32()
+              self.ids.append(_elem6)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.MAP:
+          self.id_ranges = {}
+          (_ktype8, _vtype9, _size7 ) = iprot.readMapBegin() 
+          if _size7 >= 0:
+            for _i11 in range(_size7):
+              _key12 = iprot.readI32()
+              _val13 = iprot.readI32()
+              self.id_ranges[_key12] = _val13
+          else: 
+            while iprot.peekMap():
+              _key14 = iprot.readI32()
+              _val15 = iprot.readI32()
+              self.id_ranges[_key14] = _val15
+          iprot.readMapEnd()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('ReservedIds')
+    if self.ids != None:
+      oprot.writeFieldBegin('ids', TType.LIST, 1)
+      oprot.writeListBegin(TType.I32, len(self.ids))
+      for iter16 in self.ids:
+        oprot.writeI32(iter16)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.id_ranges != None:
+      oprot.writeFieldBegin('id_ranges', TType.MAP, 2)
+      oprot.writeMapBegin(TType.I32, TType.I32, len(self.id_ranges))
+      for kiter17,viter18 in self.id_ranges.items():
+        oprot.writeI32(kiter17)
+        oprot.writeI32(viter18)
+      oprot.writeMapEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.ids is not None:
+      value = pprint.pformat(self.ids, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    ids=%s' % (value))
+    if self.id_ranges is not None:
+      value = pprint.pformat(self.id_ranges, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    id_ranges=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'ids',
+      'id_ranges',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.ReservedIds, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.ReservedIds, self)
 
   def _to_py_deprecated(self):
     return self
@@ -1610,6 +1746,32 @@ def Deprecated__setstate__(self, state):
 
 Deprecated.__getstate__ = lambda self: self.__dict__.copy()
 Deprecated.__setstate__ = Deprecated__setstate__
+
+all_structs.append(ReservedIds)
+ReservedIds.thrift_spec = (
+  None, # 0
+  (1, TType.LIST, 'ids', (TType.I32,None), None, 2, ), # 1
+  (2, TType.MAP, 'id_ranges', (TType.I32,None,TType.I32,None), None, 2, ), # 2
+)
+
+ReservedIds.thrift_struct_annotations = {
+}
+ReservedIds.thrift_field_annotations = {
+}
+
+def ReservedIds__init__(self, ids=None, id_ranges=None,):
+  self.ids = ids
+  self.id_ranges = id_ranges
+
+ReservedIds.__init__ = ReservedIds__init__
+
+def ReservedIds__setstate__(self, state):
+  state.setdefault('ids', None)
+  state.setdefault('id_ranges', None)
+  self.__dict__ = state
+
+ReservedIds.__getstate__ = lambda self: self.__dict__.copy()
+ReservedIds.__setstate__ = ReservedIds__setstate__
 
 all_structs.append(Legacy)
 Legacy.thrift_spec = (

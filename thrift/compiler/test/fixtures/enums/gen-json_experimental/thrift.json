@@ -38,6 +38,35 @@
         "is_union" : false,
         "lineno" : 49
       },
+      "ReservedIds" : {
+        "name" : "ReservedIds",
+        "fields" : {
+          "ids" : {
+            "name" : "ids",
+            "key" : 1,
+            "lineno" : 70,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i32"
+}
+          },
+          "id_ranges" : {
+            "name" : "id_ranges",
+            "key" : 2,
+            "lineno" : 75,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "map",
+  "key_type" : "i32",
+  "value_type" : "i32"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 68
+      },
       "Legacy" : {
         "name" : "Legacy",
         "docstring" : "Indicates  a definition/feature will be removed in the next release.\n\nPleased migrate off of all @Legacy as soon as possible.\n",
@@ -45,14 +74,14 @@
           "message" : {
             "name" : "message",
             "key" : 1,
-            "lineno" : 63,
+            "lineno" : 88,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 62
+        "lineno" : 87
       },
       "RequiresBackwardCompatibility" : {
         "name" : "RequiresBackwardCompatibility",
@@ -62,67 +91,67 @@
             "name" : "field_name",
             "default_value" : 0,
             "key" : 1,
-            "lineno" : 74,
+            "lineno" : 99,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 73
+        "lineno" : 98
       },
       "NoExperimental" : {
         "name" : "NoExperimental",
         "docstring" : "Best-effort disables experimental features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 80
+        "lineno" : 105
       },
       "NoBeta" : {
         "name" : "NoBeta",
         "docstring" : "Best-effort disables @Beta features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 85
+        "lineno" : 110
       },
       "NoLegacy" : {
         "name" : "NoLegacy",
         "docstring" : "Best-effort disables @Legacy features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 95
+        "lineno" : 120
       },
       "NoDeprecated" : {
         "name" : "NoDeprecated",
         "docstring" : " * Best-effort disables @Deprecated features.\n*\n* Should only be enabled in `test` versions, as deprecated implies removing\n* the feature will break current usage (otherwise it would be @Legacy or\n* deleted)\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 107
+        "lineno" : 132
       },
       "TerseWrite" : {
         "name" : "TerseWrite",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 119
+        "lineno" : 144
       },
       "Box" : {
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 124
+        "lineno" : 149
       },
       "Mixin" : {
         "name" : "Mixin",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 129
+        "lineno" : 154
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "docstring" : "Option to serialize thrift struct in ascending field id order.\n\nThis can potentially make serialized data size smaller in compact protocol,\nsince compact protocol can write deltas between subsequent field ids.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 139
+        "lineno" : 164
       },
       "GenDefaultEnumValue" : {
         "name" : "GenDefaultEnumValue",
@@ -133,48 +162,48 @@
             "default_value" : "Unspecified",
             "docstring" : "The name to use for the generated enum value.\n\nThis intentionally does **not** use the most common 'zero' enum value name,\n'Default', by default; as, defining a `Default = 0` enum value explicitly\nis a useful means of self-documenting that setting an explicit value is\nnever required. In which case, it is part of the API, and should not be\nremoved in favor of an implicitly generated value.\n\nOn the other hand, 'Unspecified' clearly indicates that the requirements\nare not intrinsic to the enum. In which case, the relevant documentation\nshould be consulted (e.g. the doc strings on the function or field).\n",
             "key" : 1,
-            "lineno" : 169,
+            "lineno" : 194,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 155
+        "lineno" : 180
       },
       "v1" : {
         "name" : "v1",
         "docstring" : "Enables all released v1 features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 179
+        "lineno" : 204
       },
       "v1beta" : {
         "name" : "v1beta",
         "docstring" : "Enables all beta v1 features.\n\nBeta features are guaranteed to *not* break unrelated Thrift features\nso they should be relatively safe to test alongside other beta or\nreleased Thrift features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 192
+        "lineno" : 217
       },
       "v1alpha" : {
         "name" : "v1alpha",
         "docstring" : "Enables all experimental v1 features.\n\nUse with *caution* and only with explicit permission. This may enable\nfeatures may change significantly without notice or not work correctly\nin all contexts.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 206
+        "lineno" : 231
       },
       "v1test" : {
         "name" : "v1test",
         "docstring" : "Enables experimental features, even those that are known to break common\nuse cases.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 216
+        "lineno" : 241
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 225
+        "lineno" : 250
       }
       },
   "source_path" : "thrift/annotation/thrift",

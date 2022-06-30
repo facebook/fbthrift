@@ -270,6 +270,209 @@ func (p *Deprecated) String() string {
   return fmt.Sprintf("Deprecated({Message:%s})", messageVal)
 }
 
+// Attributes:
+//  - Ids
+//  - IdRanges
+type ReservedIds struct {
+  Ids []int32 `thrift:"ids,1" db:"ids" json:"ids"`
+  IdRanges map[int32]int32 `thrift:"id_ranges,2" db:"id_ranges" json:"id_ranges"`
+}
+
+func NewReservedIds() *ReservedIds {
+  return &ReservedIds{}
+}
+
+
+func (p *ReservedIds) GetIds() []int32 {
+  return p.Ids
+}
+
+func (p *ReservedIds) GetIdRanges() map[int32]int32 {
+  return p.IdRanges
+}
+type ReservedIdsBuilder struct {
+  obj *ReservedIds
+}
+
+func NewReservedIdsBuilder() *ReservedIdsBuilder{
+  return &ReservedIdsBuilder{
+    obj: NewReservedIds(),
+  }
+}
+
+func (p ReservedIdsBuilder) Emit() *ReservedIds{
+  return &ReservedIds{
+    Ids: p.obj.Ids,
+    IdRanges: p.obj.IdRanges,
+  }
+}
+
+func (r *ReservedIdsBuilder) Ids(ids []int32) *ReservedIdsBuilder {
+  r.obj.Ids = ids
+  return r
+}
+
+func (r *ReservedIdsBuilder) IdRanges(idRanges map[int32]int32) *ReservedIdsBuilder {
+  r.obj.IdRanges = idRanges
+  return r
+}
+
+func (r *ReservedIds) SetIds(ids []int32) *ReservedIds {
+  r.Ids = ids
+  return r
+}
+
+func (r *ReservedIds) SetIdRanges(idRanges map[int32]int32) *ReservedIds {
+  r.IdRanges = idRanges
+  return r
+}
+
+func (p *ReservedIds) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ReservedIds)  ReadField1(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]int32, 0, size)
+  p.Ids =  tSlice
+  for i := 0; i < size; i ++ {
+    var _elem1 int32
+    if v, err := iprot.ReadI32(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
+    p.Ids = append(p.Ids, _elem1)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *ReservedIds)  ReadField2(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[int32]int32, size)
+  p.IdRanges =  tMap
+  for i := 0; i < size; i ++ {
+    var _key2 int32
+    if v, err := iprot.ReadI32(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
+    var _val3 int32
+    if v, err := iprot.ReadI32(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val3 = v
+    }
+    p.IdRanges[_key2] = _val3
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *ReservedIds) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ReservedIds"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ReservedIds) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("ids", thrift.LIST, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:ids: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.I32, len(p.Ids)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.Ids {
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:ids: ", p), err) }
+  return err
+}
+
+func (p *ReservedIds) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("id_ranges", thrift.MAP, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:id_ranges: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.I32, thrift.I32, len(p.IdRanges)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.IdRanges {
+    if err := oprot.WriteI32(int32(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:id_ranges: ", p), err) }
+  return err
+}
+
+func (p *ReservedIds) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  idsVal := fmt.Sprintf("%v", p.Ids)
+  idRangesVal := fmt.Sprintf("%v", p.IdRanges)
+  return fmt.Sprintf("ReservedIds({Ids:%s IdRanges:%s})", idsVal, idRangesVal)
+}
+
 // Indicates  a definition/feature will be removed in the next release.
 // 
 // Pleased migrate off of all @Legacy as soon as possible.
