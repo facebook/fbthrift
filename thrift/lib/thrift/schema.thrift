@@ -63,6 +63,7 @@ struct Definition {
    */
   // TODO(afuller): Support aliases to help with renaming.
   @api.Immutable
+  @api.Unique
   1: string name;
 
   /**
@@ -83,6 +84,7 @@ struct Definition {
    * URI can no longer be deserialized.
    */
   // TODO(afuller): Support aliases to help with renaming.
+  @api.Unique
   2: standard.Uri uri;
 
   /**
@@ -114,6 +116,9 @@ struct EnumValue {
    *
    * Changing value is always backward *incompatible*.
    */
+  // TODO(afuller): Consider adding support for specifying aliases by specifying
+  // multiple definitions for the same value in the IDL.
+  @api.Unique
   2: i32 value;
 }
 
@@ -165,6 +170,7 @@ struct Field {
    * Changing the field ID is always backward *incompatible*.
    */
   @api.Immutable
+  @api.Unique
   1: FieldId id;
 
   /** The qualifier for the field. */
@@ -280,6 +286,7 @@ struct Program {
    */
   // TODO(afuller): Allow 'package' as an ident in Thrift and remove trailing
   // '_' (or change the name slightly in some other way).
+  @api.Unique
   2: id.PackageId package_ (cpp.name = "package");
 
   /**

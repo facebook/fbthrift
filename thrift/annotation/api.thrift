@@ -43,3 +43,13 @@ struct OutputOnly {}
  */
 @scope.Field
 struct Immutable {}
+
+/**
+ * Indicates a field must contain a value that is unique in an outer context.
+ *
+ * For example, the uri of a Thrift type, the name or id of a REST 'resource',
+ * and the primary-key of a 'row' in a database, all must be unique within the
+ * containing universe, collection, or table.
+ */
+@scope.Field
+struct Unique {}
