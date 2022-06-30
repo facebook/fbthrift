@@ -25,13 +25,11 @@ const size_t ThriftServerConfig::T_ASYNC_DEFAULT_WORKER_THREADS =
 ThriftServerConfig::ThriftServerConfig(
     const ThriftServerInitialConfig& initialConfig)
     : ThriftServerConfig() {
-  if (initialConfig.maxRequests_) {
-    maxRequests_.setDefault(
-        folly::observer::makeStaticObserver(*initialConfig.maxRequests_));
+  if (auto& [value, isSet] = initialConfig.maxRequests_; isSet) {
+    maxRequests_.setDefault(folly::observer::makeStaticObserver(value));
   }
-  if (initialConfig.queueTimeout_) {
-    queueTimeout_.setDefault(
-        folly::observer::makeStaticObserver(*initialConfig.queueTimeout_));
+  if (auto& [value, isSet] = initialConfig.queueTimeout_; isSet) {
+    queueTimeout_.setDefault(folly::observer::makeStaticObserver(value));
   }
 }
 

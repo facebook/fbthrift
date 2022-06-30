@@ -797,15 +797,18 @@ class ThriftServerConfig {
 class ThriftServerInitialConfig {
  public:
   FOLLY_CONSTEVAL ThriftServerInitialConfig() = default;
+  // to fix oss for now we'll have this as a pair<T, bool> to mimick the
+  // behavior of optional
 
 #define THRIFT_SERVER_INITIAL_CONFIG_DEFINE(TYPE, NAME)        \
  private:                                                      \
-  std::optional<TYPE> NAME##_;                                 \
+  std::pair<TYPE, bool> NAME##_ = {{}, false};                 \
                                                                \
  public:                                                       \
   FOLLY_CONSTEVAL ThriftServerInitialConfig NAME(TYPE value) { \
     auto initialConfig(*this);                                 \
-    initialConfig.NAME##_ = std::make_optional(value);         \
+    initialConfig.NAME##_.first = value;                       \
+    initialConfig.NAME##_.second = true;                       \
     return initialConfig;                                      \
   }
 
