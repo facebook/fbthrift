@@ -18,14 +18,16 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/standard.thrift"
 
-// The **underlying representations** for well-known Thrift types.
-//
-// The following definitions are provided as unadapted underlying
-// representations for 'public' adapted typedefs defined in 'type.thrift'.
-//
-// These definitions are named after their representations, using the form
-// '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
-// type would be `exception FooException`.
+/**
+ * The **underlying representations** for well-known Thrift types.
+ *
+ * The following definitions are provided as unadapted underlying
+ * representations for 'public' adapted typedefs defined in 'type.thrift'.
+ *
+ * These definitions are named after their representations, using the form
+ * '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
+ * type would be `exception FooException`.
+ */
 @thrift.v1alpha
 package "facebook.com/thrift/type"
 
@@ -39,61 +41,66 @@ namespace py.asyncio apache_thrift_asyncio.type_rep
 namespace go thrift.lib.thrift.type_rep
 namespace py thrift.lib.thrift.type_rep
 
-// A fixed-length span of time, represented as a signed count of seconds and
-// nanoseconds (nanos).
-//
-// Considered 'normal', when `nanos` is in the range 0 to 999'999'999
-// inclusive, or `seconds` is 0 and `nanos` is in the range -999'999'999 to
-// 999'999'999 inclusive.
+/**
+ * A fixed-length span of time, represented as a signed count of seconds and
+ * nanoseconds (nanos).
+ *
+ * Considered 'normal', when `nanos` is in the range 0 to 999'999'999
+ * inclusive, or `seconds` is 0 and `nanos` is in the range -999'999'999 to
+ * 999'999'999 inclusive.
+ */
 struct DurationStruct {
-  // The count of seconds.
+  /** The count of seconds. */
   1: i64 seconds;
-  // The count of nanoseconds.
+  /** The count of nanoseconds. */
   2: i32 nanos;
 } (thrift.uri = "facebook.com/thrift/type/Duration")
 
-// An instant in time encoded as a count of seconds and nanoseconds (nanos)
-// since midnight on January 1, 1970 UTC (i.e. Unix epoch).
-//
-// Considered 'normal', when `nanos` is in the range 0 to 999'999'999 inclusive.
-//
+/**
+ * An instant in time encoded as a count of seconds and nanoseconds (nanos)
+ * since midnight on January 1, 1970 UTC (i.e. Unix epoch).
+ *
+ * Considered 'normal', when `nanos` is in the range 0 to 999'999'999 inclusive.
+ */
 // TODO(afuller): Consider making this a 'strong' typedef of `Duration`, which
 // would ensure both a separate URI and native type in all languages.
 struct TimeStruct {
-  // The count of seconds.
+  /** The count of seconds. */
   1: i64 seconds;
-  // The count of nanoseconds.
+  /** The count of nanoseconds. */
   2: i32 nanos;
 } (thrift.uri = "facebook.com/thrift/type/Time")
 
-// A integer fraction of the form {numerator} / {denominator}
-//
-// Useful for representing ratios, rates, and metric accumulators.
-//
-// Considered 'normal' when the denominator is positive.
-// Considered 'simple' when `normal` and the greatest common divisor of the
-// and `numerator` and `denominator`, is 1.
+/**
+ * A integer fraction of the form {numerator} / {denominator}
+ *
+ * Useful for representing ratios, rates, and metric accumulators.
+ *
+ * Considered 'normal' when the denominator is positive.
+ * Considered 'simple' when `normal` and the greatest common divisor of the
+ * and `numerator` and `denominator`, is 1.
+ */
 struct FractionStruct {
-  // The numerator/dividend/antecedent/upper integer.
+  /** The numerator/dividend/antecedent/upper integer. */
   1: i64 numerator;
-  // The denominator/divisor/consequent/lower integer.
+  /** The denominator/divisor/consequent/lower integer. */
   2: i64 denominator;
 } (thrift.uri = "facebook.com/thrift/type/Fraction")
 
-// A union representation of a protocol.
+/** A union representation of a protocol. */
 union ProtocolUnion {
-  // A standard protocol, known by all Thrift implementations.
+  /** A standard protocol, known by all Thrift implementations. */
   1: standard.StandardProtocol standard;
-  // A custom protocol.
+  /** A custom protocol. */
   2: standard.Uri custom;
-  // An externally stored protocol.
+  /** An externally stored protocol. */
   3: id.ProtocolId id;
 } (thrift.uri = "facebook.com/thrift/type/Protocol")
 
-// A concrete Thrift type.
+/** A concrete Thrift type. */
 struct TypeStruct {
-  // The type name.
+  /** The type name. */
   1: standard.TypeName name;
-  // The type params, if appropriate.
+  /** The type params, if appropriate. */
   2: list<TypeStruct> params;
 } (thrift.uri = "facebook.com/thrift/type/Type")
