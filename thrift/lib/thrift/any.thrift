@@ -17,7 +17,7 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/any_rep.thrift"
 
-// The **standard** representations for Thrift: Any.
+/** The **standard** representations for Thrift: Any. */
 @thrift.v1alpha
 package "facebook.com/thrift/type"
 
@@ -31,24 +31,26 @@ namespace py.asyncio apache_thrift_asyncio.any
 namespace go thrift.lib.thrift.any
 namespace py thrift.lib.thrift.any
 
-// A type that can hold 'any' value (including void).
-//
-// Always contains enough information to deserialize the stored value,  if the
-// type/protocol are recognized.
+/** A type that can hold 'any' value (including void).
+ *
+ * Always contains enough information to deserialize the stored value,  if the
+ * type/protocol are recognized.
+ */
 @thrift.Experimental // TODO(afuller): Adapt!
 typedef any_rep.AnyStruct Any (thrift.uri = "")
 
-// A type that can hold any subset of 'any' value.
-//
-// Unlike `Any`, `SemiAny` may not hold enough information to deserialized the
-// stored value.
+/** A type that can hold any subset of 'any' value.
+ *
+ * Unlike `Any`, `SemiAny` may not hold enough information to deserialized the
+ * stored value.
+ */
 @thrift.Experimental // TODO(afuller): Adapt!
 typedef any_rep.SemiAnyStruct SemiAny (thrift.uri = "")
 
-// A list of SemiAny values, accessible by ValueId.
+/** A list of SemiAny values, accessible by ValueId. */
 @thrift.Experimental // TODO(afuller): Adapt!
 typedef list<Any> AnyValueList
 
-// A list of SemiAny values, accessible by ValueId.
+/** A list of SemiAny values, accessible by ValueId. */
 @thrift.Experimental // TODO(afuller): Adapt!
 typedef list<SemiAny> SemiAnyValueList

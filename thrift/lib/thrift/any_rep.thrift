@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/api.thrift"
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/type.thrift"
 include "thrift/lib/thrift/standard.thrift"
 
-// The **underlying representations** for Thrift: Any.
-//
-// The following definitions are provided as unadapted underlying
-// representations for 'public' adapted typedefs defined in 'any.thrift'.
-//
-// These definitions are named after their representations, using the form
-// '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
-// type would be `exception FooException`.
-@thrift.v1alpha
+/**
+ * The **underlying representations** for Thrift: Any.
+ *
+ * The following definitions are provided as unadapted underlying
+ * representations for 'public' adapted typedefs defined in 'any.thrift'.
+ *
+ * These definitions are named after their representations, using the form
+ * '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
+ * type would be `exception FooException`.
+ */
+@thrift.v1beta
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -39,35 +42,40 @@ namespace py.asyncio apache_thrift_asyncio.any_rep
 namespace go thrift.lib.thrift.any_rep
 namespace py thrift.lib.thrift.any_rep
 
-// A struct that can hold any thrift supported value, encoded in any format.
+/** A struct that can hold any thrift supported value, encoded in any format. */
 struct AnyStruct {
-  // The type stored in `data`.
-  //
-  // Must not be empty.
+  /**
+   * The type stored in `data`.
+   *
+   * Must not be empty.
+   */
+  @api.Immutable
   1: type.Type type;
 
-  // The protocol used to encode `data`.
-  //
-  // Must not be empty.
+  /**
+   * The protocol used to encode `data`.
+   *
+   * Must not be empty.
+   */
+  @api.Immutable
   2: type.Protocol protocol;
 
-  // The encoded data.
+  /** The encoded data. */
   3: standard.ByteBuffer data;
 } (thrift.uri = "facebook.com/thrift/type/Any")
 
-// Like Any, except type and protocol can be empty.
-//
-// Can be upgraded to an Any after all the field are populated.
-//
-// TODO(afuller): Consider making this a 'strong' typedef of `AnyStruct`, which
-// would ensure both a separate URI and native type in all languages.
+/**
+ * Like Any, except all fields are mutable and can be empty.
+ *
+ * Can be upgraded to an Any after all the field are populated.
+ */
 struct SemiAnyStruct {
-  // The type stored in `data`, if known.
+  /** The type stored in `data`, if known. */
   1: type.Type type;
 
-  // The protocol used to encode `data`, if known.
+  /** The protocol used to encode `data`, if known. */
   2: type.Protocol protocol;
 
-  // The encoded data.
+  /** The encoded data. */
   3: standard.ByteBuffer data;
 } (thrift.uri = "facebook.com/thrift/type/SemiAny")
