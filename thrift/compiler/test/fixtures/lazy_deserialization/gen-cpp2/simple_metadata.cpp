@@ -35,14 +35,14 @@ StructMetadata<::apache::thrift::test::Foo>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& simple_Foo = res.first->second;
   simple_Foo.name() = "simple.Foo";
   simple_Foo.is_union() = false;
-  static const EncodedThriftField
-  simple_Foo_fields[] = {
+  static const auto* const
+  simple_Foo_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_Foo_fields) {
+  }};
+  for (const auto& f : *simple_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -62,14 +62,14 @@ StructMetadata<::apache::thrift::test::LazyFoo>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& simple_LazyFoo = res.first->second;
   simple_LazyFoo.name() = "simple.LazyFoo";
   simple_LazyFoo.is_union() = false;
-  static const EncodedThriftField
-  simple_LazyFoo_fields[] = {
+  static const auto* const
+  simple_LazyFoo_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("cpp.Lazy", {{"ref", cvBool(true)}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : simple_LazyFoo_fields) {
+  }};
+  for (const auto& f : *simple_LazyFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -89,14 +89,14 @@ StructMetadata<::apache::thrift::test::OptionalFoo>::gen(ThriftMetadata& metadat
   ::apache::thrift::metadata::ThriftStruct& simple_OptionalFoo = res.first->second;
   simple_OptionalFoo.name() = "simple.OptionalFoo";
   simple_OptionalFoo.is_union() = false;
-  static const EncodedThriftField
-  simple_OptionalFoo_fields[] = {
+  static const auto* const
+  simple_OptionalFoo_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_OptionalFoo_fields) {
+  }};
+  for (const auto& f : *simple_OptionalFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -116,14 +116,14 @@ StructMetadata<::apache::thrift::test::OptionalLazyFoo>::gen(ThriftMetadata& met
   ::apache::thrift::metadata::ThriftStruct& simple_OptionalLazyFoo = res.first->second;
   simple_OptionalLazyFoo.name() = "simple.OptionalLazyFoo";
   simple_OptionalLazyFoo.is_union() = false;
-  static const EncodedThriftField
-  simple_OptionalLazyFoo_fields[] = {
+  static const auto* const
+  simple_OptionalLazyFoo_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_OptionalLazyFoo_fields) {
+  }};
+  for (const auto& f : *simple_OptionalLazyFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -143,14 +143,14 @@ StructMetadata<::apache::thrift::test::LazyCppRef>::gen(ThriftMetadata& metadata
   ::apache::thrift::metadata::ThriftStruct& simple_LazyCppRef = res.first->second;
   simple_LazyCppRef.name() = "simple.LazyCppRef";
   simple_LazyCppRef.is_union() = false;
-  static const EncodedThriftField
-  simple_LazyCppRef_fields[] = {
+  static const auto* const
+  simple_LazyCppRef_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_LazyCppRef_fields) {
+  }};
+  for (const auto& f : *simple_LazyCppRef_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -170,16 +170,16 @@ StructMetadata<::apache::thrift::test::IndexedFoo>::gen(ThriftMetadata& metadata
   ::apache::thrift::metadata::ThriftStruct& simple_IndexedFoo = res.first->second;
   simple_IndexedFoo.name() = "simple.IndexedFoo";
   simple_IndexedFoo.is_union() = false;
-  static const EncodedThriftField
-  simple_IndexedFoo_fields[] = {
+  static const auto* const
+  simple_IndexedFoo_fields = new std::array<EncodedThriftField, 6>{{
     {100, "serialized_data_size", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {1, "field1", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {101, "field_id_to_size", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_IndexedFoo_fields) {
+  }};
+  for (const auto& f : *simple_IndexedFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -199,16 +199,16 @@ StructMetadata<::apache::thrift::test::OptionalIndexedFoo>::gen(ThriftMetadata& 
   ::apache::thrift::metadata::ThriftStruct& simple_OptionalIndexedFoo = res.first->second;
   simple_OptionalIndexedFoo.name() = "simple.OptionalIndexedFoo";
   simple_OptionalIndexedFoo.is_union() = false;
-  static const EncodedThriftField
-  simple_OptionalIndexedFoo_fields[] = {
+  static const auto* const
+  simple_OptionalIndexedFoo_fields = new std::array<EncodedThriftField, 6>{{
     {100, "serialized_data_size", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {1, "field1", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {101, "field_id_to_size", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_OptionalIndexedFoo_fields) {
+  }};
+  for (const auto& f : *simple_OptionalIndexedFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

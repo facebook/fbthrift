@@ -77,13 +77,13 @@ StructMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
   <%struct:metadata_name%>.name() = "<%program:name%>.<%struct:name%>";
   <%struct:metadata_name%>.is_union() = <%struct:union?%>;
 <%#struct:fields?%>
-  static const EncodedThriftField
-  <%struct:metadata_name%>_fields[] = {
+  static const auto* const
+  <%struct:metadata_name%>_fields = new std::array<EncodedThriftField, <%struct:fields_size%>>{{
 <%#struct:fields%>
     <% > metadata/field_gen%>
 <%/struct:fields%>
-  };
-  for (const auto& f : <%struct:metadata_name%>_fields) {
+  }};
+  for (const auto& f : *<%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -115,13 +115,13 @@ void ExceptionMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
   <%struct:metadata_name%>.name() = "<%program:name%>.<%struct:name%>";
 <%#struct:fields?%>
-  static const EncodedThriftField
-  <%struct:metadata_name%>_fields[] = {
+  static const auto* const
+  <%struct:metadata_name%>_fields = new std::array<EncodedThriftField, <%struct:fields_size%>>{{
 <%#struct:fields%>
     <% > metadata/field_gen%>
 <%/struct:fields%>
-  };
-  for (const auto& f : <%struct:metadata_name%>_fields) {
+  }};
+  for (const auto& f : *<%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

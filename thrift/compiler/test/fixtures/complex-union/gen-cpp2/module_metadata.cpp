@@ -35,16 +35,16 @@ StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ComplexUnion = res.first->second;
   module_ComplexUnion.name() = "module.ComplexUnion";
   module_ComplexUnion.is_union() = true;
-  static const EncodedThriftField
-  module_ComplexUnion_fields[] = {
+  static const auto* const
+  module_ComplexUnion_fields = new std::array<EncodedThriftField, 6>{{
     {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ComplexUnion_fields) {
+  }};
+  for (const auto& f : *module_ComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -64,12 +64,12 @@ StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ListUnion = res.first->second;
   module_ListUnion.name() = "module.ListUnion";
   module_ListUnion.is_union() = true;
-  static const EncodedThriftField
-  module_ListUnion_fields[] = {
+  static const auto* const
+  module_ListUnion_fields = new std::array<EncodedThriftField, 2>{{
     {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ListUnion_fields) {
+  }};
+  for (const auto& f : *module_ListUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -89,12 +89,12 @@ StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_DataUnion = res.first->second;
   module_DataUnion.name() = "module.DataUnion";
   module_DataUnion.is_union() = true;
-  static const EncodedThriftField
-  module_DataUnion_fields[] = {
+  static const auto* const
+  module_DataUnion_fields = new std::array<EncodedThriftField, 2>{{
     {1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_DataUnion_fields) {
+  }};
+  for (const auto& f : *module_DataUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -114,13 +114,13 @@ StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Val = res.first->second;
   module_Val.name() = "module.Val";
   module_Val.is_union() = false;
-  static const EncodedThriftField
-  module_Val_fields[] = {
+  static const auto* const
+  module_Val_fields = new std::array<EncodedThriftField, 3>{{
     {1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Val_fields) {
+  }};
+  for (const auto& f : *module_Val_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -140,12 +140,12 @@ StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ValUnion = res.first->second;
   module_ValUnion.name() = "module.ValUnion";
   module_ValUnion.is_union() = true;
-  static const EncodedThriftField
-  module_ValUnion_fields[] = {
+  static const auto* const
+  module_ValUnion_fields = new std::array<EncodedThriftField, 2>{{
     {1, "v1", false, std::make_unique<Struct<::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
     {2, "v2", false, std::make_unique<Struct<::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ValUnion_fields) {
+  }};
+  for (const auto& f : *module_ValUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -165,12 +165,12 @@ StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_VirtualComplexUnion = res.first->second;
   module_VirtualComplexUnion.name() = "module.VirtualComplexUnion";
   module_VirtualComplexUnion.is_union() = true;
-  static const EncodedThriftField
-  module_VirtualComplexUnion_fields[] = {
+  static const auto* const
+  module_VirtualComplexUnion_fields = new std::array<EncodedThriftField, 2>{{
     {1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_VirtualComplexUnion_fields) {
+  }};
+  for (const auto& f : *module_VirtualComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -190,11 +190,11 @@ StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableStruct = res.first->second;
   module_NonCopyableStruct.name() = "module.NonCopyableStruct";
   module_NonCopyableStruct.is_union() = false;
-  static const EncodedThriftField
-  module_NonCopyableStruct_fields[] = {
+  static const auto* const
+  module_NonCopyableStruct_fields = new std::array<EncodedThriftField, 1>{{
     {1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_NonCopyableStruct_fields) {
+  }};
+  for (const auto& f : *module_NonCopyableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -214,11 +214,11 @@ StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableUnion = res.first->second;
   module_NonCopyableUnion.name() = "module.NonCopyableUnion";
   module_NonCopyableUnion.is_union() = true;
-  static const EncodedThriftField
-  module_NonCopyableUnion_fields[] = {
+  static const auto* const
+  module_NonCopyableUnion_fields = new std::array<EncodedThriftField, 1>{{
     {1, "s", false, std::make_unique<Struct<::cpp2::NonCopyableStruct>>("module.NonCopyableStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_NonCopyableUnion_fields) {
+  }};
+  for (const auto& f : *module_NonCopyableUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

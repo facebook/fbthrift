@@ -35,8 +35,8 @@ StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& extra_services_containerStruct2 = res.first->second;
   extra_services_containerStruct2.name() = "extra_services.containerStruct2";
   extra_services_containerStruct2.is_union() = false;
-  static const EncodedThriftField
-  extra_services_containerStruct2_fields[] = {
+  static const auto* const
+  extra_services_containerStruct2_fields = new std::array<EncodedThriftField, 13>{{
     {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
@@ -50,8 +50,8 @@ StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadata) {
     {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : extra_services_containerStruct2_fields) {
+  }};
+  for (const auto& f : *extra_services_containerStruct2_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

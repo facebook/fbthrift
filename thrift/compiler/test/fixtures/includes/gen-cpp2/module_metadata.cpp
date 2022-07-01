@@ -35,13 +35,13 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name() = "module.MyStruct";
   module_MyStruct.is_union() = false;
-  static const EncodedThriftField
-  module_MyStruct_fields[] = {
+  static const auto* const
+  module_MyStruct_fields = new std::array<EncodedThriftField, 3>{{
     {1, "MyIncludedField", false, std::make_unique<Struct<::cpp2::Included>>("includes.Included"), std::vector<ThriftConstStruct>{}},
     {2, "MyOtherIncludedField", false, std::make_unique<Struct<::cpp2::Included>>("includes.Included"), std::vector<ThriftConstStruct>{}},
     {3, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_MyStruct_fields) {
+  }};
+  for (const auto& f : *module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

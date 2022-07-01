@@ -47,15 +47,15 @@ StructMetadata<::test::fixtures::tablebased::TrivialTypesStruct>::gen(ThriftMeta
   ::apache::thrift::metadata::ThriftStruct& module_TrivialTypesStruct = res.first->second;
   module_TrivialTypesStruct.name() = "module.TrivialTypesStruct";
   module_TrivialTypesStruct.is_union() = false;
-  static const EncodedThriftField
-  module_TrivialTypesStruct_fields[] = {
+  static const auto* const
+  module_TrivialTypesStruct_fields = new std::array<EncodedThriftField, 5>{{
     {1, "fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "fieldC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "fieldD", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {5, "fieldE", false, std::make_unique<Enum<::test::fixtures::tablebased::ExampleEnum>>("module.ExampleEnum"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_TrivialTypesStruct_fields) {
+  }};
+  for (const auto& f : *module_TrivialTypesStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -75,8 +75,8 @@ StructMetadata<::test::fixtures::tablebased::ContainerStruct>::gen(ThriftMetadat
   ::apache::thrift::metadata::ThriftStruct& module_ContainerStruct = res.first->second;
   module_ContainerStruct.name() = "module.ContainerStruct";
   module_ContainerStruct.is_union() = false;
-  static const EncodedThriftField
-  module_ContainerStruct_fields[] = {
+  static const auto* const
+  module_ContainerStruct_fields = new std::array<EncodedThriftField, 8>{{
     {12, "fieldA", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "fieldC", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
@@ -85,8 +85,8 @@ StructMetadata<::test::fixtures::tablebased::ContainerStruct>::gen(ThriftMetadat
     {6, "fieldF", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {8, "fieldH", false, std::make_unique<List>(std::make_unique<Struct<::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct")), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ContainerStruct_fields) {
+  }};
+  for (const auto& f : *module_ContainerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -106,12 +106,12 @@ StructMetadata<::test::fixtures::tablebased::ExampleUnion>::gen(ThriftMetadata& 
   ::apache::thrift::metadata::ThriftStruct& module_ExampleUnion = res.first->second;
   module_ExampleUnion.name() = "module.ExampleUnion";
   module_ExampleUnion.is_union() = true;
-  static const EncodedThriftField
-  module_ExampleUnion_fields[] = {
+  static const auto* const
+  module_ExampleUnion_fields = new std::array<EncodedThriftField, 2>{{
     {1, "fieldA", false, std::make_unique<Struct<::test::fixtures::tablebased::ContainerStruct>>("module.ContainerStruct"), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", false, std::make_unique<Struct<::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ExampleUnion_fields) {
+  }};
+  for (const auto& f : *module_ExampleUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

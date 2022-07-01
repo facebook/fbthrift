@@ -58,11 +58,11 @@ StructMetadata<::facebook::thrift::test::terse_write::MyStructWithCustomDefault>
   ::apache::thrift::metadata::ThriftStruct& terse_write_MyStructWithCustomDefault = res.first->second;
   terse_write_MyStructWithCustomDefault.name() = "terse_write.MyStructWithCustomDefault";
   terse_write_MyStructWithCustomDefault.is_union() = false;
-  static const EncodedThriftField
-  terse_write_MyStructWithCustomDefault_fields[] = {
+  static const auto* const
+  terse_write_MyStructWithCustomDefault_fields = new std::array<EncodedThriftField, 1>{{
     {1, "field1", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : terse_write_MyStructWithCustomDefault_fields) {
+  }};
+  for (const auto& f : *terse_write_MyStructWithCustomDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -82,8 +82,8 @@ StructMetadata<::facebook::thrift::test::terse_write::StructLevelTerseStruct>::g
   ::apache::thrift::metadata::ThriftStruct& terse_write_StructLevelTerseStruct = res.first->second;
   terse_write_StructLevelTerseStruct.name() = "terse_write.StructLevelTerseStruct";
   terse_write_StructLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  terse_write_StructLevelTerseStruct_fields[] = {
+  static const auto* const
+  terse_write_StructLevelTerseStruct_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -98,8 +98,8 @@ StructMetadata<::facebook::thrift::test::terse_write::StructLevelTerseStruct>::g
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::MyStruct>>("terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : terse_write_StructLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *terse_write_StructLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -120,8 +120,8 @@ StructMetadata<::facebook::thrift::test::terse_write::FieldLevelTerseStruct>::ge
   ::apache::thrift::metadata::ThriftStruct& terse_write_FieldLevelTerseStruct = res.first->second;
   terse_write_FieldLevelTerseStruct.name() = "terse_write.FieldLevelTerseStruct";
   terse_write_FieldLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  terse_write_FieldLevelTerseStruct_fields[] = {
+  static const auto* const
+  terse_write_FieldLevelTerseStruct_fields = new std::array<EncodedThriftField, 28>{{
     {1, "terse_bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {2, "terse_byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {3, "terse_short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
@@ -150,8 +150,8 @@ StructMetadata<::facebook::thrift::test::terse_write::FieldLevelTerseStruct>::ge
     {26, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {27, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {28, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::MyStruct>>("terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : terse_write_FieldLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *terse_write_FieldLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -171,8 +171,8 @@ StructMetadata<::facebook::thrift::test::terse_write::TerseStructWithCustomDefau
   ::apache::thrift::metadata::ThriftStruct& terse_write_TerseStructWithCustomDefault = res.first->second;
   terse_write_TerseStructWithCustomDefault.name() = "terse_write.TerseStructWithCustomDefault";
   terse_write_TerseStructWithCustomDefault.is_union() = false;
-  static const EncodedThriftField
-  terse_write_TerseStructWithCustomDefault_fields[] = {
+  static const auto* const
+  terse_write_TerseStructWithCustomDefault_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -187,8 +187,8 @@ StructMetadata<::facebook::thrift::test::terse_write::TerseStructWithCustomDefau
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::MyStructWithCustomDefault>>("terse_write.MyStructWithCustomDefault"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : terse_write_TerseStructWithCustomDefault_fields) {
+  }};
+  for (const auto& f : *terse_write_TerseStructWithCustomDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -209,13 +209,13 @@ StructMetadata<::facebook::thrift::test::terse_write::AdaptedFields>::gen(Thrift
   ::apache::thrift::metadata::ThriftStruct& terse_write_AdaptedFields = res.first->second;
   terse_write_AdaptedFields.name() = "terse_write.AdaptedFields";
   terse_write_AdaptedFields.is_union() = false;
-  static const EncodedThriftField
-  terse_write_AdaptedFields_fields[] = {
+  static const auto* const
+  terse_write_AdaptedFields_fields = new std::array<EncodedThriftField, 3>{{
     {1, "field1", false, std::make_unique<Typedef>("terse_write.MyInteger", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}},
     {2, "field2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }},
     {3, "field3", false, std::make_unique<Typedef>("terse_write.MyInteger", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : terse_write_AdaptedFields_fields) {
+  }};
+  for (const auto& f : *terse_write_AdaptedFields_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

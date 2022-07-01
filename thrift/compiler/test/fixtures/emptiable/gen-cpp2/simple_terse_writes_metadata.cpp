@@ -58,8 +58,8 @@ StructMetadata<::apache::thrift::test::EmptiableStruct>::gen(ThriftMetadata& met
   ::apache::thrift::metadata::ThriftStruct& simple_terse_writes_EmptiableStruct = res.first->second;
   simple_terse_writes_EmptiableStruct.name() = "simple_terse_writes.EmptiableStruct";
   simple_terse_writes_EmptiableStruct.is_union() = false;
-  static const EncodedThriftField
-  simple_terse_writes_EmptiableStruct_fields[] = {
+  static const auto* const
+  simple_terse_writes_EmptiableStruct_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -74,8 +74,8 @@ StructMetadata<::apache::thrift::test::EmptiableStruct>::gen(ThriftMetadata& met
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", true, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_terse_writes_EmptiableStruct_fields) {
+  }};
+  for (const auto& f : *simple_terse_writes_EmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -95,8 +95,8 @@ StructMetadata<::apache::thrift::test::NotEmptiableStruct>::gen(ThriftMetadata& 
   ::apache::thrift::metadata::ThriftStruct& simple_terse_writes_NotEmptiableStruct = res.first->second;
   simple_terse_writes_NotEmptiableStruct.name() = "simple_terse_writes.NotEmptiableStruct";
   simple_terse_writes_NotEmptiableStruct.is_union() = false;
-  static const EncodedThriftField
-  simple_terse_writes_NotEmptiableStruct_fields[] = {
+  static const auto* const
+  simple_terse_writes_NotEmptiableStruct_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -111,8 +111,8 @@ StructMetadata<::apache::thrift::test::NotEmptiableStruct>::gen(ThriftMetadata& 
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : simple_terse_writes_NotEmptiableStruct_fields) {
+  }};
+  for (const auto& f : *simple_terse_writes_NotEmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

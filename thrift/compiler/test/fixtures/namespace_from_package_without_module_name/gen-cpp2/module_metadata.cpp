@@ -35,11 +35,11 @@ StructMetadata<::test::namespace_from_package_without_module_name::Foo>::gen(Thr
   ::apache::thrift::metadata::ThriftStruct& module_Foo = res.first->second;
   module_Foo.name() = "module.Foo";
   module_Foo.is_union() = false;
-  static const EncodedThriftField
-  module_Foo_fields[] = {
+  static const auto* const
+  module_Foo_fields = new std::array<EncodedThriftField, 1>{{
     {1, "MyInt", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Foo_fields) {
+  }};
+  for (const auto& f : *module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

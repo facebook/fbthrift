@@ -35,11 +35,11 @@ StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_InitialResponse = res.first->second;
   module_InitialResponse.name() = "module.InitialResponse";
   module_InitialResponse.is_union() = false;
-  static const EncodedThriftField
-  module_InitialResponse_fields[] = {
+  static const auto* const
+  module_InitialResponse_fields = new std::array<EncodedThriftField, 1>{{
     {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_InitialResponse_fields) {
+  }};
+  for (const auto& f : *module_InitialResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -59,11 +59,11 @@ StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_FinalResponse = res.first->second;
   module_FinalResponse.name() = "module.FinalResponse";
   module_FinalResponse.is_union() = false;
-  static const EncodedThriftField
-  module_FinalResponse_fields[] = {
+  static const auto* const
+  module_FinalResponse_fields = new std::array<EncodedThriftField, 1>{{
     {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_FinalResponse_fields) {
+  }};
+  for (const auto& f : *module_FinalResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -83,11 +83,11 @@ StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkPayload = res.first->second;
   module_SinkPayload.name() = "module.SinkPayload";
   module_SinkPayload.is_union() = false;
-  static const EncodedThriftField
-  module_SinkPayload_fields[] = {
+  static const auto* const
+  module_SinkPayload_fields = new std::array<EncodedThriftField, 1>{{
     {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SinkPayload_fields) {
+  }};
+  for (const auto& f : *module_SinkPayload_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -107,11 +107,11 @@ StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata)
   ::apache::thrift::metadata::ThriftStruct& module_CompatibleWithKeywordSink = res.first->second;
   module_CompatibleWithKeywordSink.name() = "module.CompatibleWithKeywordSink";
   module_CompatibleWithKeywordSink.is_union() = false;
-  static const EncodedThriftField
-  module_CompatibleWithKeywordSink_fields[] = {
+  static const auto* const
+  module_CompatibleWithKeywordSink_fields = new std::array<EncodedThriftField, 1>{{
     {1, "sink", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_CompatibleWithKeywordSink_fields) {
+  }};
+  for (const auto& f : *module_CompatibleWithKeywordSink_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -131,11 +131,11 @@ StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_InitialException = res.first->second;
   module_InitialException.name() = "module.InitialException";
   module_InitialException.is_union() = false;
-  static const EncodedThriftField
-  module_InitialException_fields[] = {
+  static const auto* const
+  module_InitialException_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_InitialException_fields) {
+  }};
+  for (const auto& f : *module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -155,11 +155,11 @@ StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkException1 = res.first->second;
   module_SinkException1.name() = "module.SinkException1";
   module_SinkException1.is_union() = false;
-  static const EncodedThriftField
-  module_SinkException1_fields[] = {
+  static const auto* const
+  module_SinkException1_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SinkException1_fields) {
+  }};
+  for (const auto& f : *module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -179,11 +179,11 @@ StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkException2 = res.first->second;
   module_SinkException2.name() = "module.SinkException2";
   module_SinkException2.is_union() = false;
-  static const EncodedThriftField
-  module_SinkException2_fields[] = {
+  static const auto* const
+  module_SinkException2_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SinkException2_fields) {
+  }};
+  for (const auto& f : *module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -202,11 +202,11 @@ void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) 
   }
   ::apache::thrift::metadata::ThriftException& module_InitialException = res.first->second;
   module_InitialException.name() = "module.InitialException";
-  static const EncodedThriftField
-  module_InitialException_fields[] = {
+  static const auto* const
+  module_InitialException_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_InitialException_fields) {
+  }};
+  for (const auto& f : *module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -222,11 +222,11 @@ void ExceptionMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException1 = res.first->second;
   module_SinkException1.name() = "module.SinkException1";
-  static const EncodedThriftField
-  module_SinkException1_fields[] = {
+  static const auto* const
+  module_SinkException1_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SinkException1_fields) {
+  }};
+  for (const auto& f : *module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -242,11 +242,11 @@ void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException2 = res.first->second;
   module_SinkException2.name() = "module.SinkException2";
-  static const EncodedThriftField
-  module_SinkException2_fields[] = {
+  static const auto* const
+  module_SinkException2_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SinkException2_fields) {
+  }};
+  for (const auto& f : *module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

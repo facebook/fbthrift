@@ -47,16 +47,16 @@ StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ModuleA = res.first->second;
   module_ModuleA.name() = "module.ModuleA";
   module_ModuleA.is_union() = false;
-  static const EncodedThriftField
-  module_ModuleA_fields[] = {
+  static const auto* const
+  module_ModuleA_fields = new std::array<EncodedThriftField, 6>{{
     {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "listField", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {4, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {5, "inclAField", false, std::make_unique<Struct<::some::ns::IncludedA>>("include1.IncludedA"), std::vector<ThriftConstStruct>{}},
     {6, "inclBField", false, std::make_unique<Struct<::some::ns::IncludedB>>("include2.IncludedB"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ModuleA_fields) {
+  }};
+  for (const auto& f : *module_ModuleA_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -76,12 +76,12 @@ StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ModuleB = res.first->second;
   module_ModuleB.name() = "module.ModuleB";
   module_ModuleB.is_union() = false;
-  static const EncodedThriftField
-  module_ModuleB_fields[] = {
+  static const auto* const
+  module_ModuleB_fields = new std::array<EncodedThriftField, 2>{{
     {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "inclEnumB", false, std::make_unique<Enum<::some::ns::EnumB>>("module.EnumB"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_ModuleB_fields) {
+  }};
+  for (const auto& f : *module_ModuleB_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

@@ -50,11 +50,11 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
   ::apache::thrift::metadata::ThriftStruct& module_MyStructNestedAnnotation = res.first->second;
   module_MyStructNestedAnnotation.name() = "module.MyStructNestedAnnotation";
   module_MyStructNestedAnnotation.is_union() = false;
-  static const EncodedThriftField
-  module_MyStructNestedAnnotation_fields[] = {
+  static const auto* const
+  module_MyStructNestedAnnotation_fields = new std::array<EncodedThriftField, 1>{{
     {1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_MyStructNestedAnnotation_fields) {
+  }};
+  for (const auto& f : *module_MyStructNestedAnnotation_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -116,8 +116,8 @@ StructMetadata<::cpp2::detail::YourStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name() = "module.MyStruct";
   module_MyStruct.is_union() = false;
-  static const EncodedThriftField
-  module_MyStruct_fields[] = {
+  static const auto* const
+  module_MyStruct_fields = new std::array<EncodedThriftField, 9>{{
     {2, "major", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {1, "package", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "annotation_with_quote", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
@@ -127,8 +127,8 @@ StructMetadata<::cpp2::detail::YourStruct>::gen(ThriftMetadata& metadata) {
     {7, "my_enum", false, std::make_unique<Enum<::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {8, "cpp_type_annotation", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {9, "my_union", false, std::make_unique<Union<::cpp2::detail::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_MyStruct_fields) {
+  }};
+  for (const auto& f : *module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -154,12 +154,12 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SecretStruct = res.first->second;
   module_SecretStruct.name() = "module.SecretStruct";
   module_SecretStruct.is_union() = false;
-  static const EncodedThriftField
-  module_SecretStruct_fields[] = {
+  static const auto* const
+  module_SecretStruct_fields = new std::array<EncodedThriftField, 2>{{
     {1, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "password", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SecretStruct_fields) {
+  }};
+  for (const auto& f : *module_SecretStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

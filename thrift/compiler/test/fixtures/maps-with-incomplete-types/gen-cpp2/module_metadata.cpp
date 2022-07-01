@@ -35,11 +35,11 @@ StructMetadata<::apache::thrift::test::B>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_B = res.first->second;
   module_B.name() = "module.B";
   module_B.is_union() = false;
-  static const EncodedThriftField
-  module_B_fields[] = {
+  static const auto* const
+  module_B_fields = new std::array<EncodedThriftField, 1>{{
     {1, "field", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_B_fields) {
+  }};
+  for (const auto& f : *module_B_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -59,11 +59,11 @@ StructMetadata<::apache::thrift::test::A>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_A = res.first->second;
   module_A.name() = "module.A";
   module_A.is_union() = false;
-  static const EncodedThriftField
-  module_A_fields[] = {
+  static const auto* const
+  module_A_fields = new std::array<EncodedThriftField, 1>{{
     {1, "some_map", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Typedef>("module.B", std::make_unique<Struct<::apache::thrift::test::B>>("module.B"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_A_fields) {
+  }};
+  for (const auto& f : *module_A_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

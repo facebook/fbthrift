@@ -35,11 +35,11 @@ StructMetadata<::cpp2::Fields>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Fields = res.first->second;
   module_Fields.name() = "module.Fields";
   module_Fields.is_union() = false;
-  static const EncodedThriftField
-  module_Fields_fields[] = {
+  static const auto* const
+  module_Fields_fields = new std::array<EncodedThriftField, 1>{{
     {100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Fields_fields) {
+  }};
+  for (const auto& f : *module_Fields_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -59,11 +59,11 @@ StructMetadata<::cpp2::FieldsInjectedToEmptyStruct>::gen(ThriftMetadata& metadat
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedToEmptyStruct = res.first->second;
   module_FieldsInjectedToEmptyStruct.name() = "module.FieldsInjectedToEmptyStruct";
   module_FieldsInjectedToEmptyStruct.is_union() = false;
-  static const EncodedThriftField
-  module_FieldsInjectedToEmptyStruct_fields[] = {
+  static const auto* const
+  module_FieldsInjectedToEmptyStruct_fields = new std::array<EncodedThriftField, 1>{{
     {-1100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_FieldsInjectedToEmptyStruct_fields) {
+  }};
+  for (const auto& f : *module_FieldsInjectedToEmptyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -84,12 +84,12 @@ StructMetadata<::cpp2::FieldsInjectedToStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedToStruct = res.first->second;
   module_FieldsInjectedToStruct.name() = "module.FieldsInjectedToStruct";
   module_FieldsInjectedToStruct.is_union() = false;
-  static const EncodedThriftField
-  module_FieldsInjectedToStruct_fields[] = {
+  static const auto* const
+  module_FieldsInjectedToStruct_fields = new std::array<EncodedThriftField, 2>{{
     {1, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {-1100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_FieldsInjectedToStruct_fields) {
+  }};
+  for (const auto& f : *module_FieldsInjectedToStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -110,14 +110,14 @@ StructMetadata<::cpp2::FieldsInjectedWithIncludedStruct>::gen(ThriftMetadata& me
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedWithIncludedStruct = res.first->second;
   module_FieldsInjectedWithIncludedStruct.name() = "module.FieldsInjectedWithIncludedStruct";
   module_FieldsInjectedWithIncludedStruct.is_union() = false;
-  static const EncodedThriftField
-  module_FieldsInjectedWithIncludedStruct_fields[] = {
+  static const auto* const
+  module_FieldsInjectedWithIncludedStruct_fields = new std::array<EncodedThriftField, 4>{{
     {1, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {-1100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {-1101, "injected_structured_annotation_field", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.Box", {}).cv_struct_ref(), }},
     {-1102, "injected_unstructured_annotation_field", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_FieldsInjectedWithIncludedStruct_fields) {
+  }};
+  for (const auto& f : *module_FieldsInjectedWithIncludedStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

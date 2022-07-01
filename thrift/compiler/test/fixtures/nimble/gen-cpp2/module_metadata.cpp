@@ -35,14 +35,14 @@ StructMetadata<::cpp2::BasicTypes>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_BasicTypes = res.first->second;
   module_BasicTypes.name() = "module.BasicTypes";
   module_BasicTypes.is_union() = false;
-  static const EncodedThriftField
-  module_BasicTypes_fields[] = {
+  static const auto* const
+  module_BasicTypes_fields = new std::array<EncodedThriftField, 4>{{
     {1, "first", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "second", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "third", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "isTrue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_BasicTypes_fields) {
+  }};
+  for (const auto& f : *module_BasicTypes_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

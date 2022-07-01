@@ -71,8 +71,8 @@ StructMetadata<::test::fixtures::basic::MyStruct>::gen(ThriftMetadata& metadata)
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name() = "module.MyStruct";
   module_MyStruct.is_union() = false;
-  static const EncodedThriftField
-  module_MyStruct_fields[] = {
+  static const auto* const
+  module_MyStruct_fields = new std::array<EncodedThriftField, 9>{{
     {1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "MyDataField", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct<::test::fixtures::basic::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
@@ -82,8 +82,8 @@ StructMetadata<::test::fixtures::basic::MyStruct>::gen(ThriftMetadata& metadata)
     {7, "idempotent", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
     {9, "no_hack_codegen_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(skip field codegen for deprecation)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : module_MyStruct_fields) {
+  }};
+  for (const auto& f : *module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -103,14 +103,14 @@ StructMetadata<::test::fixtures::basic::MyUnion>::gen(ThriftMetadata& metadata) 
   ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
   module_MyUnion.name() = "module.MyUnion";
   module_MyUnion.is_union() = true;
-  static const EncodedThriftField
-  module_MyUnion_fields[] = {
+  static const auto* const
+  module_MyUnion_fields = new std::array<EncodedThriftField, 4>{{
     {1, "myEnum", false, std::make_unique<Enum<::test::fixtures::basic::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {2, "myStruct", false, std::make_unique<Struct<::test::fixtures::basic::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
     {3, "myDataItem", false, std::make_unique<Struct<::test::fixtures::basic::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}},
     {4, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : module_MyUnion_fields) {
+  }};
+  for (const auto& f : *module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -130,11 +130,11 @@ StructMetadata<::test::fixtures::basic::ReservedKeyword>::gen(ThriftMetadata& me
   ::apache::thrift::metadata::ThriftStruct& module_ReservedKeyword = res.first->second;
   module_ReservedKeyword.name() = "module.ReservedKeyword";
   module_ReservedKeyword.is_union() = false;
-  static const EncodedThriftField
-  module_ReservedKeyword_fields[] = {
+  static const auto* const
+  module_ReservedKeyword_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reserved_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Name", {{"name", cvString(R"(renamed_field)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : module_ReservedKeyword_fields) {
+  }};
+  for (const auto& f : *module_ReservedKeyword_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -155,11 +155,11 @@ StructMetadata<::test::fixtures::basic::UnionToBeRenamed>::gen(ThriftMetadata& m
   ::apache::thrift::metadata::ThriftStruct& module_UnionToBeRenamed = res.first->second;
   module_UnionToBeRenamed.name() = "module.UnionToBeRenamed";
   module_UnionToBeRenamed.is_union() = true;
-  static const EncodedThriftField
-  module_UnionToBeRenamed_fields[] = {
+  static const auto* const
+  module_UnionToBeRenamed_fields = new std::array<EncodedThriftField, 1>{{
     {1, "reserved_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Name", {{"name", cvString(R"(renamed_field)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : module_UnionToBeRenamed_fields) {
+  }};
+  for (const auto& f : *module_UnionToBeRenamed_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

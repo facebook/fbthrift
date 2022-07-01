@@ -47,12 +47,12 @@ StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SmallStruct = res.first->second;
   module_SmallStruct.name() = "module.SmallStruct";
   module_SmallStruct.is_union() = false;
-  static const EncodedThriftField
-  module_SmallStruct_fields[] = {
+  static const auto* const
+  module_SmallStruct_fields = new std::array<EncodedThriftField, 2>{{
     {1, "small_A", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "small_B", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SmallStruct_fields) {
+  }};
+  for (const auto& f : *module_SmallStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -72,8 +72,8 @@ StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_containerStruct = res.first->second;
   module_containerStruct.name() = "module.containerStruct";
   module_containerStruct.is_union() = false;
-  static const EncodedThriftField
-  module_containerStruct_fields[] = {
+  static const auto* const
+  module_containerStruct_fields = new std::array<EncodedThriftField, 22>{{
     {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)), std::vector<ThriftConstStruct>{}},
     {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
@@ -96,8 +96,8 @@ StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
     {20, "fieldT", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
     {21, "fieldU", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
     {23, "fieldX", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_containerStruct_fields) {
+  }};
+  for (const auto& f : *module_containerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

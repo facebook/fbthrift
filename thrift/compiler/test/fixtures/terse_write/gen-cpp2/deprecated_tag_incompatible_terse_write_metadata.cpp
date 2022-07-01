@@ -58,11 +58,11 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
   ::apache::thrift::metadata::ThriftStruct& deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault = res.first->second;
   deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault.name() = "deprecated_tag_incompatible_terse_write.MyStructWithCustomDefault";
   deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault.is_union() = false;
-  static const EncodedThriftField
-  deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault_fields[] = {
+  static const auto* const
+  deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault_fields = new std::array<EncodedThriftField, 1>{{
     {1, "field1", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault_fields) {
+  }};
+  for (const auto& f : *deprecated_tag_incompatible_terse_write_MyStructWithCustomDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -82,8 +82,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
   ::apache::thrift::metadata::ThriftStruct& deprecated_tag_incompatible_terse_write_StructLevelTerseStruct = res.first->second;
   deprecated_tag_incompatible_terse_write_StructLevelTerseStruct.name() = "deprecated_tag_incompatible_terse_write.StructLevelTerseStruct";
   deprecated_tag_incompatible_terse_write_StructLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  deprecated_tag_incompatible_terse_write_StructLevelTerseStruct_fields[] = {
+  static const auto* const
+  deprecated_tag_incompatible_terse_write_StructLevelTerseStruct_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -98,8 +98,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStruct>>("deprecated_tag_incompatible_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_tag_incompatible_terse_write_StructLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *deprecated_tag_incompatible_terse_write_StructLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -120,8 +120,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
   ::apache::thrift::metadata::ThriftStruct& deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct = res.first->second;
   deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct.name() = "deprecated_tag_incompatible_terse_write.FieldLevelTerseStruct";
   deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct_fields[] = {
+  static const auto* const
+  deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct_fields = new std::array<EncodedThriftField, 28>{{
     {1, "terse_bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {2, "terse_byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {3, "terse_short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
@@ -150,8 +150,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
     {26, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {27, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {28, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStruct>>("deprecated_tag_incompatible_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *deprecated_tag_incompatible_terse_write_FieldLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -171,8 +171,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
   ::apache::thrift::metadata::ThriftStruct& deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault = res.first->second;
   deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault.name() = "deprecated_tag_incompatible_terse_write.TerseStructWithCustomDefault";
   deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault.is_union() = false;
-  static const EncodedThriftField
-  deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault_fields[] = {
+  static const auto* const
+  deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -187,8 +187,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStructWithCustomDefault>>("deprecated_tag_incompatible_terse_write.MyStructWithCustomDefault"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault_fields) {
+  }};
+  for (const auto& f : *deprecated_tag_incompatible_terse_write_TerseStructWithCustomDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -209,13 +209,13 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated_tag_incompatibl
   ::apache::thrift::metadata::ThriftStruct& deprecated_tag_incompatible_terse_write_AdaptedFields = res.first->second;
   deprecated_tag_incompatible_terse_write_AdaptedFields.name() = "deprecated_tag_incompatible_terse_write.AdaptedFields";
   deprecated_tag_incompatible_terse_write_AdaptedFields.is_union() = false;
-  static const EncodedThriftField
-  deprecated_tag_incompatible_terse_write_AdaptedFields_fields[] = {
+  static const auto* const
+  deprecated_tag_incompatible_terse_write_AdaptedFields_fields = new std::array<EncodedThriftField, 3>{{
     {1, "field1", false, std::make_unique<Typedef>("deprecated_tag_incompatible_terse_write.MyInteger", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}},
     {2, "field2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }},
     {3, "field3", false, std::make_unique<Typedef>("deprecated_tag_incompatible_terse_write.MyInteger", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }},
-  };
-  for (const auto& f : deprecated_tag_incompatible_terse_write_AdaptedFields_fields) {
+  }};
+  for (const auto& f : *deprecated_tag_incompatible_terse_write_AdaptedFields_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

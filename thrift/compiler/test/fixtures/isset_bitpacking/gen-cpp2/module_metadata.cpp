@@ -35,14 +35,14 @@ StructMetadata<::cpp2::Default>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Default = res.first->second;
   module_Default.name() = "module.Default";
   module_Default.is_union() = false;
-  static const EncodedThriftField
-  module_Default_fields[] = {
+  static const auto* const
+  module_Default_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Default_fields) {
+  }};
+  for (const auto& f : *module_Default_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -63,14 +63,14 @@ StructMetadata<::cpp2::NonAtomic>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_NonAtomic = res.first->second;
   module_NonAtomic.name() = "module.NonAtomic";
   module_NonAtomic.is_union() = false;
-  static const EncodedThriftField
-  module_NonAtomic_fields[] = {
+  static const auto* const
+  module_NonAtomic_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_NonAtomic_fields) {
+  }};
+  for (const auto& f : *module_NonAtomic_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -91,14 +91,14 @@ StructMetadata<::cpp2::Atomic>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Atomic = res.first->second;
   module_Atomic.name() = "module.Atomic";
   module_Atomic.is_union() = false;
-  static const EncodedThriftField
-  module_Atomic_fields[] = {
+  static const auto* const
+  module_Atomic_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Atomic_fields) {
+  }};
+  for (const auto& f : *module_Atomic_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -119,14 +119,14 @@ StructMetadata<::cpp2::AtomicFoo>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_AtomicFoo = res.first->second;
   module_AtomicFoo.name() = "module.AtomicFoo";
   module_AtomicFoo.is_union() = false;
-  static const EncodedThriftField
-  module_AtomicFoo_fields[] = {
+  static const auto* const
+  module_AtomicFoo_fields = new std::array<EncodedThriftField, 4>{{
     {1, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "field3", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "field4", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_AtomicFoo_fields) {
+  }};
+  for (const auto& f : *module_AtomicFoo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

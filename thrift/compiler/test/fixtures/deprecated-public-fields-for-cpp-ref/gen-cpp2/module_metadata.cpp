@@ -35,12 +35,12 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Foo = res.first->second;
   module_Foo.name() = "module.Foo";
   module_Foo.is_union() = false;
-  static const EncodedThriftField
-  module_Foo_fields[] = {
+  static const auto* const
+  module_Foo_fields = new std::array<EncodedThriftField, 2>{{
     {1, "foo", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {2, "bar", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_Foo_fields) {
+  }};
+  for (const auto& f : *module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

@@ -58,8 +58,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated::StructLevelTer
   ::apache::thrift::metadata::ThriftStruct& deprecated_terse_write_StructLevelTerseStruct = res.first->second;
   deprecated_terse_write_StructLevelTerseStruct.name() = "deprecated_terse_write.StructLevelTerseStruct";
   deprecated_terse_write_StructLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  deprecated_terse_write_StructLevelTerseStruct_fields[] = {
+  static const auto* const
+  deprecated_terse_write_StructLevelTerseStruct_fields = new std::array<EncodedThriftField, 14>{{
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -74,8 +74,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated::StructLevelTer
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::deprecated::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_terse_write_StructLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *deprecated_terse_write_StructLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -96,8 +96,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated::FieldLevelTers
   ::apache::thrift::metadata::ThriftStruct& deprecated_terse_write_FieldLevelTerseStruct = res.first->second;
   deprecated_terse_write_FieldLevelTerseStruct.name() = "deprecated_terse_write.FieldLevelTerseStruct";
   deprecated_terse_write_FieldLevelTerseStruct.is_union() = false;
-  static const EncodedThriftField
-  deprecated_terse_write_FieldLevelTerseStruct_fields[] = {
+  static const auto* const
+  deprecated_terse_write_FieldLevelTerseStruct_fields = new std::array<EncodedThriftField, 28>{{
     {1, "terse_bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {2, "terse_byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {3, "terse_short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
@@ -126,8 +126,8 @@ StructMetadata<::facebook::thrift::test::terse_write::deprecated::FieldLevelTers
     {26, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {27, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {28, "struct_field", false, std::make_unique<Struct<::facebook::thrift::test::terse_write::deprecated::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : deprecated_terse_write_FieldLevelTerseStruct_fields) {
+  }};
+  for (const auto& f : *deprecated_terse_write_FieldLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

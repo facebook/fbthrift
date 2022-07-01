@@ -35,11 +35,11 @@ StructMetadata<::cpp2::CustomException>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_CustomException = res.first->second;
   module_CustomException.name() = "module.CustomException";
   module_CustomException.is_union() = false;
-  static const EncodedThriftField
-  module_CustomException_fields[] = {
+  static const auto* const
+  module_CustomException_fields = new std::array<EncodedThriftField, 1>{{
     {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_CustomException_fields) {
+  }};
+  for (const auto& f : *module_CustomException_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -58,11 +58,11 @@ void ExceptionMetadata<::cpp2::CustomException>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_CustomException = res.first->second;
   module_CustomException.name() = "module.CustomException";
-  static const EncodedThriftField
-  module_CustomException_fields[] = {
+  static const auto* const
+  module_CustomException_fields = new std::array<EncodedThriftField, 1>{{
     {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_CustomException_fields) {
+  }};
+  for (const auto& f : *module_CustomException_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

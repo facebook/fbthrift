@@ -47,11 +47,11 @@ StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& includes_AStruct = res.first->second;
   includes_AStruct.name() = "includes.AStruct";
   includes_AStruct.is_union() = false;
-  static const EncodedThriftField
-  includes_AStruct_fields[] = {
+  static const auto* const
+  includes_AStruct_fields = new std::array<EncodedThriftField, 1>{{
     {1, "FieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : includes_AStruct_fields) {
+  }};
+  for (const auto& f : *includes_AStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
@@ -71,11 +71,11 @@ StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& includes_AStructB = res.first->second;
   includes_AStructB.name() = "includes.AStructB";
   includes_AStructB.is_union() = false;
-  static const EncodedThriftField
-  includes_AStructB_fields[] = {
+  static const auto* const
+  includes_AStructB_fields = new std::array<EncodedThriftField, 1>{{
     {1, "FieldA", false, std::make_unique<Struct<::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : includes_AStructB_fields) {
+  }};
+  for (const auto& f : *includes_AStructB_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;

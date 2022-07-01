@@ -48,14 +48,14 @@ StructMetadata<::test::fixtures::enums::SomeStruct>::gen(ThriftMetadata& metadat
   ::apache::thrift::metadata::ThriftStruct& module_SomeStruct = res.first->second;
   module_SomeStruct.name() = "module.SomeStruct";
   module_SomeStruct.is_union() = false;
-  static const EncodedThriftField
-  module_SomeStruct_fields[] = {
+  static const auto* const
+  module_SomeStruct_fields = new std::array<EncodedThriftField, 4>{{
     {1, "reasonable", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
     {2, "fine", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
     {3, "questionable", false, std::make_unique<Enum<::test::fixtures::enums::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
     {4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-  };
-  for (const auto& f : module_SomeStruct_fields) {
+  }};
+  for (const auto& f : *module_SomeStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id() = f.id;
     field.name() = f.name;
