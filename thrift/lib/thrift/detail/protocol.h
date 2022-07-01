@@ -84,11 +84,12 @@ class ObjectWrapper : public Base {
     return members()->erase(folly::to_underlying(i));
   }
 
-  auto begin() { return members()->begin(); }
-  auto begin() const { return members()->begin(); }
-  auto end() { return members()->end(); }
-  auto end() const { return members()->end(); }
-  size_t size() const { return members()->size(); }
+  [[nodiscard]] auto begin() { return members()->begin(); }
+  [[nodiscard]] auto begin() const { return members()->begin(); }
+  [[nodiscard]] auto end() { return members()->end(); }
+  [[nodiscard]] auto end() const { return members()->end(); }
+  [[nodiscard]] size_t size() const { return members()->size(); }
+  [[nodiscard]] bool empty() const { return members()->empty(); }
 };
 
 template <class Base>

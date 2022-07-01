@@ -601,7 +601,9 @@ TEST(Object, uri) {
 
 TEST(Object, Wrapper) {
   Object object;
+  EXPECT_TRUE(object.empty());
   object.members()[0];
+  EXPECT_FALSE(object.empty());
   object.members()[2];
   EXPECT_EQ(object.size(), 2);
   EXPECT_EQ(&object[FieldId{0}], &object.members()[0]);
@@ -630,10 +632,18 @@ TEST(Object, Wrapper) {
   EXPECT_EQ(values[0], &object.members()[0]);
   EXPECT_EQ(values[1], &object.members()[2]);
 
-  object.erase(FieldId{0});
+  EXPECT_EQ(object.erase(FieldId{0}), 1);
   EXPECT_EQ(object.contains(FieldId{0}), false);
   EXPECT_EQ(object.contains(FieldId{2}), true);
   EXPECT_EQ(object.size(), 1);
+
+  EXPECT_EQ(object.erase(FieldId{1}), 0);
+  EXPECT_EQ(object.size(), 1);
+  EXPECT_FALSE(object.empty());
+
+  EXPECT_EQ(object.erase(FieldId{2}), 1);
+  EXPECT_EQ(object.size(), 0);
+  EXPECT_TRUE(object.empty());
 }
 
 TEST(Value, Wrapper) {
