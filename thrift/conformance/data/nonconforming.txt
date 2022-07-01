@@ -9,6 +9,8 @@ cpp2/RoundTripTest/testset.float/NaN.Binary
 cpp2/RoundTripTest/testset.float/NaN.Compact
 cpp2/RoundTripTest/testset.double/NaN.Binary
 cpp2/RoundTripTest/testset.double/NaN.Compact
+cpp2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Binary
+cpp2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Compact
 #
 #
 # Python: NaN
@@ -21,6 +23,8 @@ python/RoundTripTest/testset.float/NaN.Binary
 python/RoundTripTest/testset.float/NaN.Compact
 python/RoundTripTest/testset.double/NaN.Binary
 python/RoundTripTest/testset.double/NaN.Compact
+python/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Binary
+python/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Compact
 #
 #
 # Java: NaN
@@ -33,6 +37,8 @@ java2/RoundTripTest/testset.float/NaN.Binary
 java2/RoundTripTest/testset.float/NaN.Compact
 java2/RoundTripTest/testset.double/NaN.Binary
 java2/RoundTripTest/testset.double/NaN.Compact
+java2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Binary
+java2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Compact
 #
 #
 # Java: These compatibility tests are failing in Java.

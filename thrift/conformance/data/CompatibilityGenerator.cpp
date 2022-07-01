@@ -35,11 +35,13 @@
 #include <thrift/conformance/data/internal/TestGenerator.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/test/testset/Testset.h>
 #include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
+// TODO: use FieldQualifier
+using apache::thrift::test::testset::FieldModifier;
 using apache::thrift::test::testset::detail::mod_set;
 using apache::thrift::test::testset::detail::struct_ByFieldType;
 namespace mp11 = boost::mp11;
@@ -118,14 +120,105 @@ std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
   return ret;
 }
 
+template <class ThriftStruct>
+std::unique_ptr<folly::IOBuf> serializeThriftStruct(
+    const ThriftStruct& s, const Protocol& protocol) {
+  static_assert(is_thrift_class_v<ThriftStruct>);
+  switch (auto p = protocol.standard()) {
+    case StandardProtocol::Compact:
+      return apache::thrift::CompactSerializer::serialize<folly::IOBufQueue>(s)
+          .move();
+    case StandardProtocol::Binary:
+      return apache::thrift::BinarySerializer::serialize<folly::IOBufQueue>(s)
+          .move();
+    default:
+      throw std::invalid_argument(
+          "Unsupported protocol: " + util::enumNameSafe(p));
+  }
+}
+
+constexpr auto alwaysReturnTrue = [](auto&&) { return true; };
+
+template <
+    class Old,
+    class New,
+    bool compatible,
+    class ShouldTest = decltype(alwaysReturnTrue)>
+std::vector<TestCase> changeFieldTypeTestCase(
+    const Protocol& protocol, ShouldTest shouldTest = alwaysReturnTrue) {
+  static_assert(!std::is_same_v<Old, New>);
+
+  std::vector<TestCase> ret;
+
+  for (const auto& value : ValueGenerator<Old>::getInterestingValues()) {
+    if (!shouldTest(value)) {
+      continue;
+    }
+
+    typename struct_ByFieldType<Old, mod_set<FieldModifier::Optional>>::type
+        old_data;
+    typename struct_ByFieldType<New, mod_set<FieldModifier::Optional>>::type
+        new_data;
+
+    old_data.field_1() = value.value;
+
+    if constexpr (compatible) {
+      // If type change is compatible, new data will be deserialized as old data
+      new_data.field_1() = static_cast<type::native_type<New>>(value.value);
+    }
+
+    RoundTripTestCase roundTrip;
+    roundTrip.request()->value() =
+        AnyRegistry::generated().store(new_data, protocol);
+    roundTrip.request()->value()->data() =
+        *serializeThriftStruct(old_data, protocol);
+    roundTrip.expectedResponse().emplace().value() =
+        AnyRegistry::generated().store(new_data, protocol);
+
+    TestCase testCase;
+    testCase.name() = fmt::format(
+        "testset.{}.{}/ChangeFieldType/{}",
+        type::getName<Old>(),
+        type::getName<New>(),
+        value.name);
+    testCase.test()->roundTrip_ref() = std::move(roundTrip);
+    ret.push_back(std::move(testCase));
+  }
+
+  return ret;
+}
+
 template <typename TT>
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
   test.name() = protocol.name();
-  test.testCases()->push_back(addFieldTestCase<TT>(protocol));
-  for (auto& t : removeFieldTestCase<TT>(protocol)) {
-    test.testCases()->push_back(std::move(t));
-  }
+
+  auto addToTest = [&](std::vector<TestCase>&& tests) {
+    for (auto& t : tests) {
+      test.testCases()->push_back(std::move(t));
+    }
+  };
+
+  addToTest({addFieldTestCase<TT>(protocol)});
+  addToTest(removeFieldTestCase<TT>(protocol));
+  addToTest(changeFieldTypeTestCase<type::i32_t, type::i16_t, false>(protocol));
+  addToTest(changeFieldTypeTestCase<type::i32_t, type::i64_t, false>(protocol));
+  addToTest(
+      changeFieldTypeTestCase<type::string_t, type::binary_t, true>(protocol));
+  addToTest(changeFieldTypeTestCase<type::binary_t, type::string_t, true>(
+      protocol, [](auto&& value) { return value.name != "bad_utf8"; }));
+  addToTest(changeFieldTypeTestCase<type::binary_t, type::string_t, false>(
+      protocol, [](auto&& value) { return value.name == "bad_utf8"; }));
+  addToTest(changeFieldTypeTestCase<
+            type::set<type::i64_t>,
+            type::list<type::i64_t>,
+            false>(protocol));
+  addToTest(changeFieldTypeTestCase<
+            type::list<type::i64_t>,
+            type::set<type::i64_t>,
+            false>(protocol));
+
+  // TODO: Test change between enum and integer.
   return test;
 }
 } // namespace
