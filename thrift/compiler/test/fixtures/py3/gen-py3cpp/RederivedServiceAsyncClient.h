@@ -136,5 +136,5 @@ class Client<::py3::simple::RederivedService> : public ::py3::simple::DerivedSer
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-using RederivedServiceAsyncClient = ::apache::thrift::Client<RederivedService>;
+using RederivedServiceAsyncClient [[deprecated("Use apache::thrift::Client<RederivedService> instead")]] = ::apache::thrift::Client<RederivedService>;
 }} // py3::simple

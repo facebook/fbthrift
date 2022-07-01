@@ -227,5 +227,5 @@ class Client<::apache::thrift::fixtures::types::SomeService> : public apache::th
 } // namespace apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-using SomeServiceAsyncClient = ::apache::thrift::Client<SomeService>;
+using SomeServiceAsyncClient [[deprecated("Use apache::thrift::Client<SomeService> instead")]] = ::apache::thrift::Client<SomeService>;
 }}}} // apache::thrift::fixtures::types

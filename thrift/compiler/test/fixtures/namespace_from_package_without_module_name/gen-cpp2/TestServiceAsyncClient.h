@@ -135,5 +135,5 @@ class Client<::test::namespace_from_package_without_module_name::TestService> : 
 } // namespace apache::thrift
 
 namespace test { namespace namespace_from_package_without_module_name {
-using TestServiceAsyncClient = ::apache::thrift::Client<TestService>;
+using TestServiceAsyncClient [[deprecated("Use apache::thrift::Client<TestService> instead")]] = ::apache::thrift::Client<TestService>;
 }} // test::namespace_from_package_without_module_name

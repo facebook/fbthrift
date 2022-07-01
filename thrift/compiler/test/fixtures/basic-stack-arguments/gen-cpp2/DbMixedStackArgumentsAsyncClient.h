@@ -230,5 +230,5 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
 } // namespace apache::thrift
 
 namespace cpp2 {
-using DbMixedStackArgumentsAsyncClient = ::apache::thrift::Client<DbMixedStackArguments>;
+using DbMixedStackArgumentsAsyncClient [[deprecated("Use apache::thrift::Client<DbMixedStackArguments> instead")]] = ::apache::thrift::Client<DbMixedStackArguments>;
 } // cpp2

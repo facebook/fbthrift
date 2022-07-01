@@ -134,5 +134,5 @@ class Client<::cpp2::MyLeaf> : public ::cpp2::MyNodeAsyncClient {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using MyLeafAsyncClient = ::apache::thrift::Client<MyLeaf>;
+using MyLeafAsyncClient [[deprecated("Use apache::thrift::Client<MyLeaf> instead")]] = ::apache::thrift::Client<MyLeaf>;
 } // cpp2

@@ -412,5 +412,5 @@ class Client<::cpp2::Raiser> : public apache::thrift::GeneratedAsyncClient {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using RaiserAsyncClient = ::apache::thrift::Client<Raiser>;
+using RaiserAsyncClient [[deprecated("Use apache::thrift::Client<Raiser> instead")]] = ::apache::thrift::Client<Raiser>;
 } // cpp2

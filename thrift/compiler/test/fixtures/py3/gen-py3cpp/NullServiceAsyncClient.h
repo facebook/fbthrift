@@ -36,5 +36,5 @@ class Client<::cpp2::NullService> : public apache::thrift::GeneratedAsyncClient 
 } // namespace apache::thrift
 
 namespace cpp2 {
-using NullServiceAsyncClient = ::apache::thrift::Client<NullService>;
+using NullServiceAsyncClient [[deprecated("Use apache::thrift::Client<NullService> instead")]] = ::apache::thrift::Client<NullService>;
 } // cpp2

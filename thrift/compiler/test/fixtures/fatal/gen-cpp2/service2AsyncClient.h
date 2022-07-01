@@ -607,5 +607,5 @@ class Client<::test_cpp2::cpp_reflection::service2> : public apache::thrift::Gen
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-using service2AsyncClient = ::apache::thrift::Client<service2>;
+using service2AsyncClient [[deprecated("Use apache::thrift::Client<service2> instead")]] = ::apache::thrift::Client<service2>;
 }} // test_cpp2::cpp_reflection

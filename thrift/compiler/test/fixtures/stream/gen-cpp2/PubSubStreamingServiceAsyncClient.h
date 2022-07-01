@@ -781,5 +781,5 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
 } // namespace apache::thrift
 
 namespace cpp2 {
-using PubSubStreamingServiceAsyncClient = ::apache::thrift::Client<PubSubStreamingService>;
+using PubSubStreamingServiceAsyncClient [[deprecated("Use apache::thrift::Client<PubSubStreamingService> instead")]] = ::apache::thrift::Client<PubSubStreamingService>;
 } // cpp2

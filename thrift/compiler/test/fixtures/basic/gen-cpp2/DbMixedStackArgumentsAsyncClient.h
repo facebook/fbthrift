@@ -231,5 +231,5 @@ class Client<::test::fixtures::basic::DbMixedStackArguments> : public apache::th
 } // namespace apache::thrift
 
 namespace test { namespace fixtures { namespace basic {
-using DbMixedStackArgumentsAsyncClient = ::apache::thrift::Client<DbMixedStackArguments>;
+using DbMixedStackArgumentsAsyncClient [[deprecated("Use apache::thrift::Client<DbMixedStackArguments> instead")]] = ::apache::thrift::Client<DbMixedStackArguments>;
 }}} // test::fixtures::basic

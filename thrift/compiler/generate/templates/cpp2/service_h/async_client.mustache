@@ -47,5 +47,5 @@ class Client<<%service:qualified_name%>> : public <%#service:extends%><% > commo
 
 <% > common/namespace_cpp2_begin%>
 
-using <%service:cpp_name%>AsyncClient = ::apache::thrift::Client<<%service:cpp_name%>>;
+using <%service:cpp_name%>AsyncClient [[deprecated("Use apache::thrift::Client<<%service:cpp_name%>> instead")]] = ::apache::thrift::Client<<%service:cpp_name%>>;
 <% > common/namespace_cpp2_end%>

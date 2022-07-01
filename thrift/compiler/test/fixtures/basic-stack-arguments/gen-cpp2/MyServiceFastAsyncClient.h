@@ -396,5 +396,5 @@ class Client<::cpp2::MyServiceFast> : public apache::thrift::GeneratedAsyncClien
 } // namespace apache::thrift
 
 namespace cpp2 {
-using MyServiceFastAsyncClient = ::apache::thrift::Client<MyServiceFast>;
+using MyServiceFastAsyncClient [[deprecated("Use apache::thrift::Client<MyServiceFast> instead")]] = ::apache::thrift::Client<MyServiceFast>;
 } // cpp2

@@ -39,5 +39,5 @@ class Client<::some::valid::ns::EmptyService> : public apache::thrift::Generated
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-using EmptyServiceAsyncClient = ::apache::thrift::Client<EmptyService>;
+using EmptyServiceAsyncClient [[deprecated("Use apache::thrift::Client<EmptyService> instead")]] = ::apache::thrift::Client<EmptyService>;
 }}} // some::valid::ns

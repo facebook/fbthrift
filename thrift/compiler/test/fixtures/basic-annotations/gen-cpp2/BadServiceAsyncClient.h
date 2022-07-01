@@ -230,5 +230,5 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using GoodServiceAsyncClient = ::apache::thrift::Client<GoodService>;
+using GoodServiceAsyncClient [[deprecated("Use apache::thrift::Client<GoodService> instead")]] = ::apache::thrift::Client<GoodService>;
 } // cpp2

@@ -135,5 +135,5 @@ class Client<::cpp2::MyServicePrioChild> : public ::cpp2::MyServicePrioParentAsy
 } // namespace apache::thrift
 
 namespace cpp2 {
-using MyServicePrioChildAsyncClient = ::apache::thrift::Client<MyServicePrioChild>;
+using MyServicePrioChildAsyncClient [[deprecated("Use apache::thrift::Client<MyServicePrioChild> instead")]] = ::apache::thrift::Client<MyServicePrioChild>;
 } // cpp2

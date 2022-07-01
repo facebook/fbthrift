@@ -775,5 +775,5 @@ class Client<::extra::svc::ExtraService> : public ::some::valid::ns::ParamServic
 } // namespace apache::thrift
 
 namespace extra { namespace svc {
-using ExtraServiceAsyncClient = ::apache::thrift::Client<ExtraService>;
+using ExtraServiceAsyncClient [[deprecated("Use apache::thrift::Client<ExtraService> instead")]] = ::apache::thrift::Client<ExtraService>;
 }} // extra::svc

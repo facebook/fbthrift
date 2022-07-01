@@ -135,5 +135,5 @@ class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
 } // namespace apache::thrift
 
 namespace cpp2 {
-using ServiceAsyncClient = ::apache::thrift::Client<Service>;
+using ServiceAsyncClient [[deprecated("Use apache::thrift::Client<Service> instead")]] = ::apache::thrift::Client<Service>;
 } // cpp2

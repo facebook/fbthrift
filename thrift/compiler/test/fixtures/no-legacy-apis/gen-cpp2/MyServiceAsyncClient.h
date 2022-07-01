@@ -136,5 +136,5 @@ class Client<::test::fixtures::basic::MyService> : public apache::thrift::Genera
 } // namespace apache::thrift
 
 namespace test { namespace fixtures { namespace basic {
-using MyServiceAsyncClient = ::apache::thrift::Client<MyService>;
+using MyServiceAsyncClient [[deprecated("Use apache::thrift::Client<MyService> instead")]] = ::apache::thrift::Client<MyService>;
 }}} // test::fixtures::basic

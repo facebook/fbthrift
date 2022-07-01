@@ -232,5 +232,5 @@ class Client<::test::fixtures::basic-structured-annotations::MyService> : public
 } // namespace apache::thrift
 
 namespace test { namespace fixtures { namespace basic-structured-annotations {
-using MyServiceAsyncClient = ::apache::thrift::Client<MyService>;
+using MyServiceAsyncClient [[deprecated("Use apache::thrift::Client<MyService> instead")]] = ::apache::thrift::Client<MyService>;
 }}} // test::fixtures::basic-structured-annotations

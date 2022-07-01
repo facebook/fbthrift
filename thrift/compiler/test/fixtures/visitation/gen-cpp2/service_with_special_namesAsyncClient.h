@@ -2699,5 +2699,5 @@ class Client<::test_cpp2::cpp_reflection::service_with_special_names> : public a
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-using service_with_special_namesAsyncClient = ::apache::thrift::Client<service_with_special_names>;
+using service_with_special_namesAsyncClient [[deprecated("Use apache::thrift::Client<service_with_special_names> instead")]] = ::apache::thrift::Client<service_with_special_names>;
 }} // test_cpp2::cpp_reflection

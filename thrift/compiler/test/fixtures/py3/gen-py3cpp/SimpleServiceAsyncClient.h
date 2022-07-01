@@ -3927,5 +3927,5 @@ class Client<::py3::simple::SimpleService> : public apache::thrift::GeneratedAsy
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-using SimpleServiceAsyncClient = ::apache::thrift::Client<SimpleService>;
+using SimpleServiceAsyncClient [[deprecated("Use apache::thrift::Client<SimpleService> instead")]] = ::apache::thrift::Client<SimpleService>;
 }} // py3::simple

@@ -2778,5 +2778,5 @@ class Client<::some::valid::ns::ParamService> : public apache::thrift::Generated
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-using ParamServiceAsyncClient = ::apache::thrift::Client<ParamService>;
+using ParamServiceAsyncClient [[deprecated("Use apache::thrift::Client<ParamService> instead")]] = ::apache::thrift::Client<ParamService>;
 }}} // some::valid::ns

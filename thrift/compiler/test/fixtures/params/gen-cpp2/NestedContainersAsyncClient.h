@@ -501,5 +501,5 @@ class Client<::cpp2::NestedContainers> : public apache::thrift::GeneratedAsyncCl
 } // namespace apache::thrift
 
 namespace cpp2 {
-using NestedContainersAsyncClient = ::apache::thrift::Client<NestedContainers>;
+using NestedContainersAsyncClient [[deprecated("Use apache::thrift::Client<NestedContainers> instead")]] = ::apache::thrift::Client<NestedContainers>;
 } // cpp2

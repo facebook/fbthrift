@@ -164,5 +164,5 @@ class Client<::cpp2::SinkService> : public apache::thrift::GeneratedAsyncClient 
 } // namespace apache::thrift
 
 namespace cpp2 {
-using SinkServiceAsyncClient = ::apache::thrift::Client<SinkService>;
+using SinkServiceAsyncClient [[deprecated("Use apache::thrift::Client<SinkService> instead")]] = ::apache::thrift::Client<SinkService>;
 } // cpp2
