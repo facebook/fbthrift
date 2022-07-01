@@ -15,5 +15,5 @@ from thrift.protocol.TProtocol import TProtocolException
 import thrift.annotation.scope.ttypes
 
 
-from .ttypes import UTF8STRINGS, Beta, Experimental, Deprecated, ReservedIds, Legacy, RequiresBackwardCompatibility, NoExperimental, NoBeta, NoLegacy, NoDeprecated, TerseWrite, Box, Mixin, SerializeInFieldIdOrder, GenDefaultEnumValue, v1, v1beta, v1alpha, v1test, NoLegacyAPIs
+from .ttypes import UTF8STRINGS, Beta, Experimental, Testing, Deprecated, ReservedIds, Legacy, RequiresBackwardCompatibility, NoExperimental, NoBeta, NoLegacy, NoDeprecated, TerseWrite, Box, Mixin, SerializeInFieldIdOrder, GenDefaultEnumValue, v1, v1beta, v1alpha, v1test, NoLegacyAPIs
 

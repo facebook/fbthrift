@@ -188,6 +188,100 @@ class Experimental implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * Indicates a definition/feature should only be used in an ephemeral testing
+ * enviornment.
+ * 
+ * Such enviornments only store serialized values temporarly and strictly
+ * control which versions of Thrift definitions are used, so 'compatibility'
+ * is not a concern.
+ *
+ * Original thrift struct:-
+ * Testing
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Testing'))>>
+class Testing implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+    ...
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Testing';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.Testing",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Definition' => \thrift\annotation\Definition::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+/**
  * Indicates a definition/feature should no longer be used.
  *
  * Original thrift struct:-
@@ -1987,6 +2081,10 @@ class v1test implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           )
         ),
         '\thrift\annotation\v1alpha' => \thrift\annotation\v1alpha::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Testing' => \thrift\annotation\Testing::fromShape(
           shape(
           )
         ),

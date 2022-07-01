@@ -15,6 +15,7 @@ namespace annotation {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<Beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Experimental>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Testing>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Deprecated>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<ReservedIds>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Legacy>::gen(metadata);

@@ -40,6 +40,18 @@ struct Beta {}
 @scope.Definition
 struct Experimental {}
 
+/**
+ * Indicates a definition/feature should only be used in an ephemeral testing
+ * enviornment.
+ *
+ * Such enviornments only store serialized values temporarly and strictly
+ * control which versions of Thrift definitions are used, so 'compatibility'
+ * is not a concern.
+ */
+@scope.Program
+@scope.Definition
+struct Testing {}
+
 /** Indicates a definition/feature should no longer be used. */
 // TODO(afuller): Add a validator to produce warnings when annotated definitions
 // are used.
@@ -92,7 +104,7 @@ struct Legacy {
  * Indicates additional backward compatibility restrictions, beyond the
  * standard Thrift required 'wire' compatibility.
  */
-// TODO(afuller): Hook up to backward compat linter.
+// TODO(afuller): Hook up to backward compatibility linter.
 @scope.Structured
 @Experimental // TODO: Fix naming style.
 struct RequiresBackwardCompatibility {
@@ -237,6 +249,7 @@ struct v1alpha {}
 @TerseWrite
 @NoDeprecated // Remove deprecated features by default for tests.
 @v1alpha // All v1alpha features.
+@Testing // Should only be used in tests.
 @scope.Transitive
 struct v1test {}
 
