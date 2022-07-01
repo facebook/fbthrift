@@ -379,9 +379,10 @@ TEST(UnionPatchTest, ClearAndAssign) {
   MyUnionValuePatch assignEmpty = MyUnionValuePatch::createAssign(actual);
   EXPECT_EQ(
       assignEmpty.toThrift(), MyUnionValuePatch::createClear().toThrift());
-  EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::__EMPTY__);
   EXPECT_EQ(*assignEmpty.toThrift().clear(), true);
-  EXPECT_EQ(assignEmpty.toThrift().ensure()->getType(), MyUnion::__EMPTY__);
+  EXPECT_EQ(
+      assignEmpty.toThrift().ensure()->getType(), MyUnion::Type::__EMPTY__);
 
   EXPECT_EQ(actual, MyUnion{});
   test::expectPatch(noop, actual, {});
@@ -389,16 +390,16 @@ TEST(UnionPatchTest, ClearAndAssign) {
 
   actual.option1_ref() = "hi";
   MyUnionValuePatch assign = MyUnionValuePatch::createAssign(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
   test::expectPatch(noop, actual, actual);
   test::expectPatch(assignEmpty, actual, {});
   test::expectPatch(assign, actual, actual);
   test::expectPatch(assign, {}, actual);
 
   assignEmpty.apply(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::__EMPTY__);
   assign.apply(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
 }
 
 TEST(UnionPatchTest, Ensure) {
@@ -412,19 +413,19 @@ TEST(UnionPatchTest, Ensure) {
   // Empty -> expected
   test::expectPatch(patch, {}, expected);
   patch.apply(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
 
   // Same type is untouched.
   actual.option1_ref() = "bye";
   test::expectPatch(patch, actual, actual);
   patch.apply(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
 
   // Different type -> expected.
   actual.option2_ref() = 1;
   test::expectPatch(patch, actual, expected);
   patch.apply(actual);
-  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
 }
 
 TEST(UnionPatchTest, Patch) {

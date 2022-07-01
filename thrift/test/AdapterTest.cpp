@@ -268,12 +268,12 @@ TEST_F(AdapterTest, StructCodeGen_Terse) {
 namespace basic {
 TEST_F(AdapterTest, UnionCodeGen_Empty) {
   ThriftAdaptTestUnion obj0a;
-  EXPECT_EQ(obj0a.getType(), ThriftAdaptTestUnion::__EMPTY__);
+  EXPECT_EQ(obj0a.getType(), ThriftAdaptTestUnion::Type::__EMPTY__);
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   ThriftAdaptTestUnion obj0b;
   CompactSerializer::deserialize(data0, obj0b);
-  EXPECT_EQ(obj0b.getType(), ThriftAdaptTestUnion::__EMPTY__);
+  EXPECT_EQ(obj0b.getType(), ThriftAdaptTestUnion::Type::__EMPTY__);
 
   EXPECT_EQ(obj0b, obj0a);
   EXPECT_FALSE(obj0b < obj0a);
@@ -576,12 +576,12 @@ TEST_F(AdapterTest, StructFieldAdaptedStruct) {
 namespace terse {
 TEST_F(AdapterTest, UnionCodeGen_Empty_Terse) {
   AdaptTestUnion obj0a;
-  EXPECT_EQ(obj0a.getType(), AdaptTestUnion::__EMPTY__);
+  EXPECT_EQ(obj0a.getType(), AdaptTestUnion::Type::__EMPTY__);
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   AdaptTestUnion obj0b;
   CompactSerializer::deserialize(data0, obj0b);
-  EXPECT_EQ(obj0b.getType(), AdaptTestUnion::__EMPTY__);
+  EXPECT_EQ(obj0b.getType(), AdaptTestUnion::Type::__EMPTY__);
 
   EXPECT_EQ(obj0b, obj0a);
   EXPECT_FALSE(obj0b < obj0a);

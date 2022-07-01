@@ -108,8 +108,8 @@ TEST(EnumTestCpp2, test_unscoped) {
   EXPECT_TRUE((std::is_same<MyEnumUnscopedUnderlying, int>::value));
   MyEnumUnscoped value = {};
   EXPECT_TRUE(tryParseEnum("MEU_A", &value));
-  EXPECT_EQ(MEU_A, value) << "unscoped usage";
-  EXPECT_EQ(int(MEU_A), value) << "implicit conversion";
+  EXPECT_EQ(MyEnumUnscoped::MEU_A, value) << "unscoped usage";
+  EXPECT_EQ(int(MyEnumUnscoped::MEU_A), value) << "implicit conversion";
 }
 
 TEST(EnumTestCpp2, test_enum_forward_reference) {

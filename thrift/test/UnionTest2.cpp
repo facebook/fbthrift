@@ -214,7 +214,7 @@ TEST(CppRefContainers, Simple) {
   v2.set_data("v2");
   v.set_values({v1, v2});
 
-  EXPECT_EQ(v.getType(), CppRefContainers::values);
+  EXPECT_EQ(v.getType(), CppRefContainers::Type::values);
   EXPECT_EQ((*v.get_values())[0].get_data(), "v1");
   EXPECT_EQ((*v.get_values())[1].get_data(), "v2");
 }
