@@ -16,11 +16,16 @@
 
 // NOTE: See dep_test/cpp_compat_test.cpp for a comparison
 
-use super::{BOOL_VALUES, DOUBLE_VALUES, INT64_VALUES};
-use crate::simplejson_protocol::{self, SimpleJsonProtocolDeserializer};
+use super::BOOL_VALUES;
+use super::DOUBLE_VALUES;
+use super::INT64_VALUES;
+use crate::simplejson_protocol::SimpleJsonProtocolDeserializer;
+use crate::simplejson_protocol::{self};
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
-use crate::{Deserialize, ProtocolWriter, SimpleJsonProtocol};
+use crate::Deserialize;
+use crate::ProtocolWriter;
+use crate::SimpleJsonProtocol;
 use serde_json::json;
 
 #[test]

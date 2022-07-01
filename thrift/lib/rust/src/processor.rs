@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-use crate::application_exception::{ApplicationException, ApplicationExceptionErrorCode};
+use crate::application_exception::ApplicationException;
+use crate::application_exception::ApplicationExceptionErrorCode;
 use crate::context_stack::ContextStack;
-use crate::exceptions::{ExceptionInfo, ResultInfo};
-use crate::framing::{Framing, FramingDecoded, FramingEncodedFinal};
-use crate::protocol::{
-    Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
-};
+use crate::exceptions::ExceptionInfo;
+use crate::exceptions::ResultInfo;
+use crate::framing::Framing;
+use crate::framing::FramingDecoded;
+use crate::framing::FramingEncodedFinal;
+use crate::protocol::Protocol;
+use crate::protocol::ProtocolDecoded;
+use crate::protocol::ProtocolEncodedFinal;
+use crate::protocol::ProtocolReader;
+use crate::protocol::ProtocolWriter;
 use crate::request_context::RequestContext;
 use crate::serialize::Serialize;
 use crate::ttype::TType;
-use anyhow::{bail, Error};
+use anyhow::bail;
+use anyhow::Error;
 use async_trait::async_trait;
 use std::ffi::CStr;
 use std::marker::PhantomData;

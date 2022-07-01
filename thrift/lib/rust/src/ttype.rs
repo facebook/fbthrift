@@ -18,10 +18,11 @@ use crate::errors::ProtocolError;
 use crate::Result;
 use bytes::Bytes;
 use ordered_float::OrderedFloat;
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
-    hash::Hash,
-};
+use std::collections::BTreeMap;
+use std::collections::BTreeSet;
+use std::collections::HashMap;
+use std::collections::HashSet;
+use std::hash::Hash;
 
 /// Will be able to add missing types once #![feature(associated_consts)] lands
 #[derive(PartialEq, Copy, Clone, Debug)]

@@ -16,7 +16,8 @@
 
 use crate::proptest::gen_main_struct;
 use anyhow::Result;
-use fbthrift::binary_protocol::{deserialize, serialize};
+use fbthrift::binary_protocol::deserialize;
+use fbthrift::binary_protocol::serialize;
 use fbthrift::ttype::TType;
 use fbthrift_test_if::Un;
 use proptest::prelude::*;

@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-use super::{
-    BOOL_VALUES, BYTE_VALUES, DOUBLE_VALUES, FLOAT_VALUES, INT16_VALUES, INT32_VALUES, INT64_VALUES,
-};
+use super::BOOL_VALUES;
+use super::BYTE_VALUES;
+use super::DOUBLE_VALUES;
+use super::FLOAT_VALUES;
+use super::INT16_VALUES;
+use super::INT32_VALUES;
+use super::INT64_VALUES;
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
-use crate::{CompactProtocol, Protocol, ProtocolReader, ProtocolWriter};
-use bytes::{Buf, Bytes};
-use std::{io::Cursor, u8};
+use crate::CompactProtocol;
+use crate::Protocol;
+use crate::ProtocolReader;
+use crate::ProtocolWriter;
+use bytes::Buf;
+use bytes::Bytes;
+use std::io::Cursor;
+use std::u8;
 
 #[test]
 fn read_write_bool_list() {
@@ -512,8 +521,10 @@ fn read_binary_from_chained_buffer() {
 // Test for T29755131
 #[test]
 fn skip_i32_ok() {
-    use crate::compact_protocol::{CompactProtocolDeserializer, CompactProtocolSerializer};
-    use crate::protocol::{ProtocolReader, ProtocolWriter};
+    use crate::compact_protocol::CompactProtocolDeserializer;
+    use crate::compact_protocol::CompactProtocolSerializer;
+    use crate::protocol::ProtocolReader;
+    use crate::protocol::ProtocolWriter;
 
     let buf = {
         let mut serialize =
@@ -535,8 +546,10 @@ fn skip_i32_ok() {
 // Test for T29755131
 #[test]
 fn skip_stop() {
-    use crate::compact_protocol::{CompactProtocolDeserializer, CompactProtocolSerializer};
-    use crate::protocol::{ProtocolReader, ProtocolWriter};
+    use crate::compact_protocol::CompactProtocolDeserializer;
+    use crate::compact_protocol::CompactProtocolSerializer;
+    use crate::protocol::ProtocolReader;
+    use crate::protocol::ProtocolWriter;
     use crate::ProtocolError;
 
     let buf = {
@@ -562,8 +575,10 @@ fn skip_stop() {
 // Test for T29755131
 #[test]
 fn skip_stop_in_container() {
-    use crate::compact_protocol::{CompactProtocolDeserializer, CompactProtocolSerializer};
-    use crate::protocol::{ProtocolReader, ProtocolWriter};
+    use crate::compact_protocol::CompactProtocolDeserializer;
+    use crate::compact_protocol::CompactProtocolSerializer;
+    use crate::protocol::ProtocolReader;
+    use crate::protocol::ProtocolWriter;
     use crate::ProtocolError;
 
     let buf = {

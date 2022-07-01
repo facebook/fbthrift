@@ -15,17 +15,24 @@
  */
 
 use crate::binary_type::CopyFromBuf;
-use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
+use crate::bufext::BufExt;
+use crate::bufext::BufMutExt;
+use crate::bufext::DeserializeSource;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
-use crate::protocol::{Field, Protocol, ProtocolReader, ProtocolWriter};
+use crate::protocol::Field;
+use crate::protocol::Protocol;
+use crate::protocol::ProtocolReader;
+use crate::protocol::ProtocolWriter;
 use crate::serialize::Serialize;
-use crate::thrift_protocol::{MessageType, ProtocolID};
+use crate::thrift_protocol::MessageType;
+use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 use crate::Result;
 use bufsize::SizeCounter;
-use bytes::{Bytes, BytesMut};
+use bytes::Bytes;
+use bytes::BytesMut;
 use ghost::phantom;
 
 pub const BINARY_VERSION_MASK: u32 = 0xffff_0000;

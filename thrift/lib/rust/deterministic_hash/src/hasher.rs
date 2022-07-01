@@ -29,7 +29,8 @@ pub trait Hasher {
     fn combine_hasher(&mut self, value: &Self::Output);
 }
 
-use ring::digest::{Context, SHA256};
+use ring::digest::Context;
+use ring::digest::SHA256;
 
 pub struct Sha256Hasher {
     context: Context,

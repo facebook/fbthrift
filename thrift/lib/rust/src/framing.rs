@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-use crate::bufext::{BufExt, BufMutExt};
-use bytes::{Bytes, BytesMut};
+use crate::bufext::BufExt;
+use crate::bufext::BufMutExt;
+use bytes::Bytes;
+use bytes::BytesMut;
 use std::io::Cursor;
 
 /// Helper type alias to get encoding buffer type

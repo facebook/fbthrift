@@ -72,27 +72,46 @@ pub mod types {
     pub use crate::application_exception::ApplicationException;
 }
 
-pub use crate::application_exception::{ApplicationException, ApplicationExceptionErrorCode};
+pub use crate::application_exception::ApplicationException;
+pub use crate::application_exception::ApplicationExceptionErrorCode;
 pub use crate::binary_protocol::BinaryProtocol;
-pub use crate::bufext::{BufExt, BufMutExt};
-pub use crate::client::{ClientFactory, Transport};
+pub use crate::bufext::BufExt;
+pub use crate::bufext::BufMutExt;
+pub use crate::client::ClientFactory;
+pub use crate::client::Transport;
 pub use crate::compact_protocol::CompactProtocol;
-pub use crate::context_stack::{ContextStack, DummyContextStack, SerializedMessage};
+pub use crate::context_stack::ContextStack;
+pub use crate::context_stack::DummyContextStack;
+pub use crate::context_stack::SerializedMessage;
 pub use crate::deserialize::Deserialize;
-pub use crate::errors::{NonthrowingFunctionError, ProtocolError};
-pub use crate::exceptions::{ExceptionInfo, ResultInfo, ResultType};
-pub use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
+pub use crate::errors::NonthrowingFunctionError;
+pub use crate::errors::ProtocolError;
+pub use crate::exceptions::ExceptionInfo;
+pub use crate::exceptions::ResultInfo;
+pub use crate::exceptions::ResultType;
+pub use crate::framing::Framing;
+pub use crate::framing::FramingDecoded;
+pub use crate::framing::FramingEncoded;
+pub use crate::framing::FramingEncodedFinal;
 pub use crate::help::NoopSpawner;
-pub use crate::processor::{NullServiceProcessor, ServiceProcessor, ThriftService};
-pub use crate::protocol::{
-    Field, Protocol, ProtocolDecoded, ProtocolEncoded, ProtocolEncodedFinal, ProtocolReader,
-    ProtocolWriter,
-};
-pub use crate::request_context::{DummyRequestContext, RequestContext};
+pub use crate::processor::NullServiceProcessor;
+pub use crate::processor::ServiceProcessor;
+pub use crate::processor::ThriftService;
+pub use crate::protocol::Field;
+pub use crate::protocol::Protocol;
+pub use crate::protocol::ProtocolDecoded;
+pub use crate::protocol::ProtocolEncoded;
+pub use crate::protocol::ProtocolEncodedFinal;
+pub use crate::protocol::ProtocolReader;
+pub use crate::protocol::ProtocolWriter;
+pub use crate::request_context::DummyRequestContext;
+pub use crate::request_context::RequestContext;
 pub use crate::serialize::Serialize;
 pub use crate::simplejson_protocol::SimpleJsonProtocol;
-pub use crate::thrift_protocol::{MessageType, ProtocolID};
-pub use crate::ttype::{GetTType, TType};
+pub use crate::thrift_protocol::MessageType;
+pub use crate::thrift_protocol::ProtocolID;
+pub use crate::ttype::GetTType;
+pub use crate::ttype::TType;
 
 pub trait ThriftEnum: Sized {
     fn enumerate() -> &'static [(Self, &'static str)];

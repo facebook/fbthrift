@@ -15,9 +15,9 @@
  */
 
 use fbthrift::TType;
-use fbthrift_deterministic_hash::{
-    DeterministicAccumulator, DeterministicAccumulatorError, Sha256Hasher,
-};
+use fbthrift_deterministic_hash::DeterministicAccumulator;
+use fbthrift_deterministic_hash::DeterministicAccumulatorError;
+use fbthrift_deterministic_hash::Sha256Hasher;
 // use teststructs::TestSkipV2;
 
 #[test]

@@ -15,8 +15,12 @@
  */
 
 use crate::deserialize::Deserialize;
-use crate::exceptions::{ExceptionInfo, ResultInfo, ResultType};
-use crate::protocol::{Field, ProtocolReader, ProtocolWriter};
+use crate::exceptions::ExceptionInfo;
+use crate::exceptions::ResultInfo;
+use crate::exceptions::ResultType;
+use crate::protocol::Field;
+use crate::protocol::ProtocolReader;
+use crate::protocol::ProtocolWriter;
 use crate::serialize::Serialize;
 use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;

@@ -16,7 +16,8 @@
 
 use crate::errors::ProtocolError;
 use crate::Result;
-use bytes::{Buf, BufMut};
+use bytes::Buf;
+use bytes::BufMut;
 
 pub const MAX_VARINT_U64: usize = 64 / 7 + 1; // max number of bytes for a u64 varint
 
@@ -133,8 +134,12 @@ mod test {
     use bufsize::SizeCounter;
     use bytes::BytesMut;
     use quickcheck::quickcheck;
+    use std::i16;
+    use std::i32;
+    use std::i64;
+    use std::i8;
     use std::io::Cursor;
-    use std::{i16, i32, i64, i8, u64};
+    use std::u64;
 
     fn baseline_varint_u64<T: BufMut>(buf: &mut T, v: u64) {
         let mut v = v;

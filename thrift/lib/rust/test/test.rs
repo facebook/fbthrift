@@ -15,13 +15,25 @@
  */
 
 use bytes::Bytes;
-use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize, ThriftEnum};
-use indexmap::{IndexMap, IndexSet};
-use interface::{
-    NonstandardCollectionTypes, TestBytesShared, TestEnum, TestEnumEmpty, TestSkipV1, TestSkipV2,
-};
+use fbthrift::serialize;
+use fbthrift::CompactProtocol;
+use fbthrift::Deserialize;
+use fbthrift::Protocol;
+use fbthrift::Serialize;
+use fbthrift::ThriftEnum;
+use indexmap::IndexMap;
+use indexmap::IndexSet;
+use interface::NonstandardCollectionTypes;
+use interface::TestBytesShared;
+use interface::TestEnum;
+use interface::TestEnumEmpty;
+use interface::TestSkipV1;
+use interface::TestSkipV2;
 use smallvec::SmallVec;
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
+use std::collections::BTreeMap;
+use std::collections::BTreeSet;
+use std::collections::HashMap;
+use std::collections::HashSet;
 use std::fmt::Debug;
 use std::io::Cursor;
 

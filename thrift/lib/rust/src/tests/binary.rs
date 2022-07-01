@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-use super::{
-    BOOL_VALUES, BYTE_VALUES, DOUBLE_VALUES, FLOAT_VALUES, INT16_VALUES, INT32_VALUES, INT64_VALUES,
-};
+use super::BOOL_VALUES;
+use super::BYTE_VALUES;
+use super::DOUBLE_VALUES;
+use super::FLOAT_VALUES;
+use super::INT16_VALUES;
+use super::INT32_VALUES;
+use super::INT64_VALUES;
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
-use crate::{BinaryProtocol, Protocol, ProtocolReader, ProtocolWriter};
-use bytes::{Buf, Bytes};
-use std::{io::Cursor, u8};
+use crate::BinaryProtocol;
+use crate::Protocol;
+use crate::ProtocolReader;
+use crate::ProtocolWriter;
+use bytes::Buf;
+use bytes::Bytes;
+use std::io::Cursor;
+use std::u8;
 
 #[test]
 fn read_write_bool_list() {

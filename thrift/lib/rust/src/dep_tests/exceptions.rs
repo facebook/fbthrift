@@ -15,9 +15,9 @@
  */
 
 use anyhow::Result;
-use fbthrift_test_if::types::{
-    TestException, TestExceptionMsgOverride, TestExceptionMsgOverrideOptional,
-};
+use fbthrift_test_if::types::TestException;
+use fbthrift_test_if::types::TestExceptionMsgOverride;
+use fbthrift_test_if::types::TestExceptionMsgOverrideOptional;
 use std::error::Error;
 
 #[test]

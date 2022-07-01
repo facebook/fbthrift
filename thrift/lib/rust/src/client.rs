@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-use crate::{help::Spawner, Framing, FramingDecoded, FramingEncodedFinal, Protocol};
+use crate::help::Spawner;
+use crate::Framing;
+use crate::FramingDecoded;
+use crate::FramingEncodedFinal;
+use crate::Protocol;
+use futures::future;
 use futures::stream::Stream;
-use futures::{future, FutureExt};
+use futures::FutureExt;
 use std::ffi::CStr;
 use std::future::Future;
 use std::pin::Pin;

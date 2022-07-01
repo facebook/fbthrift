@@ -17,7 +17,10 @@
 use crate::varint;
 use bufsize::SizeCounter;
 use bytes::buf::Chain;
-use bytes::{Buf, BufMut, Bytes, BytesMut};
+use bytes::Buf;
+use bytes::BufMut;
+use bytes::Bytes;
+use bytes::BytesMut;
 use std::io::Cursor;
 
 pub trait BufExt: Buf {

@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-use crate::binary_type::{CopyFromBuf, Discard};
+use crate::binary_type::CopyFromBuf;
+use crate::binary_type::Discard;
 use crate::bufext::BufMutExt;
 use crate::errors::ProtocolError;
-use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
-use crate::thrift_protocol::{MessageType, ProtocolID};
+use crate::framing::Framing;
+use crate::framing::FramingDecoded;
+use crate::framing::FramingEncoded;
+use crate::framing::FramingEncodedFinal;
+use crate::thrift_protocol::MessageType;
+use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 use crate::Result;
 

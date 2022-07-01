@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-use fbthrift::builtin_types::{BTreeMap, BTreeSet};
-use fbthrift_deterministic_hash::{deterministic_hash, Sha256Hasher};
+use fbthrift::builtin_types::BTreeMap;
+use fbthrift::builtin_types::BTreeSet;
+use fbthrift_deterministic_hash::deterministic_hash;
+use fbthrift_deterministic_hash::Sha256Hasher;
 use maplit::btreemap;
-use teststructs::{ComplexStruct, ComplexStructSha256Hash, SimpleStruct1, SimpleStructSha256Hash};
+use teststructs::ComplexStruct;
+use teststructs::ComplexStructSha256Hash;
+use teststructs::SimpleStruct1;
+use teststructs::SimpleStructSha256Hash;
 
 #[test]
 fn hash_test_complex_structure() {

@@ -16,11 +16,19 @@
 
 use crate::proptest::gen_main_struct;
 use anyhow::Result;
-use fbthrift::simplejson_protocol::{deserialize, serialize};
-use fbthrift::{simplejson_protocol::SimpleJsonProtocolDeserializer, Deserialize};
-use fbthrift_test_if::{
-    Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
-};
+use fbthrift::simplejson_protocol::deserialize;
+use fbthrift::simplejson_protocol::serialize;
+use fbthrift::simplejson_protocol::SimpleJsonProtocolDeserializer;
+use fbthrift::Deserialize;
+use fbthrift_test_if::Basic;
+use fbthrift_test_if::Containers;
+use fbthrift_test_if::En;
+use fbthrift_test_if::MainStruct;
+use fbthrift_test_if::MainStructNoBinary;
+use fbthrift_test_if::Small;
+use fbthrift_test_if::SubStruct;
+use fbthrift_test_if::Un;
+use fbthrift_test_if::UnOne;
 use proptest::prelude::*;
 use std::collections::BTreeMap;
 use std::io::Cursor;

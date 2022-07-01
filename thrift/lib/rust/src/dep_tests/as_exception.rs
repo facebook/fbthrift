@@ -15,10 +15,9 @@
  */
 
 use anyhow::Result;
-use fbthrift_test_if::{
-    errors::test_service::{AsTestException, Method1Error},
-    types::TestException,
-};
+use fbthrift_test_if::errors::test_service::AsTestException;
+use fbthrift_test_if::errors::test_service::Method1Error;
+use fbthrift_test_if::types::TestException;
 
 #[test]
 fn test_as_exception() -> Result<()> {

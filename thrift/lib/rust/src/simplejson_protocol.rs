@@ -15,22 +15,35 @@
  */
 
 use crate::binary_type::CopyFromBuf;
-use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
+use crate::bufext::BufExt;
+use crate::bufext::BufMutExt;
+use crate::bufext::DeserializeSource;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
-use crate::protocol::{
-    should_break, Field, Protocol, ProtocolReader, ProtocolWriter, DEFAULT_RECURSION_DEPTH,
-};
+use crate::protocol::should_break;
+use crate::protocol::Field;
+use crate::protocol::Protocol;
+use crate::protocol::ProtocolReader;
+use crate::protocol::ProtocolWriter;
+use crate::protocol::DEFAULT_RECURSION_DEPTH;
 use crate::serialize::Serialize;
-use crate::thrift_protocol::{MessageType, ProtocolID};
+use crate::thrift_protocol::MessageType;
+use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 use crate::Result;
-use anyhow::{anyhow, bail, Context};
+use anyhow::anyhow;
+use anyhow::bail;
+use anyhow::Context;
 use bufsize::SizeCounter;
-use bytes::{buf::Writer, Buf, BufMut, Bytes, BytesMut};
+use bytes::buf::Writer;
+use bytes::Buf;
+use bytes::BufMut;
+use bytes::Bytes;
+use bytes::BytesMut;
 use ghost::phantom;
-use serde_json::ser::{CompactFormatter, Formatter};
+use serde_json::ser::CompactFormatter;
+use serde_json::ser::Formatter;
 use std::io::Cursor;
 
 #[phantom]

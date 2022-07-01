@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-use crate::context_stack::{ContextStack, DummyContextStack};
+use crate::context_stack::ContextStack;
+use crate::context_stack::DummyContextStack;
 use anyhow::Error;
 use std::marker::PhantomData;
 

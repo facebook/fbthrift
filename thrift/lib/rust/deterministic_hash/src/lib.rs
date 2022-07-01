@@ -22,10 +22,10 @@ use anyhow::Result;
 use fbthrift::protocol::ProtocolWriter;
 use fbthrift::Serialize;
 
-pub use crate::deterministic_accumulator::{
-    DeterministicAccumulator, DeterministicAccumulatorError,
-};
-pub use crate::hasher::{Hasher, Sha256Hasher};
+pub use crate::deterministic_accumulator::DeterministicAccumulator;
+pub use crate::deterministic_accumulator::DeterministicAccumulatorError;
+pub use crate::hasher::Hasher;
+pub use crate::hasher::Sha256Hasher;
 pub fn deterministic_hash<
     H: Hasher + Default,
     F: Fn() -> H,

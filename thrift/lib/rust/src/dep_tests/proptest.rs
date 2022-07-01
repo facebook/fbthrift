@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-use fbthrift_test_if::{En, MainStruct, Small, SubStruct, Un, UnOne, UnTwo};
+use fbthrift_test_if::En;
+use fbthrift_test_if::MainStruct;
+use fbthrift_test_if::Small;
+use fbthrift_test_if::SubStruct;
+use fbthrift_test_if::Un;
+use fbthrift_test_if::UnOne;
+use fbthrift_test_if::UnTwo;
 use proptest::prelude::*;
 use std::collections::BTreeMap;
 
