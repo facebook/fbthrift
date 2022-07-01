@@ -50,7 +50,7 @@ namespace apache::thrift::conformance::data {
 
 namespace {
 
-std::unique_ptr<folly::IOBuf> serialize(
+[[nodiscard]] std::unique_ptr<folly::IOBuf> serialize(
     const Object& a, const Protocol& protocol) {
   switch (auto p = protocol.standard()) {
     case StandardProtocol::Compact:
@@ -64,7 +64,7 @@ std::unique_ptr<folly::IOBuf> serialize(
 }
 
 template <class TT>
-TestCase addFieldTestCase(const Protocol& protocol) {
+[[nodiscard]] TestCase addFieldTestCase(const Protocol& protocol) {
   const typename struct_ByFieldType<TT, mod_set<>>::type def;
 
   RoundTripTestCase roundTrip;
@@ -80,7 +80,7 @@ TestCase addFieldTestCase(const Protocol& protocol) {
 }
 
 template <class T>
-Object toObject(const T& t) {
+[[nodiscard]] Object toObject(const T& t) {
   Value v;
   ::apache::thrift::protocol::detail::ObjectWriter writer{&v};
   t.write(&writer);
@@ -88,7 +88,8 @@ Object toObject(const T& t) {
 }
 
 template <class TT>
-std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
+[[nodiscard]] std::vector<TestCase> removeFieldTestCase(
+    const Protocol& protocol) {
   const typename struct_ByFieldType<TT, mod_set<>>::type def;
   std::vector<TestCase> ret;
 
@@ -121,7 +122,7 @@ std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
 }
 
 template <class ThriftStruct>
-std::unique_ptr<folly::IOBuf> serializeThriftStruct(
+[[nodiscard]] std::unique_ptr<folly::IOBuf> serializeThriftStruct(
     const ThriftStruct& s, const Protocol& protocol) {
   static_assert(is_thrift_class_v<ThriftStruct>);
   switch (auto p = protocol.standard()) {
@@ -144,7 +145,7 @@ template <
     class New,
     bool compatible,
     class ShouldTest = decltype(alwaysReturnTrue)>
-std::vector<TestCase> changeFieldTypeTestCase(
+[[nodiscard]] std::vector<TestCase> changeFieldTypeTestCase(
     const Protocol& protocol, ShouldTest shouldTest = alwaysReturnTrue) {
   static_assert(!std::is_same_v<Old, New>);
 
@@ -188,6 +189,53 @@ std::vector<TestCase> changeFieldTypeTestCase(
   return ret;
 }
 
+template <class T>
+[[nodiscard]] const char* getQualifierName() {
+  if (std::is_same_v<T, mod_set<>>) {
+    return "Unqualified";
+  }
+  // TODO(ytj): use std::is_same_v<T, mod_set<type::FieldQualifier::Optional>>
+  if (std::is_same_v<T, mod_set<FieldModifier::Optional>>) {
+    return "Optional";
+  }
+  if (std::is_same_v<T, mod_set<FieldModifier::Required>>) {
+    return "Required";
+  }
+  throw std::runtime_error("Unknown ModSet");
+}
+
+template <class Old, class New>
+[[nodiscard]] std::vector<TestCase> changeQualifierTestCase(
+    const Protocol& protocol) {
+  using TypeTag = type::list<type::i32_t>;
+  std::vector<TestCase> ret;
+
+  for (const auto& value : ValueGenerator<TypeTag>::getInterestingValues()) {
+    typename struct_ByFieldType<TypeTag, Old>::type old_data;
+    typename struct_ByFieldType<TypeTag, New>::type new_data;
+
+    old_data.field_1() = value.value;
+    new_data.field_1() = value.value;
+
+    RoundTripTestCase roundTrip;
+    roundTrip.request()->value() =
+        AnyRegistry::generated().store(old_data, protocol);
+    roundTrip.expectedResponse().emplace().value() =
+        AnyRegistry::generated().store(new_data, protocol);
+
+    TestCase testCase;
+    testCase.name() = fmt::format(
+        "testset.{}.{}/ChangeQualifier/{}",
+        getQualifierName<Old>(),
+        getQualifierName<New>(),
+        value.name);
+    testCase.test()->roundTrip_ref() = std::move(roundTrip);
+    ret.push_back(std::move(testCase));
+  }
+
+  return ret;
+}
+
 template <typename TT>
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
@@ -219,6 +267,26 @@ Test createCompatibilityTest(const Protocol& protocol) {
             false>(protocol));
 
   // TODO: Test change between enum and integer.
+
+  addToTest(
+      changeQualifierTestCase<mod_set<>, mod_set<FieldModifier::Optional>>(
+          protocol));
+  addToTest(
+      changeQualifierTestCase<mod_set<>, mod_set<FieldModifier::Required>>(
+          protocol));
+  addToTest(
+      changeQualifierTestCase<mod_set<FieldModifier::Optional>, mod_set<>>(
+          protocol));
+  addToTest(changeQualifierTestCase<
+            mod_set<FieldModifier::Optional>,
+            mod_set<FieldModifier::Required>>(protocol));
+  addToTest(
+      changeQualifierTestCase<mod_set<FieldModifier::Required>, mod_set<>>(
+          protocol));
+  addToTest(changeQualifierTestCase<
+            mod_set<FieldModifier::Required>,
+            mod_set<FieldModifier::Optional>>(protocol));
+
   return test;
 }
 } // namespace
