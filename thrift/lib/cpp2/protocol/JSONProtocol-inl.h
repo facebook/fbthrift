@@ -142,13 +142,19 @@ static uint32_t clampSize(int64_t size) {
  */
 
 uint32_t JSONProtocolWriter::writeStructBegin(const char* /*name*/) {
+  descend();
+
   auto ret = writeContext();
   ret += beginContext(ContextType::MAP);
   return ret;
 }
 
 uint32_t JSONProtocolWriter::writeStructEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t JSONProtocolWriter::writeFieldBegin(
@@ -172,6 +178,8 @@ uint32_t JSONProtocolWriter::writeFieldStop() {
 
 uint32_t JSONProtocolWriter::writeMapBegin(
     TType keyType, TType valType, uint32_t size) {
+  descend();
+
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(
@@ -187,10 +195,15 @@ uint32_t JSONProtocolWriter::writeMapBegin(
 uint32_t JSONProtocolWriter::writeMapEnd() {
   auto ret = endContext();
   ret += endContext();
+
+  ascend();
+
   return ret;
 }
 
 uint32_t JSONProtocolWriter::writeListBegin(TType elemType, uint32_t size) {
+  descend();
+
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(
@@ -200,10 +213,16 @@ uint32_t JSONProtocolWriter::writeListBegin(TType elemType, uint32_t size) {
 }
 
 uint32_t JSONProtocolWriter::writeListEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t JSONProtocolWriter::writeSetBegin(TType elemType, uint32_t size) {
+  descend();
+
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(
@@ -213,7 +232,11 @@ uint32_t JSONProtocolWriter::writeSetBegin(TType elemType, uint32_t size) {
 }
 
 uint32_t JSONProtocolWriter::writeSetEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t JSONProtocolWriter::writeBool(bool value) {
@@ -286,11 +309,15 @@ uint32_t JSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
  */
 
 void JSONProtocolReader::readStructBegin(std::string& /*name*/) {
+  descend();
+
   ensureAndBeginContext(ContextType::MAP);
 }
 
 void JSONProtocolReader::readStructEnd() {
   endContext();
+
+  ascend();
 }
 
 void JSONProtocolReader::readFieldBegin(
@@ -316,6 +343,8 @@ void JSONProtocolReader::readFieldEnd() {
 
 void JSONProtocolReader::readMapBegin(
     TType& keyType, TType& valType, uint32_t& size) {
+  descend();
+
   ensureAndBeginContext(ContextType::ARRAY);
   std::string keyTypeS;
   readString(keyTypeS);
@@ -332,9 +361,13 @@ void JSONProtocolReader::readMapBegin(
 void JSONProtocolReader::readMapEnd() {
   endContext();
   endContext();
+
+  ascend();
 }
 
 void JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
+  descend();
+
   ensureAndBeginContext(ContextType::ARRAY);
   std::string elemTypeS;
   readString(elemTypeS);
@@ -346,6 +379,8 @@ void JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
 
 void JSONProtocolReader::readListEnd() {
   endContext();
+
+  ascend();
 }
 
 void JSONProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
