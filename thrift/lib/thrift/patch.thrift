@@ -197,3 +197,10 @@ struct BinaryPatch {
   // If set, all other patch operations are ignored.
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
 }
+
+// TODO(afuller): Document.
+@thrift.GenDefaultEnumValue
+enum PatchOp {
+  Assign = 1,
+  Add = 5,
+}

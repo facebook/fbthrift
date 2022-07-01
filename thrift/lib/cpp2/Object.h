@@ -17,6 +17,7 @@
 #pragma once
 
 #include <utility>
+
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/detail/Object.h>
