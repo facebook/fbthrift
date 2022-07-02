@@ -118,12 +118,12 @@ TYPED_TEST(ForEachFieldTest, test_metadata) {
 
 TYPED_TEST(ForEachFieldTest, modify_field) {
   struct1 s;
-  s.field0_ref() = 10;
-  s.field1_ref() = "20";
-  s.field2_ref() = enum1::field0;
-  s.field3_ref() = enum2::field1_2;
-  s.field4_ref().emplace().set_us("foo");
-  s.field5_ref().emplace().set_us_2("bar");
+  s.field0() = 10;
+  s.field1() = "20";
+  s.field2() = enum1::field0;
+  s.field3() = enum2::field1_2;
+  s.field4().emplace().set_us("foo");
+  s.field5().emplace().set_us_2("bar");
   auto run = folly::overload(
       [](int32_t& ref) {
         EXPECT_EQ(ref, 10);
@@ -154,12 +154,12 @@ TYPED_TEST(ForEachFieldTest, modify_field) {
     EXPECT_TRUE(ref.has_value());
     run(*ref);
   });
-  EXPECT_EQ(s.field0_ref(), 20);
-  EXPECT_EQ(s.field1_ref(), "30");
-  EXPECT_EQ(s.field2_ref(), enum1::field1);
-  EXPECT_EQ(s.field3_ref(), enum2::field2_2);
-  EXPECT_EQ(s.field4_ref()->get_ui(), 20);
-  EXPECT_EQ(s.field5_ref()->get_ui_2(), 30);
+  EXPECT_EQ(s.field0(), 20);
+  EXPECT_EQ(s.field1(), "30");
+  EXPECT_EQ(s.field2(), enum1::field1);
+  EXPECT_EQ(s.field3(), enum2::field2_2);
+  EXPECT_EQ(s.field4()->get_ui(), 20);
+  EXPECT_EQ(s.field5()->get_ui_2(), 30);
 }
 
 TYPED_TEST(ForEachFieldTest, test_cpp_ref_unique) {
@@ -302,8 +302,8 @@ TYPED_TEST(ForEachFieldTest, test_reference_type) {
 
 TYPED_TEST(ForEachFieldTest, test_two_structs_document) {
   structA thrift1;
-  thrift1.a_ref() = 10;
-  thrift1.b_ref() = "20";
+  thrift1.a() = 10;
+  thrift1.b() = "20";
   structA thrift2 = thrift1;
 
   TestFixture::adapter(
@@ -312,16 +312,16 @@ TYPED_TEST(ForEachFieldTest, test_two_structs_document) {
       [](const apache::thrift::metadata::ThriftField& meta,
          auto field_ref1,
          auto field_ref2) {
-        EXPECT_EQ(field_ref1, field_ref2) << *meta.name_ref() << " mismatch";
+        EXPECT_EQ(field_ref1, field_ref2) << *meta.name() << " mismatch";
       });
 }
 
 TYPED_TEST(ForEachFieldTest, test_two_structs_assignment) {
   struct1 s, t;
-  s.field0_ref() = 10;
-  s.field1_ref() = "11";
-  t.field0_ref() = 20;
-  t.field1_ref() = "22";
+  s.field0() = 10;
+  s.field1() = "11";
+  t.field0() = 20;
+  t.field1() = "22";
   auto run = folly::overload(
       [](auto& meta,
          required_field_ref<int32_t&> r1,
@@ -347,10 +347,10 @@ TYPED_TEST(ForEachFieldTest, test_two_structs_assignment) {
       },
       [](auto&&...) {});
   TestFixture::adapter(s, t, run);
-  EXPECT_EQ(s.field0_ref(), 30);
-  EXPECT_EQ(s.field1_ref(), "33");
-  EXPECT_EQ(t.field0_ref(), 40);
-  EXPECT_EQ(t.field1_ref(), "44");
+  EXPECT_EQ(s.field0(), 30);
+  EXPECT_EQ(s.field1(), "33");
+  EXPECT_EQ(t.field0(), 40);
+  EXPECT_EQ(t.field1(), "44");
 }
 
 struct TestPassCallableByValue {

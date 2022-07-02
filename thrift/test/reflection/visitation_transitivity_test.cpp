@@ -26,8 +26,8 @@ namespace test_cpp2 {
 namespace cpp_reflection {
 TEST(dep_C_struct, test_transitivity) {
   dep_C_struct s;
-  s.i_c_ref() = 10;
-  s.d_ref()->i_d_ref() = 20;
+  s.i_c() = 10;
+  s.d()->i_d() = 20;
   for_each_field(s, [](auto&&, auto&& ref) {
     folly::overload(
         [](int32_t i) { EXPECT_EQ(i, 10); },

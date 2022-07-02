@@ -87,40 +87,40 @@ TEST(fatal_struct, struct1_sanity_check) {
   EXPECT_SAME<field5s, traits::member::field5::name>();
 
   struct1 pod;
-  *pod.field0_ref() = 19;
-  pod.field1_ref() = "hello";
-  *pod.field2_ref() = enum1::field2;
-  *pod.field3_ref() = enum2::field1_2;
-  pod.field4_ref() = {};
-  pod.field4_ref()->set_ud(5.6);
-  pod.field5_ref()->set_us_2("world");
+  *pod.field0() = 19;
+  pod.field1() = "hello";
+  *pod.field2() = enum1::field2;
+  *pod.field3() = enum2::field1_2;
+  pod.field4() = {};
+  pod.field4()->set_ud(5.6);
+  pod.field5()->set_us_2("world");
 
-  EXPECT_EQ(*pod.field0_ref(), traits::member::field0::getter{}(pod));
-  EXPECT_EQ(*pod.field1_ref(), traits::member::field1::getter{}(pod));
-  EXPECT_EQ(*pod.field2_ref(), traits::member::field2::getter{}(pod));
-  EXPECT_EQ(*pod.field3_ref(), traits::member::field3::getter{}(pod));
-  EXPECT_EQ(*pod.field4_ref(), traits::member::field4::getter{}(pod));
-  EXPECT_EQ(*pod.field5_ref(), traits::member::field5::getter{}(pod));
+  EXPECT_EQ(*pod.field0(), traits::member::field0::getter{}(pod));
+  EXPECT_EQ(*pod.field1(), traits::member::field1::getter{}(pod));
+  EXPECT_EQ(*pod.field2(), traits::member::field2::getter{}(pod));
+  EXPECT_EQ(*pod.field3(), traits::member::field3::getter{}(pod));
+  EXPECT_EQ(*pod.field4(), traits::member::field4::getter{}(pod));
+  EXPECT_EQ(*pod.field5(), traits::member::field5::getter{}(pod));
 
   traits::member::field0::getter{}(pod) = 98;
-  EXPECT_EQ(98, *pod.field0_ref());
+  EXPECT_EQ(98, *pod.field0());
 
   traits::member::field1::getter{}(pod) = "test";
-  EXPECT_EQ("test", *pod.field1_ref());
+  EXPECT_EQ("test", *pod.field1());
 
   traits::member::field2::getter{}(pod) = enum1::field0;
-  EXPECT_EQ(enum1::field0, *pod.field2_ref());
+  EXPECT_EQ(enum1::field0, *pod.field2());
 
   traits::member::field3::getter{}(pod) = enum2::field2_2;
-  EXPECT_EQ(enum2::field2_2, *pod.field3_ref());
+  EXPECT_EQ(enum2::field2_2, *pod.field3());
 
   traits::member::field4::getter{}(pod).set_ui(56);
-  EXPECT_EQ(union1::Type::ui, pod.field4_ref()->getType());
-  EXPECT_EQ(56, pod.field4_ref()->get_ui());
+  EXPECT_EQ(union1::Type::ui, pod.field4()->getType());
+  EXPECT_EQ(56, pod.field4()->get_ui());
 
   traits::member::field5::getter{}(pod).set_ue_2(enum1::field1);
-  EXPECT_EQ(union2::Type::ue_2, pod.field5_ref()->getType());
-  EXPECT_EQ(enum1::field1, pod.field5_ref()->get_ue_2());
+  EXPECT_EQ(union2::Type::ue_2, pod.field5()->getType());
+  EXPECT_EQ(enum1::field1, pod.field5()->get_ue_2());
 
   EXPECT_SAME<
       field0s,
@@ -596,8 +596,8 @@ TEST(fatal_struct, field_ref_getter) {
   req_field::field_ref_getter req;
   EXPECT_TRUE(req(a).has_value());
   req(a) = 1;
-  EXPECT_EQ(a.field0_ref(), 1);
-  a.field0_ref() = 2;
+  EXPECT_EQ(a.field0(), 1);
+  a.field0() = 2;
   EXPECT_EQ(req(a), 2);
   static_assert(
       std::is_same<
@@ -608,8 +608,8 @@ TEST(fatal_struct, field_ref_getter) {
   opt_field::field_ref_getter opt;
   EXPECT_FALSE(opt(a));
   opt(a) = "1";
-  EXPECT_EQ(a.field1_ref(), "1");
-  a.field1_ref() = "2";
+  EXPECT_EQ(a.field1(), "1");
+  a.field1() = "2";
   EXPECT_EQ(opt(a), "2");
   static_assert(
       std::is_same<
@@ -620,8 +620,8 @@ TEST(fatal_struct, field_ref_getter) {
   def_field::field_ref_getter def;
   EXPECT_FALSE(def(a).is_set());
   def(a) = enum1::field1;
-  EXPECT_EQ(a.field2_ref(), enum1::field1);
-  a.field2_ref() = enum1::field2;
+  EXPECT_EQ(a.field2(), enum1::field1);
+  a.field2() = enum1::field2;
   EXPECT_EQ(def(a), enum1::field2);
   static_assert(
       std::is_same<apache::thrift::field_ref<enum1&>, decltype(def(a))>::value,
@@ -629,10 +629,10 @@ TEST(fatal_struct, field_ref_getter) {
 
   ref_field::field_ref_getter ref;
   EXPECT_TRUE(ref(a));
-  ref(a)->a_ref() = 1;
-  EXPECT_EQ(a.field3_ref()->a_ref(), 1);
-  a.field3_ref()->a_ref() = 2;
-  EXPECT_EQ(ref(a)->a_ref(), 2);
+  ref(a)->a() = 1;
+  EXPECT_EQ(a.field3_ref()->a(), 1);
+  a.field3_ref()->a() = 2;
+  EXPECT_EQ(ref(a)->a(), 2);
   static_assert(
       std::is_same<std::unique_ptr<structA>&, decltype(ref(a))>::value, "");
 }

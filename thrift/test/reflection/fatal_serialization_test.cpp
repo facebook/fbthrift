@@ -72,24 +72,24 @@ namespace test_cpp2 {
 namespace simple_cpp_reflection {
 
 void init_struct_1(struct1& a) {
-  *a.field0_ref() = 10;
-  a.field1_ref() = "this is a string";
-  a.field2_ref() = enum1::field1;
-  *a.field3_ref() = {{1, 2, 3}, {4, 5, 6, 7}};
-  *a.field4_ref() = {1, 1, 2, 3, 4, 10, 4, 6};
-  *a.field5_ref() = {{42, "<answer>"}, {55, "schwifty five"}};
-  a.field6_ref()->nfield00_ref() = 5.678;
-  a.field6_ref()->nfield01_ref() = 0x42;
-  *a.field7_ref() = 0xCAFEBABEA4DAFACE;
-  *a.field8_ref() = "this field isn't set";
+  *a.field0() = 10;
+  a.field1() = "this is a string";
+  a.field2() = enum1::field1;
+  *a.field3() = {{1, 2, 3}, {4, 5, 6, 7}};
+  *a.field4() = {1, 1, 2, 3, 4, 10, 4, 6};
+  *a.field5() = {{42, "<answer>"}, {55, "schwifty five"}};
+  a.field6()->nfield00() = 5.678;
+  a.field6()->nfield01() = 0x42;
+  *a.field7() = 0xCAFEBABEA4DAFACE;
+  *a.field8() = "this field isn't set";
 
-  *a.field10_ref() = {true, false, true, false, false, true, true};
+  *a.field10() = {true, false, true, false, false, true, true};
 
-  apache::thrift::ensure_isset_unsafe(a.field1_ref());
-  apache::thrift::ensure_isset_unsafe(a.field2_ref());
-  apache::thrift::ensure_isset_unsafe(a.field6_ref()->nfield00_ref());
-  apache::thrift::ensure_isset_unsafe(a.field6_ref()->nfield01_ref());
-  a.field7_ref().ensure();
+  apache::thrift::ensure_isset_unsafe(a.field1());
+  apache::thrift::ensure_isset_unsafe(a.field2());
+  apache::thrift::ensure_isset_unsafe(a.field6()->nfield00());
+  apache::thrift::ensure_isset_unsafe(a.field6()->nfield01());
+  a.field7().ensure();
 }
 
 TYPED_TEST(MultiProtocolTest, test_serialization) {
@@ -97,33 +97,32 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   struct1 a, b;
   init_struct_1(a);
 
-  EXPECT_EQ(*a.field4_ref(), (std::set<int32_t>{1, 2, 3, 4, 6, 10}));
+  EXPECT_EQ(*a.field4(), (std::set<int32_t>{1, 2, 3, 4, 6, 10}));
 
   serializer_write(a, this->writer);
   this->prep_read();
 
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(*a.field0_ref(), *b.field0_ref());
-  EXPECT_EQ(a.field1_ref(), b.field1_ref());
-  EXPECT_EQ(a.field2_ref(), b.field2_ref());
-  EXPECT_EQ(*a.field3_ref(), *b.field3_ref());
-  EXPECT_EQ(*a.field4_ref(), *b.field4_ref());
-  EXPECT_EQ(*a.field5_ref(), *b.field5_ref());
+  EXPECT_EQ(*a.field0(), *b.field0());
+  EXPECT_EQ(a.field1(), b.field1());
+  EXPECT_EQ(a.field2(), b.field2());
+  EXPECT_EQ(*a.field3(), *b.field3());
+  EXPECT_EQ(*a.field4(), *b.field4());
+  EXPECT_EQ(*a.field5(), *b.field5());
 
-  EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
-  EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
-  EXPECT_EQ(*a.field6_ref(), *b.field6_ref());
-  EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
-  EXPECT_EQ(
-      *a.field8_ref(),
-      *b.field8_ref()); // default fields are always written out
-  EXPECT_EQ(*a.field10_ref(), *b.field10_ref());
+  EXPECT_EQ(a.field6()->nfield00(), b.field6()->nfield00());
+  EXPECT_EQ(a.field6()->nfield01(), b.field6()->nfield01());
+  EXPECT_EQ(*a.field6(), *b.field6());
+  EXPECT_EQ(*a.field7(), *b.field7());
+  EXPECT_EQ(*a.field8(),
+            *b.field8()); // default fields are always written out
+  EXPECT_EQ(*a.field10(), *b.field10());
 
-  EXPECT_TRUE(b.field1_ref().has_value());
-  EXPECT_TRUE(b.field2_ref().has_value());
-  EXPECT_TRUE(b.field7_ref().has_value());
-  EXPECT_TRUE(b.field8_ref().has_value());
+  EXPECT_TRUE(b.field1().has_value());
+  EXPECT_TRUE(b.field2().has_value());
+  EXPECT_TRUE(b.field7().has_value());
+  EXPECT_TRUE(b.field8().has_value());
 }
 
 TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
@@ -137,44 +136,43 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
   struct1 b;
   b.read(&this->reader);
 
-  EXPECT_EQ(*a.field0_ref(), *b.field0_ref());
-  EXPECT_EQ(a.field1_ref(), b.field1_ref());
-  EXPECT_EQ(a.field2_ref(), b.field2_ref());
-  EXPECT_EQ(*a.field3_ref(), *b.field3_ref());
-  EXPECT_EQ(*a.field4_ref(), *b.field4_ref());
-  EXPECT_EQ(*a.field5_ref(), *b.field5_ref());
+  EXPECT_EQ(*a.field0(), *b.field0());
+  EXPECT_EQ(a.field1(), b.field1());
+  EXPECT_EQ(a.field2(), b.field2());
+  EXPECT_EQ(*a.field3(), *b.field3());
+  EXPECT_EQ(*a.field4(), *b.field4());
+  EXPECT_EQ(*a.field5(), *b.field5());
 
-  EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
-  EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
-  EXPECT_EQ(*a.field6_ref(), *b.field6_ref());
-  EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
-  EXPECT_EQ(
-      *a.field8_ref(),
-      *b.field8_ref()); // default fields are always written out
+  EXPECT_EQ(a.field6()->nfield00(), b.field6()->nfield00());
+  EXPECT_EQ(a.field6()->nfield01(), b.field6()->nfield01());
+  EXPECT_EQ(*a.field6(), *b.field6());
+  EXPECT_EQ(*a.field7(), *b.field7());
+  EXPECT_EQ(*a.field8(),
+            *b.field8()); // default fields are always written out
 
-  EXPECT_TRUE(b.field1_ref().has_value());
-  EXPECT_TRUE(b.field2_ref().has_value());
-  EXPECT_TRUE(b.field7_ref().has_value());
-  EXPECT_TRUE(b.field8_ref().has_value());
+  EXPECT_TRUE(b.field1().has_value());
+  EXPECT_TRUE(b.field2().has_value());
+  EXPECT_TRUE(b.field7().has_value());
+  EXPECT_TRUE(b.field8().has_value());
 }
 
 TYPED_TEST(MultiProtocolTest, test_other_containers) {
   struct4 a, b;
 
-  *a.um_field_ref() = {{42, "answer"}, {5, "five"}};
-  *a.us_field_ref() = {7, 11, 13, 17, 13, 19, 11};
-  *a.deq_field_ref() = {10, 20, 30, 40};
+  *a.um_field() = {{42, "answer"}, {5, "five"}};
+  *a.us_field() = {7, 11, 13, 17, 13, 19, 11};
+  *a.deq_field() = {10, 20, 30, 40};
 
   serializer_write(a, this->writer);
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.um_field_ref().has_value());
-  EXPECT_TRUE(b.us_field_ref().has_value());
-  EXPECT_TRUE(b.deq_field_ref().has_value());
-  EXPECT_EQ(*a.um_field_ref(), *b.um_field_ref());
-  EXPECT_EQ(*a.us_field_ref(), *b.us_field_ref());
-  EXPECT_EQ(*a.deq_field_ref(), *b.deq_field_ref());
+  EXPECT_TRUE(b.um_field().has_value());
+  EXPECT_TRUE(b.us_field().has_value());
+  EXPECT_TRUE(b.deq_field().has_value());
+  EXPECT_EQ(*a.um_field(), *b.um_field());
+  EXPECT_EQ(*a.us_field(), *b.us_field());
+  EXPECT_EQ(*a.deq_field(), *b.deq_field());
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -183,8 +181,8 @@ TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
   a.opt_nested_ref() = std::make_unique<smallstruct>();
   a.req_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.opt_nested_ref()->f1_ref() = 5;
-  *a.req_nested_ref()->f1_ref() = 10;
+  *a.opt_nested_ref()->f1() = 5;
+  *a.req_nested_ref()->f1() = 10;
 
   // ref fields, interesting enough, do not have an __isset,
   // but are xfered based on the pointer value (nullptr or not)
@@ -205,8 +203,8 @@ TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
   a.def_nested_ref() = std::make_unique<smallstruct>();
   a.req_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.def_nested_ref()->f1_ref() = 5;
-  *a.req_nested_ref()->f1_ref() = 10;
+  *a.def_nested_ref()->f1() = 5;
+  *a.req_nested_ref()->f1() = 10;
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -225,8 +223,8 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   a.def_nested_ref() = std::make_unique<smallstruct>();
   a.opt_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.def_nested_ref()->f1_ref() = 5;
-  *a.opt_nested_ref()->f1_ref() = 10;
+  *a.def_nested_ref()->f1() = 5;
+  *a.opt_nested_ref()->f1() = 10;
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -241,16 +239,16 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
 
 TYPED_TEST(MultiProtocolTest, test_blank_optional_boxed_field) {
   struct3 a, b;
-  a.box_nested1_ref().ensure().f1_ref() = 5;
+  a.box_nested1().ensure().f1() = 5;
 
   serializer_write(a, this->writer);
   this->prep_read();
   this->debug_buffer();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(*a.box_nested1_ref(), *b.box_nested1_ref());
-  EXPECT_FALSE(a.box_nested2_ref().has_value());
-  EXPECT_FALSE(b.box_nested2_ref().has_value());
+  EXPECT_EQ(*a.box_nested1(), *b.box_nested1());
+  EXPECT_FALSE(a.box_nested2().has_value());
+  EXPECT_FALSE(b.box_nested2().has_value());
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -295,8 +293,8 @@ TYPED_TEST(CompareProtocolTest, test_larger_containers) {
     large_map.emplace(i, std::string("string"));
   }
 
-  *a1.field5_ref() = large_map;
-  *a2.field5_ref() = large_map;
+  *a1.field5() = large_map;
+  *a2.field5() = large_map;
 
   EXPECT_EQ(a1, a2);
   EXPECT_EQ(
@@ -345,9 +343,9 @@ const folly::StringPiece test_string2(test_range2);
 TYPED_TEST(MultiProtocolTest, test_binary_containers) {
   struct5 a, b;
 
-  *a.def_field_ref() = test_string.str();
-  *a.iobuf_field_ref() = folly::IOBuf::wrapBufferAsValue(test_range);
-  *a.iobufptr_field_ref() = folly::IOBuf::wrapBuffer(test_range2);
+  *a.def_field() = test_string.str();
+  *a.iobuf_field() = folly::IOBuf::wrapBufferAsValue(test_range);
+  *a.iobufptr_field() = folly::IOBuf::wrapBuffer(test_range2);
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -355,29 +353,29 @@ TYPED_TEST(MultiProtocolTest, test_binary_containers) {
 
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.def_field_ref().has_value());
-  EXPECT_TRUE(b.iobuf_field_ref().has_value());
-  EXPECT_TRUE(b.iobufptr_field_ref().has_value());
-  EXPECT_EQ(*a.def_field_ref(), *b.def_field_ref());
+  EXPECT_TRUE(b.def_field().has_value());
+  EXPECT_TRUE(b.iobuf_field().has_value());
+  EXPECT_TRUE(b.iobufptr_field().has_value());
+  EXPECT_EQ(*a.def_field(), *b.def_field());
 
-  EXPECT_EQ(test_range, b.iobuf_field_ref()->coalesce());
-  EXPECT_EQ(test_range2, (*b.iobufptr_field_ref())->coalesce());
+  EXPECT_EQ(test_range, b.iobuf_field()->coalesce());
+  EXPECT_EQ(test_range2, (*b.iobufptr_field())->coalesce());
   expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(MultiProtocolTest, test_workaround_binary) {
   struct5_workaround a, b;
-  *a.def_field_ref() = test_string.str();
-  *a.iobuf_field_ref() = folly::IOBuf::wrapBufferAsValue(test_range2);
+  *a.def_field() = test_string.str();
+  *a.iobuf_field() = folly::IOBuf::wrapBufferAsValue(test_range2);
 
   serializer_write(a, this->writer);
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.def_field_ref().has_value());
-  EXPECT_TRUE(b.iobuf_field_ref().has_value());
-  EXPECT_EQ(test_string.str(), *b.def_field_ref());
-  EXPECT_EQ(test_range2, b.iobuf_field_ref()->coalesce());
+  EXPECT_TRUE(b.def_field().has_value());
+  EXPECT_TRUE(b.iobuf_field().has_value());
+  EXPECT_EQ(test_string.str(), *b.def_field());
+  EXPECT_EQ(test_range2, b.iobuf_field()->coalesce());
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -400,15 +398,15 @@ TYPED_TEST(MultiProtocolTest, shared_const_ptr_test) {
   struct8 a, b;
 
   auto def_field = std::make_unique<smallstruct>();
-  *def_field->f1_ref() = 10;
+  *def_field->f1() = 10;
   a.def_field_ref() = std::move(def_field);
 
   auto opt_field = std::make_unique<smallstruct>();
-  *opt_field->f1_ref() = 20;
+  *opt_field->f1() = 20;
   a.opt_field_ref() = std::move(opt_field);
 
   auto req_field = std::make_unique<smallstruct>();
-  *req_field->f1_ref() = 30;
+  *req_field->f1() = 30;
   a.req_field_ref() = std::move(req_field);
 
   serializer_write(a, this->writer);
@@ -466,7 +464,7 @@ TYPED_TEST(UnionTest, can_read_iobufs) {
 }
 TYPED_TEST(UnionTest, can_read_nestedstructs) {
   smallstruct nested;
-  *nested.f1_ref() = 6;
+  *nested.f1() = 6;
   this->a.set_field_smallstruct(nested);
   this->xfer();
   EXPECT_EQ(6, *this->b.get_field_smallstruct()->f1_ref());
@@ -521,7 +519,7 @@ TEST_F(SimpleJsonTest, doesnt_throws_on_unset_required_value) {
   set_input("{}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_EQ("", *a.req_string_ref());
+  EXPECT_EQ("", *a.req_string());
 }
 
 // wrap in quotes
@@ -535,31 +533,31 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   set_input("{" KVS("req_string", "required") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_FALSE(a.opt_string_ref().has_value()); // gcc bug?
-  EXPECT_FALSE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", *a.req_string_ref());
-  EXPECT_EQ("", *a.def_string_ref());
+  EXPECT_FALSE(a.opt_string().has_value()); // gcc bug?
+  EXPECT_FALSE(a.def_string().has_value());
+  EXPECT_EQ("required", *a.req_string());
+  EXPECT_EQ("", *a.def_string());
 }
 TEST_F(SimpleJsonTest, sets_opt_members) {
   set_input(
       "{" KVS("req_string", "required") "," KVS("opt_string", "optional") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_TRUE(a.opt_string_ref().has_value()); // gcc bug?
-  EXPECT_FALSE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", *a.req_string_ref());
-  EXPECT_EQ("optional", *a.opt_string_ref());
-  EXPECT_EQ("", *a.def_string_ref());
+  EXPECT_TRUE(a.opt_string().has_value()); // gcc bug?
+  EXPECT_FALSE(a.def_string().has_value());
+  EXPECT_EQ("required", *a.req_string());
+  EXPECT_EQ("optional", *a.opt_string());
+  EXPECT_EQ("", *a.def_string());
 }
 TEST_F(SimpleJsonTest, sets_def_members) {
   set_input(
       "{" KVS("req_string", "required") "," KVS("def_string", "default") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_FALSE(a.opt_string_ref().has_value());
-  EXPECT_TRUE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", *a.req_string_ref());
-  EXPECT_EQ("default", *a.def_string_ref());
+  EXPECT_FALSE(a.opt_string().has_value());
+  EXPECT_TRUE(a.def_string().has_value());
+  EXPECT_EQ("required", *a.req_string());
+  EXPECT_EQ("default", *a.def_string());
 }
 TEST_F(SimpleJsonTest, doesnt_throws_on_missing_required_ref) {
   // clang-format off
@@ -576,7 +574,7 @@ TEST_F(SimpleJsonTest, doesnt_throws_on_missing_required_ref) {
   struct3 a;
 
   serializer_read(a, reader);
-  EXPECT_EQ(0, *a.req_nested_ref()->f1_ref());
+  EXPECT_EQ(0, *a.req_nested_ref()->f1());
 }
 TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
   // clang-format off
@@ -595,9 +593,9 @@ TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
 
   struct3 a;
   serializer_read(a, reader);
-  EXPECT_EQ(10, *a.opt_nested_ref()->f1_ref());
-  EXPECT_EQ(5, *a.def_nested_ref()->f1_ref());
-  EXPECT_EQ(15, *a.req_nested_ref()->f1_ref());
+  EXPECT_EQ(10, *a.opt_nested_ref()->f1());
+  EXPECT_EQ(5, *a.def_nested_ref()->f1());
+  EXPECT_EQ(15, *a.req_nested_ref()->f1());
 }
 #undef KV
 } // namespace simple_cpp_reflection

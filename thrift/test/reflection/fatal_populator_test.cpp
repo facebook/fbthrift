@@ -45,24 +45,24 @@ TYPED_TEST(MultiProtocolTest, test_structs_populate) {
     this->debug_buffer();
     serializer_read(b, this->reader);
 
-    ASSERT_EQ(*a.field1_ref(), *b.field1_ref());
-    ASSERT_EQ(*a.field2_ref(), *b.field2_ref());
-    ASSERT_EQ(*a.field3_ref(), *b.field3_ref());
-    ASSERT_EQ(*a.field4_ref(), *b.field4_ref());
-    ASSERT_EQ(*a.field5_ref(), *b.field5_ref());
-    ASSERT_EQ(*a.field6_ref(), *b.field6_ref());
-    ASSERT_EQ(*a.field7_ref(), *b.field7_ref());
-    ASSERT_EQ(*a.field8_ref(), *b.field8_ref());
-    ASSERT_EQ(*a.field9_ref(), *b.field9_ref());
+    ASSERT_EQ(*a.field1(), *b.field1());
+    ASSERT_EQ(*a.field2(), *b.field2());
+    ASSERT_EQ(*a.field3(), *b.field3());
+    ASSERT_EQ(*a.field4(), *b.field4());
+    ASSERT_EQ(*a.field5(), *b.field5());
+    ASSERT_EQ(*a.field6(), *b.field6());
+    ASSERT_EQ(*a.field7(), *b.field7());
+    ASSERT_EQ(*a.field8(), *b.field8());
+    ASSERT_EQ(*a.field9(), *b.field9());
     ASSERT_EQ(*(a.field10_ref()), *(b.field10_ref()));
 
-    auto abuf = a.field11_ref()->coalesce();
-    auto bbuf = b.field11_ref()->coalesce();
+    auto abuf = a.field11()->coalesce();
+    auto bbuf = b.field11()->coalesce();
 
     ASSERT_EQ(abuf.size(), bbuf.size());
     ASSERT_EQ(abuf, bbuf);
 
-    ASSERT_EQ(*a.field12_ref(), *b.field12_ref());
+    ASSERT_EQ(*a.field12(), *b.field12());
     if (a.field13_ref()) {
       ASSERT_EQ(*(a.field13_ref()), *(b.field13_ref()));
     } else {
@@ -99,7 +99,7 @@ TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p0) {
   for (int i = 0; i < 100; i++) {
     nested1 t;
     populator::populate(t, opts, rng);
-    if (t.nfield00_ref().has_value()) {
+    if (t.nfield00().has_value()) {
       set_count++;
     }
   }
@@ -115,7 +115,7 @@ TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p30) {
   for (int i = 0; i < 1000; i++) {
     nested1 t;
     populator::populate(t, opts, rng);
-    if (t.nfield00_ref().has_value()) {
+    if (t.nfield00().has_value()) {
       set_count++;
     }
   }
@@ -133,7 +133,7 @@ TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p100) {
   for (int i = 0; i < 100; i++) {
     nested1 t;
     populator::populate(t, opts, rng);
-    if (t.nfield00_ref().has_value()) {
+    if (t.nfield00().has_value()) {
       set_count++;
     }
   }

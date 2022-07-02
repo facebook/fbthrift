@@ -379,8 +379,8 @@ TEST(fatal_folly_dynamic, booleans) {
   };
 
   test_cpp2::cpp_reflection::structB expected;
-  *expected.c_ref() = 1.3;
-  *expected.d_ref() = true;
+  *expected.c() = 1.3;
+  *expected.d() = true;
 
   EXPECT_EQ(expected, decode(R"({ "c": 1.3, "d": 1})"));
   EXPECT_EQ(expected, decode(R"({ "c": 1.3, "d": 100})"));
@@ -419,7 +419,7 @@ TEST(fatal_folly_dynamic, to_from_dynamic_binary) {
 
   // to
   test_cpp2::cpp_reflection::struct_binary a;
-  *a.bi_ref() = "123abc";
+  *a.bi() = "123abc";
 
   actl = to_dynamic(a, dynamic_format::PORTABLE);
   expt = folly::dynamic::object("bi", "123abc");
@@ -430,7 +430,7 @@ TEST(fatal_folly_dynamic, to_from_dynamic_binary) {
   auto obj = from_dynamic<test_cpp2::cpp_reflection::struct_binary>(
       folly::dynamic::object("bi", "123abc"),
       apache::thrift::dynamic_format::PORTABLE);
-  EXPECT_EQ("123abc", *obj.bi_ref());
+  EXPECT_EQ("123abc", *obj.bi());
 }
 
 namespace {
@@ -559,8 +559,8 @@ TEST(fatal_folly_dynamic, to_from_variant_ref_unique) {
   test_cpp2::cpp_reflection::variantHasRefUnique pod;
 
   test_cpp2::cpp_reflection::structA inner;
-  inner.a_ref() = 109;
-  inner.b_ref() = "testing yo";
+  inner.a() = 109;
+  inner.b() = "testing yo";
   pod.set_aStruct(inner);
 
   auto const rawJson = folly::stripLeftMargin(R"({
@@ -577,9 +577,9 @@ TEST(fatal_folly_dynamic, to_from_variant_ref_unique) {
 TEST(fatal_pretty_print, to_from_struct_box) {
   test_cpp2::cpp_reflection::hasBoxSimple pod;
 
-  auto& inner = pod.anOptionalStruct_ref().ensure();
-  inner.a_ref() = 109;
-  inner.b_ref() = "testing yo";
+  auto& inner = pod.anOptionalStruct().ensure();
+  inner.a() = 109;
+  inner.b() = "testing yo";
 
   auto const rawJson = folly::stripLeftMargin(R"({
     "anOptionalStruct": {
@@ -603,7 +603,7 @@ TEST(fatal_folly_dynamic, optional_string) {
   auto obj = apache::thrift::from_dynamic<global_struct1>(
       folly::dynamic::object("field1", "asdf"),
       apache::thrift::dynamic_format::PORTABLE);
-  EXPECT_EQ("asdf", *obj.field1_ref());
+  EXPECT_EQ("asdf", *obj.field1());
 }
 
 TEST(fatal_folly_dynamic, list_from_empty_object) {
@@ -668,7 +668,7 @@ TEST(fatal_folly_dynamic, from_iobuf) {
   auto obj =
       apache::thrift::from_dynamic<test_cpp2::cpp_reflection::StructWithIOBuf>(
           dyn, apache::thrift::dynamic_format::PORTABLE);
-  EXPECT_EQ((*obj.buf_ref())->moveToFbString(), "foo");
+  EXPECT_EQ((*obj.buf())->moveToFbString(), "foo");
 }
 
 namespace {

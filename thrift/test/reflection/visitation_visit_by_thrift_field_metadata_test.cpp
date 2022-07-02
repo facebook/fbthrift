@@ -38,8 +38,8 @@ auto idToThriftField(int32_t id) {
 
 TEST(struct1, modify_field) {
   struct1 s;
-  s.field4_ref().emplace().set_us("foo");
-  s.field5_ref().emplace().set_us_2("bar");
+  s.field4().emplace().set_us("foo");
+  s.field5().emplace().set_us_2("bar");
   auto run = folly::overload(
       [](union1& ref) {
         EXPECT_EQ(ref.get_us(), "foo");
@@ -51,10 +51,10 @@ TEST(struct1, modify_field) {
     EXPECT_TRUE(ref.has_value());
     run(*ref);
   });
-  EXPECT_EQ(s.field4_ref()->ui_ref(), 20);
-  EXPECT_EQ(s.field5_ref()->us_2_ref(), "bar");
+  EXPECT_EQ(s.field4()->ui_ref(), 20);
+  EXPECT_EQ(s.field5()->us_2_ref(), "bar");
 
-  meta.id_ref() = 123456;
+  meta.id() = 123456;
   EXPECT_THROW(
       apache::thrift::visit_by_thrift_field_metadata(s, meta, [](auto&&...) {}),
       apache::thrift::InvalidThriftId);

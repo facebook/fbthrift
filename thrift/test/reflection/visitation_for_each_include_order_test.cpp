@@ -27,12 +27,12 @@ using namespace test_cpp2::cpp_reflection;
 
 TEST(structA, test) {
   structA s;
-  s.a_ref() = 1;
-  s.b_ref() = "1";
+  s.a() = 1;
+  s.b() = "1";
   for_each_field(s, [](auto&&, auto ref) {
     EXPECT_EQ(folly::to<std::string>(*ref), "1");
     ref = folly::to<typename decltype(ref)::value_type>(2);
   });
-  EXPECT_EQ(s.a_ref(), 2);
-  EXPECT_EQ(s.b_ref(), "2");
+  EXPECT_EQ(s.a(), 2);
+  EXPECT_EQ(s.b(), "2");
 }
