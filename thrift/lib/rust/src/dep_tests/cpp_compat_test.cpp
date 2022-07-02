@@ -32,7 +32,7 @@ TEST(JsonTest, structKey) {
   azw::SubStruct stru;
   std::map<azw::Small, int32_t> m;
   m.insert({s, 1});
-  stru.key_map_ref() = m;
+  stru.key_map() = m;
 
   SubStruct outStruct;
 
@@ -47,8 +47,8 @@ TEST(JsonTest, structKey) {
 
 TEST(JsonTest, weirdText) {
   azw::SubStruct stru;
-  stru.optDef_ref() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
-  stru.bin_ref() = "1234";
+  stru.optDef() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
+  stru.bin() = "1234";
 
   SubStruct outStruct;
 
@@ -61,7 +61,7 @@ TEST(JsonTest, weirdText) {
   apache::thrift::SimpleJSONSerializer::deserialize(t, outStruct);
   ASSERT_EQ(stru, outStruct);
 
-  stru.optDef_ref() = "UNICODE\U0001F60AUH OH";
+  stru.optDef() = "UNICODE\U0001F60AUH OH";
   t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(stru);
   ASSERT_EQ(
       t,
@@ -74,8 +74,8 @@ TEST(JsonTest, weirdText) {
 
 TEST(JsonTest, skipComplex) {
   azw::SubStruct stru;
-  stru.optDef_ref() = "thing";
-  stru.bin_ref() = "1234";
+  stru.optDef() = "thing";
+  stru.bin() = "1234";
 
   SubStruct outStruct;
 
@@ -139,7 +139,7 @@ TEST(JsonTest, needCommasContainers) {
 
 TEST(JsonTest, nullStuff) {
   azw::SubStruct stru;
-  stru.bin_ref() = "1234";
+  stru.bin() = "1234";
 
   SubStruct outStruct;
 
