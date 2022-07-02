@@ -221,7 +221,7 @@ TEST(References, type_adapter_ref_struct_fields_clear) {
       std::make_shared<Wrapper<std::string>>(wrapper);
   obj.req_shared_const_field_ref() =
       std::make_shared<Wrapper<std::string>>(wrapper);
-  obj.opt_box_field_ref() = Wrapper<std::string>{wrapper};
+  obj.opt_box_field() = Wrapper<std::string>{wrapper};
 
   EXPECT_EQ(obj.def_shared_field_ref()->value, "1");
   EXPECT_EQ(obj.req_shared_field_ref()->value, "1");
@@ -229,7 +229,7 @@ TEST(References, type_adapter_ref_struct_fields_clear) {
   EXPECT_EQ(obj.def_shared_const_field_ref()->value, "1");
   EXPECT_EQ(obj.req_shared_const_field_ref()->value, "1");
   EXPECT_EQ(obj.opt_shared_const_field_ref()->value, "1");
-  EXPECT_EQ(obj.opt_box_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_box_field()->value, "1");
 
   apache::thrift::clear(obj);
 
@@ -247,7 +247,7 @@ TEST(References, field_adapter_ref_struct_fields_clear) {
   // EXPECT_EQ(obj.def_shared_const_field_ref()->meta, &*obj.meta());
   // EXPECT_EQ(obj.req_shared_const_field_ref()->meta, &*obj.meta());
   EXPECT_FALSE(obj.opt_shared_const_field_ref());
-  EXPECT_FALSE(obj.opt_box_field_ref());
+  EXPECT_FALSE(obj.opt_box_field());
 
   obj.def_shared_field_ref() = std::make_shared<
       AdaptedWithContext<std::string, FieldAdapterRefStruct, 1>>("1");
@@ -261,7 +261,7 @@ TEST(References, field_adapter_ref_struct_fields_clear) {
       AdaptedWithContext<std::string, FieldAdapterRefStruct, 5>>("1");
   obj.req_shared_const_field_ref() = std::make_shared<
       AdaptedWithContext<std::string, FieldAdapterRefStruct, 6>>("1");
-  obj.opt_box_field_ref() =
+  obj.opt_box_field() =
       AdaptedWithContext<std::string, FieldAdapterRefStruct, 7>{"1"};
 
   EXPECT_EQ(obj.def_shared_field_ref()->value, "1");
@@ -270,7 +270,7 @@ TEST(References, field_adapter_ref_struct_fields_clear) {
   EXPECT_EQ(obj.def_shared_const_field_ref()->value, "1");
   EXPECT_EQ(obj.req_shared_const_field_ref()->value, "1");
   EXPECT_EQ(obj.opt_shared_const_field_ref()->value, "1");
-  EXPECT_EQ(obj.opt_box_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_box_field()->value, "1");
 
   apache::thrift::clear(obj);
 
@@ -319,15 +319,15 @@ TEST(References, field_ref) {
           const std::shared_ptr<const PlainStruct>&&>);
 
   a.def_field_ref() = std::make_unique<PlainStruct>();
-  a.def_field_ref()->field_ref() = 10;
+  a.def_field_ref()->field() = 10;
   auto x = std::move(a).def_field_ref();
-  EXPECT_EQ(x->field_ref(), 10);
+  EXPECT_EQ(x->field(), 10);
   EXPECT_FALSE(a.def_field_ref());
 
   a.def_field_ref() = std::make_unique<PlainStruct>();
-  a.def_field_ref()->field_ref() = 20;
+  a.def_field_ref()->field() = 20;
   auto y = std::move(a.def_field_ref());
-  EXPECT_EQ(y->field_ref(), 20);
+  EXPECT_EQ(y->field(), 20);
   EXPECT_FALSE(a.def_field_ref());
 }
 
@@ -347,16 +347,16 @@ TEST(References, structured_annotation) {
                 std::shared_ptr<PlainStruct>&>);
 
   PlainStruct plain;
-  plain.field_ref() = 10;
+  plain.field() = 10;
   a.opt_unique_field_ref() = std::make_unique<PlainStruct>(plain);
-  plain.field_ref() = 20;
+  plain.field() = 20;
   a.opt_shared_field_ref() = std::make_shared<const PlainStruct>(plain);
-  plain.field_ref() = 30;
+  plain.field() = 30;
   a.opt_shared_mutable_field_ref() = std::make_shared<PlainStruct>(plain);
 
-  EXPECT_EQ(10, a.opt_unique_field_ref()->field_ref());
-  EXPECT_EQ(20, a.opt_shared_field_ref()->field_ref());
-  EXPECT_EQ(30, a.opt_shared_mutable_field_ref()->field_ref());
+  EXPECT_EQ(10, a.opt_unique_field_ref()->field());
+  EXPECT_EQ(20, a.opt_shared_field_ref()->field());
+  EXPECT_EQ(30, a.opt_shared_mutable_field_ref()->field());
 }
 
 TEST(References, string_ref) {

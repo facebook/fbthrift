@@ -47,9 +47,9 @@ void testPartialDataHandling(const T& val, size_t bytesToPassTheCheck) {
 
 TEST(ProtocolTruncatedDataTest, TruncatedList) {
   TestStruct s;
-  s.i64_list_ref() = {};
+  s.i64_list() = {};
   for (size_t i = 0; i < 30; ++i) {
-    s.i64_list_ref()->emplace_back((1ull << i));
+    s.i64_list()->emplace_back((1ull << i));
   }
 
   testPartialDataHandling<CompactSerializer>(
@@ -58,9 +58,9 @@ TEST(ProtocolTruncatedDataTest, TruncatedList) {
 
 TEST(ProtocolTruncatedDataTest, TruncatedSet) {
   TestStruct s;
-  s.i32_set_ref() = {};
+  s.i32_set() = {};
   for (size_t i = 0; i < 30; ++i) {
-    s.i32_set_ref()->emplace((1ull << i));
+    s.i32_set()->emplace((1ull << i));
   }
 
   testPartialDataHandling<CompactSerializer>(
@@ -69,9 +69,9 @@ TEST(ProtocolTruncatedDataTest, TruncatedSet) {
 
 TEST(ProtocolTruncatedDataTest, TruncatedMap) {
   TestStruct s;
-  s.i32_i16_map_ref() = {};
+  s.i32_i16_map() = {};
   for (size_t i = 0; i < 30; ++i) {
-    s.i32_i16_map_ref()->emplace((1ull << i), i);
+    s.i32_i16_map()->emplace((1ull << i), i);
   }
 
   testPartialDataHandling<CompactSerializer>(
@@ -80,16 +80,16 @@ TEST(ProtocolTruncatedDataTest, TruncatedMap) {
 
 TEST(ProtocolTruncatedDataTest, TuncatedString_Compact) {
   TestStruct s;
-  s.a_string_ref() = "foobarbazstring";
+  s.a_string() = "foobarbazstring";
 
   testPartialDataHandling<CompactSerializer>(
-      s, 2 /* field & length header */ + s.a_string_ref()->size());
+      s, 2 /* field & length header */ + s.a_string()->size());
 }
 
 TEST(ProtocolTruncatedDataTest, TuncatedString_Binary) {
   TestStruct s;
-  s.a_string_ref() = "foobarbazstring";
+  s.a_string() = "foobarbazstring";
 
   testPartialDataHandling<BinarySerializer>(
-      s, 7 /* field & length header */ + s.a_string_ref()->size());
+      s, 7 /* field & length header */ + s.a_string()->size());
 }

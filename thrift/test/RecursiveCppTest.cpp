@@ -23,9 +23,9 @@ using namespace apache::thrift::test;
 
 TEST(Recursive, copy) {
   RecList list1;
-  *list1.item_ref() = 10;
+  *list1.item() = 10;
   list1.next_ref().reset(new RecList);
-  *list1.next_ref()->item_ref() = 20;
+  *list1.next_ref()->item() = 20;
   RecList list2{list1};
   EXPECT_EQ(list2, list1);
 
@@ -37,9 +37,9 @@ TEST(Recursive, copy) {
 
 TEST(Recursive, assign) {
   RecList list1, list2;
-  *list1.item_ref() = 11;
+  *list1.item() = 11;
   list2.next_ref().reset(new RecList);
-  *list2.next_ref()->item_ref() = 22;
+  *list2.next_ref()->item() = 22;
   list2 = list1;
   EXPECT_EQ(list1, list2);
 }
@@ -47,7 +47,7 @@ TEST(Recursive, assign) {
 TEST(Recursive, Tree) {
   RecTree tree;
   RecTree child;
-  tree.children_ref()->push_back(child);
+  tree.children()->push_back(child);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -87,7 +87,7 @@ TEST(Recursive, CoRec) {
   CoRec result;
   serializer.deserialize(bufq.front(), result);
   EXPECT_TRUE(result.other_ref() != nullptr);
-  EXPECT_TRUE(result.other_ref()->other_ref()->other_ref() == nullptr);
+  EXPECT_TRUE(result.other_ref()->other()->other_ref() == nullptr);
 }
 
 TEST(Recursive, Roundtrip) {
@@ -116,23 +116,23 @@ TEST(Recursive, CoRecJson) {
   RecList result;
   serializer.deserialize(bufq.front(), result);
   EXPECT_TRUE(c.other_ref() != nullptr);
-  EXPECT_TRUE(c.other_ref()->other_ref()->other_ref() == nullptr);
+  EXPECT_TRUE(c.other_ref()->other()->other_ref() == nullptr);
 }
 
 TEST(Recursive, StructUsingAnnotation) {
   StructUsingAnnotation s;
 
-  s.field_ref() = MyField();
-  s.field_ref()->some_val_ref() = 5;
+  s.field() = MyField();
+  s.field()->some_val() = 5;
   MyField m;
-  m.some_val_ref() = 5;
-  EXPECT_EQ(s.field_ref().value(), m);
+  m.some_val() = 5;
+  EXPECT_EQ(s.field().value(), m);
 
   StructUsingAnnotation t = s;
-  EXPECT_EQ(t.field_ref()->some_val_ref().value(), 5);
+  EXPECT_EQ(t.field()->some_val().value(), 5);
 
   StructUsingAnnotation x = std::move(t);
-  EXPECT_EQ(x.field_ref()->some_val_ref().value(), 5);
+  EXPECT_EQ(x.field()->some_val().value(), 5);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -140,24 +140,24 @@ TEST(Recursive, StructUsingAnnotation) {
 
   StructUsingAnnotation result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(result.field_ref().has_value());
-  EXPECT_EQ(result.field_ref()->some_val_ref().value(), 5);
+  EXPECT_TRUE(result.field().has_value());
+  EXPECT_EQ(result.field()->some_val().value(), 5);
 }
 
 TEST(Recursive, StructUsingThriftBox) {
   StructUsingThriftBox s;
 
-  s.field_ref() = MyField();
-  s.field_ref()->some_val_ref() = 5;
+  s.field() = MyField();
+  s.field()->some_val() = 5;
   MyField m;
-  m.some_val_ref() = 5;
-  EXPECT_EQ(s.field_ref().value(), m);
+  m.some_val() = 5;
+  EXPECT_EQ(s.field().value(), m);
 
   StructUsingThriftBox t = s;
-  EXPECT_EQ(t.field_ref()->some_val_ref().value(), 5);
+  EXPECT_EQ(t.field()->some_val().value(), 5);
 
   StructUsingThriftBox x = std::move(t);
-  EXPECT_EQ(x.field_ref()->some_val_ref().value(), 5);
+  EXPECT_EQ(x.field()->some_val().value(), 5);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -165,6 +165,6 @@ TEST(Recursive, StructUsingThriftBox) {
 
   StructUsingThriftBox result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(result.field_ref().has_value());
-  EXPECT_EQ(result.field_ref()->some_val_ref().value(), 5);
+  EXPECT_TRUE(result.field().has_value());
+  EXPECT_EQ(result.field()->some_val().value(), 5);
 }

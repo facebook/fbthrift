@@ -37,16 +37,15 @@ TEST(CppAllocatorTest, AlwaysThrowAllocator) {
   ScopedAlwaysThrowAlloc<> alloc;
   AlwaysThrowParent s(alloc);
 
-  EXPECT_THROW(s.child_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);
-  EXPECT_THROW(s.child_ref()->aa_set_ref()->emplace(42), std::bad_alloc);
-  EXPECT_THROW(s.child_ref()->aa_map_ref()->emplace(42, 42), std::bad_alloc);
-  EXPECT_THROW(
-      s.child_ref()->aa_string_ref()->assign(kTooLong), std::bad_alloc);
+  EXPECT_THROW(s.child()->aa_list()->emplace_back(42), std::bad_alloc);
+  EXPECT_THROW(s.child()->aa_set()->emplace(42), std::bad_alloc);
+  EXPECT_THROW(s.child()->aa_map()->emplace(42, 42), std::bad_alloc);
+  EXPECT_THROW(s.child()->aa_string()->assign(kTooLong), std::bad_alloc);
 
-  EXPECT_NO_THROW(s.child_ref()->not_aa_list_ref()->emplace_back(42));
-  EXPECT_NO_THROW(s.child_ref()->not_aa_set_ref()->emplace(42));
-  EXPECT_NO_THROW(s.child_ref()->not_aa_map_ref()->emplace(42, 42));
-  EXPECT_NO_THROW(s.child_ref()->not_aa_string_ref()->assign(kTooLong));
+  EXPECT_NO_THROW(s.child()->not_aa_list()->emplace_back(42));
+  EXPECT_NO_THROW(s.child()->not_aa_set()->emplace(42));
+  EXPECT_NO_THROW(s.child()->not_aa_map()->emplace(42, 42));
+  EXPECT_NO_THROW(s.child()->not_aa_string()->assign(kTooLong));
 }
 
 TEST(CppAllocatorTest, GetAllocator) {
@@ -69,30 +68,30 @@ TEST(CppAllocatorTest, Deserialize) {
   using serializer = apache::thrift::CompactSerializer;
 
   HasContainerFields s1;
-  s1.aa_list_ref() = {1, 2, 3};
-  s1.aa_set_ref() = {1, 2, 3};
-  s1.aa_map_ref() = {{1, 1}, {2, 2}, {3, 3}};
+  s1.aa_list() = {1, 2, 3};
+  s1.aa_set() = {1, 2, 3};
+  s1.aa_map() = {{1, 1}, {2, 2}, {3, 3}};
 
   auto str = serializer::serialize<std::string>(s1);
 
   ScopedStatefulAlloc<> alloc(42);
   HasContainerFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_list_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_list()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map()), alloc);
 
   serializer::deserialize(str, s2);
-  EXPECT_EQ(s2.aa_list_ref(), (StatefulAllocVector<int32_t>{1, 2, 3}));
-  EXPECT_EQ(s2.aa_set_ref(), (StatefulAllocSet<int32_t>{1, 2, 3}));
+  EXPECT_EQ(s2.aa_list(), (StatefulAllocVector<int32_t>{1, 2, 3}));
+  EXPECT_EQ(s2.aa_set(), (StatefulAllocSet<int32_t>{1, 2, 3}));
   EXPECT_EQ(
-      s2.aa_map_ref(),
+      s2.aa_map(),
       (StatefulAllocMap<int32_t, int32_t>{{1, 1}, {2, 2}, {3, 3}}));
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_list_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_list()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map()), alloc);
 }
 
 TEST(CppAllocatorTest, UsesTypedef) {
@@ -105,8 +104,8 @@ TEST(CppAllocatorTest, DeserializeNested) {
   using serializer = apache::thrift::CompactSerializer;
 
   HasNestedContainerFields s1;
-  s1.aa_map_of_map_ref() = {{42, {{42, 42}}}};
-  s1.aa_map_of_set_ref() = {{42, {42}}};
+  s1.aa_map_of_map() = {{42, {{42, 42}}}};
+  s1.aa_map_of_set() = {{42, {42}}};
 
   auto str = serializer::serialize<std::string>(s1);
 
@@ -114,40 +113,40 @@ TEST(CppAllocatorTest, DeserializeNested) {
   HasNestedContainerFields s2(alloc);
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_of_map_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_of_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_map()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_set()), alloc);
 
   serializer::deserialize(str, s2);
-  EXPECT_EQ(get_allocator(*s2.aa_map_of_map_ref()), alloc);
-  EXPECT_EQ(get_allocator(s2.aa_map_of_map_ref()->at(42)), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_of_set_ref()), alloc);
-  EXPECT_EQ(get_allocator(s2.aa_map_of_set_ref()->at(42)), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_map()), alloc);
+  EXPECT_EQ(get_allocator(s2.aa_map_of_map()->at(42)), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_set()), alloc);
+  EXPECT_EQ(get_allocator(s2.aa_map_of_set()->at(42)), alloc);
 }
 
 TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
   using serializer = apache::thrift::CompactSerializer;
 
   HasSortedUniqueConstructibleFields s1;
-  s1.aa_set_ref() = {1, 2, 3};
-  s1.aa_map_ref() = {{1, 1}, {2, 2}, {3, 3}};
+  s1.aa_set() = {1, 2, 3};
+  s1.aa_map() = {{1, 1}, {2, 2}, {3, 3}};
 
   auto str = serializer::serialize<std::string>(s1);
 
   ScopedStatefulAlloc<> alloc(42);
   HasSortedUniqueConstructibleFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map()), alloc);
 
   serializer::deserialize(str, s2);
-  EXPECT_EQ(s2.aa_set_ref(), (StatefulAllocSortedVectorSet<int32_t>{1, 2, 3}));
+  EXPECT_EQ(s2.aa_set(), (StatefulAllocSortedVectorSet<int32_t>{1, 2, 3}));
   EXPECT_EQ(
-      s2.aa_map_ref(),
+      s2.aa_map(),
       (StatefulAllocSortedVectorMap<int32_t, int32_t>{{1, 1}, {2, 2}, {3, 3}}));
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
-  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map()), alloc);
 }
 
 TEST(CppAllocatorTest, CountingAllocator) {
@@ -167,31 +166,31 @@ TEST(CppAllocatorTest, CountingAllocator) {
     EXPECT_EQ(alloc.getCount(), c); \
   }
 
-  EXPECT_ALLOC(s.aa_child_list_ref()->emplace_back());
-  auto& aa_child = s.aa_child_list_ref()[0];
+  EXPECT_ALLOC(s.aa_child_list()->emplace_back());
+  auto& aa_child = s.aa_child_list()[0];
 
-  EXPECT_ALLOC(aa_child.aa_list_ref()->emplace_back(42));
-  EXPECT_ALLOC(aa_child.aa_set_ref()->emplace(42));
-  EXPECT_ALLOC(aa_child.aa_map_ref()->emplace(42, 42));
-  EXPECT_ALLOC(aa_child.aa_string_ref()->assign(kTooLong));
+  EXPECT_ALLOC(aa_child.aa_list()->emplace_back(42));
+  EXPECT_ALLOC(aa_child.aa_set()->emplace(42));
+  EXPECT_ALLOC(aa_child.aa_map()->emplace(42, 42));
+  EXPECT_ALLOC(aa_child.aa_string()->assign(kTooLong));
 
-  EXPECT_NO_ALLOC(aa_child.not_aa_list_ref()->emplace_back(42));
-  EXPECT_NO_ALLOC(aa_child.not_aa_set_ref()->emplace(42));
-  EXPECT_NO_ALLOC(aa_child.not_aa_map_ref()->emplace(42, 42));
-  EXPECT_NO_ALLOC(aa_child.not_aa_string_ref()->assign(kTooLong));
+  EXPECT_NO_ALLOC(aa_child.not_aa_list()->emplace_back(42));
+  EXPECT_NO_ALLOC(aa_child.not_aa_set()->emplace(42));
+  EXPECT_NO_ALLOC(aa_child.not_aa_map()->emplace(42, 42));
+  EXPECT_NO_ALLOC(aa_child.not_aa_string()->assign(kTooLong));
 
-  EXPECT_NO_ALLOC(s.not_aa_child_list_ref()->emplace_back());
-  auto& not_aa_child = s.not_aa_child_list_ref()[0];
+  EXPECT_NO_ALLOC(s.not_aa_child_list()->emplace_back());
+  auto& not_aa_child = s.not_aa_child_list()[0];
 
-  EXPECT_NO_ALLOC(not_aa_child.aa_list_ref()->emplace_back(42));
-  EXPECT_NO_ALLOC(not_aa_child.aa_set_ref()->emplace(42));
-  EXPECT_NO_ALLOC(not_aa_child.aa_map_ref()->emplace(42, 42));
-  EXPECT_NO_ALLOC(not_aa_child.aa_string_ref()->assign(kTooLong));
+  EXPECT_NO_ALLOC(not_aa_child.aa_list()->emplace_back(42));
+  EXPECT_NO_ALLOC(not_aa_child.aa_set()->emplace(42));
+  EXPECT_NO_ALLOC(not_aa_child.aa_map()->emplace(42, 42));
+  EXPECT_NO_ALLOC(not_aa_child.aa_string()->assign(kTooLong));
 
-  EXPECT_NO_ALLOC(not_aa_child.not_aa_list_ref()->emplace_back(42));
-  EXPECT_NO_ALLOC(not_aa_child.not_aa_set_ref()->emplace(42));
-  EXPECT_NO_ALLOC(not_aa_child.not_aa_map_ref()->emplace(42, 42));
-  EXPECT_NO_ALLOC(not_aa_child.not_aa_string_ref()->assign(kTooLong));
+  EXPECT_NO_ALLOC(not_aa_child.not_aa_list()->emplace_back(42));
+  EXPECT_NO_ALLOC(not_aa_child.not_aa_set()->emplace(42));
+  EXPECT_NO_ALLOC(not_aa_child.not_aa_map()->emplace(42, 42));
+  EXPECT_NO_ALLOC(not_aa_child.not_aa_string()->assign(kTooLong));
 }
 
 TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRef) {

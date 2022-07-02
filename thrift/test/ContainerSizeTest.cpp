@@ -39,20 +39,20 @@ TYPED_TEST_SUITE(ContainerSizeTest, Writers);
 
 TYPED_TEST(ContainerSizeTest, string) {
   Struct obj;
-  obj.str_ref().emplace();
-  obj.str_ref()->resize(kMaxSize);
+  obj.str().emplace();
+  obj.str()->resize(kMaxSize);
   obj.write(&this->writer);
-  obj.str_ref()->resize(kExceededSize);
+  obj.str()->resize(kExceededSize);
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
 }
 
 TYPED_TEST(ContainerSizeTest, iobuf) {
   Struct obj;
-  obj.iobuf_ref() = std::move(
+  obj.iobuf() = std::move(
       *folly::IOBuf::takeOwnership(getAddr(), kMaxSize, [](void*, void*) {}));
   obj.write(&this->writer);
-  obj.iobuf_ref() = std::move(*folly::IOBuf::takeOwnership(
+  obj.iobuf() = std::move(*folly::IOBuf::takeOwnership(
       getAddr(), kExceededSize, [](void*, void*) {}));
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
@@ -60,10 +60,10 @@ TYPED_TEST(ContainerSizeTest, iobuf) {
 
 TYPED_TEST(ContainerSizeTest, unique_iobuf) {
   Struct obj;
-  obj.unique_iobuf_ref() =
+  obj.unique_iobuf() =
       folly::IOBuf::takeOwnership(getAddr(), kMaxSize, [](void*, void*) {});
   obj.write(&this->writer);
-  obj.unique_iobuf_ref() = folly::IOBuf::takeOwnership(
+  obj.unique_iobuf() = folly::IOBuf::takeOwnership(
       getAddr(), kExceededSize, [](void*, void*) {});
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
@@ -71,27 +71,27 @@ TYPED_TEST(ContainerSizeTest, unique_iobuf) {
 
 TYPED_TEST(ContainerSizeTest, list) {
   Struct obj;
-  obj.l_ref().emplace().mockedSize = kMaxSize;
+  obj.l().emplace().mockedSize = kMaxSize;
   obj.write(&this->writer);
-  obj.l_ref().emplace().mockedSize = kExceededSize;
+  obj.l().emplace().mockedSize = kExceededSize;
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
 }
 
 TYPED_TEST(ContainerSizeTest, set) {
   Struct obj;
-  obj.s_ref().emplace().mockedSize = kMaxSize;
+  obj.s().emplace().mockedSize = kMaxSize;
   obj.write(&this->writer);
-  obj.s_ref().emplace().mockedSize = kExceededSize;
+  obj.s().emplace().mockedSize = kExceededSize;
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
 }
 
 TYPED_TEST(ContainerSizeTest, map) {
   Struct obj;
-  obj.m_ref().emplace().mockedSize = kMaxSize;
+  obj.m().emplace().mockedSize = kMaxSize;
   obj.write(&this->writer);
-  obj.m_ref().emplace().mockedSize = kExceededSize;
+  obj.m().emplace().mockedSize = kExceededSize;
   EXPECT_THROW(
       obj.write(&this->writer), apache::thrift::protocol::TProtocolException);
 }

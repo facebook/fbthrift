@@ -26,15 +26,14 @@ namespace {
 
 TEST(ThrfitTypeInfoTest, GetGeneratedThriftTypeInfo) {
   EXPECT_EQ(
-      conformance::getGeneratedThriftTypeInfo<AnyTestStruct>().uri_ref(),
+      conformance::getGeneratedThriftTypeInfo<AnyTestStruct>().uri(),
       "facebook.com/thrift/test/AnyTestStruct");
   EXPECT_EQ(
-      conformance::getGeneratedThriftTypeInfo<AnyTestUnion>().uri_ref(),
+      conformance::getGeneratedThriftTypeInfo<AnyTestUnion>().uri(),
       "facebook.com/thrift/test/AnyTestUnion");
   // TypeInfo is still available, even though any is not enabled.
   EXPECT_EQ(
-      conformance::getGeneratedThriftTypeInfo<AnyTestMissingAnyOption>()
-          .uri_ref(),
+      conformance::getGeneratedThriftTypeInfo<AnyTestMissingAnyOption>().uri(),
       "facebook.com/thrift/test/AnyTestMissingAnyOption");
 }
 

@@ -33,22 +33,22 @@ TEST(GetterSetter, BasicOptionalFields) {
   std::vector<int32_t> vec = {1, 2, 3};
   auto buf = std::make_unique<folly::IOBuf>();
 
-  EXPECT_FALSE(obj.optionalInt_ref().has_value());
+  EXPECT_FALSE(obj.optionalInt().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalInt());
-  EXPECT_FALSE(obj.optionalList_ref().has_value());
+  EXPECT_FALSE(obj.optionalList().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalList());
-  EXPECT_FALSE(obj.optionalBuf_ref().has_value());
+  EXPECT_FALSE(obj.optionalBuf().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalBuf());
 
-  obj.optionalInt_ref() = 42;
+  obj.optionalInt() = 42;
   EXPECT_EQ(42, *obj.get_optionalInt());
-  EXPECT_TRUE(obj.optionalInt_ref().has_value());
-  obj.optionalList_ref() = vec;
+  EXPECT_TRUE(obj.optionalInt().has_value());
+  obj.optionalList() = vec;
   EXPECT_EQ(vec, *obj.get_optionalList());
-  EXPECT_TRUE(obj.optionalList_ref().has_value());
-  obj.optionalBuf_ref() = std::move(buf);
+  EXPECT_TRUE(obj.optionalList().has_value());
+  obj.optionalBuf() = std::move(buf);
   EXPECT_TRUE((*obj.get_optionalBuf())->empty());
-  EXPECT_TRUE(obj.optionalBuf_ref().has_value());
+  EXPECT_TRUE(obj.optionalBuf().has_value());
 }
 
 TEST(GetterSetter, BasicDefaultFields) {
@@ -60,10 +60,10 @@ TEST(GetterSetter, BasicDefaultFields) {
   EXPECT_TRUE(obj.get_defaultList().empty());
   EXPECT_EQ(nullptr, obj.get_defaultBuf());
 
-  obj.defaultInt_ref() = 42;
+  obj.defaultInt() = 42;
   EXPECT_EQ(42, obj.get_defaultInt());
-  obj.defaultList_ref() = vec;
+  obj.defaultList() = vec;
   EXPECT_EQ(vec, obj.get_defaultList());
-  obj.defaultBuf_ref() = std::move(buf);
+  obj.defaultBuf() = std::move(buf);
   EXPECT_EQ(6, obj.get_defaultBuf()->length());
 }

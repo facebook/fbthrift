@@ -67,41 +67,41 @@ TEST(constants, examples) {
   EXPECT_EQ(struct1(), test_constants::pod_0());
 
   struct1 pod1;
-  pod1.a_ref() = 10;
-  pod1.b_ref() = "foo";
+  pod1.a() = 10;
+  pod1.b() = "foo";
 
   auto const& pod_1 = test_constants::pod_1();
-  EXPECT_TRUE(pod_1.a_ref().is_set());
-  EXPECT_TRUE(pod_1.b_ref().is_set());
+  EXPECT_TRUE(pod_1.a().is_set());
+  EXPECT_TRUE(pod_1.b().is_set());
   EXPECT_EQ(pod1, pod_1);
 
   struct2 pod2;
-  pod2.a_ref() = 98;
-  pod2.b_ref() = "gaz";
-  auto& pod2_c = pod2.c_ref().emplace(struct1());
-  pod2_c.a_ref() = 12;
-  pod2_c.b_ref() = "bar";
-  pod2.d_ref() = std::vector<std::int32_t>{11, 22, 33};
+  pod2.a() = 98;
+  pod2.b() = "gaz";
+  auto& pod2_c = pod2.c().emplace(struct1());
+  pod2_c.a() = 12;
+  pod2_c.b() = "bar";
+  pod2.d() = std::vector<std::int32_t>{11, 22, 33};
 
   auto const& pod_2 = test_constants::pod_2();
-  EXPECT_TRUE(pod_2.a_ref().is_set());
-  EXPECT_TRUE(pod_2.b_ref().is_set());
-  EXPECT_TRUE(pod_2.c_ref().is_set());
-  EXPECT_TRUE(pod_2.d_ref().is_set());
-  EXPECT_TRUE(pod_2.c_ref()->a_ref().is_set());
-  EXPECT_TRUE(pod_2.c_ref()->b_ref().is_set());
+  EXPECT_TRUE(pod_2.a().is_set());
+  EXPECT_TRUE(pod_2.b().is_set());
+  EXPECT_TRUE(pod_2.c().is_set());
+  EXPECT_TRUE(pod_2.d().is_set());
+  EXPECT_TRUE(pod_2.c()->a().is_set());
+  EXPECT_TRUE(pod_2.c()->b().is_set());
   EXPECT_EQ(pod2, pod_2);
 
   auto const& pod_3 = test_constants::pod_3();
-  EXPECT_TRUE(pod_3.a_ref().is_set());
-  EXPECT_TRUE(pod_3.b_ref().is_set());
-  EXPECT_TRUE(pod_3.c_ref().is_set());
-  EXPECT_TRUE(pod_3.c_ref()->a_ref().is_set());
-  EXPECT_FALSE(pod_3.c_ref()->b_ref().is_set());
-  EXPECT_TRUE(pod_3.c_ref()->c_ref().is_set());
-  EXPECT_FALSE(pod_3.c_ref()->d_ref().is_set());
-  EXPECT_FALSE(pod_3.c_ref()->c_ref()->a_ref().is_set());
-  EXPECT_TRUE(pod_3.c_ref()->c_ref()->b_ref().is_set());
+  EXPECT_TRUE(pod_3.a().is_set());
+  EXPECT_TRUE(pod_3.b().is_set());
+  EXPECT_TRUE(pod_3.c().is_set());
+  EXPECT_TRUE(pod_3.c()->a().is_set());
+  EXPECT_FALSE(pod_3.c()->b().is_set());
+  EXPECT_TRUE(pod_3.c()->c().is_set());
+  EXPECT_FALSE(pod_3.c()->d().is_set());
+  EXPECT_FALSE(pod_3.c()->c()->a().is_set());
+  EXPECT_TRUE(pod_3.c()->c()->b().is_set());
 
   EXPECT_EQ(union1::Type::i, test_constants::u_1_1().getType());
   EXPECT_EQ(97, test_constants::u_1_1().get_i());

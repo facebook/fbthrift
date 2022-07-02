@@ -22,7 +22,7 @@ namespace apache::thrift::test {
 TEST(Field, Access) {
   Foo foo;
   foo.field1()->push_back(10);
-  EXPECT_EQ(foo.field1(), foo.field1_ref());
+  EXPECT_EQ(foo.field1(), foo.field1());
   EXPECT_FALSE(foo.field2());
   foo.field2() = "bar";
   EXPECT_TRUE(foo.field2());

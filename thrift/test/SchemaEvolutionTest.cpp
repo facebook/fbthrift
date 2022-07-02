@@ -40,48 +40,40 @@ TYPED_TEST(EvolutionTest, evolution) {
       Serializer::template serialize<std::string>(oldObj), newObj);
 
   EXPECT_EQ(
-      newObj.unqualified_to_unqualified_ref(),
-      *oldObj.unqualified_to_unqualified_ref());
+      newObj.unqualified_to_unqualified(),
+      *oldObj.unqualified_to_unqualified());
   EXPECT_EQ(
-      newObj.unqualified_to_optional_ref(),
-      *oldObj.unqualified_to_optional_ref());
+      newObj.unqualified_to_optional(), *oldObj.unqualified_to_optional());
   EXPECT_EQ(
-      newObj.unqualified_to_required_ref(),
-      *oldObj.unqualified_to_required_ref());
+      newObj.unqualified_to_required(), *oldObj.unqualified_to_required());
 
   EXPECT_EQ(
-      newObj.optional_to_unqualified_ref(),
-      *oldObj.optional_to_unqualified_ref());
-  EXPECT_EQ(
-      newObj.optional_to_optional_ref(), *oldObj.optional_to_optional_ref());
-  EXPECT_EQ(
-      newObj.optional_to_required_ref(), *oldObj.optional_to_required_ref());
+      newObj.optional_to_unqualified(), *oldObj.optional_to_unqualified());
+  EXPECT_EQ(newObj.optional_to_optional(), *oldObj.optional_to_optional());
+  EXPECT_EQ(newObj.optional_to_required(), *oldObj.optional_to_required());
 
   EXPECT_EQ(
-      newObj.required_to_unqualified_ref(),
-      *oldObj.required_to_unqualified_ref());
-  EXPECT_EQ(
-      newObj.required_to_optional_ref(), *oldObj.required_to_optional_ref());
-  EXPECT_EQ(
-      newObj.required_to_required_ref(), *oldObj.required_to_required_ref());
+      newObj.required_to_unqualified(), *oldObj.required_to_unqualified());
+  EXPECT_EQ(newObj.required_to_optional(), *oldObj.required_to_optional());
+  EXPECT_EQ(newObj.required_to_required(), *oldObj.required_to_required());
 
   if (std::is_same_v<Serializer, SimpleJSONSerializer>) {
-    EXPECT_EQ(newObj.unqualified_new_ref(), "");
-    EXPECT_EQ(newObj.required_new_ref(), "");
+    EXPECT_EQ(newObj.unqualified_new(), "");
+    EXPECT_EQ(newObj.required_new(), "");
 
-    EXPECT_FALSE(newObj.unqualified_new_ref().is_set());
-    EXPECT_FALSE(newObj.optional_new_ref().has_value());
-    EXPECT_TRUE(newObj.required_new_ref().has_value());
+    EXPECT_FALSE(newObj.unqualified_new().is_set());
+    EXPECT_FALSE(newObj.optional_new().has_value());
+    EXPECT_TRUE(newObj.required_new().has_value());
   } else {
-    EXPECT_EQ(newObj.unqualified_new_ref(), *oldObj.unqualified_old_ref());
-    EXPECT_EQ(newObj.optional_new_ref(), *oldObj.optional_old_ref());
-    EXPECT_EQ(newObj.required_new_ref(), *oldObj.required_old_ref());
+    EXPECT_EQ(newObj.unqualified_new(), *oldObj.unqualified_old());
+    EXPECT_EQ(newObj.optional_new(), *oldObj.optional_old());
+    EXPECT_EQ(newObj.required_new(), *oldObj.required_old());
   }
 
-  EXPECT_EQ(newObj.unqualified_added_ref(), "");
-  EXPECT_EQ(newObj.required_added_ref(), "");
+  EXPECT_EQ(newObj.unqualified_added(), "");
+  EXPECT_EQ(newObj.required_added(), "");
 
-  EXPECT_FALSE(newObj.unqualified_added_ref().is_set());
-  EXPECT_FALSE(newObj.optional_added_ref().has_value());
-  EXPECT_TRUE(newObj.required_added_ref().has_value());
+  EXPECT_FALSE(newObj.unqualified_added().is_set());
+  EXPECT_FALSE(newObj.optional_added().has_value());
+  EXPECT_TRUE(newObj.required_added().has_value());
 }

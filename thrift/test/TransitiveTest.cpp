@@ -21,6 +21,6 @@ using apache::thrift::test::TestStruct;
 
 TEST(TransitiveTest, AdapterApplied) {
   auto s = TestStruct();
-  s.delay_ref() = std::chrono::milliseconds(42);
-  EXPECT_EQ(s.delay_ref(), std::chrono::milliseconds(42));
+  s.delay() = std::chrono::milliseconds(42);
+  EXPECT_EQ(s.delay(), std::chrono::milliseconds(42));
 }

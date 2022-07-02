@@ -47,8 +47,8 @@ TEST(RoundTrip, test) {
   auto obj1 = gen<struct1>();
   auto obj2 = gen<struct2>();
   struct3 obj3;
-  obj3.field1_ref() = obj1;
-  obj3.field2_ref() = obj2;
+  obj3.field1() = obj1;
+  obj3.field2() = obj2;
 
   apply(
       [](auto... obj) {

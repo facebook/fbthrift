@@ -22,10 +22,10 @@ using namespace ::apache::thrift::detail;
 namespace apache::thrift::test::testset {
 namespace {
 
-using Unqualified = decltype(struct_list_i32{}.field_1_ref());
-using Optional = decltype(struct_optional_list_i32{}.field_1_ref());
-using Required = decltype(struct_required_list_i32{}.field_1_ref());
-using Box = decltype(struct_optional_list_i32_box{}.field_1_ref());
+using Unqualified = decltype(struct_list_i32{}.field_1());
+using Optional = decltype(struct_optional_list_i32{}.field_1());
+using Required = decltype(struct_required_list_i32{}.field_1());
+using Box = decltype(struct_optional_list_i32_box{}.field_1());
 using Union = decltype(union_list_i32{}.field_1_ref());
 using Unique = std::remove_reference_t<decltype(
     struct_optional_list_i32_cpp_ref{}.field_1_ref())>;

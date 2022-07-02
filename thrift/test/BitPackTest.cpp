@@ -61,118 +61,118 @@ void randomTestWithSeed(int seed) {
   auto obj2 = makeStructBasic<Type>();
   std::vector<std::function<void()>> methods = {
       [&] {
-        obj1.int32Req_ref() = 2;
+        obj1.int32Req() = 2;
         obj2.int32Req_ref() = 2;
-        EXPECT_EQ(obj1.int32Req_ref(), obj2.int32Req_ref());
+        EXPECT_EQ(obj1.int32Req(), obj2.int32Req_ref());
       },
       [&] {
-        obj1.int32Opt_ref() = 3;
+        obj1.int32Opt() = 3;
         obj2.int32Opt_ref() = 3;
-        EXPECT_EQ(obj1.int32Opt_ref(), obj2.int32Opt_ref());
+        EXPECT_EQ(obj1.int32Opt(), obj2.int32Opt_ref());
       },
       [&] {
-        obj1.int32Opt_ref().reset();
+        obj1.int32Opt().reset();
         obj2.int32Opt_ref().reset();
-        EXPECT_EQ(obj1.int32Opt_ref(), obj2.int32Opt_ref());
+        EXPECT_EQ(obj1.int32Opt(), obj2.int32Opt_ref());
       },
       [&] {
-        obj1.stringReq_ref() = "a";
+        obj1.stringReq() = "a";
         obj2.stringReq_ref() = "a";
-        EXPECT_EQ(obj1.stringReq_ref(), obj2.stringReq_ref());
+        EXPECT_EQ(obj1.stringReq(), obj2.stringReq_ref());
       },
       [&] {
-        obj1.stringOpt_ref() = "b";
+        obj1.stringOpt() = "b";
         obj2.stringOpt_ref() = "b";
-        EXPECT_EQ(obj1.stringOpt_ref(), obj2.stringOpt_ref());
+        EXPECT_EQ(obj1.stringOpt(), obj2.stringOpt_ref());
       },
       [&] {
-        obj1.stringOpt_ref().reset();
+        obj1.stringOpt().reset();
         obj2.stringOpt_ref().reset();
-        EXPECT_EQ(obj1.stringOpt_ref(), obj2.stringOpt_ref());
+        EXPECT_EQ(obj1.stringOpt(), obj2.stringOpt_ref());
       },
       [&] {
-        obj1.setReq_ref() = {7, 8, 9};
+        obj1.setReq() = {7, 8, 9};
         obj2.setReq_ref() = {7, 8, 9};
-        EXPECT_EQ(obj1.setReq_ref(), obj2.setReq_ref());
+        EXPECT_EQ(obj1.setReq(), obj2.setReq_ref());
       },
       [&] {
-        obj1.setOpt_ref() = {7, 8, 9};
+        obj1.setOpt() = {7, 8, 9};
         obj2.setOpt_ref() = {7, 8, 9};
-        EXPECT_EQ(obj1.setOpt_ref(), obj2.setOpt_ref());
+        EXPECT_EQ(obj1.setOpt(), obj2.setOpt_ref());
       },
       [&] {
-        obj1.setOpt_ref().reset();
+        obj1.setOpt().reset();
         obj2.setOpt_ref().reset();
-        EXPECT_EQ(obj1.setOpt_ref(), obj2.setOpt_ref());
+        EXPECT_EQ(obj1.setOpt(), obj2.setOpt_ref());
       },
       [&] {
-        obj1.listReq_ref() = {555};
+        obj1.listReq() = {555};
         obj2.listReq_ref() = {555};
-        EXPECT_EQ(obj1.listReq_ref(), obj2.listReq_ref());
+        EXPECT_EQ(obj1.listReq(), obj2.listReq_ref());
       },
       [&] {
-        obj1.structOpt_ref()->extraInt32Def_ref() = 10;
+        obj1.structOpt()->extraInt32Def() = 10;
         obj2.structOpt_ref()->extraInt32Def_ref() = 10;
-        EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
+        EXPECT_EQ(obj1.structOpt(), obj2.structOpt_ref());
       },
       [&] {
-        obj1.structOpt_ref()->extraInt32Req_ref() = 20;
+        obj1.structOpt()->extraInt32Req() = 20;
         obj2.structOpt_ref()->extraInt32Req_ref() = 20;
-        EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
+        EXPECT_EQ(obj1.structOpt(), obj2.structOpt_ref());
       },
       [&] {
-        obj1.structOpt_ref()->extraInt32Opt_ref() = 30;
+        obj1.structOpt()->extraInt32Opt() = 30;
         obj2.structOpt_ref()->extraInt32Opt_ref() = 30;
-        EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
+        EXPECT_EQ(obj1.structOpt(), obj2.structOpt_ref());
       },
       [&] {
-        obj1.structOpt_ref()->extraInt32Opt_ref().reset();
+        obj1.structOpt()->extraInt32Opt().reset();
         obj2.structOpt_ref()->extraInt32Opt_ref().reset();
-        EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
+        EXPECT_EQ(obj1.structOpt(), obj2.structOpt_ref());
       },
       [&] {
-        obj1.structPackedOpt_ref()->extraInt32Def_ref() = 40;
+        obj1.structPackedOpt()->extraInt32Def() = 40;
         obj2.structPackedOpt_ref()->extraInt32Def_ref() = 40;
-        EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
+        EXPECT_EQ(obj1.structPackedOpt(), obj2.structPackedOpt_ref());
       },
       [&] {
-        obj1.structPackedOpt_ref()->extraInt32Req_ref() = 50;
+        obj1.structPackedOpt()->extraInt32Req() = 50;
         obj2.structPackedOpt_ref()->extraInt32Req_ref() = 50;
-        EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
+        EXPECT_EQ(obj1.structPackedOpt(), obj2.structPackedOpt_ref());
       },
       [&] {
-        obj1.structPackedOpt_ref()->extraInt32Opt_ref() = 60;
+        obj1.structPackedOpt()->extraInt32Opt() = 60;
         obj2.structPackedOpt_ref()->extraInt32Opt_ref() = 60;
-        EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
+        EXPECT_EQ(obj1.structPackedOpt(), obj2.structPackedOpt_ref());
       },
       [&] {
-        obj1.structPackedOpt_ref()->extraInt32Opt_ref().reset();
+        obj1.structPackedOpt()->extraInt32Opt().reset();
         obj2.structPackedOpt_ref()->extraInt32Opt_ref().reset();
-        EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
+        EXPECT_EQ(obj1.structPackedOpt(), obj2.structPackedOpt_ref());
       },
       [&] {
-        obj1.structAtomicPackedOpt_ref()->extraInt32Def_ref() = 40;
+        obj1.structAtomicPackedOpt()->extraInt32Def() = 40;
         obj2.structAtomicPackedOpt_ref()->extraInt32Def_ref() = 40;
         EXPECT_EQ(
-            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+            obj1.structAtomicPackedOpt(), obj2.structAtomicPackedOpt_ref());
       },
       [&] {
-        obj1.structAtomicPackedOpt_ref()->extraInt32Req_ref() = 50;
+        obj1.structAtomicPackedOpt()->extraInt32Req() = 50;
         obj2.structAtomicPackedOpt_ref()->extraInt32Req_ref() = 50;
         EXPECT_EQ(
-            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+            obj1.structAtomicPackedOpt(), obj2.structAtomicPackedOpt_ref());
       },
       [&] {
-        obj1.structAtomicPackedOpt_ref()->extraInt32Opt_ref() = 60;
+        obj1.structAtomicPackedOpt()->extraInt32Opt() = 60;
         obj2.structAtomicPackedOpt_ref()->extraInt32Opt_ref() = 60;
         EXPECT_EQ(
-            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+            obj1.structAtomicPackedOpt(), obj2.structAtomicPackedOpt_ref());
       },
       [&] {
-        obj1.structAtomicPackedOpt_ref()->extraInt32Opt_ref().reset();
+        obj1.structAtomicPackedOpt()->extraInt32Opt().reset();
         obj2.structAtomicPackedOpt_ref()->extraInt32Opt_ref().reset();
         EXPECT_EQ(
-            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+            obj1.structAtomicPackedOpt(), obj2.structAtomicPackedOpt_ref());
       },
   };
   methods[rng() % methods.size()]();
@@ -199,16 +199,16 @@ TYPED_TEST(BitpacksTest, compare_basic) {
   auto obj1 = makeStructBasic<cpp2::Unbitpack>();
   auto obj2 = makeStructBasic<TypeParam>();
 
-  EXPECT_EQ(obj1.int32Req_ref(), obj2.int32Req_ref());
-  EXPECT_EQ(obj1.int32Opt_ref(), obj2.int32Opt_ref());
-  EXPECT_EQ(obj1.stringReq_ref(), obj2.stringReq_ref());
-  EXPECT_EQ(obj1.stringOpt_ref(), obj2.stringOpt_ref());
-  EXPECT_EQ(obj1.setReq_ref(), obj2.setReq_ref());
-  EXPECT_EQ(obj1.setOpt_ref(), obj2.setOpt_ref());
-  EXPECT_EQ(obj1.listReq_ref(), obj2.listReq_ref());
-  EXPECT_EQ(obj1.listOpt_ref(), obj2.listOpt_ref());
-  EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
-  EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
+  EXPECT_EQ(obj1.int32Req(), obj2.int32Req_ref());
+  EXPECT_EQ(obj1.int32Opt(), obj2.int32Opt_ref());
+  EXPECT_EQ(obj1.stringReq(), obj2.stringReq_ref());
+  EXPECT_EQ(obj1.stringOpt(), obj2.stringOpt_ref());
+  EXPECT_EQ(obj1.setReq(), obj2.setReq_ref());
+  EXPECT_EQ(obj1.setOpt(), obj2.setOpt_ref());
+  EXPECT_EQ(obj1.listReq(), obj2.listReq_ref());
+  EXPECT_EQ(obj1.listOpt(), obj2.listOpt_ref());
+  EXPECT_EQ(obj1.structOpt(), obj2.structOpt_ref());
+  EXPECT_EQ(obj1.structPackedOpt(), obj2.structPackedOpt_ref());
 }
 
 class RandomTestWithSeed : public testing::TestWithParam<int> {};
@@ -226,13 +226,13 @@ INSTANTIATE_TEST_CASE_P(
 TEST(AtomicBitpack, multithread) {
   cpp2::AtomicBitpack obj;
   std::vector<std::thread> v;
-  v.emplace_back([&] { obj.int32Opt_ref().emplace(); });
-  v.emplace_back([&] { obj.stringOpt_ref().emplace(); });
-  v.emplace_back([&] { obj.setOpt_ref().emplace(); });
-  v.emplace_back([&] { obj.listOpt_ref().emplace(); });
-  v.emplace_back([&] { obj.structOpt_ref().emplace(); });
-  v.emplace_back([&] { obj.structPackedOpt_ref().emplace(); });
-  v.emplace_back([&] { obj.structAtomicPackedOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.int32Opt().emplace(); });
+  v.emplace_back([&] { obj.stringOpt().emplace(); });
+  v.emplace_back([&] { obj.setOpt().emplace(); });
+  v.emplace_back([&] { obj.listOpt().emplace(); });
+  v.emplace_back([&] { obj.structOpt().emplace(); });
+  v.emplace_back([&] { obj.structPackedOpt().emplace(); });
+  v.emplace_back([&] { obj.structAtomicPackedOpt().emplace(); });
 
   for (auto&& t : v) {
     t.join();

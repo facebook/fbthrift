@@ -29,10 +29,10 @@ BENCHMARK_COUNTERS(field_ref_direct, counters, n) {
   counters["stack_mem"] = sizeof(a);
   int64_t k = n * (1 + 'a');
   while (n--) {
-    a.int64Opt_ref() = 1;
-    k -= a.int64Opt_ref().value();
-    a.stringOpt_ref() = "a";
-    k -= a.stringOpt_ref().value()[0];
+    a.int64Opt() = 1;
+    k -= a.int64Opt().value();
+    a.stringOpt() = "a";
+    k -= a.stringOpt().value()[0];
   }
   CHECK_EQ(k, 0);
   folly::doNotOptimizeAway(k);
@@ -53,19 +53,19 @@ FOLLY_NOINLINE void run(T int64Opt_ref, U stringOpt_ref, int n) {
 
 BENCHMARK_RELATIVE(field_ref_indirect, n) {
   HasOptionals a;
-  run(a.int64Opt_ref(), a.stringOpt_ref(), n);
+  run(a.int64Opt(), a.stringOpt(), n);
 }
 
 BENCHMARK_RELATIVE(unsafe, n) {
   HasOptionals a;
-  apache::thrift::ensure_isset_unsafe(a.int64Opt_ref());
-  apache::thrift::ensure_isset_unsafe(a.stringOpt_ref());
+  apache::thrift::ensure_isset_unsafe(a.int64Opt());
+  apache::thrift::ensure_isset_unsafe(a.stringOpt());
   int64_t k = n * (1 + 'a');
   while (n--) {
-    a.int64Opt_ref().value_unchecked() = 1;
-    k -= a.int64Opt_ref().value_unchecked();
-    a.stringOpt_ref().value_unchecked() = "a";
-    k -= a.stringOpt_ref().value_unchecked()[0];
+    a.int64Opt().value_unchecked() = 1;
+    k -= a.int64Opt().value_unchecked();
+    a.stringOpt().value_unchecked() = "a";
+    k -= a.stringOpt().value_unchecked()[0];
   }
   CHECK_EQ(k, 0);
   folly::doNotOptimizeAway(k);

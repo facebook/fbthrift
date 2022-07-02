@@ -22,13 +22,13 @@ using namespace apache::thrift::test;
 
 TEST(ExceptionTest, braced_init) {
   MyException e = {};
-  EXPECT_EQ(e.msg_ref(), "");
+  EXPECT_EQ(e.msg(), "");
 }
 
 TEST(ExceptionTest, test_default_constructor) {
   try {
     MyException e;
-    *e.msg_ref() = "what!!!";
+    *e.msg() = "what!!!";
     throw e;
   } catch (const std::exception& ex) {
     EXPECT_EQ(ex.what(), std::string{"what!!!"});

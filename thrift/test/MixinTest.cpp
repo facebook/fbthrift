@@ -78,15 +78,15 @@ TEST(Mixin, Simple) {
 
 TEST(Mixin, WithRefSuffix) {
   cpp2::Foo s;
-  s.m2_ref()->m1_ref()->field1_ref() = "1";
-  s.m2_ref()->field2_ref() = "2";
-  s.m3_ref()->field3_ref() = "3";
-  s.field4_ref() = "4";
-  s.u_ref()->field5_ref() = "5";
+  s.m2()->m1()->field1() = "1";
+  s.m2()->field2() = "2";
+  s.m3()->field3() = "3";
+  s.field4() = "4";
+  s.u()->field5_ref() = "5";
   EXPECT_EQ(s.field1_ref().value(), "1");
   EXPECT_EQ(s.field2_ref().value(), "2");
   EXPECT_EQ(s.field3_ref().value(), "3");
-  EXPECT_EQ(s.field4_ref().value(), "4");
+  EXPECT_EQ(s.field4().value(), "4");
   EXPECT_EQ(s.field5_ref().value(), "5");
   EXPECT_FALSE(s.field6_ref().has_value());
 }

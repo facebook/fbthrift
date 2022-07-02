@@ -22,8 +22,8 @@ using namespace apache::thrift::test;
 
 TEST(ProtocolMethodsTest, roundtrip) {
   MyStruct before;
-  before.num_ref()->value = 42;
-  before.str_ref()->value = "foo";
+  before.num()->value = 42;
+  before.str()->value = "foo";
 
   const auto after = apache::thrift::CompactSerializer::deserialize<MyStruct>(
       apache::thrift::CompactSerializer::serialize<std::string>(before));
