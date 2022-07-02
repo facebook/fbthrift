@@ -225,18 +225,18 @@ TEST(ShrinkToFitTest, OptionalCppRefListFields) {
 
 TEST(ShrinkToFitTest, BoxListFields) {
   Fields obj;
-  obj.listFieldBoxRef_ref() = std::vector<int>();
-  obj.structFieldBoxRef_ref() = StructWithListField();
-  obj.listFieldBoxRef_ref()->reserve(42);
-  obj.structFieldBoxRef_ref()->listField().ensure().reserve(42);
+  obj.listFieldBoxRef() = std::vector<int>();
+  obj.structFieldBoxRef() = StructWithListField();
+  obj.listFieldBoxRef()->reserve(42);
+  obj.structFieldBoxRef()->listField().ensure().reserve(42);
 
-  EXPECT_EQ(obj.listFieldBoxRef_ref()->capacity(), 42);
-  EXPECT_EQ(obj.structFieldBoxRef_ref()->listField()->capacity(), 42);
+  EXPECT_EQ(obj.listFieldBoxRef()->capacity(), 42);
+  EXPECT_EQ(obj.structFieldBoxRef()->listField()->capacity(), 42);
 
   apache::thrift::shrink_to_fit(obj);
 
-  EXPECT_EQ(obj.listFieldBoxRef_ref()->capacity(), 0);
-  EXPECT_EQ(obj.structFieldBoxRef_ref()->listField()->capacity(), 0);
+  EXPECT_EQ(obj.listFieldBoxRef()->capacity(), 0);
+  EXPECT_EQ(obj.structFieldBoxRef()->listField()->capacity(), 0);
 }
 
 } // namespace

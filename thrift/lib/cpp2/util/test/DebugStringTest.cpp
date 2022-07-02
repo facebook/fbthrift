@@ -123,8 +123,8 @@ TEST(DebugString, SimpleTypes) {
   toDebugStringAndBack(ms);
 
   // A couple of simple values
-  ms.myI16_ref() = 123;
-  ms.myI32_ref() = 456789;
+  ms.myI16() = 123;
+  ms.myI32() = 456789;
   EXPECT_EQ(
       folly::stripLeftMargin(R"(
       struct {
@@ -138,8 +138,8 @@ TEST(DebugString, SimpleTypes) {
   toDebugStringAndBack(ms);
 
   // Add string/binary
-  ms.myString_ref() = "thrift";
-  ms.myBinary_ref() = "fb\xff";
+  ms.myString() = "thrift";
+  ms.myBinary() = "fb\xff";
   std::string expected = folly::stripLeftMargin(R"(
       struct {
         3: i16 = 123
@@ -154,15 +154,15 @@ TEST(DebugString, SimpleTypes) {
   toDebugStringAndBack(ms);
 
   // Set all the simple fields
-  ms.myBool_ref() = true;
-  ms.myByte_ref() = 127;
-  ms.myI16_ref() = 32767;
-  ms.myI32_ref() = 2000111222;
-  ms.myI64_ref() = 8000111222;
-  ms.myDouble_ref() = 123.1;
-  ms.myFloat_ref() = -123.1;
-  ms.myString_ref() = "hi";
-  ms.myBinary_ref() = "bin";
+  ms.myBool() = true;
+  ms.myByte() = 127;
+  ms.myI16() = 32767;
+  ms.myI32() = 2000111222;
+  ms.myI64() = 8000111222;
+  ms.myDouble() = 123.1;
+  ms.myFloat() = -123.1;
+  ms.myString() = "hi";
+  ms.myBinary() = "bin";
 
   expected = folly::stripLeftMargin(R"(
       struct {
@@ -188,9 +188,9 @@ TEST(DebugString, Containers) {
   oneLinep.oneLine = true;
 
   MixedStruct ms;
-  ms.myMap_ref() = {{123, "onetwothree"}, {456, "fourfivesix"}};
-  ms.myList_ref() = {"item1", "item2", "item3"};
-  ms.mySet_ref() = {}; // empty, but set.
+  ms.myMap() = {{123, "onetwothree"}, {456, "fourfivesix"}};
+  ms.myList() = {"item1", "item2", "item3"};
+  ms.mySet() = {}; // empty, but set.
 
   std::string expected = folly::stripLeftMargin(R"(
       struct {
@@ -212,7 +212,7 @@ TEST(DebugString, Containers) {
 
   // Wrap-around with list.
   MixedStruct ms2;
-  ms2.myList_ref() = {
+  ms2.myList() = {
       "item1",
       "item2",
       "item3",
@@ -247,8 +247,8 @@ TEST(DebugString, Structs) {
   // Simple struct
   MixedStruct ms;
   Struct1 s1;
-  s1.str_ref() = "hi";
-  ms.struct1_ref() = s1;
+  s1.str() = "hi";
+  ms.struct1() = s1;
 
   std::string expected = folly::stripLeftMargin(R"(
       struct {
@@ -265,14 +265,14 @@ TEST(DebugString, Structs) {
   // Nested struct
   Struct2 s2;
   std::vector<Struct1> vec;
-  s1.str_ref() = "a";
+  s1.str() = "a";
   vec.push_back(s1);
-  s1.str_ref() = "b";
+  s1.str() = "b";
   vec.push_back(s1);
-  s1.str_ref() = "c";
+  s1.str() = "c";
   vec.push_back(s1);
-  s2.structs_ref() = vec;
-  ms.struct2_ref() = s2;
+  s2.structs() = vec;
+  ms.struct2() = s2;
   expected = folly::stripLeftMargin(R"(
       struct {
         13: struct = {
