@@ -633,9 +633,28 @@ def gen_metadata_struct_OptionalBinaryPatch() -> _fbthrift_metadata.ThriftMetada
 
 
 
+def _fbthrift_gen_metadata_enum_PatchOp(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "patch.PatchOp"
+
+    if qualified_name in metadata_struct.enums:
+        return metadata_struct
+    elements = {
+        1: "Assign",
+        5: "Add",
+        0: "Unspecified",
+    }
+    enum_dict = dict(metadata_struct.enums)
+    enum_dict[qualified_name] = _fbthrift_metadata.ThriftEnum(name=qualified_name, elements=elements, structured_annotations=[])
+    new_struct = metadata_struct(enums=enum_dict)
+
+    return new_struct
+
+def gen_metadata_enum_PatchOp() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_enum_PatchOp(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
 def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
+    meta = _fbthrift_gen_metadata_enum_PatchOp(meta)
     meta = _fbthrift_gen_metadata_struct_GeneratePatch(meta)
     meta = _fbthrift_gen_metadata_struct_GenerateOptionalPatch(meta)
     meta = _fbthrift_gen_metadata_struct_BoolPatch(meta)

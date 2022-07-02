@@ -887,7 +887,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> init<'mock> {
                 pub fn unimplemented() -> Self {
-                    init {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
                             "{}::{} is not mocked",
                             "TestService",

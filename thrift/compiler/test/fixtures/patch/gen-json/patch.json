@@ -1,6 +1,26 @@
 {
   "__fbthrift": {"@generated": 0},
   "thrift_module" : "patch",
+  "enumerations" : {
+    "PatchOp" : {
+      "lineno" : 203,
+      "constants" : {
+        "Assign" : 1,
+        "Add" : 5,
+        "Unspecified" : 0
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 202,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 206,
+          "column" : 2
+        }
+      }
+    }
+  },
   "structs" : {
     "GeneratePatch" : {
       "lineno" : 40,

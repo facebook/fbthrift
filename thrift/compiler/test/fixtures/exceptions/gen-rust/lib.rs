@@ -2034,7 +2034,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> doBland<'mock> {
                 pub fn unimplemented() -> Self {
-                    doBland {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "Raiser",
@@ -2079,7 +2079,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> doRaise<'mock> {
                 pub fn unimplemented() -> Self {
-                    doRaise {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "Raiser",
@@ -2124,7 +2124,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> get200<'mock> {
                 pub fn unimplemented() -> Self {
-                    get200 {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "Raiser",
@@ -2169,7 +2169,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> get500<'mock> {
                 pub fn unimplemented() -> Self {
-                    get500 {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "Raiser",

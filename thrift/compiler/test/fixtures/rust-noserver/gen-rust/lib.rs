@@ -1767,7 +1767,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> ping<'mock> {
                 pub fn unimplemented() -> Self {
-                    ping {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -1812,7 +1812,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> getRandomData<'mock> {
                 pub fn unimplemented() -> Self {
-                    getRandomData {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -1857,7 +1857,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> hasDataById<'mock> {
                 pub fn unimplemented() -> Self {
-                    hasDataById {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -1902,7 +1902,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> getDataById<'mock> {
                 pub fn unimplemented() -> Self {
-                    getDataById {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -1947,7 +1947,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> putDataById<'mock> {
                 pub fn unimplemented() -> Self {
-                    putDataById {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64, _: ::std::string::String| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -1992,7 +1992,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> lobDataById<'mock> {
                 pub fn unimplemented() -> Self {
-                    lobDataById {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64, _: ::std::string::String| panic!(
                             "{}::{} is not mocked",
                             "MyService",

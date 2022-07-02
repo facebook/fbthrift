@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+import enum
+
 import folly.iobuf as _fbthrift_iobuf
 import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
@@ -1101,6 +1103,17 @@ class OptionalBinaryPatch(metaclass=_fbthrift_python_types.StructMeta):
 # This unfortunately has to be down here to prevent circular imports
 import apache.thrift.op.patch.thrift_metadata
 
+class PatchOp(_fbthrift_python_types.Enum, enum.Enum):
+    Assign = 1
+    Add = 5
+    Unspecified = 0
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.PatchOp"
+
+    @staticmethod
+    def __get_metadata__():
+        return apache.thrift.op.patch.thrift_metadata.gen_metadata_enum_PatchOp()
 
 def _fbthrift_metadata__struct_GeneratePatch():
     return apache.thrift.op.patch.thrift_metadata.gen_metadata_struct_GeneratePatch()

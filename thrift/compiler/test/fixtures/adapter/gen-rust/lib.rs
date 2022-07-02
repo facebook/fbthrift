@@ -943,7 +943,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> func<'mock> {
                 pub fn unimplemented() -> Self {
-                    func {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::StringWithAdapter, _: ::std::string::String, _: crate::types::Foo| panic!(
                             "{}::{} is not mocked",
                             "Service",

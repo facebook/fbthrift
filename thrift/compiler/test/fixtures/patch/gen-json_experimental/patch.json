@@ -10,7 +10,32 @@
     "py": "thrift.lib.thrift.patch",
     "py.asyncio": "apache_thrift_asyncio.patch",
     "py3": "apache.thrift.op"
-  },  "structs" :
+  },
+  "enumerations" :
+  {
+      "PatchOp" : {
+        "name" : "PatchOp",
+        "constants" : {
+          "Assign" : {
+            "name" : "Assign",
+            "lineno" : 204,
+            "value" : 1
+          },
+          "Add" : {
+            "name" : "Add",
+            "lineno" : 205,
+            "value" : 5
+          },
+          "Unspecified" : {
+            "name" : "Unspecified",
+            "lineno" : -1,
+            "value" : 0
+          }
+        },
+        "lineno" : 203
+      }
+      },
+  "structs" :
   {
       "GeneratePatch" : {
         "name" : "GeneratePatch",

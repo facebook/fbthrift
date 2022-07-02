@@ -126,7 +126,7 @@
             #[allow(clippy::redundant_closure)]
             impl<'mock> {{function:rust_name}}<'mock> {
                 pub fn unimplemented() -> Self {
-                    {{function:rust_name}} {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|{{!
                             }}{{#function:args}}{{!
                             }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!

@@ -53,8 +53,20 @@ cdef extern from "thrift/lib/cpp2/op/detail/Patch.h":
 cdef extern from *:
     ctypedef bstring _folly_IOBuf "::folly::IOBuf"
 
+cdef extern from "thrift/lib/thrift/gen-cpp2/patch_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types.h" namespace "::apache::thrift::op":
+    cdef cppclass cPatchOp "::apache::thrift::op::PatchOp":
+        pass
 
 
+
+
+
+cdef class PatchOp(thrift.py3.types.CompiledEnum):
+    pass
 
 cdef extern from "thrift/lib/thrift/gen-cpp2/patch_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass ExceptionMetadata[T]:

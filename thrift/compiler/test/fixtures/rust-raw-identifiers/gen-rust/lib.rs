@@ -1246,7 +1246,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> r#return<'mock> {
                 pub fn unimplemented() -> Self {
-                    r#return {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::ThereAreNoPascalCaseKeywords| panic!(
                             "{}::{} is not mocked",
                             "Foo",
@@ -1291,7 +1291,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> super_<'mock> {
                 pub fn unimplemented() -> Self {
-                    super_ {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::ThereAreNoPascalCaseKeywords| panic!(
                             "{}::{} is not mocked",
                             "Foo",

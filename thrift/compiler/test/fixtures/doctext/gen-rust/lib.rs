@@ -1559,7 +1559,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> f<'mock> {
                 pub fn unimplemented() -> Self {
-                    f {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "C",
@@ -1604,7 +1604,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> numbers<'mock> {
                 pub fn unimplemented() -> Self {
-                    numbers {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "C",
@@ -1649,7 +1649,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> thing<'mock> {
                 pub fn unimplemented() -> Self {
-                    thing {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32, _: ::std::string::String, _: ::std::collections::BTreeSet<::std::primitive::i32>| panic!(
                             "{}::{} is not mocked",
                             "C",

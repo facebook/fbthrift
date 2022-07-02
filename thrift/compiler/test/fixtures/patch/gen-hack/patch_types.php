@@ -9,6 +9,45 @@
 namespace thrift\op;
 
 /**
+ * Original thrift enum:-
+ * PatchOp
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/PatchOp'))>>
+enum PatchOp: int {
+  Assign = 1;
+  Add = 5;
+  Unspecified = 0;
+}
+
+class PatchOp_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "patch.PatchOp",
+        "elements" => dict[
+          1 => "Assign",
+          5 => "Add",
+          0 => "Unspecified",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[
+        '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
+/**
  * Original thrift struct:-
  * GeneratePatch
  */

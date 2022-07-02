@@ -5892,7 +5892,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> foo<'mock> {
                 pub fn unimplemented() -> Self {
-                    foo {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -5937,7 +5937,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> interact<'mock> {
                 pub fn unimplemented() -> Self {
-                    interact {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -5982,7 +5982,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> interactFast<'mock> {
                 pub fn unimplemented() -> Self {
-                    interactFast {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "MyService",
@@ -6027,7 +6027,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> serialize<'mock> {
                 pub fn unimplemented() -> Self {
-                    serialize {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                             "{}::{} is not mocked",
                             "MyService",

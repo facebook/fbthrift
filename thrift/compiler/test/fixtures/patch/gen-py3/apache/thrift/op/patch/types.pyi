@@ -22,6 +22,12 @@ import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_th
 __property__ = property
 
 
+class PatchOp(thrift.py3.types.Enum):
+    Assign: PatchOp = ...
+    Add: PatchOp = ...
+    Unspecified: PatchOp = ...
+
+
 class GeneratePatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass

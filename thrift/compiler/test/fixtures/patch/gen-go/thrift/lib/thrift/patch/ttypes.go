@@ -28,6 +28,53 @@ var _ = scope1.GoUnusedProtection__
 var _ = cpp2.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
+type PatchOp int64
+const (
+  PatchOp_Assign PatchOp = 1
+  PatchOp_Add PatchOp = 5
+  PatchOp_Unspecified PatchOp = 0
+)
+
+var PatchOpToName = map[PatchOp]string {
+  PatchOp_Assign: "Assign",
+  PatchOp_Add: "Add",
+  PatchOp_Unspecified: "Unspecified",
+}
+
+var PatchOpToValue = map[string]PatchOp {
+  "Assign": PatchOp_Assign,
+  "Add": PatchOp_Add,
+  "Unspecified": PatchOp_Unspecified,
+}
+
+var PatchOpNames = []string {
+  "Assign",
+  "Add",
+  "Unspecified",
+}
+
+var PatchOpValues = []PatchOp {
+  PatchOp_Assign,
+  PatchOp_Add,
+  PatchOp_Unspecified,
+}
+
+func (p PatchOp) String() string {
+  if v, ok := PatchOpToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func PatchOpFromString(s string) (PatchOp, error) {
+  if v, ok := PatchOpToValue[s]; ok {
+    return v, nil
+  }
+  return PatchOp(0), fmt.Errorf("not a valid PatchOp string")
+}
+
+func PatchOpPtr(v PatchOp) *PatchOp { return &v }
+
 type GeneratePatch struct {
 }
 

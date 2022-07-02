@@ -3183,7 +3183,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> returnstream<'mock> {
                 pub fn unimplemented() -> Self {
-                    returnstream {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32, _: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3228,7 +3228,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> streamthrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    streamthrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3273,7 +3273,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> servicethrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    servicethrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3318,7 +3318,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> boththrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    boththrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3363,7 +3363,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> responseandstreamstreamthrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    responseandstreamstreamthrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3408,7 +3408,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> responseandstreamservicethrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    responseandstreamservicethrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3453,7 +3453,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> responseandstreamboththrows<'mock> {
                 pub fn unimplemented() -> Self {
-                    responseandstreamboththrows {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",
@@ -3498,7 +3498,7 @@ pub mod mock {
             #[allow(clippy::redundant_closure)]
             impl<'mock> returnstreamFast<'mock> {
                 pub fn unimplemented() -> Self {
-                    returnstreamFast {
+                    Self {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32, _: ::std::primitive::i32| panic!(
                             "{}::{} is not mocked",
                             "PubSubStreamingService",

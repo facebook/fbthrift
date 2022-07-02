@@ -36,7 +36,24 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'GeneratePatch', 'GenerateOptionalPatch', 'BoolPatch', 'BytePatch', 'I16Patch', 'I32Patch', 'I64Patch', 'FloatPatch', 'DoublePatch', 'StringPatch', 'BinaryPatch', 'OptionalBoolPatch', 'OptionalBytePatch', 'OptionalI16Patch', 'OptionalI32Patch', 'OptionalI64Patch', 'OptionalFloatPatch', 'OptionalDoublePatch', 'OptionalStringPatch', 'OptionalBinaryPatch']
+__all__ = ['UTF8STRINGS', 'PatchOp', 'GeneratePatch', 'GenerateOptionalPatch', 'BoolPatch', 'BytePatch', 'I16Patch', 'I32Patch', 'I64Patch', 'FloatPatch', 'DoublePatch', 'StringPatch', 'BinaryPatch', 'OptionalBoolPatch', 'OptionalBytePatch', 'OptionalI16Patch', 'OptionalI32Patch', 'OptionalI64Patch', 'OptionalFloatPatch', 'OptionalDoublePatch', 'OptionalStringPatch', 'OptionalBinaryPatch']
+
+class PatchOp:
+  Assign = 1
+  Add = 5
+  Unspecified = 0
+
+  _VALUES_TO_NAMES = {
+    1: "Assign",
+    5: "Add",
+    0: "Unspecified",
+  }
+
+  _NAMES_TO_VALUES = {
+    "Assign": 1,
+    "Add": 5,
+    "Unspecified": 0,
+  }
 
 class GeneratePatch:
 
