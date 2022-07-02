@@ -118,7 +118,7 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
   result += readJSONString(tmpStr);
 
   if (currentType != nullptr) {
-    auto fields = currentType->fields_ref();
+    auto fields = currentType->fields();
     if (!fields) {
       throw TProtocolException(
           TProtocolException::INVALID_DATA,
@@ -127,9 +127,9 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
 
     // find the corresponding StructField object and field id of the field
     for (auto ite = fields->begin(); ite != fields->end(); ++ite) {
-      if (*ite->second.name_ref() == tmpStr) {
+      if (*ite->second.name() == tmpStr) {
         fieldId = ite->first;
-        fieldType = getTypeIdFromTypeNum(*ite->second.type_ref());
+        fieldType = getTypeIdFromTypeNum(*ite->second.type());
 
         // set the nextType_ if the field type is a compound type
         // e.g. list<i64>, mySimpleStruct
@@ -139,8 +139,8 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
         // but this allows only calling setNextStructType() on the
         // base type
         auto& field = ite->second;
-        if (isCompoundType(*field.type_ref())) {
-          nextType_ = getDataTypeFromTypeNum(*field.type_ref());
+        if (isCompoundType(*field.type())) {
+          nextType_ = getDataTypeFromTypeNum(*field.type());
         }
 
         return result;
@@ -182,8 +182,8 @@ uint32_t TSimpleJSONProtocol::readMapBegin(
   // we should never arrive here
   assert(!beingSkipped);
 
-  auto keyTypeNum = currentType->mapKeyType_ref().value_or(0);
-  auto valTypeNum = currentType->valueType_ref().value_or(0);
+  auto keyTypeNum = currentType->mapKeyType().value_or(0);
+  auto valTypeNum = currentType->valueType().value_or(0);
   keyType = getTypeIdFromTypeNum(keyTypeNum);
   valType = getTypeIdFromTypeNum(valTypeNum);
   size = 0;
@@ -224,7 +224,7 @@ uint32_t TSimpleJSONProtocol::readListBegin(
     return result + getNumSkippedChars();
 
   } else {
-    auto elemTypeNum = currentType->valueType_ref().value_or(0);
+    auto elemTypeNum = currentType->valueType().value_or(0);
     elemType = getTypeIdFromTypeNum(elemTypeNum);
     size = 0;
     sizeUnknown = true;
@@ -261,7 +261,7 @@ uint32_t TSimpleJSONProtocol::readSetBegin(
   // we should never arrive here
   assert(!beingSkipped);
 
-  auto elemTypeNum = currentType->valueType_ref().value_or(0);
+  auto elemTypeNum = currentType->valueType().value_or(0);
   elemType = getTypeIdFromTypeNum(elemTypeNum);
   size = 0;
   sizeUnknown = true;
@@ -362,9 +362,9 @@ TType TSimpleJSONProtocol::guessTypeIdFromFirstByte() {
 }
 
 DataType* TSimpleJSONProtocol::getDataTypeFromTypeNum(int64_t typeNum) {
-  auto ite = schema_.dataTypes_ref()->find(typeNum);
+  auto ite = schema_.dataTypes()->find(typeNum);
 
-  if (ite == schema_.dataTypes_ref()->cend()) {
+  if (ite == schema_.dataTypes()->cend()) {
     throw TProtocolException(
         TProtocolException::INVALID_DATA,
         "Type id not found, schema is corrupted");
@@ -388,8 +388,8 @@ void TSimpleJSONProtocol::exitType() {
     return;
   }
 
-  auto mapKeyType = currentType->mapKeyType_ref();
-  auto valueType = currentType->valueType_ref();
+  auto mapKeyType = currentType->mapKeyType();
+  auto valueType = currentType->valueType();
   if (mapKeyType && isCompoundType(*mapKeyType) &&
       (!valueType || !isCompoundType(*valueType) ||
        lastType == getDataTypeFromTypeNum(*valueType))) {
