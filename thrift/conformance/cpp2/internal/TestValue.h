@@ -52,50 +52,50 @@ uint32_t invoke(WriteToken token, W& writer) {
 template <typename W>
 uint32_t invoke(const WriteOp& write, W& writer) {
   switch (write.getType()) {
-    case WriteOp::writeBool:
+    case WriteOp::Type::writeBool:
       return writer.writeBool(*write.writeBool_ref());
-    case WriteOp::writeByte:
+    case WriteOp::Type::writeByte:
       return writer.writeByte(*write.writeByte_ref());
-    case WriteOp::writeI16:
+    case WriteOp::Type::writeI16:
       return writer.writeI16(*write.writeI16_ref());
-    case WriteOp::writeI32:
+    case WriteOp::Type::writeI32:
       return writer.writeI32(*write.writeI32_ref());
-    case WriteOp::writeI64:
+    case WriteOp::Type::writeI64:
       return writer.writeI64(*write.writeI64_ref());
-    case WriteOp::writeFloat:
+    case WriteOp::Type::writeFloat:
       return writer.writeFloat(*write.writeFloat_ref());
-    case WriteOp::writeDouble:
+    case WriteOp::Type::writeDouble:
       return writer.writeDouble(*write.writeDouble_ref());
-    case WriteOp::writeString:
+    case WriteOp::Type::writeString:
       return writer.writeString(*write.writeString_ref());
-    case WriteOp::writeBinary:
+    case WriteOp::Type::writeBinary:
       return writer.writeBinary(*write.writeBinary_ref());
 
-    case WriteOp::writeToken:
+    case WriteOp::Type::writeToken:
       return invoke(*write.writeToken_ref(), writer);
 
-    case WriteOp::writeStructBegin: {
+    case WriteOp::Type::writeStructBegin: {
       const auto& begin = *write.writeStructBegin_ref();
       return writer.writeStructBegin(begin.name()->c_str());
     }
-    case WriteOp::writeFieldBegin: {
+    case WriteOp::Type::writeFieldBegin: {
       const auto& begin = *write.writeFieldBegin_ref();
       return writer.writeFieldBegin(
           begin.name()->c_str(), type::toTType(*begin.type()), *begin.id());
     }
-    case WriteOp::writeMapBegin: {
+    case WriteOp::Type::writeMapBegin: {
       const auto& begin = *write.writeMapBegin_ref();
       return writer.writeMapBegin(
           type::toTType(*begin.keyType()),
           type::toTType(*begin.valueType()),
           *begin.size());
     }
-    case WriteOp::writeListBegin: {
+    case WriteOp::Type::writeListBegin: {
       const auto& begin = *write.writeListBegin_ref();
       return writer.writeListBegin(
           type::toTType(*begin.elemType()), *begin.size());
     }
-    case WriteOp::writeSetBegin: {
+    case WriteOp::Type::writeSetBegin: {
       const auto& begin = *write.writeSetBegin_ref();
       return writer.writeSetBegin(
           type::toTType(*begin.elemType()), *begin.size());

@@ -161,7 +161,7 @@ std::set<std::string> parseNonconforming(std::string_view data) {
 testing::AssertionResult RunTestCase(
     ConformanceServiceAsyncClient& client, const TestCase& testCase) {
   switch (testCase.test()->getType()) {
-    case TestCaseUnion::roundTrip:
+    case TestCaseUnion::Type::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());
     default:
       return testing::AssertionFailure()

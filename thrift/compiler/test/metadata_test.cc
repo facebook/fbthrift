@@ -111,10 +111,10 @@ TEST_F(MetadataCodegenTest, structTest) {
 
   auto td = s.fields_ref()[2];
   EXPECT_EQ(td.name_ref(), "structured_annotations");
-  EXPECT_EQ(td.type_ref()->getType(), ThriftType::t_list);
+  EXPECT_EQ(td.type_ref()->getType(), ThriftType::Type::t_list);
   EXPECT_EQ(
       td.type_ref()->t_list_ref()->valueType_ref()->getType(),
-      ThriftType::t_struct);
+      ThriftType::Type::t_struct);
   EXPECT_EQ(
       td.type_ref()->t_list_ref()->valueType_ref()->t_struct_ref()->name_ref(),
       "metadata.ThriftConstStruct");
