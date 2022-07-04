@@ -316,11 +316,11 @@ TYPED_TEST(MultiProtocolTest, UnionWithRef) {
 
 TYPED_TEST(MultiProtocolTest, DirtyReadIntoContainer) {
   auto dirty = tablebased::StructA();
-  dirty.list_field_ref() = {"should be cleared"};
+  dirty.list_field() = {"should be cleared"};
   auto filled = makeStructALike<tablebased::StructA>();
   auto serialized = TypeParam::template serialize<std::string>(filled);
   TypeParam::deserialize(serialized, dirty);
-  EXPECT_EQ(filled.list_field_ref(), dirty.list_field_ref());
+  EXPECT_EQ(filled.list_field(), dirty.list_field());
 }
 
 TYPED_TEST(MultiProtocolTest, ReadingUnqualifiedFieldShouldSetIsset) {
