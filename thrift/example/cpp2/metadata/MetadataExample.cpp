@@ -32,44 +32,44 @@ void printServiceMethodName() {
   auto handler = std::make_shared<MyServiceHandler>();
   ThriftServiceMetadataResponse resp;
   handler->getProcessor()->getServiceMetadata(resp);
-  const ThriftMetadata& metadata = *resp.metadata_ref();
+  const ThriftMetadata& metadata = *resp.metadata();
   const ThriftService& serviceMetadata =
-      metadata.services_ref()->at("MetadataExample.MyService");
-  for (const ThriftFunction& func : *serviceMetadata.functions_ref()) {
-    LOG(INFO) << *func.name_ref();
+      metadata.services()->at("MetadataExample.MyService");
+  for (const ThriftFunction& func : *serviceMetadata.functions()) {
+    LOG(INFO) << *func.name();
   }
 }
 
 void printStructFieldName() {
   const ThriftStruct& metadata = get_struct_metadata<MyStruct>();
-  for (const ThriftField& field : *metadata.fields_ref()) {
-    LOG(INFO) << *field.name_ref();
+  for (const ThriftField& field : *metadata.fields()) {
+    LOG(INFO) << *field.name();
   }
 }
 
 void printStructuredAnnotationData() {
   const ThriftStruct& metadata = get_struct_metadata<MyStruct>();
   const ThriftField& field = *ranges::find_if(
-      *metadata.fields_ref(),
+      *metadata.fields(),
       [](auto& field) { return field.name_ref() == "field2"; });
 
   // Get structured annotations of the field
   const std::vector<ThriftConstStruct>& fieldAnnotations =
-      *field.structured_annotations_ref();
+      *field.structured_annotations();
 
   // Print "field annotation"
-  LOG(INFO) << *fieldAnnotations[0].fields_ref()->at("data").cv_string_ref();
+  LOG(INFO) << *fieldAnnotations[0].fields()->at("data").cv_string_ref();
 
   // Structured annotation of the typedef
-  const ThriftTypedefType& typeDef = *field.type_ref()->t_typedef_ref();
+  const ThriftTypedefType& typeDef = *field.type()->t_typedef_ref();
   const std::vector<ThriftConstStruct>& typedefAnnotations =
-      *typeDef.structured_annotations_ref();
+      *typeDef.structured_annotations();
 
   // Print "MetadataExample.Text"
-  LOG(INFO) << *typeDef.name_ref();
+  LOG(INFO) << *typeDef.name();
 
   // Print "typedef annotation"
-  LOG(INFO) << *typedefAnnotations[0].fields_ref()->at("data").cv_string_ref();
+  LOG(INFO) << *typedefAnnotations[0].fields()->at("data").cv_string_ref();
 }
 
 } // namespace apache::thrift::metadata

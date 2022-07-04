@@ -26,8 +26,8 @@ namespace chatroom {
 void ChatRoomServiceHandler::getMessages(
     GetMessagesResponse& resp, std::unique_ptr<GetMessagesRequest> req) {
   int64_t idx = 0;
-  if (auto token = req->token_ref()) {
-    idx = *token->index_ref();
+  if (auto token = req->token()) {
+    idx = *token->index();
   }
 
   int64_t i = idx;
@@ -42,17 +42,17 @@ void ChatRoomServiceHandler::getMessages(
   });
 
   IndexToken token;
-  *token.index_ref() = i;
-  *resp.token_ref() = token;
+  *token.index() = i;
+  *resp.token() = token;
 }
 
 void ChatRoomServiceHandler::sendMessage(
     std::unique_ptr<SendMessageRequest> req) {
   Message msg;
-  *msg.message_ref() = *req->message_ref();
-  *msg.sender_ref() = *req->sender_ref();
+  *msg.message() = *req->message();
+  *msg.sender() = *req->sender();
 
-  *msg.timestamp_ref() = (int64_t)time(nullptr);
+  *msg.timestamp() = (int64_t)time(nullptr);
 
   messageBuffer_.withWLock([&](auto& lockedMessage) { //
     lockedMessage.push_back(msg);
