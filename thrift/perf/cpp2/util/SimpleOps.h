@@ -103,19 +103,17 @@ class Sum {
 
   void async(
       AsyncClient* client, std::unique_ptr<RequestCallbackWithValidator> cb) {
-    request_.x_ref() = gen_();
-    request_.y_ref() = gen_();
+    request_.x() = gen_();
+    request_.y() = gen_();
 
     cb->validator = [request = request_](ClientReceiveState& rstate) {
       try {
         TwoInts response;
         AsyncClient::recv_sum(response, rstate);
         CHECK_EQ(
-            static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
-            *response.x_ref());
+            static_cast<uint32_t>(*request.x()) + *request.y(), *response.x());
         CHECK_EQ(
-            static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
-            *response.y_ref());
+            static_cast<uint32_t>(*request.x()) - *request.y(), *response.y());
       } catch (...) {
         // handled by asyncReceived
       }
@@ -232,18 +230,18 @@ class SemiFutureSum {
   ~SemiFutureSum() = default;
 
   void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
-    request_.x_ref() = gen_();
-    request_.y_ref() = gen_();
+    request_.x() = gen_();
+    request_.y() = gen_();
 
     client->semifuture_sum(request_)
         .via(client->getChannel()->getEventBase())
         .thenTry([this, cb = std::move(cb), request = request_](auto response) {
           try {
             CHECK_EQ(
-                static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
+                static_cast<uint32_t>(*request.x()) + *request.y(),
                 *response->x_ref());
             CHECK_EQ(
-                static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
+                static_cast<uint32_t>(*request.x()) - *request.y(),
                 *response->y_ref());
             stats_->add(op_name_);
             cb->replyReceived({});
@@ -290,8 +288,8 @@ class CoSum {
   ~CoSum() = default;
 
   void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
-    request_.x_ref() = gen_();
-    request_.y_ref() = gen_();
+    request_.x() = gen_();
+    request_.y() = gen_();
 
     client->co_sum(request_)
         .scheduleOn(client->getChannel()->getEventBase())
@@ -299,10 +297,10 @@ class CoSum {
                                auto response) {
           try {
             CHECK_EQ(
-                static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
+                static_cast<uint32_t>(*request.x()) + *request.y(),
                 *response->x_ref());
             CHECK_EQ(
-                static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
+                static_cast<uint32_t>(*request.x()) - *request.y(),
                 *response->y_ref());
             stats_->add(op_name_);
             cb->replyReceived({});

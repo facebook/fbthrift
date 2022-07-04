@@ -41,15 +41,15 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->registerCounter(ks_Download_);
     stats_->registerCounter(ks_Upload_);
 
-    chunk_.data_ref()->unshare();
-    chunk_.data_ref()->reserve(0, FLAGS_chunk_size);
-    auto buffer = chunk_.data_ref()->writableData();
+    chunk_.data()->unshare();
+    chunk_.data()->reserve(0, FLAGS_chunk_size);
+    auto buffer = chunk_.data()->writableData();
     // Make it real data to eliminate network optimizations on sending all 0's.
     srand(time(nullptr));
     for (uint32_t i = 0; i < FLAGS_chunk_size; ++i) {
       buffer[i] = (uint8_t)(rand() % 26 + 'A');
     }
-    chunk_.data_ref()->append(FLAGS_chunk_size);
+    chunk_.data()->append(FLAGS_chunk_size);
   }
 
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override {
@@ -72,10 +72,10 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
       std::unique_ptr<TwoInts> input) override {
     stats_->add(kSum_);
     auto result = std::make_unique<TwoInts>();
-    result->x_ref() = static_cast<uint32_t>(input->x_ref().value_or(0)) +
-        input->y_ref().value_or(0);
-    result->y_ref() = static_cast<uint32_t>(input->x_ref().value_or(0)) -
-        input->y_ref().value_or(0);
+    result->x() =
+        static_cast<uint32_t>(input->x().value_or(0)) + input->y().value_or(0);
+    result->y() =
+        static_cast<uint32_t>(input->x().value_or(0)) - input->y().value_or(0);
     callback->result(std::move(result));
   }
 

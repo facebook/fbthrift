@@ -96,15 +96,15 @@ class Upload {
     stats_->registerCounter(timeout_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
-    chunk_.data_ref()->unshare();
-    chunk_.data_ref()->reserve(0, chunkSize);
-    auto buffer = chunk_.data_ref()->writableData();
+    chunk_.data()->unshare();
+    chunk_.data()->reserve(0, chunkSize);
+    auto buffer = chunk_.data()->writableData();
     // Make it real data to eliminate network optimizations on sending all 0's.
     srand(time(nullptr));
     for (uint32_t i = 0; i < FLAGS_chunk_size; ++i) {
       buffer[i] = (uint8_t)(rand() % 26 + 'A');
     }
-    chunk_.data_ref()->append(chunkSize);
+    chunk_.data()->append(chunkSize);
   }
   ~Upload() = default;
 
@@ -160,13 +160,13 @@ class StreamDownload {
     stats_->registerCounter(download_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
-    chunk_.data_ref()->unshare();
-    chunk_.data_ref()->reserve(0, chunkSize);
-    auto buffer = chunk_.data_ref()->writableData();
+    chunk_.data()->unshare();
+    chunk_.data()->reserve(0, chunkSize);
+    auto buffer = chunk_.data()->writableData();
     for (uint32_t i = 0; i < chunkSize; ++i) {
       buffer[i] = (uint8_t)((i + 'A') % 26);
     }
-    chunk_.data_ref()->append(chunkSize);
+    chunk_.data()->append(chunkSize);
   }
   ~StreamDownload() = default;
 
