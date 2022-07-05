@@ -230,7 +230,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return runtimeServerActions_.enableResourcePoolForWildcard;
   }
 
- protected:
   bool useResourcePools() {
     if (!runtimeServerActions_.resourcePoolEnablementLocked) {
       runtimeServerActions_.resourcePoolEnablementLocked = true;
