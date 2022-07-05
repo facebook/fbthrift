@@ -1115,6 +1115,31 @@ TEST_P(HeaderOrRocket, OnewayClientConnectionCloseTest) {
   EXPECT_TRUE(posted);
 }
 
+TEST_P(HeaderOrRocket, ResourcePoolSetWorkers) {
+  static folly::Baton enterBaton;
+  static folly::Baton exitBaton;
+
+  class OnewayTestInterface : public TestServiceSvIf {
+    void noResponse(int64_t) override {
+      enterBaton.post();
+      exitBaton.wait();
+    }
+  };
+
+  ScopedServerInterfaceThread runner(std::make_shared<OnewayTestInterface>());
+  // Only test in the presence of resource pools
+  if (!runner.getThriftServer().resourcePoolSet().empty()) {
+    auto client = makeClient(runner, nullptr);
+    EXPECT_EQ(runner.getThriftServer().resourcePoolSet().idleWorkerCount(), 1);
+    EXPECT_EQ(runner.getThriftServer().resourcePoolSet().workerCount(), 1);
+    client->sync_noResponse(0);
+    enterBaton.wait();
+    // The above call blocks so we expect our idle worker count to reflect that.
+    EXPECT_EQ(runner.getThriftServer().resourcePoolSet().idleWorkerCount(), 0);
+    exitBaton.post();
+  }
+}
+
 TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
   class TestInterfaceSF : public TestServiceSvIf {
     folly::SemiFuture<folly::Unit> semifuture_voidResponse() override {

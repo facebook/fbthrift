@@ -172,6 +172,16 @@ class ResourcePoolSet {
   // Returns true if the ResourcePoolSet is empty.
   bool empty() const;
 
+  // Returns the total number of threads available in this ResourcePoolSet.
+  // This is inteded for reporting statistics and should not be called
+  // frequently.
+  std::size_t workerCount() const;
+
+  // Returns the number of of idle threads in this ResourcePoolSet.
+  // This is inteded for reporting statistics and should not be called
+  // frequently.
+  std::size_t idleWorkerCount() const;
+
   // Stop all the concurrency controllers in this ResourcePoolSet and join
   // all the executors before returning. This unlocks the ResourcePoolSet. This
   // is called by the thrift server during shutdown.

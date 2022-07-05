@@ -231,6 +231,44 @@ bool ResourcePoolSet::empty() const {
   return resourcePools_.empty();
 }
 
+std::size_t ResourcePoolSet::workerCount() const {
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+
+  std::size_t workers = 0;
+  for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
+    if (resourcePools_[i]->executor()) {
+      if (auto* tpe = dynamic_cast<folly::ThreadPoolExecutor*>(
+              &resourcePools_[i]->executor()->get())) {
+        // Return the configured number of threads not the dynamic number.
+        workers += tpe->numThreads();
+      }
+    }
+  }
+
+  return workers;
+}
+
+std::size_t ResourcePoolSet::idleWorkerCount() const {
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+
+  std::size_t idle = 0;
+  for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
+    if (resourcePools_[i]->executor()) {
+      if (auto* tpe = dynamic_cast<folly::ThreadPoolExecutor*>(
+              &resourcePools_[i]->executor()->get())) {
+        auto poolStats = tpe->getPoolStats();
+        // PoolStats idleThreadCount correctly reflects threads which are
+        // configured in the executor but not running as idle.
+        idle += poolStats.idleThreadCount;
+      }
+    }
+  }
+
+  return idle;
+}
+
 void ResourcePoolSet::stopAndJoin() {
   {
     // This is called during shutdown - the ResourcePoolSet should have been
