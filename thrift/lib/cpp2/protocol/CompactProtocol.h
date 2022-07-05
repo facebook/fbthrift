@@ -58,7 +58,7 @@ class CompactProtocolReader;
 /**
  * C++ Implementation of the Compact Protocol as described in THRIFT-110
  */
-class CompactProtocolWriter {
+class CompactProtocolWriter : public detail::ProtocolBase {
  public:
   using ProtocolReader = CompactProtocolReader;
 
@@ -206,7 +206,7 @@ class CompactProtocolWriter {
       int16_t previousId);
 };
 
-class CompactProtocolReader {
+class CompactProtocolReader : public detail::ProtocolBase {
  public:
   static const int8_t VERSION_MASK = 0x1f; // 0001 1111
 

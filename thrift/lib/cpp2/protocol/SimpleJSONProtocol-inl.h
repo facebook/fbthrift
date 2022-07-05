@@ -32,12 +32,18 @@ namespace thrift {
  * Public writing methods
  */
 uint32_t SimpleJSONProtocolWriter::writeStructBegin(const char* /*name*/) {
+  descend();
+
   auto ret = writeContext();
   return ret + beginContext(ContextType::MAP);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeStructEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t SimpleJSONProtocolWriter::writeFieldBegin(
@@ -56,32 +62,50 @@ uint32_t SimpleJSONProtocolWriter::writeFieldStop() {
 
 uint32_t SimpleJSONProtocolWriter::writeMapBegin(
     const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
+  descend();
+
   auto ret = writeContext();
   return ret + beginContext(ContextType::MAP);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeMapEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t SimpleJSONProtocolWriter::writeListBegin(
     TType /*elemType*/, uint32_t /*size*/) {
+  descend();
+
   auto ret = writeContext();
   return ret + beginContext(ContextType::ARRAY);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeListEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t SimpleJSONProtocolWriter::writeSetBegin(
     TType /*elemType*/, uint32_t /*size*/) {
+  descend();
+
   auto ret = writeContext();
   return ret + beginContext(ContextType::ARRAY);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeSetEnd() {
-  return endContext();
+  auto ret = endContext();
+
+  ascend();
+
+  return ret;
 }
 
 uint32_t SimpleJSONProtocolWriter::writeBool(bool value) {
@@ -154,11 +178,15 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
  */
 
 void SimpleJSONProtocolReader::readStructBegin(std::string& /*name*/) {
+  descend();
+
   ensureAndBeginContext(ContextType::MAP);
 }
 
 void SimpleJSONProtocolReader::readStructEnd() {
   endContext();
+
+  ascend();
 }
 
 void SimpleJSONProtocolReader::readFieldBegin(
@@ -187,32 +215,44 @@ void SimpleJSONProtocolReader::readFieldEnd() {}
 
 void SimpleJSONProtocolReader::readMapBegin(
     TType& /*keyType*/, TType& /*valType*/, uint32_t& size) {
+  descend();
+
   size = std::numeric_limits<uint32_t>::max();
   ensureAndBeginContext(ContextType::MAP);
 }
 
 void SimpleJSONProtocolReader::readMapEnd() {
   endContext();
+
+  ascend();
 }
 
 void SimpleJSONProtocolReader::readListBegin(
     TType& /*elemType*/, uint32_t& size) {
+  descend();
+
   size = std::numeric_limits<uint32_t>::max();
   ensureAndBeginContext(ContextType::ARRAY);
 }
 
 void SimpleJSONProtocolReader::readListEnd() {
   endContext();
+
+  ascend();
 }
 
 void SimpleJSONProtocolReader::readSetBegin(
     TType& /*elemType*/, uint32_t& size) {
+  descend();
+
   size = std::numeric_limits<uint32_t>::max();
   ensureAndBeginContext(ContextType::ARRAY);
 }
 
 void SimpleJSONProtocolReader::readSetEnd() {
   endContext();
+
+  ascend();
 }
 
 void SimpleJSONProtocolReader::readBool(bool& value) {
@@ -245,6 +285,7 @@ void SimpleJSONProtocolReader::skip(TType /*type*/) {
   readWhitespace();
   auto ch = peekCharSafe();
   if (ch == apache::thrift::detail::json::kJSONObjectStart) {
+    descend();
     beginContext(ContextType::MAP);
     while (true) {
       skipWhitespace();
@@ -255,7 +296,9 @@ void SimpleJSONProtocolReader::skip(TType /*type*/) {
       skip(TType::T_VOID);
     }
     endContext();
+    ascend();
   } else if (ch == apache::thrift::detail::json::kJSONArrayStart) {
+    descend();
     beginContext(ContextType::ARRAY);
     while (true) {
       skipWhitespace();
@@ -265,6 +308,7 @@ void SimpleJSONProtocolReader::skip(TType /*type*/) {
       skip(TType::T_VOID);
     }
     endContext();
+    ascend();
   } else if (ch == apache::thrift::detail::json::kJSONStringDelimiter) {
     std::string tmp;
     readJSONVal(tmp);

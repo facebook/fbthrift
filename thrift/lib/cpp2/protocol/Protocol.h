@@ -46,6 +46,31 @@
 namespace apache {
 namespace thrift {
 
+constexpr size_t kProtocolMaxDepth = 15000;
+
+namespace detail {
+
+class ProtocolBase {
+ public:
+  // height is maximum permitted remaining levels of nesting, applying to map,
+  // set, list, and struct types
+  void setHeight(size_t height) { height_ = height + 1; }
+  size_t getHeight() const { return height_ - 1; }
+
+ protected:
+  void descend() {
+    if (!--height_) {
+      protocol::TProtocolException::throwExceededDepthLimit();
+    }
+  }
+  void ascend() { ++height_; }
+
+ private:
+  size_t height_{kProtocolMaxDepth + 1};
+};
+
+} // namespace detail
+
 /**
  * Certain serialization / deserialization operations allow sharing
  * external (user-owned) buffers. This means that the external buffers must

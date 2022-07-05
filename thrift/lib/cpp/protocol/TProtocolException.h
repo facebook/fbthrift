@@ -49,6 +49,7 @@ class FOLLY_EXPORT TProtocolException
     NOT_IMPLEMENTED = 5,
     MISSING_REQUIRED_FIELD = 6,
     CHECKSUM_MISMATCH = 7,
+    DEPTH_LIMIT = 8,
   };
 
   TProtocolException() : apache::thrift::TLibraryException(), type_(UNKNOWN) {}
@@ -91,6 +92,8 @@ class FOLLY_EXPORT TProtocolException
           return "TProtocolException: Missing required field";
         case CHECKSUM_MISMATCH:
           return "TProtocolException: Checksum mismatch";
+        case DEPTH_LIMIT:
+          return "TProtocolException: Exceeded depth limit";
         default:
           return "TProtocolException: (Invalid exception type)";
       }
@@ -106,6 +109,7 @@ class FOLLY_EXPORT TProtocolException
   [[noreturn]] static void
   throwExceededSizeLimit();
   [[noreturn]] static void throwExceededSizeLimit(size_t size, size_t limit);
+  [[noreturn]] static void throwExceededDepthLimit();
   [[noreturn]] static void throwMissingRequiredField(
       folly::StringPiece field, folly::StringPiece type);
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);

@@ -68,7 +68,7 @@ constexpr folly::StringPiece kThriftNegativeInfinity("-Infinity");
 } // namespace json
 } // namespace detail
 
-class JSONProtocolWriterCommon {
+class JSONProtocolWriterCommon : public detail::ProtocolBase {
  public:
   explicit JSONProtocolWriterCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
@@ -164,7 +164,7 @@ class JSONProtocolWriterCommon {
   uint32_t writeJSONIntInternal(int64_t num);
 };
 
-class JSONProtocolReaderCommon {
+class JSONProtocolReaderCommon : public detail::ProtocolBase {
  public:
   explicit JSONProtocolReaderCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
