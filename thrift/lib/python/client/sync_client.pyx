@@ -17,7 +17,7 @@
 cimport folly.iobuf
 
 from cython.operator cimport dereference as deref
-from folly.iobuf cimport IOBuf
+from folly.iobuf cimport IOBuf, cIOBuf
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
@@ -59,20 +59,23 @@ cdef class SyncClient:
 
         protocol = deref(self._omni_client).getChannelProtocolId()
         cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
+        cdef unique_ptr[cIOBuf] args_ciobuf = cmove(args_iobuf.c_clone())
         if response_cls is None:
-            deref(self._omni_client).oneway_send(
-                service_name,
-                function_name,
-                args_iobuf.c_clone(),
-                self._persistent_headers,
-            )
+            with nogil:
+                deref(self._omni_client).oneway_send(
+                    service_name,
+                    function_name,
+                    cmove(args_ciobuf),
+                    self._persistent_headers,
+                )
         else:
-            resp = deref(self._omni_client).sync_send(
-                service_name,
-                function_name,
-                args_iobuf.c_clone(),
-                self._persistent_headers,
-            )
+            with nogil:
+                resp = deref(self._omni_client).sync_send(
+                    service_name,
+                    function_name,
+                    cmove(args_ciobuf),
+                    self._persistent_headers,
+                )
             if resp.buf.hasValue():
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
                 return deserialize(response_cls, response_iobuf, protocol=protocol)

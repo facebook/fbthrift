@@ -54,7 +54,7 @@ cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::py
         F14NodeMap[string, string] headers
         unique_ptr[cIOBufClientBufferedStream] stream
 
-    cdef cppclass cOmniClient "::thrift::python::client::OmniClient":
+    cdef cppclass cOmniClient "::thrift::python::client::OmniClient" nogil:
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
         cOmniClientResponseWithHeaders sync_send(
             const string& serviceName,
