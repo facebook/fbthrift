@@ -3843,6 +3843,21 @@ class HeaderOrRocketCompression
       underlyingProcessor_->processSerializedRequest(
           std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
     }
+
+    void processSerializedCompressedRequestWithMetadata(
+        apache::thrift::ResponseChannelRequest::UniquePtr req,
+        apache::thrift::SerializedCompressedRequest&& serializedRequest,
+        const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
+        apache::thrift::protocol::PROTOCOL_TYPES prot,
+        apache::thrift::Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        apache::thrift::concurrency::ThreadManager* tm) override {
+      // check that SerializedCompressedRequest has expected compression
+      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
+      underlyingProcessor_->processSerializedCompressedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+
     void processSerializedCompressedRequest(
         ResponseChannelRequest::UniquePtr req,
         SerializedCompressedRequest&& serializedRequest,
@@ -3850,10 +3865,14 @@ class HeaderOrRocketCompression
         Cpp2RequestContext* ctx,
         folly::EventBase* eb,
         concurrency::ThreadManager* tm) override {
-      // check that SerializedCompressedRequest has expected compression
-      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
-      underlyingProcessor_->processSerializedCompressedRequest(
-          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+      processSerializedCompressedRequestWithMetadata(
+          std::move(req),
+          std::move(serializedRequest),
+          apache::thrift::AsyncProcessorFactory::MethodMetadata(),
+          prot,
+          ctx,
+          eb,
+          tm);
     }
     std::unique_ptr<AsyncProcessor> underlyingProcessor_;
     CompressionAlgorithm compression_;
@@ -3864,6 +3883,24 @@ class HeaderOrRocketCompression
     explicit LegacyContainmentProcessor(
         std::unique_ptr<AsyncProcessor> underlyingProcessor)
         : underlyingProcessor_(std::move(underlyingProcessor)) {}
+
+    void processSerializedCompressedRequestWithMetadata(
+        apache::thrift::ResponseChannelRequest::UniquePtr req,
+        apache::thrift::SerializedCompressedRequest&& serializedRequest,
+        const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
+        apache::thrift::protocol::PROTOCOL_TYPES prot,
+        apache::thrift::Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        apache::thrift::concurrency::ThreadManager* tm) override {
+      underlyingProcessor_->processSerializedRequest(
+          std::move(req),
+          std::move(serializedRequest).uncompress(),
+          prot,
+          ctx,
+          eb,
+          tm);
+    }
+
     void processSerializedRequest(
         ResponseChannelRequest::UniquePtr req,
         SerializedRequest&& serializedRequest,
@@ -3871,8 +3908,15 @@ class HeaderOrRocketCompression
         Cpp2RequestContext* ctx,
         folly::EventBase* eb,
         concurrency::ThreadManager* tm) override {
-      underlyingProcessor_->processSerializedRequest(
-          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+      processSerializedCompressedRequestWithMetadata(
+          std::move(req),
+          apache::thrift::SerializedCompressedRequest(
+              std::move(serializedRequest)),
+          apache::thrift::AsyncProcessorFactory::MethodMetadata(),
+          prot,
+          ctx,
+          eb,
+          tm);
     }
     std::unique_ptr<AsyncProcessor> underlyingProcessor_;
   };
@@ -3883,6 +3927,21 @@ class HeaderOrRocketCompression
     InheritanceCompressionCheckProcessor(
         TestServiceSvIf* iface, CompressionAlgorithm compression)
         : TestInterface::ProcessorType(iface), compression_(compression) {}
+
+    void processSerializedCompressedRequestWithMetadata(
+        apache::thrift::ResponseChannelRequest::UniquePtr req,
+        apache::thrift::SerializedCompressedRequest&& serializedRequest,
+        const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
+        apache::thrift::protocol::PROTOCOL_TYPES prot,
+        apache::thrift::Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        apache::thrift::concurrency::ThreadManager* tm) override {
+      // check that SerializedCompressedRequest has expected compression
+      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
+      TestInterface::ProcessorType::processSerializedCompressedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+
     void processSerializedCompressedRequest(
         ResponseChannelRequest::UniquePtr req,
         SerializedCompressedRequest&& serializedRequest,
@@ -3890,11 +3949,16 @@ class HeaderOrRocketCompression
         Cpp2RequestContext* ctx,
         folly::EventBase* eb,
         concurrency::ThreadManager* tm) override {
-      // check that SerializedCompressedRequest has expected compression
-      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
-      TestInterface::ProcessorType::processSerializedCompressedRequest(
-          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+      processSerializedCompressedRequestWithMetadata(
+          std::move(req),
+          std::move(serializedRequest),
+          apache::thrift::AsyncProcessorFactory::MethodMetadata(),
+          prot,
+          ctx,
+          eb,
+          tm);
     }
+
     CompressionAlgorithm compression_;
   };
 
