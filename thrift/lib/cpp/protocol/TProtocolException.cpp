@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,6 @@ namespace protocol {
 
 [[noreturn]] void TProtocolException::throwNegativeSize() {
   throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-}
-
-[[noreturn]] void TProtocolException::throwExceededDepthLimit() {
-  throw TProtocolException(TProtocolException::DEPTH_LIMIT);
 }
 
 [[noreturn]] void TProtocolException::throwExceededSizeLimit() {
