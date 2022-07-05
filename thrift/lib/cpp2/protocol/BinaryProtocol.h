@@ -45,7 +45,7 @@ class BinaryProtocolReader;
  * binary format, essentially just spitting out the raw bytes.
  *
  */
-class BinaryProtocolWriter {
+class BinaryProtocolWriter : public detail::ProtocolBase {
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
@@ -164,7 +164,7 @@ class BinaryProtocolWriter {
   ExternalBufferSharing sharing_;
 };
 
-class BinaryProtocolReader {
+class BinaryProtocolReader : public detail::ProtocolBase {
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
