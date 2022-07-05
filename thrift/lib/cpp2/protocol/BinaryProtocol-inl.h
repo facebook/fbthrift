@@ -38,14 +38,10 @@ inline uint32_t BinaryProtocolWriter::writeMessageEnd() {
 }
 
 inline uint32_t BinaryProtocolWriter::writeStructBegin(const char* /*name*/) {
-  descend();
-
   return 0;
 }
 
 inline uint32_t BinaryProtocolWriter::writeStructEnd() {
-  ascend();
-
   return 0;
 }
 
@@ -67,7 +63,6 @@ inline uint32_t BinaryProtocolWriter::writeFieldStop() {
 
 inline uint32_t BinaryProtocolWriter::writeMapBegin(
     const TType keyType, TType valType, uint32_t size) {
-  descend();
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)keyType);
   wsize += writeByte((int8_t)valType);
@@ -76,15 +71,11 @@ inline uint32_t BinaryProtocolWriter::writeMapBegin(
 }
 
 inline uint32_t BinaryProtocolWriter::writeMapEnd() {
-  ascend();
-
   return 0;
 }
 
 inline uint32_t BinaryProtocolWriter::writeListBegin(
     TType elemType, uint32_t size) {
-  descend();
-
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)elemType);
   wsize += writeI32((int32_t)size);
@@ -92,15 +83,11 @@ inline uint32_t BinaryProtocolWriter::writeListBegin(
 }
 
 inline uint32_t BinaryProtocolWriter::writeListEnd() {
-  ascend();
-
   return 0;
 }
 
 inline uint32_t BinaryProtocolWriter::writeSetBegin(
     TType elemType, uint32_t size) {
-  descend();
-
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)elemType);
   wsize += writeI32((int32_t)size);
@@ -108,8 +95,6 @@ inline uint32_t BinaryProtocolWriter::writeSetBegin(
 }
 
 inline uint32_t BinaryProtocolWriter::writeSetEnd() {
-  ascend();
-
   return 0;
 }
 
@@ -395,13 +380,10 @@ inline void BinaryProtocolReader::readMessageBegin(
 inline void BinaryProtocolReader::readMessageEnd() {}
 
 inline void BinaryProtocolReader::readStructBegin(std::string& name) {
-  descend();
   name = "";
 }
 
-inline void BinaryProtocolReader::readStructEnd() {
-  ascend();
-}
+inline void BinaryProtocolReader::readStructEnd() {}
 
 inline void BinaryProtocolReader::readFieldBegin(
     std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
@@ -419,7 +401,6 @@ inline void BinaryProtocolReader::readFieldEnd() {}
 
 inline void BinaryProtocolReader::readMapBegin(
     TType& keyType, TType& valType, uint32_t& size) {
-  descend();
   int8_t k, v;
   int32_t sizei;
   readByte(k);
@@ -431,13 +412,10 @@ inline void BinaryProtocolReader::readMapBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readMapEnd() {
-  ascend();
-}
+inline void BinaryProtocolReader::readMapEnd() {}
 
 inline void BinaryProtocolReader::readListBegin(
     TType& elemType, uint32_t& size) {
-  descend();
   int8_t e;
   int32_t sizei;
   readByte(e);
@@ -447,13 +425,10 @@ inline void BinaryProtocolReader::readListBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readListEnd() {
-  ascend();
-}
+inline void BinaryProtocolReader::readListEnd() {}
 
 inline void BinaryProtocolReader::readSetBegin(
     TType& elemType, uint32_t& size) {
-  descend();
   int8_t e;
   int32_t sizei;
   readByte(e);
@@ -463,9 +438,7 @@ inline void BinaryProtocolReader::readSetBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readSetEnd() {
-  ascend();
-}
+inline void BinaryProtocolReader::readSetEnd() {}
 
 inline void BinaryProtocolReader::readBool(bool& value) {
   auto byte = in_.read<uint8_t>();

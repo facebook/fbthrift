@@ -107,8 +107,6 @@ inline uint32_t CompactProtocolWriter::writeMessageEnd() {
 
 inline uint32_t CompactProtocolWriter::writeStructBegin(
     const char* /* name */) {
-  descend();
-
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;
@@ -117,9 +115,6 @@ inline uint32_t CompactProtocolWriter::writeStructBegin(
 inline uint32_t CompactProtocolWriter::writeStructEnd() {
   lastFieldId_ = lastField_.top();
   lastField_.pop();
-
-  ascend();
-
   return 0;
 }
 
@@ -180,8 +175,6 @@ inline uint32_t CompactProtocolWriter::writeFieldStop() {
 
 inline uint32_t CompactProtocolWriter::writeMapBegin(
     const TType keyType, TType valType, uint32_t size) {
-  descend();
-
   uint32_t wsize = 0;
 
   if (size == 0) {
@@ -197,8 +190,6 @@ inline uint32_t CompactProtocolWriter::writeMapBegin(
 }
 
 inline uint32_t CompactProtocolWriter::writeMapEnd() {
-  ascend();
-
   return 0;
 }
 
@@ -218,27 +209,19 @@ inline uint32_t CompactProtocolWriter::writeCollectionBegin(
 
 inline uint32_t CompactProtocolWriter::writeListBegin(
     TType elemType, uint32_t size) {
-  descend();
-
   return writeCollectionBegin(elemType, size);
 }
 
 inline uint32_t CompactProtocolWriter::writeListEnd() {
-  ascend();
-
   return 0;
 }
 
 inline uint32_t CompactProtocolWriter::writeSetBegin(
     TType elemType, uint32_t size) {
-  descend();
-
   return writeCollectionBegin(elemType, size);
 }
 
 inline uint32_t CompactProtocolWriter::writeSetEnd() {
-  ascend();
-
   return 0;
 }
 
@@ -547,8 +530,6 @@ inline void CompactProtocolReader::readMessageBegin(
 inline void CompactProtocolReader::readMessageEnd() {}
 
 inline void CompactProtocolReader::readStructBegin(std::string& name) {
-  descend();
-
   if (!name.empty()) {
     name.clear();
   }
@@ -559,8 +540,6 @@ inline void CompactProtocolReader::readStructBegin(std::string& name) {
 inline void CompactProtocolReader::readStructEnd() {
   lastFieldId_ = lastField_.top();
   lastField_.pop();
-
-  ascend();
 }
 
 inline void CompactProtocolReader::readFieldBegin(
@@ -606,8 +585,6 @@ inline void CompactProtocolReader::readFieldEnd() {}
 
 inline void CompactProtocolReader::readMapBegin(
     TType& keyType, TType& valType, uint32_t& size) {
-  descend();
-
   int8_t kvType = 0;
   int32_t msize = 0;
 
@@ -627,14 +604,10 @@ inline void CompactProtocolReader::readMapBegin(
   size = (uint32_t)msize;
 }
 
-inline void CompactProtocolReader::readMapEnd() {
-  ascend();
-}
+inline void CompactProtocolReader::readMapEnd() {}
 
 inline void CompactProtocolReader::readListBegin(
     TType& elemType, uint32_t& size) {
-  descend();
-
   int8_t size_and_type;
   int32_t lsize;
 
@@ -655,18 +628,14 @@ inline void CompactProtocolReader::readListBegin(
   size = (uint32_t)lsize;
 }
 
-inline void CompactProtocolReader::readListEnd() {
-  ascend();
-}
+inline void CompactProtocolReader::readListEnd() {}
 
 inline void CompactProtocolReader::readSetBegin(
     TType& elemType, uint32_t& size) {
   readListBegin(elemType, size);
 }
 
-inline void CompactProtocolReader::readSetEnd() {
-  ascend();
-}
+inline void CompactProtocolReader::readSetEnd() {}
 
 inline void CompactProtocolReader::readBool(bool& value) {
   if (boolValue_.hasBoolValue == true) {
