@@ -220,6 +220,17 @@ class UnionValuePatch : public BaseEnsurePatch<Patch, UnionValuePatch<Patch>> {
 
   void apply(T& val) const { applyEnsure(val); }
 
+  // TODO: "From this I think the only 'safe' choice for now, is to make
+  // applying a 'clearing' optional patch to a union_field, an error,
+  // just like it is with a non-optional value. This also implies that
+  // a union_field should not be bundled in with other 'optional' types."
+  template <typename U>
+  if_opt_type<folly::remove_cvref_t<U>> apply(U&& field) const {
+    if (field.has_value()) {
+      apply(*std::forward<U>(field));
+    }
+  }
+
   template <typename U>
   void merge(U&& next) {
     mergeEnsure(std::forward<U>(next));

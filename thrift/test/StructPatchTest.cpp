@@ -449,5 +449,16 @@ TEST(UnionPatchTest, Patch) {
   test::expectPatch(patch, bye, hi);
 }
 
+TEST(UnionPatchTest, PatchInner) {
+  MyUnionValuePatch patch;
+  *patch.patch()->option3()->patch()->option1() = "World";
+
+  MyUnion a, b;
+  a.option3_ref().ensure().option1_ref() = "Hello";
+  b.option3_ref().ensure().option1_ref() = "World";
+
+  test::expectPatch(patch, a, b);
+}
+
 } // namespace
 } // namespace apache::thrift
