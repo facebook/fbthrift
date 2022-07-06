@@ -20,8 +20,13 @@
 
 namespace apache::thrift::protocol {
 // Removes masked fields in schemaless Thrift Object (Protocol Object).
-// Throws a runtime exception if the mask and object don't match.
+// Throws a runtime exception if the mask and object are incompatible.
 void clear(const Mask& mask, protocol::Object& t);
+
+// Copies masked fields from one object to another (schemaless).
+// If the masked field doesn't exist in src, the field in dst will be removed.
+// Throws a runtime exception if the mask and objects are incompatible.
+void copy(const Mask& mask, const protocol::Object& src, protocol::Object& dst);
 
 namespace detail {
 
@@ -29,7 +34,8 @@ namespace detail {
 // excludes mask. MaskRef is used for inputs and outputs for Field Mask
 // methods to determine the status of the mask, because if the mask is coming
 // from excludes mask, the mask actually represents the complement set.
-struct MaskRef {
+class MaskRef {
+ public:
   const Mask& mask;
   bool is_exclusion = false; // Whether the mask comes from excludes mask
 
@@ -44,9 +50,28 @@ struct MaskRef {
   // Returns whether the ref includes no fields.
   bool isNoneMask() const;
 
+  // Returns whether the ref is logically exclusive in context.
+  bool isExclusive() const;
+
   // Removes masked fields in schemaless Thrift Object (Protocol Object).
   // Throws a runtime exception if the mask and object are incompatible.
   void clear(protocol::Object& t) const;
+
+  // Copies masked fields from one object to another (schemaless).
+  // If the masked field doesn't exist in src, the field in dst will be removed.
+  // Returns true if there is a field copied from src to dst (not removed).
+  // Throws a runtime exception if the mask and objects are incompatible.
+  bool copy(const protocol::Object& src, protocol::Object& dst) const;
+
+ private:
+  // Gets all fields that need to be copied from src to dst.
+  // Only contains fields either in src or dst.
+  std::unordered_set<FieldId> getFieldsToCopy(
+      const protocol::Object& src, const protocol::Object& dst) const;
 };
+
+// Throws an error if the given value is not a dynamic object value.
+void errorIfNotObject(const protocol::Value& value);
+
 } // namespace detail
 } // namespace apache::thrift::protocol
