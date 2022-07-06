@@ -284,6 +284,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool quickExitOnShutdownTimeout_ = false;
 
+  bool setupThreadManagerCalled_ = false;
+
  protected:
   folly::observer::CallbackHandle getSSLCallbackHandle();
 

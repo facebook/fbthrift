@@ -178,6 +178,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool setIsOverloaded{false};
     bool resourcePoolFlagSet{false};
     bool codelEnabled{false};
+    bool setupThreadManagerBeforeHandler{false};
     std::string executorToThreadManagerUnexpectedFunctionName{};
 
     bool enableResourcePoolForWildcard{false};

@@ -183,6 +183,8 @@ std::string BaseThriftServer::RuntimeServerActions::explain() const {
       (setPreprocess ? "setPreprocess, " : "") +
       (setIsOverloaded ? "setIsOverloaded, " : "") +
       (codelEnabled ? "codelEnabled, " : "") +
+      (setupThreadManagerBeforeHandler ? "setupThreadManagerBeforeHandler, "
+                                       : "") +
       (!resourcePoolFlagSet ? "flagsNotSet, " : "");
   return result;
 }

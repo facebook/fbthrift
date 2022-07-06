@@ -3503,6 +3503,13 @@ TEST(ThriftServer, acceptConnection) {
   EXPECT_EQ("echo", client1->semifuture_echoRequest("echo").get());
 }
 
+TEST(ThriftServer, SetupThreadManager) {
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestServiceSvIf>(), "::1", 0, [](auto& ts) {
+        ts.setupThreadManager();
+      });
+}
+
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {

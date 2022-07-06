@@ -442,74 +442,7 @@ void ThriftServer::setup() {
       setObserver(server::observerFactory_->getObserver());
     }
 
-    runtimeResourcePoolsChecks();
-
-    // Past this point no modification to the enablement of
-    // ResourcePool should be made in the same server
-    runtimeServerActions_.resourcePoolFlagSet =
-        THRIFT_FLAG(experimental_use_resource_pools);
-    if (!useResourcePools()) {
-      // We always need a threadmanager for cpp2.
-      LOG(INFO) << "Using thread manager (resource pools not enabled) "
-                << runtimeServerActions_.explain();
-      setupThreadManager();
-      threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
-        EventTask* task = dynamic_cast<EventTask*>(r.get());
-        if (task) {
-          task->expired();
-        }
-      });
-      threadManager_->setCodelCallback([&](std::shared_ptr<Runnable>) {
-        auto observer = getObserver();
-        if (observer) {
-          if (getEnableCodel()) {
-            observer->queueTimeout();
-          } else {
-            observer->shadowQueueTimeout();
-          }
-        }
-      });
-
-      // Log the case when we tried to use resource pools and disabled it
-      // because of run-time holdouts.
-      if (runtimeServerActions_.resourcePoolFlagSet) {
-        THRIFT_SERVER_EVENT(resourcepoolsruntimedisallowed).log(*this);
-      }
-    } else {
-      LOG(INFO) << "Using resource pools";
-      DCHECK(!threadManager_);
-      ensureResourcePools();
-      // Keep concurrency controller in sync with max requests for now.
-      auto maxRequests = getMaxRequests();
-      resourcePoolSet()
-          .resourcePool(ResourcePoolHandle::defaultAsync())
-          .concurrencyController()
-          .value()
-          .get()
-          .setExecutionLimitRequests(
-              maxRequests != 0 ? maxRequests
-                               : std::numeric_limits<uint32_t>::max());
-
-      if (resourcePoolSet().hasResourcePool(
-              ResourcePoolHandle::defaultAsync())) {
-        auto& executor = resourcePoolSet()
-                             .resourcePool(ResourcePoolHandle::defaultAsync())
-                             .executor()
-                             .value()
-                             .get();
-        auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(executor);
-        setThreadManagerInternal(extm);
-      }
-
-      // During resource pools roll out we want to track services that get
-      // enrolled in the roll out.
-      THRIFT_SERVER_EVENT(resourcepoolsenabled).log(*this);
-    }
-
-    // After this point there should be no further changes to resource pools. We
-    // lock whether or not we are actually using them so that the checks on
-    // resourcePoolSet().empty() can be efficient.
-    resourcePoolSet().lock();
+    setupThreadManager();
 
     if (!serverChannel_) {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
@@ -666,96 +599,188 @@ void ThriftServer::setup() {
 }
 
 void ThriftServer::setupThreadManager() {
-  if (!threadManager_) {
-    std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager;
-    switch (threadManagerType_) {
-      case ThreadManagerType::PRIORITY:
-        if (std::any_of(
-                std::begin(threadManagerPoolSizes_),
-                std::end(threadManagerPoolSizes_),
-                [](std::size_t c) { return c != 0; })) {
-          // The priorities were specified using setThreadManagerPoolSizes
-          threadManager = PriorityThreadManager::newPriorityThreadManager(
-              threadManagerPoolSizes_);
-        } else {
-          threadManager = PriorityThreadManager::newPriorityThreadManager(
-              getNumCPUWorkerThreads());
+  if (!setupThreadManagerCalled_) {
+    setupThreadManagerCalled_ = true;
+
+    // Do one time only setup operations
+    runtimeResourcePoolsChecks();
+
+    // Past this point no modification to the enablement of
+    // ResourcePool should be made in the same server
+    runtimeServerActions_.resourcePoolFlagSet =
+        THRIFT_FLAG(experimental_use_resource_pools);
+
+    // Ensure that either the thread manager or resource pools exist.
+    if (!useResourcePools()) {
+      DCHECK(resourcePoolSet().empty());
+      // We always need a threadmanager for cpp2.
+      LOG(INFO) << "Using thread manager (resource pools not enabled) "
+                << runtimeServerActions_.explain();
+      if (!threadManager_) {
+        std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+            threadManager;
+        switch (threadManagerType_) {
+          case ThreadManagerType::PRIORITY:
+            if (std::any_of(
+                    std::begin(threadManagerPoolSizes_),
+                    std::end(threadManagerPoolSizes_),
+                    [](std::size_t c) { return c != 0; })) {
+              // The priorities were specified using setThreadManagerPoolSizes
+              threadManager = PriorityThreadManager::newPriorityThreadManager(
+                  threadManagerPoolSizes_);
+            } else {
+              threadManager = PriorityThreadManager::newPriorityThreadManager(
+                  getNumCPUWorkerThreads());
+            }
+            break;
+          case ThreadManagerType::SIMPLE:
+            threadManager =
+                ThreadManager::newSimpleThreadManager(getNumCPUWorkerThreads());
+            break;
+          case ThreadManagerType::PRIORITY_QUEUE:
+            threadManager = ThreadManager::newPriorityQueueThreadManager(
+                getNumCPUWorkerThreads());
+            break;
+          case ThreadManagerType::EXECUTOR_ADAPTER:
+            threadManager =
+                std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
+                    threadManagerExecutors_);
+            break;
         }
-        break;
-      case ThreadManagerType::SIMPLE:
-        threadManager =
-            ThreadManager::newSimpleThreadManager(getNumCPUWorkerThreads());
-        break;
-      case ThreadManagerType::PRIORITY_QUEUE:
-        threadManager = ThreadManager::newPriorityQueueThreadManager(
-            getNumCPUWorkerThreads());
-        break;
-      case ThreadManagerType::EXECUTOR_ADAPTER:
-        threadManager =
-            std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
-                threadManagerExecutors_);
-        break;
+        threadManager->enableCodel(getEnableCodel());
+        // If a thread factory has been specified, use it.
+        if (threadFactory_) {
+          threadManager->threadFactory(threadFactory_);
+        }
+        auto poolThreadName = getCPUWorkerThreadName();
+        if (!poolThreadName.empty()) {
+          threadManager->setNamePrefix(poolThreadName);
+        }
+        threadManager->start();
+        setThreadManagerInternal(threadManager);
+      }
+
+      // Log the case when we tried to use resource pools and disabled it
+      // because of run-time holdouts.
+      if (runtimeServerActions_.resourcePoolFlagSet) {
+        THRIFT_SERVER_EVENT(resourcepoolsruntimedisallowed).log(*this);
+      }
+    } else {
+      LOG(INFO) << "Using resource pools";
+      DCHECK(!threadManager_);
+
+      ensureResourcePools();
+
+      // During resource pools roll out we want to track services that get
+      // enrolled in the roll out.
+      THRIFT_SERVER_EVENT(resourcepoolsenabled).log(*this);
     }
-    threadManager->enableCodel(getEnableCodel());
-    // If a thread factory has been specified, use it.
-    if (threadFactory_) {
-      threadManager->threadFactory(threadFactory_);
-    }
-    auto poolThreadName = getCPUWorkerThreadName();
-    if (!poolThreadName.empty()) {
-      threadManager->setNamePrefix(poolThreadName);
-    }
-    threadManager->start();
-    setThreadManagerInternal(threadManager);
   }
+
+  // Now do setup that we want to do whether we created these resources or the
+  // client did.
+  if (!resourcePoolSet().empty()) {
+    // Keep concurrency controller in sync with max requests for now.
+    resourcePoolSet()
+        .resourcePool(ResourcePoolHandle::defaultAsync())
+        .concurrencyController()
+        .value()
+        .get()
+        .setExecutionLimitRequests(getMaxRequests());
+
+    // Create an adapter so calls to getThreadManager_deprecated will work
+    // when we are using resource pools
+    if (!threadManager_ &&
+        resourcePoolSet().hasResourcePool(ResourcePoolHandle::defaultAsync())) {
+      auto& executor = resourcePoolSet()
+                           .resourcePool(ResourcePoolHandle::defaultAsync())
+                           .executor()
+                           .value()
+                           .get();
+      auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(executor);
+      setThreadManagerInternal(extm);
+    }
+  } else {
+    threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
+      EventTask* task = dynamic_cast<EventTask*>(r.get());
+      if (task) {
+        task->expired();
+      }
+    });
+    threadManager_->setCodelCallback([&](std::shared_ptr<Runnable>) {
+      auto observer = getObserver();
+      if (observer) {
+        if (getEnableCodel()) {
+          observer->queueTimeout();
+        } else {
+          observer->shadowQueueTimeout();
+        }
+      }
+    });
+  }
+
+  // After this point there should be no further changes to resource pools. We
+  // lock whether or not we are actually using them so that the checks on
+  // resourcePoolSet().empty() can be efficient.
+  resourcePoolSet().lock();
 }
 
 void ThriftServer::runtimeResourcePoolsChecks() {
-  // Check whether there are any wildcard services.
-  auto methodMetadata = getDecoratedProcessorFactory().createMethodMetadata();
+  // If this is called too early we can't run our other checks.
+  if (!getProcessorFactory()) {
+    runtimeServerActions_.setupThreadManagerBeforeHandler = true;
+    runtimeDisableResourcePoolsDeprecated();
+  } else {
+    // Need to set this up now to check.
+    ensureDecoratedProcessorFactoryInitialized();
 
-  if (auto* wildcardMap =
-          std::get_if<AsyncProcessorFactory::WildcardMethodMetadataMap>(
-              &methodMetadata)) {
-    auto metadata = wildcardMap->wildcardMetadata;
-    // wildcard methods, but ResourcePool compatible
-    if (!getRuntimeServerActions().enableResourcePoolForWildcard) {
+    // Check whether there are any wildcard services.
+    auto methodMetadata = getDecoratedProcessorFactory().createMethodMetadata();
+
+    if (auto* wildcardMap =
+            std::get_if<AsyncProcessorFactory::WildcardMethodMetadataMap>(
+                &methodMetadata)) {
+      auto metadata = wildcardMap->wildcardMetadata;
+      // wildcard methods, but ResourcePool compatible
+      if (!getRuntimeServerActions().enableResourcePoolForWildcard) {
+        LOG(INFO) << "Resource pools disabled. Wildcard methods";
+        runtimeServerActions_.wildcardMethods = true;
+        runtimeDisableResourcePoolsDeprecated();
+      }
+    } else if (
+        auto* methodMetadataMap =
+            std::get_if<AsyncProcessorFactory::MethodMetadataMap>(
+                &methodMetadata)) {
+      for (const auto& methodToMetadataPtr : *methodMetadataMap) {
+        const auto& metadata = *methodToMetadataPtr.second;
+        if (metadata.executorType ==
+                AsyncProcessorFactory::MethodMetadata::ExecutorType::UNKNOWN ||
+            metadata.interactionType ==
+                AsyncProcessorFactory::MethodMetadata::InteractionType::
+                    UNKNOWN ||
+            !metadata.rpcKind || !metadata.priority) {
+          // Disable resource pools if there is no service request info
+          LOG(INFO) << "Resource pools disabled. Incomplete metadata";
+          runtimeServerActions_.noServiceRequestInfo = true;
+          runtimeDisableResourcePoolsDeprecated();
+        }
+        if (metadata.interactionType ==
+            AsyncProcessorFactory::MethodMetadata::InteractionType::
+                INTERACTION_V1) {
+          // We've found an interaction in this service. Mark it is incompatible
+          // with resource pools
+          LOG(INFO) << "Resource pools disabled. Interaction on request "
+                    << methodToMetadataPtr.first;
+          runtimeServerActions_.interactionInService = true;
+          runtimeDisableResourcePoolsDeprecated();
+        }
+      }
+    } else {
+      // unimplemented MethodMetadata
       LOG(INFO) << "Resource pools disabled. Wildcard methods";
       runtimeServerActions_.wildcardMethods = true;
       runtimeDisableResourcePoolsDeprecated();
     }
-  } else if (
-      auto* methodMetadataMap =
-          std::get_if<AsyncProcessorFactory::MethodMetadataMap>(
-              &methodMetadata)) {
-    for (const auto& methodToMetadataPtr : *methodMetadataMap) {
-      const auto& metadata = *methodToMetadataPtr.second;
-      if (metadata.executorType ==
-              AsyncProcessorFactory::MethodMetadata::ExecutorType::UNKNOWN ||
-          metadata.interactionType ==
-              AsyncProcessorFactory::MethodMetadata::InteractionType::UNKNOWN ||
-          !metadata.rpcKind || !metadata.priority) {
-        // Disable resource pools if there is no service request info
-        LOG(INFO) << "Resource pools disabled. Incomplete metadata";
-        runtimeServerActions_.noServiceRequestInfo = true;
-        runtimeDisableResourcePoolsDeprecated();
-      }
-      if (metadata.interactionType ==
-          AsyncProcessorFactory::MethodMetadata::InteractionType::
-              INTERACTION_V1) {
-        // We've found an interaction in this service. Mark it is incompatible
-        // with resource pools
-        LOG(INFO) << "Resource pools disabled. Interaction on request "
-                  << methodToMetadataPtr.first;
-        runtimeServerActions_.interactionInService = true;
-        runtimeDisableResourcePoolsDeprecated();
-      }
-    }
-  } else {
-    // unimplemented MethodMetadata
-    LOG(INFO) << "Resource pools disabled. Wildcard methods";
-    runtimeServerActions_.wildcardMethods = true;
-    runtimeDisableResourcePoolsDeprecated();
   }
 
   if (isActiveRequestsTrackingDisabled()) {
