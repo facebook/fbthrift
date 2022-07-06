@@ -22,31 +22,26 @@
 namespace apache {
 namespace thrift {
 
+// Runtime and compile time representations for a field id.
+enum class FieldId : int16_t {};
+template <FieldId id>
+using field_id_tag = std::integral_constant<FieldId, id>;
+template <std::underlying_type_t<FieldId> id>
+using field_id = field_id_tag<FieldId(id)>;
+
+// Runtime and compile time representations for a field ordinal.
+enum class FieldOrdinal : uint16_t {};
+template <FieldOrdinal ord>
+using field_ordinal_tag = std::integral_constant<FieldOrdinal, ord>;
+template <std::underlying_type_t<FieldOrdinal> ord>
+using field_ordinal = field_ordinal_tag<FieldOrdinal(ord)>;
+
 // TODO(dokwon): Change FieldContext to use strong FieldId type.
 template <typename Struct, int16_t FieldId>
 struct FieldContext {
   static constexpr int16_t kFieldId = FieldId;
   Struct& object;
 };
-
-namespace type {
-using field_id_u_t = int16_t;
-template <field_id_u_t id>
-using field_id_u_c = std::integral_constant<field_id_u_t, id>;
-} // namespace type
-
-enum class FieldId : type::field_id_u_t {};
-
-template <FieldId Id>
-using FieldIdTag = type::field_id_u_c<static_cast<type::field_id_u_t>(Id)>;
-
-enum class FieldOrdinal : uint16_t {};
-
-template <std::underlying_type_t<FieldId> id>
-using field_id = std::integral_constant<FieldId, FieldId(id)>;
-
-template <std::underlying_type_t<FieldOrdinal> ord>
-using field_ordinal = std::integral_constant<FieldOrdinal, FieldOrdinal(ord)>;
 
 } // namespace thrift
 } // namespace apache
