@@ -39,15 +39,6 @@ class MockAsyncProcessor : public AsyncProcessor {
       folly::EventBase*,
       concurrency::ThreadManager*) override {}
 
-  void processSerializedCompressedRequestWithMetadata(
-      apache::thrift::ResponseChannelRequest::UniquePtr,
-      apache::thrift::SerializedCompressedRequest&&,
-      const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
-      apache::thrift::protocol::PROTOCOL_TYPES,
-      apache::thrift::Cpp2RequestContext*,
-      folly::EventBase*,
-      apache::thrift::concurrency::ThreadManager*) override {}
-
   void executeRequest(
       ServerRequest&& request,
       const AsyncProcessorFactory::MethodMetadata& methodMetadata) override {

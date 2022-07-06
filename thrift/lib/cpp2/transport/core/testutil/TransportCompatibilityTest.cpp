@@ -1268,24 +1268,6 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
         std::unique_ptr<apache::thrift::AsyncProcessor> processor)
         : underlyingProcessor_(std::move(processor)) {}
 
-    void processSerializedCompressedRequestWithMetadata(
-        apache::thrift::ResponseChannelRequest::UniquePtr req,
-        apache::thrift::SerializedCompressedRequest&& serializedRequest,
-        const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
-        apache::thrift::protocol::PROTOCOL_TYPES protType,
-        apache::thrift::Cpp2RequestContext* context,
-        folly::EventBase* eb,
-        apache::thrift::concurrency::ThreadManager* tm) override {
-      underlyingProcessor_->processSerializedRequest(
-          apache::thrift::ResponseChannelRequest::UniquePtr(
-              new TestResponseChannelRequest(std::move(req))),
-          std::move(serializedRequest).uncompress(),
-          protType,
-          context,
-          eb,
-          tm);
-    }
-
     void processSerializedRequest(
         apache::thrift::ResponseChannelRequest::UniquePtr req,
         apache::thrift::SerializedRequest&& serializedRequest,
@@ -1293,11 +1275,10 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
         apache::thrift::Cpp2RequestContext* context,
         folly::EventBase* eb,
         apache::thrift::concurrency::ThreadManager* tm) override {
-      processSerializedCompressedRequestWithMetadata(
-          std::move(req),
-          apache::thrift::SerializedCompressedRequest(
-              std::move(serializedRequest)),
-          apache::thrift::AsyncProcessorFactory::MethodMetadata(),
+      underlyingProcessor_->processSerializedRequest(
+          apache::thrift::ResponseChannelRequest::UniquePtr(
+              new TestResponseChannelRequest(std::move(req))),
+          std::move(serializedRequest),
           protType,
           context,
           eb,

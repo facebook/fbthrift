@@ -348,7 +348,7 @@ class AsyncProcessor : public TProcessorBase {
       protocol::PROTOCOL_TYPES prot_type,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
-      concurrency::ThreadManager* tm) = 0;
+      concurrency::ThreadManager* tm);
 
   /**
    * Reflects on the current service's methods, associated structs etc. at

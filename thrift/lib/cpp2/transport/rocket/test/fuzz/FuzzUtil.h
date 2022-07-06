@@ -83,38 +83,19 @@ class FakeTransport final : public folly::AsyncTransport {
 
 class FakeProcessor final : public apache::thrift::AsyncProcessor {
  public:
-  void processSerializedCompressedRequestWithMetadata(
+  void processSerializedRequest(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedCompressedRequest&&,
-      const apache::thrift::AsyncProcessorFactory::MethodMetadata&,
+      apache::thrift::SerializedRequest&&,
       apache::thrift::protocol::PROTOCOL_TYPES,
       apache::thrift::Cpp2RequestContext*,
       folly::EventBase*,
-      apache::thrift::concurrency::ThreadManager*) override {
+      apache::thrift::concurrency::ThreadManager*) {
     req->sendErrorWrapped(
         folly::make_exception_wrapper<apache::thrift::TApplicationException>(
             apache::thrift::TApplicationException::TApplicationExceptionType::
                 INTERNAL_ERROR,
             "place holder"),
         "1" /* doesnt matter */);
-  }
-
-  void processSerializedRequest(
-      apache::thrift::ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedRequest&& serializedRequest,
-      apache::thrift::protocol::PROTOCOL_TYPES protType,
-      apache::thrift::Cpp2RequestContext* context,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) {
-    processSerializedCompressedRequestWithMetadata(
-        std::move(req),
-        apache::thrift::SerializedCompressedRequest(
-            std::move(serializedRequest)),
-        apache::thrift::AsyncProcessorFactory::MethodMetadata(),
-        protType,
-        context,
-        eb,
-        tm);
   }
 };
 
