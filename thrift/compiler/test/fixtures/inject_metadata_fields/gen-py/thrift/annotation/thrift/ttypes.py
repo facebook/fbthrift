@@ -996,6 +996,19 @@ class NoDeprecated:
     return self
 
 class TerseWrite:
+  """
+  An annotation that changes the field qualifier from 'none' to 'terse'.
+  A terse field is eligible to skip serialization, when it equals to the
+  intrinsic default value. It also clears to the intrinsic default value
+  before deserialization to distinguish between if a terse field was skipped
+  or missing during serialization. This is different from an unqualified
+  field, as an unqualified field is always serialized regardless of its value,
+  and it is not cleared before deserialization.
+  
+  The annotation can be only used to annotate an unqualified field, and when
+  it is annotating a struct or exception, it changes all unqualified fields to
+  terse fields. Note, the annotation can not be used for union.
+  """
 
   thrift_spec = None
   thrift_field_annotations = None

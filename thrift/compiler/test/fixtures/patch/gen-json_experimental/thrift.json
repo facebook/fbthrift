@@ -137,28 +137,29 @@
       },
       "TerseWrite" : {
         "name" : "TerseWrite",
+        "docstring" : "An annotation that changes the field qualifier from 'none' to 'terse'.\nA terse field is eligible to skip serialization, when it equals to the\nintrinsic default value. It also clears to the intrinsic default value\nbefore deserialization to distinguish between if a terse field was skipped\nor missing during serialization. This is different from an unqualified\nfield, as an unqualified field is always serialized regardless of its value,\nand it is not cleared before deserialization.\n\nThe annotation can be only used to annotate an unqualified field, and when\nit is annotating a struct or exception, it changes all unqualified fields to\nterse fields. Note, the annotation can not be used for union.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 156
+        "lineno" : 169
       },
       "Box" : {
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 161
+        "lineno" : 174
       },
       "Mixin" : {
         "name" : "Mixin",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 166
+        "lineno" : 179
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "docstring" : "Option to serialize thrift struct in ascending field id order.\n\nThis can potentially make serialized data size smaller in compact protocol,\nsince compact protocol can write deltas between subsequent field ids.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 176
+        "lineno" : 189
       },
       "GenDefaultEnumValue" : {
         "name" : "GenDefaultEnumValue",
@@ -169,48 +170,48 @@
             "default_value" : "Unspecified",
             "docstring" : "The name to use for the generated enum value.\n\nThis intentionally does **not** use the most common 'zero' enum value name,\n'Default', by default; as, defining a `Default = 0` enum value explicitly\nis a useful means of self-documenting that setting an explicit value is\nnever required. In which case, it is part of the API, and should not be\nremoved in favor of an implicitly generated value.\n\nOn the other hand, 'Unspecified' clearly indicates that the requirements\nare not intrinsic to the enum. In which case, the relevant documentation\nshould be consulted (e.g. the doc strings on the function or field).\n",
             "key" : 1,
-            "lineno" : 206,
+            "lineno" : 219,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 192
+        "lineno" : 205
       },
       "v1" : {
         "name" : "v1",
         "docstring" : "Enables all released v1 features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 216
+        "lineno" : 229
       },
       "v1beta" : {
         "name" : "v1beta",
         "docstring" : "Enables all beta v1 features.\n\nBeta features are guaranteed to *not* break unrelated Thrift features\nso they should be relatively safe to test alongside other beta or\nreleased Thrift features.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 229
+        "lineno" : 242
       },
       "v1alpha" : {
         "name" : "v1alpha",
         "docstring" : "Enables all experimental v1 features.\n\nUse with *caution* and only with explicit permission. This may enable\nfeatures may change significantly without notice or not work correctly\nin all contexts.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 243
+        "lineno" : 256
       },
       "v1test" : {
         "name" : "v1test",
         "docstring" : "Enables experimental features, even those that are known to break common\nuse cases.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 254
+        "lineno" : 267
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 263
+        "lineno" : 276
       }
       },
   "source_path" : "thrift/annotation/thrift",

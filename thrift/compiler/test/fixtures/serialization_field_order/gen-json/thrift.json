@@ -273,43 +273,7 @@
       }
     },
     "TerseWrite" : {
-      "lineno" : 156,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 152,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 156,
-          "column" : 21
-        }
-      }
-    },
-    "Box" : {
-      "lineno" : 161,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 159,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 161,
-          "column" : 14
-        }
-      }
-    },
-    "Mixin" : {
-      "lineno" : 166,
+      "lineno" : 169,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -321,13 +285,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 166,
-          "column" : 16
+          "line" : 169,
+          "column" : 21
         }
       }
     },
-    "SerializeInFieldIdOrder" : {
-      "lineno" : 176,
+    "Box" : {
+      "lineno" : 174,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -335,17 +299,53 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 174,
+          "line" : 172,
           "column" : 1
         },
         "end" : {
-          "line" : 176,
+          "line" : 174,
+          "column" : 14
+        }
+      }
+    },
+    "Mixin" : {
+      "lineno" : 179,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 177,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 179,
+          "column" : 16
+        }
+      }
+    },
+    "SerializeInFieldIdOrder" : {
+      "lineno" : 189,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 187,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 189,
           "column" : 34
         }
       }
     },
     "GenDefaultEnumValue" : {
-      "lineno" : 192,
+      "lineno" : 205,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -356,11 +356,11 @@
           "default_value" : "Unspecified",
           "source_range" : {
             "begin" : {
-              "line" : 206,
+              "line" : 219,
               "column" : 3
             },
             "end" : {
-              "line" : 206,
+              "line" : 219,
               "column" : 33
             }
           }
@@ -368,34 +368,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 189,
+          "line" : 202,
           "column" : 1
         },
         "end" : {
-          "line" : 207,
+          "line" : 220,
           "column" : 2
         }
       }
     },
     "v1" : {
-      "lineno" : 216,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 215,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 216,
-          "column" : 13
-        }
-      }
-    },
-    "v1beta" : {
       "lineno" : 229,
       "is_exception" : false,
       "is_union" : false,
@@ -404,17 +386,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 225,
+          "line" : 228,
           "column" : 1
         },
         "end" : {
           "line" : 229,
-          "column" : 17
+          "column" : 13
         }
       }
     },
-    "v1alpha" : {
-      "lineno" : 243,
+    "v1beta" : {
+      "lineno" : 242,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -426,13 +408,31 @@
           "column" : 1
         },
         "end" : {
-          "line" : 243,
+          "line" : 242,
+          "column" : 17
+        }
+      }
+    },
+    "v1alpha" : {
+      "lineno" : 256,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 251,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 256,
           "column" : 18
         }
       }
     },
     "v1test" : {
-      "lineno" : 254,
+      "lineno" : 267,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -440,17 +440,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 249,
+          "line" : 262,
           "column" : 1
         },
         "end" : {
-          "line" : 254,
+          "line" : 267,
           "column" : 17
         }
       }
     },
     "NoLegacyAPIs" : {
-      "lineno" : 263,
+      "lineno" : 276,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -458,11 +458,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 257,
+          "line" : 270,
           "column" : 1
         },
         "end" : {
-          "line" : 263,
+          "line" : 276,
           "column" : 23
         }
       }
