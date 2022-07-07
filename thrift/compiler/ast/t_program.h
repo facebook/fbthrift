@@ -77,7 +77,7 @@ class t_program : public t_named {
       : t_program(std::move(path), std::make_shared<t_scope>()) {}
 
   void set_package(t_package package) { package_ = std::move(package); }
-  const t_package package() const { return package_; }
+  const t_package& package() const { return package_; }
 
   // Defintions, in the order they were added.
   node_list_view<t_named> definitions() { return definitions_; }
