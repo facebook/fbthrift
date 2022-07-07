@@ -2982,3 +2982,108 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+/**
+ * Original thrift exception:-
+ * TerseException
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/terse_write/TerseException'))>>
+class TerseException extends \TException implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'msg',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'msg' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'msg' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 2581942019413135946;
+  /**
+   * Original thrift field:-
+   * 1: string msg
+   */
+  public string $msg;
+
+  public function __construct(?string $msg = null)[] {
+    parent::__construct();
+    $this->msg = $msg ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'msg'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'TerseException';
+  }
+
+  <<__Override>>
+  public function getMessage()[]: string {
+    return $this->msg ?? '';
+  }
+
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return \tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "terse_write.TerseException",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "msg",
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'msg') !== null) {
+      $this->msg = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['msg']);
+    }
+  }
+
+}
+

@@ -227,7 +227,53 @@ StructMetadata<::facebook::thrift::test::terse_write::AdaptedFields>::gen(Thrift
   terse_write_AdaptedFields.structured_annotations()->push_back(*cvStruct("thrift.TerseWrite", {}).cv_struct_ref());
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::facebook::thrift::test::terse_write::TerseException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("terse_write.TerseException", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& terse_write_TerseException = res.first->second;
+  terse_write_TerseException.name() = "terse_write.TerseException";
+  terse_write_TerseException.is_union() = false;
+  static const auto* const
+  terse_write_TerseException_fields = new std::array<EncodedThriftField, 1>{{
+    {1, "msg", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *terse_write_TerseException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    terse_write_TerseException.fields()->push_back(std::move(field));
+  }
+  terse_write_TerseException.structured_annotations()->push_back(*cvStruct("thrift.TerseWrite", {}).cv_struct_ref());
+  return res.first->second;
+}
 
+void ExceptionMetadata<::facebook::thrift::test::terse_write::TerseException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions()->emplace("terse_write.TerseException", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& terse_write_TerseException = res.first->second;
+  terse_write_TerseException.name() = "terse_write.TerseException";
+  static const auto* const
+  terse_write_TerseException_fields = new std::array<EncodedThriftField, 1>{{
+    {1, "msg", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *terse_write_TerseException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    terse_write_TerseException.fields()->push_back(std::move(field));
+  }
+  terse_write_TerseException.structured_annotations()->push_back(*cvStruct("thrift.TerseWrite", {}).cv_struct_ref());
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -3399,3 +3399,118 @@ func (p *AdaptedFields) String() string {
   return fmt.Sprintf("AdaptedFields({Field1:%s Field2:%s Field3:%s})", field1Val, field2Val, field3Val)
 }
 
+// Attributes:
+//  - Msg
+type TerseException struct {
+  Msg string `thrift:"msg,1" db:"msg" json:"msg"`
+}
+
+func NewTerseException() *TerseException {
+  return &TerseException{}
+}
+
+
+func (p *TerseException) GetMsg() string {
+  return p.Msg
+}
+type TerseExceptionBuilder struct {
+  obj *TerseException
+}
+
+func NewTerseExceptionBuilder() *TerseExceptionBuilder{
+  return &TerseExceptionBuilder{
+    obj: NewTerseException(),
+  }
+}
+
+func (p TerseExceptionBuilder) Emit() *TerseException{
+  return &TerseException{
+    Msg: p.obj.Msg,
+  }
+}
+
+func (t *TerseExceptionBuilder) Msg(msg string) *TerseExceptionBuilder {
+  t.obj.Msg = msg
+  return t
+}
+
+func (t *TerseException) SetMsg(msg string) *TerseException {
+  t.Msg = msg
+  return t
+}
+
+func (p *TerseException) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TerseException)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Msg = v
+  }
+  return nil
+}
+
+func (p *TerseException) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TerseException"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TerseException) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("msg", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:msg: ", p), err) }
+  if err := oprot.WriteString(string(p.Msg)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.msg (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:msg: ", p), err) }
+  return err
+}
+
+func (p *TerseException) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  msgVal := fmt.Sprintf("%v", p.Msg)
+  return fmt.Sprintf("TerseException({Msg:%s})", msgVal)
+}
+
+func (p *TerseException) Error() string {
+  return p.String()
+}
+

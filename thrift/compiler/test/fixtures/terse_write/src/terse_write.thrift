@@ -125,3 +125,8 @@ struct AdaptedFields {
   @cpp.Adapter{name = "my::Adapter"}
   3: MyInteger field3;
 }
+
+@thrift.TerseWrite
+exception TerseException {
+  1: string msg;
+} (message = 'msg')

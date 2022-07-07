@@ -114,6 +114,14 @@ struct ForEachField<::facebook::thrift::test::terse_write::AdaptedFields> {
     f(2, static_cast<T&&>(t).field3_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::facebook::thrift::test::terse_write::TerseException> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).msg_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

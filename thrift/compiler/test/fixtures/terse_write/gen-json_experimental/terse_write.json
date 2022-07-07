@@ -520,6 +520,21 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 121
+      },
+      "TerseException" : {
+        "name" : "TerseException",
+        "fields" : {
+          "msg" : {
+            "name" : "msg",
+            "key" : 1,
+            "lineno" : 131,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : true,
+        "is_union" : false,
+        "lineno" : 130
       }
       },
   "source_path" : "src/terse_write",

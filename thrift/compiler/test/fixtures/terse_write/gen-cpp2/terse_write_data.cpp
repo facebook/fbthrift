@@ -243,5 +243,15 @@ const std::array<protocol::TType, 3> TStructDataStorage<::facebook::thrift::test
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::terse_write::TerseException>::fields_names = {{
+  "msg",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::facebook::thrift::test::terse_write::TerseException>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::terse_write::TerseException>::fields_types = {{
+  TType::T_STRING,
+}};
+
 } // namespace thrift
 } // namespace apache

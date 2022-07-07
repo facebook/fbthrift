@@ -35,7 +35,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'MyStructWithCustomDefault', 'StructLevelTerseStruct', 'FieldLevelTerseStruct', 'TerseStructWithCustomDefault', 'AdaptedFields', 'MyInteger']
+__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'MyStructWithCustomDefault', 'StructLevelTerseStruct', 'FieldLevelTerseStruct', 'TerseStructWithCustomDefault', 'AdaptedFields', 'TerseException', 'MyInteger']
 
 class MyEnum:
   ME0 = 0
@@ -1897,6 +1897,123 @@ class AdaptedFields:
   def _to_py_deprecated(self):
     return self
 
+class TerseException(TException):
+  """
+  Attributes:
+   - msg
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.msg = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('TerseException')
+    if self.msg != None:
+      oprot.writeFieldBegin('msg', TType.STRING, 1)
+      oprot.writeString(self.msg.encode('utf-8')) if UTF8STRINGS and not isinstance(self.msg, bytes) else oprot.writeString(self.msg)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'msg' in json_obj and json_obj['msg'] is not None:
+      self.msg = json_obj['msg']
+
+  def __str__(self):
+    if self.msg:
+      return self.msg
+    else:
+      return repr(self)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.msg is not None:
+      value = pprint.pformat(self.msg, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    msg=%s' % (value))
+    if 'message' not in self.__dict__:
+      message = getattr(self, 'message', None)
+      if message:
+        L.append('message=%r' % message)
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'msg',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.test.terse_write.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.TerseException, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.test.terse_write.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.TerseException, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 MyInteger = UnimplementedTypedef()
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
@@ -2210,6 +2327,30 @@ def AdaptedFields__setstate__(self, state):
 
 AdaptedFields.__getstate__ = lambda self: self.__dict__.copy()
 AdaptedFields.__setstate__ = AdaptedFields__setstate__
+
+all_structs.append(TerseException)
+TerseException.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'msg', True, None, 2, ), # 1
+)
+
+TerseException.thrift_struct_annotations = {
+  "message": "msg",
+}
+TerseException.thrift_field_annotations = {
+}
+
+def TerseException__init__(self, msg=None,):
+  self.msg = msg
+
+TerseException.__init__ = TerseException__init__
+
+def TerseException__setstate__(self, state):
+  state.setdefault('msg', None)
+  self.__dict__ = state
+
+TerseException.__getstate__ = lambda self: self.__dict__.copy()
+TerseException.__setstate__ = TerseException__setstate__
 
 fix_spec(all_structs)
 del all_structs

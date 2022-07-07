@@ -1054,6 +1054,38 @@
           "column" : 2
         }
       }
+    },
+    "TerseException" : {
+      "lineno" : 130,
+      "is_exception" : true,
+      "is_union" : false,
+      "fields" : {
+        "msg" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 131,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 131,
+              "column" : 16
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 129,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 132,
+          "column" : 20
+        }
+      }
     }
   }
 }

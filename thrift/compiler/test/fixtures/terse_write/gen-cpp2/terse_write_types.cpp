@@ -1492,6 +1492,115 @@ template uint32_t AdaptedFields::serializedSizeZC<>(apache::thrift::CompactProto
 
 }}}} // facebook::thrift::test::terse_write
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::facebook::thrift::test::terse_write::TerseException>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::facebook::thrift::test::terse_write::TerseException>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace facebook { namespace thrift { namespace test { namespace terse_write {
+
+const char* TerseException::__fbthrift_thrift_uri() {
+  return "facebook.com/thrift/test/terse_write/TerseException";
+}
+
+TerseException::TerseException(const TerseException&) = default;
+TerseException& TerseException::operator=(const TerseException&) = default;
+TerseException::TerseException() {
+}
+
+TerseException::TerseException(std::string __message) : TerseException() {
+  __fbthrift_field_msg = std::move(__message);
+}
+
+
+TerseException::~TerseException() {}
+
+TerseException::TerseException(TerseException&& other) noexcept  :
+    __fbthrift_field_msg(std::move(other.__fbthrift_field_msg)),
+    __isset(other.__isset) {
+}
+
+TerseException& TerseException::operator=(FOLLY_MAYBE_UNUSED TerseException&& other) noexcept {
+    this->__fbthrift_field_msg = std::move(other.__fbthrift_field_msg);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+TerseException::TerseException(apache::thrift::FragileConstructor, ::std::string msg__arg) :
+    __fbthrift_field_msg(std::move(msg__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void TerseException::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_msg = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+void TerseException::__fbthrift_clear_terse_fields() {
+}
+
+bool TerseException::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool TerseException::operator==(const TerseException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.msg_ref() == rhs.msg_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool TerseException::operator<(const TerseException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.msg_ref() == rhs.msg_ref())) {
+    return lhs.msg_ref() < rhs.msg_ref();
+  }
+  return false;
+}
+
+
+void swap(TerseException& a, TerseException& b) {
+  using ::std::swap;
+  swap(a.msg_ref().value(), b.msg_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void TerseException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TerseException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TerseException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TerseException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TerseException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TerseException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TerseException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TerseException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}}}} // facebook::thrift::test::terse_write
+
 namespace facebook { namespace thrift { namespace test { namespace terse_write { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter, 1, ::std::int32_t, ::facebook::thrift::test::terse_write::AdaptedFields>();

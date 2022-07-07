@@ -11,7 +11,7 @@ import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_429f3b32 implements TypeList {
+public class __fbthrift_TypeList_6c15c42c implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
@@ -22,6 +22,7 @@ public class __fbthrift_TypeList_429f3b32 implements TypeList {
     list.add(new TypeList.TypeMapping("facebook.com/thrift/test/terse_write/FieldLevelTerseStruct", "com.facebook.thrift.test.terse_write.FieldLevelTerseStruct"));
     list.add(new TypeList.TypeMapping("facebook.com/thrift/test/terse_write/TerseStructWithCustomDefault", "com.facebook.thrift.test.terse_write.TerseStructWithCustomDefault"));
     list.add(new TypeList.TypeMapping("facebook.com/thrift/test/terse_write/AdaptedFields", "com.facebook.thrift.test.terse_write.AdaptedFields"));
+    list.add(new TypeList.TypeMapping("facebook.com/thrift/test/terse_write/TerseException", "com.facebook.thrift.test.terse_write.TerseException"));
     list.add(new TypeList.TypeMapping("facebook.com/thrift/test/terse_write/MyEnum", "com.facebook.thrift.test.terse_write.MyEnum"));
   }
 
