@@ -1001,6 +1001,7 @@ void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
  * Loop and accept incoming connections.
  */
 void ThriftServer::serve() {
+  tracker_.emplace(instrumentation::kThriftServerTrackerKey, *this);
   setup();
   if (serverChannel_ != nullptr) {
     // A duplex server (the one running on a client) doesn't uses its own
@@ -1013,7 +1014,6 @@ void ThriftServer::serve() {
       ? getSSLCallbackHandle()
       : folly::observer::CallbackHandle{};
 
-  tracker_.emplace(instrumentation::kThriftServerTrackerKey, *this);
   eventBaseManager_->getEventBase()->loopForever();
 }
 
