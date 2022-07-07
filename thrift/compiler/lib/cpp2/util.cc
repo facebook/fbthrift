@@ -18,6 +18,7 @@
 #include "thrift/compiler/ast/t_program.h"
 
 #include <algorithm>
+#include <memory>
 #include <queue>
 #include <stdexcept>
 
@@ -37,7 +38,6 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
-#include <thrift/compiler/util.h>
 
 namespace apache {
 namespace thrift {
@@ -219,6 +219,10 @@ bool is_orderable(
   if (!seen.insert(&type).second) {
     return true;
   }
+  auto make_scope_guard = [](auto f) {
+    auto deleter = [=](void*) { f(); };
+    return std::unique_ptr<void, decltype(deleter)>(&f, deleter);
+  };
   auto g = make_scope_guard([&] { seen.erase(&type); });
   // TODO: Consider why typedef is not resolved in this method
   if (type.is_base_type()) {

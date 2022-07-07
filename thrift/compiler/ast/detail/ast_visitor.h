@@ -16,11 +16,11 @@
 
 #pragma once
 
+#include <functional>
 #include <type_traits>
 #include <utility>
 
 #include <thrift/compiler/ast/t_node.h>
-#include <thrift/compiler/util.h>
 
 // Visitation and registration functions for concrete AST nodes.
 #define FBTHRIFT_AST_DETAIL_AST_VISITOR_NODE_T_(name)       \

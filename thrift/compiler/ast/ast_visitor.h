@@ -284,12 +284,13 @@ class basic_ast_visitor {
 
   template <typename N>
   static void end_visit(N& node, Args... args) {
-    // TODO(afuller): Replace with c++17 folding syntax when available.
-    auto cb = [&](auto& arg) {
-      return make_scope_guard([&] { ast_detail::end_visit(node, arg); });
+    auto make_func = [&](auto& arg) {
+      return std::function<void()>([&] { ast_detail::end_visit(node, arg); });
     };
-    using _ = int[];
-    void(_{0, (cb(args), 0)...});
+    std::function<void()> funcs[] = {make_func(args)...};
+    for (int i = sizeof...(args); i > 0; --i) {
+      funcs[i - 1]();
+    }
   }
 
   template <typename C>
