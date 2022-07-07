@@ -3703,7 +3703,7 @@ template <class Protocol_>
 uint32_t struct3::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
-  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
+  if (!(this->__fbthrift_field_fieldA == ::std::int32_t())) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
@@ -3783,7 +3783,7 @@ template <class Protocol_>
 uint32_t struct3::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
-  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
+  if (!(this->__fbthrift_field_fieldA == ::std::int32_t())) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
@@ -3864,7 +3864,7 @@ uint32_t struct3::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct3");
   bool previousFieldHasValue = true;
-  if (this->__fbthrift_field_fieldA != ::std::int32_t()) {
+  if (!(this->__fbthrift_field_fieldA == ::std::int32_t())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "fieldA", previousFieldHasValue);
     previousFieldHasValue = true;

@@ -330,20 +330,20 @@ void StructLevelTerseStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool StructLevelTerseStruct::__fbthrift_is_empty() const {
-  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::bool_t>(this->__fbthrift_field_bool_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::byte_t>(this->__fbthrift_field_byte_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i16_t>(this->__fbthrift_field_short_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_int_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i64_t>(this->__fbthrift_field_long_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::float_t>(this->__fbthrift_field_float_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::double_t>(this->__fbthrift_field_double_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_string_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::binary_t>(this->__fbthrift_field_binary_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::enum_t<::facebook::thrift::test::terse_write::MyEnum>>(this->__fbthrift_field_enum_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i16_t>>(this->__fbthrift_field_list_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::set<::apache::thrift::type::i16_t>>(this->__fbthrift_field_set_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::MyStruct>>(this->__fbthrift_field_struct_field));
+  return ::apache::thrift::op::isEmpty<::apache::thrift::type::bool_t>(this->__fbthrift_field_bool_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::byte_t>(this->__fbthrift_field_byte_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i16_t>(this->__fbthrift_field_short_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_int_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i64_t>(this->__fbthrift_field_long_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::float_t>(this->__fbthrift_field_float_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::double_t>(this->__fbthrift_field_double_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_string_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::binary_t>(this->__fbthrift_field_binary_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::enum_t<::facebook::thrift::test::terse_write::MyEnum>>(this->__fbthrift_field_enum_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i16_t>>(this->__fbthrift_field_list_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::set<::apache::thrift::type::i16_t>>(this->__fbthrift_field_set_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::MyStruct>>(this->__fbthrift_field_struct_field);
 }
 
 bool StructLevelTerseStruct::operator==(const StructLevelTerseStruct& rhs) const {
@@ -1169,20 +1169,20 @@ void TerseStructWithCustomDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool TerseStructWithCustomDefault::__fbthrift_is_empty() const {
-  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::bool_t>(this->__fbthrift_field_bool_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::byte_t>(this->__fbthrift_field_byte_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i16_t>(this->__fbthrift_field_short_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_int_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::i64_t>(this->__fbthrift_field_long_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::float_t>(this->__fbthrift_field_float_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::double_t>(this->__fbthrift_field_double_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_string_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::binary_t>(this->__fbthrift_field_binary_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::enum_t<::facebook::thrift::test::terse_write::MyEnum>>(this->__fbthrift_field_enum_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i16_t>>(this->__fbthrift_field_list_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::set<::apache::thrift::type::i16_t>>(this->__fbthrift_field_set_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::MyStructWithCustomDefault>>(this->__fbthrift_field_struct_field));
+  return ::apache::thrift::op::isEmpty<::apache::thrift::type::bool_t>(this->__fbthrift_field_bool_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::byte_t>(this->__fbthrift_field_byte_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i16_t>(this->__fbthrift_field_short_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_int_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::i64_t>(this->__fbthrift_field_long_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::float_t>(this->__fbthrift_field_float_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::double_t>(this->__fbthrift_field_double_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_string_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::binary_t>(this->__fbthrift_field_binary_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::enum_t<::facebook::thrift::test::terse_write::MyEnum>>(this->__fbthrift_field_enum_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i16_t>>(this->__fbthrift_field_list_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::set<::apache::thrift::type::i16_t>>(this->__fbthrift_field_set_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::MyStructWithCustomDefault>>(this->__fbthrift_field_struct_field);
 }
 
 bool TerseStructWithCustomDefault::operator==(const TerseStructWithCustomDefault& rhs) const {
@@ -1435,9 +1435,9 @@ void AdaptedFields::__fbthrift_clear_terse_fields() {
 }
 
 bool AdaptedFields::__fbthrift_is_empty() const {
-  return !(!::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3));
+  return ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3);
 }
 
 bool AdaptedFields::operator==(const AdaptedFields& rhs) const {
@@ -1556,7 +1556,7 @@ void TerseException::__fbthrift_clear_terse_fields() {
 }
 
 bool TerseException::__fbthrift_is_empty() const {
-  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg));
+  return ::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg);
 }
 
 bool TerseException::operator==(const TerseException& rhs) const {
