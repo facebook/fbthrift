@@ -91,8 +91,8 @@ void mutate_terse_write_annotation_field(
 }
 
 // Only an unqualified field is eligible for terse write.
-void mutate_terse_write_annotation_struct(
-    diagnostic_context& ctx, mutator_context&, t_struct& node) {
+void mutate_terse_write_annotation_structured(
+    diagnostic_context& ctx, mutator_context&, t_structured& node) {
   if (ctx.program().inherit_annotation_or_null(node, kTerseWriteUri)) {
     for (auto& field : node.fields()) {
       if (field.qualifier() == t_field_qualifier::none) {
@@ -281,7 +281,8 @@ ast_mutators standard_mutators() {
   {
     auto& main = mutators[standard_mutator_stage::main];
     main.add_field_visitor(&mutate_terse_write_annotation_field);
-    main.add_struct_visitor(&mutate_terse_write_annotation_struct);
+    main.add_struct_visitor(&mutate_terse_write_annotation_structured);
+    main.add_exception_visitor(&mutate_terse_write_annotation_structured);
     main.add_struct_visitor(&mutate_inject_metadata_fields);
   }
   add_patch_mutators(mutators);

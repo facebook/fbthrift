@@ -564,6 +564,26 @@ TYPED_TEST_P(TerseWriteSerializerTests, AdaptedListFields) {
   EXPECT_EQ(emptys, objs);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, TerseException) {
+  terse_write::TerseException obj;
+  terse_write::EmptyStruct empty;
+
+  obj.msg() = "message";
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+  EXPECT_NE(emptys, objs);
+
+  obj.msg() = "";
+
+  objs = TypeParam::template serialize<std::string>(obj);
+  terse_write::TerseException objd;
+  TypeParam::template deserialize(objs, objd);
+
+  EXPECT_EQ(obj, objd);
+  EXPECT_EQ(emptys, objs);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     AdaptedFields,
@@ -577,6 +597,7 @@ REGISTER_TYPED_TEST_CASE_P(
     CustomStringFields,
     CustomStringFieldsDeserialization,
     EmptiableStructField,
+    TerseException,
     TerseStructWithCustomDefault,
     TerseStructWithCustomDefaultDeserialization,
     TerseStructWithCustomDefaultClearTerseFields,

@@ -186,3 +186,8 @@ struct AdaptedListFields {
   5: AdaptedList field5 (py3.hidden);
   6: string meta;
 }
+
+@thrift.TerseWrite
+exception TerseException {
+  1: string msg;
+} (message = 'msg')

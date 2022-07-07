@@ -51,7 +51,7 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
     
     public static class Builder {
     
-        private String msg = null;
+        private String msg = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="msg", requiredness=Requiredness.NONE)
         public Builder setMsg(String msg) {
@@ -117,7 +117,12 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.msg != null) {
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      java.util.Objects.requireNonNull(this.msg, "msg must not be null");
+      
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.msg)) {
         oprot.writeFieldBegin(MSG_FIELD_DESC);
         oprot.writeString(this.msg);
         oprot.writeFieldEnd();

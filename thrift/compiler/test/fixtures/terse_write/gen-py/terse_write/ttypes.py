@@ -2331,7 +2331,7 @@ AdaptedFields.__setstate__ = AdaptedFields__setstate__
 all_structs.append(TerseException)
 TerseException.thrift_spec = (
   None, # 0
-  (1, TType.STRING, 'msg', True, None, 2, ), # 1
+  (1, TType.STRING, 'msg', True, None, 3, ), # 1
 )
 
 TerseException.thrift_struct_annotations = {

@@ -528,7 +528,6 @@
             "name" : "msg",
             "key" : 1,
             "lineno" : 131,
-            "required" : "opt-in-req-out",
             "type" : "string"
           }
         },

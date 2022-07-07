@@ -2895,7 +2895,6 @@ _readField_msg:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_msg, _readState);
     
   }
- this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2943,7 +2942,7 @@ template <class Protocol_>
 uint32_t TerseException::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseException");
-  {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg)) {
     xfer += prot_->serializedFieldSize("msg", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_msg);
   }
@@ -2955,7 +2954,7 @@ template <class Protocol_>
 uint32_t TerseException::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseException");
-  {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg)) {
     xfer += prot_->serializedFieldSize("msg", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_msg);
   }
@@ -2968,12 +2967,14 @@ uint32_t TerseException::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseException");
   bool previousFieldHasValue = true;
-  {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg)) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "msg", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_msg);
     xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

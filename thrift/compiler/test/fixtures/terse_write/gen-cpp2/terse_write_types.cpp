@@ -1532,34 +1532,31 @@ TerseException::TerseException(std::string __message) : TerseException() {
 TerseException::~TerseException() {}
 
 TerseException::TerseException(TerseException&& other) noexcept  :
-    __fbthrift_field_msg(std::move(other.__fbthrift_field_msg)),
-    __isset(other.__isset) {
+    __fbthrift_field_msg(std::move(other.__fbthrift_field_msg)) {
 }
 
 TerseException& TerseException::operator=(FOLLY_MAYBE_UNUSED TerseException&& other) noexcept {
     this->__fbthrift_field_msg = std::move(other.__fbthrift_field_msg);
-    __isset = other.__isset;
     return *this;
 }
 
 
 TerseException::TerseException(apache::thrift::FragileConstructor, ::std::string msg__arg) :
     __fbthrift_field_msg(std::move(msg__arg)) {
-  __isset.set(folly::index_constant<0>(), true);
 }
 
 
 void TerseException::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_msg = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  __isset = {};
 }
 
 void TerseException::__fbthrift_clear_terse_fields() {
+  this->__fbthrift_field_msg = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
 
 bool TerseException::__fbthrift_is_empty() const {
-  return false;
+  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::string_t>(this->__fbthrift_field_msg));
 }
 
 bool TerseException::operator==(const TerseException& rhs) const {
@@ -1586,7 +1583,6 @@ bool TerseException::operator<(const TerseException& rhs) const {
 void swap(TerseException& a, TerseException& b) {
   using ::std::swap;
   swap(a.msg_ref().value(), b.msg_ref().value());
-  swap(a.__isset, b.__isset);
 }
 
 template void TerseException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -4714,8 +4714,6 @@ class FOLLY_EXPORT TerseException : public apache::thrift::TException {
 
  private:
   ::std::string __fbthrift_field_msg;
- private:
-  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4723,43 +4721,43 @@ class FOLLY_EXPORT TerseException : public apache::thrift::TException {
   bool operator<(const TerseException&) const;
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> msg_ref() const& {
-    return {this->__fbthrift_field_msg, __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const T&> msg_ref() const& {
+    return ::apache::thrift::terse_field_ref<const T&>{this->__fbthrift_field_msg};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> msg_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_msg), __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const T&&> msg_ref() const&& {
+    return ::apache::thrift::terse_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_msg)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> msg_ref() & {
-    return {this->__fbthrift_field_msg, __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<T&> msg_ref() & {
+    return ::apache::thrift::terse_field_ref<T&>{this->__fbthrift_field_msg};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> msg_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_msg), __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<T&&> msg_ref() && {
+    return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_msg)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> msg() const& {
-    return {this->__fbthrift_field_msg, __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const T&> msg() const& {
+    return ::apache::thrift::terse_field_ref<const T&>{this->__fbthrift_field_msg};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> msg() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_msg), __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const T&&> msg() const&& {
+    return ::apache::thrift::terse_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_msg)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> msg() & {
-    return {this->__fbthrift_field_msg, __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<T&> msg() & {
+    return ::apache::thrift::terse_field_ref<T&>{this->__fbthrift_field_msg};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> msg() && {
-    return {static_cast<T&&>(this->__fbthrift_field_msg), __isset.at(0), __isset.bit(0)};
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<T&&> msg() && {
+    return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_msg)};
   }
 
   const ::std::string& get_msg() const& {

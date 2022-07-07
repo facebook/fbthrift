@@ -3004,7 +3004,7 @@ class TerseException extends \TException implements \IThriftSyncStruct {
     ?'msg' => ?string,
   );
 
-  const int STRUCTURAL_ID = 2581942019413135946;
+  const int STRUCTURAL_ID = 1537019148371217773;
   /**
    * Original thrift field:-
    * 1: string msg
