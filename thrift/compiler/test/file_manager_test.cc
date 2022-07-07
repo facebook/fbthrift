@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <folly/String.h>
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/codemod/file_manager.h>
 #include <thrift/compiler/test/parser_test_helpers.h>
-#include <thrift/compiler/util.h>
 
 namespace apache::thrift::compiler {
 
@@ -56,7 +56,7 @@ TEST(FileManagerTest, apply_replacements_test) {
 
   fm.apply_replacements();
 
-  EXPECT_EQ(read_file(program->path()), strip_left_margin(R"(
+  EXPECT_EQ(read_file(program->path()), folly::stripLeftMargin(R"(
     struct A {
       @cpp.Ref{cpp.RefType.Unique}
       1: optional string a;
