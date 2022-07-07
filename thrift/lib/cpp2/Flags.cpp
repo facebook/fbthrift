@@ -32,7 +32,8 @@ class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
     static const folly::Indestructible<std::map<std::string, bool>>
         oss_defaults = std::map<std::string, bool>{
             {"server_header_reject_framed", false},
-            {"server_header_reject_unframed", false}};
+            {"server_header_reject_unframed", false},
+            {"server_header_reject_all", false}};
     return folly::observer::makeObserver(
         [name = std::string(name)]() -> folly::Optional<bool> {
           return folly::get_optional(*oss_defaults, name);

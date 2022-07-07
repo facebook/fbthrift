@@ -35,6 +35,7 @@ THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_http, true);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_framed, true);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_unframed, true);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_all, true);
 
 THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 
@@ -443,9 +444,15 @@ void Cpp2Connection::requestReceived(
     }
   }
 
-  if (worker_->getServer()->isHeaderDisabled()) {
-    disconnect("Rejecting Header connection");
-    return;
+  if (worker_->getServer()->isHeaderDisabled() ||
+      THRIFT_FLAG(server_header_reject_all)) {
+    THRIFT_CONNECTION_EVENT(connection_rejected.header).log(context_);
+
+    // Make server_header_reject_all be log-only for now
+    if (worker_->getServer()->isHeaderDisabled()) {
+      disconnect("Rejecting Header connection");
+      return;
+    }
   }
 
   using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
