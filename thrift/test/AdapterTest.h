@@ -235,4 +235,15 @@ struct TaggedWrapper {
   bool operator<(const TaggedWrapper& other) const { return val < other.val; }
 };
 
+struct MoveOnlyAdapter {
+  template <class T>
+  static std::unique_ptr<T> fromThrift(const T& i) {
+    return std::make_unique<T>(i);
+  }
+  template <class T>
+  static const T& toThrift(const std::unique_ptr<T>& i) {
+    return *i;
+  }
+};
+
 } // namespace apache::thrift::test

@@ -385,12 +385,17 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'extraNamespace',
       'type' => \TType::STRING,
     ),
+    5 => shape(
+      'var' => 'moveOnly',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
     'adaptedType' => 2,
     'underlyingName' => 3,
     'extraNamespace' => 4,
+    'moveOnly' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -398,6 +403,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'adaptedType' => ?string,
     ?'underlyingName' => ?string,
     ?'extraNamespace' => ?string,
+    ?'moveOnly' => ?bool,
   );
 
   const type TShape = shape(
@@ -405,9 +411,10 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'adaptedType' => string,
     'underlyingName' => string,
     'extraNamespace' => string,
+    'moveOnly' => bool,
     ...
   );
-  const int STRUCTURAL_ID = 2040671797212520393;
+  const int STRUCTURAL_ID = 8180344078447403329;
   /**
    * Original thrift field:-
    * 1: string name
@@ -428,12 +435,18 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 4: string extraNamespace
    */
   public string $extraNamespace;
+  /**
+   * Original thrift field:-
+   * 5: bool moveOnly
+   */
+  public bool $moveOnly;
 
-  public function __construct(?string $name = null, ?string $adaptedType = null, ?string $underlyingName = null, ?string $extraNamespace = null)[] {
+  public function __construct(?string $name = null, ?string $adaptedType = null, ?string $underlyingName = null, ?string $extraNamespace = null, ?bool $moveOnly = null)[] {
     $this->name = $name ?? '';
     $this->adaptedType = $adaptedType ?? '';
     $this->underlyingName = $underlyingName ?? '';
     $this->extraNamespace = $extraNamespace ?? "detail";
+    $this->moveOnly = $moveOnly ?? false;
   }
 
   public static function withDefaultValues()[]: this {
@@ -446,6 +459,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'adaptedType'),
       Shapes::idx($shape, 'underlyingName'),
       Shapes::idx($shape, 'extraNamespace'),
+      Shapes::idx($shape, 'moveOnly'),
     );
   }
 
@@ -502,6 +516,17 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "extraNamespace",
             )
           ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "moveOnly",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -535,6 +560,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $shape['adaptedType'],
       $shape['underlyingName'],
       $shape['extraNamespace'],
+      $shape['moveOnly'],
     );
   }
 
@@ -544,6 +570,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'adaptedType' => $this->adaptedType,
       'underlyingName' => $this->underlyingName,
       'extraNamespace' => $this->extraNamespace,
+      'moveOnly' => $this->moveOnly,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -568,6 +595,9 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
     if (idx($parsed, 'extraNamespace') !== null) {
       $this->extraNamespace = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['extraNamespace']);
+    }
+    if (idx($parsed, 'moveOnly') !== null) {
+      $this->moveOnly = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['moveOnly']);
     }
   }
 

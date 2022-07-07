@@ -778,4 +778,14 @@ TEST(AdaptTest, ComposedAdapter) {
   EXPECT_EQ(*obj2.double_wrapped_integer()->meta, "foo");
 }
 
+TEST(AdaptTest, MoveOnlyAdapter) {
+  basic::MoveOnly obj;
+  obj.ptr() = std::make_unique<basic::detail::HeapAllocated>();
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  basic::MoveOnly objd;
+  EXPECT_FALSE(*objd.ptr());
+  CompactSerializer::deserialize(objs, objd);
+  EXPECT_TRUE(*objd.ptr());
+}
+
 } // namespace apache::thrift::test

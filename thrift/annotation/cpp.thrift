@@ -95,6 +95,8 @@ struct Adapter {
   // Empty string disables the nested namespace and uses the IDL name for the struct.
   3: string underlyingName;
   4: string extraNamespace = 'detail';
+  // Must set to true when adapted type is not copyable.
+  5: bool moveOnly;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
 
 @scope.Struct

@@ -178,3 +178,10 @@ struct RenamedStruct {
 struct SameNamespaceStruct {
   1: i64 data;
 }
+
+@cpp.Adapter{name = "::apache::thrift::test::MoveOnlyAdapter", moveOnly = true}
+struct HeapAllocated {}
+
+struct MoveOnly {
+  1: HeapAllocated ptr;
+}

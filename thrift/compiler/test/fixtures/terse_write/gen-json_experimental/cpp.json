@@ -104,6 +104,13 @@
             "lineno" : 97,
             "required" : "opt-in-req-out",
             "type" : "string"
+          },
+          "moveOnly" : {
+            "name" : "moveOnly",
+            "key" : 5,
+            "lineno" : 99,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
           }
         },
         "is_exception" : false,
@@ -117,32 +124,32 @@
             "name" : "atomic",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 102,
+            "lineno" : 104,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 101
+        "lineno" : 103
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 106
+        "lineno" : 108
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 111
+        "lineno" : 113
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 116
+        "lineno" : 118
       }
       },
   "source_path" : "thrift/annotation/cpp",

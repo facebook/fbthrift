@@ -364,11 +364,13 @@ func (p *DisableLazyChecksum) String() string {
 //  - AdaptedType
 //  - UnderlyingName
 //  - ExtraNamespace
+//  - MoveOnly
 type Adapter struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
   AdaptedType string `thrift:"adaptedType,2" db:"adaptedType" json:"adaptedType"`
   UnderlyingName string `thrift:"underlyingName,3" db:"underlyingName" json:"underlyingName"`
   ExtraNamespace string `thrift:"extraNamespace,4" db:"extraNamespace" json:"extraNamespace"`
+  MoveOnly bool `thrift:"moveOnly,5" db:"moveOnly" json:"moveOnly"`
 }
 
 func NewAdapter() *Adapter {
@@ -393,6 +395,10 @@ func (p *Adapter) GetUnderlyingName() string {
 func (p *Adapter) GetExtraNamespace() string {
   return p.ExtraNamespace
 }
+
+func (p *Adapter) GetMoveOnly() bool {
+  return p.MoveOnly
+}
 type AdapterBuilder struct {
   obj *Adapter
 }
@@ -409,6 +415,7 @@ func (p AdapterBuilder) Emit() *Adapter{
     AdaptedType: p.obj.AdaptedType,
     UnderlyingName: p.obj.UnderlyingName,
     ExtraNamespace: p.obj.ExtraNamespace,
+    MoveOnly: p.obj.MoveOnly,
   }
 }
 
@@ -432,6 +439,11 @@ func (a *AdapterBuilder) ExtraNamespace(extraNamespace string) *AdapterBuilder {
   return a
 }
 
+func (a *AdapterBuilder) MoveOnly(moveOnly bool) *AdapterBuilder {
+  a.obj.MoveOnly = moveOnly
+  return a
+}
+
 func (a *Adapter) SetName(name string) *Adapter {
   a.Name = name
   return a
@@ -449,6 +461,11 @@ func (a *Adapter) SetUnderlyingName(underlyingName string) *Adapter {
 
 func (a *Adapter) SetExtraNamespace(extraNamespace string) *Adapter {
   a.ExtraNamespace = extraNamespace
+  return a
+}
+
+func (a *Adapter) SetMoveOnly(moveOnly bool) *Adapter {
+  a.MoveOnly = moveOnly
   return a
 }
 
@@ -479,6 +496,10 @@ func (p *Adapter) Read(iprot thrift.Protocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
         return err
       }
     default:
@@ -532,6 +553,15 @@ func (p *Adapter)  ReadField4(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Adapter)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.MoveOnly = v
+  }
+  return nil
+}
+
 func (p *Adapter) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Adapter"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -539,6 +569,7 @@ func (p *Adapter) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -586,6 +617,16 @@ func (p *Adapter) writeField4(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Adapter) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("moveOnly", thrift.BOOL, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:moveOnly: ", p), err) }
+  if err := oprot.WriteBool(bool(p.MoveOnly)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.moveOnly (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:moveOnly: ", p), err) }
+  return err
+}
+
 func (p *Adapter) String() string {
   if p == nil {
     return "<nil>"
@@ -595,7 +636,8 @@ func (p *Adapter) String() string {
   adaptedTypeVal := fmt.Sprintf("%v", p.AdaptedType)
   underlyingNameVal := fmt.Sprintf("%v", p.UnderlyingName)
   extraNamespaceVal := fmt.Sprintf("%v", p.ExtraNamespace)
-  return fmt.Sprintf("Adapter({Name:%s AdaptedType:%s UnderlyingName:%s ExtraNamespace:%s})", nameVal, adaptedTypeVal, underlyingNameVal, extraNamespaceVal)
+  moveOnlyVal := fmt.Sprintf("%v", p.MoveOnly)
+  return fmt.Sprintf("Adapter({Name:%s AdaptedType:%s UnderlyingName:%s ExtraNamespace:%s MoveOnly:%s})", nameVal, adaptedTypeVal, underlyingNameVal, extraNamespaceVal, moveOnlyVal)
 }
 
 // Attributes:

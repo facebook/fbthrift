@@ -366,6 +366,7 @@ class Adapter:
    - adaptedType
    - underlyingName
    - extraNamespace
+   - moveOnly
   """
 
   thrift_spec = None
@@ -408,6 +409,11 @@ class Adapter:
           self.extraNamespace = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.BOOL:
+          self.moveOnly = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -437,6 +443,10 @@ class Adapter:
       oprot.writeFieldBegin('extraNamespace', TType.STRING, 4)
       oprot.writeString(self.extraNamespace.encode('utf-8')) if UTF8STRINGS and not isinstance(self.extraNamespace, bytes) else oprot.writeString(self.extraNamespace)
       oprot.writeFieldEnd()
+    if self.moveOnly != None:
+      oprot.writeFieldBegin('moveOnly', TType.BOOL, 5)
+      oprot.writeBool(self.moveOnly)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -460,6 +470,8 @@ class Adapter:
       self.underlyingName = json_obj['underlyingName']
     if 'extraNamespace' in json_obj and json_obj['extraNamespace'] is not None:
       self.extraNamespace = json_obj['extraNamespace']
+    if 'moveOnly' in json_obj and json_obj['moveOnly'] is not None:
+      self.moveOnly = json_obj['moveOnly']
 
   def __repr__(self):
     L = []
@@ -480,6 +492,10 @@ class Adapter:
       value = pprint.pformat(self.extraNamespace, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    extraNamespace=%s' % (value))
+    if self.moveOnly is not None:
+      value = pprint.pformat(self.moveOnly, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    moveOnly=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -497,6 +513,7 @@ class Adapter:
       'adaptedType',
       'underlyingName',
       'extraNamespace',
+      'moveOnly',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -947,6 +964,7 @@ Adapter.thrift_spec = (
   (2, TType.STRING, 'adaptedType', True, None, 2, ), # 2
   (3, TType.STRING, 'underlyingName', True, None, 2, ), # 3
   (4, TType.STRING, 'extraNamespace', True, "detail", 2, ), # 4
+  (5, TType.BOOL, 'moveOnly', None, None, 2, ), # 5
 )
 
 Adapter.thrift_struct_annotations = {
@@ -955,11 +973,12 @@ Adapter.thrift_struct_annotations = {
 Adapter.thrift_field_annotations = {
 }
 
-def Adapter__init__(self, name=None, adaptedType=None, underlyingName=None, extraNamespace=Adapter.thrift_spec[4][4],):
+def Adapter__init__(self, name=None, adaptedType=None, underlyingName=None, extraNamespace=Adapter.thrift_spec[4][4], moveOnly=None,):
   self.name = name
   self.adaptedType = adaptedType
   self.underlyingName = underlyingName
   self.extraNamespace = extraNamespace
+  self.moveOnly = moveOnly
 
 Adapter.__init__ = Adapter__init__
 
@@ -968,6 +987,7 @@ def Adapter__setstate__(self, state):
   state.setdefault('adaptedType', None)
   state.setdefault('underlyingName', None)
   state.setdefault('extraNamespace', "detail")
+  state.setdefault('moveOnly', None)
   self.__dict__ = state
 
 Adapter.__getstate__ = lambda self: self.__dict__.copy()
