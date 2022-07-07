@@ -59,9 +59,8 @@ class MaskRef {
 
   // Copies masked fields from one object to another (schemaless).
   // If the masked field doesn't exist in src, the field in dst will be removed.
-  // Returns true if there is a field copied from src to dst (not removed).
   // Throws a runtime exception if the mask and objects are incompatible.
-  bool copy(const protocol::Object& src, protocol::Object& dst) const;
+  void copy(const protocol::Object& src, protocol::Object& dst) const;
 
  private:
   // Gets all fields that need to be copied from src to dst.

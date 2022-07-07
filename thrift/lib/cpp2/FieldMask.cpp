@@ -80,8 +80,7 @@ void MaskRef::clear(protocol::Object& obj) const {
   }
 }
 
-bool MaskRef::copy(const protocol::Object& src, protocol::Object& dst) const {
-  bool copied = false;
+void MaskRef::copy(const protocol::Object& src, protocol::Object& dst) const {
   // Get all fields that are possibly masked (either in src or dst).
   for (FieldId fieldId : getFieldsToCopy(src, dst)) {
     MaskRef ref = get(fieldId);
@@ -93,7 +92,6 @@ bool MaskRef::copy(const protocol::Object& src, protocol::Object& dst) const {
     if (ref.isAllMask()) {
       if (src.contains(fieldId)) {
         dst[fieldId] = src.at(fieldId);
-        copied = true;
       } else {
         dst.erase(fieldId);
       }
@@ -117,14 +115,11 @@ bool MaskRef::copy(const protocol::Object& src, protocol::Object& dst) const {
     // Field only exists in src. Need to construct object only if there's
     // a field to add.
     protocol::Object newObject;
-    bool nestedCopied =
-        ref.copy(src.at(fieldId).objectValue_ref().value(), newObject);
-    if (nestedCopied) {
-      dst[fieldId].emplace_object() = newObject;
-      copied = true;
+    ref.copy(src.at(fieldId).objectValue_ref().value(), newObject);
+    if (!newObject.empty()) {
+      dst[fieldId].emplace_object() = std::move(newObject);
     }
   }
-  return copied;
 }
 
 std::unordered_set<FieldId> MaskRef::getFieldsToCopy(
