@@ -155,6 +155,12 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
       smsg.buffer = serializedRequest.buffer.get();
       smsg.methodName = ctx->getMethodName();
       ctxStack->onReadData(smsg);
+
+      ctxStack->postRead(
+          nullptr,
+          serializedRequest.buffer
+              ->computeChainDataLength()); // TODO move this call to inside the
+                                           // python code
     }
 
     return ctxStack;
