@@ -16,8 +16,10 @@ import copy
 import functools
 
 from cython.operator cimport dereference as deref
+from thrift.python.serializer cimport cserialize, cdeserialize
 from thrift.python.types cimport StructInfo, createStructTuple, set_struct_field
 from libcpp.vector cimport vector
+from libcpp.utility cimport move as cmove
 
 
 cdef class Error(Exception):
@@ -199,6 +201,16 @@ cdef class GeneratedError(Error):
         cdef StructInfo info = self._fbthrift_struct_info
         for name in info.name_to_index:
             yield name, getattr(self, name)
+
+    cdef iobuf.IOBuf _serialize(self, Protocol proto):
+        cdef StructInfo info = self._fbthrift_struct_info
+        return iobuf.from_unique_ptr(
+            cmove(cserialize(deref(info.cpp_obj), self._fbthrift_data, proto))
+        )
+
+    cdef uint32_t _deserialize(self, iobuf.IOBuf buf, Protocol proto) except? 0:
+        cdef StructInfo info = self._fbthrift_struct_info
+        return cdeserialize(deref(info.cpp_obj), buf._this, self._fbthrift_data, proto)
 
     cdef _fbthrift_get_field_value(self, int16_t index):
         data = self._fbthrift_data[index + 1]

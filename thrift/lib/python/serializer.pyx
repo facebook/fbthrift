@@ -14,29 +14,36 @@
 
 from cython.view cimport memoryview
 from folly.iobuf cimport IOBuf
-from thrift.python.exceptions cimport Error
+from thrift.python.exceptions cimport Error, GeneratedError
 from thrift.python.types cimport Struct, StructOrUnion, Union
 
 import cython
 
 Buf = cython.fused_type(IOBuf, bytes, bytearray, memoryview)
 
-def serialize_iobuf(StructOrUnion strct not None, Protocol protocol=Protocol.COMPACT):
-    return strct._serialize(protocol)
+StructOrError = cython.fused_type(StructOrUnion, GeneratedError)
 
-def serialize(StructOrUnion struct not None, Protocol protocol=Protocol.COMPACT):
+def serialize_iobuf(StructOrError strct, Protocol protocol=Protocol.COMPACT):
+    if isinstance(strct, StructOrUnion):
+        return (<StructOrUnion>strct)._serialize(protocol)
+    return (<GeneratedError>strct)._serialize(protocol)
+
+def serialize(StructOrError struct, Protocol protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(struct, protocol))
 
 def deserialize_with_length(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
-    if not issubclass(klass, StructOrUnion):
-        raise TypeError("Only Struct or Union classes can be deserialized")
+    if not issubclass(klass, (StructOrUnion, GeneratedError)):
+        raise TypeError("Only Struct, Union, or Exception classes can be deserialized")
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     inst = klass.__new__(klass)
     cdef uint32_t length
     try:
-        length = (<Struct>inst)._deserialize(
-            iobuf, protocol) if issubclass(klass, Struct) else (
-            <Union>inst)._deserialize(iobuf, protocol)
+        if issubclass(klass, Struct):
+            length = (<Struct>inst)._deserialize(iobuf, protocol)
+        elif issubclass(klass, Union):
+            length = (<Union>inst)._deserialize(iobuf, protocol)
+        else:
+            length = (<GeneratedError>inst)._deserialize(iobuf, protocol)
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None
     return inst, length

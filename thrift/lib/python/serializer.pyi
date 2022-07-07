@@ -16,9 +16,10 @@ import typing
 from enum import Enum
 
 from folly.iobuf import IOBuf
+from thrift.python.exceptions import GeneratedError
 from thrift.python.types import StructOrUnion
 
-sT = typing.TypeVar("sT", bound=StructOrUnion)
+sT = typing.TypeVar("sT", bound=typing.Union[StructOrUnion, GeneratedError])
 
 class Protocol(Enum):
     COMPACT: Protocol = ...

@@ -13,11 +13,13 @@
 # limitations under the License.
 
 from cpython.ref cimport PyObject
-from folly cimport cFollyExceptionWrapper
-from libc.stdint cimport int16_t
+from folly cimport cFollyExceptionWrapper, iobuf
+from libc.stdint cimport int16_t, uint32_t
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from thrift.py3.common cimport RpcOptions
+
+from thrift.python.serializer cimport Protocol
 
 
 cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
@@ -107,6 +109,8 @@ cdef object create_py_exception(const cFollyExceptionWrapper& ex, RpcOptions opt
 cdef class GeneratedError(Error):
     cdef object _fbthrift_data
     cdef _fbthrift_get_field_value(self, int16_t index)
+    cdef iobuf.IOBuf _serialize(GeneratedError self, Protocol proto)
+    cdef uint32_t _deserialize(GeneratedError self, iobuf.IOBuf buf, Protocol proto) except? 0
 
 # TODO: add a HandlerManager class to wrap functionality below
 ctypedef object(*Handler)(const cFollyExceptionWrapper& ex, PyObject* user_data)

@@ -100,6 +100,11 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsNot(x, y)
         self.assertEqual(x, y)
 
+        serialized_direct = serialize_iobuf(err)
+        deserialized_direct = deserialize(HardError, serialized_direct)
+        self.assertIsNot(err, deserialized_direct)
+        self.assertEqual(err, deserialized_direct)
+
     def test_create_transporterror_should_set_correct_values(self) -> None:
         t = TransportError(
             type=TransportErrorType.CORRUPTED_DATA,
