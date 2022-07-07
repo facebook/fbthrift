@@ -26,7 +26,6 @@
 
 #include <boost/mp11.hpp>
 #include <fmt/core.h>
-#include <folly/init/Init.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
