@@ -240,7 +240,17 @@ class AsyncProcessorFactory {
    * processor will always be a reference from the map (or be
    * kWildcardMethodMetadata).
    */
-  virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
+  virtual CreateMethodMetadataResult createMethodMetadata() {
+    // executorType is only used in ResourcePool world
+    // so here we are pretty safe to let all the services
+    // return Executor wildcard
+    WildcardMethodMetadataMap wildcardMap;
+    wildcardMap.wildcardMetadata = std::make_shared<WildcardMethodMetadata>(
+        MethodMetadata::ExecutorType::ANY);
+    wildcardMap.knownMethods = {};
+
+    return wildcardMap;
+  }
 
   /**
    * Override to return a pre-initialized RequestContext.
