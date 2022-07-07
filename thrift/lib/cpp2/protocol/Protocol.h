@@ -45,9 +45,6 @@
 
 namespace apache {
 namespace thrift {
-
-constexpr size_t kProtocolMaxDepth = 15000;
-
 namespace detail {
 
 class ProtocolBase {
@@ -56,6 +53,7 @@ class ProtocolBase {
   // set, list, and struct types
   void setHeight(size_t height) { height_ = height + 1; }
   size_t getHeight() const { return height_ - 1; }
+  ProtocolBase();
 
  protected:
   void descend() {
@@ -63,10 +61,11 @@ class ProtocolBase {
       protocol::TProtocolException::throwExceededDepthLimit();
     }
   }
+
   void ascend() { ++height_; }
 
  private:
-  size_t height_{kProtocolMaxDepth + 1};
+  size_t height_;
 };
 
 } // namespace detail
