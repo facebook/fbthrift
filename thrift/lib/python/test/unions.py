@@ -18,12 +18,24 @@ from __future__ import annotations
 
 import unittest
 
-from testing.thrift_types import ComplexUnion, Integers, ReservedUnion
+from testing.thrift_types import ComplexUnion, Digits, Integers, ReservedUnion
 from thrift.python.serializer import deserialize, serialize_iobuf
 from thrift.python.types import Union
 
 
 class UnionTests(unittest.TestCase):
+    def test_constructor(self) -> None:
+        self.assertEqual(Integers(small=2).type, Integers.Type.small)
+        self.assertEqual(Integers(unbounded="123").type, Integers.Type.unbounded)
+        self.assertEqual(
+            Integers(
+                digits=Digits(
+                    data=[Integers(tiny=1), Integers(small=2), Integers(large=3)]
+                )
+            ).type,
+            Integers.Type.digits,
+        )
+
     def test_hashability(self) -> None:
         hash(Integers())
 
@@ -98,6 +110,7 @@ class UnionTests(unittest.TestCase):
         small = 2**15 - 1
         medium = 2**31 - 1
         large = 2**63 - 1
+        string = "123"
         union = Integers.fromValue(tiny)
         self.assertEqual(union.type, Integers.Type.tiny)
         union = Integers.fromValue(small)
@@ -106,6 +119,12 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(union.type, Integers.Type.medium)
         union = Integers.fromValue(large)
         self.assertEqual(union.type, Integers.Type.large)
+        union = Integers.fromValue(string)
+        self.assertEqual(union.type, Integers.Type.unbounded)
+        union = Integers.fromValue(
+            Digits(data=[Integers(tiny=1), Integers(unbounded="123")])
+        )
+        self.assertEqual(union.type, Integers.Type.digits)
 
     def test_reserved_union(self) -> None:
         x = ReservedUnion(from_="foo")

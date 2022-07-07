@@ -531,7 +531,10 @@ cdef class Union(StructOrUnion):
             tpe = self.Type[name]
         except KeyError:
             raise TypeError(f"__init__() got an unexpected keyword argument '{name}'")
-        self._fbthrift_update_type_value(tpe.value, value)
+        self._fbthrift_update_type_value(
+            tpe.value,
+            self._fbthrift_to_internal_data(tpe.value, value),
+        )
 
     @classmethod
     def _fbthrift_create(cls, data):
@@ -552,17 +555,19 @@ cdef class Union(StructOrUnion):
     def __get_thrift_uri__() -> typing.Optional[str]:
         return NotImplementedError()
 
+    cdef object _fbthrift_to_internal_data(self, type_value, value):
+        cdef UnionInfo union_info = self._fbthrift_struct_info
+        adapter_class = union_info.id_to_adapter_class[type_value]
+        if adapter_class:
+            value = adapter_class.to_thrift_field(value, type_value, self)
+        return union_info.type_infos[type_value].to_internal_data(value)
+
     cdef void _fbthrift_update_type_value(self, type_value, value) except *:
         Py_INCREF(type_value)
         old_type_value = self._fbthrift_data[0]
         PyTuple_SET_ITEM(self._fbthrift_data, 0, type_value)
         Py_DECREF(old_type_value)
         old_value = self._fbthrift_data[1]
-        union_info = (<UnionInfo>self._fbthrift_struct_info)
-        adapter_class = union_info.id_to_adapter_class[type_value]
-        if adapter_class:
-            value = adapter_class.to_thrift_field(value, type_value, self)
-        value = union_info.type_infos[type_value].to_internal_data(value)
         Py_INCREF(value)
         PyTuple_SET_ITEM(self._fbthrift_data, 1, value)
         Py_DECREF(old_value)
@@ -606,7 +611,7 @@ cdef class Union(StructOrUnion):
         cdef UnionInfo info = cls._fbthrift_struct_info
         for type_value, typeinfo in info.type_infos.items():
             try:
-                value = typeinfo.to_internal_data(value)
+                value = inst._fbthrift_to_internal_data(type_value, value)
             except (TypeError, OverflowError):
                 continue
             else:
