@@ -19,6 +19,7 @@
 #include <cmath>
 #include <limits>
 
+#include <folly/Portability.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/ast/t_base_type.h>
@@ -86,18 +87,21 @@ TEST(ConstCheckerTest, IsValidCustomDefaultIntegerAssert) {
   auto custom_long = t_const_value(std::numeric_limits<int64_t>::min());
   auto custom_double = t_const_value();
   custom_double.set_double(1.0);
-  EXPECT_DEATH(
-      detail::is_valid_custom_default_integer(
-          &t_base_type::t_i64(), &custom_long),
-      "");
-  EXPECT_DEATH(
-      detail::is_valid_custom_default_integer(
-          &t_base_type::t_float(), &custom_double),
-      "");
-  EXPECT_DEATH(
-      detail::is_valid_custom_default_integer(
-          &t_base_type::t_double(), &custom_double),
-      "");
+
+  if (folly::kIsDebug) {
+    EXPECT_DEATH(
+        detail::is_valid_custom_default_integer(
+            &t_base_type::t_i64(), &custom_long),
+        "");
+    EXPECT_DEATH(
+        detail::is_valid_custom_default_integer(
+            &t_base_type::t_float(), &custom_double),
+        "");
+    EXPECT_DEATH(
+        detail::is_valid_custom_default_integer(
+            &t_base_type::t_double(), &custom_double),
+        "");
+  }
 }
 
 TEST(ConstCheckerTest, IsValidCustomDefaultFloatOverAndUnderFlow) {
