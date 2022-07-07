@@ -61,7 +61,7 @@ TEST(cpp_name_test, enum_value) {
 
 // Make sure the server code uses the renamed method.  If the following code
 // compiles, that should be sufficient to verify this.
-class MyServiceImpl : public MyServiceSvIf {
+class MyServiceImpl : public apache::thrift::ServiceHandler<MyService> {
  public:
   int getCallCount() { return callCount_; }
 

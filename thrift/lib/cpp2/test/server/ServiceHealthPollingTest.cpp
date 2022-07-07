@@ -36,11 +36,12 @@ using apache::thrift::PolledServiceHealth;
 using apache::thrift::ScopedServerInterfaceThread;
 using apache::thrift::ThriftServer;
 using ServiceHealth = PolledServiceHealth::ServiceHealth;
+using apache::thrift::test::DummyStatus;
 using apache::thrift::test::DummyStatusAsyncClient;
-using apache::thrift::test::DummyStatusSvIf;
 
 namespace {
-class Handler : public DummyStatusSvIf, public PolledServiceHealth {
+class Handler : public apache::thrift::ServiceHandler<DummyStatus>,
+                public PolledServiceHealth {
  public:
   explicit Handler(ServiceHealth serviceHealth)
       : serviceHealth_(serviceHealth) {}

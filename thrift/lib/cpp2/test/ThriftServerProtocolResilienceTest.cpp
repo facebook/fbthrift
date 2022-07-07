@@ -30,7 +30,7 @@ THRIFT_FLAG_DECLARE_bool(server_header_reject_http);
 
 class ThriftServerProtocolResilienceTest : public testing::Test {};
 
-class Handler : public TestServiceSvIf {
+class Handler : public apache::thrift::ServiceHandler<TestService> {
  public:
   Future<unique_ptr<string>> future_sendResponse(int64_t size) override {
     return makeFuture(make_unique<string>(to<string>(size)));

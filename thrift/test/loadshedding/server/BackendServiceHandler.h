@@ -24,7 +24,8 @@ namespace facebook {
 namespace thrift {
 namespace test {
 
-class BackendServiceHandler : virtual public BackendServiceSvIf {
+class BackendServiceHandler
+    : virtual public apache::thrift::ServiceHandler<BackendService> {
  public:
   BackendServiceHandler();
 

@@ -100,7 +100,8 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
 }
 
 TEST(ThriftServer, H2ClientAddressTest) {
-  class EchoClientAddrTestInterface : public TestServiceSvIf {
+  class EchoClientAddrTestInterface
+      : public apache::thrift::ServiceHandler<TestService> {
     void sendResponse(std::string& _return, int64_t /* size */) override {
       _return = getConnectionContext()->getPeerAddress()->describe();
     }
@@ -125,7 +126,8 @@ TEST(ThriftServer, H2ClientAddressTest) {
 }
 
 TEST(ThriftServer, OnewayDeferredHandlerTest) {
-  class OnewayTestInterface : public TestServiceSvIf {
+  class OnewayTestInterface
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::Baton<> done;
 
@@ -274,7 +276,7 @@ TEST(ThriftServer, HeaderTest) {
 }
 
 TEST(ThriftServer, ServerEventHandlerTest) {
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     void voidResponse() override {}
   };
@@ -424,7 +426,7 @@ void doLoadHeaderTest(bool isRocket) {
     }
   };
 
-  class BlockInterface : public TestServiceSvIf {
+  class BlockInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::Optional<folly::Baton<>> block;
     void voidResponse() override {
@@ -643,7 +645,8 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
 // then drop the client connection along with all undelivered responses.
 //
 TEST(ThriftServer, EnforceEgressMemoryLimit) {
-  class TestServiceHandler : public TestServiceSvIf {
+  class TestServiceHandler
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     // only used to configure the server-side connection socket
     int echoInt(int) override {
@@ -761,7 +764,8 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
 }
 
 TEST(ThriftServer, SocketWriteTimeout) {
-  class TestServiceHandler : public TestServiceSvIf {
+  class TestServiceHandler
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     void echoRequest(
         std::string& _return, std::unique_ptr<std::string>) override {
@@ -838,7 +842,8 @@ TEST(ThriftServer, SocketWriteTimeout) {
 namespace long_shutdown {
 namespace {
 
-class BlockingTestInterface : public TestServiceSvIf {
+class BlockingTestInterface
+    : public apache::thrift::ServiceHandler<TestService> {
  public:
   explicit BlockingTestInterface(folly::Baton<>& baton) : baton_(baton) {}
 
@@ -935,7 +940,8 @@ TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshotTimeout) {
 }
 
 TEST(ThriftServerDeathTest, OnStopRequestedException) {
-  class ThrowExceptionInterface : public TestServiceSvIf {
+  class ThrowExceptionInterface
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::coro::Task<void> co_onStopRequested() override {
       throw std::runtime_error("onStopRequested");
@@ -1102,7 +1108,8 @@ class HeaderOrRocket : public HeaderOrRocketTest,
 TEST_P(HeaderOrRocket, OnewayClientConnectionCloseTest) {
   static folly::Baton baton;
 
-  class OnewayTestInterface : public TestServiceSvIf {
+  class OnewayTestInterface
+      : public apache::thrift::ServiceHandler<TestService> {
     void noResponse(int64_t) override { baton.post(); }
   };
 
@@ -1119,7 +1126,8 @@ TEST_P(HeaderOrRocket, ResourcePoolSetWorkers) {
   static folly::Baton enterBaton;
   static folly::Baton exitBaton;
 
-  class OnewayTestInterface : public TestServiceSvIf {
+  class OnewayTestInterface
+      : public apache::thrift::ServiceHandler<TestService> {
     void noResponse(int64_t) override {
       enterBaton.post();
       exitBaton.wait();
@@ -1141,7 +1149,7 @@ TEST_P(HeaderOrRocket, ResourcePoolSetWorkers) {
 }
 
 TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
-  class TestInterfaceSF : public TestServiceSvIf {
+  class TestInterfaceSF : public apache::thrift::ServiceHandler<TestService> {
     folly::SemiFuture<folly::Unit> semifuture_voidResponse() override {
       EXPECT_NE(getRequestContext(), nullptr);
       EXPECT_NE(getHandlerExecutor(), nullptr);
@@ -1154,7 +1162,7 @@ TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
     }
   };
 
-  class TestInterfaceCoro : public TestServiceSvIf {
+  class TestInterfaceCoro : public apache::thrift::ServiceHandler<TestService> {
     folly::coro::Task<void> co_voidResponse() override {
       EXPECT_NE(getRequestContext(), nullptr);
       EXPECT_NE(getHandlerExecutor(), nullptr);
@@ -1181,7 +1189,7 @@ TEST_P(HeaderOrRocket, OnewayQueueTimeTest) {
   static folly::Baton running, finished;
   static folly::Baton running2;
 
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
     void voidResponse() override {
       static int once;
       EXPECT_EQ(once++, 0);
@@ -1210,7 +1218,7 @@ TEST_P(HeaderOrRocket, OnewayQueueTimeTest) {
 
 TEST_P(HeaderOrRocket, Priority) {
   int callCount{0};
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
     int& callCount_;
 
    public:
@@ -1253,7 +1261,7 @@ bool blockWhile(F&& f, Duration duration = 1s) {
 } // namespace
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     TestInterface() {}
     void voidResponse() override { callback_(getHandlerExecutor()); }
@@ -1304,7 +1312,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
 
 TEST_P(
     HeaderOrRocket, ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     explicit TestInterface(int& testCounter) : testCounter_(testCounter) {}
     void voidResponse() override { callback_(getHandlerExecutor()); }
@@ -1374,7 +1382,7 @@ TEST_P(
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
   int callCount{0};
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
     int& callCount_;
     std::array<std::array<std::string, 3>, 2> prefixes = {
         {{"tm-1-", "tm-4-", "cpu0"}, {"tm.H", "tm.BE", "tm.N"}}};
@@ -1434,7 +1442,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
   int callCount{0};
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
     int& callCount_;
     std::array<std::string, 2> threadNames{{"cpu0", "cpu.N0"}};
 
@@ -1489,7 +1497,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
 
 TEST_P(HeaderOrRocket, StickyToThreadPool) {
   int callCount{0};
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
     int& callCount_;
 
    public:
@@ -1557,7 +1565,8 @@ TEST_P(HeaderOrRocket, CancellationTest) {
     folly::CancellationCallback cancelCallback_;
   };
 
-  class NotCalledBackInterface : public TestServiceSvIf {
+  class NotCalledBackInterface
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     using NotCalledBackHandlers =
         std::vector<std::shared_ptr<NotCalledBackHandler>>;
@@ -1640,7 +1649,7 @@ TEST_P(HeaderOrRocket, CancellationTest) {
 }
 
 TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
-  class BlockInterface : public TestServiceSvIf {
+  class BlockInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::Baton<> stopEnter, stopExit;
 
@@ -1745,7 +1754,7 @@ INSTANTIATE_TEST_CASE_P(
     testing::Values(TransportType::Header, TransportType::Rocket));
 
 TEST_P(OverloadTest, Test) {
-  class BlockInterface : public TestServiceSvIf {
+  class BlockInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::Baton<> block;
     void voidResponse() override { block.wait(); }
@@ -2791,7 +2800,8 @@ TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
 }
 
 TEST(ThriftServer, ClientOnlyTimeouts) {
-  class SendResponseInterface : public TestServiceSvIf {
+  class SendResponseInterface
+      : public apache::thrift::ServiceHandler<TestService> {
     void sendResponse(std::string& _return, int64_t shouldSleepMs) override {
       auto header = getConnectionContext()->getHeader();
       if (shouldSleepMs) {
@@ -2840,7 +2850,8 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
   // Tests that queue time metadata is returned in the THeader when
   // queueing delay on server side is greater than pre-defined threshold.
   static constexpr std::chrono::milliseconds kDefaultQueueTimeout{100};
-  class QueueTimeTestHandler : public TestServiceSvIf {
+  class QueueTimeTestHandler
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     void sendResponse(std::string& _return, int64_t size) override {
       _return = folly::to<std::string>(size);
@@ -2887,7 +2898,8 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   static std::atomic<int> server_reply = 0;
   static std::atomic<int> received_reply = 0;
 
-  class SendResponseInterface : public TestServiceSvIf {
+  class SendResponseInterface
+      : public apache::thrift::ServiceHandler<TestService> {
     void sendResponse(std::string& _return, int64_t id) override {
       DCHECK(lastSeenId_ < id);
 
@@ -3073,7 +3085,8 @@ TEST_P(HeaderOrRocket, TaskTimeoutBeforeProcessing) {
   folly::Baton haltBaton;
   std::atomic<int> processedCount{0};
 
-  class VoidResponseInterface : public TestServiceSvIf {
+  class VoidResponseInterface
+      : public apache::thrift::ServiceHandler<TestService> {
    public:
     VoidResponseInterface() = delete;
     VoidResponseInterface(
@@ -3283,7 +3296,7 @@ TEST(ThriftServer, AlpnNotAllowMismatchFizz) {
 }
 
 TEST(ThriftServer, SocketQueueTimeout) {
-  TestThriftServerFactory<TestServiceSvIf> factory;
+  TestThriftServerFactory<apache::thrift::ServiceHandler<TestService>> factory;
   auto baseServer = factory.create();
 
   auto checkSocketQueueTimeout = [&](std::chrono::nanoseconds expectedTimeout) {
@@ -3346,7 +3359,8 @@ TEST(ThriftServer, SocketQueueTimeout) {
 }
 
 TEST(ThriftServer, PerConnectionSocketOptions) {
-  class TestServiceHandler : public TestServiceSvIf {
+  class TestServiceHandler
+      : public apache::thrift::ServiceHandler<TestService> {
     void voidResponse() override {
       auto socket = const_cast<folly::AsyncSocket*>(
           this->getRequestContext()
@@ -3453,13 +3467,13 @@ TEST(ThriftServer, getThreadManager) {
 }
 
 TEST(ThriftServer, acceptConnection) {
-  struct Interface1 : public TestServiceSvIf {
+  struct Interface1 : public apache::thrift::ServiceHandler<TestService> {
     void echoRequest(
         std::string& _return, std::unique_ptr<std::string>) override {
       _return = "echo";
     }
   };
-  struct Interface2 : public TestServiceSvIf {
+  struct Interface2 : public apache::thrift::ServiceHandler<TestService> {
     void echoRequest(
         std::string& _return, std::unique_ptr<std::string>) override {
       _return = "echoOverride";
@@ -3505,9 +3519,10 @@ TEST(ThriftServer, acceptConnection) {
 
 TEST(ThriftServer, SetupThreadManager) {
   ScopedServerInterfaceThread runner(
-      std::make_shared<TestServiceSvIf>(), "::1", 0, [](auto& ts) {
-        ts.setupThreadManager();
-      });
+      std::make_shared<apache::thrift::ServiceHandler<TestService>>(),
+      "::1",
+      0,
+      [](auto& ts) { ts.setupThreadManager(); });
 }
 
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
@@ -3553,7 +3568,7 @@ void setConfig(size_t concurrency, double jitter = 0.0) {
 } // namespace
 
 TEST_P(HeaderOrRocket, AdaptiveConcurrencyConfig) {
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     void voidResponse() override {}
   };
@@ -3584,7 +3599,7 @@ TEST_P(HeaderOrRocket, AdaptiveConcurrencyConfig) {
 }
 
 TEST_P(HeaderOrRocket, OnStartStopServingTest) {
-  class TestInterface : public TestServiceSvIf {
+  class TestInterface : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::Baton<> startEnter;
     folly::Baton<> stopEnter;
@@ -3751,7 +3766,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   auto preStartHandler = std::make_shared<TestEventHandler>();
 
   // Block on onStartServing and onStopRequested to allow testing
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
       return folly::makeSemiFuture().deferValue([&](auto&&) {
@@ -3774,7 +3789,8 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   };
   auto handler = std::make_shared<Handler>();
 
-  class DummyStatus : public DummyStatusSvIf, public StatusServerInterface {
+  class DummyStatusHandler : public apache::thrift::ServiceHandler<DummyStatus>,
+                             public StatusServerInterface {
     void async_eb_getStatus(
         std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
       ThriftServer* server = callback->getRequestContext()
@@ -3791,7 +3807,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   std::thread startRunnerThread([&] {
     runner = std::make_unique<ScopedServerInterfaceThread>(
         handler, [&](ThriftServer& server) {
-          server.setStatusInterface(std::make_shared<DummyStatus>());
+          server.setStatusInterface(std::make_shared<DummyStatusHandler>());
           server.addServerEventHandler(preStartHandler);
         });
   });
@@ -3957,7 +3973,8 @@ class HeaderOrRocketCompression
   struct InheritanceCompressionCheckProcessor
       : public TestInterface::ProcessorType {
     InheritanceCompressionCheckProcessor(
-        TestServiceSvIf* iface, CompressionAlgorithm compression)
+        apache::thrift::ServiceHandler<TestService>* iface,
+        CompressionAlgorithm compression)
         : TestInterface::ProcessorType(iface), compression_(compression) {}
 
     void processSerializedCompressedRequestWithMetadata(

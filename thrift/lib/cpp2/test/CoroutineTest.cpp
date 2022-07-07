@@ -30,8 +30,8 @@ using apache::thrift::ScopedServerInterfaceThread;
 using apache::thrift::concurrency::ThreadManager;
 using folly::EventBase;
 
+using apache::thrift::test::Coroutine;
 using apache::thrift::test::CoroutineAsyncClient;
-using apache::thrift::test::CoroutineSvIf;
 using apache::thrift::test::CoroutineSvNull;
 using apache::thrift::test::Ex;
 using apache::thrift::test::SumRequest;
@@ -42,7 +42,8 @@ static int voidReturnValue;
 
 #if FOLLY_HAS_COROUTINES
 
-class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
+class CoroutineServiceHandlerCoro
+    : virtual public apache::thrift::ServiceHandler<Coroutine> {
  public:
   void computeSumNoCoro(
       SumResponse& response, std::unique_ptr<SumRequest> request) override {
@@ -126,7 +127,8 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
 
 #endif
 
-class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
+class CoroutineServiceHandlerFuture
+    : virtual public apache::thrift::ServiceHandler<Coroutine> {
  public:
   void computeSumNoCoro(
       SumResponse& response, std::unique_ptr<SumRequest> request) override {
@@ -633,7 +635,8 @@ TEST_F(CoroutineClientTest, cancelCoroClient) {
 }
 
 TEST(CoroutineExceptionTest, completesHandlerCallback) {
-  class CoroutineServiceHandlerThrowing : virtual public CoroutineSvIf {
+  class CoroutineServiceHandlerThrowing
+      : virtual public apache::thrift::ServiceHandler<Coroutine> {
    public:
     folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrows(
         std::unique_ptr<SumRequest> /* request */) override {
@@ -685,7 +688,7 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
 }
 
 TEST(CoroutineHeaderTest, customHeaderTest) {
-  class CoroHandler : virtual public CoroutineSvIf {
+  class CoroHandler : virtual public apache::thrift::ServiceHandler<Coroutine> {
    public:
     folly::coro::Task<std::unique_ptr<::apache::thrift::test::SumResponse>>
     co_computeSum(

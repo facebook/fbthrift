@@ -39,7 +39,7 @@ TEST(ClientTest, ReadHeaderAvailableToEventProcessor) {
   TClientBase::addClientEventHandlerFactory(
       std::make_shared<EventHandlerFactory>());
 
-  struct Handler : test::HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<test::HandlerGeneric> {
     void get_string(std::string&) override {
       getRequestContext()->setHeader("header", "value");
     }

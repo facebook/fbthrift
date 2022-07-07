@@ -73,7 +73,8 @@ class InstrumentationRequestPayload : public folly::RequestData {
 class InstrumentationTestProcessor
     : public InstrumentationTestServiceAsyncProcessor {
  public:
-  explicit InstrumentationTestProcessor(InstrumentationTestServiceSvIf* iface)
+  explicit InstrumentationTestProcessor(
+      apache::thrift::ServiceHandler<InstrumentationTestService>* iface)
       : InstrumentationTestServiceAsyncProcessor(iface) {}
 
   void executeRequest(
@@ -91,14 +92,15 @@ class InstrumentationTestProcessor
   }
 };
 
-class DebugInterface : public DebugTestServiceSvIf {
+class DebugInterface : public apache::thrift::ServiceHandler<DebugTestService> {
  public:
   void echo(std::string& r, std::unique_ptr<::std::string> s) override {
     r = folly::format("{}:{}", *s, folly::getCurrentThreadName().value()).str();
   }
 };
 
-class TestInterface : public InstrumentationTestServiceSvIf {
+class TestInterface
+    : public apache::thrift::ServiceHandler<InstrumentationTestService> {
  public:
   auto requestGuard() {
     reqCount_++;

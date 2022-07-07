@@ -42,7 +42,8 @@ using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using apache::thrift::TApplicationException;
 
-class SampleServiceHandler : public SampleServiceSvIf {
+class SampleServiceHandler
+    : public apache::thrift::ServiceHandler<SampleService> {
  public:
   int32_t return42(const MyArgs&, int32_t) override { return 42; }
 };

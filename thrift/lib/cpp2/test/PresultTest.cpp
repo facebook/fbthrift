@@ -26,7 +26,8 @@ using namespace cpp2;
 using namespace apache::thrift;
 using namespace apache::thrift::util;
 
-class PresultServiceInterface : public PresultServiceSvIf {
+class PresultServiceInterface
+    : public apache::thrift::ServiceHandler<PresultService> {
  public:
   void methodVoid() override {}
   bool methodBool(bool x) override { return x; }

@@ -20,7 +20,8 @@
 
 namespace apache::thrift::conformance {
 
-class ConformanceHandler : public ConformanceServiceSvIf {
+class ConformanceHandler
+    : public apache::thrift::ServiceHandler<ConformanceService> {
  public:
   void roundTrip(
       RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;

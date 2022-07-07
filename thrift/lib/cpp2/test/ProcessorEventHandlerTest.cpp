@@ -92,7 +92,7 @@ TEST_F(TProcessorEventHandlerTest, BasicRead) {
   auto testEventHandler = std::make_shared<TestEventHandler>();
   TProcessorBase::addProcessorEventHandler(testEventHandler);
 
-  struct Handler : test::HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<test::HandlerGeneric> {
     folly::coro::Task<std::unique_ptr<std::string>> co_get_string() override {
       co_return std::make_unique<std::string>("reply");
     }

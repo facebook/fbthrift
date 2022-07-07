@@ -82,7 +82,7 @@ class ExceptionTrackingEventHandler : public TProcessorEventHandler {
   std::vector<std::shared_ptr<Context>>* contexts_;
 };
 
-class RaiserHandler : public RaiserSvIf {
+class RaiserHandler : public apache::thrift::ServiceHandler<Raiser> {
  public:
   RaiserHandler(
       vector<shared_ptr<TProcessorEventHandler>> handlers,
@@ -94,7 +94,7 @@ class RaiserHandler : public RaiserSvIf {
       : handlers_(move(handlers)), go_(wrap(move(go))) {}
 
   unique_ptr<AsyncProcessor> getProcessor() override {
-    auto processor = RaiserSvIf::getProcessor();
+    auto processor = apache::thrift::ServiceHandler<Raiser>::getProcessor();
     for (auto handler : handlers_) {
       processor->addEventHandler(handler);
     }
@@ -127,7 +127,7 @@ class RaiserHandler : public RaiserSvIf {
   Function<void(unique_ptr<HandlerCallbackBase>)> go_;
 };
 
-class BugServiceHandler : public BugSvIf {
+class BugServiceHandler : public apache::thrift::ServiceHandler<Bug> {
  public:
   BugServiceHandler() {}
 

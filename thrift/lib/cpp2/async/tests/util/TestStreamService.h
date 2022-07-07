@@ -23,7 +23,8 @@
 namespace testutil {
 namespace testservice {
 
-class TestStreamGeneratorService : public TestStreamServiceSvIf {
+class TestStreamGeneratorService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
@@ -35,7 +36,8 @@ class TestStreamGeneratorService : public TestStreamServiceSvIf {
       int32_t from, int32_t to) override;
 };
 
-class TestStreamPublisherService : public TestStreamServiceSvIf {
+class TestStreamPublisherService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
@@ -47,7 +49,8 @@ class TestStreamPublisherService : public TestStreamServiceSvIf {
       int32_t from, int32_t to) override;
 };
 
-class TestStreamGeneratorWithHeaderService : public TestStreamServiceSvIf {
+class TestStreamGeneratorWithHeaderService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
@@ -59,7 +62,8 @@ class TestStreamGeneratorWithHeaderService : public TestStreamServiceSvIf {
       int32_t from, int32_t to) override;
 };
 
-class TestStreamPublisherWithHeaderService : public TestStreamServiceSvIf {
+class TestStreamPublisherWithHeaderService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
@@ -71,7 +75,8 @@ class TestStreamPublisherWithHeaderService : public TestStreamServiceSvIf {
       int32_t from, int32_t to) override;
 };
 
-class TestStreamMultiPublisherService : public TestStreamServiceSvIf {
+class TestStreamMultiPublisherService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
@@ -101,7 +106,8 @@ class TestStreamMultiPublisherService : public TestStreamServiceSvIf {
   std::atomic<size_t> activeStreams_{0};
 };
 
-class TestStreamMultiPublisherWithHeaderService : public TestStreamServiceSvIf {
+class TestStreamMultiPublisherWithHeaderService
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;

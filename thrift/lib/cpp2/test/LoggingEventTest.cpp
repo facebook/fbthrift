@@ -206,7 +206,8 @@ class ServerTrackerLogTest : public LoggingEventTest<TestServerTrackerHandler> {
   }
 };
 
-class TestServiceHandler : public apache::thrift::test::TestServiceSvIf {
+class TestServiceHandler
+    : public apache::thrift::ServiceHandler<apache::thrift::test::TestService> {
  public:
   void voidResponse() override {}
 };

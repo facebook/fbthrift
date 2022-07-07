@@ -27,7 +27,7 @@
 namespace testutil {
 namespace testservice {
 
-class TestServiceMock : public TestServiceSvIf {
+class TestServiceMock : public apache::thrift::ServiceHandler<TestService> {
  public:
   using EmptyArgs = apache::thrift::ThriftPresult<false>;
   using EmptyResult = apache::thrift::ThriftPresult<true>;
@@ -69,7 +69,8 @@ class TestServiceMock : public TestServiceSvIf {
   std::atomic<int32_t> sum{0};
 };
 
-class IntermHeaderService : public IntermHeaderServiceSvIf {
+class IntermHeaderService
+    : public apache::thrift::ServiceHandler<IntermHeaderService> {
  public:
   IntermHeaderService(std::string const& host, int16_t port);
   virtual ~IntermHeaderService();

@@ -57,7 +57,7 @@ using CreateMethodMetadataResult =
 using TransportType = Cpp2ConnContext::TransportType;
 
 namespace {
-class ChildHandler : public ChildSvIf {
+class ChildHandler : public apache::thrift::ServiceHandler<Child> {
   MOCK_METHOD(std::unique_ptr<InteractionIf>, createInteraction, ());
 
   int parentMethod1() override { return 42; }
@@ -86,7 +86,7 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
 } // namespace
 
 TEST(AsyncProcessorMetadataTest, ParentMetadata) {
-  ParentSvIf service;
+  apache::thrift::ServiceHandler<Parent> service;
   auto createMethodMetadataResult = service.createMethodMetadata();
   auto& metadataMap = expectMethodMetadataMap(createMethodMetadataResult);
 
@@ -229,8 +229,10 @@ TEST_P(AsyncProcessorMethodResolutionTestP, ParentMapDeathTest) {
   // might contain all the function pointers we need.
   EXPECT_DEATH(
       [&] {
-        auto service = std::make_shared<ChildHandlerWithMetadata>(
-            [](auto&&) { return ParentSvIf{}.createMethodMetadata(); });
+        auto service = std::make_shared<ChildHandlerWithMetadata>([](auto&&) {
+          return apache::thrift::ServiceHandler<Parent>{}
+              .createMethodMetadata();
+        });
         auto runner = makeServer(service);
         auto client = makeClientFor<ChildAsyncClient>(*runner);
         client->semifuture_parentMethod1().get();
@@ -330,7 +332,7 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
     // Interactions are only supported on rocket
     return;
   }
-  class ChildWithInteraction : public ChildSvIf {
+  class ChildWithInteraction : public apache::thrift::ServiceHandler<Child> {
     std::unique_ptr<InteractionIf> createInteraction() override {
       class InteractionImpl : public InteractionIf {
         int interactionMethod() override { return ++counter_; }
@@ -351,16 +353,19 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
 TEST_P(
     AsyncProcessorMethodResolutionTestP,
     MonitoringAndStatusMethodMultiplexing) {
-  class Monitor : public DummyMonitorSvIf, public MonitoringServerInterface {
+  class Monitor : public apache::thrift::ServiceHandler<DummyMonitor>,
+                  public MonitoringServerInterface {
     std::int64_t getCounter() override { return 420; }
   };
-  class Status : public DummyStatusSvIf, public StatusServerInterface {
+  class Status : public apache::thrift::ServiceHandler<DummyStatus>,
+                 public StatusServerInterface {
     void async_eb_getStatus(
         std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
       callback->result(360);
     }
   };
-  class Control : public DummyControlSvIf, public ControlServerInterface {
+  class Control : public apache::thrift::ServiceHandler<DummyControl>,
+                  public ControlServerInterface {
     std::int64_t getOption() override { return 42; }
   };
   auto service =
@@ -418,16 +423,19 @@ TEST_P(
 TEST_P(
     AsyncProcessorMethodResolutionTestP,
     WildcardMethodMetadataWithMonitoringAndStatus) {
-  class Monitor : public DummyMonitorSvIf, public MonitoringServerInterface {
+  class Monitor : public apache::thrift::ServiceHandler<DummyMonitor>,
+                  public MonitoringServerInterface {
     std::int64_t getCounter() override { return 420; }
   };
-  class Status : public DummyStatusSvIf, public StatusServerInterface {
+  class Status : public apache::thrift::ServiceHandler<DummyStatus>,
+                 public StatusServerInterface {
     void async_eb_getStatus(
         std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
       callback->result(360);
     }
   };
-  class Control : public DummyControlSvIf, public ControlServerInterface {
+  class Control : public apache::thrift::ServiceHandler<DummyControl>,
+                  public ControlServerInterface {
     std::int64_t getOption() override { return 42; }
   };
   class ChildHandlerWithWildcard : public ChildHandlerWithMetadata {
@@ -572,7 +580,8 @@ THRIFT_PLUGGABLE_FUNC_SET(
 namespace apache::thrift::test {
 
 TEST(AsyncProcessorMethodResolutionTest, MultipleService) {
-  class Monitor : public ChildSvIf, public MonitoringServerInterface {
+  class Monitor : public apache::thrift::ServiceHandler<Child>,
+                  public MonitoringServerInterface {
     MOCK_METHOD(std::unique_ptr<InteractionIf>, createInteraction, ());
 
     int parentMethod1() override { return 84; }

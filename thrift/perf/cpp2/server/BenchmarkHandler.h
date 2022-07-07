@@ -30,7 +30,8 @@ using apache::thrift::HandlerCallback;
 using apache::thrift::HandlerCallbackBase;
 using apache::thrift::ServerStream;
 
-class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
+class BenchmarkHandler
+    : virtual public apache::thrift::ServiceHandler<StreamBenchmark> {
  public:
   explicit BenchmarkHandler(QPSStats* stats) : stats_(stats) {
     stats_->registerCounter(kNoop_);

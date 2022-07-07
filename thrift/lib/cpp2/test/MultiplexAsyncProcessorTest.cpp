@@ -47,22 +47,22 @@ using CreateMethodMetadataResult =
     AsyncProcessorFactory::CreateMethodMetadataResult;
 
 namespace {
-class FirstHandler : public FirstSvIf {
+class FirstHandler : public apache::thrift::ServiceHandler<First> {
   int one() override { return 1; }
   int two() override { return 2; }
 };
 
-class SecondHandler : public SecondSvIf {
+class SecondHandler : public apache::thrift::ServiceHandler<Second> {
   int three() override { return 3; }
   int four() override { return 4; }
 };
 
-class ThirdHandler : public ThirdSvIf {
+class ThirdHandler : public apache::thrift::ServiceHandler<Third> {
   int five() override { return 5; }
   int six() override { return 6; }
 };
 
-class ConflictsHandler : public ConflictsSvIf {
+class ConflictsHandler : public apache::thrift::ServiceHandler<Conflicts> {
   int four() override { return 444; }
   int five() override { return 555; }
 };
@@ -123,7 +123,7 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex = {
       std::make_shared<FirstHandler>(),
       std::make_shared<SecondHandler>(),
-      std::make_shared<SomeServiceSvIf>(),
+      std::make_shared<apache::thrift::ServiceHandler<SomeService>>(),
       std::make_shared<ConflictsHandler>(),
       std::make_shared<ThirdHandler>(),
   };
@@ -169,7 +169,7 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata_Nested) {
       std::make_shared<FirstHandler>(),
       std::make_shared<SecondHandler>(),
       multiplex({
-          std::make_shared<SomeServiceSvIf>(),
+          std::make_shared<apache::thrift::ServiceHandler<SomeService>>(),
           std::make_shared<ConflictsHandler>(),
       }),
       std::make_shared<ThirdHandler>(),
@@ -516,22 +516,22 @@ TEST_F(MultiplexAsyncProcessorServerTest, UnimplementedMetadataActsAsWildcard) {
 
 namespace {
 
-class RctxFirst : public FirstSvIf {
+class RctxFirst : public apache::thrift::ServiceHandler<First> {
   int one() override { return ContextData::readFromCurrent(); }
   int two() override { return ContextData::readFromCurrent(); }
 };
 
-class RctxSecond : public SecondSvIf {
+class RctxSecond : public apache::thrift::ServiceHandler<Second> {
   int three() override { return ContextData::readFromCurrent(); }
   int four() override { return ContextData::readFromCurrent(); }
 };
 
-class RctxThird : public ThirdSvIf {
+class RctxThird : public apache::thrift::ServiceHandler<Third> {
   int five() override { return ContextData::readFromCurrent(); }
   int six() override { return ContextData::readFromCurrent(); }
 };
 
-class RctxConflicts : public ConflictsSvIf {
+class RctxConflicts : public apache::thrift::ServiceHandler<Conflicts> {
   int four() override { return ContextData::readFromCurrent(); }
   int five() override { return ContextData::readFromCurrent(); }
 };
@@ -684,7 +684,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
     Counter& numCalls_;
   };
 
-  class Interaction1 : public Interaction1SvIf {
+  class Interaction1Handler
+      : public apache::thrift::ServiceHandler<Interaction1> {
    public:
     std::unique_ptr<Thing1If> createThing1() override {
       class Thing1 : public Thing1If {
@@ -704,7 +705,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
 
     std::unique_ptr<AsyncProcessor> getProcessor() override {
       return std::make_unique<TerminateInteractionTrackingProcessor>(
-          Interaction1SvIf::getProcessor(), numTerminateInteractionCalls);
+          apache::thrift::ServiceHandler<Interaction1>::getProcessor(),
+          numTerminateInteractionCalls);
     }
 
     Counter numCalls{0};
@@ -712,7 +714,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
     folly::Baton<> destroyed;
   };
 
-  class Interaction2 : public Interaction2SvIf {
+  class Interaction2Handler
+      : public apache::thrift::ServiceHandler<Interaction2> {
     std::unique_ptr<Thing2If> createThing2() override {
       class Thing2 : public Thing2If {
        public:
@@ -730,8 +733,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
     Counter numCalls{0};
   };
 
-  auto interaction1 = std::make_shared<Interaction1>();
-  auto interaction2 = std::make_shared<Interaction2>();
+  auto interaction1 = std::make_shared<Interaction1Handler>();
+  auto interaction2 = std::make_shared<Interaction2Handler>();
   auto runner = runMultiplexedServices({interaction1, interaction2});
 
   auto client1 = runner->newClient<Interaction1AsyncClient>(
@@ -761,7 +764,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, InteractionConflict) {
-  class Interaction1 : public Interaction1SvIf {
+  class Interaction1Handler
+      : public apache::thrift::ServiceHandler<Interaction1> {
    public:
     std::unique_ptr<Thing1If> createThing1() override {
       class Thing1 : public Thing1If {
@@ -772,8 +776,9 @@ TEST_F(MultiplexAsyncProcessorServerTest, InteractionConflict) {
     }
   };
 
-  class ConflictsInteraction1
-      : public apache::thrift::test2::ConflictsInteraction1SvIf {
+  class ConflictsInteraction1Handler
+      : public apache::thrift::ServiceHandler<
+            apache::thrift::test2::ConflictsInteraction1> {
    public:
     std::unique_ptr<Thing1If> createThing1() override {
       class Thing1 : public Thing1If {
@@ -786,8 +791,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, InteractionConflict) {
   };
 
   auto runner = runMultiplexedServices(
-      {std::make_shared<Interaction1>(),
-       std::make_shared<ConflictsInteraction1>(),
+      {std::make_shared<Interaction1Handler>(),
+       std::make_shared<ConflictsInteraction1Handler>(),
        std::make_shared<WildcardThrowsInternalError<SecondHandler>>(
            "ConflictsInteraction1")});
 

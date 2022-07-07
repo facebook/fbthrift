@@ -22,7 +22,7 @@ namespace apache {
 namespace thrift {
 namespace stress {
 
-class StressTestHandler : public StressTestSvIf {
+class StressTestHandler : public apache::thrift::ServiceHandler<StressTest> {
  public:
   StressTestHandler();
 

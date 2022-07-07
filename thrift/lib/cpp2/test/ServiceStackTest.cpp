@@ -25,7 +25,8 @@ using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 
-class ServiceStackHandler : public TestServiceStackSvIf {
+class ServiceStackHandler
+    : public apache::thrift::ServiceHandler<TestServiceStack> {
  public:
   void noResponse(int64_t /* size */) override {}
 };

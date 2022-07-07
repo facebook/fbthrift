@@ -23,7 +23,8 @@ namespace thrift {
 namespace py3 {
 namespace test {
 
-class TestingService : public cpp2::TestingServiceSvIf {
+class TestingService
+    : public apache::thrift::ServiceHandler<cpp2::TestingService> {
  public:
   static std::shared_ptr<TestingService> createInstance() {
     return std::make_shared<TestingService>();

@@ -83,7 +83,8 @@ class ServiceMetadataTest : public testing::Test {
 };
 
 TEST_F(ServiceMetadataTest, EnumTest) {
-  auto& metadata = getMetadata<metadata::test::enums::EnumTestServiceSvIf>();
+  auto& metadata = getMetadata<
+      apache::thrift::ServiceHandler<metadata::test::enums::EnumTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(), "enum_test");
   auto e = metadata.enums_ref()->at("enum_test.Continent");
@@ -98,8 +99,8 @@ TEST_F(ServiceMetadataTest, EnumTest) {
 }
 
 TEST_F(ServiceMetadataTest, ExceptionTest) {
-  auto& metadata =
-      getMetadata<metadata::test::exceptions::ExceptionTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::exceptions::ExceptionTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "exception_test");
@@ -122,8 +123,8 @@ TEST_F(ServiceMetadataTest, ExceptionTest) {
 }
 
 TEST_F(ServiceMetadataTest, SimpleStructsTest) {
-  auto& metadata = getMetadata<
-      metadata::test::simple_structs::SimpleStructsTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::simple_structs::SimpleStructsTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "simple_structs_test");
@@ -214,8 +215,8 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
 }
 
 TEST_F(ServiceMetadataTest, StructUnionTest) {
-  auto& metadata =
-      getMetadata<metadata::test::struct_union::StructUnionTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::struct_union::StructUnionTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "struct_union_test");
@@ -248,8 +249,8 @@ TEST_F(ServiceMetadataTest, StructUnionTest) {
 }
 
 TEST_F(ServiceMetadataTest, NestedStructsTest) {
-  auto& metadata = getMetadata<
-      metadata::test::nested_structs::NestedStructsTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::nested_structs::NestedStructsTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "nested_structs_test");
@@ -333,8 +334,8 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
 }
 
 TEST_F(ServiceMetadataTest, IncludeTest) {
-  auto& metadata =
-      getMetadata<metadata::test::include::IncludeTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::include::IncludeTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "include_test");
@@ -481,8 +482,8 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
 }
 
 TEST_F(ServiceMetadataTest, TypedefTest) {
-  auto& metadata =
-      getMetadata<metadata::test::typedefs::TypedefTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::typedefs::TypedefTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "typedef_test");
@@ -566,7 +567,8 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
 }
 
 TEST_F(ServiceMetadataTest, ServicesAndContextPopulated) {
-  auto& metadata = getMetadata<metadata::test::services::MyTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::services::MyTestService>>();
   EXPECT_EQ(response_.services_ref()->size(), 2);
   auto& derived = response_.services_ref()->front();
   auto& base = response_.services_ref()->back();
@@ -587,7 +589,8 @@ TEST_F(ServiceMetadataTest, ServicesAndContextPopulated) {
 }
 
 TEST_F(ServiceMetadataTest, ServiceTest) {
-  auto& metadata = getMetadata<metadata::test::services::MyTestServiceSvIf>();
+  auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+      metadata::test::services::MyTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "service_test");
@@ -664,8 +667,8 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
 TEST_F(ServiceMetadataTest, RepeatedTest) {
   for (size_t i = 0; i < 3; i++) {
     resetResponse();
-    auto& metadata =
-        getMetadata<metadata::test::repeated::RepeatedTestServiceSvIf>();
+    auto& metadata = getMetadata<apache::thrift::ServiceHandler<
+        metadata::test::repeated::RepeatedTestService>>();
     EXPECT_EQ(
         response_.services_ref()->front().module_ref()->name_ref(), "repeated");
 
@@ -698,7 +701,8 @@ TEST_F(ServiceMetadataTest, RepeatedTest) {
 }
 
 TEST_F(ServiceMetadataTest, NoNamespaceTest) {
-  auto& metadata = getMetadata<cpp2::AnotherTestServiceSvIf>();
+  auto& metadata =
+      getMetadata<apache::thrift::ServiceHandler<cpp2::AnotherTestService>>();
   EXPECT_EQ(
       response_.services_ref()->front().module_ref()->name_ref(),
       "no_namespace");

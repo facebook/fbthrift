@@ -97,7 +97,8 @@ static dynamic kDynamics[] = {
     ("g", dynamic::object("a", "A")),
 };
 
-class TestServiceHandler : public DynamicTestServiceSvIf {
+class TestServiceHandler
+    : public apache::thrift::ServiceHandler<DynamicTestService> {
  public:
   void echo(SerializableDynamic& out, const SerializableDynamic& in) override {
     out = in;

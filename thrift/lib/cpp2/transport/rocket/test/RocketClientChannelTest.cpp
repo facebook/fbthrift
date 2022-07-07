@@ -46,7 +46,7 @@ THRIFT_FLAG_DECLARE_bool(rocket_client_rocket_skip_protocol_key);
 using namespace apache::thrift;
 
 namespace {
-class Handler : public test::TestServiceSvIf {
+class Handler : public apache::thrift::ServiceHandler<test::TestService> {
  public:
   folly::SemiFuture<std::unique_ptr<std::string>> semifuture_sendResponse(
       int64_t size) final {

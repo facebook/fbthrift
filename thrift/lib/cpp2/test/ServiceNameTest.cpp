@@ -23,21 +23,22 @@
 namespace apache::thrift::test {
 
 TEST(ServiceNameTest, Basic) {
-  ServiceNameASvIf serviceA;
+  apache::thrift::ServiceHandler<ServiceNameA> serviceA;
   EXPECT_EQ(serviceA.getName(), "ServiceNameA");
 }
 
 TEST(ServiceNameTest, Derived) {
-  ServiceNameBSvIf serviceB;
+  apache::thrift::ServiceHandler<ServiceNameB> serviceB;
   EXPECT_EQ(serviceB.getName(), "ServiceNameB");
 
-  ServiceNameCSvIf serviceC;
+  apache::thrift::ServiceHandler<ServiceNameC> serviceC;
   EXPECT_EQ(serviceC.getName(), "ServiceNameC");
 }
 
 TEST(ServiceNameTest, Override) {
-  class ServiceNameX : public ServiceNameCSvIf,
-                       public virtual ServiceNameBSvIf {
+  class ServiceNameX
+      : public apache::thrift::ServiceHandler<ServiceNameC>,
+        public virtual apache::thrift::ServiceHandler<ServiceNameB> {
    public:
     explicit ServiceNameX(std::string name) {
       setNameOverride(std::move(name));

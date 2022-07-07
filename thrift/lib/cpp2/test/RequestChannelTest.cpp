@@ -40,7 +40,8 @@ using namespace testing;
 
 using CSR = ClientReceiveState;
 
-class TestServiceServerMock : public TestServiceSvIf {
+class TestServiceServerMock
+    : public apache::thrift::ServiceHandler<TestService> {
  public:
   MOCK_METHOD(void, noResponse, (int64_t), (override));
   MOCK_METHOD(void, voidResponse, (), (override));

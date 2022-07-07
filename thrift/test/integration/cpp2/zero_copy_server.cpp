@@ -30,7 +30,7 @@ using namespace thrift::zerocopy::cpp2;
 
 namespace {
 class ZeroCopyServiceImpl
-    : public ZeroCopyServiceSvIf,
+    : public apache::thrift::ServiceHandler<ZeroCopyService>,
       public ::facebook::fb303::FacebookBase2DeprecationMigration {
  public:
   ZeroCopyServiceImpl()

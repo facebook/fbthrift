@@ -45,7 +45,8 @@ const std::string kTestHeaderValue = "headerValue";
 /**
  * A simple Scaffold service that will be used to test the Thrift OmniClient.
  */
-class TestServiceHandler : virtual public TestServiceSvIf {
+class TestServiceHandler
+    : virtual public apache::thrift::ServiceHandler<TestService> {
  public:
   TestServiceHandler() {}
   virtual ~TestServiceHandler() override {}

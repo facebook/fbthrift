@@ -25,7 +25,7 @@
 namespace testutil {
 namespace testservice {
 
-class OldServiceMock : public OldVersionSvIf {
+class OldServiceMock : public apache::thrift::ServiceHandler<OldVersion> {
  public:
   OldServiceMock() {}
 
@@ -86,7 +86,7 @@ class OldServiceMock : public OldVersionSvIf {
   folly::ScopedEventBaseThread executor_;
 };
 
-class NewServiceMock : public NewVersionSvIf {
+class NewServiceMock : public apache::thrift::ServiceHandler<NewVersion> {
  public:
   NewServiceMock() {}
 

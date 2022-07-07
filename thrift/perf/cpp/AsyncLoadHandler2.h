@@ -22,7 +22,8 @@
 namespace apache {
 namespace thrift {
 
-class AsyncLoadHandler2 : public test::LoadTestSvIf {
+class AsyncLoadHandler2
+    : public apache::thrift::ServiceHandler<test::LoadTest> {
  public:
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;
   void async_eb_onewayNoop(

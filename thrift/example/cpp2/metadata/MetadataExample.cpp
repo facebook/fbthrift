@@ -22,7 +22,8 @@
 
 namespace apache::thrift::metadata {
 
-class MyServiceHandler : virtual public MyServiceSvIf {
+class MyServiceHandler
+    : virtual public apache::thrift::ServiceHandler<MyService> {
  public:
   void func1() override {}
   void func2(MyStruct&) override {}

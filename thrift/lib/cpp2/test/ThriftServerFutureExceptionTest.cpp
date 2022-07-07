@@ -34,7 +34,7 @@ namespace {
 using AppExn = TApplicationException;
 using AppExnType = AppExn::TApplicationExceptionType;
 
-class RaiserHandler : public RaiserSvIf {
+class RaiserHandler : public apache::thrift::ServiceHandler<Raiser> {
  public:
   explicit RaiserHandler(function<Future<Unit>()> go) : go_(move(go)) {}
 

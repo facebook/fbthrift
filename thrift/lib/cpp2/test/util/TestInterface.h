@@ -20,7 +20,8 @@
 
 extern const std::string kEchoSuffix;
 
-class TestInterface : public apache::thrift::test::TestServiceSvIf {
+class TestInterface
+    : public apache::thrift::ServiceHandler<apache::thrift::test::TestService> {
   void sendResponse(std::string& _return, int64_t size) override;
   void noResponse(int64_t size) override;
   void voidResponse() override;

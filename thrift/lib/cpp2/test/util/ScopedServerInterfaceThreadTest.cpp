@@ -44,7 +44,8 @@ using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::util::cpp2;
 
-class SimpleServiceImpl : public virtual SimpleServiceSvIf {
+class SimpleServiceImpl
+    : public virtual apache::thrift::ServiceHandler<SimpleService> {
  public:
   ~SimpleServiceImpl() override {}
   void async_tm_add(
@@ -138,7 +139,7 @@ TEST(ScopedServerInterfaceThread, newClientWithSSLPolicyREQUIRED) {
 }
 
 TEST(ScopedServerInterfaceThread, newRemoteClient) {
-  struct Handler : SimpleServiceSvIf {
+  struct Handler : apache::thrift::ServiceHandler<SimpleService> {
     struct State {
       size_t requests = 0;
     };
@@ -301,7 +302,8 @@ TEST(ScopedServerInterfaceThread, makeTestClient) {
 
 TEST(ScopedServerInterfaceThread, makeTestClientMismatch) {
   EXPECT_DEATH(
-      makeTestClient<SimpleServiceAsyncClient>(make_shared<OtherServiceSvIf>()),
+      makeTestClient<SimpleServiceAsyncClient>(
+          make_shared<apache::thrift::ServiceHandler<OtherService>>()),
       "Client and handler type mismatch");
 }
 
@@ -383,7 +385,8 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
   gflags::FlagSaver flagSaver;
 };
 
-class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
+class SlowSimpleServiceImpl
+    : public virtual apache::thrift::ServiceHandler<SimpleService> {
  public:
   ~SlowSimpleServiceImpl() override {}
   folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
@@ -422,7 +425,8 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   folly::LifoSem requestSem_;
 };
 
-class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
+class SlowSimpleServiceImplSemiFuture
+    : public virtual apache::thrift::ServiceHandler<SimpleService> {
  public:
   ~SlowSimpleServiceImplSemiFuture() override {}
   folly::SemiFuture<int64_t> semifuture_add(int64_t a, int64_t b) override {

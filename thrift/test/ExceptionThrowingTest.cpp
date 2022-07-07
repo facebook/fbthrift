@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,12 @@
 using namespace apache::thrift;
 using namespace apache::thrift::util;
 using folly::EventBase;
+using thrift::test::cpp2::ExceptionThrowingService;
 using thrift::test::cpp2::ExceptionThrowingServiceAsyncClient;
-using thrift::test::cpp2::ExceptionThrowingServiceSvIf;
 using thrift::test::cpp2::SimpleException;
 
-class ExceptionThrowingHandler : public ExceptionThrowingServiceSvIf {
+class ExceptionThrowingHandler
+    : public apache::thrift::ServiceHandler<ExceptionThrowingService> {
  public:
   void echo(std::string& ret, std::unique_ptr<std::string> req) override {
     ret = *req;

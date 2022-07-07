@@ -137,7 +137,8 @@ TYPED_TEST(StreamServiceTest, WithSizeTarget) {
       });
 }
 
-class InitialThrowHandler : public TestStreamServiceSvIf {
+class InitialThrowHandler
+    : public apache::thrift::ServiceHandler<TestStreamService> {
  public:
   ServerStream<int32_t> range(int32_t, int32_t) override {
     throw std::runtime_error("oops");

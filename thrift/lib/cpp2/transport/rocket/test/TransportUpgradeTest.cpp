@@ -32,7 +32,8 @@ THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
 namespace apache {
 namespace thrift {
 
-class TransportUpgradeService : public TransportUpgradeSvIf {
+class TransportUpgradeService
+    : public apache::thrift::ServiceHandler<TransportUpgrade> {
  public:
   MOCK_METHOD(void, noResponse, (std::unique_ptr<std::string>), (override));
 

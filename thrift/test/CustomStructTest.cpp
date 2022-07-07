@@ -49,7 +49,8 @@ Container createContainer() {
   return c;
 }
 
-class CustomStructHandler : public CustomStructSvIf {
+class CustomStructHandler
+    : public apache::thrift::ServiceHandler<CustomStruct> {
  public:
   void echoStruct(MyCustomStruct& out, const MyCustomStruct& in) override {
     out = in;

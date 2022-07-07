@@ -22,7 +22,7 @@
 namespace testutil {
 namespace testservice {
 
-class TestSinkService : public TestSinkServiceSvIf {
+class TestSinkService : public apache::thrift::ServiceHandler<TestSinkService> {
  public:
   apache::thrift::SinkConsumer<int32_t, bool> range(
       int32_t from, int32_t to) override;

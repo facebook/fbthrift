@@ -44,7 +44,7 @@ MATCHER(IsMissingResult, "") {
 }
 
 TEST_F(HandlerTest, async_eb_result_nullptr) {
-  struct Handler : HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<HandlerGeneric> {
     void async_eb_get_string_eb(
         unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
       callback->result(unique_ptr<string>(nullptr));
@@ -59,7 +59,7 @@ TEST_F(HandlerTest, async_eb_result_nullptr) {
 }
 
 TEST_F(HandlerTest, async_tm_result_nullptr) {
-  struct Handler : HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<HandlerGeneric> {
     void async_tm_get_string(
         unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
       callback->result(unique_ptr<string>(nullptr));
@@ -75,7 +75,7 @@ TEST_F(HandlerTest, async_tm_result_nullptr) {
 
 #if FOLLY_HAS_COROUTINES
 TEST_F(HandlerTest, co_nullptr) {
-  struct Handler : HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<HandlerGeneric> {
     Task<unique_ptr<string>> co_get_string() override { co_return nullptr; }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};
@@ -88,7 +88,7 @@ TEST_F(HandlerTest, co_nullptr) {
 #endif
 
 TEST_F(HandlerTest, future_nullptr) {
-  struct Handler : HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<HandlerGeneric> {
     Future<unique_ptr<string>> future_get_string() override { return nullptr; }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};
@@ -100,7 +100,7 @@ TEST_F(HandlerTest, future_nullptr) {
 }
 
 TEST_F(HandlerTest, semifuture_nullptr) {
-  struct Handler : HandlerGenericSvIf {
+  struct Handler : apache::thrift::ServiceHandler<HandlerGeneric> {
     SemiFuture<unique_ptr<string>> semifuture_get_string() override {
       return nullptr;
     }

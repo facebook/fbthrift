@@ -34,8 +34,9 @@ using namespace ::testing;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 
-struct SemiCalculatorHandler : CalculatorSvIf {
-  struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+struct SemiCalculatorHandler : apache::thrift::ServiceHandler<Calculator> {
+  struct SemiAdditionHandler
+      : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
     int acc_{0};
     Point pacc_;
 
@@ -71,7 +72,8 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return {std::move(handler), x};
   }
 
-  struct FastAdditionHandler : CalculatorSvIf::AdditionFastIf {
+  struct FastAdditionHandler
+      : apache::thrift::ServiceHandler<Calculator>::AdditionFastIf {
     int acc_{0};
     void async_eb_accumulatePrimitive(
         std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
@@ -205,8 +207,9 @@ TEST(InteractionTest, IsDetachable) {
 }
 
 TEST(InteractionTest, QueueTimeout) {
-  struct SlowCalculatorHandler : CalculatorSvIf {
-    struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+  struct SlowCalculatorHandler : apache::thrift::ServiceHandler<Calculator> {
+    struct SemiAdditionHandler
+        : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
       folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
         /* sleep override: testing timeout */
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -232,12 +235,13 @@ TEST(InteractionTest, QueueTimeout) {
 }
 
 TEST(InteractionTest, OnTermination) {
-  struct TerminationHandler : CalculatorSvIf {
+  struct TerminationHandler : apache::thrift::ServiceHandler<Calculator> {
     folly::coro::Baton create;
     folly::coro::Baton terminate;
     folly::coro::Baton terminated;
     folly::coro::Baton destroyed;
-    struct AdditionHandler : CalculatorSvIf::AdditionIf {
+    struct AdditionHandler
+        : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
       TerminationHandler& handler;
 
       explicit AdditionHandler(TerminationHandler& parent) : handler(parent) {}
@@ -258,7 +262,8 @@ TEST(InteractionTest, OnTermination) {
       }
     };
 
-    struct AdditionFastHandler : CalculatorSvIf::AdditionFastIf {
+    struct AdditionFastHandler
+        : apache::thrift::ServiceHandler<Calculator>::AdditionFastIf {
       TerminationHandler& handler;
 
       explicit AdditionFastHandler(TerminationHandler& parent)
@@ -290,14 +295,15 @@ TEST(InteractionTest, OnTermination) {
       return std::make_unique<AdditionFastHandler>(*this);
     }
 
-    folly::SemiFuture<
-        apache::thrift::TileAndResponse<CalculatorSvIf::AdditionIf, void>>
+    folly::SemiFuture<apache::thrift::TileAndResponse<
+        apache::thrift::ServiceHandler<Calculator>::AdditionIf,
+        void>>
     semifuture_newAddition() override {
       return folly::coro::toSemiFuture(std::ref(create))
           .deferValue([&](auto&&) {
-            return apache::thrift::
-                TileAndResponse<CalculatorSvIf::AdditionIf, void>{
-                    std::make_unique<AdditionHandler>(*this)};
+            return apache::thrift::TileAndResponse<
+                apache::thrift::ServiceHandler<Calculator>::AdditionIf,
+                void>{std::make_unique<AdditionHandler>(*this)};
           });
     }
 
@@ -398,8 +404,9 @@ TEST(InteractionTest, OnTermination) {
   std::move(fut).get();
 }
 
-struct CalculatorHandler : CalculatorSvIf {
-  struct AdditionHandler : CalculatorSvIf::AdditionIf {
+struct CalculatorHandler : apache::thrift::ServiceHandler<Calculator> {
+  struct AdditionHandler
+      : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
     int acc_{0};
     Point pacc_;
 
@@ -574,8 +581,10 @@ TEST(InteractionCodegenTest, Error) {
 }
 
 TEST(InteractionCodegenTest, MethodException) {
-  struct ExceptionCalculatorHandler : CalculatorSvIf {
-    struct AdditionHandler : CalculatorSvIf::AdditionIf {
+  struct ExceptionCalculatorHandler
+      : apache::thrift::ServiceHandler<Calculator> {
+    struct AdditionHandler
+        : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
       int acc_{0};
 #if FOLLY_HAS_COROUTINES
       folly::coro::Task<void> co_accumulatePrimitive(int32_t a) override {
@@ -834,7 +843,8 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
 TEST(InteractionCodegenTest, SerialInteraction) {
 #if FOLLY_HAS_COROUTINES
   struct SerialCalculatorHandler : CalculatorHandler {
-    struct SerialAdditionHandler : CalculatorSvIf::SerialAdditionIf {
+    struct SerialAdditionHandler
+        : apache::thrift::ServiceHandler<Calculator>::SerialAdditionIf {
       int acc_{0};
       folly::coro::Baton &baton2_, &baton3_;
       SerialAdditionHandler(
@@ -915,14 +925,14 @@ TEST(InteractionCodegenTest, SerialInteraction) {
 
 TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
 #if FOLLY_HAS_COROUTINES
-  struct StreamingHandler : StreamerSvIf {
+  struct StreamingHandler : apache::thrift::ServiceHandler<Streamer> {
     StreamingHandler()
         : publisherPair(ServerStream<int>::createPublisher([&] {
             streamBaton.post();
             EXPECT_FALSE(
                 tileBaton2.try_wait_for(std::chrono::milliseconds(100)));
           })) {}
-    struct StreamTile : StreamerSvIf::StreamingIf {
+    struct StreamTile : apache::thrift::ServiceHandler<Streamer>::StreamingIf {
       folly::coro::Task<ServerStream<int>> co_generatorStream() override {
         co_return folly::coro::co_invoke(
             [&]() -> folly::coro::AsyncGenerator<int&&> {
@@ -1060,8 +1070,8 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
 
 TEST(InteractionCodegenTest, ShutdownDuringStreamTeardown) {
 #if FOLLY_HAS_COROUTINES
-  struct StreamingHandler : StreamerSvIf {
-    struct StreamTile : StreamerSvIf::StreamingIf {
+  struct StreamingHandler : apache::thrift::ServiceHandler<Streamer> {
+    struct StreamTile : apache::thrift::ServiceHandler<Streamer>::StreamingIf {
       folly::coro::Task<ServerStream<int>> co_generatorStream() override {
         co_return folly::coro::co_invoke(
             [&]() -> folly::coro::AsyncGenerator<int&&> {
@@ -1089,8 +1099,10 @@ TEST(InteractionCodegenTest, ShutdownDuringStreamTeardown) {
 }
 
 TEST(InteractionCodegenTest, BasicEB) {
-  struct ExceptionCalculatorHandler : CalculatorSvIf {
-    struct AdditionHandler : CalculatorSvIf::AdditionFastIf {
+  struct ExceptionCalculatorHandler
+      : apache::thrift::ServiceHandler<Calculator> {
+    struct AdditionHandler
+        : apache::thrift::ServiceHandler<Calculator>::AdditionFastIf {
       int acc_{0};
       void async_eb_accumulatePrimitive(
           std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
@@ -1124,7 +1136,8 @@ TEST(InteractionCodegenTest, BasicEB) {
 }
 
 TEST(InteractionCodegenTest, ErrorEB) {
-  struct ExceptionCalculatorHandler : CalculatorSvIf {
+  struct ExceptionCalculatorHandler
+      : apache::thrift::ServiceHandler<Calculator> {
     std::unique_ptr<AdditionFastIf> createAdditionFast() override {
       throw std::runtime_error("Unimplemented");
     }
@@ -1241,7 +1254,7 @@ TEST(InteractionCodegenTest, FactoryEb) {
 }
 
 TEST(InteractionCodegenTest, FactoryHandlerCallback) {
-  struct HandlerResult : CalculatorSvIf {
+  struct HandlerResult : apache::thrift::ServiceHandler<Calculator> {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1273,7 +1286,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerComplete : CalculatorSvIf {
+  struct HandlerComplete : apache::thrift::ServiceHandler<Calculator> {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1309,7 +1322,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerException : CalculatorSvIf {
+  struct HandlerException : apache::thrift::ServiceHandler<Calculator> {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1325,7 +1338,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerDrop : CalculatorSvIf {
+  struct HandlerDrop : apache::thrift::ServiceHandler<Calculator> {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>

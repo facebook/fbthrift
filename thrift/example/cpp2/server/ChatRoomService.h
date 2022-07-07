@@ -24,7 +24,8 @@
 namespace example {
 namespace chatroom {
 
-class ChatRoomServiceHandler : virtual public ChatRoomServiceSvIf {
+class ChatRoomServiceHandler
+    : virtual public apache::thrift::ServiceHandler<ChatRoomService> {
  public:
   ChatRoomServiceHandler() = default;
 

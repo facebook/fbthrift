@@ -51,7 +51,7 @@ TEST_P(ThriftClientTestWithResourcePools, FutureCapturesChannel) {
     // Resource pools path not implemented yet so test would fail
     return;
   }
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     Future<unique_ptr<string>> future_sendResponse(int64_t size) override {
       return makeFuture(make_unique<string>(to<string>(size)));
@@ -73,7 +73,7 @@ TEST_P(ThriftClientTestWithResourcePools, FutureCapturesChannel) {
 }
 
 TEST_F(ThriftClientTest, SemiFutureCapturesChannel) {
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     void sendResponse(std::string& _return, int64_t size) override {
       _return = to<string>(size);
@@ -94,9 +94,9 @@ TEST_F(ThriftClientTest, SemiFutureCapturesChannel) {
 }
 
 TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
-  //  Generated SvIf handler methods throw. We check Try::hasValue().
-  //  So this is a sanity check that the method is oneway.
-  auto handler = make_shared<TestServiceSvIf>();
+  //  Generated apache::thrift::ServiceHandler<> handler methods throw. We check
+  //  Try::hasValue(). So this is a sanity check that the method is oneway.
+  auto handler = make_shared<apache::thrift::ServiceHandler<TestService>>();
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
@@ -111,7 +111,7 @@ TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
 
 TEST_F(ThriftClientTest, SemiFutureCapturesChannelOneway) {
   // Ditto previous test but with the SemiFuture<T> methods
-  auto handler = make_shared<TestServiceSvIf>();
+  auto handler = make_shared<apache::thrift::ServiceHandler<TestService>>();
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
@@ -124,7 +124,7 @@ TEST_F(ThriftClientTest, SemiFutureCapturesChannelOneway) {
 }
 
 TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
-  class DelayHandler : public TestServiceSvIf {
+  class DelayHandler : public apache::thrift::ServiceHandler<TestService> {
    public:
     DelayHandler(milliseconds delay) : delay_(delay) {}
     void async_eb_eventBaseAsync(
@@ -171,7 +171,7 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
 }
 
 TEST_F(ThriftClientTest, SyncCallRequestResponse) {
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     void sendResponse(std::string& _return, int64_t size) override {
       _return = to<string>(size);
@@ -235,7 +235,7 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
 }
 
 TEST_F(ThriftClientTest, SyncCallOneWay) {
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     void noResponse(int64_t) override {
       std::lock_guard<std::mutex> l(lock_);
@@ -303,7 +303,7 @@ TEST_F(ThriftClientTest, SyncCallOneWay) {
 }
 
 TEST_F(ThriftClientTest, FutureCallRequestResponse) {
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     Future<unique_ptr<string>> future_sendResponse(int64_t size) override {
       return makeFuture(make_unique<string>(to<string>(size)));
@@ -366,7 +366,7 @@ TEST_F(ThriftClientTest, FutureCallRequestResponse) {
 }
 
 TEST_F(ThriftClientTest, FutureCallOneWay) {
-  class Handler : public TestServiceSvIf {
+  class Handler : public apache::thrift::ServiceHandler<TestService> {
    public:
     void noResponse(int64_t) override {
       std::lock_guard<std::mutex> l(lock_);
@@ -454,7 +454,8 @@ TEST_F(ThriftClientTest, FutureCallOneWay) {
 // client channel should be gracefully destroyed.
 //
 TEST_F(ThriftClientTest, FirstResponseTimeout) {
-  struct TestServiceHandler : public TestServiceSvIf {
+  struct TestServiceHandler
+      : public apache::thrift::ServiceHandler<TestService> {
     explicit TestServiceHandler(folly::test::Barrier& barrier)
         : barrier_(barrier) {}
     apache::thrift::ResponseAndServerStream<bool, int32_t> rangeWithResponse(

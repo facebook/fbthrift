@@ -24,7 +24,8 @@
 namespace apache::thrift::test {
 
 TEST(UnimplementedMethodTest, Basic) {
-  auto service = std::make_shared<UnimplementedMethodSvIf>();
+  auto service =
+      std::make_shared<apache::thrift::ServiceHandler<UnimplementedMethod>>();
   ScopedServerInterfaceThread runner{service};
   auto client = runner.newClient<UnimplementedMethodAsyncClient>();
 

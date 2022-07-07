@@ -44,7 +44,8 @@ using namespace folly;
 using std::shared_ptr;
 using std::unique_ptr;
 
-class DuplexClientInterface : public DuplexClientSvIf {
+class DuplexClientInterface
+    : public apache::thrift::ServiceHandler<DuplexClient> {
  public:
   DuplexClientInterface(int32_t first, int32_t count, bool& success)
       : firstIndex_(first), indexesSeen_(count, false), success_(success) {}
@@ -113,7 +114,8 @@ class Updater {
   int32_t interval_;
 };
 
-class DuplexServiceInterface : public DuplexServiceSvIf {
+class DuplexServiceInterface
+    : public apache::thrift::ServiceHandler<DuplexService> {
   void async_tm_registerForUpdates(
       unique_ptr<HandlerCallback<bool>> callback,
       int32_t startIndex,

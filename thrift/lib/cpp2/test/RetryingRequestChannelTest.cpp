@@ -40,7 +40,8 @@ using namespace apache::thrift::test;
 using apache::thrift::transport::TTransportException;
 using folly::AsyncSocket;
 
-class TestServiceServerMock : public TestServiceSvIf {
+class TestServiceServerMock
+    : public apache::thrift::ServiceHandler<TestService> {
  public:
   MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
   MOCK_METHOD(

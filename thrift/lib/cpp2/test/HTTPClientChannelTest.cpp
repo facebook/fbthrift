@@ -38,7 +38,7 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::test;
 using std::string;
 
-class TestServiceHandler : public TestServiceSvIf {
+class TestServiceHandler : public apache::thrift::ServiceHandler<TestService> {
  public:
   void sendResponse(string& _return, int64_t size) override {
     if (size >= 0) {

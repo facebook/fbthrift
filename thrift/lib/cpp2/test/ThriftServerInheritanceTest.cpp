@@ -29,7 +29,7 @@ using namespace apache::thrift::test;
  *  really ought to have a test for it.
  */
 
-class Handler : public MyLeafSvIf {
+class Handler : public apache::thrift::ServiceHandler<MyLeaf> {
  public:
   Future<string> future_doRoot() override { return makeFuture(string("root")); }
   Future<string> future_doNode() override { return makeFuture(string("node")); }

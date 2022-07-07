@@ -41,7 +41,7 @@ using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using namespace folly;
 
-class TestInterface : public FutureServiceSvIf {
+class TestInterface : public apache::thrift::ServiceHandler<FutureService> {
   Future<std::unique_ptr<std::string>> future_sendResponse(
       int64_t size) override {
     EXPECT_NE("", getConnectionContext()->getPeerAddress()->describe());

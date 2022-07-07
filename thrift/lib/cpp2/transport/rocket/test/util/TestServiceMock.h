@@ -24,7 +24,8 @@
 namespace testutil {
 namespace testservice {
 
-class TestStreamServiceMock : public StreamServiceSvIf {
+class TestStreamServiceMock
+    : public apache::thrift::ServiceHandler<StreamService> {
  public:
   TestStreamServiceMock() {}
 

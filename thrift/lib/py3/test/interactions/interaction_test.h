@@ -20,8 +20,9 @@
 namespace interactions {
 namespace test {
 namespace thrift {
-struct SemiCalculatorHandler : CalculatorSvIf {
-  struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+struct SemiCalculatorHandler : apache::thrift::ServiceHandler<Calculator> {
+  struct SemiAdditionHandler
+      : apache::thrift::ServiceHandler<Calculator>::AdditionIf {
     int acc_{0};
     Point pacc_;
 
@@ -57,7 +58,8 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return a + b;
   }
 };
-struct SemiBlankServiceHandler : BlankServiceRenamedSvIf {};
+struct SemiBlankServiceHandler
+    : apache::thrift::ServiceHandler<BlankServiceRenamed> {};
 } // namespace thrift
 } // namespace test
 } // namespace interactions

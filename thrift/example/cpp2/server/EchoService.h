@@ -21,7 +21,7 @@
 namespace example {
 namespace chatroom {
 
-class EchoHandler : virtual public EchoSvIf {
+class EchoHandler : virtual public apache::thrift::ServiceHandler<Echo> {
  public:
   void echo(
       std::string& response, std::unique_ptr<std::string> message) override;
