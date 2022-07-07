@@ -199,6 +199,7 @@ bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
   thriftprotocol
 
+  protocol/Protocol.cpp
   protocol/BinaryProtocol.cpp
   protocol/CompactProtocol.cpp
   protocol/CompactV1Protocol.cpp
