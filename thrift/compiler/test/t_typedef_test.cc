@@ -14,17 +14,50 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/ast/t_program.h>
-#include <thrift/compiler/ast/t_typedef.h>
-
 #include <folly/portability/GTest.h>
 
-namespace apache {
-namespace thrift {
-namespace compiler {
-namespace {
+#include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/test/parser_test_helpers.h>
 
-TEST(TypeDefTest, InheritedAnnotations) {
+using namespace apache::thrift::compiler;
+
+// Confirm that we don't crash when getting the true type of an unresolved
+// type name (MissingType in the example below)
+TEST(TypedefTest, bad_true_type) {
+  auto source_mgr = source_manager();
+  auto program = dedent_and_parse_to_program(source_mgr, R"(
+    struct MyStruct {
+      1: string first;
+      2: MissingType second;
+    }
+  )");
+
+  const std::vector<t_struct*>& structs = program->structs();
+
+  EXPECT_EQ(structs.size(), 1);
+
+  const t_struct* my_struct = structs[0];
+
+  // Control case
+  const t_field* first_field = my_struct->get_field_by_id(1);
+  ASSERT_NE(first_field, nullptr);
+  EXPECT_EQ(first_field->name(), "first");
+  const t_type* first_field_type = first_field->get_type();
+  ASSERT_NE(first_field_type, nullptr);
+  EXPECT_NE(first_field_type->get_true_type(), nullptr);
+
+  // Missing type case
+  const t_field* second_field = my_struct->get_field_by_id(2);
+  ASSERT_NE(second_field, nullptr);
+  EXPECT_EQ(second_field->name(), "second");
+  const t_type* second_field_type = second_field->get_type();
+  ASSERT_NE(second_field_type, nullptr);
+  EXPECT_EQ(second_field_type->get_true_type(), nullptr);
+}
+
+TEST(TypedefTest, inherited_annotations) {
   t_program program("test");
   t_scope scope;
   t_typedef t1(&program, &t_base_type::t_i32(), "t1", &scope);
@@ -103,8 +136,3 @@ TEST(TypeDefTest, InheritedAnnotations) {
   EXPECT_EQ(t_typedef::get_first_annotation(p2, {"foo2"}), "a");
   EXPECT_EQ(t_typedef::get_first_annotation(p3, {"foo2"}), "d");
 }
-
-} // namespace
-} // namespace compiler
-} // namespace thrift
-} // namespace apache
