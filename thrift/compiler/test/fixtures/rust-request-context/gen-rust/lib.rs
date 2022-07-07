@@ -3314,8 +3314,8 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdStreamExn> {
-            ::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::ApplicationException(
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdExn> {
+            ::std::result::Result::Err(crate::services::my_service::StreamByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "streamById",
@@ -3328,8 +3328,8 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionStreamExn> {
-            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionExn> {
+            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "streamByIdWithException",
@@ -3428,7 +3428,7 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdStreamExn> {
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdExn> {
             (**self).streamById(
                 request_context, 
                 id, 
@@ -3440,7 +3440,7 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionStreamExn> {
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_service::StreamByIdWithExceptionExn> {
             (**self).streamByIdWithException(
                 request_context, 
                 id, 
@@ -3637,6 +3637,90 @@ pub mod server {
             ::std::result::Result::Ok(Self {
                 id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "id"))?,
                 data: field_data.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "data"))?,
+            })
+        }
+    }
+
+    struct Args_MyService_streamById {
+        id: ::std::primitive::i64,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_streamById {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.streamById"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
+            ];
+            let mut field_id = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.streamById", "id"))?,
+            })
+        }
+    }
+
+    struct Args_MyService_streamByIdWithException {
+        id: ::std::primitive::i64,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_streamByIdWithException {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.streamByIdWithException"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
+            ];
+            let mut field_id = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.streamByIdWithException", "id"))?,
+            })
+        }
+    }
+
+    struct Args_MyService_streamByIdWithResponse {
+        id: ::std::primitive::i64,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_streamByIdWithResponse {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.streamByIdWithResponse"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
+            ];
+            let mut field_id = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.streamByIdWithResponse", "id"))?,
             })
         }
     }
@@ -4017,6 +4101,180 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip_all, fields(method = "MyService.streamById"))]
+        async fn handle_streamById<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::StreamByIdExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.streamById";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_streamById = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamById(
+                    _req_ctxt,
+                    _args.id,
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.streamById"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.streamById", "success");
+                    crate::services::my_service::StreamByIdExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "streamById",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamById", exn);
+                    crate::services::my_service::StreamByIdExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithException"))]
+        async fn handle_streamByIdWithException<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::StreamByIdWithExceptionExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.streamByIdWithException";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_streamByIdWithException = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamByIdWithException(
+                    _req_ctxt,
+                    _args.id,
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.streamByIdWithException"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.streamByIdWithException", "success");
+                    crate::services::my_service::StreamByIdWithExceptionExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "streamByIdWithException",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", exn);
+                    crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithResponse"))]
+        async fn handle_streamByIdWithResponse<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::StreamByIdWithResponseExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.streamByIdWithResponse";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_streamByIdWithResponse = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamByIdWithResponse(
+                    _req_ctxt,
+                    _args.id,
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.streamByIdWithResponse"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.streamByIdWithResponse", "success");
+                    crate::services::my_service::StreamByIdWithResponseExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "streamByIdWithResponse",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithResponse", exn);
+                    crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
         fn handle_createMyInteraction(
             &self,
         ) -> ::anyhow::Result<::std::boxed::Box<dyn MyInteraction>> {
@@ -4046,6 +4304,9 @@ pub mod server {
                 b"getDataById" => ::std::result::Result::Ok(3usize),
                 b"putDataById" => ::std::result::Result::Ok(4usize),
                 b"lobDataById" => ::std::result::Result::Ok(5usize),
+                b"streamById" => ::std::result::Result::Ok(6usize),
+                b"streamByIdWithException" => ::std::result::Result::Ok(7usize),
+                b"streamByIdWithResponse" => ::std::result::Result::Ok(8usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -4184,6 +4445,45 @@ pub mod server {
                         res
                     )?;
                     Ok(env)
+                }
+                6usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.streamById";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_streamById(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
+                }
+                7usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.streamByIdWithException";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_streamByIdWithException(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
+                }
+                8usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.streamByIdWithResponse";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_streamByIdWithResponse(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
                 }
                 bad => panic!(
                     "{}: unexpected method idx {}",

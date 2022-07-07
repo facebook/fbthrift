@@ -62,9 +62,9 @@
             }}{{/function:args}}
         ) -> ::std::result::Result<{{!
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn{{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
-            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn::ApplicationException(
+            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "{{service:name}}",
                     "{{function:name}}",
@@ -127,7 +127,7 @@
             }}{{/function:args}}
         ) -> ::std::result::Result<{{!
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}{{^function:stream_has_first_response?}}Stream{{/function:stream_has_first_response?}}Exn{{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
             (**self).{{function:rust_name}}({{!
                 }}{{#service:requestContext?}}
@@ -164,7 +164,7 @@
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
-    {{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
+    {{#service:rustFunctions}}{{^function:starts_interaction?}}
     struct Args_{{service:name}}_{{function:name}} {
         {{#function:args}}
         {{field:rust_name}}: {{>lib/fieldtype}},
@@ -205,7 +205,7 @@
         }
     }
 
-    {{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+    {{/function:starts_interaction?}}{{/service:rustFunctions}}
 
     impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
@@ -242,7 +242,7 @@
         pub fn into_inner(self) -> H {
             self.service
         }{{!
-        }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
+        }}{{#service:rustFunctions}}{{^function:starts_interaction?}}
 
         #[::tracing::instrument(skip_all, fields(method = "{{service:name}}.{{function:name}}"))]
         async fn handle_{{function:name}}<'a>(
@@ -295,7 +295,10 @@
                     )
                 }
                 ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    {{!TODO: Remove this once debug for stream is implemented.}}
+                    {{^function:returns_stream?}}
                     ::tracing::error!(method = "{{service:name}}.{{function:name}}", exception = ?exn);
+                    {{/function:returns_stream?}}
                     exn
                 }
                 ::std::result::Result::Err(exn) => {
@@ -306,7 +309,7 @@
 
             ::std::result::Result::Ok(res)
         }{{!
-        }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        }}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
 
         fn handle_{{function:name}}(
             &self,
@@ -342,9 +345,9 @@
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {{>lib/block}}{{!
-                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
+                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}
                 b"{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
-                }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+                }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -358,7 +361,7 @@
             _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
-                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
+                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}
                 {{function:index}}usize => {
                     use const_cstr::const_cstr;
                     const_cstr! {
@@ -370,6 +373,7 @@
                         METHOD_NAME.as_cstr(),
                     )?;
                     let res = self.handle_{{function:name}}(_p, _r, &mut ctx_stack).await?;
+                    {{^function:returns_streams?}}
                     let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "{{function:name}}",
                         METHOD_NAME.as_cstr(),
@@ -379,8 +383,12 @@
                         res
                     )?;
                     Ok(env)
+                    {{/function:returns_streams?}}
+                    {{#function:returns_streams?}}
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
+                    {{/function:returns_streams?}}
                 }{{!
-                }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+                }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "{{service:name}}Processor",

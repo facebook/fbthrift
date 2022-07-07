@@ -992,8 +992,8 @@ pub mod server {
         #[doc(hidden)]
         async fn numbers(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersStreamExn> {
-            ::std::result::Result::Err(crate::services::c::NumbersStreamExn::ApplicationException(
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersExn> {
+            ::std::result::Result::Err(crate::services::c::NumbersExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "C",
                     "numbers",
@@ -1031,7 +1031,7 @@ pub mod server {
         #[doc(hidden)]
         async fn numbers(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersStreamExn> {
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersExn> {
             (**self).numbers(
             ).await
         }
@@ -1062,6 +1062,29 @@ pub mod server {
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_f {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "C.f"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_C_numbers {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_numbers {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "C.numbers"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1197,6 +1220,62 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip_all, fields(method = "C.numbers"))]
+        async fn handle_numbers<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::c::NumbersExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "C";
+                METHOD_NAME = "C.numbers";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_C_numbers = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.numbers(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "C.numbers"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "C.numbers", "success");
+                    crate::services::c::NumbersExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::c::NumbersExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "numbers",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("C.numbers", exn);
+                    crate::services::c::NumbersExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
         #[::tracing::instrument(skip_all, fields(method = "C.thing"))]
         async fn handle_thing<'a>(
             &'a self,
@@ -1275,6 +1354,7 @@ pub mod server {
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
                 b"f" => ::std::result::Result::Ok(0usize),
+                b"numbers" => ::std::result::Result::Ok(1usize),
                 b"thing" => ::std::result::Result::Ok(2usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
@@ -1309,6 +1389,19 @@ pub mod server {
                         res
                     )?;
                     Ok(env)
+                }
+                1usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "C";
+                        METHOD_NAME = "C.numbers";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_numbers(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
                 }
                 2usize => {
                     use const_cstr::const_cstr;

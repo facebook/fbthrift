@@ -3872,8 +3872,8 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyStreamExn> {
-            ::std::result::Result::Err(crate::services::my_interaction::TruthifyStreamExn::ApplicationException(
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyExn> {
+            ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
                     "truthify",
@@ -3913,7 +3913,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyStreamExn> {
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyExn> {
             (**self).truthify(
             ).await
         }
@@ -3961,6 +3961,29 @@ pub mod server {
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteraction_ping {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteraction.ping"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_MyInteraction_truthify {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteraction_truthify {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteraction.truthify"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -4138,6 +4161,62 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip_all, fields(method = "MyInteraction.truthify"))]
+        async fn handle_truthify<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_interaction::TruthifyExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyInteraction";
+                METHOD_NAME = "MyInteraction.truthify";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyInteraction_truthify = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.truthify(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyInteraction.truthify"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyInteraction.truthify", "success");
+                    crate::services::my_interaction::TruthifyExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "truthify",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.truthify", exn);
+                    crate::services::my_interaction::TruthifyExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
         #[::tracing::instrument(skip_all, fields(method = "MyInteraction.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -4214,6 +4293,7 @@ pub mod server {
             match name {
                 b"MyInteraction.frobnicate" => ::std::result::Result::Ok(0usize),
                 b"MyInteraction.ping" => ::std::result::Result::Ok(1usize),
+                b"MyInteraction.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteraction.encode" => ::std::result::Result::Ok(3usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
@@ -4269,6 +4349,19 @@ pub mod server {
                         res
                     )?;
                     Ok(env)
+                }
+                2usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyInteraction";
+                        METHOD_NAME = "MyInteraction.truthify";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_truthify(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
                 }
                 3usize => {
                     use const_cstr::const_cstr;
@@ -4413,8 +4506,8 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyStreamExn> {
-            ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyStreamExn::ApplicationException(
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyExn> {
+            ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
                     "truthify",
@@ -4454,7 +4547,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyStreamExn> {
+        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyExn> {
             (**self).truthify(
             ).await
         }
@@ -4502,6 +4595,29 @@ pub mod server {
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteractionFast_ping {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteractionFast.ping"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_MyInteractionFast_truthify {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteractionFast_truthify {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteractionFast.truthify"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -4679,6 +4795,62 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip_all, fields(method = "MyInteractionFast.truthify"))]
+        async fn handle_truthify<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_interaction_fast::TruthifyExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyInteractionFast";
+                METHOD_NAME = "MyInteractionFast.truthify";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyInteractionFast_truthify = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.truthify(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyInteractionFast.truthify"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyInteractionFast.truthify", "success");
+                    crate::services::my_interaction_fast::TruthifyExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "truthify",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteractionFast.truthify", exn);
+                    crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
         #[::tracing::instrument(skip_all, fields(method = "MyInteractionFast.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -4755,6 +4927,7 @@ pub mod server {
             match name {
                 b"MyInteractionFast.frobnicate" => ::std::result::Result::Ok(0usize),
                 b"MyInteractionFast.ping" => ::std::result::Result::Ok(1usize),
+                b"MyInteractionFast.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteractionFast.encode" => ::std::result::Result::Ok(3usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
@@ -4810,6 +4983,19 @@ pub mod server {
                         res
                     )?;
                     Ok(env)
+                }
+                2usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyInteractionFast";
+                        METHOD_NAME = "MyInteractionFast.truthify";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_truthify(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
                 }
                 3usize => {
                     use const_cstr::const_cstr;
@@ -5407,6 +5593,29 @@ pub mod server {
         }
     }
 
+    struct Args_MyService_serialize {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_serialize {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.serialize"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
 
     impl<P, H, R> MyServiceProcessor<P, H, R>
     where
@@ -5618,6 +5827,62 @@ pub mod server {
 
             ::std::result::Result::Ok(res)
         }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.serialize"))]
+        async fn handle_serialize<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::SerializeExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.serialize";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_serialize = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.serialize(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.serialize"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.serialize", "success");
+                    crate::services::my_service::SerializeExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::SerializeExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "serialize",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.serialize", exn);
+                    crate::services::my_service::SerializeExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
     }
 
     #[::async_trait::async_trait]
@@ -5639,6 +5904,7 @@ pub mod server {
                 b"foo" => ::std::result::Result::Ok(3usize),
                 b"interact" => ::std::result::Result::Ok(4usize),
                 b"interactFast" => ::std::result::Result::Ok(5usize),
+                b"serialize" => ::std::result::Result::Ok(6usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -5714,6 +5980,19 @@ pub mod server {
                         res
                     )?;
                     Ok(env)
+                }
+                6usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.serialize";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_serialize(_p, _r, &mut ctx_stack).await?;
+                    Err(::anyhow::anyhow!("Streaming not yet supported"))
                 }
                 bad => panic!(
                     "{}: unexpected method idx {}",
