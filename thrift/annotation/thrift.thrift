@@ -132,7 +132,7 @@ struct NoBeta {}
 struct NoLegacy {}
 
 /**
-  * Best-effort disables @Deprecated features.
+ * Best-effort disables @Deprecated features.
  *
  * Should only be enabled in `test` versions, as deprecated implies removing
  * the feature will break current usage (otherwise it would be @Legacy or

@@ -79,21 +79,21 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 85,
+            "lineno" : 86,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "adaptedType" : {
             "name" : "adaptedType",
             "key" : 2,
-            "lineno" : 88,
+            "lineno" : 89,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "underlyingName" : {
             "name" : "underlyingName",
             "key" : 3,
-            "lineno" : 95,
+            "lineno" : 96,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -101,14 +101,14 @@
             "name" : "extraNamespace",
             "default_value" : "detail",
             "key" : 4,
-            "lineno" : 96,
+            "lineno" : 97,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 64
+        "lineno" : 65
       },
       "PackIsset" : {
         "name" : "PackIsset",
@@ -117,32 +117,32 @@
             "name" : "atomic",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 101,
+            "lineno" : 102,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 100
+        "lineno" : 101
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 105
+        "lineno" : 106
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 110
+        "lineno" : 111
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 115
+        "lineno" : 116
       }
       },
   "source_path" : "thrift/annotation/cpp",

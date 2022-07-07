@@ -130,7 +130,7 @@
       },
       "NoDeprecated" : {
         "name" : "NoDeprecated",
-        "docstring" : " * Best-effort disables @Deprecated features.\n*\n* Should only be enabled in `test` versions, as deprecated implies removing\n* the feature will break current usage (otherwise it would be @Legacy or\n* deleted)\n",
+        "docstring" : "Best-effort disables @Deprecated features.\n\nShould only be enabled in `test` versions, as deprecated implies removing\nthe feature will break current usage (otherwise it would be @Legacy or\ndeleted)\n",
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 144
