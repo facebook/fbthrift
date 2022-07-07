@@ -175,7 +175,7 @@
 
                 {{#function:stream_has_first_response?}}
                 let de = P::deserializer(_initial);
-                let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn =
+                let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
                 let initial: ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{!

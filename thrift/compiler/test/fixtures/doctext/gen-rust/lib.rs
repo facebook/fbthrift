@@ -32,7 +32,6 @@ pub mod services {
     pub mod c {
         #![doc = "Detailed overview of service"]
 
-
         #[derive(Clone, Debug)]
         pub enum FExn {
             #[doc(hidden)]
@@ -149,6 +148,7 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum NumbersStreamExn {
             #[doc(hidden)]
@@ -240,6 +240,55 @@ pub mod services {
                 )
             }
         }
+
+        pub enum NumbersExn {
+            #[doc(hidden)]
+            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for NumbersExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                NumbersExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for NumbersExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    NumbersExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    NumbersExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    NumbersExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    NumbersExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    NumbersExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    NumbersExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for NumbersExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    NumbersExn::Success(_) => ::fbthrift::ResultType::Return,
+                    NumbersExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for NumbersExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
 
 
         #[derive(Clone, Debug)]
@@ -1721,6 +1770,19 @@ pub mod errors {
         }
 
         pub type NumbersError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::c::NumbersExn> for
+            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, NumbersError>
+        {
+            fn from(e: crate::services::c::NumbersExn) -> Self {
+                match e {
+                    crate::services::c::NumbersExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::c::NumbersExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(NumbersError::ApplicationException(aexn)),
+                }
+            }
+        }
 
         pub type NumbersStreamError = ::fbthrift::NonthrowingFunctionError;
 

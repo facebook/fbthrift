@@ -16,7 +16,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod foo_service {
-
         #[derive(Clone, Debug)]
         pub enum SimpleRpcExn {
             #[doc(hidden)]
@@ -136,7 +135,6 @@ pub mod services {
     }
 
     pub mod f_b303_service {
-
         #[derive(Clone, Debug)]
         pub enum SimpleRpcExn {
             #[doc(hidden)]
@@ -262,7 +260,6 @@ pub mod services {
     }
 
     pub mod my_service {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
@@ -1459,7 +1456,6 @@ pub mod services {
     }
 
     pub mod db_mixed_stack_arguments {
-
         #[derive(Clone, Debug)]
         pub enum GetDataByKey0Exn {
             #[doc(hidden)]

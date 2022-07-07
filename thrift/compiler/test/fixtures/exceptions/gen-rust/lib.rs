@@ -15,7 +15,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod raiser {
-
         #[derive(Clone, Debug)]
         pub enum DoBlandExn {
             #[doc(hidden)]

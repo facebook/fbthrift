@@ -19,7 +19,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod service {
-
         #[derive(Clone, Debug)]
         pub enum FuncExn {
             #[doc(hidden)]

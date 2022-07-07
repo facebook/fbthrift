@@ -33,7 +33,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod my_service {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
@@ -898,7 +897,6 @@ pub mod services {
     }
 
     pub mod my_service_prio_parent {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
@@ -1135,7 +1133,6 @@ pub mod services {
     }
 
     pub mod my_service_prio_child {
-
         #[derive(Clone, Debug)]
         pub enum PangExn {
             #[doc(hidden)]
@@ -1256,7 +1253,6 @@ pub mod services {
 
 
     pub mod bad_interaction {
-
         #[derive(Clone, Debug)]
         pub enum FooExn {
             #[doc(hidden)]
@@ -1375,7 +1371,6 @@ pub mod services {
         }
     }
     pub mod bad_service {
-
         #[derive(Clone, Debug)]
         pub enum BarExn {
             #[doc(hidden)]

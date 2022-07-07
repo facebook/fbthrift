@@ -12,7 +12,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod my_root {
-
         #[derive(Clone, Debug)]
         pub enum DoRootExn {
             #[doc(hidden)]
@@ -132,7 +131,6 @@ pub mod services {
     }
 
     pub mod my_node {
-
         #[derive(Clone, Debug)]
         pub enum DoMidExn {
             #[doc(hidden)]
@@ -252,7 +250,6 @@ pub mod services {
     }
 
     pub mod my_leaf {
-
         #[derive(Clone, Debug)]
         pub enum DoLeafExn {
             #[doc(hidden)]

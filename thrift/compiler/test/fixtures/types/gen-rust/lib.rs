@@ -16,7 +16,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod some_service {
-
         #[derive(Clone, Debug)]
         pub enum BounceMapExn {
             #[doc(hidden)]

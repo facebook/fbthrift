@@ -16,7 +16,6 @@ pub mod dependencies {
 pub mod services {
 
     pub mod my_interaction {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
@@ -135,7 +134,6 @@ pub mod services {
         }
     }
     pub mod my_service {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
@@ -855,6 +853,7 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum StreamByIdStreamExn {
             #[doc(hidden)]
@@ -946,6 +945,56 @@ pub mod services {
                 )
             }
         }
+
+        pub enum StreamByIdExn {
+            #[doc(hidden)]
+            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for StreamByIdExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    StreamByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    StreamByIdExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    StreamByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    StreamByIdExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    StreamByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    StreamByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for StreamByIdExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    StreamByIdExn::Success(_) => ::fbthrift::ResultType::Return,
+                    StreamByIdExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+
 
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithExceptionStreamExn {
@@ -1095,6 +1144,56 @@ pub mod services {
             }
         }
 
+        pub enum StreamByIdWithExceptionExn {
+            #[doc(hidden)]
+            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithExceptionExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithExceptionExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for StreamByIdWithExceptionExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    StreamByIdWithExceptionExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    StreamByIdWithExceptionExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    StreamByIdWithExceptionExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    StreamByIdWithExceptionExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    StreamByIdWithExceptionExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    StreamByIdWithExceptionExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for StreamByIdWithExceptionExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    StreamByIdWithExceptionExn::Success(_) => ::fbthrift::ResultType::Return,
+                    StreamByIdWithExceptionExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdWithExceptionExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+
+
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithResponseStreamExn {
             #[doc(hidden)]
@@ -1187,30 +1286,30 @@ pub mod services {
             }
         }
         #[derive(Clone, Debug)]
-        pub enum StreamByIdWithResponseExn {
+        pub enum StreamByIdWithResponseResponseExn {
             #[doc(hidden)]
             Success(crate::types::MyDataItem),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithResponseExn {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithResponseResponseExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                StreamByIdWithResponseExn::ApplicationException(exn)
+                StreamByIdWithResponseResponseExn::ApplicationException(exn)
             }
         }
 
-        impl ::fbthrift::GetTType for StreamByIdWithResponseExn {
+        impl ::fbthrift::GetTType for StreamByIdWithResponseResponseExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithResponseExn
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithResponseResponseExn
         where
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("StreamByIdWithResponse");
                 match self {
-                    StreamByIdWithResponseExn::Success(inner) => {
+                    StreamByIdWithResponseResponseExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Struct,
@@ -1219,7 +1318,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    StreamByIdWithResponseExn::ApplicationException(_) => panic!(
+                    StreamByIdWithResponseResponseExn::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1230,7 +1329,7 @@ pub mod services {
             }
         }
 
-        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithResponseExn
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithResponseResponseExn
         where
             P: ::fbthrift::ProtocolReader,
         {
@@ -1250,7 +1349,7 @@ pub mod services {
                         }
                         ((::fbthrift::TType::Struct, 0i32), false) => {
                             once = true;
-                            alt = ::std::option::Option::Some(StreamByIdWithResponseExn::Success(::fbthrift::Deserialize::read(p)?));
+                            alt = ::std::option::Option::Some(StreamByIdWithResponseResponseExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
@@ -1258,7 +1357,7 @@ pub mod services {
                                 ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
-                                    "StreamByIdWithResponseExn",
+                                    "StreamByIdWithResponseResponseExn",
                                     badty,
                                     badid,
                                 ),
@@ -1271,12 +1370,61 @@ pub mod services {
                 alt.ok_or_else(||
                     ::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "StreamByIdWithResponseExn"),
+                        format!("Empty union {}", "StreamByIdWithResponseResponseExn"),
                     )
                     .into(),
                 )
             }
         }
+
+        pub enum StreamByIdWithResponseExn {
+            #[doc(hidden)]
+            Success((crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>)),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for StreamByIdWithResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    StreamByIdWithResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    StreamByIdWithResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    StreamByIdWithResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    StreamByIdWithResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    StreamByIdWithResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    StreamByIdWithResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for StreamByIdWithResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    StreamByIdWithResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    StreamByIdWithResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdWithResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
 
     }
 }
@@ -2020,7 +2168,7 @@ pub mod client {
                 .boxed();
 
                 let de = P::deserializer(_initial);
-                let res: crate::services::my_service::StreamByIdWithResponseExn =
+                let res: crate::services::my_service::StreamByIdWithResponseResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
                 let initial: ::std::result::Result<crate::types::MyDataItem, crate::errors::my_service::StreamByIdWithResponseError> =
@@ -4900,6 +5048,19 @@ pub mod errors {
 
         pub type StreamByIdError = ::fbthrift::NonthrowingFunctionError;
 
+        impl ::std::convert::From<crate::services::my_service::StreamByIdExn> for
+            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, StreamByIdError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type StreamByIdStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::StreamByIdStreamExn> for
@@ -4916,6 +5077,19 @@ pub mod errors {
         }
 
         pub type StreamByIdWithExceptionError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::StreamByIdWithExceptionExn> for
+            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, StreamByIdWithExceptionError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdWithExceptionExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdWithExceptionExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdWithExceptionError::ApplicationException(aexn)),
+                }
+            }
+        }
 
         #[derive(Debug, ::thiserror::Error)]
         pub enum StreamByIdWithExceptionStreamError {
@@ -4963,13 +5137,26 @@ pub mod errors {
         pub type StreamByIdWithResponseError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::StreamByIdWithResponseExn> for
-            ::std::result::Result<crate::types::MyDataItem, StreamByIdWithResponseError>
+            ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), StreamByIdWithResponseError>
         {
             fn from(e: crate::services::my_service::StreamByIdWithResponseExn) -> Self {
                 match e {
                     crate::services::my_service::StreamByIdWithResponseExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdWithResponseError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::my_service::StreamByIdWithResponseResponseExn> for
+            ::std::result::Result<crate::types::MyDataItem, StreamByIdWithResponseError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdWithResponseResponseExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdWithResponseResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithResponseResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdWithResponseError::ApplicationException(aexn)),
                 }
             }

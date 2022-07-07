@@ -16,7 +16,6 @@ pub mod dependencies {
 pub mod services {
 
     pub mod my_interaction {
-
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
             #[doc(hidden)]
@@ -281,6 +280,7 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum TruthifyStreamExn {
             #[doc(hidden)]
@@ -372,6 +372,55 @@ pub mod services {
                 )
             }
         }
+
+        pub enum TruthifyExn {
+            #[doc(hidden)]
+            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for TruthifyExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                TruthifyExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for TruthifyExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for TruthifyExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    TruthifyExn::Success(_) => ::fbthrift::ResultType::Return,
+                    TruthifyExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for TruthifyExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
 
 
         #[derive(Clone, Debug)]
@@ -499,7 +548,6 @@ pub mod services {
     }
 
     pub mod my_interaction_fast {
-
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
             #[doc(hidden)]
@@ -739,6 +787,7 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum TruthifyStreamExn {
             #[doc(hidden)]
@@ -830,6 +879,55 @@ pub mod services {
                 )
             }
         }
+
+        pub enum TruthifyExn {
+            #[doc(hidden)]
+            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for TruthifyExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                TruthifyExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for TruthifyExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    TruthifyExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    TruthifyExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for TruthifyExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    TruthifyExn::Success(_) => ::fbthrift::ResultType::Return,
+                    TruthifyExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for TruthifyExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
 
 
         #[derive(Clone, Debug)]
@@ -957,7 +1055,6 @@ pub mod services {
     }
 
     pub mod serial_interaction {
-
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
             #[doc(hidden)]
@@ -1076,7 +1173,6 @@ pub mod services {
         }
     }
     pub mod my_service {
-
         #[derive(Clone, Debug)]
         pub enum FooExn {
             #[doc(hidden)]
@@ -1439,6 +1535,7 @@ pub mod services {
                 )
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum SerializeStreamExn {
             #[doc(hidden)]
@@ -1531,30 +1628,30 @@ pub mod services {
             }
         }
         #[derive(Clone, Debug)]
-        pub enum SerializeExn {
+        pub enum SerializeResponseExn {
             #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl ::std::convert::From<::fbthrift::ApplicationException> for SerializeExn {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SerializeResponseExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                SerializeExn::ApplicationException(exn)
+                SerializeResponseExn::ApplicationException(exn)
             }
         }
 
-        impl ::fbthrift::GetTType for SerializeExn {
+        impl ::fbthrift::GetTType for SerializeResponseExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for SerializeExn
+        impl<P> ::fbthrift::Serialize<P> for SerializeResponseExn
         where
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Serialize");
                 match self {
-                    SerializeExn::Success(inner) => {
+                    SerializeResponseExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
@@ -1563,7 +1660,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    SerializeExn::ApplicationException(_) => panic!(
+                    SerializeResponseExn::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1574,7 +1671,7 @@ pub mod services {
             }
         }
 
-        impl<P> ::fbthrift::Deserialize<P> for SerializeExn
+        impl<P> ::fbthrift::Deserialize<P> for SerializeResponseExn
         where
             P: ::fbthrift::ProtocolReader,
         {
@@ -1594,7 +1691,7 @@ pub mod services {
                         }
                         ((::fbthrift::TType::I32, 0i32), false) => {
                             once = true;
-                            alt = ::std::option::Option::Some(SerializeExn::Success(::fbthrift::Deserialize::read(p)?));
+                            alt = ::std::option::Option::Some(SerializeResponseExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
@@ -1602,7 +1699,7 @@ pub mod services {
                                 ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
-                                    "SerializeExn",
+                                    "SerializeResponseExn",
                                     badty,
                                     badid,
                                 ),
@@ -1615,12 +1712,61 @@ pub mod services {
                 alt.ok_or_else(||
                     ::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "SerializeExn"),
+                        format!("Empty union {}", "SerializeResponseExn"),
                     )
                     .into(),
                 )
             }
         }
+
+        pub enum SerializeExn {
+            #[doc(hidden)]
+            Success((::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>)),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SerializeExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                SerializeExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for SerializeExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    SerializeExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    SerializeExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    SerializeExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    SerializeExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    SerializeExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    SerializeExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for SerializeExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    SerializeExn::Success(_) => ::fbthrift::ResultType::Return,
+                    SerializeExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for SerializeExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
 
     }
 }
@@ -3243,7 +3389,7 @@ pub mod client {
                 .boxed();
 
                 let de = P::deserializer(_initial);
-                let res: crate::services::my_service::SerializeExn =
+                let res: crate::services::my_service::SerializeResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
                 let initial: ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeError> =
@@ -6152,6 +6298,19 @@ pub mod errors {
 
         pub type TruthifyError = ::fbthrift::NonthrowingFunctionError;
 
+        impl ::std::convert::From<crate::services::my_interaction::TruthifyExn> for
+            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, TruthifyError>
+        {
+            fn from(e: crate::services::my_interaction::TruthifyExn) -> Self {
+                match e {
+                    crate::services::my_interaction::TruthifyExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::TruthifyExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type TruthifyStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_interaction::TruthifyStreamExn> for
@@ -6218,6 +6377,19 @@ pub mod errors {
         }
 
         pub type TruthifyError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_interaction_fast::TruthifyExn> for
+            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, TruthifyError>
+        {
+            fn from(e: crate::services::my_interaction_fast::TruthifyExn) -> Self {
+                match e {
+                    crate::services::my_interaction_fast::TruthifyExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
+                }
+            }
+        }
 
         pub type TruthifyStreamError = ::fbthrift::NonthrowingFunctionError;
 
@@ -6322,13 +6494,26 @@ pub mod errors {
         pub type SerializeError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::SerializeExn> for
-            ::std::result::Result<::std::primitive::i32, SerializeError>
+            ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), SerializeError>
         {
             fn from(e: crate::services::my_service::SerializeExn) -> Self {
                 match e {
                     crate::services::my_service::SerializeExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::SerializeExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(SerializeError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::my_service::SerializeResponseExn> for
+            ::std::result::Result<::std::primitive::i32, SerializeError>
+        {
+            fn from(e: crate::services::my_service::SerializeResponseExn) -> Self {
+                match e {
+                    crate::services::my_service::SerializeResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::SerializeResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SerializeError::ApplicationException(aexn)),
                 }
             }

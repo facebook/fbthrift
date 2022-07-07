@@ -15,7 +15,6 @@ pub mod dependencies {
 
 pub mod services {
     pub mod my_service {
-
         #[derive(Clone, Debug)]
         pub enum PingExn {
             #[doc(hidden)]
