@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/FieldMask.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_constants.h>
 

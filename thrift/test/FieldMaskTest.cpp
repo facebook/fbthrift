@@ -18,6 +18,7 @@
 #include <thrift/lib/cpp2/FieldMask.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
+#include <thrift/test/gen-cpp2/FieldMask_types.h>
 
 using apache::thrift::protocol::Mask;
 using apache::thrift::protocol::protocol_constants;
@@ -25,7 +26,7 @@ using namespace apache::thrift::protocol::detail;
 
 namespace apache::thrift::test {
 
-bool literallyEqual(const MaskRef& actual, const MaskRef& expected) {
+bool literallyEqual(MaskRef actual, MaskRef expected) {
   return actual.mask == expected.mask &&
       actual.is_exclusion == expected.is_exclusion;
 }
@@ -409,5 +410,70 @@ TEST(FieldMaskTest, CopyException) {
   // baz[2] is an object, but since bar[2] is not, it still throws an error.
   EXPECT_THROW(protocol::copy(m1, barObject, bazObject), std::runtime_error);
   EXPECT_THROW(protocol::copy(m1, bazObject, barObject), std::runtime_error);
+}
+
+TEST(FieldMaskTest, IsCompatibleWithSimple) {
+  EXPECT_TRUE(protocol::is_compatible_with<Foo>(protocol_constants::allMask()));
+  EXPECT_TRUE(
+      protocol::is_compatible_with<Foo>(protocol_constants::noneMask()));
+
+  Mask m;
+  auto& includes = m.includes_ref().emplace();
+  includes[1] = protocol_constants::allMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Foo>(m));
+  includes[3] = protocol_constants::noneMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Foo>(m));
+
+  includes[2] = protocol_constants::allMask(); // doesn't exist
+  EXPECT_FALSE(protocol::is_compatible_with<Foo>(m));
+}
+
+TEST(FieldMaskTest, IsCompatibleWithNested) {
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(protocol_constants::allMask()));
+  EXPECT_TRUE(
+      protocol::is_compatible_with<Bar>(protocol_constants::noneMask()));
+
+  // These are valid field masks for Bar.
+  Mask m;
+  // includes{1: excludes{}}
+  m.includes_ref().emplace()[1] = protocol_constants::allMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
+  // includes{2: includes{}}
+  m.includes_ref().emplace()[2] = protocol_constants::noneMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
+  // includes{1: includes{1: excludes{}}, 2: excludes{}}
+  auto& includes = m.includes_ref().emplace();
+  includes[1].includes_ref().emplace()[1] = protocol_constants::allMask();
+  includes[2] = protocol_constants::allMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
+
+  // There are invalid field masks for Bar.
+  // includes{3: excludes{}}
+  m.includes_ref().emplace()[3] = protocol_constants::allMask();
+  EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
+  // includes{2: includes{1: includes{}}}
+  m.includes_ref().emplace()[2].includes_ref().emplace()[1] =
+      protocol_constants::noneMask();
+  EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
+  // includes{1: excludes{2: excludes{}}}
+  m.includes_ref().emplace()[1].excludes_ref().emplace()[2] =
+      protocol_constants::allMask();
+  EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
+}
+
+TEST(FieldMaskTest, IsCompatibleWithAdaptedField) {
+  EXPECT_TRUE(protocol::is_compatible_with<Baz>(protocol_constants::allMask()));
+  EXPECT_TRUE(
+      protocol::is_compatible_with<Baz>(protocol_constants::noneMask()));
+
+  Mask m;
+  // includes{1: excludes{}}
+  m.includes_ref().emplace()[1] = protocol_constants::allMask();
+  EXPECT_TRUE(protocol::is_compatible_with<Baz>(m));
+  // includes{1: includes{1: excludes{}}}
+  m.includes_ref().emplace()[1].includes_ref().emplace()[1] =
+      protocol_constants::allMask();
+  // adapted struct field is treated as non struct field.
+  EXPECT_FALSE(protocol::is_compatible_with<Baz>(m));
 }
 } // namespace apache::thrift::test

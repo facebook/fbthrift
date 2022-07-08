@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 
 namespace apache::thrift::protocol {
@@ -72,5 +73,55 @@ class MaskRef {
 // Throws an error if the given value is not a dynamic object value.
 void errorIfNotObject(const protocol::Value& value);
 
+template <typename StructTag, size_t... I>
+bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
+  std::unordered_set<FieldId> ids{
+      (field::id<StructTag, field_ordinal<I + 1>>())...};
+  const FieldIdToMask& map = ref.mask.includes_ref()
+      ? ref.mask.includes_ref().value()
+      : ref.mask.excludes_ref().value();
+  for (auto& [id, _] : map) {
+    // Mask contains a field not in the struct.
+    if (!ids.contains(FieldId{id})) {
+      return false;
+    }
+  }
+  // Validates each field in the struct.
+  return (... && validate_field<StructTag, I + 1>(ref));
+}
+
+template <typename StructTag, size_t I>
+bool validate_field(MaskRef ref) {
+  MaskRef next = ref.get(field::id<StructTag, field_ordinal<I>>());
+  if (next.isAllMask() || next.isNoneMask()) {
+    return true;
+  }
+  // Check if the field is a thrift struct type. It uses type::native_type to
+  // extract the type as we don't support adapted struct fields in field mask.
+  using Nested =
+      type::native_type<field::type_tag<StructTag, field_ordinal<I>>>;
+  if constexpr (is_thrift_struct_v<Nested>) {
+    // Need to validate the nested struct.
+    return is_compatible_with<Nested>(next.mask);
+  }
+  return false;
+}
+
+template <typename T>
+using get_ordinal_sequence =
+    std::make_integer_sequence<size_t, type::field_size_v<type::struct_t<T>>>;
 } // namespace detail
+
+// Returns whether field mask is compatible with thrift struct T.
+// It is incompatible if the mask contains a field that doesn't exist in the
+// struct or that exists with a different type.
+template <typename T>
+bool is_compatible_with(const Mask& mask) {
+  detail::MaskRef ref{mask, false};
+  if (ref.isAllMask() || ref.isNoneMask()) {
+    return true;
+  }
+  return detail::validate_fields<type::struct_t<T>>(
+      ref, detail::get_ordinal_sequence<T>{});
+}
 } // namespace apache::thrift::protocol
