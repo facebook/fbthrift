@@ -1376,11 +1376,13 @@ void t_hack_generator::close_generator() {
  */
 void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
   if (typedef_) {
-    f_types_ << "type " << hack_name(ttypedef, true) << " = "
-             << type_to_typehint(
-                    ttypedef,
-                    {{TypeToTypehintVariations::IGNORE_TYPEDEF, true}})
-             << ";\n";
+    auto typedef_name = hack_name(ttypedef, true);
+    auto typehint = type_to_typehint(
+        ttypedef, {{TypeToTypehintVariations::IGNORE_TYPEDEF, true}});
+    if (typedef_name == typehint) {
+      return;
+    }
+    f_types_ << "type " << typedef_name << " = " << typehint << ";\n";
   }
 }
 
@@ -5887,6 +5889,10 @@ std::string t_hack_generator::type_to_typehint(
       return *adapter + "::THackType";
     }
   }
+  variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
+  if (const auto* ttypedef = dynamic_cast<const t_typedef*>(ttype)) {
+    return type_to_typehint(ttypedef->get_type(), variations);
+  }
   ttype = ttype->get_true_type();
   bool immutable_collections =
       variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] ||
@@ -5960,7 +5966,6 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
-    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     std::string key_type = type_to_typehint(tmap->get_key_type(), variations);
     if (variations[TypeToTypehintVariations::IS_SHAPE] && shape_arraykeys_ &&
         key_type == "string") {
@@ -5993,7 +5998,6 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
-    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     std::string key_type = !is_type_arraykey(tset->get_elem_type())
         ? "arraykey"
         : type_to_typehint(tset->get_elem_type(), variations);

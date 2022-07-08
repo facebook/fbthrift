@@ -11,7 +11,7 @@ type StringWithAdapter = \Adapter1::THackType;
 type ListWithElemAdapter = Vector<StringWithAdapter>;
 type ListWithElemAdapter_withAdapter = \Adapter2::THackType;
 type MyI64 = int;
-type DoubleTypedefI64 = int;
+type DoubleTypedefI64 = MyI64;
 type MyI32 = \Adapter1::THackType;
 type FooWithAdapter = \Adapter1::THackType;
 type StructWithAdapter = \Adapter2::THackType;
@@ -2740,20 +2740,20 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?A,
+    ?'a' => ?AdaptedA,
   );
 
   const type TShape = shape(
-    ?'a' => ?A::TShape,
+    ?'a' => ?AdaptedA,
   );
   const int STRUCTURAL_ID = 1135805466744601735;
   /**
    * Original thrift field:-
    * 1: struct module.A a
    */
-  public ?A $a;
+  public ?AdaptedA $a;
 
-  public function __construct(?A $a = null)[] {
+  public function __construct(?AdaptedA $a = null)[] {
     $this->a = $a;
   }
 
@@ -2865,7 +2865,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, A>($parsed['a']));
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, AdaptedA>($parsed['a']));
       $_tmp1 = A::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->a = $_tmp1;
