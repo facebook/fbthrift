@@ -181,8 +181,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool setupThreadManagerBeforeHandler{false};
     std::string executorToThreadManagerUnexpectedFunctionName{};
 
-    bool enableResourcePoolForWildcard{false};
-
     bool resourcePoolEnablementLocked{false};
     bool resourcePoolRuntimeRequested{false};
     bool resourcePoolRuntimeDisabled{false};
@@ -221,14 +219,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   RuntimeServerActions& getRuntimeServerActions() const {
     return runtimeServerActions_;
-  }
-
-  void enableResourcePoolForWildcard() {
-    runtimeServerActions_.enableResourcePoolForWildcard = true;
-  }
-
-  bool resourcePoolEnabledForWildcard() override {
-    return runtimeServerActions_.enableResourcePoolForWildcard;
   }
 
   bool useResourcePools() {

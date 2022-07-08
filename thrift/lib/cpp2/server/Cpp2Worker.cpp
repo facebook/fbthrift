@@ -464,7 +464,6 @@ void Cpp2Worker::dispatchRequest(
         // if this is a wildcard method enalbled for using Sync path of
         // ResourcePool
         if (maybeWildcardMetadata &&
-            serverConfigs->resourcePoolEnabledForWildcard() &&
             maybeWildcardMetadata->executorType ==
                 AsyncProcessorFactory::MethodMetadata::ExecutorType::EVB) {
           poolResult = ResourcePoolHandle::defaultSync();
