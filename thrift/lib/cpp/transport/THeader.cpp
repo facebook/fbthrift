@@ -775,7 +775,7 @@ THeader::StringToStringMap& THeader::mutableWriteHeaders() {
 
 THeader::StringToStringMap THeader::releaseWriteHeaders() {
   return writeHeaders_ ? *std::exchange(writeHeaders_, std::nullopt)
-                       : kEmptyMap();
+                       : THeader::StringToStringMap{};
 }
 
 THeader::StringToStringMap THeader::extractAllWriteHeaders() {
@@ -800,7 +800,7 @@ const THeader::StringToStringMap& THeader::getHeaders() const {
 
 THeader::StringToStringMap THeader::releaseHeaders() {
   return readHeaders_ ? *std::exchange(readHeaders_, std::nullopt)
-                      : kEmptyMap();
+                      : THeader::StringToStringMap{};
 }
 
 string THeader::getPeerIdentity() const {
