@@ -124,7 +124,7 @@ jobs:
     - name: Build wangle
       run: python3 build/fbcode_builder/getdeps.py build --no-tests wangle
     - name: Build fbthrift
-      run: python3 build/fbcode_builder/getdeps.py build --src-dir=. fbthrift  --project-install-prefix fbthrift:/usr/local
+      run: python3 build/fbcode_builder/getdeps.py build --allow-system-packages --src-dir=. fbthrift  --project-install-prefix fbthrift:/usr/local
     - name: Copy artifacts
       run: python3 build/fbcode_builder/getdeps.py fixup-dyn-deps --strip --src-dir=. fbthrift _artifacts/linux  --project-install-prefix fbthrift:/usr/local --final-install-prefix /usr/local
     - uses: actions/upload-artifact@v2
