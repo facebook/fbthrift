@@ -143,81 +143,82 @@ int main(int argc, char** argv) {
 
 #if 0
 $ buck run @mode/opt-clang-thinlto --config=cxx.use_default_autofdo_profile=false \
-    //thrift/lib/cpp/util/test:varint_utils_bench -- --bm_min_iters=1000000
+    //thrift/lib/cpu/util/test:varint_utils_bench -- --bm_min_iters=1000000
 ============================================================================
-[...]ib/cpp/util/test/VarintUtilsBench.cpp     relative  time/iter   iters/s
+thrift/lib/cpp/util/test/VarintUtilsBench.cpp   relative  time/iter  iters/s
 ============================================================================
-bench_write(u8_any_unrolled)                                2.14us   466.65K
-bench_write(u8_any_bmi2)                        140.85%     1.52us   657.30K
-bench_write(u16_any_unrolled)                               4.50us   222.06K
-bench_write(u16_any_bmi2)                       278.76%     1.62us   619.01K
-bench_write(u32_any_unrolled)                               4.12us   242.54K
-bench_write(u32_any_bmi2)                       260.58%     1.58us   632.02K
-bench_write(u64_any_unrolled)                               9.45us   105.82K
-bench_write(u64_any_bmi2)                       480.55%     1.97us   508.53K
-bench_write(u8_1b_unrolled)                                 1.36us   736.86K
-bench_write(u8_1b_bmi2)                         104.09%     1.30us   767.00K
-bench_write(u8_2b_unrolled)                                 2.09us   478.46K
-bench_write(u8_2b_bmi2)                         127.52%     1.64us   610.10K
-bench_write(u16_1b_unrolled)                                1.40us   713.68K
-bench_write(u16_1b_bmi2)                        97.217%     1.44us   693.82K
-bench_write(u16_2b_unrolled)                                2.38us   420.66K
-bench_write(u16_2b_bmi2)                        118.56%     2.01us   498.72K
-bench_write(u16_3b_unrolled)                                2.48us   403.41K
-bench_write(u16_3b_bmi2)                        161.58%     1.53us   651.82K
-bench_write(u32_1b_unrolled)                                1.31us   760.87K
-bench_write(u32_1b_bmi2)                        96.028%     1.37us   730.65K
-bench_write(u32_2b_unrolled)                                2.51us   398.21K
-bench_write(u32_2b_bmi2)                        162.89%     1.54us   648.65K
-bench_write(u32_3b_unrolled)                                3.12us   321.02K
-bench_write(u32_3b_bmi2)                        203.37%     1.53us   652.85K
-bench_write(u32_4b_unrolled)                                3.16us   315.97K
-bench_write(u32_4b_bmi2)                        205.97%     1.54us   650.80K
-bench_write(u32_5b_unrolled)                                2.98us   335.28K
-bench_write(u32_5b_bmi2)                        178.06%     1.68us   596.99K
-bench_write(u64_1b_unrolled)                                1.34us   745.74K
-bench_write(u64_1b_bmi2)                        99.655%     1.35us   743.17K
-bench_write(u64_2b_unrolled)                                3.19us   313.53K
-bench_write(u64_2b_bmi2)                        175.14%     1.82us   549.12K
-bench_write(u64_3b_unrolled)                                3.39us   294.73K
-bench_write(u64_3b_bmi2)                        179.66%     1.89us   529.52K
-bench_write(u64_4b_unrolled)                                4.42us   226.01K
-bench_write(u64_4b_bmi2)                        234.87%     1.88us   530.82K
-bench_write(u64_5b_unrolled)                                4.51us   221.88K
-bench_write(u64_5b_bmi2)                        238.21%     1.89us   528.54K
-bench_write(u64_6b_unrolled)                                4.96us   201.47K
-bench_write(u64_6b_bmi2)                        266.08%     1.87us   536.07K
-bench_write(u64_7b_unrolled)                                5.83us   171.60K
-bench_write(u64_7b_bmi2)                        298.78%     1.95us   512.70K
-bench_write(u64_8b_unrolled)                                6.07us   164.76K
-bench_write(u64_8b_bmi2)                        326.97%     1.86us   538.73K
-bench_write(u64_9b_unrolled)                                6.09us   164.13K
-bench_write(u64_9b_bmi2)                        319.45%     1.91us   524.31K
-bench_write(u64_10b_unrolled)                               6.38us   156.72K
-bench_write(u64_10b_bmi2)                       323.96%     1.97us   507.70K
+bench_write(u8_any_unrolled)                                 2.32us  431.26K
+bench_write(u8_any_bmi2)                         114.19%     2.03us  492.46K
+bench_write(u16_any_unrolled)                                5.89us  169.88K
+bench_write(u16_any_bmi2)                        309.18%     1.90us  525.24K
+bench_write(u32_any_unrolled)                                4.76us  210.02K
+bench_write(u32_any_bmi2)                        233.53%     2.04us  490.46K
+bench_write(u64_any_unrolled)                               11.30us   88.53K
+bench_write(u64_any_bmi2)                        405.43%     2.79us  358.92K
+bench_write(u8_1b_unrolled)                                  1.50us  665.71K
+bench_write(u8_1b_bmi2)                          102.35%     1.47us  681.36K
+bench_write(u8_2b_unrolled)                                  2.25us  443.95K
+bench_write(u8_2b_bmi2)                          127.76%     1.76us  567.17K
+bench_write(u16_1b_unrolled)                                 1.57us  636.62K
+bench_write(u16_1b_bmi2)                         101.12%     1.55us  643.75K
+bench_write(u16_2b_unrolled)                                 2.97us  336.28K
+bench_write(u16_2b_bmi2)                         122.31%     2.43us  411.30K
+bench_write(u16_3b_unrolled)                                 3.00us  333.84K
+bench_write(u16_3b_bmi2)                         150.83%     1.99us  503.53K
+bench_write(u32_1b_unrolled)                                 1.63us  614.07K
+bench_write(u32_1b_bmi2)                         104.41%     1.56us  641.14K
+bench_write(u32_2b_unrolled)                                 2.74us  365.19K
+bench_write(u32_2b_bmi2)                         149.83%     1.83us  547.18K
+bench_write(u32_3b_unrolled)                                 3.41us  293.63K
+bench_write(u32_3b_bmi2)                         166.78%     2.04us  489.71K
+bench_write(u32_4b_unrolled)                                 3.73us  268.01K
+bench_write(u32_4b_bmi2)                         202.50%     1.84us  542.72K
+bench_write(u32_5b_unrolled)                                 4.09us  244.42K
+bench_write(u32_5b_bmi2)                         205.56%     1.99us  502.42K
+bench_write(u64_1b_unrolled)                                 1.66us  602.68K
+bench_write(u64_1b_bmi2)                         100.67%     1.65us  606.73K
+bench_write(u64_2b_unrolled)                                 3.81us  262.77K
+bench_write(u64_2b_bmi2)                         121.63%     3.13us  319.60K
+bench_write(u64_3b_unrolled)                                 4.32us  231.41K
+bench_write(u64_3b_bmi2)                         148.34%     2.91us  343.27K
+bench_write(u64_4b_unrolled)                                 4.95us  202.02K
+bench_write(u64_4b_bmi2)                         191.90%     2.58us  387.68K
+bench_write(u64_5b_unrolled)                                 5.71us  175.26K
+bench_write(u64_5b_bmi2)                         188.98%     3.02us  331.21K
+bench_write(u64_6b_unrolled)                                 5.85us  170.95K
+bench_write(u64_6b_bmi2)                         219.50%     2.67us  375.23K
+bench_write(u64_7b_unrolled)                                 6.87us  145.49K
+bench_write(u64_7b_bmi2)                         235.90%     2.91us  343.21K
+bench_write(u64_8b_unrolled)                                 7.34us  136.17K
+bench_write(u64_8b_bmi2)                         243.54%     3.02us  331.62K
+bench_write(u64_9b_unrolled)                                 7.86us  127.25K
+bench_write(u64_9b_bmi2)                         233.07%     3.37us  296.57K
+bench_write(u64_10b_unrolled)                                8.14us  122.92K
+bench_write(u64_10b_bmi2)                        250.79%     3.24us  308.27K
 ----------------------------------------------------------------------------
-bench_read(u8_any)                                          5.35ns   187.05M
-bench_read(u8_1b)                                           1.10ns   909.75M
-bench_read(u8_2b)                                           1.63ns   614.17M
-bench_read(u16_any)                                         3.69ns   271.01M
-bench_read(u16_1b)                                          1.06ns   940.09M
-bench_read(u16_2b)                                          2.19ns   456.05M
-bench_read(u16_3b)                                          1.87ns   534.97M
-bench_read(u32_any)                                         4.84ns   206.57M
-bench_read(u32_1b)                                          2.41ns   414.36M
-bench_read(u32_2b)                                          3.25ns   308.15M
-bench_read(u32_3b)                                          3.50ns   285.52M
-bench_read(u32_4b)                                          3.78ns   264.38M
-bench_read(u32_5b)                                          4.36ns   229.21M
-bench_read(u64_any)                                         4.80ns   208.21M
-bench_read(u64_1b)                                          1.02ns   985.09M
-bench_read(u64_2b)                                          1.50ns   666.79M
-bench_read(u64_3b)                                          4.78ns   209.16M
-bench_read(u64_4b)                                          4.81ns   207.78M
-bench_read(u64_5b)                                          4.78ns   209.00M
-bench_read(u64_6b)                                          4.78ns   209.27M
-bench_read(u64_7b)                                          4.78ns   209.35M
-bench_read(u64_8b)                                          5.07ns   197.39M
-bench_read(u64_9b)                                          5.17ns   193.38M
-bench_read(u64_10b)                                         5.13ns   194.97M
+bench_read(u8_any)                                           6.21ns  161.05M
+bench_read(u8_1b)                                            1.61ns  621.54M
+bench_read(u8_2b)                                            2.02ns  496.05M
+bench_read(u16_any)                                          4.64ns  215.54M
+bench_read(u16_1b)                                           1.66ns  601.75M
+bench_read(u16_2b)                                           3.07ns  326.04M
+bench_read(u16_3b)                                           2.32ns  430.36M
+bench_read(u32_any)                                          4.62ns  216.60M
+bench_read(u32_1b)                                           1.29ns  776.61M
+bench_read(u32_2b)                                           2.46ns  406.32M
+bench_read(u32_3b)                                           2.23ns  447.59M
+bench_read(u32_4b)                                           4.15ns  241.11M
+bench_read(u32_5b)                                           3.17ns  315.28M
+bench_read(u64_any)                                         11.06ns   90.43M
+bench_read(u64_1b)                                           1.29ns  772.55M
+bench_read(u64_2b)                                           4.75ns  210.44M
+bench_read(u64_3b)                                           3.66ns  272.96M
+bench_read(u64_4b)                                           4.81ns  208.07M
+bench_read(u64_5b)                                           5.07ns  197.09M
+bench_read(u64_6b)                                           5.68ns  176.13M
+bench_read(u64_7b)                                           6.59ns  151.84M
+bench_read(u64_8b)                                           6.77ns  147.64M
+bench_read(u64_9b)                                           8.03ns  124.54M
+bench_read(u64_10b)                                          7.72ns  129.51M
+============================================================================
 #endif
