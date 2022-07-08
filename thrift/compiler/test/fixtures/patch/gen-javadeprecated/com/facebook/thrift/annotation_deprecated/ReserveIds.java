@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comparable<ReservedIds> {
-  private static final TStruct STRUCT_DESC = new TStruct("ReservedIds");
+public class ReserveIds implements TBase, java.io.Serializable, Cloneable, Comparable<ReserveIds> {
+  private static final TStruct STRUCT_DESC = new TStruct("ReserveIds");
   private static final TField IDS_FIELD_DESC = new TField("ids", TType.LIST, (short)1);
   private static final TField ID_RANGES_FIELD_DESC = new TField("id_ranges", TType.MAP, (short)2);
 
@@ -51,13 +51,13 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(ReservedIds.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(ReserveIds.class, metaDataMap);
   }
 
-  public ReservedIds() {
+  public ReserveIds() {
   }
 
-  public ReservedIds(
+  public ReserveIds(
       List<Integer> ids,
       Map<Integer,Integer> id_ranges) {
     this();
@@ -82,8 +82,8 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
       return this;
     }
 
-    public ReservedIds build() {
-      ReservedIds result = new ReservedIds();
+    public ReserveIds build() {
+      ReserveIds result = new ReserveIds();
       result.setIds(this.ids);
       result.setId_ranges(this.id_ranges);
       return result;
@@ -97,7 +97,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ReservedIds(ReservedIds other) {
+  public ReserveIds(ReserveIds other) {
     if (other.isSetIds()) {
       this.ids = TBaseHelper.deepCopy(other.ids);
     }
@@ -106,15 +106,15 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
     }
   }
 
-  public ReservedIds deepCopy() {
-    return new ReservedIds(this);
+  public ReserveIds deepCopy() {
+    return new ReserveIds(this);
   }
 
   public List<Integer> getIds() {
     return this.ids;
   }
 
-  public ReservedIds setIds(List<Integer> ids) {
+  public ReserveIds setIds(List<Integer> ids) {
     this.ids = ids;
     return this;
   }
@@ -138,7 +138,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
     return this.id_ranges;
   }
 
-  public ReservedIds setId_ranges(Map<Integer,Integer> id_ranges) {
+  public ReserveIds setId_ranges(Map<Integer,Integer> id_ranges) {
     this.id_ranges = id_ranges;
     return this;
   }
@@ -201,9 +201,9 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof ReservedIds))
+    if (!(_that instanceof ReserveIds))
       return false;
-    ReservedIds that = (ReservedIds)_that;
+    ReserveIds that = (ReserveIds)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetIds(), that.isSetIds(), this.ids, that.ids)) { return false; }
 
@@ -218,7 +218,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   @Override
-  public int compareTo(ReservedIds other) {
+  public int compareTo(ReserveIds other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -353,7 +353,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable, Comp
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("ReservedIds");
+    StringBuilder sb = new StringBuilder("ReserveIds");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

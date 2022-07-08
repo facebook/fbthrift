@@ -436,10 +436,10 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 /**
  * Original thrift struct:-
- * ReservedIds
+ * ReserveIds
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/ReservedIds'))>>
-class ReservedIds implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/ReserveIds'))>>
+class ReserveIds implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -509,13 +509,13 @@ class ReservedIds implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public function getName()[]: string {
-    return 'ReservedIds';
+    return 'ReserveIds';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "thrift.ReservedIds",
+        "name" => "thrift.ReserveIds",
         "fields" => vec[
           \tmeta_ThriftField::fromShape(
             shape(

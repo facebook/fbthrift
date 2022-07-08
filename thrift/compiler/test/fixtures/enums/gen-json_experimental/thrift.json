@@ -45,8 +45,8 @@
         "is_union" : false,
         "lineno" : 61
       },
-      "ReservedIds" : {
-        "name" : "ReservedIds",
+      "ReserveIds" : {
+        "name" : "ReserveIds",
         "fields" : {
           "ids" : {
             "name" : "ids",

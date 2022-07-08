@@ -22,8 +22,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("ReservedIds");
+public class ReserveIds implements TBase, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("ReserveIds");
   private static final TField IDS_FIELD_DESC = new TField("ids", TType.LIST, (short)1);
   private static final TField ID_RANGES_FIELD_DESC = new TField("id_ranges", TType.MAP, (short)2);
 
@@ -32,7 +32,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
   public static final int IDS = 1;
   public static final int ID_RANGES = 2;
 
-  public ReservedIds(
+  public ReserveIds(
       List<Integer> ids,
       Map<Integer,Integer> id_ranges) {
     this.ids = ids;
@@ -42,7 +42,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ReservedIds(ReservedIds other) {
+  public ReserveIds(ReserveIds other) {
     if (other.isSetIds()) {
       this.ids = TBaseHelper.deepCopy(other.ids);
     } else {
@@ -55,8 +55,8 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
     }
   }
 
-  public ReservedIds deepCopy() {
-    return new ReservedIds(this);
+  public ReserveIds deepCopy() {
+    return new ReserveIds(this);
   }
 
   public List<Integer> getIds() {
@@ -83,9 +83,9 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof ReservedIds))
+    if (!(_that instanceof ReserveIds))
       return false;
-    ReservedIds that = (ReservedIds)_that;
+    ReserveIds that = (ReserveIds)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetIds(), that.isSetIds(), this.ids, that.ids)) { return false; }
 
@@ -104,7 +104,7 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
     throw new TException("unimplemented in android immutable structure");
   }
 
-  public static ReservedIds deserialize(TProtocol iprot) throws TException {
+  public static ReserveIds deserialize(TProtocol iprot) throws TException {
     List<Integer> tmp_ids = null;
     Map<Integer,Integer> tmp_id_ranges = null;
     TField __field;
@@ -165,8 +165,8 @@ public class ReservedIds implements TBase, java.io.Serializable, Cloneable {
     }
     iprot.readStructEnd();
 
-    ReservedIds _that;
-    _that = new ReservedIds(
+    ReserveIds _that;
+    _that = new ReserveIds(
       tmp_ids
       ,tmp_id_ranges
     );

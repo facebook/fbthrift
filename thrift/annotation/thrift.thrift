@@ -70,14 +70,14 @@ struct Deprecated {
 // the range of values represented in `id_ranges`. Example:
 //
 //  // These ids are not allowed: 3, 8, half-open ranges [10, 15), [20, 30)
-//  @thrift.ReservedIds{ids = [3, 8], id_ranges = {10: 15, 20: 30}}
+//  @thrift.ReserveIds{ids = [3, 8], id_ranges = {10: 15, 20: 30}}
 //  struct Foo {
 //    ...
 //    3: i64 f;       // Build failure: 3 cannot be used
 //  }
 @scope.Structured
 @scope.FbthriftInternalEnum
-struct ReservedIds {
+struct ReserveIds {
   // Individual ids that cannot be used
   1: list<i32> ids;
   // Represents ranges of ids that cannot be used. Each (key: value) pair

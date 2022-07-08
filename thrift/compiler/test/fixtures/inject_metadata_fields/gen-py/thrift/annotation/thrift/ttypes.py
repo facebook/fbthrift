@@ -30,7 +30,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Testing', 'Deprecated', 'ReservedIds', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'GenDefaultEnumValue', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
+__all__ = ['UTF8STRINGS', 'Beta', 'Experimental', 'Testing', 'Deprecated', 'ReserveIds', 'Legacy', 'RequiresBackwardCompatibility', 'NoExperimental', 'NoBeta', 'NoLegacy', 'NoDeprecated', 'TerseWrite', 'Box', 'Mixin', 'SerializeInFieldIdOrder', 'GenDefaultEnumValue', 'v1', 'v1beta', 'v1alpha', 'v1test', 'NoLegacyAPIs']
 
 class Beta:
   """
@@ -360,7 +360,7 @@ class Deprecated:
   def _to_py_deprecated(self):
     return self
 
-class ReservedIds:
+class ReserveIds:
   """
   Attributes:
    - ids
@@ -431,7 +431,7 @@ class ReservedIds:
     if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
-    oprot.writeStructBegin('ReservedIds')
+    oprot.writeStructBegin('ReserveIds')
     if self.ids != None:
       oprot.writeFieldBegin('ids', TType.LIST, 1)
       oprot.writeListBegin(TType.I32, len(self.ids))
@@ -485,13 +485,13 @@ class ReservedIds:
     import importlib
     import thrift.python.converter
     python_types = importlib.import_module("facebook.thrift.annotation.thrift.thrift_types")
-    return thrift.python.converter.to_python_struct(python_types.ReservedIds, self)
+    return thrift.python.converter.to_python_struct(python_types.ReserveIds, self)
 
   def _to_py3(self):
     import importlib
     import thrift.py3.converter
     py3_types = importlib.import_module("facebook.thrift.annotation.thrift.types")
-    return thrift.py3.converter.to_py3_struct(py3_types.ReservedIds, self)
+    return thrift.py3.converter.to_py3_struct(py3_types.ReserveIds, self)
 
   def _to_py_deprecated(self):
     return self
@@ -1850,31 +1850,31 @@ def Deprecated__setstate__(self, state):
 Deprecated.__getstate__ = lambda self: self.__dict__.copy()
 Deprecated.__setstate__ = Deprecated__setstate__
 
-all_structs.append(ReservedIds)
-ReservedIds.thrift_spec = (
+all_structs.append(ReserveIds)
+ReserveIds.thrift_spec = (
   None, # 0
   (1, TType.LIST, 'ids', (TType.I32,None), None, 2, ), # 1
   (2, TType.MAP, 'id_ranges', (TType.I32,None,TType.I32,None), None, 2, ), # 2
 )
 
-ReservedIds.thrift_struct_annotations = {
+ReserveIds.thrift_struct_annotations = {
 }
-ReservedIds.thrift_field_annotations = {
+ReserveIds.thrift_field_annotations = {
 }
 
-def ReservedIds__init__(self, ids=None, id_ranges=None,):
+def ReserveIds__init__(self, ids=None, id_ranges=None,):
   self.ids = ids
   self.id_ranges = id_ranges
 
-ReservedIds.__init__ = ReservedIds__init__
+ReserveIds.__init__ = ReserveIds__init__
 
-def ReservedIds__setstate__(self, state):
+def ReserveIds__setstate__(self, state):
   state.setdefault('ids', None)
   state.setdefault('id_ranges', None)
   self.__dict__ = state
 
-ReservedIds.__getstate__ = lambda self: self.__dict__.copy()
-ReservedIds.__setstate__ = ReservedIds__setstate__
+ReserveIds.__getstate__ = lambda self: self.__dict__.copy()
+ReserveIds.__setstate__ = ReserveIds__setstate__
 
 all_structs.append(Legacy)
 Legacy.thrift_spec = (

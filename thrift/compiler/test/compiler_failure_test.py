@@ -2017,43 +2017,43 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 include "thrift/annotation/thrift.thrift"
 
-                @thrift.ReservedIds{ids = [3, 8]}
+                @thrift.ReserveIds{ids = [3, 8]}
                 struct IdList {
                   1: i64 a;
                   3: string bad_field;
                 }
 
-                @thrift.ReservedIds{ids = [2], id_ranges = {5: 10, 15: 20}}
+                @thrift.ReserveIds{ids = [2], id_ranges = {5: 10, 15: 20}}
                 struct IdRanges {
                   1: i64 a;
                   10: string bad_field;
                 }
 
-                @thrift.ReservedIds{ids = [3, 8]}
+                @thrift.ReserveIds{ids = [3, 8]}
                 enum EnumWithBadId {
                   A = 0,
                   B = 3,
                 }
 
-                @thrift.ReservedIds{ids = [3, 8]}
+                @thrift.ReserveIds{ids = [3, 8]}
                 union UnionWithBadId {
                   1: i64 a;
                   3: string bad_field;
                 }
 
-                @thrift.ReservedIds{ids = [3, 8]}
+                @thrift.ReserveIds{ids = [3, 8]}
                 safe exception ExceptionWithBadId {
                   1: i64 a;
                   3: string bad_field;
                 }
 
-                @thrift.ReservedIds{id_ranges = {5: 3}}
+                @thrift.ReserveIds{id_ranges = {5: 3}}
                 struct InvalidIdRange {
                   1: i64 a;
                   3: string bad_field;
                 }
 
-                @thrift.ReservedIds{id_ranges = {5: 10}}
+                @thrift.ReserveIds{id_ranges = {5: 10}}
                 struct OkStruct {
                   1: i64 a;
                   12: string b;

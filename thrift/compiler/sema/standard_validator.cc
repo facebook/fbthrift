@@ -51,7 +51,7 @@ namespace {
 constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
 constexpr auto kHackAdapterUri = "facebook.com/thrift/annotation/hack/Adapter";
-constexpr auto kReservedIdsUri = "facebook.com/thrift/annotation/ReservedIds";
+constexpr auto kReserveIdsUri = "facebook.com/thrift/annotation/ReserveIds";
 constexpr auto kCppUnstructuredAdapter = "cpp.adapter";
 constexpr auto kHackUnstructuredAdapter = "hack.adapter";
 
@@ -771,7 +771,7 @@ class reserved_ids_checker {
   std::unordered_set<int32_t> get_reserved_ids(const t_type& node) {
     std::unordered_set<int32_t> reserved_ids;
 
-    auto* annotation = node.find_structured_annotation_or_null(kReservedIdsUri);
+    auto* annotation = node.find_structured_annotation_or_null(kReserveIdsUri);
     if (annotation == nullptr) {
       return reserved_ids;
     }

@@ -51,14 +51,14 @@ void reset_field<::facebook::thrift::annotation::Deprecated>(
 }
 
 template<>
-void reset_field<::facebook::thrift::annotation::ReservedIds>(
-    ::facebook::thrift::annotation::ReservedIds& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::ReserveIds>(
+    ::facebook::thrift::annotation::ReserveIds& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.ids_ref().copy_from(default_inst<::facebook::thrift::annotation::ReservedIds>().ids_ref());
+      obj.ids_ref().copy_from(default_inst<::facebook::thrift::annotation::ReserveIds>().ids_ref());
       return;
     case 1:
-      obj.id_ranges_ref().copy_from(default_inst<::facebook::thrift::annotation::ReservedIds>().id_ranges_ref());
+      obj.id_ranges_ref().copy_from(default_inst<::facebook::thrift::annotation::ReserveIds>().id_ranges_ref());
       return;
   }
 }
@@ -226,7 +226,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::facebook::thrift::annotation::ReservedIds>::namesmap() {
+    ::facebook::thrift::annotation::ReserveIds>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
