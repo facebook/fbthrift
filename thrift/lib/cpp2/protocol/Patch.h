@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/Object.h>
+#include <thrift/lib/thrift/detail/protocol.h>
 
 namespace apache {
 namespace thrift {
@@ -31,7 +32,14 @@ struct ApplyPatch {
 
 } // namespace detail
 
-// TODO: Document.
+/**
+ * Takes protocol Object and targer protocol Value. Makes sure that Object
+ * represents a Patch and tries to apply this patch to the target Value.
+ *
+ * @param patch Object
+ * @param value to be patched
+ * @returns nothing
+ */
 FOLLY_INLINE_VARIABLE constexpr detail::ApplyPatch applyPatch{};
 
 } // namespace protocol

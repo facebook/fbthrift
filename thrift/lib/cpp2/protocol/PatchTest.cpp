@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <stdexcept>
 #include <thrift/lib/cpp2/protocol/Patch.h>
 
 #include <folly/portability/GTest.h>
@@ -22,6 +23,8 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/thrift/gen-cpp2/patch_types.h>
+#include <thrift/test/testset/Testset.h>
 
 namespace apache::thrift::protocol {
 namespace {
@@ -49,7 +52,6 @@ class PatchTest : public testing::Test {
   }
 };
 
-// TODO: Add tests for error cases.
 TEST_F(PatchTest, Bool) {
   // Noop
   EXPECT_TRUE(*apply(op::BoolPatch{}, true).boolValue_ref());
@@ -64,6 +66,17 @@ TEST_F(PatchTest, Bool) {
   // Invert
   EXPECT_TRUE(*apply(!op::BoolPatch{}, false).boolValue_ref());
   EXPECT_FALSE(*apply(!op::BoolPatch{}, true).boolValue_ref());
+
+  // Wrong patch provided
+  EXPECT_THROW(apply(op::I16Patch{}, true), std::runtime_error);
+
+  // Wrong object to patch
+  EXPECT_THROW(
+      apply(op::BoolPatch{}, asValueStruct<type::i16_t>(42)),
+      std::runtime_error);
+
+  // Should we check non-patch objects passed as patch? Previous checks kind of
+  // cover this.
 }
 
 } // namespace
