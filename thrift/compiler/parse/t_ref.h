@@ -31,7 +31,6 @@ template <typename T>
 class t_ref {
  public:
   constexpr t_ref() = default;
-  constexpr t_ref(const t_ref&) noexcept = default;
   constexpr t_ref(std::nullptr_t) noexcept {}
   constexpr t_ref& operator=(const t_ref&) = default;
 
