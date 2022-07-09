@@ -38,7 +38,6 @@
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/gen/testing.h>
-#include <thrift/compiler/util.h>
 
 namespace apache::thrift::compiler {
 namespace {

@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-#pragma once
+#include <thrift/compiler/generate/json.h>
 
-#include <iosfwd>
-#include <string>
-#include <type_traits>
-#include <utility>
+#include <sstream>
+#include <folly/portability/GTest.h>
 
-namespace apache {
-namespace thrift {
-namespace compiler {
+using namespace apache::thrift::compiler;
 
-//  json_quote_ascii
-//
-//  Emits a json quoted-string given an input ascii string.
-std::string json_quote_ascii(std::string const& s);
-std::ostream& json_quote_ascii(std::ostream& o, std::string const& s);
+TEST(JsonTest, json_quote_ascii_string) {
+  auto actual = json_quote_ascii("the\bquick\"brown\nfox\001jumps\201over");
+  EXPECT_EQ("\"the\\bquick\\\"brown\\nfox\\u0001jumps\\u0081over\"", actual);
+}
 
-} // namespace compiler
-} // namespace thrift
-} // namespace apache
+TEST(JsonTest, json_quote_ascii_stream) {
+  std::ostringstream actual;
+  json_quote_ascii(actual, "the\bquick\"brown\nfox\001jumps\201over");
+  EXPECT_EQ(
+      "\"the\\bquick\\\"brown\\nfox\\u0001jumps\\u0081over\"", actual.str());
+}

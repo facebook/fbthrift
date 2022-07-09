@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/util.h>
+#include <thrift/compiler/generate/json.h>
 
 #include <ostream>
 #include <sstream>
-#include <vector>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-std::string json_quote_ascii(std::string const& s) {
+std::string json_quote_ascii(const std::string& s) {
   std::ostringstream o;
   json_quote_ascii(o, s);
   return o.str();
 }
 
-std::ostream& json_quote_ascii(std::ostream& o, std::string const& s) {
+std::ostream& json_quote_ascii(std::ostream& o, const std::string& s) {
   o << "\"";
-  for (char const c : s) {
+  for (char c : s) {
     switch (c) {
       // clang-format off
       case '"':  o << "\\\""; break;
@@ -43,11 +42,11 @@ std::ostream& json_quote_ascii(std::ostream& o, std::string const& s) {
       case '\r': o << "\\r";  break;
       // clang-format on
       default: {
-        uint8_t const b = uint8_t(c);
+        uint8_t b = static_cast<uint8_t>(c);
         if (!(b >= 0x20 && b < 0x80)) {
-          constexpr auto const hex = "0123456789abcdef";
-          auto const c1 = char(hex[(b >> 4) & 0x0f]);
-          auto const c0 = char(hex[(b >> 0) & 0x0f]);
+          constexpr auto hex = "0123456789abcdef";
+          auto c1 = static_cast<char>(hex[(b >> 4) & 0x0f]);
+          auto c0 = static_cast<char>(hex[(b >> 0) & 0x0f]);
           o << "\\u00" << c1 << c0;
         } else {
           o << c;

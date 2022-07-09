@@ -56,7 +56,6 @@ add_library(
   detail/system.cc
   diagnostic.cc
   source_location.cc
-  util.cc
 
   parse/lexer.cc
   parse/lexer.h

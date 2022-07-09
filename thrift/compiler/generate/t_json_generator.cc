@@ -23,9 +23,9 @@
 #include <boost/filesystem.hpp>
 
 #include <sstream>
+#include <thrift/compiler/generate/json.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/util.h>
 
 using namespace std;
 

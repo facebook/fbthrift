@@ -20,9 +20,9 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <thrift/compiler/generate/json.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
-#include <thrift/compiler/util.h>
 
 namespace apache {
 namespace thrift {
