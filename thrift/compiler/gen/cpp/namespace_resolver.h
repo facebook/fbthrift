@@ -65,8 +65,6 @@ class namespace_resolver {
   static std::string gen_unprefixed_namespace(const t_program& progam);
   static std::vector<std::string> gen_namespace_components(
       const t_program& program);
-  static std::vector<std::string> gen_namespace_components_from_package(
-      const t_package& package);
 
  private:
   std::unordered_map<const t_program*, std::string> namespace_cache_;

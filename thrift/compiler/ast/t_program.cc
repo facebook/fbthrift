@@ -79,18 +79,41 @@ const std::string& t_program::get_namespace(const std::string& language) const {
 }
 
 std::vector<std::string> t_program::gen_namespace_or_default(
-    const std::string& language,
-    std::function<std::vector<std::string>()> gen) const {
+    const std::string& language, namespace_config config) const {
+  std::vector<std::string> ret;
+
   auto pos = namespaces_.find(language);
   if (pos != namespaces_.end()) {
-    std::vector<std::string> ret;
     if (!pos->second.empty()) {
       split(ret, pos->second, boost::algorithm::is_any_of("."));
     }
     return ret;
   }
 
-  return gen();
+  // namespace is not defined explicitly. Generating it from package name
+
+  if (package().empty()) {
+    return ret;
+  }
+
+  if (!config.no_domain) {
+    ret = package().domain();
+
+    if (config.no_top_level_domain && !ret.empty()) {
+      ret.pop_back();
+    }
+
+    // We use reverse domain name notation
+    std::reverse(ret.begin(), ret.end());
+  }
+
+  const auto& path = package().path();
+  ret.insert(ret.end(), path.begin(), path.end());
+  if (config.no_filename && !ret.empty() && name() == ret.back()) {
+    ret.pop_back();
+  }
+
+  return ret;
 }
 
 std::unique_ptr<t_program> t_program::add_include(

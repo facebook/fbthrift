@@ -197,9 +197,14 @@ class t_program : public t_named {
    */
   const std::string& get_namespace(const std::string& language) const;
 
+  struct namespace_config {
+    bool no_top_level_domain = false;
+    bool no_domain = false;
+    bool no_filename = false;
+  };
+
   std::vector<std::string> gen_namespace_or_default(
-      const std::string& language,
-      std::function<std::vector<std::string>()> gen) const;
+      const std::string& language, namespace_config config) const;
 
   /**
    * This creates a new program for every thrift file in an

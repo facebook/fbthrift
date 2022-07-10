@@ -60,12 +60,6 @@ std::string quote_java_string(const std::string& unescaped);
  */
 std::string package_to_path(std::string package);
 
-/**
- * Generate java namespace from package
- * Example: "meta.com/foo/bar" -> ["com", "meta", "foo", "bar"]
- */
-std::vector<std::string> gen_namespace_from_package(const t_package& package);
-
 } // namespace java
 } // namespace compiler
 } // namespace thrift

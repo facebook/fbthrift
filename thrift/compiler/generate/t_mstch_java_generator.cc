@@ -37,10 +37,7 @@ namespace {
  */
 std::string get_namespace_or_default(const t_program& prog) {
   auto prog_namespace = boost::algorithm::join(
-      prog.gen_namespace_or_default(
-          "java.swift",
-          [&prog] { return java::gen_namespace_from_package(prog.package()); }),
-      ".");
+      prog.gen_namespace_or_default("java.swift", {}), ".");
   if (prog_namespace != "") {
     return prog_namespace;
   } else {

@@ -25,26 +25,13 @@ namespace compiler {
 namespace gen {
 namespace cpp {
 
-std::vector<std::string>
-namespace_resolver::gen_namespace_components_from_package(
-    const t_package& package) {
-  if (package.empty()) {
-    return {};
-  }
-  std::vector<std::string> ret = {package.domain()[0]};
-  auto&& path = package.path();
-  ret.insert(ret.end(), path.begin(), path.end());
-  return ret;
-}
-
 std::vector<std::string> namespace_resolver::gen_namespace_components(
     const t_program& program) {
-  auto components = program.gen_namespace_or_default("cpp2", [&program] {
-    return gen_namespace_components_from_package(program.package());
-  });
+  t_program::namespace_config conf;
+  conf.no_top_level_domain = true;
+  auto components = program.gen_namespace_or_default("cpp2", conf);
   if (components.empty()) {
-    components = program.gen_namespace_or_default(
-        "cpp", [] { return std::vector<std::string>{}; });
+    components = program.gen_namespace_or_default("cpp", conf);
     components.push_back("cpp2");
   }
   return components;

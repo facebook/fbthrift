@@ -141,20 +141,6 @@ std::string package_to_path(std::string package) {
   return package;
 }
 
-std::vector<std::string> gen_namespace_from_package(const t_package& package) {
-  if (package.empty()) {
-    return {};
-  }
-
-  const auto& domain = package.domain();
-  const auto& path = package.path();
-  std::vector<std::string> ret;
-  ret.reserve(domain.size() + path.size());
-  ret.insert(ret.end(), domain.rbegin(), domain.rend());
-  ret.insert(ret.end(), path.begin(), path.end());
-  return ret;
-}
-
 } // namespace java
 } // namespace compiler
 } // namespace thrift

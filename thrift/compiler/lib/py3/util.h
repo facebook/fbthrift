@@ -28,15 +28,10 @@ namespace thrift {
 namespace compiler {
 
 inline std::vector<std::string> get_py3_namespace(const t_program* prog) {
-  return prog->gen_namespace_or_default("py3", [&prog] {
-    auto ret =
-        gen::cpp::namespace_resolver::gen_namespace_components_from_package(
-            prog->package());
-    if (!ret.empty() && ret.back() == prog->name()) {
-      ret.pop_back();
-    }
-    return ret;
-  });
+  t_program::namespace_config conf;
+  conf.no_top_level_domain = true;
+  conf.no_filename = true;
+  return prog->gen_namespace_or_default("py3", conf);
 }
 
 inline std::string get_py3_namespace_with_name_and_prefix(
