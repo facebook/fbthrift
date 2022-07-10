@@ -17,6 +17,7 @@
 #include <thrift/compiler/sema/standard_validator.h>
 
 #include <algorithm>
+#include <set>
 #include <string>
 #include <unordered_map>
 
@@ -743,6 +744,7 @@ class reserved_ids_checker {
 
   void check(const t_structured& node) {
     auto reserved_ids = get_reserved_ids(node);
+    check_out_of_range_ids(node, reserved_ids);
     for (const auto& field : node.fields()) {
       ctx_.check(
           reserved_ids.count(field.id()) == 0,
@@ -823,6 +825,25 @@ class reserved_ids_checker {
       }
     }
     return reserved_ids;
+  }
+
+  void check_out_of_range_ids(
+      const t_structured& node,
+      const std::unordered_set<int32_t>& reserved_ids) {
+    // Insert into std::set to make sure error message is deterministic
+    std::set<int32_t> out_of_range_ids;
+    for (auto id : reserved_ids) {
+      if (id < std::numeric_limits<std::int16_t>::min() ||
+          std::numeric_limits<std::int16_t>::max() < id) {
+        out_of_range_ids.insert(id);
+      }
+    }
+    for (auto id : out_of_range_ids) {
+      ctx_.failure([&](auto& o) {
+        o << "Struct `" << node.name()
+          << "` cannot have reserved id that is out of range: " << id;
+      });
+    }
   }
 };
 

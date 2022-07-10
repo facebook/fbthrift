@@ -2058,6 +2058,11 @@ class CompilerFailureTest(unittest.TestCase):
                   1: i64 a;
                   12: string b;
                 }
+
+                @thrift.ReserveIds{ids = [-40000, 40000], id_ranges = {-50001: -50000, 50000: 50001}}
+                struct Message {
+                  1: string msg;
+                }
                 """
             ),
         )
@@ -2071,6 +2076,12 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:9] Fields in IdRanges cannot use reserved ids: 10\n"
             "[FAILURE:foo.thrift:21] Fields in UnionWithBadId cannot use reserved ids: 3\n"
             "[FAILURE:foo.thrift:33] For each (start: end) in id_ranges, we must have start < end. Got (5: 3), annotated on InvalidIdRange\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -50001\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -50000\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -40000\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 40000\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 50000\n"
+            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 50001\n"
             "[FAILURE:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
             "[FAILURE:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
         )
