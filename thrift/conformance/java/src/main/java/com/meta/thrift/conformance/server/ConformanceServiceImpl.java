@@ -25,6 +25,7 @@ import org.apache.thrift.conformance.ConformanceService;
 import org.apache.thrift.conformance.RoundTripRequest;
 import org.apache.thrift.conformance.RoundTripResponse;
 import org.apache.thrift.conformance.StandardProtocol;
+import org.apache.thrift.conformance.TestCase;
 
 public class ConformanceServiceImpl implements ConformanceService {
 
@@ -65,6 +66,9 @@ public class ConformanceServiceImpl implements ConformanceService {
       throws TException {
     return roundTrip(request);
   }
+
+  @Override
+  public void sendTestCase(TestCase testCase) throws TException {}
 
   @Override
   public void close() {}

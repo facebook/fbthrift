@@ -19,6 +19,7 @@ from thrift.conformance.serialization.thrift_types import (
     RoundTripRequest,
     RoundTripResponse,
 )
+from thrift.conformance.test_suite.thrift_types import TestCase
 from thrift.python.conformance.omni_registry import OmniAnyRegistry
 from thrift.python.server import ThriftServer
 
@@ -31,6 +32,9 @@ class Handler(ConformanceServiceInterface):
         if protocol is None:
             protocol = request.value.protocol
         return RoundTripResponse(value=registry.store(obj, protocol))
+
+    async def sendTestCase(self, testCase: TestCase):
+        pass
 
 
 async def main():

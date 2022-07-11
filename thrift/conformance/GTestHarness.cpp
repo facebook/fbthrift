@@ -160,6 +160,7 @@ std::set<std::string> parseNonconforming(std::string_view data) {
 
 testing::AssertionResult RunTestCase(
     ConformanceServiceAsyncClient& client, const TestCase& testCase) {
+  client.sync_sendTestCase(testCase);
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());
