@@ -15,7 +15,7 @@
 import asyncio
 
 from thrift.conformance.conformance.thrift_services import ConformanceServiceInterface
-from thrift.conformance.conformance.thrift_types import (
+from thrift.conformance.serialization.thrift_types import (
     RoundTripRequest,
     RoundTripResponse,
 )

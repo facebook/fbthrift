@@ -23,7 +23,7 @@ namespace java.swift org.apache.thrift.conformance
 namespace java2 org.apache.thrift.conformance
 namespace go thrift.conformance.test_suite
 
-include "thrift/conformance/if/conformance.thrift"
+include "thrift/conformance/if/serialization.thrift"
 
 // A Collection of tests.
 struct TestSuite {
@@ -63,13 +63,5 @@ struct TestCase {
 
 // A union of all supported test case types.
 union TestCaseUnion {
-  1: RoundTripTestCase roundTrip;
-}
-
-// Tests if a value round trips correctly.
-struct RoundTripTestCase {
-  // The request for the test.
-  1: conformance.RoundTripRequest request;
-  // The expected output of the test, if different from the input.
-  2: optional conformance.RoundTripResponse expectedResponse;
+  1: serialization.RoundTripTestCase roundTrip;
 }

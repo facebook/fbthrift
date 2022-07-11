@@ -16,19 +16,33 @@
 
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
-namespace py thrift.conformance.conformance
-namespace py.asyncio thrift_asyncio.conformance.conformance
+namespace py thrift.conformance.serialization
+namespace py.asyncio thrift_asyncio.conformance.serialization
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace java2 org.apache.thrift.conformance
-namespace go thrift.conformance.conformance
+namespace go thrift.conformance.serialization
 
-include "thrift/conformance/if/serialization.thrift"
+include "thrift/conformance/if/any.thrift"
+include "thrift/conformance/if/protocol.thrift"
 
-// The conformance test service.
-service ConformanceService {
-  // Unpacks the given value, and repacks it with the given target protocol.
-  serialization.RoundTripResponse roundTrip(
-    1: serialization.RoundTripRequest request,
-  );
+struct RoundTripRequest {
+  // The value to decode and renecode.
+  1: any.Any value;
+
+  // The protocol to use to return the value.
+  // If not specified, `value.protocol` is used.
+  2: optional protocol.ProtocolStruct targetProtocol;
+}
+
+struct RoundTripResponse {
+  1: any.Any value;
+}
+
+// Tests if a value round trips correctly.
+struct RoundTripTestCase {
+  // The request for the test.
+  1: RoundTripRequest request;
+  // The expected output of the test, if different from the input.
+  2: optional RoundTripResponse expectedResponse;
 }
