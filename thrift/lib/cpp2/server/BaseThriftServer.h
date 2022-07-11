@@ -591,6 +591,28 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
+   * Get the maximum queries per second (QPS) this server is allowed
+   * to receive. If we receive more requests than this, we will shed
+   * incoming requests until we refresh our token bucket.
+   *
+   * @return current setting
+   */
+  uint32_t getMaxQps() const override {
+    return thriftConfig_.getMaxQps().get();
+  }
+
+  /**
+   * Set the maximum queries per second (QPS) this server is allowed
+   * to receive.
+   *
+   * @param maxQps new setting for maximum qps
+   */
+  void setMaxQps(uint32_t maxQps) override {
+    thriftConfig_.setMaxQps(
+        folly::observer::makeStaticObserver(maxQps), AttributeSource::OVERRIDE);
+  }
+
+  /**
    * Sets the timeout for joining workers
    * @param timeout new setting for timeout for joining requests.
    */

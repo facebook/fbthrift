@@ -94,6 +94,10 @@ const ServerAttributeDynamic<uint64_t>& ThriftServerConfig::getMaxResponseSize()
   return maxResponseSize_;
 }
 
+const ServerAttributeDynamic<uint32_t>& ThriftServerConfig::getMaxQps() const {
+  return maxQps_;
+}
+
 const ServerAttributeDynamic<bool>& ThriftServerConfig::getUseClientTimeout()
     const {
   return useClientTimeout_;
@@ -319,6 +323,15 @@ void ThriftServerConfig::setMaxResponseSize(
 
 void ThriftServerConfig::unsetMaxResponseSize(AttributeSource source) {
   maxResponseSize_.unset(source);
+}
+
+void ThriftServerConfig::setMaxQps(
+    folly::observer::Observer<uint32_t> maxQps, AttributeSource source) {
+  maxQps_.set(maxQps, source);
+}
+
+void ThriftServerConfig::unsetMaxQps(AttributeSource source) {
+  maxQps_.unset(source);
 }
 
 void ThriftServerConfig::setUseClientTimeout(

@@ -1411,7 +1411,7 @@ PreprocessResult ThriftServer::preprocess(
 folly::Optional<server::ServerConfigs::ErrorCodeAndMessage>
 ThriftServer::checkOverload(
     const transport::THeader::StringToStringMap* readHeaders,
-    const std::string* method) const {
+    const std::string* method) {
   if (UNLIKELY(isOverloaded_ && isOverloaded_(readHeaders, method))) {
     return {std::make_pair(
         kAppOverloadedErrorCode,
@@ -1431,6 +1431,14 @@ ThriftServer::checkOverload(
       return {std::make_pair(
           kOverloadedErrorCode, "load shedding due to max request limit")};
     }
+  }
+
+  if (auto maxQps = getMaxQps(); maxQps > 0 &&
+      (method == nullptr ||
+       !getMethodsBypassMaxRequestsLimit().contains(*method)) &&
+      !qpsTokenBucket_.consume(1.0, maxQps, maxQps)) {
+    return {
+        std::make_pair(kOverloadedErrorCode, "load shedding due to qps limit")};
   }
 
   return {};

@@ -124,6 +124,12 @@ class ThriftServerConfig {
 
   const ServerAttributeDynamic<uint64_t>& getMaxResponseSize() const;
 
+  /**
+   * Get the maximum QPS this server is allowed to handle, above that we will
+   * start shedding additional requests. Enforced via folly/TokenBucket.h.
+   */
+  const ServerAttributeDynamic<uint32_t>& getMaxQps() const;
+
   const ServerAttributeDynamic<bool>& getUseClientTimeout() const;
 
   const ServerAttributeDynamic<bool>& getEnableCodel() const;
@@ -359,6 +365,16 @@ class ThriftServerConfig {
       AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMaxResponseSize(AttributeSource source = AttributeSource::OVERRIDE);
+
+  /**
+   * Sets the maximum QPS this server is allowed to handle, above that we will
+   * start shedding additional requests. Enforced via folly/TokenBucket.h.
+   */
+  void setMaxQps(
+      folly::observer::Observer<uint32_t> maxQps,
+      AttributeSource source = AttributeSource::OVERRIDE);
+
+  void unsetMaxQps(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setUseClientTimeout(
       folly::observer::Observer<bool> useClientTimeout,
@@ -694,6 +710,9 @@ class ThriftServerConfig {
   // Max response size allowed. This is the size of the serialized and
   // transformed response, headers not included. 0 (default) means no limit.
   ServerAttributeDynamic<uint64_t> maxResponseSize_{0};
+
+  // Max qps enforced with tokenbucket -- 0 is disabled.
+  ServerAttributeDynamic<uint32_t> maxQps_{0};
 
   /**
    * The maximum memory usage (in bytes) by each request debug payload.

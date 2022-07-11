@@ -102,7 +102,7 @@ class ServerConfigs {
   using ErrorCodeAndMessage = std::pair<std::string, std::string>;
   virtual folly::Optional<ErrorCodeAndMessage> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders,
-      const std::string* method) const = 0;
+      const std::string* method) = 0;
 
   // @see ThriftServer::preprocess function.
   virtual PreprocessResult preprocess(const PreprocessParams& params) const = 0;
@@ -158,6 +158,9 @@ class ServerConfigs {
 
   virtual uint32_t getMaxRequests() const = 0;
   virtual void setMaxRequests(uint32_t maxRequests) = 0;
+
+  virtual uint32_t getMaxQps() const = 0;
+  virtual void setMaxQps(uint32_t maxQps) = 0;
 
   enum class RequestHandlingCapability { NONE, INTERNAL_METHODS_ONLY, ALL };
   /**

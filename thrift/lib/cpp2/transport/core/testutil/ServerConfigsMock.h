@@ -65,7 +65,7 @@ class ServerConfigsMock : public ServerConfigs {
 
   folly::Optional<ServerConfigs::ErrorCodeAndMessage> checkOverload(
       const transport::THeader::StringToStringMap*,
-      const std::string*) const override {
+      const std::string*) override {
     return {};
   }
 
@@ -96,6 +96,10 @@ class ServerConfigsMock : public ServerConfigs {
     oMaxRequests_.setValue(maxRequests);
   }
 
+  uint32_t getMaxQps() const override { return **oMaxQps_.getObserver(); }
+
+  void setMaxQps(uint32_t maxQps) override { oMaxQps_.setValue(maxQps); }
+
   uint32_t getListenerTos() const override { return 0; }
 
   std::shared_ptr<concurrency::ThreadManager> getThreadManager_deprecated()
@@ -124,6 +128,7 @@ class ServerConfigsMock : public ServerConfigs {
   folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
       oConfig_{AdaptiveConcurrencyController::Config{}};
   folly::observer::SimpleObservable<uint32_t> oMaxRequests_{0};
+  folly::observer::SimpleObservable<uint32_t> oMaxQps_{0};
   AdaptiveConcurrencyController adaptiveConcurrencyController_{
       oConfig_.getObserver(), oMaxRequests_.getObserver()};
 

@@ -31,6 +31,7 @@
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
+#include <folly/TokenBucket.h>
 #include <folly/dynamic.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
 #include <folly/experimental/PrimaryPtr.h>
@@ -200,6 +201,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
   std::optional<std::chrono::milliseconds> sslHandshakeTimeout_;
   std::atomic<std::chrono::steady_clock::duration::rep> lastRequestTime_;
+  // Token bucket used to load shed requests when we've exceeded `getMaxQps()`.
+  folly::DynamicTokenBucket qpsTokenBucket_;
 
   // Includes non-request events in Rocket. Only bumped if idleTimeout set.
   std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
@@ -512,7 +515,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // if overloaded, returns applicable overloaded exception code.
   folly::Optional<server::ServerConfigs::ErrorCodeAndMessage> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
-      const std::string* = nullptr) const final;
+      const std::string* = nullptr) final;
 
   // returns descriptive error if application is unable to process request
   PreprocessResult preprocess(
