@@ -3701,7 +3701,8 @@ string t_py_generator::type_name(const t_type* ttype) {
     return get_real_py_module(program) + "." +
         rename_reserved_keywords(ttype->get_name());
   }
-  if (program != nullptr && program != program_) {
+  if (program != nullptr && program != program_ &&
+      !program_->includes().empty()) {
     return get_real_py_module(program) + ".ttypes." +
         rename_reserved_keywords(ttype->get_name());
   }
