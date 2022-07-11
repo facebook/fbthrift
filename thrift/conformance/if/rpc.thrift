@@ -37,3 +37,11 @@ struct Response {
   1: string data;
   2: optional i32 num;
 }
+
+union ServerTestResult {
+  1: RequestResponseServerTestResult requestResponse;
+}
+
+struct RequestResponseServerTestResult {
+  1: optional Request request;
+}

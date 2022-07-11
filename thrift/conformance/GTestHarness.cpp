@@ -99,6 +99,35 @@ testing::AssertionResult RunRoundTripTest(
   return testing::AssertionSuccess();
 }
 
+testing::AssertionResult RunRequestResponseTest(
+    ConformanceServiceAsyncClient& client,
+    const RequestResponseTestDescription& requestResponse) {
+  if (!requestResponse.request() || !requestResponse.response()) {
+    throw std::invalid_argument("Unimplemented");
+  }
+
+  // Test request-response
+  try {
+    Response res;
+    client.sync_requestResponse(res, *requestResponse.request());
+    if (res != requestResponse.response()) {
+      return testing::AssertionFailure();
+    }
+  } catch (const apache::thrift::TApplicationException&) {
+    return testing::AssertionFailure();
+  }
+
+  // Get result from server
+  ServerTestResult result;
+  client.sync_getTestResult(result);
+
+  if (result.requestResponse_ref()->request() != requestResponse.request()) {
+    return testing::AssertionFailure();
+  }
+
+  return testing::AssertionSuccess();
+}
+
 } // namespace
 
 std::pair<std::string_view, std::string_view> parseNameAndCmd(
@@ -164,6 +193,8 @@ testing::AssertionResult RunTestCase(
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());
+    case TestCaseUnion::Type::requestResponse:
+      return RunRequestResponseTest(client, *testCase.requestResponse_ref());
     default:
       return testing::AssertionFailure()
           << "Unsupported test case type: " << testCase.test()->getType();

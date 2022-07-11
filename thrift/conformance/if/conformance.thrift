@@ -25,6 +25,7 @@ namespace go thrift.conformance.conformance
 
 include "thrift/conformance/if/serialization.thrift"
 include "thrift/conformance/if/test_suite.thrift"
+include "thrift/conformance/if/rpc.thrift"
 
 // The conformance test service.
 service ConformanceService {
@@ -35,4 +36,8 @@ service ConformanceService {
 
   // =================== Conformance framework - Only for Server Tests ===================
   void sendTestCase(1: test_suite.TestCase testCase);
+  rpc.ServerTestResult getTestResult();
+
+  // =================== Request-Response ===================
+  rpc.Response requestResponse(1: rpc.Request req);
 }

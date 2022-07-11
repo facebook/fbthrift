@@ -26,7 +26,17 @@ class ConformanceHandler
   void roundTrip(
       RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
 
-  void sendTestCase(std::unique_ptr<TestCase>) override {}
+  void requestResponse(Response& res, std::unique_ptr<Request> req) override;
+
+  void sendTestCase(std::unique_ptr<TestCase> req) override {
+    testCase_ = std::move(req);
+  }
+
+  void getTestResult(ServerTestResult& res) override { res = result_; }
+
+ private:
+  std::unique_ptr<TestCase> testCase_;
+  ServerTestResult result_;
 };
 
 } // namespace apache::thrift::conformance
