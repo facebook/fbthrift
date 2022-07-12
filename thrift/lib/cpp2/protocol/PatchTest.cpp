@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-#include <stdexcept>
 #include <thrift/lib/cpp2/protocol/Patch.h>
 
+#include <stdexcept>
+
+#include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/Object.h>
 #include <thrift/lib/cpp2/op/Patch.h>
@@ -134,6 +136,81 @@ TEST_F(PatchTest, Double) {
   testNumericPatchObject<op::DoublePatch>(
       asValueStruct<type::double_t>(42),
       [](auto val) { return *val.doubleValue_ref(); });
+}
+
+TEST_F(PatchTest, Binary) {
+  std::string data = "test", patch = "best";
+  auto toPatch = folly::IOBuf::wrapBufferAsValue(data.data(), data.size());
+  auto patchValue = folly::IOBuf::wrapBufferAsValue(patch.data(), patch.size());
+  auto binaryData = asValueStruct<type::binary_t>(toPatch);
+  // Noop
+  EXPECT_TRUE(folly::IOBufEqualTo{}(
+      toPatch, *apply(op::BinaryPatch{}, binaryData).binaryValue_ref()));
+
+  // Assign
+  EXPECT_TRUE(apply(op::BinaryPatch{} = folly::IOBuf(), binaryData)
+                  .binaryValue_ref()
+                  ->empty());
+  EXPECT_TRUE(folly::IOBufEqualTo{}(
+      patchValue,
+      *apply(op::BinaryPatch{} = patchValue, binaryData).binaryValue_ref()));
+
+  // Wrong patch provided
+  EXPECT_THROW(apply(op::I16Patch{}, binaryData), std::runtime_error);
+
+  // Wrong object to patch
+  EXPECT_THROW(
+      apply(op::BinaryPatch{} = patchValue, asValueStruct<type::i16_t>(42)),
+      std::runtime_error);
+}
+
+TEST_F(PatchTest, String) {
+  std::string data = "test", patch = "best";
+  auto stringData = asValueStruct<type::string_t>(data);
+  // Noop
+  EXPECT_EQ(data, *apply(op::StringPatch{}, stringData).stringValue_ref());
+
+  // Assign
+  EXPECT_EQ(
+      patch, *apply(op::StringPatch{} = patch, stringData).stringValue_ref());
+
+  // Clear
+  {
+    op::StringPatch strPatch;
+    strPatch.clear();
+    EXPECT_TRUE(apply(strPatch, stringData).stringValue_ref()->empty());
+  }
+
+  // Append
+  {
+    op::StringPatch strPatch;
+    strPatch.append(patch);
+    EXPECT_EQ(data + patch, *apply(strPatch, stringData).stringValue_ref());
+  }
+
+  // Prepend
+  {
+    op::StringPatch strPatch;
+    strPatch.prepend(patch);
+    EXPECT_EQ(patch + data, *apply(strPatch, stringData).stringValue_ref());
+  }
+
+  // Clear, Append and Prepend in one
+  {
+    op::StringPatch strPatch;
+    strPatch.clear();
+    strPatch.append(patch);
+    strPatch.prepend(patch);
+    EXPECT_EQ(patch + patch, *apply(strPatch, stringData).stringValue_ref());
+  }
+
+  // Wrong patch provided
+  EXPECT_THROW(apply(op::I16Patch{}, stringData), std::runtime_error);
+
+  // Wrong object to patch
+  EXPECT_THROW(
+      apply(op::StringPatch{} = patch, asValueStruct<type::i16_t>(42)),
+      std::runtime_error);
 }
 
 } // namespace

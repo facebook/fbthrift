@@ -35,6 +35,7 @@ struct ApplyPatch {
   void operator()(const Object& patch, int64_t& value) const;
   void operator()(const Object& patch, float& value) const;
   void operator()(const Object& patch, double& value) const;
+  void operator()(const Object& patch, folly::IOBuf& value) const;
 };
 
 } // namespace detail

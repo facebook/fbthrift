@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include <fmt/core.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/op/Get.h>
@@ -115,6 +116,15 @@ void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
       return operator()(patch, *value.floatValue_ref());
     case Value::Type::doubleValue:
       return operator()(patch, *value.doubleValue_ref());
+    case Value::Type::stringValue: {
+      auto binaryValue = folly::IOBuf::wrapBufferAsValue(
+          value.stringValue_ref()->data(), value.stringValue_ref()->size());
+      operator()(patch, binaryValue);
+      value.stringValue_ref() = binaryValue.to<std::string>();
+      return;
+    }
+    case Value::Type::binaryValue:
+      return operator()(patch, *value.binaryValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -149,6 +159,37 @@ void ApplyPatch::operator()(const Object& patch, float& value) const {
 }
 void ApplyPatch::operator()(const Object& patch, double& value) const {
   applyNumericPatch<type::double_t>(patch, value);
+}
+
+void ApplyPatch::operator()(const Object& patch, folly::IOBuf& value) const {
+  checkOps(
+      patch,
+      Value::Type::boolValue,
+      {PatchOp::Assign, PatchOp::Clear, PatchOp::Put, PatchOp::Prepend});
+  if (applyAssign<type::cpp_type<folly::IOBuf, type::binary_t>>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    if (argAs<type::bool_t>(*clear)) {
+      value = folly::IOBuf{};
+    }
+  }
+
+  // Put is Append for string/binary
+  auto* append = findOp(patch, PatchOp::Put);
+  auto* prepend = findOp(patch, PatchOp::Prepend);
+  if (append || prepend) {
+    folly::IOBufQueue queue;
+    if (prepend) {
+      queue.append(argAs<type::binary_t>(*prepend));
+    }
+    queue.append(value);
+    if (append) {
+      queue.append(argAs<type::binary_t>(*append));
+    }
+    value = queue.moveAsValue();
+  }
 }
 
 } // namespace detail
