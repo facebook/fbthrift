@@ -84,12 +84,37 @@ bool applyAssign(const Object& patch, type::native_type<Tag>& value) {
   return false;
 }
 
+template <typename Tag, typename T>
+void applyNumericPatch(const Object& patch, T& value) {
+  constexpr auto valueType = static_cast<Value::Type>(type::base_type_v<Tag>);
+  checkOps(patch, valueType, {PatchOp::Assign, PatchOp::Add});
+  if (applyAssign<Tag>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+  if (auto* arg = findOp(patch, PatchOp::Add)) {
+    value += argAs<Tag>(*arg);
+  }
+}
+
 } // namespace
 
 void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
+  // TODO(afuller): Consider using visitation instead.
   switch (value.getType()) {
     case Value::Type::boolValue:
       return operator()(patch, *value.boolValue_ref());
+    case Value::Type::byteValue:
+      return operator()(patch, *value.byteValue_ref());
+    case Value::Type::i16Value:
+      return operator()(patch, *value.i16Value_ref());
+    case Value::Type::i32Value:
+      return operator()(patch, *value.i32Value_ref());
+    case Value::Type::i64Value:
+      return operator()(patch, *value.i64Value_ref());
+    case Value::Type::floatValue:
+      return operator()(patch, *value.floatValue_ref());
+    case Value::Type::doubleValue:
+      return operator()(patch, *value.doubleValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -105,6 +130,25 @@ void ApplyPatch::operator()(const Object& patch, bool& value) const {
       value = !value;
     }
   }
+}
+
+void ApplyPatch::operator()(const Object& patch, int8_t& value) const {
+  applyNumericPatch<type::byte_t>(patch, value);
+}
+void ApplyPatch::operator()(const Object& patch, int16_t& value) const {
+  applyNumericPatch<type::i16_t>(patch, value);
+}
+void ApplyPatch::operator()(const Object& patch, int32_t& value) const {
+  applyNumericPatch<type::i32_t>(patch, value);
+}
+void ApplyPatch::operator()(const Object& patch, int64_t& value) const {
+  applyNumericPatch<type::i64_t>(patch, value);
+}
+void ApplyPatch::operator()(const Object& patch, float& value) const {
+  applyNumericPatch<type::float_t>(patch, value);
+}
+void ApplyPatch::operator()(const Object& patch, double& value) const {
+  applyNumericPatch<type::double_t>(patch, value);
 }
 
 } // namespace detail

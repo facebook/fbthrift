@@ -29,6 +29,12 @@ struct ApplyPatch {
   // Applies 'patch' to 'value' in-place.
   void operator()(const Object& patch, protocol::Value& value) const;
   void operator()(const Object& patch, bool& value) const;
+  void operator()(const Object& patch, int8_t& value) const;
+  void operator()(const Object& patch, int16_t& value) const;
+  void operator()(const Object& patch, int32_t& value) const;
+  void operator()(const Object& patch, int64_t& value) const;
+  void operator()(const Object& patch, float& value) const;
+  void operator()(const Object& patch, double& value) const;
 };
 
 } // namespace detail

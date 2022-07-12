@@ -50,6 +50,27 @@ class PatchTest : public testing::Test {
   static Value apply(const P& patchStruct, V&& val) {
     return apply(patchStruct, asVal(val));
   }
+
+  template <typename PatchType, typename F>
+  void testNumericPatchObject(Value value, F unpacker) {
+    // Noop
+    EXPECT_EQ(42, unpacker(apply(PatchType{}, value)));
+
+    // Assign
+    EXPECT_EQ(43, unpacker(apply(PatchType{} = 43, value)));
+
+    // Add
+    EXPECT_EQ(43, unpacker(apply(PatchType{} + 1, value)));
+
+    // Subtract
+    EXPECT_EQ(41, unpacker(apply(PatchType{} - 1, value)));
+
+    // Wrong patch provided
+    EXPECT_THROW(apply(op::BoolPatch{}, value), std::runtime_error);
+
+    // Wrong object to patch
+    EXPECT_THROW(apply(PatchType{}, true), std::runtime_error);
+  }
 };
 
 TEST_F(PatchTest, Bool) {
@@ -77,6 +98,42 @@ TEST_F(PatchTest, Bool) {
 
   // Should we check non-patch objects passed as patch? Previous checks kind of
   // cover this.
+}
+
+TEST_F(PatchTest, Byte) {
+  testNumericPatchObject<op::BytePatch>(
+      asValueStruct<type::byte_t>(42),
+      [](auto val) { return *val.byteValue_ref(); });
+}
+
+TEST_F(PatchTest, I16) {
+  testNumericPatchObject<op::I16Patch>(
+      asValueStruct<type::i16_t>(42),
+      [](auto val) { return *val.i16Value_ref(); });
+}
+
+TEST_F(PatchTest, I32) {
+  testNumericPatchObject<op::I32Patch>(
+      asValueStruct<type::i32_t>(42),
+      [](auto val) { return *val.i32Value_ref(); });
+}
+
+TEST_F(PatchTest, I64) {
+  testNumericPatchObject<op::I64Patch>(
+      asValueStruct<type::i64_t>(42),
+      [](auto val) { return *val.i64Value_ref(); });
+}
+
+TEST_F(PatchTest, Float) {
+  testNumericPatchObject<op::FloatPatch>(
+      asValueStruct<type::float_t>(42),
+      [](auto val) { return *val.floatValue_ref(); });
+}
+
+TEST_F(PatchTest, Double) {
+  testNumericPatchObject<op::DoublePatch>(
+      asValueStruct<type::double_t>(42),
+      [](auto val) { return *val.doubleValue_ref(); });
 }
 
 } // namespace
