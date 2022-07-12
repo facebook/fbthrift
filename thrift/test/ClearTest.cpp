@@ -16,6 +16,8 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Clear.h>
+#include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/clear_types.h>
 
 namespace apache::thrift::test {
@@ -112,9 +114,9 @@ TEST(AdaptTest, AdapterClearTestStructOpClear) {
                 adapt_detail::ClearType,
                 AdapterWithContextAndClear,
                 AdaptedWithContext<int64_t, AdapterClearTestStruct, 1>>);
-  using namespace apache::thrift::type;
-  using field_type_tag = field<
-      adapted<AdapterWithContextAndClear, i64_t>,
+  using namespace apache::thrift;
+  using field_type_tag = type::field<
+      type::adapted<AdapterWithContextAndClear, type::i64_t>,
       FieldContext<AdapterClearTestStruct, 1>>;
 
   auto obj = AdapterClearTestStruct();
@@ -122,11 +124,74 @@ TEST(AdaptTest, AdapterClearTestStructOpClear) {
   obj.data()->value = 42;
   obj.meta() = "foo";
 
-  apache::thrift::op::clear<field_type_tag>(*obj.data(), obj);
+  apache::thrift::op::clear<field_type_tag>(obj.data(), obj);
 
   EXPECT_EQ(obj.data()->value, 0);
   EXPECT_EQ(obj.data()->fieldId, 1);
   EXPECT_EQ(*obj.data()->meta, "foo");
+}
+
+// TODO: move this to public header
+template <size_t Ord, typename Struct>
+void clear_struct_impl(Struct& s) {
+  if constexpr (Ord != 0) {
+    using FieldOrdinal = field_ordinal<Ord>;
+    using FieldTag = field::tag<type::struct_t<Struct>, FieldOrdinal>;
+    op::clear<FieldTag>(op::get<type::struct_t<Struct>, FieldOrdinal>(s), s);
+    clear_struct_impl<Ord - 1>(s);
+  }
+}
+
+template <typename Struct>
+void clear_struct(Struct& s) {
+  clear_struct_impl<type::field_size_v<type::struct_t<Struct>>>(s);
+}
+
+TEST(ClearStructTest, StructWithDefaultStruct) {
+  StructWithDefaultStruct obj;
+  clear_struct(obj);
+  checkIsDefault(obj);
+}
+
+TEST(OpClearTest, StructWithDefaultStruct) {
+  {
+    StructWithDefaultStruct obj;
+    clear_struct(obj);
+    checkIsDefault(obj);
+  }
+
+  {
+    auto obj = AdapterClearTestStruct();
+    obj.data()->value = 42;
+    obj.meta() = "foo";
+    clear_struct(obj);
+    EXPECT_EQ(obj.data()->value, 0);
+    EXPECT_EQ(obj.data()->fieldId, 1);
+    EXPECT_EQ(*obj.data()->meta, "");
+  }
+}
+
+TEST(OpClearTest, OptionalField) {
+  OptionalField obj;
+  obj.optional_i32() = 10;
+  obj.boxed_i32() = 20;
+  obj.shared_i32_ref() = std::make_shared<const std::int32_t>(30);
+  obj.unique_i32_ref() = std::make_unique<std::int32_t>(40);
+  clear_struct(obj);
+  EXPECT_FALSE(obj.optional_i32());
+  EXPECT_FALSE(obj.boxed_i32());
+  EXPECT_FALSE(obj.shared_i32_ref());
+  EXPECT_FALSE(obj.unique_i32_ref());
+}
+
+TEST(OpClearTest, TerseWriteField) {
+  TerseWriteField obj;
+  obj.field_1() = 1;
+  EXPECT_EQ(obj.field_1(), 1);
+  EXPECT_EQ(obj.field_2(), 2);
+  clear_struct(obj);
+  EXPECT_EQ(obj.field_1(), 0);
+  EXPECT_EQ(obj.field_2(), 0);
 }
 
 } // namespace

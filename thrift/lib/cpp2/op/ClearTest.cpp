@@ -30,7 +30,7 @@ namespace apache::thrift::op {
 namespace {
 using namespace apache::thrift::test;
 
-template <typename Tag, bool IsAdaptedField = false>
+template <typename Tag, bool IsField = false>
 void testClearImpl(
     const type::native_type<Tag>& expected,
     type::native_type<Tag> unexpected,
@@ -44,9 +44,10 @@ void testClearImpl(
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
   EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
 
-  if constexpr (IsAdaptedField) {
+  if constexpr (IsField) {
+    uint8_t isset = 1;
     TestStruct obj;
-    clear<Tag>(unexpected, obj);
+    clear<Tag>(apache::thrift::detail::make_field_ref(unexpected, isset), obj);
   } else {
     clear<Tag>(unexpected);
   }
@@ -61,8 +62,9 @@ void testClear(
     type::native_type<Tag> unexpected,
     bool emptiable = true) {
   testClearImpl<Tag>(expected, unexpected, emptiable);
-  testClearImpl<type::field<Tag, apache::thrift::FieldContext<TestStruct, 0>>>(
-      expected, unexpected, emptiable);
+  testClearImpl<
+      type::field<Tag, apache::thrift::FieldContext<TestStruct, 0>>,
+      true>(expected, unexpected, emptiable);
 }
 
 TEST(ClearTest, Integral) {

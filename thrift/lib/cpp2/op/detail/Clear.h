@@ -24,6 +24,7 @@
 #if FOLLY_LIBRARY_SANITIZE_ADDRESS
 #include <sanitizer/lsan_interface.h>
 #endif
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/op/Create.h>
@@ -138,19 +139,69 @@ struct Clear<type::adapted<Adapter, Tag>> {
   }
 };
 
-// TODO(dokwon): Support field_ref types.
+// TODO: support union
+struct ClearOptionalField {
+  template <typename T, typename Struct>
+  void operator()(optional_boxed_field_ref<T> field, Struct&) const {
+    field.reset();
+  }
+  template <typename T, typename Struct>
+  void operator()(optional_field_ref<T> field, Struct&) const {
+    field.reset();
+  }
+  template <typename T, typename Struct>
+  void operator()(std::shared_ptr<T>& field, Struct&) const {
+    field = nullptr;
+  }
+  template <typename T, typename Struct>
+  void operator()(std::unique_ptr<T>& field, Struct&) const {
+    field = nullptr;
+  }
+};
+
 template <typename Tag, typename Context>
-struct Clear<type::field<Tag, Context>> : Clear<Tag> {};
+struct Clear<type::field<Tag, Context>> : ClearOptionalField {
+  using ClearOptionalField::operator();
+
+  template <typename T, typename Struct>
+  void operator()(required_field_ref<T> field, Struct&) const {
+    Clear<Tag>{}(*field);
+  }
+
+  template <typename T, typename Struct>
+  void operator()(terse_field_ref<T> field, Struct&) const {
+    Clear<Tag>{}(*field);
+  }
+
+  template <typename T, typename Struct>
+  void operator()(field_ref<T> field, Struct&) const {
+    Clear<Tag>{}(*field);
+  }
+};
 
 template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
 struct Clear<
-    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>> {
+    type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>>
+    : ClearOptionalField {
   using field_adapted_tag =
       type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>;
   static_assert(type::is_concrete_v<field_adapted_tag>, "");
+
+  using ClearOptionalField::operator();
+
   template <typename T>
-  void operator()(T& value, Struct& obj) const {
-    ::apache::thrift::adapt_detail::clear<Adapter, FieldId>(value, obj);
+  void operator()(required_field_ref<T> field, Struct& s) const {
+    ::apache::thrift::adapt_detail::clear<Adapter, FieldId>(*field, s);
+  }
+
+  template <typename T>
+  void operator()(terse_field_ref<T> field, Struct& s) const {
+    ::apache::thrift::adapt_detail::clear<Adapter, FieldId>(*field, s);
+  }
+
+  template <typename T>
+  void operator()(field_ref<T> field, Struct& s) const {
+    ::apache::thrift::adapt_detail::clear<Adapter, FieldId>(*field, s);
   }
 };
 

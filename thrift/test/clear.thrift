@@ -16,7 +16,10 @@
 
 namespace cpp2 apache.thrift.test
 
+package "facebook.com/thrift/test"
+
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 
 cpp_include "thrift/test/AdapterTest.h"
 
@@ -79,4 +82,20 @@ struct AdapterClearTestStruct {
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContextAndClear"}
   1: i64 data;
   2: string meta;
+}
+
+@thrift.TerseWrite
+struct TerseWriteField {
+  1: i32 field_1;
+  2: i32 field_2 = 2;
+}
+
+struct OptionalField {
+  1: optional i32 optional_i32;
+  @thrift.Box
+  2: optional i32 boxed_i32;
+  @cpp.Ref{type = cpp.RefType.Shared}
+  3: optional i32 shared_i32;
+  @cpp.Ref{type = cpp.RefType.Unique}
+  4: optional i32 unique_i32;
 }
