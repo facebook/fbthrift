@@ -27,8 +27,8 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     public MyStructField22Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final Set<String> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE) final Set<String> remove,
-        @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE) final Set<String> add
+        @com.facebook.swift.codec.ThriftField(value=7, name="remove", requiredness=Requiredness.NONE) final Set<String> remove,
+        @com.facebook.swift.codec.ThriftField(value=8, name="add", requiredness=Requiredness.NONE) final Set<String> add
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -67,7 +67,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=7, name="remove", requiredness=Requiredness.NONE)
         public Builder setRemove(Set<String> remove) {
             this.remove = remove;
             return this;
@@ -75,7 +75,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
         public Set<String> getRemove() { return remove; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=8, name="add", requiredness=Requiredness.NONE)
         public Builder setAdd(Set<String> add) {
             this.add = add;
             return this;
@@ -113,11 +113,11 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
         private final Set<String> remove;
-    public static final int _REMOVE = 4;
-    private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)4);
+    public static final int _REMOVE = 7;
+    private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)7);
         private final Set<String> add;
-    public static final int _ADD = 5;
-    private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)5);
+    public static final int _ADD = 8;
+    private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)8);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -125,12 +125,12 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("remove", 4);
-      THRIFT_NAMES_TO_IDS.put("remove", 4);
-      FIELD_METADATA.put(4, REMOVE_FIELD_DESC);
-      NAMES_TO_IDS.put("add", 5);
-      THRIFT_NAMES_TO_IDS.put("add", 5);
-      FIELD_METADATA.put(5, ADD_FIELD_DESC);
+      NAMES_TO_IDS.put("remove", 7);
+      THRIFT_NAMES_TO_IDS.put("remove", 7);
+      FIELD_METADATA.put(7, REMOVE_FIELD_DESC);
+      NAMES_TO_IDS.put("add", 8);
+      THRIFT_NAMES_TO_IDS.put("add", 8);
+      FIELD_METADATA.put(8, ADD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField22Patch"), 
         MyStructField22Patch.class, MyStructField22Patch::read0));
@@ -147,12 +147,12 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=7, name="remove", requiredness=Requiredness.NONE)
     public Set<String> getRemove() { return remove; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=8, name="add", requiredness=Requiredness.NONE)
     public Set<String> getAdd() { return add; }
     
     @java.lang.Override

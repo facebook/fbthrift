@@ -28,8 +28,8 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
   private static final TStruct STRUCT_DESC = new TStruct("MyStructField22Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.SET, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)4);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)5);
+  private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)7);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)8);
 
   /**
    * Assigns a value. If set, all other operations are ignored.
@@ -49,8 +49,8 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
   public final Set<String> add;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
-  public static final int REMOVE = 4;
-  public static final int ADD = 5;
+  public static final int REMOVE = 7;
+  public static final int ADD = 8;
 
   public MyStructField22Patch(
       Set<String> assign,

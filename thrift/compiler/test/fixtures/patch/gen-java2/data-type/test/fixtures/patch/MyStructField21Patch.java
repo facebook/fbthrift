@@ -27,8 +27,8 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     public MyStructField21Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final List<Short> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
-        @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE) final List<Short> append
+        @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
+        @com.facebook.swift.codec.ThriftField(value=9, name="append", requiredness=Requiredness.NONE) final List<Short> append
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -67,7 +67,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE)
         public Builder setPrepend(List<Short> prepend) {
             this.prepend = prepend;
             return this;
@@ -75,7 +75,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public List<Short> getPrepend() { return prepend; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="append", requiredness=Requiredness.NONE)
         public Builder setAppend(List<Short> append) {
             this.append = append;
             return this;
@@ -113,11 +113,11 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
         private final List<Short> prepend;
-    public static final int _PREPEND = 4;
-    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)4);
+    public static final int _PREPEND = 10;
+    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)10);
         private final List<Short> append;
-    public static final int _APPEND = 5;
-    private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)5);
+    public static final int _APPEND = 9;
+    private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)9);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -125,12 +125,12 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("prepend", 4);
-      THRIFT_NAMES_TO_IDS.put("prepend", 4);
-      FIELD_METADATA.put(4, PREPEND_FIELD_DESC);
-      NAMES_TO_IDS.put("append", 5);
-      THRIFT_NAMES_TO_IDS.put("append", 5);
-      FIELD_METADATA.put(5, APPEND_FIELD_DESC);
+      NAMES_TO_IDS.put("prepend", 10);
+      THRIFT_NAMES_TO_IDS.put("prepend", 10);
+      FIELD_METADATA.put(10, PREPEND_FIELD_DESC);
+      NAMES_TO_IDS.put("append", 9);
+      THRIFT_NAMES_TO_IDS.put("append", 9);
+      FIELD_METADATA.put(9, APPEND_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField21Patch"), 
         MyStructField21Patch.class, MyStructField21Patch::read0));
@@ -147,12 +147,12 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE)
     public List<Short> getPrepend() { return prepend; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="append", requiredness=Requiredness.NONE)
     public List<Short> getAppend() { return append; }
     
     @java.lang.Override

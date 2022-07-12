@@ -361,7 +361,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -428,7 +428,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -477,7 +477,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -564,7 +564,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -613,7 +613,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -899,7 +899,7 @@
           "prepend" : {
             "name" : "prepend",
             "docstring" : "Prepends to the front of a given list.\n",
-            "key" : 4,
+            "key" : 10,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -910,7 +910,7 @@
           "append" : {
             "name" : "append",
             "docstring" : "Appends to the back of a given list.\n",
-            "key" : 5,
+            "key" : 9,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -959,7 +959,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -997,7 +997,7 @@
           "remove" : {
             "name" : "remove",
             "docstring" : "Removes entries, if present. Applies thrid.\n",
-            "key" : 4,
+            "key" : 7,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -1008,7 +1008,7 @@
           "add" : {
             "name" : "add",
             "docstring" : "Adds entries, if not already present. Applies fourth.\n",
-            "key" : 5,
+            "key" : 8,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -1057,7 +1057,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -1096,7 +1096,7 @@
           "put" : {
             "name" : "put",
             "docstring" : "Adds or replaces the given key/value pairs. Applies Second.\n",
-            "key" : 7,
+            "key" : 9,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -1147,7 +1147,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {
@@ -1234,7 +1234,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 5,
+            "key" : 6,
             "lineno" : 22,
             "required" : "opt-in-req-out",
             "type" : {

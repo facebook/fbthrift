@@ -1976,7 +1976,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyData::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyDataValuePatch::class,
@@ -1986,7 +1986,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -2003,7 +2003,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
     ?'patchAfter' => ?\fixtures\patch\MyDataValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 3365710564040561421;
+  const int STRUCTURAL_ID = 6522584910828194334;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2029,7 +2029,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyDataValuePatch patchAfter
+   * 6: struct module.MyDataValuePatch patchAfter
    */
   public ?\fixtures\patch\MyDataValuePatch $patchAfter;
 
@@ -2106,7 +2106,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -2383,7 +2383,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\InnerUnion::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\InnerUnionPatch::class,
@@ -2393,7 +2393,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -2410,7 +2410,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     ?'patchAfter' => ?\fixtures\patch\InnerUnionPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7701717709566785682;
+  const int STRUCTURAL_ID = 4311008690403865628;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2436,7 +2436,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.InnerUnionPatch patchAfter
+   * 6: struct module.InnerUnionPatch patchAfter
    */
   public ?\fixtures\patch\InnerUnionPatch $patchAfter;
 
@@ -2512,7 +2512,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -2647,7 +2647,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\InnerUnion::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\InnerUnionValuePatch::class,
@@ -2657,7 +2657,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -2674,7 +2674,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\InnerUnionValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5093727267085472978;
+  const int STRUCTURAL_ID = 7663654509649247494;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2700,7 +2700,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.InnerUnionValuePatch patchAfter
+   * 6: struct module.InnerUnionValuePatch patchAfter
    */
   public ?\fixtures\patch\InnerUnionValuePatch $patchAfter;
 
@@ -2777,7 +2777,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -3158,7 +3158,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyUnion::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyUnionPatch::class,
@@ -3168,7 +3168,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -3185,7 +3185,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?\fixtures\patch\MyUnionPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 305167005019819383;
+  const int STRUCTURAL_ID = 4587627317551787981;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3211,7 +3211,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyUnionPatch patchAfter
+   * 6: struct module.MyUnionPatch patchAfter
    */
   public ?\fixtures\patch\MyUnionPatch $patchAfter;
 
@@ -3287,7 +3287,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -3422,7 +3422,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyUnion::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyUnionValuePatch::class,
@@ -3432,7 +3432,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -3449,7 +3449,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
     ?'patchAfter' => ?\fixtures\patch\MyUnionValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 3542537273181542021;
+  const int STRUCTURAL_ID = 2372586242166173315;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3475,7 +3475,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyUnionValuePatch patchAfter
+   * 6: struct module.MyUnionValuePatch patchAfter
    */
   public ?\fixtures\patch\MyUnionValuePatch $patchAfter;
 
@@ -3552,7 +3552,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -5010,7 +5010,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       'var' => 'clear',
       'type' => \TType::BOOL,
     ),
-    4 => shape(
+    10 => shape(
       'var' => 'prepend',
       'type' => \TType::LST,
       'etype' => \TType::I16,
@@ -5019,7 +5019,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       ),
       'format' => 'collection',
     ),
-    5 => shape(
+    9 => shape(
       'var' => 'append',
       'type' => \TType::LST,
       'etype' => \TType::I16,
@@ -5032,8 +5032,8 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
-    'prepend' => 4,
-    'append' => 5,
+    'prepend' => 10,
+    'append' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -5050,7 +5050,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'append' => vec<int>,
     ...
   );
-  const int STRUCTURAL_ID = 4256906023524413972;
+  const int STRUCTURAL_ID = 4816181056566650979;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -5069,14 +5069,14 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    * Prepends to the front of a given list.
    * 
    * Original thrift field:-
-   * 4: list<i16> prepend
+   * 10: list<i16> prepend
    */
   public Vector<int> $prepend;
   /**
    * Appends to the back of a given list.
    * 
    * Original thrift field:-
-   * 5: list<i16> append
+   * 9: list<i16> append
    */
   public Vector<int> $append;
 
@@ -5142,7 +5142,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 10,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_list" => \tmeta_ThriftListType::fromShape(
@@ -5161,7 +5161,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 9,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_list" => \tmeta_ThriftListType::fromShape(
@@ -5308,7 +5308,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
       ),
       'format' => 'collection',
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyStructField21Patch::class,
@@ -5318,7 +5318,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -5335,7 +5335,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField21Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 4095824536033136952;
+  const int STRUCTURAL_ID = 399677568138600541;
   /**
    * Clears any set value. Applies first.
    * 
@@ -5361,7 +5361,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyStructField21Patch patchAfter
+   * 6: struct module.MyStructField21Patch patchAfter
    */
   public ?\fixtures\patch\MyStructField21Patch $patchAfter;
 
@@ -5442,7 +5442,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -5586,7 +5586,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       'var' => 'clear',
       'type' => \TType::BOOL,
     ),
-    4 => shape(
+    7 => shape(
       'var' => 'remove',
       'type' => \TType::SET,
       'etype' => \TType::STRING,
@@ -5595,7 +5595,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       ),
       'format' => 'collection',
     ),
-    5 => shape(
+    8 => shape(
       'var' => 'add',
       'type' => \TType::SET,
       'etype' => \TType::STRING,
@@ -5608,8 +5608,8 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
-    'remove' => 4,
-    'add' => 5,
+    'remove' => 7,
+    'add' => 8,
   ];
 
   const type TConstructorShape = shape(
@@ -5626,7 +5626,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'add' => dict<string, bool>,
     ...
   );
-  const int STRUCTURAL_ID = 8177727502465209939;
+  const int STRUCTURAL_ID = 5127750308738770244;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -5645,14 +5645,14 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    * Removes entries, if present. Applies thrid.
    * 
    * Original thrift field:-
-   * 4: set<string> remove
+   * 7: set<string> remove
    */
   public Set<string> $remove;
   /**
    * Adds entries, if not already present. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: set<string> add
+   * 8: set<string> add
    */
   public Set<string> $add;
 
@@ -5718,7 +5718,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 7,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_set" => \tmeta_ThriftSetType::fromShape(
@@ -5737,7 +5737,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 8,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_set" => \tmeta_ThriftSetType::fromShape(
@@ -5869,7 +5869,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
       ),
       'format' => 'collection',
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyStructField22Patch::class,
@@ -5879,7 +5879,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -5896,7 +5896,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField22Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2046524193018424240;
+  const int STRUCTURAL_ID = 6625713450872318421;
   /**
    * Clears any set value. Applies first.
    * 
@@ -5922,7 +5922,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyStructField22Patch patchAfter
+   * 6: struct module.MyStructField22Patch patchAfter
    */
   public ?\fixtures\patch\MyStructField22Patch $patchAfter;
 
@@ -6003,7 +6003,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -6146,7 +6146,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       'var' => 'clear',
       'type' => \TType::BOOL,
     ),
-    7 => shape(
+    9 => shape(
       'var' => 'put',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
@@ -6163,7 +6163,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
-    'put' => 7,
+    'put' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -6178,7 +6178,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'put' => dict<string, string>,
     ...
   );
-  const int STRUCTURAL_ID = 703634612098794818;
+  const int STRUCTURAL_ID = 7333479681602234485;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -6197,7 +6197,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    * Adds or replaces the given key/value pairs. Applies Second.
    * 
    * Original thrift field:-
-   * 7: map<string, string> put
+   * 9: map<string, string> put
    */
   public Map<string, string> $put;
 
@@ -6266,7 +6266,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 7,
+              "id" => 9,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_map" => \tmeta_ThriftMapType::fromShape(
@@ -6395,7 +6395,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
       ),
       'format' => 'collection',
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyStructField23Patch::class,
@@ -6405,7 +6405,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -6422,7 +6422,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField23Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5711935609534114541;
+  const int STRUCTURAL_ID = 130886248632223471;
   /**
    * Clears any set value. Applies first.
    * 
@@ -6448,7 +6448,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyStructField23Patch patchAfter
+   * 6: struct module.MyStructField23Patch patchAfter
    */
   public ?\fixtures\patch\MyStructField23Patch $patchAfter;
 
@@ -6534,7 +6534,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(
@@ -6887,7 +6887,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyStruct::class,
     ),
-    5 => shape(
+    6 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => \fixtures\patch\MyStructValuePatch::class,
@@ -6897,7 +6897,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
     'clear' => 2,
     'patch' => 3,
     'ensure' => 4,
-    'patchAfter' => 5,
+    'patchAfter' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -6914,7 +6914,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
     ?'patchAfter' => ?\fixtures\patch\MyStructValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5228484313055784520;
+  const int STRUCTURAL_ID = 4091773926166036521;
   /**
    * Clears any set value. Applies first.
    * 
@@ -6940,7 +6940,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 5: struct module.MyStructValuePatch patchAfter
+   * 6: struct module.MyStructValuePatch patchAfter
    */
   public ?\fixtures\patch\MyStructValuePatch $patchAfter;
 
@@ -7017,7 +7017,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
           ),
           \tmeta_ThriftField::fromShape(
             shape(
-              "id" => 5,
+              "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => \tmeta_ThriftStructType::fromShape(

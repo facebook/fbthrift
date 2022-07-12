@@ -150,25 +150,23 @@ struct StructGen {
 struct PatchGen : StructGen {
   // Standardized patch field ids.
   enum t_patch_field_id : t_field_id {
+    // All values.
     kAssignId = 1,
     kClearId = 2,
+
+    // Optional, Union, Struct
     kPatchId = 3,
-
-    // Optional, Union
     kEnsureId = 4,
-    kPatchAfterId = 5,
-
-    // List, String, Binary
-    kPrependId = 4,
-    kAppendId = 5,
+    kPatchAfterId = 6,
 
     // Set, Map, Number
-    kRemoveId = 4,
-    kAddId = 5,
+    kRemoveId = 7,
+    kAddId = 8,
+    kPutId = 9,
 
-    // TODO(afuller): Add 'replace' op.
-    // kReplaceId = 6,
-    kPutId = 7, // Map Patch
+    // List, String, Binary
+    kAppendId = 9,
+    kPrependId = 10,
   };
 
   // {kAssignId}: optional {type} assign (thrift.box);

@@ -27,12 +27,12 @@ import com.facebook.thrift.protocol.*;
 public class I32Patch implements TBase, java.io.Serializable, Cloneable, Comparable<I32Patch> {
   private static final TStruct STRUCT_DESC = new TStruct("I32Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.I32, (short)1);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.I32, (short)5);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.I32, (short)8);
 
   public int assign;
   public int add;
   public static final int ASSIGN = 1;
-  public static final int ADD = 5;
+  public static final int ADD = 8;
 
   // isset id assignments
   private static final int __ASSIGN_ISSET_ID = 0;

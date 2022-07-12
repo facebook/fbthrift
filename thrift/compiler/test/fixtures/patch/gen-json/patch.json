@@ -3,19 +3,26 @@
   "thrift_module" : "patch",
   "enumerations" : {
     "PatchOp" : {
-      "lineno" : 203,
+      "lineno" : 207,
       "constants" : {
         "Assign" : 1,
-        "Add" : 5,
+        "Clear" : 2,
+        "Patch" : 3,
+        "Ensure" : 4,
+        "PatchAfter" : 6,
+        "Remove" : 7,
+        "Add" : 8,
+        "Put" : 9,
+        "Prepend" : 10,
         "Unspecified" : 0
       },
       "source_range" : {
         "begin" : {
-          "line" : 202,
+          "line" : 206,
           "column" : 1
         },
         "end" : {
-          "line" : 206,
+          "line" : 246,
           "column" : 2
         }
       }
@@ -422,33 +429,33 @@
             }
           }
         },
-        "prepend" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 181,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 181,
-              "column" : 20
-            }
-          }
-        },
         "append" : {
           "type_enum" : "STRING",
           "spec_args" : null,
           "required" : true,
           "source_range" : {
             "begin" : {
+              "line" : 181,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 181,
+              "column" : 19
+            }
+          }
+        },
+        "prepend" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
               "line" : 184,
               "column" : 3
             },
             "end" : {
               "line" : 184,
-              "column" : 19
+              "column" : 21
             }
           }
         }

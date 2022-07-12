@@ -3603,7 +3603,7 @@ class OptionalMyDataValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -3630,7 +3630,7 @@ class OptionalMyDataValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -3640,7 +3640,7 @@ class OptionalMyDataValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -3678,7 +3678,7 @@ class OptionalMyDataValuePatchStruct final  {
   OptionalMyDataValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4073,7 +4073,7 @@ class InnerUnionValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4100,7 +4100,7 @@ class InnerUnionValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -4110,7 +4110,7 @@ class InnerUnionValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -4148,7 +4148,7 @@ class InnerUnionValuePatchStruct final  {
   InnerUnionValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4398,7 +4398,7 @@ class OptionalInnerUnionValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4425,7 +4425,7 @@ class OptionalInnerUnionValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -4435,7 +4435,7 @@ class OptionalInnerUnionValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -4473,7 +4473,7 @@ class OptionalInnerUnionValuePatchStruct final  {
   OptionalInnerUnionValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4970,7 +4970,7 @@ class MyUnionValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4997,7 +4997,7 @@ class MyUnionValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -5007,7 +5007,7 @@ class MyUnionValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -5045,7 +5045,7 @@ class MyUnionValuePatchStruct final  {
   MyUnionValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -5295,7 +5295,7 @@ class OptionalMyUnionValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -5322,7 +5322,7 @@ class OptionalMyUnionValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -5332,7 +5332,7 @@ class OptionalMyUnionValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -5370,7 +5370,7 @@ class OptionalMyUnionValuePatchStruct final  {
   OptionalMyUnionValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -5610,8 +5610,8 @@ class MyStructField21PatchStruct final  {
                                                    void,
                                                    ::apache::thrift::field_id<1>,
                                                    ::apache::thrift::field_id<2>,
-                                                   ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<10>,
+                                                   ::apache::thrift::field_id<9>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -5636,9 +5636,9 @@ class MyStructField21PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::assign> = 1;
     template<> static constexpr int value<::apache::thrift::field_id<2>> = 2;
     template<> static constexpr int value<::apache::thrift::tag::clear> = 2;
-    template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
+    template<> static constexpr int value<::apache::thrift::field_id<10>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::prepend> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<9>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::append> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -5646,9 +5646,9 @@ class MyStructField21PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::assign>) { return 1; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::clear>) { return 2; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<10>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::prepend>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<9>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::append>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -5954,7 +5954,7 @@ class OptionalMyStructField21PatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -5981,7 +5981,7 @@ class OptionalMyStructField21PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -5991,7 +5991,7 @@ class OptionalMyStructField21PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -6029,7 +6029,7 @@ class OptionalMyStructField21PatchStruct final  {
   OptionalMyStructField21PatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6279,8 +6279,8 @@ class MyStructField22PatchStruct final  {
                                                    void,
                                                    ::apache::thrift::field_id<1>,
                                                    ::apache::thrift::field_id<2>,
-                                                   ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<7>,
+                                                   ::apache::thrift::field_id<8>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -6305,9 +6305,9 @@ class MyStructField22PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::assign> = 1;
     template<> static constexpr int value<::apache::thrift::field_id<2>> = 2;
     template<> static constexpr int value<::apache::thrift::tag::clear> = 2;
-    template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
+    template<> static constexpr int value<::apache::thrift::field_id<7>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::remove> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<8>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::add> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -6315,9 +6315,9 @@ class MyStructField22PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::assign>) { return 1; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::clear>) { return 2; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<7>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::remove>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<8>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::add>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -6623,7 +6623,7 @@ class OptionalMyStructField22PatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -6650,7 +6650,7 @@ class OptionalMyStructField22PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -6660,7 +6660,7 @@ class OptionalMyStructField22PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -6698,7 +6698,7 @@ class OptionalMyStructField22PatchStruct final  {
   OptionalMyStructField22PatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6948,7 +6948,7 @@ class MyStructField23PatchStruct final  {
                                                    void,
                                                    ::apache::thrift::field_id<1>,
                                                    ::apache::thrift::field_id<2>,
-                                                   ::apache::thrift::field_id<7>>;
+                                                   ::apache::thrift::field_id<9>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -6971,7 +6971,7 @@ class MyStructField23PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::assign> = 1;
     template<> static constexpr int value<::apache::thrift::field_id<2>> = 2;
     template<> static constexpr int value<::apache::thrift::tag::clear> = 2;
-    template<> static constexpr int value<::apache::thrift::field_id<7>> = 3;
+    template<> static constexpr int value<::apache::thrift::field_id<9>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::put> = 3;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -6979,7 +6979,7 @@ class MyStructField23PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::assign>) { return 1; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::clear>) { return 2; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<7>>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<9>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::put>) { return 3; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -7233,7 +7233,7 @@ class OptionalMyStructField23PatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -7260,7 +7260,7 @@ class OptionalMyStructField23PatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -7270,7 +7270,7 @@ class OptionalMyStructField23PatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -7308,7 +7308,7 @@ class OptionalMyStructField23PatchStruct final  {
   OptionalMyStructField23PatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -9151,7 +9151,7 @@ class OptionalMyStructValuePatchStruct final  {
                                                    ::apache::thrift::field_id<2>,
                                                    ::apache::thrift::field_id<3>,
                                                    ::apache::thrift::field_id<4>,
-                                                   ::apache::thrift::field_id<5>>;
+                                                   ::apache::thrift::field_id<6>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -9178,7 +9178,7 @@ class OptionalMyStructValuePatchStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::patch> = 2;
     template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
     template<> static constexpr int value<::apache::thrift::tag::ensure> = 3;
-    template<> static constexpr int value<::apache::thrift::field_id<5>> = 4;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
     template<> static constexpr int value<::apache::thrift::tag::patchAfter> = 4;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
@@ -9188,7 +9188,7 @@ class OptionalMyStructValuePatchStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patch>) { return 2; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::ensure>) { return 3; }
-    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<5>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::patchAfter>) { return 4; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
@@ -9226,7 +9226,7 @@ class OptionalMyStructValuePatchStruct final  {
   OptionalMyStructValuePatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -28,7 +28,7 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   private static final TStruct STRUCT_DESC = new TStruct("MyStructField23Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.MAP, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)7);
+  private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)9);
 
   /**
    * Assigns a value. If set, all other operations are ignored.
@@ -44,7 +44,7 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   public Map<String,String> put;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
-  public static final int PUT = 7;
+  public static final int PUT = 9;
 
   // isset id assignments
   private static final int __CLEAR_ISSET_ID = 0;

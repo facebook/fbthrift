@@ -1128,7 +1128,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -1145,7 +1145,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -1159,7 +1159,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -1291,7 +1291,7 @@ where
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
         ::fbthrift::Serialize::write(&self.ensure, p);
         p.write_field_end();
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -1308,7 +1308,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -1322,7 +1322,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -1388,7 +1388,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -1405,7 +1405,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -1419,7 +1419,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -1569,7 +1569,7 @@ where
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
         ::fbthrift::Serialize::write(&self.ensure, p);
         p.write_field_end();
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -1586,7 +1586,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -1600,7 +1600,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -1666,7 +1666,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -1683,7 +1683,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -1697,7 +1697,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2035,10 +2035,10 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("prepend", ::fbthrift::TType::List, 4);
+        p.write_field_begin("prepend", ::fbthrift::TType::List, 10);
         ::fbthrift::Serialize::write(&self.prepend, p);
         p.write_field_end();
-        p.write_field_begin("append", ::fbthrift::TType::List, 5);
+        p.write_field_begin("append", ::fbthrift::TType::List, 9);
         ::fbthrift::Serialize::write(&self.append, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2052,10 +2052,10 @@ where
 {
     fn read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
-            ::fbthrift::Field::new("append", ::fbthrift::TType::List, 5),
+            ::fbthrift::Field::new("append", ::fbthrift::TType::List, 9),
             ::fbthrift::Field::new("assign", ::fbthrift::TType::List, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-            ::fbthrift::Field::new("prepend", ::fbthrift::TType::List, 4),
+            ::fbthrift::Field::new("prepend", ::fbthrift::TType::List, 10),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
@@ -2068,8 +2068,8 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::List, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::List, 4) => field_prepend = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::List, 5) => field_append = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::List, 10) => field_prepend = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::List, 9) => field_append = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2135,7 +2135,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2152,7 +2152,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::List, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -2166,7 +2166,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::List, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2229,10 +2229,10 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("remove", ::fbthrift::TType::Set, 4);
+        p.write_field_begin("remove", ::fbthrift::TType::Set, 7);
         ::fbthrift::Serialize::write(&self.remove, p);
         p.write_field_end();
-        p.write_field_begin("add", ::fbthrift::TType::Set, 5);
+        p.write_field_begin("add", ::fbthrift::TType::Set, 8);
         ::fbthrift::Serialize::write(&self.add, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2246,10 +2246,10 @@ where
 {
     fn read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
-            ::fbthrift::Field::new("add", ::fbthrift::TType::Set, 5),
+            ::fbthrift::Field::new("add", ::fbthrift::TType::Set, 8),
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Set, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-            ::fbthrift::Field::new("remove", ::fbthrift::TType::Set, 4),
+            ::fbthrift::Field::new("remove", ::fbthrift::TType::Set, 7),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
@@ -2262,8 +2262,8 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Set, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Set, 4) => field_remove = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Set, 5) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Set, 7) => field_remove = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Set, 8) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2329,7 +2329,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2346,7 +2346,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Set, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -2360,7 +2360,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Set, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2421,7 +2421,7 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("put", ::fbthrift::TType::Map, 7);
+        p.write_field_begin("put", ::fbthrift::TType::Map, 9);
         ::fbthrift::Serialize::write(&self.put, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2437,7 +2437,7 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Map, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-            ::fbthrift::Field::new("put", ::fbthrift::TType::Map, 7),
+            ::fbthrift::Field::new("put", ::fbthrift::TType::Map, 9),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
@@ -2449,7 +2449,7 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Map, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Map, 7) => field_put = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Map, 9) => field_put = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2514,7 +2514,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2531,7 +2531,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Map, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -2545,7 +2545,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Map, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -2699,7 +2699,7 @@ where
             ::fbthrift::Serialize::write(some, p);
             p.write_field_end();
         }
-        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+        p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 6);
         ::fbthrift::Serialize::write(&self.patchAfter, p);
         p.write_field_end();
         p.write_field_stop();
@@ -2716,7 +2716,7 @@ where
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
             ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
         ];
         let mut field_clear = ::std::option::Option::None;
         let mut field_patch = ::std::option::Option::None;
@@ -2730,7 +2730,7 @@ where
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;

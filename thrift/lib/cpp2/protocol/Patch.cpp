@@ -89,22 +89,19 @@ bool applyAssign(const Object& patch, type::native_type<Tag>& value) {
 void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
   switch (value.getType()) {
     case Value::Type::boolValue:
-      operator()(patch, *value.boolValue_ref());
-      return;
+      return operator()(patch, *value.boolValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
 }
 
 void ApplyPatch::operator()(const Object& patch, bool& value) const {
-  checkOps(patch, Value::Type::boolValue, {PatchOp::Assign, PatchOp::Add});
-
+  checkOps(patch, Value::Type::boolValue, {PatchOp::Assign, PatchOp::Put});
   if (applyAssign<type::bool_t>(patch, value)) {
     return; // Ignore all other ops.
   }
-
-  if (auto* arg = findOp(patch, PatchOp::Add)) {
-    if (argAs<type::bool_t>(*arg)) { // Invert.
+  if (auto* invert = findOp(patch, PatchOp::Put)) { // Put is Invert for bool.
+    if (argAs<type::bool_t>(*invert)) {
       value = !value;
     }
   }

@@ -28,7 +28,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
         @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patch,
         @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final Map<String, String> ensure,
-        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -75,7 +75,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     
         public Map<String, String> getEnsure() { return ensure; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
         public Builder setPatchAfter(test.fixtures.patch.MyStructField23Patch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
@@ -116,8 +116,8 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     public static final int _ENSURE = 4;
     private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.MAP, (short)4);
         private final test.fixtures.patch.MyStructField23Patch patchAfter;
-    public static final int _PATCHAFTER = 5;
-    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)5);
+    public static final int _PATCHAFTER = 6;
+    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
     static {
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
@@ -128,9 +128,9 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
       NAMES_TO_IDS.put("ensure", 4);
       THRIFT_NAMES_TO_IDS.put("ensure", 4);
       FIELD_METADATA.put(4, ENSURE_FIELD_DESC);
-      NAMES_TO_IDS.put("patchAfter", 5);
-      THRIFT_NAMES_TO_IDS.put("patchAfter", 5);
-      FIELD_METADATA.put(5, PATCH_AFTER_FIELD_DESC);
+      NAMES_TO_IDS.put("patchAfter", 6);
+      THRIFT_NAMES_TO_IDS.put("patchAfter", 6);
+      FIELD_METADATA.put(6, PATCH_AFTER_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/OptionalMyStructField23Patch"), 
         OptionalMyStructField23Patch.class, OptionalMyStructField23Patch::read0));
@@ -152,7 +152,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyStructField23Patch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override

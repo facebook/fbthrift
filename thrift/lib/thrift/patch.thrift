@@ -56,7 +56,7 @@ struct BoolPatch {
   1: optional bool assign;
 
   // If the bool value should be inverted.
-  5: bool invert;
+  9: bool invert;
 }
 
 // A patch for an 8-bit integer value.
@@ -73,7 +73,7 @@ struct BytePatch {
   1: optional byte assign;
 
   // Add to a given value.
-  5: byte add;
+  8: byte add;
 }
 
 // A patch for a 16-bit integer value.
@@ -90,7 +90,7 @@ struct I16Patch {
   1: optional i16 assign;
 
   // Add to a given value.
-  5: i16 add;
+  8: i16 add;
 }
 
 // A patch for a 32-bit integer value.
@@ -107,7 +107,7 @@ struct I32Patch {
   1: optional i32 assign;
 
   // Add to a given value.
-  5: i32 add;
+  8: i32 add;
 }
 
 // A patch for a 64-bit integer value.
@@ -124,7 +124,7 @@ struct I64Patch {
   1: optional i64 assign;
 
   // Add to a given value.
-  5: i64 add;
+  8: i64 add;
 }
 
 // A patch for a 32-bit floating point value.
@@ -141,7 +141,7 @@ struct FloatPatch {
   1: optional float assign;
 
   // Add to a given value.
-  5: float add;
+  8: float add;
 }
 
 // A patch for an 64-bit floating point value.
@@ -158,7 +158,7 @@ struct DoublePatch {
   1: optional double assign;
 
   // Add to a given value.
-  5: double add;
+  8: double add;
 }
 
 // A patch for a string value.
@@ -177,11 +177,11 @@ struct StringPatch {
   // Clear a given string.
   2: bool clear;
 
-  // Prepend to a given value.
-  4: string prepend;
-
   // Append to a given value.
-  5: string append;
+  9: string append;
+
+  // Prepend to a given value.
+  10: string prepend;
 }
 
 // A patch for a binary value.
@@ -198,9 +198,49 @@ struct BinaryPatch {
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
 }
 
-// TODO(afuller): Document.
+// The meaning of the patch op field ids, in all properly formulated patch
+// definitions.
+//
+// Patch field ids are interpreted at runtime, as a dynamic patch protocol,
+// without any additional schema derived from IDL patch definitions.
 @thrift.GenDefaultEnumValue
 enum PatchOp {
+  // Set the value. Supersedes all other ops.
   Assign = 1,
-  Add = 5,
+
+  // Set to the intrinsic default (which might be 'unset').
+  Clear = 2,
+
+  // Apply a structured patch.
+  Patch = 3,
+
+  // Set to the given default, if not already of the same type.
+  Ensure = 4,
+
+  // TODO(afuller): Add a variant of ensure, which only ensures if 'unset'.
+  // EnsureIfUnset = 5,
+
+  // Apply a structured patch, after other ops.
+  PatchAfter = 6,
+
+  // Remove if present.
+  //
+  // A key/value-based remove for set/list, 'saturating subtract' for
+  // numeric/'counting' types, and 'remove by key' for maps.
+  Remove = 7,
+
+  // Add if not present.
+  //
+  // A key/value-based add for set/list, 'saturating add' for numeric/'counting'
+  // types, and non-overwriting 'insert' for maps.
+  Add = 8, // Add, if not present, or + .
+
+  // Add even if present.
+  //
+  // Identical to 'add' for set, 'append' for list, overwriting
+  // 'update or insert' for maps, 'invert' for boolean.
+  Put = 9,
+
+  // Add to the beginning of a list, string, or binary value.
+  Prepend = 10,
 }

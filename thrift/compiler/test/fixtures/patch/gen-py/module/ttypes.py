@@ -1359,7 +1359,7 @@ class OptionalMyDataValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyDataValuePatch()
           self.patchAfter.read(iprot)
@@ -1391,7 +1391,7 @@ class OptionalMyDataValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1632,7 +1632,7 @@ class InnerUnionValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = InnerUnionPatch()
           self.patchAfter.read(iprot)
@@ -1664,7 +1664,7 @@ class InnerUnionValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1796,7 +1796,7 @@ class OptionalInnerUnionValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = InnerUnionValuePatch()
           self.patchAfter.read(iprot)
@@ -1828,7 +1828,7 @@ class OptionalInnerUnionValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2107,7 +2107,7 @@ class MyUnionValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyUnionPatch()
           self.patchAfter.read(iprot)
@@ -2139,7 +2139,7 @@ class MyUnionValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2271,7 +2271,7 @@ class OptionalMyUnionValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyUnionValuePatch()
           self.patchAfter.read(iprot)
@@ -2303,7 +2303,7 @@ class OptionalMyUnionValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2984,7 +2984,7 @@ class MyStructField21Patch:
           self.clear = iprot.readBool()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 10:
         if ftype == TType.LIST:
           self.prepend = []
           (_etype42, _size39) = iprot.readListBegin()
@@ -2999,7 +2999,7 @@ class MyStructField21Patch:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 9:
         if ftype == TType.LIST:
           self.append = []
           (_etype49, _size46) = iprot.readListBegin()
@@ -3038,17 +3038,17 @@ class MyStructField21Patch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.prepend != None:
-      oprot.writeFieldBegin('prepend', TType.LIST, 4)
-      oprot.writeListBegin(TType.I16, len(self.prepend))
-      for iter54 in self.prepend:
+    if self.append != None:
+      oprot.writeFieldBegin('append', TType.LIST, 9)
+      oprot.writeListBegin(TType.I16, len(self.append))
+      for iter54 in self.append:
         oprot.writeI16(iter54)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
-    if self.append != None:
-      oprot.writeFieldBegin('append', TType.LIST, 5)
-      oprot.writeListBegin(TType.I16, len(self.append))
-      for iter55 in self.append:
+    if self.prepend != None:
+      oprot.writeFieldBegin('prepend', TType.LIST, 10)
+      oprot.writeListBegin(TType.I16, len(self.prepend))
+      for iter55 in self.prepend:
         oprot.writeI16(iter55)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
@@ -3122,8 +3122,8 @@ class MyStructField21Patch:
     return (
       'assign',
       'clear',
-      'prepend',
       'append',
+      'prepend',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -3199,7 +3199,7 @@ class OptionalMyStructField21Patch:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField21Patch()
           self.patchAfter.read(iprot)
@@ -3234,7 +3234,7 @@ class OptionalMyStructField21Patch:
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -3372,7 +3372,7 @@ class MyStructField22Patch:
           self.clear = iprot.readBool()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 7:
         if ftype == TType.SET:
           self.remove = set()
           (_etype78, _size75) = iprot.readSetBegin()
@@ -3387,7 +3387,7 @@ class MyStructField22Patch:
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 8:
         if ftype == TType.SET:
           self.add = set()
           (_etype85, _size82) = iprot.readSetBegin()
@@ -3427,14 +3427,14 @@ class MyStructField22Patch:
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
     if self.remove != None:
-      oprot.writeFieldBegin('remove', TType.SET, 4)
+      oprot.writeFieldBegin('remove', TType.SET, 7)
       oprot.writeSetBegin(TType.STRING, len(self.remove))
       for iter90 in self.remove:
         oprot.writeString(iter90.encode('utf-8')) if UTF8STRINGS and not isinstance(iter90, bytes) else oprot.writeString(iter90)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     if self.add != None:
-      oprot.writeFieldBegin('add', TType.SET, 5)
+      oprot.writeFieldBegin('add', TType.SET, 8)
       oprot.writeSetBegin(TType.STRING, len(self.add))
       for iter91 in self.add:
         oprot.writeString(iter91.encode('utf-8')) if UTF8STRINGS and not isinstance(iter91, bytes) else oprot.writeString(iter91)
@@ -3581,7 +3581,7 @@ class OptionalMyStructField22Patch:
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField22Patch()
           self.patchAfter.read(iprot)
@@ -3616,7 +3616,7 @@ class OptionalMyStructField22Patch:
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -3753,7 +3753,7 @@ class MyStructField23Patch:
           self.clear = iprot.readBool()
         else:
           iprot.skip(ftype)
-      elif fid == 7:
+      elif fid == 9:
         if ftype == TType.MAP:
           self.put = {}
           (_ktype114, _vtype115, _size113 ) = iprot.readMapBegin() 
@@ -3796,7 +3796,7 @@ class MyStructField23Patch:
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
     if self.put != None:
-      oprot.writeFieldBegin('put', TType.MAP, 7)
+      oprot.writeFieldBegin('put', TType.MAP, 9)
       oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.put))
       for kiter124,viter125 in self.put.items():
         oprot.writeString(kiter124.encode('utf-8')) if UTF8STRINGS and not isinstance(kiter124, bytes) else oprot.writeString(kiter124)
@@ -3939,7 +3939,7 @@ class OptionalMyStructField23Patch:
           iprot.readMapEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField23Patch()
           self.patchAfter.read(iprot)
@@ -3975,7 +3975,7 @@ class OptionalMyStructField23Patch:
       oprot.writeMapEnd()
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -4254,7 +4254,7 @@ class OptionalMyStructValuePatch:
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 5:
+      elif fid == 6:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructValuePatch()
           self.patchAfter.read(iprot)
@@ -4286,7 +4286,7 @@ class OptionalMyStructValuePatch:
       self.ensure.write(oprot)
       oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 6)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -4613,7 +4613,8 @@ OptionalMyDataValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyDataValuePatch.thrift_struct_annotations = {
@@ -4672,7 +4673,8 @@ InnerUnionValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [InnerUnion, InnerUnion.thrift_spec, True], None, 2, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 6
 )
 
 InnerUnionValuePatch.thrift_struct_annotations = {
@@ -4705,7 +4707,8 @@ OptionalInnerUnionValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [InnerUnionValuePatch, InnerUnionValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [InnerUnion, InnerUnion.thrift_spec, True], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [InnerUnionValuePatch, InnerUnionValuePatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [InnerUnionValuePatch, InnerUnionValuePatch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalInnerUnionValuePatch.thrift_struct_annotations = {
@@ -4770,7 +4773,8 @@ MyUnionValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 6
 )
 
 MyUnionValuePatch.thrift_struct_annotations = {
@@ -4803,7 +4807,8 @@ OptionalMyUnionValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyUnionValuePatch.thrift_struct_annotations = {
@@ -4936,8 +4941,13 @@ MyStructField21Patch.thrift_spec = (
   (1, TType.LIST, 'assign', (TType.I16,None), None, 1, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.LIST, 'prepend', (TType.I16,None), None, 2, ), # 4
-  (5, TType.LIST, 'append', (TType.I16,None), None, 2, ), # 5
+  None, # 4
+  None, # 5
+  None, # 6
+  None, # 7
+  None, # 8
+  (9, TType.LIST, 'append', (TType.I16,None), None, 2, ), # 9
+  (10, TType.LIST, 'prepend', (TType.I16,None), None, 2, ), # 10
 )
 
 MyStructField21Patch.thrift_struct_annotations = {
@@ -4970,7 +4980,8 @@ OptionalMyStructField21Patch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyStructField21Patch.thrift_struct_annotations = {
@@ -5002,8 +5013,11 @@ MyStructField22Patch.thrift_spec = (
   (1, TType.SET, 'assign', (TType.STRING,True), None, 1, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.SET, 'remove', (TType.STRING,True), None, 2, ), # 4
-  (5, TType.SET, 'add', (TType.STRING,True), None, 2, ), # 5
+  None, # 4
+  None, # 5
+  None, # 6
+  (7, TType.SET, 'remove', (TType.STRING,True), None, 2, ), # 7
+  (8, TType.SET, 'add', (TType.STRING,True), None, 2, ), # 8
 )
 
 MyStructField22Patch.thrift_struct_annotations = {
@@ -5036,7 +5050,8 @@ OptionalMyStructField22Patch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyStructField22Patch.thrift_struct_annotations = {
@@ -5071,7 +5086,9 @@ MyStructField23Patch.thrift_spec = (
   None, # 4
   None, # 5
   None, # 6
-  (7, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 2, ), # 7
+  None, # 7
+  None, # 8
+  (9, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 2, ), # 9
 )
 
 MyStructField23Patch.thrift_struct_annotations = {
@@ -5102,7 +5119,8 @@ OptionalMyStructField23Patch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyStructField23Patch.thrift_struct_annotations = {
@@ -5167,7 +5185,8 @@ OptionalMyStructValuePatch.thrift_spec = (
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 5
+  None, # 5
+  (6, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 6
 )
 
 OptionalMyStructValuePatch.thrift_struct_annotations = {

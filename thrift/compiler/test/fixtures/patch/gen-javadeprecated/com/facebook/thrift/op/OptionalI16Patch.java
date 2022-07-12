@@ -29,7 +29,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.I16, (short)4);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)5);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
   /**
    * Clears any set value. Applies first.
@@ -50,7 +50,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
-  public static final int PATCHAFTER = 5;
+  public static final int PATCHAFTER = 6;
 
   // isset id assignments
   private static final int __CLEAR_ISSET_ID = 0;

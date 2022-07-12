@@ -27,7 +27,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     public MyStructField23Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final Map<String, String> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE) final Map<String, String> put
+        @com.facebook.swift.codec.ThriftField(value=9, name="put", requiredness=Requiredness.NONE) final Map<String, String> put
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -63,7 +63,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="put", requiredness=Requiredness.NONE)
         public Builder setPut(Map<String, String> put) {
             this.put = put;
             return this;
@@ -99,8 +99,8 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
         private final Map<String, String> put;
-    public static final int _PUT = 7;
-    private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)7);
+    public static final int _PUT = 9;
+    private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)9);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -108,9 +108,9 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("put", 7);
-      THRIFT_NAMES_TO_IDS.put("put", 7);
-      FIELD_METADATA.put(7, PUT_FIELD_DESC);
+      NAMES_TO_IDS.put("put", 9);
+      THRIFT_NAMES_TO_IDS.put("put", 9);
+      FIELD_METADATA.put(9, PUT_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField23Patch"), 
         MyStructField23Patch.class, MyStructField23Patch::read0));
@@ -127,7 +127,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="put", requiredness=Requiredness.NONE)
     public Map<String, String> getPut() { return put; }
     
     @java.lang.Override

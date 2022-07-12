@@ -12,7 +12,14 @@ import java.util.HashMap;
 @SuppressWarnings({ "unused" })
 public enum PatchOp implements com.facebook.thrift.TEnum {
   Assign(1),
-  Add(5),
+  Clear(2),
+  Patch(3),
+  Ensure(4),
+  PatchAfter(6),
+  Remove(7),
+  Add(8),
+  Put(9),
+  Prepend(10),
   Unspecified(0);
 
   private final int value;
@@ -36,8 +43,22 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
     switch (value) {
       case 1:
         return Assign;
-      case 5:
+      case 2:
+        return Clear;
+      case 3:
+        return Patch;
+      case 4:
+        return Ensure;
+      case 6:
+        return PatchAfter;
+      case 7:
+        return Remove;
+      case 8:
         return Add;
+      case 9:
+        return Put;
+      case 10:
+        return Prepend;
       case 0:
         return Unspecified;
       default:
