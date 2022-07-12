@@ -24,7 +24,6 @@ use crate::framing::FramingDecoded;
 use crate::framing::FramingEncodedFinal;
 use crate::protocol::Protocol;
 use crate::protocol::ProtocolDecoded;
-use crate::protocol::ProtocolEncodedFinal;
 use crate::protocol::ProtocolReader;
 use crate::protocol::ProtocolWriter;
 use crate::request_context::RequestContext;
@@ -36,6 +35,14 @@ use async_trait::async_trait;
 use std::ffi::CStr;
 use std::marker::PhantomData;
 use std::sync::Arc;
+use std::sync::Mutex;
+
+pub trait ReplyState<F>
+where
+    F: Framing,
+{
+    fn send_reply(&mut self, reply: FramingEncodedFinal<F>);
+}
 
 #[async_trait]
 pub trait ThriftService<F>: Send + Sync + 'static
@@ -44,20 +51,26 @@ where
 {
     type Handler;
     type RequestContext;
+    type ReplyState;
 
     async fn call(
         &self,
         req: FramingDecoded<F>,
         req_ctxt: &Self::RequestContext,
-    ) -> Result<FramingEncodedFinal<F>, Error>;
+        reply_state: Arc<Mutex<Self::ReplyState>>,
+    ) -> Result<(), Error>;
 
     fn create_interaction(
         &self,
         _name: &str,
     ) -> ::anyhow::Result<
         Arc<
-            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
-                + ::std::marker::Send
+            dyn ThriftService<
+                    F,
+                    Handler = (),
+                    RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
+                > + ::std::marker::Send
                 + 'static,
         >,
     > {
@@ -71,16 +84,19 @@ where
     T: ThriftService<F> + Send + Sync + ?Sized,
     F: Framing + Send + 'static,
     T::RequestContext: Send + Sync + 'static,
+    T::ReplyState: Send + Sync + 'static,
 {
     type Handler = T::Handler;
     type RequestContext = T::RequestContext;
+    type ReplyState = T::ReplyState;
 
     async fn call(
         &self,
         req: FramingDecoded<F>,
         req_ctxt: &Self::RequestContext,
-    ) -> Result<FramingEncodedFinal<F>, Error> {
-        (**self).call(req, req_ctxt).await
+        reply_state: Arc<Mutex<Self::ReplyState>>,
+    ) -> Result<(), Error> {
+        (**self).call(req, req_ctxt, reply_state).await
     }
 
     fn create_interaction(
@@ -88,8 +104,12 @@ where
         name: &str,
     ) -> ::anyhow::Result<
         Arc<
-            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
-                + ::std::marker::Send
+            dyn ThriftService<
+                    F,
+                    Handler = (),
+                    RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
+                > + ::std::marker::Send
                 + 'static,
         >,
     > {
@@ -103,16 +123,19 @@ where
     T: ThriftService<F> + Send + Sync + ?Sized,
     F: Framing + Send + 'static,
     T::RequestContext: Send + Sync + 'static,
+    T::ReplyState: Send + Sync + 'static,
 {
     type Handler = T::Handler;
     type RequestContext = T::RequestContext;
+    type ReplyState = T::ReplyState;
 
     async fn call(
         &self,
         req: FramingDecoded<F>,
         req_ctxt: &Self::RequestContext,
-    ) -> Result<FramingEncodedFinal<F>, Error> {
-        (**self).call(req, req_ctxt).await
+        reply_state: Arc<Mutex<Self::ReplyState>>,
+    ) -> Result<(), Error> {
+        (**self).call(req, req_ctxt, reply_state).await
     }
 
     fn create_interaction(
@@ -120,8 +143,12 @@ where
         name: &str,
     ) -> ::anyhow::Result<
         Arc<
-            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
-                + ::std::marker::Send
+            dyn ThriftService<
+                    F,
+                    Handler = (),
+                    RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
+                > + ::std::marker::Send
                 + 'static,
         >,
     > {
@@ -136,6 +163,7 @@ where
     P: Protocol,
 {
     type RequestContext;
+    type ReplyState;
 
     /// Given a method name, return a reference to the processor for that index.
     fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException>;
@@ -151,8 +179,9 @@ where
         //frame: &P::Frame,
         request: &mut P::Deserializer,
         req_ctxt: &Self::RequestContext,
+        reply_state: Arc<Mutex<Self::ReplyState>>,
         seqid: u32,
-    ) -> Result<ProtocolEncodedFinal<P>, Error>;
+    ) -> Result<(), Error>;
 
     /// Given a method name, return a reference to the interaction creation fn for that index
     fn create_interaction_idx(&self, _name: &str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -165,8 +194,12 @@ where
         _idx: ::std::primitive::usize,
     ) -> ::anyhow::Result<
         Arc<
-            dyn ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext>
-                + ::std::marker::Send
+            dyn ThriftService<
+                    P::Frame,
+                    Handler = (),
+                    RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
+                > + ::std::marker::Send
                 + 'static,
         >,
     > {
@@ -177,11 +210,11 @@ where
 /// Null processor which implements no methods - it acts as the super for any service
 /// which has no super-service.
 #[derive(Debug, Clone)]
-pub struct NullServiceProcessor<P, R> {
-    _phantom: PhantomData<(P, R)>,
+pub struct NullServiceProcessor<P, R, RS> {
+    _phantom: PhantomData<(P, R, RS)>,
 }
 
-impl<P, R> NullServiceProcessor<P, R> {
+impl<P, R, RS> NullServiceProcessor<P, R, RS> {
     pub fn new() -> Self {
         Self {
             _phantom: PhantomData,
@@ -189,20 +222,22 @@ impl<P, R> NullServiceProcessor<P, R> {
     }
 }
 
-impl<P, R> Default for NullServiceProcessor<P, R> {
+impl<P, R, RS> Default for NullServiceProcessor<P, R, RS> {
     fn default() -> Self {
         Self::new()
     }
 }
 
 #[async_trait]
-impl<P, R> ServiceProcessor<P> for NullServiceProcessor<P, R>
+impl<P, R, RS> ServiceProcessor<P> for NullServiceProcessor<P, R, RS>
 where
     P: Protocol + Sync,
     P::Deserializer: Send,
     R: Sync,
+    RS: Sync + Send,
 {
     type RequestContext = R;
+    type ReplyState = RS;
 
     #[inline]
     fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
@@ -218,8 +253,9 @@ where
         //_frame: &P::Frame,
         _d: &mut P::Deserializer,
         _req_ctxt: &R,
+        _reply_state: Arc<Mutex<RS>>,
         _seqid: u32,
-    ) -> Result<ProtocolEncodedFinal<P>, Error> {
+    ) -> Result<(), Error> {
         // Should never be called since method_idx() always returns an error
         unimplemented!("NullServiceProcessor implements no methods")
     }
@@ -233,8 +269,12 @@ where
         _idx: ::std::primitive::usize,
     ) -> ::anyhow::Result<
         Arc<
-            dyn ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext>
-                + ::std::marker::Send
+            dyn ThriftService<
+                    P::Frame,
+                    Handler = (),
+                    RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
+                > + ::std::marker::Send
                 + 'static,
         >,
     > {
@@ -243,21 +283,24 @@ where
 }
 
 #[async_trait]
-impl<P, R> ThriftService<P::Frame> for NullServiceProcessor<P, R>
+impl<P, R, RS> ThriftService<P::Frame> for NullServiceProcessor<P, R, RS>
 where
     P: Protocol + Send + Sync + 'static,
     P::Frame: Send + 'static,
     R: RequestContext<Name = CStr> + Send + Sync + 'static,
     R::ContextStack: ContextStack<Name = CStr>,
+    RS: ReplyState<P::Frame> + Send + Sync + 'static,
 {
     type Handler = ();
     type RequestContext = R;
+    type ReplyState = RS;
 
     async fn call(
         &self,
         req: ProtocolDecoded<P>,
         rctxt: &R,
-    ) -> Result<ProtocolEncodedFinal<P>, Error> {
+        reply_state: Arc<Mutex<RS>>,
+    ) -> Result<(), Error> {
         let mut p = P::deserializer(req);
 
         const SERVICE_NAME: &str = "NullService";
@@ -276,7 +319,8 @@ where
             ae.write(p);
             p.write_message_end();
         });
-        Ok(res)
+        reply_state.lock().unwrap().send_reply(res);
+        Ok(())
     }
 
     fn create_interaction(
@@ -288,6 +332,7 @@ where
                     P::Frame,
                     Handler = Self::Handler,
                     RequestContext = Self::RequestContext,
+                    ReplyState = Self::ReplyState,
                 > + ::std::marker::Send
                 + 'static,
         >,

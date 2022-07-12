@@ -95,6 +95,7 @@ pub use crate::framing::FramingEncoded;
 pub use crate::framing::FramingEncodedFinal;
 pub use crate::help::NoopSpawner;
 pub use crate::processor::NullServiceProcessor;
+pub use crate::processor::ReplyState;
 pub use crate::processor::ServiceProcessor;
 pub use crate::processor::ThriftService;
 pub use crate::protocol::Field;
