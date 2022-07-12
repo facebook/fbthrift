@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 
@@ -73,6 +74,10 @@ class MaskRef {
 // Throws an error if the given value is not a dynamic object value.
 void errorIfNotObject(const protocol::Value& value);
 
+template <typename T>
+using get_ordinal_sequence =
+    std::make_integer_sequence<size_t, type::field_size_v<type::struct_t<T>>>;
+
 template <typename StructTag, size_t... I>
 bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
   std::unordered_set<FieldId> ids{
@@ -107,9 +112,26 @@ bool validate_field(MaskRef ref) {
   return false;
 }
 
-template <typename T>
-using get_ordinal_sequence =
-    std::make_integer_sequence<size_t, type::field_size_v<type::struct_t<T>>>;
+template <typename T, size_t... I>
+void ensure_fields(MaskRef ref, T& t, std::index_sequence<I...>) {
+  (ensure_field<T, I + 1>(ref, t), ...);
+}
+
+template <typename T, size_t I>
+void ensure_field(MaskRef ref, T& t) {
+  using StructTag = type::struct_t<T>;
+  MaskRef next = ref.get(field::id<StructTag, field_ordinal<I>>());
+  if (next.isNoneMask()) {
+    return;
+  }
+  auto& nested = op::get<StructTag, field_ordinal<I>>(t).ensure();
+  // Need to ensure the nested object.
+  using Nested =
+      type::native_type<field::type_tag<StructTag, field_ordinal<I>>>;
+  if constexpr (is_thrift_struct_v<Nested>) {
+    return ensure_fields(next, nested, get_ordinal_sequence<Nested>{});
+  }
+}
 } // namespace detail
 
 // Returns whether field mask is compatible with thrift struct T.
@@ -123,5 +145,17 @@ bool is_compatible_with(const Mask& mask) {
   }
   return detail::validate_fields<type::struct_t<T>>(
       ref, detail::get_ordinal_sequence<T>{});
+}
+
+// Ensures that the masked fields have value in the thrift struct.
+// If it doesn't, it emplaces the field.
+// Throws a runtime exception if the mask and struct are incompatible.
+template <typename T>
+void ensure(const Mask& mask, T& t) {
+  if (!is_compatible_with<T>(mask)) {
+    throw std::runtime_error("The field mask and struct are incompatible.");
+  }
+  return detail::ensure_fields(
+      detail::MaskRef{mask, false}, t, detail::get_ordinal_sequence<T>{});
 }
 } // namespace apache::thrift::protocol

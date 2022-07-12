@@ -32,3 +32,13 @@ struct Baz {
   @cpp.Adapter{name = "TemplatedTestAdapter"}
   1: Foo foo;
 }
+
+struct Foo2 {
+  1: optional i32 field_1;
+  2: optional i32 field_2;
+}
+
+struct Bar2 {
+  1: optional Foo2 field_3;
+  2: string field_4;
+}

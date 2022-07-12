@@ -476,4 +476,69 @@ TEST(FieldMaskTest, IsCompatibleWithAdaptedField) {
   // adapted struct field is treated as non struct field.
   EXPECT_FALSE(protocol::is_compatible_with<Baz>(m));
 }
+
+TEST(FieldMaskTest, Ensure) {
+  Mask mask;
+  // mask = includes{1: includes{2: excludes{}},
+  //                 2: excludes{}}
+  auto& includes = mask.includes_ref().emplace();
+  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
+  includes[2] = protocol_constants::allMask();
+
+  Bar2 bar;
+  ensure(mask, bar);
+  ASSERT_TRUE(bar.field_3().has_value());
+  ASSERT_FALSE(bar.field_3()->field_1().has_value());
+  ASSERT_TRUE(bar.field_3()->field_2().has_value());
+  EXPECT_EQ(bar.field_3()->field_2(), 0);
+  ASSERT_TRUE(bar.field_4().has_value());
+  EXPECT_EQ(bar.field_4(), "");
+
+  // mask = includes{1: includes{2: excludes{}},
+  //                 2: includes{}}
+  includes[2] = protocol_constants::noneMask();
+
+  Bar2 bar2;
+  ensure(mask, bar2);
+  ASSERT_TRUE(bar2.field_3().has_value());
+  ASSERT_FALSE(bar2.field_3()->field_1().has_value());
+  ASSERT_TRUE(bar2.field_3()->field_2().has_value());
+  EXPECT_EQ(bar2.field_3()->field_2(), 0);
+  ASSERT_FALSE(bar2.field_4().has_value());
+
+  // mask = excludes{1: includes{1: excludes{},
+  //                             2: excludes{}}}
+  auto& excludes = mask.excludes_ref().emplace();
+  auto& nestedIncludes = excludes[1].includes_ref().emplace();
+  nestedIncludes[1] = protocol_constants::allMask();
+  nestedIncludes[2] = protocol_constants::allMask();
+
+  Bar2 bar3;
+  ensure(mask, bar3);
+  ASSERT_TRUE(bar3.field_3().has_value());
+  ASSERT_FALSE(bar3.field_3()->field_1().has_value());
+  ASSERT_FALSE(bar3.field_3()->field_2().has_value());
+  ASSERT_TRUE(bar3.field_4().has_value());
+  EXPECT_EQ(bar3.field_4(), "");
+}
+
+TEST(FieldMaskTest, EnsureException) {
+  Mask mask;
+  // mask = includes{1: includes{2: excludes{1: includes{}}}}
+  mask.includes_ref()
+      .emplace()[1]
+      .includes_ref()
+      .emplace()[2]
+      .excludes_ref()
+      .emplace()[1] = protocol_constants::noneMask();
+  Bar2 bar;
+  EXPECT_THROW(ensure(mask, bar), std::runtime_error); // incompatible
+
+  // includes{1: includes{1: excludes{}}}
+  mask.includes_ref().emplace()[1].includes_ref().emplace()[1] =
+      protocol_constants::allMask();
+  Baz baz;
+  // adapted field cannot be masked.
+  EXPECT_THROW(ensure(mask, baz), std::runtime_error);
+}
 } // namespace apache::thrift::test
