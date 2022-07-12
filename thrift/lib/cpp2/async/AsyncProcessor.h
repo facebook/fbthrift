@@ -240,7 +240,17 @@ class AsyncProcessorFactory {
    * processor will always be a reference from the map (or be
    * kWildcardMethodMetadata).
    */
-  virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
+  virtual CreateMethodMetadataResult createMethodMetadata() {
+    // For generated APFs, this will lead to fallback to old logic
+    // For custom APFs, we shouldn't use this default but owner shoul
+    // override this function to provide dedicated executorType of their
+    // service
+    WildcardMethodMetadataMap wildcardMap;
+    wildcardMap.wildcardMetadata = std::make_shared<WildcardMethodMetadata>();
+    wildcardMap.knownMethods = {};
+
+    return wildcardMap;
+  }
 
   /**
    * Override to return a pre-initialized RequestContext.
