@@ -426,7 +426,7 @@ using YourUnion = ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::
 
 
 namespace detail {
-class FOLLY_EXPORT YourException : public apache::thrift::TException {
+class FOLLY_EXPORT YourException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

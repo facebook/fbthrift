@@ -6881,7 +6881,7 @@ unsigned long TypeRemapped::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
+class FOLLY_EXPORT emptyXcep : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -6958,7 +6958,7 @@ unsigned long emptyXcep::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
+class FOLLY_EXPORT reqXcep : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -7144,7 +7144,7 @@ unsigned long reqXcep::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT optXcep : public apache::thrift::TException {
+class FOLLY_EXPORT optXcep : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -7338,7 +7338,7 @@ unsigned long optXcep::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT complexException : public apache::thrift::TException {
+class FOLLY_EXPORT complexException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

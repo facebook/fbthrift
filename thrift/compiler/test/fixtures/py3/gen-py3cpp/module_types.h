@@ -258,7 +258,7 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 typedef folly::IOBuf IOBuf;
 typedef foo::Bar foo_bar;
 
-class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
+class FOLLY_EXPORT SimpleException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

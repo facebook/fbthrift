@@ -82,7 +82,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
 
-class FOLLY_EXPORT Fiery : public apache::thrift::TException {
+class FOLLY_EXPORT Fiery : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -217,7 +217,7 @@ unsigned long Fiery::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT Serious : public apache::thrift::TException {
+class FOLLY_EXPORT Serious : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -355,7 +355,7 @@ unsigned long Serious::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
+class FOLLY_EXPORT ComplexFieldNames : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -549,7 +549,7 @@ unsigned long ComplexFieldNames::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
+class FOLLY_EXPORT CustomFieldNames : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -743,7 +743,7 @@ unsigned long CustomFieldNames::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TException {
+class FOLLY_EXPORT ExceptionWithPrimitiveField : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -932,7 +932,7 @@ unsigned long ExceptionWithPrimitiveField::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT Banal : public apache::thrift::TException {
+class FOLLY_EXPORT Banal : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

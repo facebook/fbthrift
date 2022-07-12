@@ -81,7 +81,7 @@ namespace <%struct:extra_namespace%> {
 <%/struct:extra_namespace%>
 class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_underlying_name%> <%!
 %><%^struct:exception?%><%^struct:virtual%>final <%/struct:virtual%><%/struct:exception?%><%!
-%><%#struct:exception?%>: public apache::thrift::TException<%/struct:exception?%> {
+%><%#struct:exception?%>: public virtual apache::thrift::TException<%/struct:exception?%> {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

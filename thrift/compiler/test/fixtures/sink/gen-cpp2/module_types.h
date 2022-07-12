@@ -570,7 +570,7 @@ unsigned long CompatibleWithKeywordSink::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT InitialException : public apache::thrift::TException {
+class FOLLY_EXPORT InitialException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -706,7 +706,7 @@ unsigned long InitialException::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
+class FOLLY_EXPORT SinkException1 : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -842,7 +842,7 @@ unsigned long SinkException1::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
+class FOLLY_EXPORT SinkException2 : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;

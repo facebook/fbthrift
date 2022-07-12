@@ -4597,7 +4597,7 @@ unsigned long ComplexUnion::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT AnException : public apache::thrift::TException {
+class FOLLY_EXPORT AnException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -5540,7 +5540,7 @@ unsigned long AnException::read(Protocol_* iprot) {
 }
 
 
-class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
+class FOLLY_EXPORT AnotherException : public virtual apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
