@@ -383,19 +383,19 @@ t_type_ref patch_generator::find_patch_type(
     if (const auto* result = program_.scope()->find_type(name)) {
       return t_type_ref::from_ptr(result);
     }
+
     // TODO(afuller): This look up hack only works for 'built-in' patch types.
     // Use a shared uri type registry instead.
-    if (const auto* result =
-            annot.type()->program()->scope()->find_type(name)) {
-      return t_type_ref::from_ptr(result);
+    t_type_ref result = annot.type()->program()->scope()->ref_type(
+        *annot.type()->program(), name, field.src_range());
+    if (auto* ph = result.get_unresolved_type()) {
+      // Set the location info, in case the type can't be resolved later.
+      ph->set_lineno(field.lineno());
+      ph->set_src_range(field.src_range());
+      ph->set_generated();
     }
 
-    // These type should always be availabile because the are defined along
-    // side the annoation used to trigger patch generation.
-    ctx_.failure(field, [&](auto& os) {
-      os << "Could not find expected patch type: " << name;
-    });
-    return {};
+    return result;
   }
 
   // Check the field for a custom patch type.
