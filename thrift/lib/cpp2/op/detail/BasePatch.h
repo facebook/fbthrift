@@ -44,8 +44,6 @@ template <typename T>
 struct is_optional_type<optional_field_ref<T>> : std::true_type {};
 template <typename T>
 struct is_optional_type<optional_boxed_field_ref<T>> : std::true_type {};
-template <typename T>
-struct is_optional_type<union_field_ref<T>> : std::true_type {};
 #ifdef THRIFT_HAS_OPTIONAL
 template <typename T>
 struct is_optional_type<std::optional<T>> : std::true_type {};
@@ -161,10 +159,18 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   void assign(const value_type& val) { resetAnd().assign().emplace(val); }
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
+  // A 'value' patch only applies to set optional values.
   template <typename U>
   if_opt_type<folly::remove_cvref_t<U>> apply(U&& field) const {
     if (field.has_value()) {
       derived().apply(*std::forward<U>(field));
+    }
+  }
+  // A 'value' patch only applies to set union field values.
+  template <typename U>
+  void apply(union_field_ref<U> field) const {
+    if (field.has_value()) {
+      derived().apply(*field);
     }
   }
 

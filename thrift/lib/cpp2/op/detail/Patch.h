@@ -54,11 +54,11 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
 
   // Set to the given value.
   template <typename U>
-  if_not_opt_type<std::decay_t<U>> assign(U&& val) {
+  if_not_opt_type<folly::remove_cvref_t<U>> assign(U&& val) {
     clearAnd().ensure().emplace(std::forward<U>(val));
   }
   template <typename U>
-  if_opt_type<std::decay_t<U>> assign(U&& val) {
+  if_opt_type<folly::remove_cvref_t<U>> assign(U&& val) {
     clear();
     if (val.has_value()) {
       ensure(*std::forward<U>(val));
@@ -69,7 +69,7 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
   OptionalPatch& operator=(std::nullopt_t) { return (clear(), *this); }
 #endif
   template <typename U>
-  if_opt_type<std::decay_t<U>, OptionalPatch&> operator=(U&& val) {
+  if_opt_type<folly::remove_cvref_t<U>, OptionalPatch&> operator=(U&& val) {
     assign(std::forward<U>(val));
     return *this;
   }
@@ -94,6 +94,17 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
 
   bool empty() const { return emptyEnsure(); }
 
+  template <typename U>
+  if_opt_type<folly::remove_cvref_t<U>> apply(U&& val) const {
+    applyEnsure(val);
+  }
+
+  // Non-optional value overload.
+  //
+  // Throws a op::bad_patch_access, if the resulting value should be
+  // 'unset', which is not representable in a non-optional context.
+  //
+  // TODO(afuller): Consider also supporting union_field_ref.
   void apply(T& val) const {
     if (*data_.clear()) {
       if (!data_.ensure().has_value()) { // Cannot represent 'unset'.
@@ -102,11 +113,6 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
       val = *data_.ensure();
     }
     data_.patchAfter()->apply(val);
-  }
-
-  template <typename U>
-  if_opt_type<std::decay_t<U>> apply(U&& val) const {
-    applyEnsure(val);
   }
 
   template <typename U>
