@@ -512,8 +512,12 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
 }
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
-  if (node.explicit_id() != node.id()) {
-    ctx.warning(
+  if (node.explicit_id() != node.id() && !ctx.has(context_type::testing)) {
+    ctx.report(
+        node,
+        ctx.has(context_type::no_legacy) && !ctx.has(context_type::experimental)
+            ? diagnostic_level::failure
+            : diagnostic_level::warning,
         "No field id specified for `{}`, resulting protocol may have conflicts "
         "or not be backwards compatible!",
         node.name());

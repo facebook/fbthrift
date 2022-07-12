@@ -24,6 +24,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_type.h>
 
+// TODO(afuller): Test coverage for context_type and visitor_context::has
 namespace apache::thrift::compiler {
 namespace {
 

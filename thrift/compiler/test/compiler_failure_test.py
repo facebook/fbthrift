@@ -78,6 +78,39 @@ class CompilerFailureTest(unittest.TestCase):
         )
         self.assertEqual(ret, 1)
 
+    def test_no_field_id(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct NoLegacy {} (thrift.uri = "facebook.com/thrift/annotation/NoLegacy")
+                struct Testing {} (thrift.uri = "facebook.com/thrift/annotation/Testing")
+                struct Experimental {} (thrift.uri = "facebook.com/thrift/annotation/Experimental")
+
+                @NoLegacy
+                struct Foo {
+                    i32 field1; // Failure
+                    @Experimental
+                    i32 field2; // Warning
+                    @Testing
+                    i32 field3; // Allowed
+                }
+
+                struct Bar {
+                    i32 field4; // Warning
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:7] No field id specified for `field1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:8] No field id specified for `field2`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:15] No field id specified for `field4`, resulting protocol may have conflicts or not be backwards compatible!\n",
+        )
+        self.assertEqual(ret, 1)
+
     def test_zero_as_field_id(self):
         write_file(
             "foo.thrift",
