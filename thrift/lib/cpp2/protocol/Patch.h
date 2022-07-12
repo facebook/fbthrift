@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Portability.h>
 #include <thrift/lib/cpp2/Object.h>
 #include <thrift/lib/thrift/detail/protocol.h>
 
@@ -38,7 +39,6 @@ struct ApplyPatch {
  *
  * @param patch Object
  * @param value to be patched
- * @returns nothing
  */
 FOLLY_INLINE_VARIABLE constexpr detail::ApplyPatch applyPatch{};
 

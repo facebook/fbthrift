@@ -68,7 +68,7 @@ TEST_F(PatchTest, Bool) {
   EXPECT_FALSE(*apply(!op::BoolPatch{}, true).boolValue_ref());
 
   // Wrong patch provided
-  EXPECT_THROW(apply(op::I16Patch{}, true), std::runtime_error);
+  EXPECT_THROW(apply(op::I16Patch{} += 1, true), std::runtime_error);
 
   // Wrong object to patch
   EXPECT_THROW(
