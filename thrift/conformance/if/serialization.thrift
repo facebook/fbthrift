@@ -21,7 +21,6 @@ namespace py.asyncio thrift_asyncio.conformance.serialization
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace java2 org.apache.thrift.conformance
-namespace go thrift.conformance.serialization
 
 include "thrift/conformance/if/any.thrift"
 include "thrift/conformance/if/protocol.thrift"
