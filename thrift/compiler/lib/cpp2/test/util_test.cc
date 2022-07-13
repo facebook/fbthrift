@@ -38,6 +38,8 @@
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/gen/testing.h>
+#include <thrift/compiler/source_location.h>
+#include <thrift/compiler/test/parser_test_helpers.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -411,6 +413,93 @@ TEST_F(UtilTest, gen_adapter_dependency_graph) {
 
   t_typedef t5(&p, "typedef_of_typedef", t2);
   test("dependent typedef after typedef", {&t2, &t5});
+}
+
+TEST_F(UtilTest, simple_struct_dependency_graph) {
+  auto source_mgr = source_manager();
+  auto program = dedent_and_parse_to_program(source_mgr, R"(
+    struct FirstStruct {
+      1: string one;
+      2: MissingType two;
+    }
+    struct SecondStruct {
+      1: string another;
+      2: FirstStruct referent;
+    }
+  )");
+
+  auto edges =
+      cpp2::gen_struct_dependency_graph(program.get(), program->objects());
+
+  // We should really define some sort of "EXPECT_GRAPH_ISOMORPHIC" primitive,
+  // but since that's hard we'll just use a simplistic/brute-force approach.
+  EXPECT_EQ(edges.size(), 2);
+
+  // Technically redundant, but making explicit
+  t_struct* first_node = nullptr;
+  t_struct* second_node = nullptr;
+
+  for (const auto& vertex_with_destinations : edges) {
+    const std::string& name = vertex_with_destinations.first->name();
+    if (name == "FirstStruct") {
+      first_node = vertex_with_destinations.first;
+    } else if (name == "SecondStruct") {
+      second_node = vertex_with_destinations.first;
+    } else {
+      throw std::runtime_error("Wrong graph node: " + name);
+    }
+  }
+
+  EXPECT_TRUE(first_node != nullptr);
+  EXPECT_TRUE(second_node != nullptr);
+
+  EXPECT_TRUE(edges.at(first_node).empty());
+  ASSERT_THAT(edges.at(second_node), testing::ElementsAre(first_node));
+}
+
+// This is the same test as the above, but where one of the structures
+// has a type that doesn't actually resolve.  The same dep graph should
+// be generated without crashing.
+TEST_F(UtilTest, struct_dependency_graph_with_bad_type) {
+  auto source_mgr = source_manager();
+  auto program = dedent_and_parse_to_program(source_mgr, R"(
+    struct FirstStruct {
+      1: string one;
+      2: MissingType two;
+    }
+    struct SecondStruct {
+      1: string another;
+      2: FirstStruct referent;
+    }
+  )");
+
+  auto edges =
+      cpp2::gen_struct_dependency_graph(program.get(), program->objects());
+
+  // We should really define some sort of "EXPECT_GRAPH_ISOMORPHIC" primitive,
+  // but since that's hard we'll just use a simplistic/brute-force approach.
+  EXPECT_EQ(edges.size(), 2);
+
+  // Technically redundant, but making explicit
+  t_struct* first_node = nullptr;
+  t_struct* second_node = nullptr;
+
+  for (const auto& vertex_with_destinations : edges) {
+    const std::string& name = vertex_with_destinations.first->name();
+    if (name == "FirstStruct") {
+      first_node = vertex_with_destinations.first;
+    } else if (name == "SecondStruct") {
+      second_node = vertex_with_destinations.first;
+    } else {
+      throw std::runtime_error("Wrong graph node: " + name);
+    }
+  }
+
+  EXPECT_TRUE(first_node != nullptr);
+  EXPECT_TRUE(second_node != nullptr);
+
+  EXPECT_TRUE(edges.at(first_node).empty());
+  ASSERT_THAT(edges.at(second_node), testing::ElementsAre(first_node));
 }
 
 } // namespace

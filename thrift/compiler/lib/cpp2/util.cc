@@ -91,27 +91,36 @@ gen_struct_dependency_graph(
       }
 
       auto add_dependency = [&](const t_type* type) {
-        type = type->get_true_type();
-        if (const auto strct = dynamic_cast<const t_struct*>(type)) {
-          // We're only interested in types defined in the current program.
-          if (!strct->is_exception() && strct->program() == program) {
-            // TODO(afuller): Remove const cast, once the return type also has
-            // const elements.
-            deps.emplace_back(const_cast<t_struct*>(strct));
+        if (type != nullptr) {
+          type = type->get_true_type();
+          if (const auto strct = dynamic_cast<const t_struct*>(type)) {
+            // We're only interested in types defined in the current program.
+            if (!strct->is_exception() && strct->program() == program) {
+              // TODO(afuller): Remove const cast, once the return type also has
+              // const elements.
+              deps.emplace_back(const_cast<t_struct*>(strct));
+            }
           }
         }
       };
 
-      auto t = f.type()->get_true_type();
-      if (auto map = dynamic_cast<t_map const*>(t)) {
-        // We don't add non-custom type `std::map` to dependency graph since it
-        // supports incomplete types
-        if (cpp2::is_custom_type(*map)) {
-          add_dependency(map->get_key_type());
-          add_dependency(map->get_val_type());
+      // This awkward "resolve-then-check-if-resolved" formulation is to handle
+      // the (malformed) case where a type definition exists for the field but
+      // doesn't actually resolve to an actual type.
+      auto ftype = f.type();
+      ftype.resolve();
+      if (ftype.resolved()) {
+        auto t = ftype->get_true_type();
+        if (auto map = dynamic_cast<t_map const*>(t)) {
+          // We don't add non-custom type `std::map` to dependency graph since
+          // it supports incomplete types
+          if (cpp2::is_custom_type(*map)) {
+            add_dependency(map->get_key_type());
+            add_dependency(map->get_val_type());
+          }
+        } else {
+          add_dependency(t);
         }
-      } else {
-        add_dependency(t);
       }
     }
 
