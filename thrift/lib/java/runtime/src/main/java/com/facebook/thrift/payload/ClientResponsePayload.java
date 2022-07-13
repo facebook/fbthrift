@@ -37,9 +37,10 @@ public interface ClientResponsePayload<T> extends ResponseWrapper<T> {
 
   Integer getStreamId();
 
+  @SuppressWarnings({"rawtypes"})
   static ClientResponsePayload createEmptyStreamingResult(
       ResponseRpcMetadata responseRpcMetadata, StreamPayloadMetadata streamPayloadMetadata) {
-    return new DefaultClientResponsePayload(
+    return new DefaultClientResponsePayload<>(
         StreamResponse.emptyResponse(),
         null,
         responseRpcMetadata,
@@ -68,6 +69,7 @@ public interface ClientResponsePayload<T> extends ResponseWrapper<T> {
         data, null, responseRpcMetadata, streamPayloadMetadata, binaryHeaders, true, streamId);
   }
 
+  @SuppressWarnings("rawtypes")
   static ClientResponsePayload createException(
       Exception error,
       ResponseRpcMetadata responseRpcMetadata,

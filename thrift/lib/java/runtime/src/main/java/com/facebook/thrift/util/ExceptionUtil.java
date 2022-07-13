@@ -18,6 +18,7 @@ package com.facebook.thrift.util;
 
 import com.facebook.thrift.payload.ClientResponsePayload;
 import java.util.Map;
+import org.apache.thrift.TBaseException;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.transport.TTransportException;
@@ -69,15 +70,24 @@ public final class ExceptionUtil {
     Exception exception = errorResponse.getException();
 
     if (headers != null) {
+      if (exception instanceof TBaseException) {
+        ((TBaseException) exception).setHeaders(headers);
+      }
+
       String value = headers.get(EXCEPTION_HEADER_KEY);
       if (TRANSPORT_EXCEPTION.equals(value)) {
-        return new TTransportException(
-            exception.getMessage() != null
-                ? exception.getMessage()
-                : "Proxy hit a transport exception");
+        TTransportException ex =
+            new TTransportException(
+                exception.getMessage() != null
+                    ? exception.getMessage()
+                    : "Proxy hit a transport exception");
+        ex.setHeaders(headers);
+        return ex;
       }
       if (PROTOCOL_EXCEPTION.equals(value)) {
-        return new TProtocolException("Proxy hit a protocol exception");
+        TProtocolException ex = new TProtocolException("Proxy hit a protocol exception");
+        ex.setHeaders(headers);
+        return ex;
       }
     }
 

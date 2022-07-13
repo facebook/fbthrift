@@ -16,8 +16,12 @@
 
 package org.apache.thrift;
 
+import java.util.Collections;
+import java.util.Map;
+
 /** Generic exception class for Thrift. */
 public abstract class TBaseException extends RuntimeException {
+  protected Map<String, String> headers = Collections.emptyMap();
 
   private static final long serialVersionUID = 1L;
 
@@ -35,5 +39,13 @@ public abstract class TBaseException extends RuntimeException {
 
   public TBaseException(String message, Throwable cause) {
     super(message, cause);
+  }
+
+  public void setHeaders(Map<String, String> headers) {
+    this.headers = headers;
+  }
+
+  public Map<String, String> headers() {
+    return headers;
   }
 }

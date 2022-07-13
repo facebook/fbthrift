@@ -22,6 +22,7 @@ import com.facebook.thrift.payload.ClientResponsePayload;
 import java.util.Collections;
 import org.apache.thrift.ResponseRpcMetadata;
 import org.apache.thrift.TApplicationException;
+import org.apache.thrift.TBaseException;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.transport.TTransportException;
@@ -30,7 +31,7 @@ import reactor.core.Exceptions;
 
 public class ExceptionUtilTest {
 
-  private class MyException extends Exception {
+  private class MyException extends TBaseException {
     public MyException(String msg) {
       super(msg);
     }
@@ -79,7 +80,8 @@ public class ExceptionUtilTest {
     ClientResponsePayload responsePayload =
         ClientResponsePayload.createException(myExp, metadata, null, false);
     RuntimeException ex = ExceptionUtil.propagate(responsePayload);
-    assertEquals(myExp, ex.getCause());
+    assertEquals(myExp, ex);
+    assertEquals("x", ((MyException) ex).headers().get("ex"));
   }
 
   @Test
@@ -95,6 +97,7 @@ public class ExceptionUtilTest {
     RuntimeException ex = ExceptionUtil.propagate(responsePayload);
     assertEquals(TTransportException.class, ex.getClass());
     assertEquals("my exception", ex.getMessage());
+    assertEquals("3", ((TTransportException) ex).headers().get("ex"));
   }
 
   @Test
@@ -137,7 +140,7 @@ public class ExceptionUtilTest {
     ClientResponsePayload responsePayload =
         ClientResponsePayload.createException(myExp, metadata, null, false);
     RuntimeException ex = ExceptionUtil.propagate(responsePayload);
-    assertEquals(myExp, ex.getCause());
+    assertEquals(myExp, ex);
   }
 
   @Test
@@ -152,5 +155,6 @@ public class ExceptionUtilTest {
         ClientResponsePayload.createException(myExp, metadata, null, false);
     RuntimeException ex = ExceptionUtil.propagate(responsePayload);
     assertEquals(myExp, ex);
+    assertEquals("5", ((TException) ex).headers().get("ex"));
   }
 }
