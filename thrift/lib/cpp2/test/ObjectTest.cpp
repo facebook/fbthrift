@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/Object.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 
 #include <set>
 

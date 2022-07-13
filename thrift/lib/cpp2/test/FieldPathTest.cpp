@@ -20,7 +20,7 @@
 #include <thrift/conformance/if/gen-cpp2/conformance_types_custom_protocol.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
 #include <thrift/lib/cpp2/FieldPath.h>
-#include <thrift/lib/cpp2/Object.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 
 namespace apache::thrift::protocol {
 namespace {

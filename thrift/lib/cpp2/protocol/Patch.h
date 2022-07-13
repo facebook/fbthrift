@@ -17,7 +17,7 @@
 #pragma once
 
 #include <folly/Portability.h>
-#include <thrift/lib/cpp2/Object.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/thrift/detail/protocol.h>
 
 namespace apache {

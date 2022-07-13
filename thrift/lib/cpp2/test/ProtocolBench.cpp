@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/Object.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
 

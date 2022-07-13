@@ -16,7 +16,7 @@
 
 #pragma once
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
-#include <thrift/lib/cpp2/Object.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 // TODO: remove this file
 
 namespace apache::thrift::conformance {
