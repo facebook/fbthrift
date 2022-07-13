@@ -142,8 +142,8 @@ hash_size_t UniversalHashSizeSha2_256() {
 // requiring the uri be expressed in a restricted cononical form.
 void validateUniversalName(std::string_view uri) {
   // We require a minimum 1 domain and 2 path segements, though up to 4 path
-  // segements is likely to be common.
-  folly::small_vector<folly::StringPiece, 5> segs;
+  // segments is likely to be common.
+  folly::small_vector<folly::StringPiece, 4> segs;
   folly::splitTo<folly::StringPiece>('/', uri, std::back_inserter(segs));
   check(segs.size() >= 3, "not enough path segments");
   checkDomain(segs[0]);
