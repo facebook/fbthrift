@@ -46,6 +46,16 @@ class t_structured : public t_type {
   // Tries to append the given field, the argument is untouched on failure.
   bool try_append_field(std::unique_ptr<t_field>&& elem);
 
+  // Creates a new field using the given arguments, appends it, and returns a
+  // mutable reference to the newly create (and internally owned) field
+  // instance, if successful.
+  template <typename... Args>
+  t_field& create_field(Args&&... args) {
+    auto* ptr = new t_field(std::forward<Args>(args)...);
+    append_field(std::unique_ptr<t_field>(ptr));
+    return *ptr;
+  }
+
   node_list_view<t_field> fields() { return fields_; }
   node_list_view<const t_field> fields() const { return fields_; }
   bool has_fields() const { return !fields_.empty(); }

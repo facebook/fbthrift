@@ -23,10 +23,69 @@
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/test/ast_testing.h>
 
-// TODO(afuller): Test coverage for context_type and visitor_context::has
 namespace apache::thrift::compiler {
 namespace {
+
+class VisitorContextTest : public test::BaseVisitorTest {};
+
+TEST_F(VisitorContextTest, ContextTypeUri) {
+  EXPECT_EQ(legacy_.uri(), getContextTypeUri(context_type::legacy));
+  EXPECT_EQ(deprecated_.uri(), getContextTypeUri(context_type::deprecated));
+  EXPECT_EQ("", getContextTypeUri(context_type::released));
+  EXPECT_EQ(beta_.uri(), getContextTypeUri(context_type::beta));
+  EXPECT_EQ(experimental_.uri(), getContextTypeUri(context_type::experimental));
+  EXPECT_EQ(testing_.uri(), getContextTypeUri(context_type::testing));
+  EXPECT_EQ(
+      no_deprecated_.uri(), getContextTypeUri(context_type::no_deprecated));
+  EXPECT_EQ(no_legacy_.uri(), getContextTypeUri(context_type::no_legacy));
+}
+
+TEST_F(VisitorContextTest, Has) {
+  auto& union1 = create_def<t_union>("Union1");
+  auto& struct1 = create_def<t_struct>("Struct1");
+
+  add_annot(legacy_, union1);
+  add_annot(deprecated_, struct1);
+  add_annot(beta_, program_);
+
+  visitor_context ctx;
+  EXPECT_FALSE(ctx.has(context_type::legacy));
+  EXPECT_FALSE(ctx.has(context_type::deprecated));
+  EXPECT_FALSE(ctx.has(context_type::beta));
+  EXPECT_FALSE(ctx.has(context_type::experimental));
+  EXPECT_FALSE(ctx.has(context_type::testing));
+  EXPECT_FALSE(ctx.has(context_type::no_legacy));
+  EXPECT_FALSE(ctx.has(context_type::no_deprecated));
+
+  ctx.begin_visit(program_);
+  EXPECT_FALSE(ctx.has(context_type::legacy));
+  EXPECT_FALSE(ctx.has(context_type::deprecated));
+  EXPECT_TRUE(ctx.has(context_type::beta));
+  EXPECT_FALSE(ctx.has(context_type::experimental));
+  EXPECT_FALSE(ctx.has(context_type::testing));
+  EXPECT_FALSE(ctx.has(context_type::no_legacy));
+  EXPECT_FALSE(ctx.has(context_type::no_deprecated));
+
+  ctx.begin_visit(union1);
+  EXPECT_TRUE(ctx.has(context_type::legacy));
+  EXPECT_FALSE(ctx.has(context_type::deprecated));
+  EXPECT_TRUE(ctx.has(context_type::beta));
+  EXPECT_FALSE(ctx.has(context_type::experimental));
+  EXPECT_FALSE(ctx.has(context_type::testing));
+  EXPECT_FALSE(ctx.has(context_type::no_legacy));
+  EXPECT_FALSE(ctx.has(context_type::no_deprecated));
+
+  ctx.begin_visit(struct1);
+  EXPECT_TRUE(ctx.has(context_type::legacy));
+  EXPECT_TRUE(ctx.has(context_type::deprecated));
+  EXPECT_TRUE(ctx.has(context_type::beta));
+  EXPECT_FALSE(ctx.has(context_type::experimental));
+  EXPECT_FALSE(ctx.has(context_type::testing));
+  EXPECT_FALSE(ctx.has(context_type::no_legacy));
+  EXPECT_FALSE(ctx.has(context_type::no_deprecated));
+}
 
 // A helper class for keeping track of visitation expectations.
 class MockAstVisitor {
@@ -154,11 +213,9 @@ class OverloadedVisitor {
 };
 
 template <typename V>
-class AstVisitorTest : public ::testing::Test {
+class AstVisitorTest : public test::BaseProgramTest {
  public:
-  AstVisitorTest() noexcept
-      : program_("path/to/program.thrift"),
-        overload_visitor_(&overload_mock_) {}
+  AstVisitorTest() noexcept : overload_visitor_(&overload_mock_) {}
 
   void SetUp() override {
     // Register mock_ to verify add_* function -> nodes visited
@@ -183,7 +240,6 @@ class AstVisitorTest : public ::testing::Test {
  protected:
   ::testing::StrictMock<MockAstVisitor> mock_;
   ::testing::StrictMock<MockAstVisitor> overload_mock_;
-  t_program program_;
   t_scope scope_;
 
  private:
@@ -429,81 +485,10 @@ TYPED_TEST(AstVisitorTest, StreamResponse) {
   this->program_.add_type_instantiation(std::move(stream2));
 }
 
-class MockObserver {
- public:
-  MOCK_METHOD(void, begin_visit, (t_node&));
-  MOCK_METHOD(void, end_visit, (t_node&));
-};
-
-TEST(ObserverTest, OrderOfCalls) {
-  static_assert(ast_detail::is_observer<MockObserver&>::value, "");
-  using test_ast_visitor =
-      basic_ast_visitor<false, MockObserver&, int, MockObserver&>;
-
-  t_program program("path/to/program.thrift");
-  auto& tunion = program.add_def(std::make_unique<t_union>(&program, "Union"));
-  auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
-  tunion.append(std::unique_ptr<t_field>(field));
-
-  MockObserver m1, m2;
-  {
-    ::testing::InSequence ins;
-    EXPECT_CALL(m1, begin_visit(::testing::Ref(program)));
-    EXPECT_CALL(m2, begin_visit(::testing::Ref(program)));
-    EXPECT_CALL(m1, begin_visit(::testing::Ref(tunion)));
-    EXPECT_CALL(m2, begin_visit(::testing::Ref(tunion)));
-    EXPECT_CALL(m1, begin_visit(::testing::Ref(*field)));
-    EXPECT_CALL(m2, begin_visit(::testing::Ref(*field)));
-
-    // End is called in reverse order.
-    EXPECT_CALL(m2, end_visit(::testing::Ref(*field)));
-    EXPECT_CALL(m1, end_visit(::testing::Ref(*field)));
-    EXPECT_CALL(m2, end_visit(::testing::Ref(tunion)));
-    EXPECT_CALL(m1, end_visit(::testing::Ref(tunion)));
-    EXPECT_CALL(m2, end_visit(::testing::Ref(program)));
-    EXPECT_CALL(m1, end_visit(::testing::Ref(program)));
-  }
-  test_ast_visitor visitor;
-  visitor(m1, 1, m2, program);
-}
-
-TEST(ObserverTest, VisitContext) {
-  static_assert(ast_detail::is_observer<visitor_context&>::value, "");
-  using ctx_ast_visitor = basic_ast_visitor<false, visitor_context&>;
-
-  t_program program("path/to/program.thrift");
-  auto& tunion = program.add_def(std::make_unique<t_union>(&program, "Union"));
-  auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
-  tunion.append(std::unique_ptr<t_field>(field));
-
-  int calls = 0;
-  ctx_ast_visitor visitor;
-  visitor.add_program_visitor([&](visitor_context& ctx, t_program& node) {
-    EXPECT_EQ(&node, &program);
-    EXPECT_EQ(ctx.parent(), nullptr);
-    ++calls;
-  });
-  visitor.add_union_visitor([&](visitor_context& ctx, t_union& node) {
-    EXPECT_EQ(&node, &tunion);
-    EXPECT_EQ(ctx.parent(), &program);
-    ++calls;
-  });
-  visitor.add_field_visitor([&](visitor_context& ctx, t_field& node) {
-    EXPECT_EQ(&node, field);
-    EXPECT_EQ(ctx.parent(), &tunion);
-    ++calls;
-  });
-
-  visitor_context ctx;
-  EXPECT_EQ(ctx.parent(), nullptr);
-  visitor(ctx, program);
-  EXPECT_EQ(calls, 3);
-}
-
 TEST(AstVisitorTest, Modifications) {
   t_program program("path/to/program.thrift");
-  program.add_def(std::make_unique<t_union>(&program, "Union1"));
-  program.add_def(std::make_unique<t_union>(&program, "Union2"));
+  program.create_def<t_union>(&program, "Union1");
+  program.create_def<t_union>(&program, "Union2");
   std::vector<std::string> seen;
 
   ast_visitor visitor;
@@ -512,8 +497,8 @@ TEST(AstVisitorTest, Modifications) {
     // Add some more nodes, which will actually show up in the current
     // traversal.
     if (std::isdigit(node.name().back())) { // Don't recurse indefinitely.
-      program.add_def(std::make_unique<t_union>(&program, node.name() + "a"));
-      program.add_def(std::make_unique<t_union>(&program, node.name() + "b"));
+      program.create_def<t_union>(&program, node.name() + "a");
+      program.create_def<t_union>(&program, node.name() + "b");
     }
   });
   visitor(program);
@@ -522,6 +507,74 @@ TEST(AstVisitorTest, Modifications) {
       seen,
       ::testing::ElementsAre(
           "Union1", "Union2", "Union1a", "Union1b", "Union2a", "Union2b"));
+}
+
+class MockObserver {
+ public:
+  MOCK_METHOD(void, begin_visit, (t_node&));
+  MOCK_METHOD(void, end_visit, (t_node&));
+};
+
+class ObserverTest : public test::BaseProgramTest {};
+
+TEST_F(ObserverTest, OrderOfCalls) {
+  static_assert(ast_detail::is_observer<MockObserver&>::value, "");
+  using test_ast_visitor =
+      basic_ast_visitor<false, MockObserver&, int, MockObserver&>;
+
+  auto& tunion = create_def<t_union>("Union");
+  auto& field = tunion.create_field(&t_base_type::t_i32(), "union_field", 1);
+  MockObserver m1, m2;
+  {
+    ::testing::InSequence ins;
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(program_)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(program_)));
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(field)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(field)));
+
+    // End is called in reverse order.
+    EXPECT_CALL(m2, end_visit(::testing::Ref(field)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(field)));
+    EXPECT_CALL(m2, end_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(tunion)));
+    EXPECT_CALL(m2, end_visit(::testing::Ref(program_)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(program_)));
+  }
+  test_ast_visitor visitor;
+  visitor(m1, 1, m2, program_);
+}
+
+TEST_F(ObserverTest, VisitContext) {
+  static_assert(ast_detail::is_observer<visitor_context&>::value, "");
+  using ctx_ast_visitor = basic_ast_visitor<false, visitor_context&>;
+
+  auto& tunion = create_def<t_union>("Union");
+  auto& field = tunion.create_field(&t_base_type::t_i32(), "union_field", 1);
+
+  int calls = 0;
+  ctx_ast_visitor visitor;
+  visitor.add_program_visitor([&](visitor_context& ctx, t_program& node) {
+    EXPECT_EQ(&node, &program_);
+    EXPECT_EQ(ctx.parent(), nullptr);
+    ++calls;
+  });
+  visitor.add_union_visitor([&](visitor_context& ctx, t_union& node) {
+    EXPECT_EQ(&node, &tunion);
+    EXPECT_EQ(ctx.parent(), &program_);
+    ++calls;
+  });
+  visitor.add_field_visitor([&](visitor_context& ctx, t_field& node) {
+    EXPECT_EQ(&node, &field);
+    EXPECT_EQ(ctx.parent(), &tunion);
+    ++calls;
+  });
+
+  visitor_context ctx;
+  EXPECT_EQ(ctx.parent(), nullptr);
+  visitor(ctx, program_);
+  EXPECT_EQ(calls, 3);
 }
 
 } // namespace
