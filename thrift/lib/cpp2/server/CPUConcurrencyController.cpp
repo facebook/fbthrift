@@ -89,8 +89,17 @@ void CPUConcurrencyController::cycleOnce() {
       }
     }
 
+    // We prevent unbounded increase of limits by only changing when
+    // necessary (i.e., we are getting near breaching existing limit). We try
+    // and push the limit back to stable estimate if we are not overloaded as
+    // after an overload event the limit will be set aggressively and may cause
+    // steady-state load shedding due to bursty traffic.
     auto lim = this->getLimit();
-    if (currentLimitUsage >= (1.0 - config().increaseDistanceRatio) * lim) {
+    bool nearExistingLimit =
+        currentLimitUsage >= (1.0 - config().increaseDistanceRatio) * lim;
+    bool shouldConvergeStable =
+        !isRefractoryPeriod() && lim < getStableEstimate();
+    if (nearExistingLimit || shouldConvergeStable) {
       auto newLim =
           lim +
           std::max<int64_t>(
