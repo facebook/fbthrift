@@ -695,7 +695,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
           util::includeInRecentRequestsCount(reqContext_.getMethodName()),
           connection_->getWorker()
               ->getServer()
-              ->getAdaptiveConcurrencyController()),
+              ->getAdaptiveConcurrencyController(),
+          connection_->getWorker()->getServer()->getCPUConcurrencyController()),
       activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
       *connection_->getWorker()->getRequestsRegistry(),

@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
@@ -46,6 +47,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/DebugTestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/InstrumentationTestService.h>
 #include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -970,7 +972,8 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MockRequest(
         RequestsRegistry::DebugStub& stub,
         std::shared_ptr<RequestsRegistry> registry)
-        : registry_(registry), stateMachine_(true, controller_) {
+        : registry_(registry),
+          stateMachine_(true, controller_, cpuConcurrencyController_) {
       new (&stub) RequestsRegistry::DebugStub(
           *registry,
           *this,
@@ -1011,6 +1014,12 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     folly::observer::SimpleObservable<uint32_t> oMaxRequests{0u};
     AdaptiveConcurrencyController controller_{
         oConfig.getObserver(), oMaxRequests.getObserver()};
+    server::ServerConfigsMock serverConfigs;
+    folly::observer::SimpleObservable<
+        apache::thrift::CPUConcurrencyController::Config>
+        cConfig_{apache::thrift::CPUConcurrencyController::Config{}};
+    apache::thrift::CPUConcurrencyController cpuConcurrencyController_{
+        cConfig_.getObserver(), serverConfigs};
     RequestStateMachine stateMachine_;
   };
 };

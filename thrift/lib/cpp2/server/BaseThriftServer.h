@@ -711,6 +711,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return adaptiveConcurrencyController_;
   }
 
+  CPUConcurrencyController& getCPUConcurrencyController() final {
+    return cpuConcurrencyController_;
+  }
+
   const CPUConcurrencyController& getCPUConcurrencyController() const final {
     return cpuConcurrencyController_;
   }

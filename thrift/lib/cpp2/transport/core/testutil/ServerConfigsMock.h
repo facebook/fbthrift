@@ -83,6 +83,11 @@ class ServerConfigsMock : public ServerConfigs {
     return adaptiveConcurrencyController_;
   }
 
+  apache::thrift::CPUConcurrencyController& getCPUConcurrencyController()
+      override {
+    return cpuConcurrencyController_;
+  }
+
   const apache::thrift::CPUConcurrencyController& getCPUConcurrencyController()
       const override {
     return cpuConcurrencyController_;

@@ -42,31 +42,24 @@ void CPUConcurrencyController::cycleOnce() {
   auto load = getLoad();
   if (load >= config().cpuTarget) {
     lastOverloadStart_ = std::chrono::steady_clock::now();
-    auto lim = serverConfigs_.getMaxRequests();
+    auto lim = this->getLimit();
     auto newLim =
         lim -
         std::max<int64_t>(
             static_cast<int64_t>(lim * config().decreaseMultiplier), 1);
-    serverConfigs_.setMaxRequests(
-        std::max<int64_t>(newLim, config().concurrencyLowerBound));
+    this->setLimit(std::max<int64_t>(newLim, config().concurrencyLowerBound));
   } else {
-    // TODO: We should exclude fb303 methods.
-    auto activeReq = serverConfigs_.getActiveRequests();
-    if (activeReq <= 0 || load <= 0) {
+    auto currentLimitUsage = this->getLimitUsage();
+    if (currentLimitUsage == 0 || load <= 0) {
       return;
     }
 
     // Estimate stable concurrency only if we haven't been overloaded recently
     // (and thus current concurrency/CPU is not a good indicator).
-    //
-    // Note: estimating concurrency is fairly lossy as it's a gauge
-    // metric and we can't use techniques to measure it over a duration.
-    // We may be able to get much better estimates if we switch to use QPS
-    // and a token bucket for rate limiting.
     if (!isRefractoryPeriod() &&
         config().collectionSampleSize > stableConcurrencySamples_.size()) {
       auto concurrencyEstimate =
-          static_cast<double>(activeReq) / load * config().cpuTarget;
+          static_cast<double>(currentLimitUsage) / load * config().cpuTarget;
 
       stableConcurrencySamples_.push_back(
           config().initialEstimateFactor * concurrencyEstimate);
@@ -86,20 +79,23 @@ void CPUConcurrencyController::cycleOnce() {
             stableConcurrencySamples_.begin(),
             pct,
             stableConcurrencySamples_.end());
-        stableEstimate_.store(*pct, std::memory_order_relaxed);
-        serverConfigs_.setMaxRequests(*pct);
+        auto result = std::clamp<int64_t>(
+            *pct,
+            config().concurrencyLowerBound,
+            config().concurrencyUpperBound);
+        stableEstimate_.store(result, std::memory_order_relaxed);
+        this->setLimit(result);
         return;
       }
     }
 
-    auto lim = serverConfigs_.getMaxRequests();
-    if (activeReq >= (1.0 - config().increaseDistanceRatio) * lim) {
+    auto lim = this->getLimit();
+    if (currentLimitUsage >= (1.0 - config().increaseDistanceRatio) * lim) {
       auto newLim =
           lim +
           std::max<int64_t>(
               static_cast<int64_t>(lim * config().additiveMultiplier), 1);
-      serverConfigs_.setMaxRequests(
-          std::min<int64_t>(config().concurrencyUpperBound, newLim));
+      this->setLimit(std::min<int64_t>(config().concurrencyUpperBound, newLim));
     }
   }
 }
@@ -111,7 +107,7 @@ void CPUConcurrencyController::schedule() {
   }
 
   LOG(INFO) << "Enabling CPUConcurrencyController. CPU Target: "
-            << this->config().cpuTarget
+            << static_cast<int32_t>(this->config().cpuTarget)
             << " Refresh Period Ms: " << this->config().refreshPeriodMs.count();
   scheduler_.addFunctionGenericNextRunTimeFunctor(
       [this] { this->cycleOnce(); },
@@ -125,5 +121,75 @@ void CPUConcurrencyController::schedule() {
 
 void CPUConcurrencyController::cancel() {
   scheduler_.cancelAllFunctionsAndWait();
+  stableConcurrencySamples_.clear();
+  stableEstimate_.exchange(-1);
+}
+
+void CPUConcurrencyController::requestStarted() {
+  if (config().mode == Mode::DISABLED) {
+    return;
+  }
+
+  totalRequestCount_ += 1;
+}
+
+uint32_t CPUConcurrencyController::getLimit() const {
+  uint32_t limit = 0;
+  switch (config().mode) {
+    case Mode::ENABLED_CONCURRENCY_LIMITS:
+      limit = serverConfigs_.getMaxRequests();
+      break;
+    case Mode::ENABLED_TOKEN_BUCKET:
+      limit = serverConfigs_.getMaxQps();
+      break;
+    default:
+      DCHECK(false);
+  }
+
+  // Fallback to concurrency upper bound if no limit is set yet.
+  // This is most sensible value until we collect enough samples
+  // to estimate a better upper bound;
+  return limit ? limit : config().concurrencyUpperBound;
+}
+
+void CPUConcurrencyController::setLimit(uint32_t newLimit) {
+  switch (config().mode) {
+    case Mode::ENABLED_CONCURRENCY_LIMITS:
+      serverConfigs_.setMaxRequests(newLimit);
+      break;
+    case Mode::ENABLED_TOKEN_BUCKET:
+      serverConfigs_.setMaxQps(newLimit);
+      break;
+    default:
+      DCHECK(false);
+  }
+}
+
+uint32_t CPUConcurrencyController::getLimitUsage() {
+  using namespace std::chrono;
+  switch (config().mode) {
+    case Mode::ENABLED_CONCURRENCY_LIMITS:
+      // Note: estimating concurrency from this is fairly lossy as it's a
+      // gauge metric and we can't use techniques to measure it over a duration.
+      // We may be able to get much better estimates if we switch to use QPS
+      // and a token bucket for rate limiting.
+      // TODO: We should exclude fb303 methods.
+      return serverConfigs_.getActiveRequests();
+    case Mode::ENABLED_TOKEN_BUCKET: {
+      auto now = steady_clock::now();
+      auto milliSince =
+          duration_cast<milliseconds>(now - lastTotalRequestReset_).count();
+      if (milliSince == 0) {
+        return 0;
+      }
+      auto totalRequestSince = totalRequestCount_.load();
+      totalRequestCount_ = 0;
+      lastTotalRequestReset_ = now;
+      return totalRequestSince * 1000L / milliSince;
+    }
+    default:
+      DCHECK(false);
+      return 0;
+  }
 }
 } // namespace apache::thrift

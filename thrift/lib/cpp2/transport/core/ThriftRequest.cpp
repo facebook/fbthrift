@@ -49,7 +49,8 @@ ThriftRequestCore::ThriftRequestCore(
       taskTimeout_(serverConfigs_),
       stateMachine_(
           includeInRecentRequestsCount(reqContext_.getMethodName()),
-          serverConfigs_.getAdaptiveConcurrencyController()) {
+          serverConfigs_.getAdaptiveConcurrencyController(),
+          serverConfigs_.getCPUConcurrencyController()) {
   // Note that method name, RPC kind, and serialization protocol are validated
   // outside the ThriftRequestCore constructor.
   header_.setProtocolId(static_cast<int16_t>(

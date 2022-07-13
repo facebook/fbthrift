@@ -35,7 +35,11 @@ THRIFT_PLUGGABLE_FUNC_DECLARE(
 
 class CPUConcurrencyController {
  public:
-  enum class Mode { DISABLED, ENABLED };
+  enum class Mode {
+    DISABLED,
+    ENABLED_CONCURRENCY_LIMITS,
+    ENABLED_TOKEN_BUCKET
+  };
   struct Config {
     Mode mode = Mode::DISABLED;
     // CPU target in the range [0, 100]
@@ -91,6 +95,8 @@ class CPUConcurrencyController {
     cancel();
   }
 
+  void requestStarted();
+
   int64_t getStableEstimate() const {
     return stableEstimate_.load(std::memory_order_relaxed);
   }
@@ -114,6 +120,10 @@ class CPUConcurrencyController {
   void schedule();
   void cancel();
 
+  uint32_t getLimit() const;
+  void setLimit(uint32_t newLimit);
+  uint32_t getLimitUsage();
+
   const Config& config() const { return **config_; }
 
   folly::observer::Observer<Config> config_;
@@ -127,6 +137,14 @@ class CPUConcurrencyController {
 
   std::vector<int64_t> stableConcurrencySamples_;
   std::atomic<int64_t> stableEstimate_{-1};
+
+  // Keeps track of total requests seen. We use this to compute
+  // an estimate of RPS since the last time interval. This helps us
+  // estimate RPS at target load, as well as whether we should increase
+  // while underloaded.
+  folly::relaxed_atomic<int32_t> totalRequestCount_{0};
+  std::chrono::steady_clock::time_point lastTotalRequestReset_{
+      std::chrono::steady_clock::now()};
 };
 
 namespace detail {

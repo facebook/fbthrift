@@ -20,6 +20,7 @@
 
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
+#include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
 
 namespace apache {
 namespace thrift {
@@ -29,11 +30,14 @@ class AdaptiveConcurrencyController;
 class RequestStateMachine {
  public:
   RequestStateMachine(
-      bool includeInRecentRequests, AdaptiveConcurrencyController& controller)
+      bool includeInRecentRequests,
+      AdaptiveConcurrencyController& controller,
+      CPUConcurrencyController& cpuController)
       : includeInRecentRequests_(includeInRecentRequests),
         adaptiveConcurrencyController_(controller) {
     if (includeInRecentRequests_) {
       adaptiveConcurrencyController_.requestStarted(started());
+      cpuController.requestStarted();
     }
   }
 
