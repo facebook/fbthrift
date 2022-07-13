@@ -108,10 +108,15 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
 
           _chain.postRead(_data);
 
+          reactor.core.publisher.Mono<Map<String, List<Integer>>> _delegateResponse =
+            _delegate.getPoints(key, legacyStuff);
+
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _delegateResponse = _delegateResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            reactor.core.publisher.Mono.defer(() -> _delegate
-            .getPoints(key, legacyStuff))
-            .map(_response -> {
+            _delegateResponse.map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                 com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(

@@ -145,10 +145,15 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
           _chain.postRead(_data);
 
+          reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _delegateResponse =
+            _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _delegateResponse = _delegateResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            reactor.core.publisher.Mono.defer(() -> _delegate
-            .{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}))
-            .map(_response -> {
+            _delegateResponse.map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                 com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
@@ -245,7 +250,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
       reactor.core.publisher.Mono.defer(() -> _delegate
       .{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-      _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+      _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
     return _internalResponse;
