@@ -42,25 +42,21 @@ set(CMAKE_INSTALL_DIR lib/cmake/fbthrift CACHE STRING
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# Name the top level directories
-set(THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BUILD ${CMAKE_CURRENT_BINARY_DIR})
+# Add root dir so qualified includes work, e.g. #include "thrift/compiler/*.h".
+include_directories(.)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# Add root dir so qualified includes work. E.g. #include "thrift/compiler/$x.h"
-include_directories(${THRIFT_HOME})
-include_directories(${THRIFT_BUILD})
-
-# Set directory of the Find$x.cmake files to properly include dependencies
+# Set directory of the Find$x.cmake files to properly include dependencies.
 set(CMAKE_STD_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH
-  "${THRIFT_HOME}/thrift/cmake"
-  # for in-fbsource builds
-  "${CMAKE_CURRENT_SOURCE_DIR}/../opensource/fbcode_builder/CMake"
-  # For shipit-transformed builds
-  "${THRIFT_HOME}/build/fbcode_builder/CMake"
+  ${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake
+  # For in-fbsource builds:
+  ${CMAKE_CURRENT_SOURCE_DIR}/../opensource/fbcode_builder/CMake
+  # For shipit-transformed builds:
+  ${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake
   ${CMAKE_MODULE_PATH})
 
-# Find required dependencies
+# Find required dependencies.
 find_package(OpenSSL REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)

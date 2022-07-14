@@ -16,7 +16,7 @@
 set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # Override the default install path for `make install` step.
-set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
+set(CMAKE_INSTALL_PREFIX ${THRIFT_SOURCE_DIR})
 
 # Compile Bison files.
 set(BISON_FLAGS "--skeleton=lalr1.cc")
