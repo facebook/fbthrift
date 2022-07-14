@@ -269,6 +269,9 @@ cdef class ThriftServer:
     def get_stop_workers_on_stop_listening(self):
         return self.server.get().getStopWorkersOnStopListening()
 
+    def set_idle_server_timeout(self, seconds):
+        self.server.get().setIdleServerTimeout(milliseconds(<int64_t>(seconds * 1000)))
+
 
 cdef class ConnectionContext:
     @staticmethod
