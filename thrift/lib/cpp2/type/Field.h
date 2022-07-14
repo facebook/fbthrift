@@ -25,45 +25,43 @@ namespace type {
 
 using detail::field_size_v;
 
-} // namespace type
-namespace field {
 template <class Tag, class T>
-using ordinal = typename detail::OrdinalImpl<Tag, T>::type;
+using get_field_ordinal = typename detail::OrdinalImpl<Tag, T>::type;
 
 template <class Tag, class T>
-using id = ::apache::thrift::detail::st::struct_private_access::
-    field_id<type::native_type<Tag>, ordinal<Tag, T>>;
+using get_field_id = ::apache::thrift::detail::st::struct_private_access::
+    field_id<type::native_type<Tag>, get_field_ordinal<Tag, T>>;
 
 template <class Tag, class T>
-using type_tag = ::apache::thrift::detail::st::struct_private_access::
-    type_tag<type::native_type<Tag>, ordinal<Tag, T>>;
+using get_field_type_tag = ::apache::thrift::detail::st::struct_private_access::
+    type_tag<type::native_type<Tag>, get_field_ordinal<Tag, T>>;
 
 template <class Tag, class T>
-using ident = ::apache::thrift::detail::st::struct_private_access::
-    ident<type::native_type<Tag>, ordinal<Tag, T>>;
+using get_field_ident = ::apache::thrift::detail::st::struct_private_access::
+    ident<type::native_type<Tag>, get_field_ordinal<Tag, T>>;
 
 namespace detail {
 template <class Tag, class T>
-FOLLY_INLINE_VARIABLE constexpr bool exists = ordinal<Tag, T>::value !=
-    static_cast<FieldOrdinal>(0);
+FOLLY_INLINE_VARIABLE constexpr bool exists =
+    get_field_ordinal<Tag, T>::value != static_cast<FieldOrdinal>(0);
 
-struct TagImpl {
+struct FieldTagImpl {
  public:
   template <class Tag, class T>
   using apply = type::field<
-      type_tag<Tag, T>,
+      get_field_type_tag<Tag, T>,
       FieldContext<
           type::native_type<Tag>,
-          folly::to_underlying(id<Tag, T>::value)>>;
+          folly::to_underlying(get_field_id<Tag, T>::value)>>;
 };
 } // namespace detail
 
 template <class Tag, class T>
-using tag = typename std::conditional_t<
+using get_field_tag = typename std::conditional_t<
     detail::exists<Tag, T>,
-    detail::TagImpl,
+    detail::FieldTagImpl,
     detail::MakeVoid>::template apply<Tag, T>;
 
-} // namespace field
+} // namespace type
 } // namespace thrift
 } // namespace apache

@@ -95,38 +95,37 @@ void checkField() {
   }
 
   using StructTag = struct_t<Struct>;
-  namespace field = apache::thrift::field;
-  test::same_tag<field::ordinal<StructTag, Ordinal>, Ordinal>;
-  test::same_tag<field::id<StructTag, Ordinal>, Id>;
-  test::same_tag<field::type_tag<StructTag, Ordinal>, TypeTag>;
-  test::same_tag<field::ident<StructTag, Ordinal>, Ident>;
-  test::same_tag<field::tag<StructTag, Ordinal>, FieldTag>;
+  test::same_tag<type::get_field_ordinal<StructTag, Ordinal>, Ordinal>;
+  test::same_tag<type::get_field_id<StructTag, Ordinal>, Id>;
+  test::same_tag<type::get_field_type_tag<StructTag, Ordinal>, TypeTag>;
+  test::same_tag<type::get_field_ident<StructTag, Ordinal>, Ident>;
+  test::same_tag<type::get_field_tag<StructTag, Ordinal>, FieldTag>;
 
-  test::same_tag<field::ordinal<StructTag, Id>, Ordinal>;
-  test::same_tag<field::id<StructTag, Id>, Id>;
-  test::same_tag<field::type_tag<StructTag, Id>, TypeTag>;
-  test::same_tag<field::ident<StructTag, Id>, Ident>;
-  test::same_tag<field::tag<StructTag, Id>, FieldTag>;
+  test::same_tag<type::get_field_ordinal<StructTag, Id>, Ordinal>;
+  test::same_tag<type::get_field_id<StructTag, Id>, Id>;
+  test::same_tag<type::get_field_type_tag<StructTag, Id>, TypeTag>;
+  test::same_tag<type::get_field_ident<StructTag, Id>, Ident>;
+  test::same_tag<type::get_field_tag<StructTag, Id>, FieldTag>;
 
   if constexpr (is_type_tag_unique) {
-    test::same_tag<field::ordinal<StructTag, TypeTag>, Ordinal>;
-    test::same_tag<field::id<StructTag, TypeTag>, Id>;
-    test::same_tag<field::type_tag<StructTag, TypeTag>, TypeTag>;
-    test::same_tag<field::ident<StructTag, TypeTag>, Ident>;
-    test::same_tag<field::tag<StructTag, TypeTag>, FieldTag>;
+    test::same_tag<type::get_field_ordinal<StructTag, TypeTag>, Ordinal>;
+    test::same_tag<type::get_field_id<StructTag, TypeTag>, Id>;
+    test::same_tag<type::get_field_type_tag<StructTag, TypeTag>, TypeTag>;
+    test::same_tag<type::get_field_ident<StructTag, TypeTag>, Ident>;
+    test::same_tag<type::get_field_tag<StructTag, TypeTag>, FieldTag>;
   }
 
-  test::same_tag<field::ordinal<StructTag, Ident>, Ordinal>;
-  test::same_tag<field::id<StructTag, Ident>, Id>;
-  test::same_tag<field::type_tag<StructTag, Ident>, TypeTag>;
-  test::same_tag<field::ident<StructTag, Ident>, Ident>;
-  test::same_tag<field::tag<StructTag, Ident>, FieldTag>;
+  test::same_tag<type::get_field_ordinal<StructTag, Ident>, Ordinal>;
+  test::same_tag<type::get_field_id<StructTag, Ident>, Id>;
+  test::same_tag<type::get_field_type_tag<StructTag, Ident>, TypeTag>;
+  test::same_tag<type::get_field_ident<StructTag, Ident>, Ident>;
+  test::same_tag<type::get_field_tag<StructTag, Ident>, FieldTag>;
 
-  test::same_tag<field::ordinal<StructTag, FieldTag>, Ordinal>;
-  test::same_tag<field::id<StructTag, FieldTag>, Id>;
-  test::same_tag<field::type_tag<StructTag, FieldTag>, TypeTag>;
-  test::same_tag<field::ident<StructTag, FieldTag>, Ident>;
-  test::same_tag<field::tag<StructTag, FieldTag>, FieldTag>;
+  test::same_tag<type::get_field_ordinal<StructTag, FieldTag>, Ordinal>;
+  test::same_tag<type::get_field_id<StructTag, FieldTag>, Id>;
+  test::same_tag<type::get_field_type_tag<StructTag, FieldTag>, TypeTag>;
+  test::same_tag<type::get_field_ident<StructTag, FieldTag>, Ident>;
+  test::same_tag<type::get_field_tag<StructTag, FieldTag>, FieldTag>;
 }
 
 TEST(FieldsTest, UnifiedAPIs) {
@@ -202,31 +201,30 @@ TEST(FieldsTest, UnifiedAPIs) {
 
 TEST(FieldsTest, NotFoundFieldInfo) {
   using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  namespace field = apache::thrift::field;
 
-  test::same_tag<field::ordinal<Tag, field_ordinal<0>>, field_ordinal<0>>;
-  test::same_tag<field::id<Tag, field_ordinal<0>>, void>;
-  test::same_tag<field::type_tag<Tag, field_ordinal<0>>, void>;
-  test::same_tag<field::ident<Tag, field_ordinal<0>>, void>;
-  test::same_tag<field::tag<Tag, field_ordinal<0>>, void>;
+  test::same_tag<type::get_field_ordinal<Tag, field_ordinal<0>>, field_ordinal<0>>;
+  test::same_tag<type::get_field_id<Tag, field_ordinal<0>>, void>;
+  test::same_tag<type::get_field_type_tag<Tag, field_ordinal<0>>, void>;
+  test::same_tag<type::get_field_ident<Tag, field_ordinal<0>>, void>;
+  test::same_tag<type::get_field_tag<Tag, field_ordinal<0>>, void>;
 
-  test::same_tag<field::ordinal<Tag, field_id<200>>, field_ordinal<0>>;
-  test::same_tag<field::id<Tag, field_id<200>>, void>;
-  test::same_tag<field::type_tag<Tag, field_id<200>>, void>;
-  test::same_tag<field::ident<Tag, field_id<200>>, void>;
-  test::same_tag<field::tag<Tag, field_id<200>>, void>;
+  test::same_tag<type::get_field_ordinal<Tag, field_id<200>>, field_ordinal<0>>;
+  test::same_tag<type::get_field_id<Tag, field_id<200>>, void>;
+  test::same_tag<type::get_field_type_tag<Tag, field_id<200>>, void>;
+  test::same_tag<type::get_field_ident<Tag, field_id<200>>, void>;
+  test::same_tag<type::get_field_tag<Tag, field_id<200>>, void>;
 
-  test::same_tag<field::ordinal<Tag, binary_t>, field_ordinal<0>>;
-  test::same_tag<field::id<Tag, binary_t>, void>;
-  test::same_tag<field::type_tag<Tag, binary_t>, void>;
-  test::same_tag<field::ident<Tag, binary_t>, void>;
-  test::same_tag<field::tag<Tag, binary_t>, void>;
+  test::same_tag<type::get_field_ordinal<Tag, binary_t>, field_ordinal<0>>;
+  test::same_tag<type::get_field_id<Tag, binary_t>, void>;
+  test::same_tag<type::get_field_type_tag<Tag, binary_t>, void>;
+  test::same_tag<type::get_field_ident<Tag, binary_t>, void>;
+  test::same_tag<type::get_field_tag<Tag, binary_t>, void>;
 
-  test::same_tag<field::ordinal<Tag, tag::a>, field_ordinal<0>>;
-  test::same_tag<field::id<Tag, tag::a>, void>;
-  test::same_tag<field::type_tag<Tag, tag::a>, void>;
-  test::same_tag<field::ident<Tag, tag::a>, void>;
-  test::same_tag<field::tag<Tag, tag::a>, void>;
+  test::same_tag<type::get_field_ordinal<Tag, tag::a>, field_ordinal<0>>;
+  test::same_tag<type::get_field_id<Tag, tag::a>, void>;
+  test::same_tag<type::get_field_type_tag<Tag, tag::a>, void>;
+  test::same_tag<type::get_field_ident<Tag, tag::a>, void>;
+  test::same_tag<type::get_field_tag<Tag, tag::a>, void>;
 }
 
 } // namespace apache::thrift::type

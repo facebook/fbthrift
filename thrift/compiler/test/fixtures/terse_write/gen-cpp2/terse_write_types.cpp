@@ -1435,9 +1435,9 @@ void AdaptedFields::__fbthrift_clear_terse_fields() {
 }
 
 bool AdaptedFields::__fbthrift_is_empty() const {
-  return ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1) &&
- ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2) &&
- ::apache::thrift::op::isEmpty<::apache::thrift::field::tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3);
+  return ::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2) &&
+ ::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3);
 }
 
 bool AdaptedFields::operator==(const AdaptedFields& rhs) const {

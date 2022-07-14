@@ -23,7 +23,8 @@ namespace thrift {
 namespace op {
 
 template <typename Tag, class T>
-FOLLY_INLINE_VARIABLE constexpr auto get = access_field<field::ident<Tag, T>>;
+FOLLY_INLINE_VARIABLE constexpr auto get =
+    access_field<type::get_field_ident<Tag, T>>;
 
 } // namespace op
 } // namespace thrift

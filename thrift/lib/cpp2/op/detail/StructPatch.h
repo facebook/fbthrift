@@ -49,16 +49,19 @@ struct FieldPatch<Tag, T, std::integer_sequence<std::size_t, idx...>> {
   template <typename P>
   static void apply(const P& patch, T& val) {
     (...,
-     applySubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(patch, val));
+     applySubPatch<Tag, type::get_field_id<Tag, field_ordinal<idx + 1>>>(
+         patch, val));
   }
   template <typename P1, typename P2>
   static void merge(P1& lhs, const P2& rhs) {
-    (..., mergeSubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(lhs, rhs));
+    (...,
+     mergeSubPatch<Tag, type::get_field_id<Tag, field_ordinal<idx + 1>>>(
+         lhs, rhs));
   }
   template <typename P>
   static void forwardFrom(T&& from, P& to) {
     (...,
-     forwardFromSubPatch<Tag, field::id<Tag, field_ordinal<idx + 1>>>(
+     forwardFromSubPatch<Tag, type::get_field_id<Tag, field_ordinal<idx + 1>>>(
          std::forward<T>(from), to));
   }
 };

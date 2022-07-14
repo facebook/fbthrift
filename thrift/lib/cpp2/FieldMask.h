@@ -81,7 +81,7 @@ using get_ordinal_sequence =
 template <typename StructTag, size_t... I>
 bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
   std::unordered_set<FieldId> ids{
-      (field::id<StructTag, field_ordinal<I + 1>>())...};
+      (type::get_field_id<StructTag, field_ordinal<I + 1>>())...};
   const FieldIdToMask& map = ref.mask.includes_ref()
       ? ref.mask.includes_ref().value()
       : ref.mask.excludes_ref().value();
@@ -97,14 +97,14 @@ bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
 
 template <typename StructTag, size_t I>
 bool validate_field(MaskRef ref) {
-  MaskRef next = ref.get(field::id<StructTag, field_ordinal<I>>());
+  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
   if (next.isAllMask() || next.isNoneMask()) {
     return true;
   }
   // Check if the field is a thrift struct type. It uses type::native_type to
   // extract the type as we don't support adapted struct fields in field mask.
   using Nested =
-      type::native_type<field::type_tag<StructTag, field_ordinal<I>>>;
+      type::native_type<type::get_field_type_tag<StructTag, field_ordinal<I>>>;
   if constexpr (is_thrift_struct_v<Nested>) {
     // Need to validate the nested struct.
     return is_compatible_with<Nested>(next.mask);
@@ -120,14 +120,14 @@ void ensure_fields(MaskRef ref, T& t, std::index_sequence<I...>) {
 template <typename T, size_t I>
 void ensure_field(MaskRef ref, T& t) {
   using StructTag = type::struct_t<T>;
-  MaskRef next = ref.get(field::id<StructTag, field_ordinal<I>>());
+  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
   if (next.isNoneMask()) {
     return;
   }
   auto& nested = op::get<StructTag, field_ordinal<I>>(t).ensure();
   // Need to ensure the nested object.
   using Nested =
-      type::native_type<field::type_tag<StructTag, field_ordinal<I>>>;
+      type::native_type<type::get_field_type_tag<StructTag, field_ordinal<I>>>;
   if constexpr (is_thrift_struct_v<Nested>) {
     return ensure_fields(next, nested, get_ordinal_sequence<Nested>{});
   }

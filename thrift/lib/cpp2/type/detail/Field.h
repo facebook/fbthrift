@@ -33,10 +33,6 @@ FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_field_size_v<native_type<StructTag>>;
 
-} // namespace detail
-} // namespace type
-namespace field {
-namespace detail {
 template <class Tag, class T>
 struct OrdinalImpl {
   using type = ::apache::thrift::detail::st::struct_private_access::
@@ -65,6 +61,6 @@ struct MakeVoid {
 };
 
 } // namespace detail
-} // namespace field
+} // namespace type
 } // namespace thrift
 } // namespace apache
