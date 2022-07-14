@@ -32,8 +32,7 @@
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:stream_exceptions}}
             ApplicationException(::fbthrift::ApplicationException),
-        }{{!
-        }}{{#function:uniqueStreamExceptions}}
+        }
 
         impl ::fbthrift::ExceptionInfo for {{function:upcamel}}StreamExn {
             fn exn_name(&self) -> &'static str {
@@ -77,7 +76,8 @@
                     {{/function:stream_exceptions}}
                 }
             }
-        }
+        }{{!
+        }}{{#function:uniqueStreamExceptions}}
 
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}StreamExn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
@@ -217,8 +217,7 @@
             }}{{/function:exceptions}}
             ApplicationException(::fbthrift::ApplicationException),
         }{{!
-        }}{{#function:uniqueExceptions}}
-
+        }}
 
         impl ::fbthrift::ExceptionInfo for {{function:upcamel}}ResponseExn {
             fn exn_name(&self) -> &'static str {
@@ -264,6 +263,7 @@
             }
         }
 
+        {{#function:uniqueExceptions}}
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}ResponseExn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}ResponseExn::{{field:rust_name}}(exn)
