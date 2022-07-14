@@ -14,11 +14,11 @@
 
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 
-# Package information
+# Package information.
 if (NOT DEFINED PACKAGE_VERSION)
   set(PACKAGE_VERSION 1.0.0)
 endif ()
-project(fbthrift VERSION ${PACKAGE_VERSION} LANGUAGES CXX)
+project(THRIFT VERSION ${PACKAGE_VERSION} LANGUAGES CXX)
 
 if (NOT DEFINED CPACK_GENERATOR)
   set(CPACK_GENERATOR RPM)
