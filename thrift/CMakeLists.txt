@@ -46,3 +46,12 @@ install(
   NAMESPACE FBThrift::
   DESTINATION ${CMAKE_INSTALL_DIR}
 )
+
+install(
+  DIRECTORY annotation "${CMAKE_CURRENT_BINARY_DIR}/annotation"
+  DESTINATION include/thrift
+  FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.tcc"
+    PATTERN CMakeFiles EXCLUDE
+)

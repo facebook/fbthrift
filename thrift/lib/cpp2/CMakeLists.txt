@@ -142,6 +142,7 @@ add_library(
 
   ${type-cpp2-SOURCES}
 
+  op/Serializer.cpp
   type/Any.cpp
   type/BaseType.cpp
   type/Protocol.cpp
@@ -269,7 +270,6 @@ add_library(
   async/ThreadBoundAdaptorChannel.cpp
   gen/module_metadata_cpp.cpp
   gen/module_types_cpp.cpp
-  op/Serializer.cpp
   security/AsyncStopTLS.cpp
   security/FizzPeeker.cpp
   security/SSLUtil.cpp

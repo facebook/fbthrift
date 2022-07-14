@@ -89,6 +89,12 @@ class AnyValue : public detail::AnyValueBase {
   //
   using Base::clear;
 
+  // Returns held Thrift exception wrapped in folly::exception_wrapper.
+  //
+  // Returns an empty folly::exception_wrapper iff held type is not a Thrift
+  // exception.
+  using Base::asExceptionWrapper;
+
  private:
   using Base::Base;
 };

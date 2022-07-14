@@ -29,6 +29,7 @@ struct IntValue {
   bool empty() const { return value == 0; }
   void clear() { value = 0; }
   bool identical(IntValue other) const { return value == other.value; }
+  folly::exception_wrapper asExceptionWrapper() const { return {}; }
 };
 
 TEST(AnyDataTest, IAnyData) {

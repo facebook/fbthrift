@@ -18,6 +18,7 @@
 
 #include <type_traits>
 
+#include <folly/ExceptionWrapper.h>
 #include <folly/Poly.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/Clear.h>
@@ -39,10 +40,14 @@ struct IAnyData {
     bool identical(const folly::PolySelf<Base>& other) const {
       return folly::poly_call<2>(*this, other);
     }
+    folly::exception_wrapper asExceptionWrapper() const {
+      return folly::poly_call<3>(*this);
+    }
   };
 
   template <class T>
-  using Members = folly::PolyMembers<&T::empty, &T::clear, &T::identical>;
+  using Members = folly::
+      PolyMembers<&T::empty, &T::clear, &T::identical, &T::asExceptionWrapper>;
 };
 
 // A holder that implements IAnyDataHolder for any type T, that can be used with
@@ -67,6 +72,13 @@ struct AnyData {
   constexpr bool identical(const AnyData& other) const noexcept {
     return op::identical<Tag>(data, other.data);
   }
+  folly::exception_wrapper asExceptionWrapper() const {
+    if constexpr (!std::is_base_of_v<apache::thrift::TException, T>) {
+      return {};
+    } else {
+      return data;
+    }
+  }
 };
 template <typename Tag, typename T>
 struct AnyData<Tag, T, true> {
@@ -83,6 +95,7 @@ struct AnyData<Tag, T, true> {
   constexpr bool identical(const AnyData& other) const noexcept {
     return op::identical<Tag>(*ptr, *other.ptr);
   }
+  folly::exception_wrapper asExceptionWrapper() const { return {}; }
 };
 
 // void_t had no data.
@@ -95,6 +108,7 @@ struct AnyData<void_t, T, isPointer> {
   constexpr bool empty() const noexcept { return true; }
   constexpr void clear() noexcept {}
   constexpr bool identical(AnyData) const { return true; }
+  folly::exception_wrapper asExceptionWrapper() const { return {}; }
 };
 
 // An abstract base class for all AnyData-based types.
@@ -114,6 +128,10 @@ class AnyBase {
   // Throws folly::BadPolyCast if the underlying types are incompatible.
   bool identical(const AnyBase& other) const {
     return type_ == other.type_ && data_.identical(other.data_);
+  }
+
+  folly::exception_wrapper asExceptionWrapper() const {
+    return data_.asExceptionWrapper();
   }
 
   // Dynamic type constructor.
