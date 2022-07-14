@@ -43,7 +43,7 @@ similar to the older first-generation implementation:
 
 ### Prerequisites
 
-This document assumes you are familiar with basic thrift usage. We
+This document assumes you are familiar with basic Thrift usage. We
 recommend the following to become familiar:
 [Apache Thrift](http://thrift.apache.org/),
 [Thrift: The Missing Guide](http://diwakergupta.github.io/thrift-missing-guide/),
@@ -71,7 +71,7 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
   priority threads; the Thrift thread manager can create additional threads for
   other priorities.
 
-* `setInterface(std::shared_ptr<ServerInterface>)` - Your thrift handler
+* `setInterface(std::shared_ptr<ServerInterface>)` - Your Thrift handler
   interface that subclasses the generated code.
 
 * `setMaxRequests(uint32_t)` - The maximum number of outstanding
@@ -194,7 +194,7 @@ the allocator than trying to allocate large megabytes of data.
 
 ![IO Readahead](iobuf-readahead.png)
 
-When the thrift channel reads the last part of a frame, it clones the
+When the Thrift channel reads the last part of a frame, it clones the
 IOBuf. There are now two 'views' on the same shared memory segment:
 One part has the first part of the buffer (which is the last part of
 the frame), the other is the last part of the buffer, which is the
@@ -227,7 +227,7 @@ we call writeV with the whole of the queue.
 * Using the load generator, we get some good numbers for QPS. This one
   is Noop's, one thread per core, and sending up to 100 outstanding
   requests to fill up the buffer and show off the readahead / write
-  queueing. (Note that performance is similar to previous thrift
+  queueing. (Note that performance is similar to previous Thrift
   servers if there is only one outstanding request at a time). In
   practice, it seems raw qps for in-memory type servers (like
   key-value store or similar) is at least 20% better than previous
@@ -247,7 +247,7 @@ we call writeV with the whole of the queue.
   and short requests, but we only saw the improvement at p75 and
   above.
 
-* The previous thrift ThreadManager used mutexs and condition
+* The previous Thrift ThreadManager used mutexs and condition
   variables to queue tasks and wake up threads. In practice, this
   limited the throughput to around 300k qps. We have overhauled
   ThreadManager to use a lockless MPMC queue, as well as adding LIFO
