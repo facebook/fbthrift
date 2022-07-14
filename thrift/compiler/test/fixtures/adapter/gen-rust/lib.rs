@@ -583,6 +583,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Service";
@@ -633,6 +634,7 @@ pub mod server {
                     crate::services::service::FuncExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "func",
                 METHOD_NAME.as_cstr(),

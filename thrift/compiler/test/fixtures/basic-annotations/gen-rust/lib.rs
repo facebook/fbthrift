@@ -4040,6 +4040,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4087,6 +4088,7 @@ pub mod server {
                     crate::services::my_service::PingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
@@ -4110,6 +4112,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4157,6 +4160,7 @@ pub mod server {
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getRandomData",
                 METHOD_NAME.as_cstr(),
@@ -4180,6 +4184,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4228,6 +4233,7 @@ pub mod server {
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "hasDataById",
                 METHOD_NAME.as_cstr(),
@@ -4251,6 +4257,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4299,6 +4306,7 @@ pub mod server {
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getDataById",
                 METHOD_NAME.as_cstr(),
@@ -4322,6 +4330,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4371,6 +4380,7 @@ pub mod server {
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "putDataById",
                 METHOD_NAME.as_cstr(),
@@ -4394,6 +4404,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4443,6 +4454,7 @@ pub mod server {
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "lobDataById",
                 METHOD_NAME.as_cstr(),
@@ -4466,6 +4478,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4513,6 +4526,7 @@ pub mod server {
                     crate::services::my_service::DoNothingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "doNothing",
                 METHOD_NAME.as_cstr(),
@@ -4843,6 +4857,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyServicePrioParent";
@@ -4890,6 +4905,7 @@ pub mod server {
                     crate::services::my_service_prio_parent::PingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
@@ -4913,6 +4929,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyServicePrioParent";
@@ -4960,6 +4977,7 @@ pub mod server {
                     crate::services::my_service_prio_parent::PongExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "pong",
                 METHOD_NAME.as_cstr(),
@@ -5234,6 +5252,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyServicePrioChild";
@@ -5281,6 +5300,7 @@ pub mod server {
                     crate::services::my_service_prio_child::PangExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "pang",
                 METHOD_NAME.as_cstr(),
@@ -5557,6 +5577,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "BadInteraction";
@@ -5604,6 +5625,7 @@ pub mod server {
                     crate::services::bad_interaction::FooExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "foo",
                 METHOD_NAME.as_cstr(),
@@ -5860,6 +5882,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "BadService";
@@ -5907,6 +5930,7 @@ pub mod server {
                     crate::services::bad_service::BarExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "bar",
                 METHOD_NAME.as_cstr(),

@@ -1207,6 +1207,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "C";
@@ -1254,6 +1255,7 @@ pub mod server {
                     crate::services::c::FExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "f",
                 METHOD_NAME.as_cstr(),
@@ -1277,6 +1279,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "C";
@@ -1323,7 +1326,35 @@ pub mod server {
                     crate::services::c::NumbersExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::c::NumbersExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::c::NumbersStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("C.numbers", Box::new(exn));
+                                crate::services::c::NumbersStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "C.thing"))]
@@ -1337,6 +1368,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "C";
@@ -1387,6 +1419,7 @@ pub mod server {
                     crate::services::c::ThingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "thing",
                 METHOD_NAME.as_cstr(),

@@ -813,6 +813,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
@@ -861,6 +862,7 @@ pub mod server {
                     crate::services::some_service::BounceMapExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "bounce_map",
                 METHOD_NAME.as_cstr(),
@@ -884,6 +886,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
@@ -932,6 +935,7 @@ pub mod server {
                     crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "binary_keyed_map",
                 METHOD_NAME.as_cstr(),

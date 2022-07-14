@@ -800,6 +800,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
@@ -848,6 +849,7 @@ pub mod server {
                     crate::services::foo::ReturnExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "return",
                 METHOD_NAME.as_cstr(),
@@ -871,6 +873,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
@@ -919,6 +922,7 @@ pub mod server {
                     crate::services::foo::SuperExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "super",
                 METHOD_NAME.as_cstr(),

@@ -3138,6 +3138,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyInteraction";
@@ -3185,6 +3186,7 @@ pub mod server {
                     crate::services::my_interaction::PingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
@@ -3859,6 +3861,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3907,6 +3910,7 @@ pub mod server {
                     crate::services::my_service::PingExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
@@ -3930,6 +3934,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3978,6 +3983,7 @@ pub mod server {
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getRandomData",
                 METHOD_NAME.as_cstr(),
@@ -4001,6 +4007,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4050,6 +4057,7 @@ pub mod server {
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "hasDataById",
                 METHOD_NAME.as_cstr(),
@@ -4073,6 +4081,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4122,6 +4131,7 @@ pub mod server {
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getDataById",
                 METHOD_NAME.as_cstr(),
@@ -4145,6 +4155,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4195,6 +4206,7 @@ pub mod server {
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "putDataById",
                 METHOD_NAME.as_cstr(),
@@ -4218,6 +4230,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4268,6 +4281,7 @@ pub mod server {
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "lobDataById",
                 METHOD_NAME.as_cstr(),
@@ -4291,6 +4305,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4339,7 +4354,35 @@ pub mod server {
                     crate::services::my_service::StreamByIdExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::my_service::StreamByIdExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::my_service::StreamByIdStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamById", Box::new(exn));
+                                crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithException"))]
@@ -4353,6 +4396,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4401,7 +4445,35 @@ pub mod server {
                     crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::my_service::StreamByIdWithExceptionExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", Box::new(exn));
+                                crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithResponse"))]
@@ -4415,6 +4487,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -4463,7 +4536,44 @@ pub mod server {
                     crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::my_service::StreamByIdWithResponseExn::Success(res) => {
+                    let (response, stream) = res;
+                    let response = crate::services::my_service::StreamByIdWithResponseResponseExn::Success(response);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamByIdWithResponse",
+                        METHOD_NAME.as_cstr(),
+                        seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithResponse", Box::new(exn));
+                                crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         fn handle_createMyInteraction(

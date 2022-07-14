@@ -1367,6 +1367,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyRoot";
@@ -1414,6 +1415,7 @@ pub mod server {
                     crate::services::my_root::DoRootExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "do_root",
                 METHOD_NAME.as_cstr(),
@@ -1684,6 +1686,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyNode";
@@ -1731,6 +1734,7 @@ pub mod server {
                     crate::services::my_node::DoMidExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "do_mid",
                 METHOD_NAME.as_cstr(),
@@ -2010,6 +2014,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyLeaf";
@@ -2057,6 +2062,7 @@ pub mod server {
                     crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "do_leaf",
                 METHOD_NAME.as_cstr(),

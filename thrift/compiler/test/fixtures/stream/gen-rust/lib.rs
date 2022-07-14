@@ -3673,6 +3673,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3721,7 +3722,35 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ReturnstreamExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstream", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.streamthrows"))]
@@ -3735,6 +3764,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3782,7 +3812,35 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.streamthrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.servicethrows"))]
@@ -3796,6 +3854,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3843,7 +3902,35 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ServicethrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ServicethrowsExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.servicethrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.boththrows"))]
@@ -3857,6 +3944,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3904,7 +3992,35 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::BoththrowsExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.boththrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::BoththrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.responseandstreamstreamthrows"))]
@@ -3918,6 +4034,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3965,7 +4082,44 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::Success(res) => {
+                    let (response, stream) = res;
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsResponseExn::Success(response);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamstreamthrows",
+                        METHOD_NAME.as_cstr(),
+                        seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamstreamthrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.responseandstreamservicethrows"))]
@@ -3979,6 +4133,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4026,7 +4181,44 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::Success(res) => {
+                    let (response, stream) = res;
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsResponseExn::Success(response);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamservicethrows",
+                        METHOD_NAME.as_cstr(),
+                        seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamservicethrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.responseandstreamboththrows"))]
@@ -4040,6 +4232,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4087,7 +4280,44 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::Success(res) => {
+                    let (response, stream) = res;
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsResponseExn::Success(response);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamboththrows",
+                        METHOD_NAME.as_cstr(),
+                        seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamboththrows", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
 
         #[::tracing::instrument(skip_all, fields(method = "PubSubStreamingService.returnstreamFast"))]
@@ -4101,6 +4331,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4149,7 +4380,35 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn)
                 }
             };
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) => {
+                    let response = None;
+                    let stream = res;
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(res)
+                            },
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstreamFast", Box::new(exn));
+                                crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
         }
     }
 

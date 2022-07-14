@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,17 @@ where
     ctx_stack.post_write(0)?;
 
     Ok(envelope)
+}
+
+/// TODO: Currently does minimal encoding. Not sure if this'll work.
+pub fn serialize_stream_item<P, RES>(res: RES) -> anyhow::Result<ProtocolEncodedFinal<P>>
+where
+    P: Protocol,
+    RES: ResultInfo + Serialize<P::Sizer> + Serialize<P::Serializer>,
+{
+    Ok(serialize!(P, |p| {
+        res.write(p);
+    }))
 }
 
 /// Serialize a request with envelope.

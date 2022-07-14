@@ -31,6 +31,7 @@ use crate::serialize::Serialize;
 use crate::ttype::TType;
 use anyhow::bail;
 use anyhow::Error;
+use anyhow::Result;
 use async_trait::async_trait;
 use futures::stream::Stream;
 use std::ffi::CStr;
@@ -44,11 +45,11 @@ where
     F: Framing,
 {
     fn send_reply(&mut self, reply: FramingEncodedFinal<F>);
-    fn send_stream_reply(
-        &mut self,
+    fn send_stream_reply<'a>(
+        &'a mut self,
         response: Option<FramingEncodedFinal<F>>,
-        stream: Pin<Box<dyn Stream<Item = FramingEncodedFinal<F>>>>,
-    );
+        stream: Pin<Box<dyn Stream<Item = Result<FramingEncodedFinal<F>>> + 'a>>,
+    ) -> Result<()>;
 }
 
 #[async_trait]

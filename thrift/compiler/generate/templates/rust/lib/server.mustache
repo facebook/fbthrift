@@ -256,6 +256,7 @@
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "{{service:name}}";
@@ -313,6 +314,7 @@
                 }
             };
             {{^function:returns_streams?}}
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "{{function:name}}",
                 METHOD_NAME.as_cstr(),
@@ -325,14 +327,57 @@
             Ok(())
             {{/function:returns_streams?}}
             {{#function:returns_streams?}}
-            {{!TODO:
-                1. destructure initial response and stream
-                2. serialize initial response if it's there and put it in Option
-                3. call stream.then to process each individual item
-                4. serialize each item preferably through *StreamExn
-                5. call reply_state.send_stream_reply
-            }}
-            Err(::anyhow::anyhow!("Streaming not yet supported"))
+
+            match res {
+                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => {
+                    {{#function:stream_has_first_response?}}
+                    let (response, stream) = res;
+                    let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::Success(response);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    {{/function:stream_has_first_response?}}{{!
+                    }}{{^function:stream_has_first_response?}}
+                    let response = None;
+                    let stream = res;
+                    {{/function:stream_has_first_response?}}
+
+                    let stream = stream.map(|item| {
+                        let item = match item {
+                            ::std::result::Result::Ok(res) => {
+                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
+                            },
+                            {{!TODO: How are we handling custom stream exceptions?}}
+                            ::std::result::Result::Err(exn) => {
+                                let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
+                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
+                            }
+                        };
+
+                        {{!TODO: Does this work?}}
+                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
+
+                    })
+                    {{!TODO: should we instrument with tracing?}}
+                    .boxed();
+
+                    reply_state.lock().unwrap().send_stream_reply(response, stream);
+                    Ok(())
+                },
+                _ => {
+                    {{!TODO: *Exn for stream response doesn't impl serialization.
+                            Consequently, can't serialize exceptions as well.
+                            We might need to add some logic to serialize service exceptions.
+                    }}
+                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                }
+            }
             {{/function:returns_streams?}}
         }{{!
         }}{{/function:starts_interaction?}}{{#function:starts_interaction?}}

@@ -1622,6 +1622,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1670,6 +1671,7 @@ pub mod server {
                     crate::services::nested_containers::MapListExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "mapList",
                 METHOD_NAME.as_cstr(),
@@ -1693,6 +1695,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1741,6 +1744,7 @@ pub mod server {
                     crate::services::nested_containers::MapSetExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "mapSet",
                 METHOD_NAME.as_cstr(),
@@ -1764,6 +1768,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1812,6 +1817,7 @@ pub mod server {
                     crate::services::nested_containers::ListMapExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "listMap",
                 METHOD_NAME.as_cstr(),
@@ -1835,6 +1841,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1883,6 +1890,7 @@ pub mod server {
                     crate::services::nested_containers::ListSetExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "listSet",
                 METHOD_NAME.as_cstr(),
@@ -1906,6 +1914,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1954,6 +1963,7 @@ pub mod server {
                     crate::services::nested_containers::TurtlesExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "turtles",
                 METHOD_NAME.as_cstr(),

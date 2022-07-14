@@ -1416,6 +1416,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1463,6 +1464,7 @@ pub mod server {
                     crate::services::raiser::DoBlandExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "doBland",
                 METHOD_NAME.as_cstr(),
@@ -1486,6 +1488,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1533,6 +1536,7 @@ pub mod server {
                     crate::services::raiser::DoRaiseExn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "doRaise",
                 METHOD_NAME.as_cstr(),
@@ -1556,6 +1560,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1603,6 +1608,7 @@ pub mod server {
                     crate::services::raiser::Get200Exn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "get200",
                 METHOD_NAME.as_cstr(),
@@ -1626,6 +1632,7 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
+            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1673,6 +1680,7 @@ pub mod server {
                     crate::services::raiser::Get500Exn::ApplicationException(aexn)
                 }
             };
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "get500",
                 METHOD_NAME.as_cstr(),
