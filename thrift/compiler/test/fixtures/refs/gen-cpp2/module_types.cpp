@@ -213,8 +213,8 @@ MyField::MyField(const MyField& srcObj) {
         ::apache::thrift::type_class::string>(srcObj.req_str_value);
 }
 
-MyField& MyField::operator=(const MyField& src) {
-  MyField tmp(src);
+MyField& MyField::operator=(const MyField& other) {
+  MyField tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -416,8 +416,8 @@ MyStruct::MyStruct(const MyStruct& srcObj) {
         ::apache::thrift::type_class::structure>(srcObj.req_ref);
 }
 
-MyStruct& MyStruct::operator=(const MyStruct& src) {
-  MyStruct tmp(src);
+MyStruct& MyStruct::operator=(const MyStruct& other) {
+  MyStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -559,8 +559,8 @@ StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
   __isset.set(0,srcObj.__isset.get(0));
 }
 
-StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
-  StructWithUnion tmp(src);
+StructWithUnion& StructWithUnion::operator=(const StructWithUnion& other) {
+  StructWithUnion tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -816,8 +816,8 @@ StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
   list_ref_shared_const = srcObj.list_ref_shared_const;
 }
 
-StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src) {
-  StructWithContainers tmp(src);
+StructWithContainers& StructWithContainers::operator=(const StructWithContainers& other) {
+  StructWithContainers tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1187,8 +1187,8 @@ StructWithRef::StructWithRef(const StructWithRef& srcObj) {
         ::apache::thrift::type_class::structure>(srcObj.req_field);
 }
 
-StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
-  StructWithRef tmp(src);
+StructWithRef& StructWithRef::operator=(const StructWithRef& other) {
+  StructWithRef tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1447,8 +1447,8 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& 
         ::apache::thrift::type_class::structure>(srcObj.req_field);
 }
 
-StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& src) {
-  StructWithRefTypeUnique tmp(src);
+StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& other) {
+  StructWithRefTypeUnique tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1837,8 +1837,8 @@ StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCt
         ::apache::thrift::type_class::structure>(srcObj.def_field);
 }
 
-StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src) {
-  StructWithRefAndAnnotCppNoexceptMoveCtor tmp(src);
+StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& other) {
+  StructWithRefAndAnnotCppNoexceptMoveCtor tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1946,8 +1946,8 @@ StructWithString::StructWithString(const StructWithString& srcObj) {
   shared_string_ref = srcObj.shared_string_ref;
 }
 
-StructWithString& StructWithString::operator=(const StructWithString& src) {
-  StructWithString tmp(src);
+StructWithString& StructWithString::operator=(const StructWithString& other) {
+  StructWithString tmp(other);
   swap(*this, tmp);
   return *this;
 }

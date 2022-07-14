@@ -402,8 +402,8 @@ MyStruct::MyStruct(const MyStruct& srcObj) {
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
 
-MyStruct& MyStruct::operator=(const MyStruct& src) {
-  MyStruct tmp(src);
+MyStruct& MyStruct::operator=(const MyStruct& other) {
+  MyStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1176,8 +1176,8 @@ AnException::AnException(const AnException& srcObj) {
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
 }
 
-AnException& AnException::operator=(const AnException& src) {
-  AnException tmp(src);
+AnException& AnException::operator=(const AnException& other) {
+  AnException tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -2609,8 +2609,8 @@ MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
   __fbthrift_field_ARequiredField = srcObj.__fbthrift_field_ARequiredField;
 }
 
-MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
-  MyIncludedStruct tmp(src);
+MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& other) {
+  MyIncludedStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -3360,8 +3360,8 @@ ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& src
   __isset.set(1,srcObj.__isset.get(1));
 }
 
-ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& src) {
-  ComplexContainerStruct tmp(src);
+ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& other) {
+  ComplexContainerStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }

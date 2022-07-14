@@ -198,8 +198,8 @@ containerStruct::containerStruct(const containerStruct& srcObj) {
         ::apache::thrift::type_class::structure>(srcObj.fieldX);
 }
 
-containerStruct& containerStruct::operator=(const containerStruct& src) {
-  containerStruct tmp(src);
+containerStruct& containerStruct::operator=(const containerStruct& other) {
+  containerStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }

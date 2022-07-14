@@ -224,8 +224,8 @@ LazyFoo::LazyFoo(const LazyFoo& srcObj) {
   __isset.set(3,srcObj.__isset.get(3));
 }
 
-LazyFoo& LazyFoo::operator=(const LazyFoo& src) {
-  LazyFoo tmp(src);
+LazyFoo& LazyFoo::operator=(const LazyFoo& other) {
+  LazyFoo tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -676,8 +676,8 @@ OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) {
   __isset.set(3,srcObj.__isset.get(3));
 }
 
-OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& src) {
-  OptionalLazyFoo tmp(src);
+OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& other) {
+  OptionalLazyFoo tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -973,8 +973,8 @@ LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) {
         ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.__fbthrift_field_field4);
 }
 
-LazyCppRef& LazyCppRef::operator=(const LazyCppRef& src) {
-  LazyCppRef tmp(src);
+LazyCppRef& LazyCppRef::operator=(const LazyCppRef& other) {
+  LazyCppRef tmp(other);
   swap(*this, tmp);
   return *this;
 }

@@ -1388,8 +1388,8 @@ AdaptedFields::AdaptedFields(const AdaptedFields& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 3>(__fbthrift_field_field3, *this);
 }
 
-AdaptedFields& AdaptedFields::operator=(const AdaptedFields& src) {
-  AdaptedFields tmp(src);
+AdaptedFields& AdaptedFields::operator=(const AdaptedFields& other) {
+  AdaptedFields tmp(other);
   swap(*this, tmp);
   return *this;
 }

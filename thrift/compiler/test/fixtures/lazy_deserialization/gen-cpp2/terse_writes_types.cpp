@@ -225,8 +225,8 @@ TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   __isset.set(3,srcObj.__isset.get(3));
 }
 
-TerseLazyFoo& TerseLazyFoo::operator=(const TerseLazyFoo& src) {
-  TerseLazyFoo tmp(src);
+TerseLazyFoo& TerseLazyFoo::operator=(const TerseLazyFoo& other) {
+  TerseLazyFoo tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -680,8 +680,8 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   __isset.set(3,srcObj.__isset.get(3));
 }
 
-TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(const TerseOptionalLazyFoo& src) {
-  TerseOptionalLazyFoo tmp(src);
+TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(const TerseOptionalLazyFoo& other) {
+  TerseOptionalLazyFoo tmp(other);
   swap(*this, tmp);
   return *this;
 }

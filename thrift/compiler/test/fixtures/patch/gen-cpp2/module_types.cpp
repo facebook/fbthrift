@@ -867,8 +867,8 @@ MyDataPatchStruct::MyDataPatchStruct(const MyDataPatchStruct& srcObj) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_data2, *this);
 }
 
-MyDataPatchStruct& MyDataPatchStruct::operator=(const MyDataPatchStruct& src) {
-  MyDataPatchStruct tmp(src);
+MyDataPatchStruct& MyDataPatchStruct::operator=(const MyDataPatchStruct& other) {
+  MyDataPatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1007,8 +1007,8 @@ MyDataValuePatchStruct::MyDataValuePatchStruct(const MyDataValuePatchStruct& src
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
 }
 
-MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(const MyDataValuePatchStruct& src) {
-  MyDataValuePatchStruct tmp(src);
+MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(const MyDataValuePatchStruct& other) {
+  MyDataValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1159,8 +1159,8 @@ OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(const OptionalMyD
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(const OptionalMyDataValuePatchStruct& src) {
-  OptionalMyDataValuePatchStruct tmp(src);
+OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(const OptionalMyDataValuePatchStruct& other) {
+  OptionalMyDataValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1325,8 +1325,8 @@ InnerUnionPatchStruct::InnerUnionPatchStruct(const InnerUnionPatchStruct& srcObj
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
 }
 
-InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(const InnerUnionPatchStruct& src) {
-  InnerUnionPatchStruct tmp(src);
+InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(const InnerUnionPatchStruct& other) {
+  InnerUnionPatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1449,8 +1449,8 @@ InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(const InnerUnionValuePatc
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(const InnerUnionValuePatchStruct& src) {
-  InnerUnionValuePatchStruct tmp(src);
+InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(const InnerUnionValuePatchStruct& other) {
+  InnerUnionValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1630,8 +1630,8 @@ OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(const Opt
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator=(const OptionalInnerUnionValuePatchStruct& src) {
-  OptionalInnerUnionValuePatchStruct tmp(src);
+OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator=(const OptionalInnerUnionValuePatchStruct& other) {
+  OptionalInnerUnionValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1802,8 +1802,8 @@ MyUnionPatchStruct::MyUnionPatchStruct(const MyUnionPatchStruct& srcObj) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
 }
 
-MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& src) {
-  MyUnionPatchStruct tmp(src);
+MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& other) {
+  MyUnionPatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1966,8 +1966,8 @@ MyUnionValuePatchStruct::MyUnionValuePatchStruct(const MyUnionValuePatchStruct& 
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(const MyUnionValuePatchStruct& src) {
-  MyUnionValuePatchStruct tmp(src);
+MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(const MyUnionValuePatchStruct& other) {
+  MyUnionValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -2147,8 +2147,8 @@ OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(const OptionalM
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(const OptionalMyUnionValuePatchStruct& src) {
-  OptionalMyUnionValuePatchStruct tmp(src);
+OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(const OptionalMyUnionValuePatchStruct& other) {
+  OptionalMyUnionValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -2479,8 +2479,8 @@ OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(const Opt
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator=(const OptionalMyStructField21PatchStruct& src) {
-  OptionalMyStructField21PatchStruct tmp(src);
+OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator=(const OptionalMyStructField21PatchStruct& other) {
+  OptionalMyStructField21PatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -2814,8 +2814,8 @@ OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(const Opt
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator=(const OptionalMyStructField22PatchStruct& src) {
-  OptionalMyStructField22PatchStruct tmp(src);
+OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator=(const OptionalMyStructField22PatchStruct& other) {
+  OptionalMyStructField22PatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -3129,8 +3129,8 @@ OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(const Opt
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator=(const OptionalMyStructField23PatchStruct& src) {
-  OptionalMyStructField23PatchStruct tmp(src);
+OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator=(const OptionalMyStructField23PatchStruct& other) {
+  OptionalMyStructField23PatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -3367,8 +3367,8 @@ MyStructPatchStruct::MyStructPatchStruct(const MyStructPatchStruct& srcObj) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 30>(__fbthrift_field_unionVal, *this);
 }
 
-MyStructPatchStruct& MyStructPatchStruct::operator=(const MyStructPatchStruct& src) {
-  MyStructPatchStruct tmp(src);
+MyStructPatchStruct& MyStructPatchStruct::operator=(const MyStructPatchStruct& other) {
+  MyStructPatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -3947,8 +3947,8 @@ MyStructValuePatchStruct::MyStructValuePatchStruct(const MyStructValuePatchStruc
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
 }
 
-MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(const MyStructValuePatchStruct& src) {
-  MyStructValuePatchStruct tmp(src);
+MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(const MyStructValuePatchStruct& other) {
+  MyStructValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -4099,8 +4099,8 @@ OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(const Optiona
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
 
-OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(const OptionalMyStructValuePatchStruct& src) {
-  OptionalMyStructValuePatchStruct tmp(src);
+OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(const OptionalMyStructValuePatchStruct& other) {
+  OptionalMyStructValuePatchStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }

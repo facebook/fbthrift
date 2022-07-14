@@ -2425,8 +2425,8 @@ struct4::struct4(const struct4& srcObj) {
         ::apache::thrift::type_class::structure>(srcObj.field3);
 }
 
-struct4& struct4::operator=(const struct4& src) {
-  struct4 tmp(src);
+struct4& struct4::operator=(const struct4& other) {
+  struct4 tmp(other);
   swap(*this, tmp);
   return *this;
 }

@@ -75,8 +75,8 @@ Foo::Foo(const Foo& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
 }
 
-Foo& Foo::operator=(const Foo& src) {
-  Foo tmp(src);
+Foo& Foo::operator=(const Foo& other) {
+  Foo tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -508,8 +508,8 @@ Bar::Bar(const Bar& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 7>(__fbthrift_field_adaptedStructField, *this);
 }
 
-Bar& Bar::operator=(const Bar& src) {
-  Bar tmp(src);
+Bar& Bar::operator=(const Bar& other) {
+  Bar tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -730,8 +730,8 @@ StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& src
   if (__fbthrift_field_opt_boxed_field) ::apache::thrift::adapt_detail::construct<my::Adapter1, 4>(*__fbthrift_field_opt_boxed_field, *this);
 }
 
-StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldAdapter& src) {
-  StructWithFieldAdapter tmp(src);
+StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldAdapter& other) {
+  StructWithFieldAdapter tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -879,8 +879,8 @@ TerseAdaptedFields::TerseAdaptedFields(const TerseAdaptedFields& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
 }
 
-TerseAdaptedFields& TerseAdaptedFields::operator=(const TerseAdaptedFields& src) {
-  TerseAdaptedFields tmp(src);
+TerseAdaptedFields& TerseAdaptedFields::operator=(const TerseAdaptedFields& other) {
+  TerseAdaptedFields tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -1083,8 +1083,8 @@ B::B(const B& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);
 }
 
-B& B::operator=(const B& src) {
-  B tmp(src);
+B& B::operator=(const B& other) {
+  B tmp(other);
   swap(*this, tmp);
   return *this;
 }

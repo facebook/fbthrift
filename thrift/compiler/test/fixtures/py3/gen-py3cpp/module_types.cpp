@@ -195,8 +195,8 @@ OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
   __isset.set(0,srcObj.__isset.get(0));
 }
 
-OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {
-  OptionalRefStruct tmp(src);
+OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& other) {
+  OptionalRefStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }

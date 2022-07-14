@@ -116,8 +116,8 @@ TrivialTypesStruct::TrivialTypesStruct(const TrivialTypesStruct& srcObj) {
   __isset.set(4,srcObj.__isset.get(4));
 }
 
-TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& src) {
-  TrivialTypesStruct tmp(src);
+TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& other) {
+  TrivialTypesStruct tmp(other);
   swap(*this, tmp);
   return *this;
 }

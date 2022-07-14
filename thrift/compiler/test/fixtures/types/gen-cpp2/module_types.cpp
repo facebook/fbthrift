@@ -1792,8 +1792,8 @@ ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
         ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
 }
 
-ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
-  ForwardUsageRoot tmp(src);
+ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& other) {
+  ForwardUsageRoot tmp(other);
   swap(*this, tmp);
   return *this;
 }
@@ -2523,8 +2523,8 @@ AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) {
   aa_shared = srcObj.aa_shared;
 }
 
-AllocatorAware& AllocatorAware::operator=(const AllocatorAware& src) {
-  AllocatorAware tmp(src);
+AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {
+  AllocatorAware tmp(other);
   swap(*this, tmp);
   return *this;
 }
