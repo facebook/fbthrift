@@ -464,6 +464,7 @@ public class MyServiceReactiveClient
 
           return _rpc
               .singleRequestStreamingResponse(_crp, rpcOptions)
+              .transform(com.facebook.thrift.util.FluxPublishingTransformer.getInstance())
               .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
               .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
               .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
@@ -681,6 +682,7 @@ public class MyServiceReactiveClient
 
           return _rpc
               .singleRequestStreamingResponse(_crp, rpcOptions)
+              .transform(com.facebook.thrift.util.FluxPublishingTransformer.getInstance())
               .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
               .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
               .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
