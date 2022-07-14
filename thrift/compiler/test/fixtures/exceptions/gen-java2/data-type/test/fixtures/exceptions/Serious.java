@@ -120,4 +120,10 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
       oprot.writeStructEnd();
     }
     
-}
+    private static class _SeriousLazy {
+        private static final Serious _DEFAULT = new Serious.Builder().build();
+    }
+    
+    public static Serious defaultInstance() {
+        return  _SeriousLazy._DEFAULT;
+    }}

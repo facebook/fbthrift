@@ -24,6 +24,7 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final Nada _DEFAULT = new Nada();
 
 
     static {
@@ -131,4 +132,8 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
       oprot.readStructEnd();
       return res;
     }
+    public static Nada defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

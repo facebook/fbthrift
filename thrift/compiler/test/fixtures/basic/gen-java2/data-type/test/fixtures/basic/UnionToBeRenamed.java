@@ -24,6 +24,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final UnionToBeRenamed _DEFAULT = new UnionToBeRenamed();
 
     public static final int _RESERVED_FIELD = 1;
     private static final TField RESERVED_FIELD_FIELD_DESC = new TField("reservedField", TType.I32, (short)1);
@@ -183,4 +184,8 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
       oprot.readStructEnd();
       return res;
     }
+    public static UnionToBeRenamed defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

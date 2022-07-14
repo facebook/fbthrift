@@ -154,4 +154,10 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
       oprot.writeStructEnd();
     }
     
-}
+    private static class _ComplexFieldNamesLazy {
+        private static final ComplexFieldNames _DEFAULT = new ComplexFieldNames.Builder().build();
+    }
+    
+    public static ComplexFieldNames defaultInstance() {
+        return  _ComplexFieldNamesLazy._DEFAULT;
+    }}

@@ -24,6 +24,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final Baz _DEFAULT = new Baz();
 
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I32, (short)1);
@@ -425,4 +426,8 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
       oprot.readStructEnd();
       return res;
     }
+    public static Baz defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

@@ -24,6 +24,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final Union2 _DEFAULT = new Union2();
 
     public static final int _I = 1;
     private static final TField I_FIELD_DESC = new TField("i", TType.I32, (short)1);
@@ -327,4 +328,8 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       oprot.readStructEnd();
       return res;
     }
+    public static Union2 defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

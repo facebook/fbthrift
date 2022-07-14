@@ -80,4 +80,10 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
       oprot.writeStructEnd();
     }
     
-}
+    private static class _EmptyXcepLazy {
+        private static final EmptyXcep _DEFAULT = new EmptyXcep.Builder().build();
+    }
+    
+    public static EmptyXcep defaultInstance() {
+        return  _EmptyXcepLazy._DEFAULT;
+    }}

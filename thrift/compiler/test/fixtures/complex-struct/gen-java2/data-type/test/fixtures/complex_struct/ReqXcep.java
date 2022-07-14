@@ -148,4 +148,10 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
       oprot.writeStructEnd();
     }
     
-}
+    private static class _ReqXcepLazy {
+        private static final ReqXcep _DEFAULT = new ReqXcep.Builder().build();
+    }
+    
+    public static ReqXcep defaultInstance() {
+        return  _ReqXcepLazy._DEFAULT;
+    }}

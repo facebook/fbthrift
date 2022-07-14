@@ -80,4 +80,10 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
       oprot.writeStructEnd();
     }
     
-}
+    private static class _BanalLazy {
+        private static final Banal _DEFAULT = new Banal.Builder().build();
+    }
+    
+    public static Banal defaultInstance() {
+        return  _BanalLazy._DEFAULT;
+    }}

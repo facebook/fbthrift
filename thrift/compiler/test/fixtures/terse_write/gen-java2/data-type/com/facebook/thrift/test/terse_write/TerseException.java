@@ -131,4 +131,10 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
       oprot.writeStructEnd();
     }
     
-}
+    private static class _TerseExceptionLazy {
+        private static final TerseException _DEFAULT = new TerseException.Builder().build();
+    }
+    
+    public static TerseException defaultInstance() {
+        return  _TerseExceptionLazy._DEFAULT;
+    }}

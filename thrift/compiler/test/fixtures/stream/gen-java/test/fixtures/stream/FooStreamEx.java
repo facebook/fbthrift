@@ -80,4 +80,10 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
       oprot.writeStructEnd();
     }
     
-}
+    private static class _FooStreamExLazy {
+        private static final FooStreamEx _DEFAULT = new FooStreamEx.Builder().build();
+    }
+    
+    public static FooStreamEx defaultInstance() {
+        return  _FooStreamExLazy._DEFAULT;
+    }}

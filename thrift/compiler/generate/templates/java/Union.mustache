@@ -36,6 +36,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final {{struct:javaCapitalName}} _DEFAULT = new {{struct:javaCapitalName}}();
 
     {{#struct:fields}}
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
@@ -151,4 +152,8 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
 
     {{> union/UnionRead}}
 
+    public static {{struct:javaCapitalName}} defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

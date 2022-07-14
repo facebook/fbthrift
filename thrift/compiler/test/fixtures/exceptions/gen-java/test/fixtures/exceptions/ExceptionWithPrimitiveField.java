@@ -148,4 +148,10 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
       oprot.writeStructEnd();
     }
     
-}
+    private static class _ExceptionWithPrimitiveFieldLazy {
+        private static final ExceptionWithPrimitiveField _DEFAULT = new ExceptionWithPrimitiveField.Builder().build();
+    }
+    
+    public static ExceptionWithPrimitiveField defaultInstance() {
+        return  _ExceptionWithPrimitiveFieldLazy._DEFAULT;
+    }}

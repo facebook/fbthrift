@@ -101,7 +101,6 @@ public final class TerseStructWithCustomDefault implements com.facebook.thrift.p
         private Map<Short, Short> mapField = ImmutableMap.<Short, Short>builder()
         .put((short)1, (short)1)
         .build();
-        
         private com.facebook.thrift.test.terse_write.MyStructWithCustomDefault structField = com.facebook.thrift.test.terse_write.MyStructWithCustomDefault.defaultInstance();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="bool_field", requiredness=Requiredness.NONE)

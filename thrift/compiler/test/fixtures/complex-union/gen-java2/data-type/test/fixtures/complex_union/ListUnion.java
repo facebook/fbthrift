@@ -24,6 +24,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final ListUnion _DEFAULT = new ListUnion();
 
     public static final int _INTLISTVALUE = 2;
     private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);
@@ -255,4 +256,8 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       oprot.readStructEnd();
       return res;
     }
+    public static ListUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

@@ -115,7 +115,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private double doubleVal = 0.;
         private String stringVal = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
         private byte[] binaryVal = com.facebook.thrift.util.IntrinsicDefaults.defaultByteArray();
-        
         private test.fixtures.patch.MyData structVal = test.fixtures.patch.MyData.defaultInstance();
         private Boolean optBoolVal = null;
         private Byte optByteVal = null;
@@ -130,8 +129,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private List<Short> optListVal = null;
         private Set<String> optSetVal = null;
         private Map<String, String> optMapVal = null;
-        private test.fixtures.patch.MyUnion unionVal = null;
-        
+        private test.fixtures.patch.MyUnion unionVal = test.fixtures.patch.MyUnion.defaultInstance();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(boolean boolVal) {

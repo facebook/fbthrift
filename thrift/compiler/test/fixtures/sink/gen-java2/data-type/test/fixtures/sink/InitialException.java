@@ -116,4 +116,10 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
       oprot.writeStructEnd();
     }
     
-}
+    private static class _InitialExceptionLazy {
+        private static final InitialException _DEFAULT = new InitialException.Builder().build();
+    }
+    
+    public static InitialException defaultInstance() {
+        return  _InitialExceptionLazy._DEFAULT;
+    }}

@@ -24,6 +24,7 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final InnerUnion _DEFAULT = new InnerUnion();
 
     public static final int _INNEROPTION = 1;
     private static final TField INNER_OPTION_FIELD_DESC = new TField("innerOption", TType.STRING, (short)1);
@@ -183,4 +184,8 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
       oprot.readStructEnd();
       return res;
     }
+    public static InnerUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

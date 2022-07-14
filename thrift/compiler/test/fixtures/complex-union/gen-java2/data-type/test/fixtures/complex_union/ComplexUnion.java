@@ -24,6 +24,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final ComplexUnion _DEFAULT = new ComplexUnion();
 
     public static final int _INTVALUE = 1;
     private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
@@ -463,4 +464,8 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       oprot.readStructEnd();
       return res;
     }
+    public static ComplexUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

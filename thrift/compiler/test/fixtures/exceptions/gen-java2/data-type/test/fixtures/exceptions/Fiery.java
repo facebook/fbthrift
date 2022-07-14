@@ -116,4 +116,10 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
       oprot.writeStructEnd();
     }
     
-}
+    private static class _FieryLazy {
+        private static final Fiery _DEFAULT = new Fiery.Builder().build();
+    }
+    
+    public static Fiery defaultInstance() {
+        return  _FieryLazy._DEFAULT;
+    }}

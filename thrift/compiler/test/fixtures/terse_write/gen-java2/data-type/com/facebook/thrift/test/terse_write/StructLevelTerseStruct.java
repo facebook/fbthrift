@@ -89,7 +89,6 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         private List<Short> listField = com.facebook.thrift.util.IntrinsicDefaults.defaultList();
         private Set<Short> setField = com.facebook.thrift.util.IntrinsicDefaults.defaultSet();
         private Map<Short, Short> mapField = com.facebook.thrift.util.IntrinsicDefaults.defaultMap();
-        
         private com.facebook.thrift.test.terse_write.MyStruct structField = com.facebook.thrift.test.terse_write.MyStruct.defaultInstance();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="bool_field", requiredness=Requiredness.NONE)

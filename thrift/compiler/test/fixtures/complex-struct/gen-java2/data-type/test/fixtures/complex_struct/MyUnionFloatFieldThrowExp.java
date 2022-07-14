@@ -24,6 +24,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final MyUnionFloatFieldThrowExp _DEFAULT = new MyUnionFloatFieldThrowExp();
 
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
@@ -359,4 +360,8 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       oprot.readStructEnd();
       return res;
     }
+    public static MyUnionFloatFieldThrowExp defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

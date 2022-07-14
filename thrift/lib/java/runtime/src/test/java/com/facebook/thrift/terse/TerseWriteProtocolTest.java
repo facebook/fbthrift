@@ -25,11 +25,14 @@ import com.facebook.thrift.any.LazyAny;
 import com.facebook.thrift.payload.ThriftSerializable;
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.test.terse.MyStruct;
+import com.facebook.thrift.test.terse.MyUnion;
 import com.facebook.thrift.test.terse.NestedStruct;
 import com.facebook.thrift.test.terse.SingleFieldStruct;
+import com.facebook.thrift.test.terse.StructLevelTerseStruct;
 import com.facebook.thrift.test.terse.Structv1;
 import com.facebook.thrift.test.terse.Structv2;
 import com.facebook.thrift.test.terse.Structv3;
+import com.facebook.thrift.test.terse.TerseException;
 import com.facebook.thrift.test.terse.TerseStructSingleField;
 import com.facebook.thrift.test.terse.TerseStructWithDateAdapter;
 import com.facebook.thrift.test.terse.TerseStructWithPrimitiveTypeAdapter;
@@ -224,5 +227,68 @@ public class TerseWriteProtocolTest {
     assertEquals("foo", st.getStringField());
     assertEquals(6700000000L, st.getDateField().getTime());
     assertTrue(size(st) > size);
+  }
+
+  @Test
+  public void testUnion() {
+    // even the value is intrinsic default, this should be written
+    MyUnion u = MyUnion.fromIntField3(0);
+    StructLevelTerseStruct st1 =
+        new StructLevelTerseStruct.Builder().setStringField("test").setUnionField(u).build();
+    assertEquals("test", st1.getStringField());
+
+    u = MyUnion.fromIntField3(5);
+    StructLevelTerseStruct st2 =
+        new StructLevelTerseStruct.Builder().setStringField("test").setUnionField(u).build();
+    assertEquals("test", st2.getStringField());
+
+    assertEquals(size(st1), size(st2));
+
+    // nothing is set
+    u = new MyUnion();
+    StructLevelTerseStruct st3 =
+        new StructLevelTerseStruct.Builder().setStringField("test").setUnionField(u).build();
+
+    assertTrue(size(st1) > size(st3));
+  }
+
+  @Test
+  public void testDeserializeUnion() {
+    StructLevelTerseStruct st = new StructLevelTerseStruct.Builder().build();
+    serialize(st);
+
+    // deserialize it
+    StructLevelTerseStruct read = StructLevelTerseStruct.read0(protocol);
+    assertNotNull(read.getUnionField());
+  }
+
+  @Test
+  public void testException() {
+    MyUnion u = MyUnion.fromIntField3(0);
+    StructLevelTerseStruct st1 =
+        new StructLevelTerseStruct.Builder().setStringField("test").setUnionField(u).build();
+    assertEquals("test", st1.getStringField());
+
+    TerseException e = new TerseException.Builder().setCode(0).setMsg("").build();
+    StructLevelTerseStruct st2 =
+        new StructLevelTerseStruct.Builder()
+            .setStringField("test")
+            .setUnionField(u)
+            .setExceptionField(e)
+            .build();
+
+    assertEquals(size(st1), size(st2));
+  }
+
+  @Test
+  public void testExceptionDefaultValue() {
+    MyUnion u = MyUnion.fromIntField3(0);
+    StructLevelTerseStruct st =
+        new StructLevelTerseStruct.Builder().setStringField("test").setUnionField(u).build();
+    serialize(st);
+
+    // deserialize it
+    StructLevelTerseStruct read = StructLevelTerseStruct.read0(protocol);
+    assertNotNull(read.getExceptionField());
   }
 }

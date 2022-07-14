@@ -24,6 +24,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final MyUnion _DEFAULT = new MyUnion();
 
     public static final int _ANINTEGER = 1;
     private static final TField AN_INTEGER_FIELD_DESC = new TField("anInteger", TType.I32, (short)1);
@@ -229,4 +230,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       oprot.readStructEnd();
       return res;
     }
+    public static MyUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

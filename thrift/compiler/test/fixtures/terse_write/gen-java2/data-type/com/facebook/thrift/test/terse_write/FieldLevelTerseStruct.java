@@ -131,7 +131,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         private List<Short> terseListField = com.facebook.thrift.util.IntrinsicDefaults.defaultList();
         private Set<Short> terseSetField = com.facebook.thrift.util.IntrinsicDefaults.defaultSet();
         private Map<Short, Short> terseMapField = com.facebook.thrift.util.IntrinsicDefaults.defaultMap();
-        
         private com.facebook.thrift.test.terse_write.MyStruct terseStructField = com.facebook.thrift.test.terse_write.MyStruct.defaultInstance();
         private boolean boolField = false;
         private byte byteField = 0;

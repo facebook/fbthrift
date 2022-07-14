@@ -121,8 +121,8 @@ struct StructLevelTerseStruct {
   13: map<i16, i16> map_field;
   14: MyStruct struct_field;
   15: InnerTerseStruct inner_field;
-  // 16: MyUnion union_field;
-  // 17: TerseException exception_field;
+  16: MyUnion union_field;
+  17: TerseException exception_field;
 }
 
 struct FieldLevelTerseStruct {

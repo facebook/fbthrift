@@ -80,4 +80,10 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
       oprot.writeStructEnd();
     }
     
-}
+    private static class _MyExceptionLazy {
+        private static final MyException _DEFAULT = new MyException.Builder().build();
+    }
+    
+    public static MyException defaultInstance() {
+        return  _MyExceptionLazy._DEFAULT;
+    }}

@@ -316,4 +316,10 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       oprot.writeStructEnd();
     }
     
-}
+    private static class _ComplexExceptionLazy {
+        private static final ComplexException _DEFAULT = new ComplexException.Builder().build();
+    }
+    
+    public static ComplexException defaultInstance() {
+        return  _ComplexExceptionLazy._DEFAULT;
+    }}

@@ -24,6 +24,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final ValUnion _DEFAULT = new ValUnion();
 
     public static final int _V1 = 1;
     private static final TField V1_FIELD_DESC = new TField("v1", TType.STRUCT, (short)1);
@@ -227,4 +228,8 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
       oprot.readStructEnd();
       return res;
     }
+    public static ValUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

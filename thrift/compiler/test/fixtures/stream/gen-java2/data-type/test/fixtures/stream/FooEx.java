@@ -80,4 +80,10 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
       oprot.writeStructEnd();
     }
     
-}
+    private static class _FooExLazy {
+        private static final FooEx _DEFAULT = new FooEx.Builder().build();
+    }
+    
+    public static FooEx defaultInstance() {
+        return  _FooExLazy._DEFAULT;
+    }}

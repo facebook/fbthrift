@@ -24,6 +24,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final NonCopyableUnion _DEFAULT = new NonCopyableUnion();
 
     public static final int _S = 1;
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
@@ -180,4 +181,8 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
       oprot.readStructEnd();
       return res;
     }
+    public static NonCopyableUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

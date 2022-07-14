@@ -154,4 +154,10 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
       oprot.writeStructEnd();
     }
     
-}
+    private static class _CustomFieldNamesLazy {
+        private static final CustomFieldNames _DEFAULT = new CustomFieldNames.Builder().build();
+    }
+    
+    public static CustomFieldNames defaultInstance() {
+        return  _CustomFieldNamesLazy._DEFAULT;
+    }}

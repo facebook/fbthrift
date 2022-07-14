@@ -150,4 +150,10 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
       oprot.writeStructEnd();
     }
     
-}
+    private static class _OptXcepLazy {
+        private static final OptXcep _DEFAULT = new OptXcep.Builder().build();
+    }
+    
+    public static OptXcep defaultInstance() {
+        return  _OptXcepLazy._DEFAULT;
+    }}

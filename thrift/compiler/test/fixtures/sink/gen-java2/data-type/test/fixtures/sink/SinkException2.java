@@ -114,4 +114,10 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
       oprot.writeStructEnd();
     }
     
-}
+    private static class _SinkException2Lazy {
+        private static final SinkException2 _DEFAULT = new SinkException2.Builder().build();
+    }
+    
+    public static SinkException2 defaultInstance() {
+        return  _SinkException2Lazy._DEFAULT;
+    }}

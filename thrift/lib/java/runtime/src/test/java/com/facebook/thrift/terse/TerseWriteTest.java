@@ -25,6 +25,7 @@ import com.facebook.thrift.payload.ThriftSerializable;
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.test.terse.EmptyStruct;
 import com.facebook.thrift.test.terse.FieldLevelTerseStruct;
+import com.facebook.thrift.test.terse.InnerTerseStruct;
 import com.facebook.thrift.test.terse.MyEnum;
 import com.facebook.thrift.test.terse.MyStruct;
 import com.facebook.thrift.test.terse.PackageLevelTerseStruct;
@@ -38,6 +39,9 @@ import com.facebook.thrift.util.SerializationProtocol;
 import com.facebook.thrift.util.SerializerUtil;
 import com.facebook.thrift.util.resources.RpcResources;
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -202,7 +206,7 @@ public class TerseWriteTest {
     assertNotNull(st.getStructVal());
     assertNull(st.getOptStructVal());
     assertNull(st.getOptI32Val());
-    assertNull(st.getUnionVal());
+    assertNotNull(st.getUnionVal());
   }
 
   @Test
@@ -210,5 +214,24 @@ public class TerseWriteTest {
     TerseException ex = new TerseException.Builder().build();
     assertEquals(IntrinsicDefaults.defaultInt(), ex.getCode());
     assertEquals(IntrinsicDefaults.defaultString(), ex.getMsg());
+  }
+
+  @Test
+  public void testStructLevelTerseStructNullUnionValue() {
+    expectedException.expect(NullPointerException.class);
+    expectedException.expectMessage("unionField must not be null");
+    StructLevelTerseStruct st =
+        new StructLevelTerseStruct.Builder()
+            .setStringField("test")
+            .setBinaryField(new byte[1])
+            .setEnumField(MyEnum.ME1)
+            .setListField(new ArrayList<>())
+            .setSetField(new HashSet<>())
+            .setMapField(new HashMap<>())
+            .setStructField(new MyStruct.Builder().build())
+            .setInnerField(new InnerTerseStruct.Builder().build())
+            .setUnionField(null)
+            .build();
+    serialize(st);
   }
 }

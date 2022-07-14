@@ -24,6 +24,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final DataUnion _DEFAULT = new DataUnion();
 
     public static final int _BINARYDATA = 1;
     private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);
@@ -229,4 +230,8 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
       oprot.readStructEnd();
       return res;
     }
+    public static DataUnion defaultInstance() {
+        return _DEFAULT;
+    }
+    
 }

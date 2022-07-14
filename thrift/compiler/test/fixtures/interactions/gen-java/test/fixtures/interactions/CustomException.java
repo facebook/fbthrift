@@ -116,4 +116,10 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
       oprot.writeStructEnd();
     }
     
-}
+    private static class _CustomExceptionLazy {
+        private static final CustomException _DEFAULT = new CustomException.Builder().build();
+    }
+    
+    public static CustomException defaultInstance() {
+        return  _CustomExceptionLazy._DEFAULT;
+    }}

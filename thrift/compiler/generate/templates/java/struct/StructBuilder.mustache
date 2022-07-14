@@ -29,8 +29,7 @@ public static class Builder {
     {{/field:hasAdapter?}}
     {{^field:hasAdapter?}}
     {{#field:isObject?}}
-    {{#field:isUnion?}}private {{> FieldType}} {{field:javaName}} = null;{{/field:isUnion?}}
-    {{^field:isUnion?}}private {{> FieldType}} {{field:javaName}} = {{> FieldType}}.defaultInstance();{{/field:isUnion?}}
+    private {{> FieldType}} {{field:javaName}} = {{> FieldType}}.defaultInstance();
     {{/field:isObject?}}
     {{^field:isObject?}}
     private {{> FieldType}} {{field:javaName}} = {{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}};
