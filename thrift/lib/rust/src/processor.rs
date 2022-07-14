@@ -32,8 +32,10 @@ use crate::ttype::TType;
 use anyhow::bail;
 use anyhow::Error;
 use async_trait::async_trait;
+use futures::stream::Stream;
 use std::ffi::CStr;
 use std::marker::PhantomData;
+use std::pin::Pin;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -42,6 +44,11 @@ where
     F: Framing,
 {
     fn send_reply(&mut self, reply: FramingEncodedFinal<F>);
+    fn send_stream_reply(
+        &mut self,
+        response: Option<FramingEncodedFinal<F>>,
+        stream: Pin<Box<dyn Stream<Item = FramingEncodedFinal<F>>>>,
+    );
 }
 
 #[async_trait]

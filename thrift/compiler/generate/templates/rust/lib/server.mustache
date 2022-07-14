@@ -325,6 +325,13 @@
             Ok(())
             {{/function:returns_streams?}}
             {{#function:returns_streams?}}
+            {{!TODO:
+                1. destructure initial response and stream
+                2. serialize initial response if it's there and put it in Option
+                3. call stream.then to process each individual item
+                4. serialize each item preferably through *StreamExn
+                5. call reply_state.send_stream_reply
+            }}
             Err(::anyhow::anyhow!("Streaming not yet supported"))
             {{/function:returns_streams?}}
         }{{!
