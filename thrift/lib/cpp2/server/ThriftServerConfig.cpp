@@ -79,6 +79,10 @@ uint16_t ThriftServerConfig::getMaxFinishedDebugPayloadsPerWorker() const {
   return maxFinishedDebugPayloadsPerWorker_.get();
 }
 
+std::chrono::milliseconds ThriftServerConfig::getConnectionAgeTimeout() const {
+  return connectionAgeTimeout_.get();
+}
+
 const ServerAttributeDynamic<uint32_t>& ThriftServerConfig::getMaxConnections()
     const {
   return maxConnections_;
@@ -295,6 +299,15 @@ void ThriftServerConfig::setMaxFinishedDebugPayloadsPerWorker(
 void ThriftServerConfig::unsetMaxFinishedDebugPayloadsPerWorker(
     AttributeSource source) {
   unsetStaticAttribute(maxFinishedDebugPayloadsPerWorker_, source);
+}
+
+void ThriftServerConfig::setConnectionAgeTimeout(
+    std::chrono::milliseconds timeout, AttributeSource source) {
+  setStaticAttribute(connectionAgeTimeout_, std::move(timeout), source);
+}
+
+void ThriftServerConfig::unsetConnectionAgeTimeout(AttributeSource source) {
+  unsetStaticAttribute(connectionAgeTimeout_, source);
 }
 
 void ThriftServerConfig::setMaxConnections(

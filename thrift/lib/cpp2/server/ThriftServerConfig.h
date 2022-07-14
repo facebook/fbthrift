@@ -68,6 +68,13 @@ class ThriftServerConfig {
    */
   std::chrono::milliseconds getIdleTimeout() const;
 
+  /** Get maximum number of milliseconds we'll keep the connection alive (0 =
+   * infinity).
+   *
+   *  @return number of milliseconds, or 0 if no timeout set.
+   */
+  std::chrono::milliseconds getConnectionAgeTimeout() const;
+
   /**
    * Get the number of IO worker threads
    *
@@ -336,6 +343,18 @@ class ThriftServerConfig {
       AttributeSource source = AttributeSource::OVERRIDE);
 
   void unsetMethodsBypassMaxRequestsLimit(
+      AttributeSource source = AttributeSource::OVERRIDE);
+
+  /** Set maximum number of milliseconds we'll keep the connection alive (0 =
+   * infinity).
+   *
+   *  @param timeout number of milliseconds, or 0 to disable timeouts.
+   */
+  void setConnectionAgeTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE);
+
+  void unsetConnectionAgeTimeout(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -623,6 +642,10 @@ class ThriftServerConfig {
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
   ServerAttributeStatic<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
+
+  //! Milliseconds we'll keep the connection alive for (0 = infinity)
+  ServerAttributeStatic<std::chrono::milliseconds> connectionAgeTimeout_{
+      std::chrono::milliseconds(0)};
 
   /**
    * The time in milliseconds before an unperformed task expires

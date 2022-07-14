@@ -815,6 +815,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return thriftConfig_.getIdleTimeout();
   }
 
+  void setConnectionAgeTimeout(std::chrono::milliseconds timeout) {
+    thriftConfig_.setConnectionAgeTimeout(
+        std::move(timeout), AttributeSource::OVERRIDE);
+  }
+
+  std::chrono::milliseconds getConnectionAgeTimeout() const {
+    return thriftConfig_.getConnectionAgeTimeout();
+  }
+
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
    *
