@@ -3673,7 +3673,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3723,6 +3722,8 @@ pub mod server {
                 }
             };
 
+            use ::futures::StreamExt as _;
+
             match res {
                 crate::services::pub_sub_streaming_service::ReturnstreamExn::Success(res) => {
                     let response = None;
@@ -3764,7 +3765,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3813,6 +3813,8 @@ pub mod server {
                 }
             };
 
+            use ::futures::StreamExt as _;
+
             match res {
                 crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) => {
                     let response = None;
@@ -3854,7 +3856,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3903,6 +3904,8 @@ pub mod server {
                 }
             };
 
+            use ::futures::StreamExt as _;
+
             match res {
                 crate::services::pub_sub_streaming_service::ServicethrowsExn::Success(res) => {
                     let response = None;
@@ -3944,7 +3947,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -3993,6 +3995,8 @@ pub mod server {
                 }
             };
 
+            use ::futures::StreamExt as _;
+
             match res {
                 crate::services::pub_sub_streaming_service::BoththrowsExn::Success(res) => {
                     let response = None;
@@ -4034,7 +4038,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4082,6 +4085,8 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(aexn)
                 }
             };
+
+            use ::futures::StreamExt as _;
 
             match res {
                 crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::Success(res) => {
@@ -4133,7 +4138,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4181,6 +4185,8 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(aexn)
                 }
             };
+
+            use ::futures::StreamExt as _;
 
             match res {
                 crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::Success(res) => {
@@ -4232,7 +4238,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4280,6 +4285,8 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(aexn)
                 }
             };
+
+            use ::futures::StreamExt as _;
 
             match res {
                 crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::Success(res) => {
@@ -4331,7 +4338,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "PubSubStreamingService";
@@ -4380,6 +4386,8 @@ pub mod server {
                     crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn)
                 }
             };
+
+            use ::futures::StreamExt as _;
 
             match res {
                 crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) => {

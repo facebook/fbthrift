@@ -256,7 +256,6 @@
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "{{service:name}}";
@@ -327,6 +326,8 @@
             Ok(())
             {{/function:returns_streams?}}
             {{#function:returns_streams?}}
+
+            use ::futures::StreamExt as _;
 
             match res {
                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => {

@@ -1367,7 +1367,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyRoot";
@@ -1686,7 +1685,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyNode";
@@ -2014,7 +2012,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyLeaf";

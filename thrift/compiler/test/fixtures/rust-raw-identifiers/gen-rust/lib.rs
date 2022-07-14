@@ -800,7 +800,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
@@ -873,7 +872,6 @@ pub mod server {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
-            use ::futures::StreamExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
