@@ -227,4 +227,13 @@ TEST(FieldsTest, NotFoundFieldInfo) {
   test::same_tag<type::get_field_tag<Tag, tag::a>, void>;
 }
 
+TEST(FieldsTest, HelperAPIs) {
+  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+
+  test::same_tag<type::get_field_native_type<Tag, field_ordinal<1>>, std::int32_t>;
+  test::same_tag<type::get_field_native_type<Tag, tag::fieldA>, std::int32_t>;
+  test::same_tag<type::get_field_native_type<Tag, field_id<11>>, std::deque<std::string>>;
+  EXPECT_EQ((type::get_field_id_v<Tag, field_ordinal<1>>), FieldId{2});
+  EXPECT_EQ((type::get_field_ordinal_v<Tag, field_id<2>>), FieldOrdinal{1});
+}
 } // namespace apache::thrift::type

@@ -62,6 +62,19 @@ using get_field_tag = typename std::conditional_t<
     detail::FieldTagImpl,
     detail::MakeVoid>::template apply<Tag, T>;
 
+template <class Tag, class T>
+FOLLY_INLINE_VARIABLE constexpr FieldOrdinal get_field_ordinal_v =
+    get_field_ordinal<Tag, T>::value;
+
+template <class Tag, class T>
+FOLLY_INLINE_VARIABLE constexpr FieldId get_field_id_v =
+    get_field_id<Tag, T>::value;
+
+// TODO(ytj): use a more specific template parameter name instead of `T`.
+// Since we only accept type tag, id, ordinal or ident
+template <class Tag, class T>
+using get_field_native_type = native_type<get_field_tag<Tag, T>>;
+
 } // namespace type
 } // namespace thrift
 } // namespace apache
