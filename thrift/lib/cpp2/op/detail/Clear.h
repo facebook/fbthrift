@@ -159,8 +159,11 @@ struct ClearOptionalField {
   }
 };
 
+template <typename>
+struct ClearField {};
+
 template <typename Tag, typename Context>
-struct Clear<type::field<Tag, Context>> : ClearOptionalField {
+struct ClearField<type::field<Tag, Context>> : ClearOptionalField {
   using ClearOptionalField::operator();
 
   template <typename T, typename Struct>
@@ -180,7 +183,7 @@ struct Clear<type::field<Tag, Context>> : ClearOptionalField {
 };
 
 template <typename Adapter, typename Tag, typename Struct, int16_t FieldId>
-struct Clear<
+struct ClearField<
     type::field<type::adapted<Adapter, Tag>, FieldContext<Struct, FieldId>>>
     : ClearOptionalField {
   using field_adapted_tag =

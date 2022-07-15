@@ -124,7 +124,7 @@ TEST(AdaptTest, AdapterClearTestStructOpClear) {
   obj.data()->value = 42;
   obj.meta() = "foo";
 
-  apache::thrift::op::clear<field_type_tag>(obj.data(), obj);
+  apache::thrift::op::clear_field<field_type_tag>(obj.data(), obj);
 
   EXPECT_EQ(obj.data()->value, 0);
   EXPECT_EQ(obj.data()->fieldId, 1);
@@ -137,7 +137,8 @@ void clear_struct_impl(Struct& s) {
   if constexpr (Ord != 0) {
     using FieldOrdinal = field_ordinal<Ord>;
     using FieldTag = type::get_field_tag<type::struct_t<Struct>, FieldOrdinal>;
-    op::clear<FieldTag>(op::get<type::struct_t<Struct>, FieldOrdinal>(s), s);
+    op::clear_field<FieldTag>(
+        op::get<type::struct_t<Struct>, FieldOrdinal>(s), s);
     clear_struct_impl<Ord - 1>(s);
   }
 }

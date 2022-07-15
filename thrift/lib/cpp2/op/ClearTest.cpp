@@ -47,7 +47,8 @@ void testClearImpl(
   if constexpr (IsField) {
     uint8_t isset = 1;
     TestStruct obj;
-    clear<Tag>(apache::thrift::detail::make_field_ref(unexpected, isset), obj);
+    clear_field<Tag>(
+        apache::thrift::detail::make_field_ref(unexpected, isset), obj);
   } else {
     clear<Tag>(unexpected);
   }

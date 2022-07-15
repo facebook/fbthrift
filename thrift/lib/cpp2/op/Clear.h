@@ -58,6 +58,15 @@ constexpr detail::GetIntrinsicDefault<Tag> getIntrinsicDefault{};
 template <typename Tag>
 constexpr detail::Clear<Tag> clear{};
 
+// Clears the given field, setting the field to initial state.
+// For example:
+//   // clears foo.field().value() to the intrinsic default value.
+//   clear_field<field_tag>(foo.field(), foo)
+//   // calls foo.optional_field().reset().
+//   clear_field<field_tag>(foo.optional_field(), foo)
+template <typename Tag>
+constexpr detail::ClearField<Tag> clear_field{};
+
 } // namespace op
 } // namespace thrift
 } // namespace apache
