@@ -20,6 +20,7 @@
 
 #include <folly/MapUtil.h>
 #include <folly/Optional.h>
+#include <folly/Random.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/container/F14Map.h>
@@ -127,8 +128,6 @@ struct DummyIndexWriter {
   void finalize() {}
 };
 
-int64_t random_64bits_integer();
-
 // Utility class to inject index fields to serialized data
 template <class Protocol>
 class IndexWriterImpl {
@@ -186,7 +185,7 @@ class IndexWriterImpl {
   }
 
   void writeRandomNumberField() {
-    const int64_t randomNumber = random_64bits_integer();
+    const int64_t randomNumber = static_cast<int64_t>(folly::Random::rand64());
     writtenBytes_ += prot_->writeFieldBegin(
         kExpectedRandomNumberField.name,
         kExpectedRandomNumberField.type,

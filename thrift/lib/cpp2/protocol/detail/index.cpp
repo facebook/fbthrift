@@ -53,13 +53,6 @@ Xxh3Hasher::operator int64_t() {
   return XXH3_64bits_digest(static_cast<XXH3_state_t*>(state));
 }
 
-int64_t random_64bits_integer() {
-  thread_local std::default_random_engine engine(std::random_device{}());
-  thread_local std::uniform_int_distribution<int64_t> dist(
-      std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
-  return dist(engine);
-}
-
 void throwChecksumMismatch(int64_t expected, int64_t actual) {
   gLazyDeserializationIsDisabledDueToChecksumMismatch = true;
   throw TProtocolException(
