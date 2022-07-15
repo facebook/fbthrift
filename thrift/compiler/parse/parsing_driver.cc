@@ -505,10 +505,11 @@ void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
       // avoid double reporting
       if (mode == parsing_mode::PROGRAM ||
           program != program_bundle->root_program()) {
-        ctx_.failure(*field, [&](auto& o) {
-          o << "Field identifier " << field->get_key() << " for \""
-            << field->get_name() << "\" has already been used.";
-        });
+        ctx_.failure(
+            *field,
+            "Field identifier {} for \"{}\" has already been used.",
+            field->get_key(),
+            field->get_name());
       }
     }
   }
@@ -682,8 +683,8 @@ void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {
   if (next_id < t_field::min_id) {
     ctx_.failure(
         field,
-        "Cannot allocate an id for `" + field.name() +
-            "`. Automatic field ids are exhausted.");
+        "Cannot allocate an id for `{}`. Automatic field ids are exhausted.",
+        field.name());
   }
   field.set_implicit_id(next_id--);
 }

@@ -532,7 +532,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
       result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {
-    ctx.failure(*program->root_program(), [&](auto& o) { o << e.what(); });
+    ctx.failure(*program->root_program(), "{}", e.what());
   }
   ctx.end_visit(*program->root_program());
   return result;

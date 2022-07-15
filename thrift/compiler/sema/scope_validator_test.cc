@@ -179,11 +179,12 @@ class ScopeValidatorTest : public ::testing::Test {
           diagnostic_level::failure,
           "`" + annot->name() + "` cannot annotate `" + node.name() + "`",
           "path/to/file.thrift",
-          -1);
+          1);
     }
     expected.emplace_back(
         diagnostic_level::warning,
-        "Using `UnscopedAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
+        "Using `UnscopedAnnot` as an annotation, even though it has not been "
+        "enabled for any annotation scope.",
         "path/to/file.thrift",
         1);
     EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
@@ -260,11 +261,11 @@ TEST_F(ScopeValidatorTest, FieldWithTransitiveStructuredScope) {
       {diagnostic_level::failure,
        "`MyStructuredAnnot` cannot annotate `" + field.name() + "`",
        "path/to/file.thrift",
-       -1},
+       1},
       {diagnostic_level::failure,
        "`MyNestedStructuredAnnot` cannot annotate `" + field.name() + "`",
        "path/to/file.thrift",
-       -1}};
+       1}};
   EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
 }
 
@@ -274,7 +275,8 @@ TEST_F(ScopeValidatorTest, StructWithNonTransitiveStructuredScope) {
   auto result = validate(strct);
   std::vector<diagnostic> expected{
       {diagnostic_level::warning,
-       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
+       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though "
+       "it has not been enabled for any annotation scope.",
        "path/to/file.thrift",
        1}};
   EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
@@ -286,7 +288,8 @@ TEST_F(ScopeValidatorTest, FieldWithNonTransitiveStructuredScope) {
   auto result = validate(field);
   std::vector<diagnostic> expected{
       {diagnostic_level::warning,
-       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
+       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though "
+       "it has not been enabled for any annotation scope.",
        "path/to/file.thrift",
        1}};
   EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));

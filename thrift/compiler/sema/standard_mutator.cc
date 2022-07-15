@@ -121,7 +121,7 @@ void mutate_inject_metadata_fields(
     type_string =
         annotation->get_value_from_structured_annotation("type").get_string();
   } catch (const std::exception& e) {
-    ctx.failure([&](auto& o) { o << e.what(); });
+    ctx.failure("{}", e.what());
     return;
   }
   // If the specified type and annotation are from the same program, append
@@ -132,11 +132,11 @@ void mutate_inject_metadata_fields(
 
   const auto* ttype = node.program()->scope()->find_type(type_string);
   if (!ttype) {
-    ctx.failure([&](auto& o) {
-      o << "Can not find expected type `" << type_string
-        << "` specified in `@internal.InjectMetadataFields` in the current scope."
-        << " Please check the include.";
-    });
+    ctx.failure(
+        "Can not find expected type `{}` specified in "
+        "`@internal.InjectMetadataFields` in the current scope. "
+        "Please check the include.",
+        type_string);
     return;
   }
 
@@ -144,10 +144,10 @@ void mutate_inject_metadata_fields(
   // We only allow injecting fields from a struct type.
   if (structured == nullptr || ttype->is_union() || ttype->is_exception() ||
       ttype->is_paramlist()) {
-    ctx.failure([&](auto& o) {
-      o << "`" << type_string << "` is not a struct type."
-        << " `@internal.InjectMetadataFields` can be only used with a struct type.";
-    });
+    ctx.failure(
+        "`{}` is not a struct type. `@internal.InjectMetadataFields` can be "
+        "only used with a struct type.",
+        type_string);
     return;
   }
   for (const auto& field : structured->fields()) {
@@ -155,8 +155,8 @@ void mutate_inject_metadata_fields(
     try {
       injected_id = cpp2::get_internal_injected_field_id(field.id());
     } catch (const std::exception& e) {
-      ctx.failure([&](auto& o) { o << e.what(); });
-      // Iterate all fields to find more failure.
+      ctx.failure("{}", e.what());
+      // Iterate all fields to find more failures.
       continue;
     }
     std::unique_ptr<t_field> cloned_field = field.clone_DO_NOT_USE();
@@ -180,18 +180,16 @@ void normalize_return_type(
   auto& types = node.return_types();
   for (size_t i = 0; i < types.size(); ++i) {
     if (!types[i].resolve()) {
-      ctx.failure(
-          node, "Failed to resolve return type of `" + node.name() + "`.");
+      ctx.failure(node, "Failed to resolve return type of `{}`.", node.name());
       return;
     }
 
     const auto* type = types[i]->get_true_type();
     if (auto* interaction = dynamic_cast<const t_interaction*>(type)) {
       if (i != 0) {
-        ctx.failure([&](auto& o) {
-          o << "Interactions are only allowed as the leftmost return type: "
-            << type->get_full_name();
-        });
+        ctx.failure(
+            "Interactions are only allowed as the leftmost return type: {}",
+            type->get_full_name());
       }
 
       // Old syntax treats returned interaction as response instead
@@ -207,10 +205,9 @@ void normalize_return_type(
       }
     } else if (auto* stream = dynamic_cast<const t_stream_response*>(type)) {
       if (i + 1 != types.size()) {
-        ctx.failure([&](auto& o) {
-          o << "Streams are only allowed as the rightmost return type: "
-            << type->get_full_name();
-        });
+        ctx.failure(
+            "Streams are only allowed as the rightmost return type: {}",
+            type->get_full_name());
       }
       // TODO: move first response out of t_stream_response
       if (const auto& ret = node.return_type()) {
@@ -219,10 +216,9 @@ void normalize_return_type(
       node.set_response_pos(i);
     } else if (auto* sink = dynamic_cast<const t_sink*>(type)) {
       if (i + 1 != types.size()) {
-        ctx.failure([&](auto& o) {
-          o << "Sinks are only allowed as the rightmost return type: "
-            << type->get_full_name();
-        });
+        ctx.failure(
+            "Sinks are only allowed as the rightmost return type: {}",
+            type->get_full_name());
       }
       // TODO: move first response out of t_sink
       if (const auto& ret = node.return_type()) {
@@ -232,14 +228,10 @@ void normalize_return_type(
     } else if (
         dynamic_cast<const t_service*>(type) ||
         dynamic_cast<const t_exception*>(type)) {
-      ctx.failure([&](auto& o) {
-        o << "Invalid return type: " << type->get_full_name();
-      });
+      ctx.failure("Invalid return type: {}", type->get_full_name());
     } else {
       if (node.return_type()) {
-        ctx.failure([&](auto& o) {
-          o << "Too many return types: " << type->get_full_name();
-        });
+        ctx.failure("Too many return types: {}", type->get_full_name());
       }
       node.set_response_pos(i);
     }

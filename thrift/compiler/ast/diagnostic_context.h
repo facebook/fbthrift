@@ -115,6 +115,12 @@ class diagnostic_context : public diagnostics_engine,
     warning(*current(), msg, std::forward<T>(args)...);
   }
 
+  using diagnostics_engine::failure;
+  template <typename... T>
+  void failure(fmt::format_string<T...> msg, T&&... args) {
+    failure(*current(), msg, std::forward<T>(args)...);
+  }
+
   using diagnostics_engine::check;
   template <typename... T>
   bool check(bool condition, fmt::format_string<T...> msg, T&&... args) {
@@ -194,11 +200,6 @@ class diagnostic_context : public diagnostics_engine,
   void report(diagnostic_level level, With&& with) {
     assert(current() != nullptr);
     report(level, current()->lineno(), std::forward<With>(with));
-  }
-
-  template <typename... Args>
-  void failure(Args&&... args) {
-    report(diagnostic_level::failure, std::forward<Args>(args)...);
   }
 
  private:

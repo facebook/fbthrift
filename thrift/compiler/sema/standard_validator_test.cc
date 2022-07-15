@@ -45,7 +45,7 @@ using ::testing::UnorderedElementsAre;
 class StandardValidatorTest : public ::testing::Test {
  public:
   StandardValidatorTest()
-      : loc(source_mgr.add_string("/path/to/file.thrift", "").start) {}
+      : loc(source_mgr.add_string("/path/to/file.thrift", "\n\n\n\n").start) {}
 
  protected:
   std::vector<diagnostic> validate(
@@ -227,7 +227,7 @@ TEST_F(StandardValidatorTest, RepeatedNameInExtendedService) {
   // Add an overlapping function in the derived service.
   auto dupe = std::make_unique<t_function>(
       &t_base_type::t_void(), "baz", std::make_unique<t_paramlist>(&program_));
-  dupe->set_lineno(1);
+  dupe->set_src_range({loc, loc});
   derived_ptr->add_function(std::move(dupe));
 
   // An error will be found
@@ -290,9 +290,9 @@ TEST_F(StandardValidatorTest, UnsetEnumValues) {
   auto enum_value_1 = std::make_unique<t_enum_value>("Foo", 1);
   auto enum_value_2 = std::make_unique<t_enum_value>("Bar");
   auto enum_value_3 = std::make_unique<t_enum_value>("Baz");
-  enum_value_1->set_lineno(1);
-  enum_value_2->set_lineno(2);
-  enum_value_3->set_lineno(3);
+  enum_value_1->set_src_range({loc, loc});
+  enum_value_2->set_src_range({loc + 1, loc + 1});
+  enum_value_3->set_src_range({loc + 2, loc + 2});
   tenum_ptr->append(std::move(enum_value_1));
   tenum_ptr->append(std::move(enum_value_2));
   tenum_ptr->append(std::move(enum_value_3));
@@ -312,27 +312,27 @@ TEST_F(StandardValidatorTest, UnsetEnumValues) {
 TEST_F(StandardValidatorTest, UnionFieldAttributes) {
   auto tstruct = std::make_unique<t_struct>(&program_, "Struct");
   auto tunion = std::make_unique<t_union>(&program_, "Union");
-  tunion->set_lineno(1);
+  tunion->set_src_range({loc, loc});
   {
     auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "req", 1);
-    field->set_lineno(2);
+    field->set_src_range({loc + 1, loc + 1});
     field->set_qualifier(t_field_qualifier::required);
     tunion->append(std::move(field));
   }
   {
     auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "op", 2);
-    field->set_lineno(3);
+    field->set_src_range({loc + 2, loc + 2});
     field->set_qualifier(t_field_qualifier::optional);
     tunion->append(std::move(field));
   }
   {
     auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "non", 3);
-    field->set_lineno(4);
+    field->set_src_range({loc + 3, loc + 3});
     tunion->append(std::move(field));
   }
   {
     auto field = std::make_unique<t_field>(tstruct.get(), "mixin", 4);
-    field->set_lineno(5);
+    field->set_src_range({loc + 4, loc + 4});
     field->set_annotation("cpp.mixin");
     tunion->append(std::move(field));
   }
@@ -384,7 +384,7 @@ TEST_F(StandardValidatorTest, MixinFieldType) {
   auto foo = std::make_unique<t_struct>(&program_, "Foo");
   {
     auto field = std::make_unique<t_field>(tstruct.get(), "struct_field", 1);
-    field->set_lineno(1);
+    field->set_src_range({loc, loc});
     field->set_annotation("cpp.mixin");
     field->set_qualifier(t_field_qualifier::optional);
     foo->append(std::move(field));

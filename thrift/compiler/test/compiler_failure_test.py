@@ -824,7 +824,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """
                 [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field1`.
                 [WARNING:foo.thrift:6] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field2`.
-                [FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
+                [FAILURE:foo.thrift:9] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
                 [WARNING:foo.thrift:9] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field3`.
                 [WARNING:foo.thrift:9] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field3`.
                 [WARNING:foo.thrift:12] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field4`.
@@ -870,16 +870,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be combined with "
+            "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
             "`cpp.adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:9] `@hack.Adapter` cannot be combined with "
+            "[FAILURE:foo.thrift:7] `@hack.Adapter` cannot be combined with "
             "`hack.adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:12] key `name` not found.\n"
-            "[FAILURE:foo.thrift:15] cpp.ref, cpp2.ref are deprecated. "
+            "[FAILURE:foo.thrift:10] key `name` not found.\n"
+            "[FAILURE:foo.thrift:13] cpp.ref, cpp2.ref are deprecated. "
             "Please use @thrift.Box annotation instead in `my_field3` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:18] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            "[FAILURE:foo.thrift:16] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
             "are deprecated. Please use @thrift.Box annotation instead in `my_field4` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:22] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
+            "[FAILURE:foo.thrift:19] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
             "Please use @thrift.Box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
@@ -927,13 +927,13 @@ class CompilerFailureTest(unittest.TestCase):
             "`cpp.adapter` in `my_field1`.\n"
             "[FAILURE:foo.thrift:18] `@hack.Adapter` cannot be combined with "
             "`hack.adapter` in `my_field1`.\n"
-            "[FAILURE:foo.thrift:6] key `name` not found.\n"
-            "[FAILURE:foo.thrift:6] key `name` not found.\n"
-            "[FAILURE:foo.thrift:14] The `@cpp.Adapter` annotation cannot be annotated more "
+            "[FAILURE:foo.thrift:4] key `name` not found.\n"
+            "[FAILURE:foo.thrift:4] key `name` not found.\n"
+            "[FAILURE:foo.thrift:12] The `@cpp.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n"
-            "[FAILURE:foo.thrift:14] The `@hack.Adapter` annotation cannot be annotated more "
+            "[FAILURE:foo.thrift:12] The `@hack.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n"
-            "[FAILURE:foo.thrift:26] The `@cpp.Adapter` annotation cannot be annotated more "
+            "[FAILURE:foo.thrift:25] The `@cpp.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleAdapted`.\n",
         )
 
@@ -1293,7 +1293,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] Invalid pair `MyService1:3:1` in client_cpp_splits value: `MyService1:3:1,MyService2:2`\n",
+            "[FAILURE:foo.thrift:1] Invalid pair `MyService1:3:1` in client_cpp_splits value: `MyService1:3:1,MyService2:2`\n",
         )
 
         ret, out, err = self.run_thrift(
@@ -1475,9 +1475,9 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """
                 [WARNING:foo.thrift:17] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
-                [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`
+                [FAILURE:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
                 """
             ),
         )
@@ -1488,9 +1488,9 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`
+                [FAILURE:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
                 """
             ),
         )
@@ -1935,15 +1935,15 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:bar.thrift:36] Nonpositive value (-1) not allowed as a field id.\n"
-            "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified"
+            "[FAILURE:bar.thrift:16] Can not find expected type `foo.Fields` specified"
             " in `@internal.InjectMetadataFields` in the current scope. Please check the include.\n"
-            "[FAILURE:bar.thrift:20] key `type` not found.\n"
-            "[FAILURE:bar.thrift:23] `bar.UnionFields` is not a struct type. "
+            "[FAILURE:bar.thrift:19] key `type` not found.\n"
+            "[FAILURE:bar.thrift:22] `bar.UnionFields` is not a struct type. "
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:26] `bar.MyI64` is not a struct type. "
+            "[FAILURE:bar.thrift:25] `bar.MyI64` is not a struct type. "
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:43] Field id `-1` does not mapped to valid internal id.\n"
-            "[FAILURE:bar.thrift:43] Field id `1000` does not mapped to valid internal id.\n"
+            "[FAILURE:bar.thrift:42] Field id `-1` does not mapped to valid internal id.\n"
+            "[FAILURE:bar.thrift:42] Field id `1000` does not mapped to valid internal id.\n"
             "[FAILURE:bar.thrift] Field `field1` is already defined for `Injected5`.\n",
         )
 
@@ -1964,7 +1964,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: set<float> set_of_float.\n",
+            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: set<float> set_of_float.\n",
         )
 
     def test_map_invalid_key_type(self):
@@ -1983,7 +1983,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: map<float, i32> map_of_float_to_int.\n",
+            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: map<float, i32> map_of_float_to_int.\n",
         )
 
     def test_rpc_return_invalid_key_type(self):
@@ -2001,7 +2001,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
+            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
         )
 
     def test_undefined_type(self):
@@ -2040,7 +2040,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
+            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
         )
 
     def test_reserved_ids(self):
@@ -2109,12 +2109,12 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:9] Fields in IdRanges cannot use reserved ids: 10\n"
             "[FAILURE:foo.thrift:21] Fields in UnionWithBadId cannot use reserved ids: 3\n"
             "[FAILURE:foo.thrift:33] For each (start: end) in id_ranges, we must have start < end. Got (5: 3), annotated on InvalidIdRange\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -50001\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -50000\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: -40000\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 40000\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 50000\n"
-            "[FAILURE:foo.thrift:46] Struct `Message` cannot have reserved id that is out of range: 50001\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50001\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50000\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -40000\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 40000\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50000\n"
+            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50001\n"
             "[FAILURE:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
             "[FAILURE:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
         )
