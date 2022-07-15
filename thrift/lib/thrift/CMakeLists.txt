@@ -20,7 +20,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -31,7 +31,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -42,7 +42,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -53,7 +53,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -64,7 +64,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -75,7 +75,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -86,7 +86,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -97,7 +97,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -108,7 +108,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 thrift_generate(
@@ -119,7 +119,7 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
 )
 
 set_property(GLOBAL PROPERTY any_rep-cpp2-SOURCES ${any_rep-cpp2-SOURCES})
