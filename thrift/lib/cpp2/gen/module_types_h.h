@@ -219,5 +219,9 @@ using DeserializationMutex = std::shared_timed_mutex; // C++14
 } // namespace st
 
 } // namespace detail
+namespace tag {
+template <class T>
+void __fbthrift_check_whether_type_is_ident_via_adl(T&&);
+}
 } // namespace thrift
 } // namespace apache

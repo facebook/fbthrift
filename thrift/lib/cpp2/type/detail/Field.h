@@ -33,8 +33,52 @@ FOLLY_INLINE_VARIABLE constexpr std::size_t field_size_v =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_field_size_v<native_type<StructTag>>;
 
+template <class T>
+FOLLY_INLINE_VARIABLE constexpr bool is_field_id_v = false;
+
+template <FieldId Id>
+FOLLY_INLINE_VARIABLE constexpr bool
+    is_field_id_v<std::integral_constant<FieldId, Id>> = true;
+
+template <class T>
+FOLLY_INLINE_VARIABLE constexpr bool is_field_ordinal_v = false;
+
+template <FieldOrdinal Ordinal>
+FOLLY_INLINE_VARIABLE constexpr bool
+    is_field_ordinal_v<std::integral_constant<FieldOrdinal, Ordinal>> = true;
+
+template <class T, class = void>
+FOLLY_INLINE_VARIABLE constexpr bool is_field_ident_v = false;
+
+template <class T>
+FOLLY_INLINE_VARIABLE constexpr bool is_field_ident_v<
+    T,
+    decltype(__fbthrift_check_whether_type_is_ident_via_adl(
+        FOLLY_DECLVAL(T &&)))> = true;
+
+void is_type_tag_impl(all_c);
+void is_type_tag_impl(void_t);
+void is_type_tag_impl(service_c);
+
+// We can't use std::is_base_of since it's undefined behavior to use it on
+// incomplete type, and ident is incomplete type.
+template <class T, class = void>
+FOLLY_INLINE_VARIABLE constexpr bool is_type_tag_v = false;
+template <class T>
+FOLLY_INLINE_VARIABLE constexpr bool
+    is_type_tag_v<T, decltype(is_type_tag_impl(FOLLY_DECLVAL(T &&)))> = true;
+
+// TODO(ytj): Disallow void type
+template <class T>
+FOLLY_INLINE_VARIABLE constexpr bool is_reflection_metadata_v =
+    is_type_tag_v<T> || is_field_id_v<T> || is_field_ordinal_v<T> ||
+    is_field_ident_v<T> || std::is_void<T>::value;
+
 template <class Tag, class T>
 struct OrdinalImpl {
+  // TODO(ytj): To reduce build time, only check whether T is reflection
+  // metadata if we couldn't find T.
+  static_assert(is_reflection_metadata_v<T>, "");
   using type = ::apache::thrift::detail::st::struct_private_access::
       ordinal<type::native_type<Tag>, T>;
 };

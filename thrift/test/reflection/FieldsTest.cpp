@@ -199,6 +199,61 @@ TEST(FieldsTest, UnifiedAPIs) {
   // clang-format off
 }
 
+struct IncompleteType;
+
+TEST(FieldsTest, IsReflectionMetadata) {
+  using namespace apache::thrift::type::detail;
+  static_assert(is_type_tag_v<bool_t>);
+  static_assert(is_type_tag_v<list<i32_t>>);
+  static_assert(is_type_tag_v<field<list<i32_t>, FieldContext<test_cpp2::cpp_reflection::struct3, 1>>>);
+  static_assert(!is_type_tag_v<bool>);
+  static_assert(!is_type_tag_v<std::int32_t>);
+  static_assert(!is_type_tag_v<std::vector<int32_t>>);
+  static_assert(!is_type_tag_v<void>);
+  static_assert(!is_type_tag_v<IncompleteType>);
+
+  static_assert(is_field_id_v<field_id<0>>);
+  static_assert(is_field_id_v<field_id<1>>);
+  static_assert(!is_field_id_v<field_ordinal<1>>);
+  static_assert(!is_field_id_v<void>);
+  static_assert(!is_field_id_v<IncompleteType>);
+
+  static_assert(is_field_ordinal_v<field_ordinal<0>>);
+  static_assert(is_field_ordinal_v<field_ordinal<1>>);
+  static_assert(!is_field_ordinal_v<field_id<1>>);
+  static_assert(!is_field_ordinal_v<void>);
+  static_assert(!is_field_ordinal_v<IncompleteType>);
+
+  static_assert(is_field_ident_v<tag::fieldA>);
+  static_assert(!is_field_ident_v<IncompleteType>);
+  static_assert(!is_field_ident_v<int>);
+  static_assert(!is_field_ident_v<void>);
+
+  static_assert(is_reflection_metadata_v<bool_t>);
+  static_assert(is_reflection_metadata_v<list<i32_t>>);
+  static_assert(is_reflection_metadata_v<field<list<i32_t>, FieldContext<test_cpp2::cpp_reflection::struct3, 1>>>);
+  static_assert(is_reflection_metadata_v<field_id<0>>);
+  static_assert(is_reflection_metadata_v<field_id<1>>);
+  static_assert(is_reflection_metadata_v<field_ordinal<0>>);
+  static_assert(is_reflection_metadata_v<field_ordinal<1>>);
+  static_assert(is_reflection_metadata_v<tag::fieldA>);
+  static_assert(is_reflection_metadata_v<void>);
+  static_assert(!is_reflection_metadata_v<bool>);
+  static_assert(!is_reflection_metadata_v<std::int32_t>);
+  static_assert(!is_reflection_metadata_v<std::vector<int32_t>>);
+  static_assert(!is_reflection_metadata_v<IncompleteType>);
+  static_assert(!is_reflection_metadata_v<IncompleteType>);
+  static_assert(!is_reflection_metadata_v<int>);
+
+  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  // TODO(ytj): We need to figure out a way to test compile error
+  // type::get_field_id<Tag, int>{}; // compile error
+  // type::get_field_ordinal<Tag, int>{}; // compile error
+  // type::get_field_type_tag<Tag, int>{}; // compile error
+  // type::get_field_ident<Tag, int>{}; // compile error
+  // type::get_field_native_type<Tag, int>{}; // compile error
+}
+
 TEST(FieldsTest, NotFoundFieldInfo) {
   using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
 
