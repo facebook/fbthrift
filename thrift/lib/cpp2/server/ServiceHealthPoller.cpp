@@ -27,6 +27,7 @@
 #include <folly/experimental/coro/Collect.h>
 #include <folly/experimental/coro/CurrentExecutor.h>
 #include <folly/experimental/coro/Sleep.h>
+#include <folly/futures/Future.h>
 
 #if FOLLY_HAS_COROUTINES
 
@@ -70,7 +71,14 @@ ServiceHealthPoller::poll(
   while (true) {
     co_await folly::coro::co_safe_point;
     co_yield co_await computeServiceHealth();
-    co_await folly::coro::sleep(*liveness);
+    try {
+      co_await folly::coro::sleep(*liveness);
+    } catch (const folly::FutureNoTimekeeper&) {
+      // Sleep is cancelled on singleton vault destruction. The vault may be
+      // (temporarily) destroyed when forking.
+      FB_LOG_EVERY_MS(WARNING, 10'000)
+          << "Failed to wait between service health computations - No Timekeeper";
+    }
   }
 }
 
