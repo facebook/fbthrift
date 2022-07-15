@@ -12,7 +12,7 @@ How to bundle annotations together.
 
 ## Program Annotations
 
-How to apply an annotation to every definition in a [program](program).
+How to apply an annotation to every definition in a [program](program.md).
 
 ## Standard Annotations
 

@@ -1,6 +1,6 @@
 # Deterministic Hashing
 
-How Thrift [values](../definition/data) are hashed.
+How Thrift [values](../definition/data.md) are hashed.
 
 ## Standard Algorithms
 

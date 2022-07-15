@@ -1,6 +1,6 @@
 # Data Protocols
 
-How [data](../definition/data) is (de)serialized.
+How [data](../definition/data.md) is (de)serialized.
 
 ## Standard Protocols
 
@@ -22,5 +22,5 @@ Immutable as memories in water.
 
 ## Deprecated
 
-- JSON (see [yaml](../experimental/yaml))
-- SimpleJSON (see [yaml](../experimental/yaml))
+- JSON (see [yaml](../experimental/yaml.md))
+- SimpleJSON (see [yaml](../experimental/yaml.md))

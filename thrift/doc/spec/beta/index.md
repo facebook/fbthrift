@@ -2,5 +2,5 @@
 
 Upcoming Thrift features that are ready to try out.
 
-- [Adapters](adapter)
-- [Dynamic Values (Any)](any)
+- [Adapters](adapter.md)
+- [Dynamic Values (Any)](any.md)

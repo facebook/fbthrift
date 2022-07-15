@@ -1,10 +1,10 @@
 # Programs
 
-How a Thrift program is structured and the 'universal' names of the [definitions](./) it contains.
+How a Thrift program is structured and the 'universal' names of the [definitions](index.md) it contains.
 
 ## Universal Names
 
-The universally unique names for [Thrift definitions](./).
+The universally unique names for [Thrift definitions](index.md).
 
 ## Packages
 

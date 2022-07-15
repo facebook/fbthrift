@@ -1,11 +1,11 @@
 # Definitions
 
-Thrift concepts that can be defined and referenced through the [Interface Definition Language (IDL)](../idl).
+Thrift concepts that can be defined and referenced through the [Interface Definition Language (IDL)](../idl.md).
 
-- [Programs](program)
-- [Data Types](data)
-- [Interface Types](interface)
-- [Values](value)
-- [Errors and Exceptions](exception)
-- [Compatibility](compatibility)
-- [Annotations](annotation)
+- [Programs](program.md)
+- [Data Types](data.md)
+- [Interface Types](interface.md)
+- [Values](value.md)
+- [Errors and Exceptions](exception.md)
+- [Compatibility](compatibility.md)
+- [Annotations](annotation.md)

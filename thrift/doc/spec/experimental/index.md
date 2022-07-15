@@ -2,7 +2,7 @@
 
 Features that are in the works.
 
-- [Deterministic Hashing](hash)
-- [Patches](patch)
-- [Runtime Type Information (Schema)](schema)
-- [YAML (and JSON)](yaml)
+- [Deterministic Hashing](hash.md)
+- [Patches](patch.md)
+- [Runtime Type Information (Schema)](schema.md)
+- [YAML (and JSON)](yaml.md)

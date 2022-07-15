@@ -2,6 +2,6 @@
 
 How thrift implementations communicate.
 
-- [Data Protocols](data)
-- [Interface Protocols](interface)
-- [Channels](channel)
+- [Data Protocols](data.md)
+- [Interface Protocols](interface.md)
+- [Channels](channel.md)
