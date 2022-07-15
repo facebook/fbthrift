@@ -16,6 +16,7 @@
 
 package "apache.org/thrift/test"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 
 struct Foo {
@@ -24,6 +25,8 @@ struct Foo {
 }
 
 struct Bar {
+  // The field id is intentionally flipped to test if the methods use field id
+  // and ordinal correctly.
   2: list<Foo> foos;
   1: Foo foo;
 }
@@ -41,4 +44,14 @@ struct Foo2 {
 struct Bar2 {
   1: optional Foo2 field_3;
   2: string field_4;
+}
+
+struct CustomDefault {
+  1: string field = "default";
+}
+
+@thrift.TerseWrite
+struct TerseWrite {
+  1: i32 field;
+  2: Foo foo;
 }
