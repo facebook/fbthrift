@@ -660,4 +660,119 @@ TEST(FieldMaskTest, SchemafulClearException) {
   includes2[2] = protocol_constants::allMask();
   EXPECT_THROW(protocol::clear(m2, bar), std::runtime_error);
 }
+
+TEST(FieldMaskTest, SchemafulCopy) {
+  Bar2 src, empty;
+  // src = {1: {1: 10, 2: 20}, 2: "40"}
+  src.field_3().ensure().field_1() = 10;
+  src.field_3()->field_2() = 20;
+  src.field_4() = "40";
+
+  Mask mask;
+  // includes{1: includes{2: excludes{}},
+  //          2: excludes{}}
+  auto& includes = mask.includes_ref().emplace();
+  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
+  includes[2] = protocol_constants::allMask();
+
+  // copy empty
+  {
+    Bar2 dst;
+    copy(mask, empty, dst);
+    EXPECT_EQ(dst, empty);
+  }
+
+  // test copy field to dst
+  {
+    Bar2 dst;
+    dst.field_3().ensure().field_1() = 30;
+    dst.field_3()->field_2() = 40;
+    copy(mask, src, dst);
+    ASSERT_TRUE(dst.field_3().has_value());
+    ASSERT_TRUE(dst.field_3()->field_1().has_value());
+    EXPECT_EQ(dst.field_3()->field_1().value(), 30);
+    ASSERT_TRUE(dst.field_3()->field_2().has_value());
+    EXPECT_EQ(dst.field_3()->field_2().value(), 20);
+    ASSERT_TRUE(dst.field_4().has_value());
+    EXPECT_EQ(dst.field_4(), "40");
+  }
+
+  // test add field to dst
+  {
+    Bar2 dst;
+    copy(mask, src, dst);
+    ASSERT_TRUE(dst.field_3().has_value());
+    ASSERT_FALSE(dst.field_3()->field_1().has_value());
+    ASSERT_TRUE(dst.field_3()->field_2().has_value());
+    EXPECT_EQ(dst.field_3()->field_2().value(), 20);
+    EXPECT_EQ(dst.field_4(), "40");
+  }
+
+  // test remove field from src
+  {
+    Bar2 dst;
+    copy(mask, empty, src);
+    // src = {1: {1: 10}, 2: "40"}
+    ASSERT_TRUE(src.field_3().has_value());
+    ASSERT_TRUE(src.field_3()->field_1().has_value());
+    EXPECT_EQ(src.field_3()->field_1().value(), 10);
+    ASSERT_FALSE(src.field_3()->field_2().has_value());
+    EXPECT_EQ(src.field_4(), "");
+
+    src.field_4() = "40";
+    copy(mask, src, dst); // this does not create a new object.
+    ASSERT_FALSE(dst.field_3().has_value());
+    ASSERT_TRUE(dst.field_4().has_value());
+    EXPECT_EQ(dst.field_4().value(), "40");
+
+    copy(protocol_constants::allMask(), empty, src);
+    ASSERT_FALSE(src.field_3().has_value());
+    EXPECT_EQ(src.field_4(), "");
+  }
+}
+TEST(FieldMaskTest, SchemafulCopyExcludes) {
+  // test excludes mask
+  // mask2 = excludes{1: includes{1: excludes{}}}
+  Mask mask;
+  auto& excludes = mask.excludes_ref().emplace();
+  excludes[1].includes_ref().emplace()[1] = protocol_constants::allMask();
+  Bar src, dst;
+  src.foo().emplace().field1() = 1;
+  src.foo()->field2() = 2;
+  protocol::copy(mask, src, dst);
+  ASSERT_FALSE(dst.foo()->field1().has_value());
+  ASSERT_TRUE(dst.foo()->field2().has_value());
+  EXPECT_EQ(dst.foo()->field2(), 2);
+  ASSERT_FALSE(dst.foos().has_value());
+}
+
+TEST(FieldMaskTest, SchemafulCopyTerseWrite) {
+  // Makes sure copy doesn't use has_value() for all fields.
+  TerseWrite src, dst;
+  src.field() = 4;
+  src.foo()->field1() = 5;
+  protocol::copy(protocol_constants::allMask(), src, dst);
+  EXPECT_EQ(dst, src);
+
+  Mask m;
+  m.includes_ref().emplace()[2].includes_ref().emplace()[1] =
+      protocol_constants::allMask();
+  protocol::copy(m, src, dst);
+  EXPECT_EQ(dst, src);
+}
+
+TEST(FieldMaskTest, SchemafulCopyException) {
+  Bar2 src, dst;
+  Mask m1; // m1 = includes{2: includes{4: includes{}}}
+  auto& includes = m1.includes_ref().emplace();
+  includes[2].includes_ref().emplace()[4] = protocol_constants::noneMask();
+  EXPECT_THROW(protocol::copy(m1, src, dst), std::runtime_error);
+
+  Mask m2; // m2 = includes{1: includes{2: includes{5: excludes{}}}}
+  auto& includes2 = m2.includes_ref().emplace();
+  includes2[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
+      protocol_constants::allMask();
+  includes2[2] = protocol_constants::allMask();
+  EXPECT_THROW(protocol::copy(m2, src, dst), std::runtime_error);
+}
 } // namespace apache::thrift::test

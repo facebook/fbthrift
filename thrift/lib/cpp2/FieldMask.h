@@ -178,6 +178,73 @@ void clear_field(MaskRef ref, T& t) {
   }
 }
 
+template <typename T, size_t... I>
+bool copy_fields(MaskRef ref, const T& src, T& dst, std::index_sequence<I...>) {
+  // This does not short circuit as it has to process all fields.
+  return (... | copy_field<T, I + 1>(ref, src, dst));
+}
+
+template <typename T, size_t I>
+bool copy_field(MaskRef ref, const T& src, T& dst) {
+  using StructTag = type::struct_t<T>;
+  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
+  // Id doesn't exist in field mask, skip.
+  if (next.isNoneMask()) {
+    return false;
+  }
+  // TODO(aoka): Support smart pointers and thrift box references.
+  auto src_ref = op::get<StructTag, field_ordinal<I>>(src);
+  auto dst_ref = op::get<StructTag, field_ordinal<I>>(dst);
+  // Field ref has a value unless it is optional ref and not set.
+  bool srcHasValue = true;
+  bool dstHasValue = true;
+  if constexpr (apache::thrift::detail::is_optional_field_ref<
+                    decltype(src_ref)>::value) {
+    srcHasValue = src_ref.has_value();
+    dstHasValue = dst_ref.has_value();
+  }
+  if (!srcHasValue && !dstHasValue) { // skip
+    return false;
+  }
+  // Id that we want to copy.
+  if (next.isAllMask()) {
+    if (srcHasValue) {
+      dst_ref.copy_from(src_ref);
+      return true;
+    } else {
+      op::clear_field<type::get_field_tag<StructTag, field_ordinal<I>>>(
+          dst_ref, dst);
+      return false;
+    }
+  }
+  using FieldType = field_native_type<StructTag, I>;
+  if constexpr (is_thrift_struct_v<FieldType>) {
+    // Field doesn't exist in src, so just clear dst with the mask.
+    if (!srcHasValue) {
+      clear_fields(next, dst_ref.value(), get_ordinal_sequence<FieldType>{});
+      return false;
+    }
+    // Field exists in both src and dst, so call copy recursively.
+    if (dstHasValue) {
+      return copy_fields(
+          next,
+          src_ref.value(),
+          dst_ref.value(),
+          get_ordinal_sequence<FieldType>{});
+    }
+    // Field only exists in src. Need to construct object only if there's
+    // a field to add.
+    FieldType newObject;
+    bool constructObject = copy_fields(
+        next, src_ref.value(), newObject, get_ordinal_sequence<FieldType>{});
+    if (constructObject) {
+      dst_ref = std::move(newObject);
+      return true;
+    }
+  }
+  return false;
+}
+
 } // namespace detail
 
 // Returns whether field mask is compatible with thrift struct T.
@@ -185,6 +252,7 @@ void clear_field(MaskRef ref, T& t) {
 // struct or that exists with a different type.
 template <typename T>
 bool is_compatible_with(const Mask& mask) {
+  static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::MaskRef ref{mask, false};
   if (ref.isAllMask() || ref.isNoneMask()) {
     return true;
@@ -198,6 +266,7 @@ bool is_compatible_with(const Mask& mask) {
 // Throws a runtime exception if the mask and struct are incompatible.
 template <typename T>
 void ensure(const Mask& mask, T& t) {
+  static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::errorIfNotCompatible<T>(mask);
   return detail::ensure_fields(
       detail::MaskRef{mask, false}, t, detail::get_ordinal_sequence<T>{});
@@ -208,8 +277,23 @@ void ensure(const Mask& mask, T& t) {
 // Throws a runtime exception if the mask and struct are incompatible.
 template <typename T>
 void clear(const Mask& mask, T& t) {
+  static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::errorIfNotCompatible<T>(mask);
   return detail::clear_fields(
       detail::MaskRef{mask, false}, t, detail::get_ordinal_sequence<T>{});
+}
+
+// Copys masked fields from one thrift struct to another.
+// If the masked field doesn't exist in src, the field in dst will be removed.
+// Throws a runtime exception if the mask and objects are incompatible.
+template <class T>
+void copy(const Mask& mask, const T& src, T& dst) {
+  static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  detail::errorIfNotCompatible<T>(mask);
+  detail::copy_fields(
+      detail::MaskRef{mask, false},
+      src,
+      dst,
+      detail::get_ordinal_sequence<T>{});
 }
 } // namespace apache::thrift::protocol
