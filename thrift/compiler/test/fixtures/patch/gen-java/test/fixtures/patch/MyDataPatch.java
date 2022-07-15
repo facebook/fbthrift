@@ -25,8 +25,8 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
 
     @ThriftConstructor
     public MyDataPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.StringPatch data1,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.I32Patch data2
+        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE) final com.facebook.thrift.op.StringPatch data1,
+        @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE) final com.facebook.thrift.op.I32Patch data2
     ) {
         this.data1 = data1;
         this.data2 = data2;
@@ -40,24 +40,24 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     
     public static class Builder {
     
-        private com.facebook.thrift.op_swift.StringPatch data1 = null;
-        private com.facebook.thrift.op_swift.I32Patch data2 = null;
+        private com.facebook.thrift.op.StringPatch data1 = null;
+        private com.facebook.thrift.op.I32Patch data2 = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
-        public Builder setData1(com.facebook.thrift.op_swift.StringPatch data1) {
+        public Builder setData1(com.facebook.thrift.op.StringPatch data1) {
             this.data1 = data1;
             return this;
         }
     
-        public com.facebook.thrift.op_swift.StringPatch getData1() { return data1; }
+        public com.facebook.thrift.op.StringPatch getData1() { return data1; }
     
             @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
-        public Builder setData2(com.facebook.thrift.op_swift.I32Patch data2) {
+        public Builder setData2(com.facebook.thrift.op.I32Patch data2) {
             this.data2 = data2;
             return this;
         }
     
-        public com.facebook.thrift.op_swift.I32Patch getData2() { return data2; }
+        public com.facebook.thrift.op.I32Patch getData2() { return data2; }
     
         public Builder() { }
         public Builder(MyDataPatch other) {
@@ -78,10 +78,10 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataPatch");
-    private final com.facebook.thrift.op_swift.StringPatch data1;
+    private final com.facebook.thrift.op.StringPatch data1;
     public static final int _DATA1 = 1;
     private static final TField DATA1_FIELD_DESC = new TField("data1", TType.STRUCT, (short)1);
-        private final com.facebook.thrift.op_swift.I32Patch data2;
+        private final com.facebook.thrift.op.I32Patch data2;
     public static final int _DATA2 = 2;
     private static final TField DATA2_FIELD_DESC = new TField("data2", TType.STRUCT, (short)2);
     static {
@@ -98,12 +98,12 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op_swift.StringPatch getData1() { return data1; }
+    public com.facebook.thrift.op.StringPatch getData1() { return data1; }
     
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op_swift.I32Patch getData2() { return data2; }
+    public com.facebook.thrift.op.I32Patch getData2() { return data2; }
     
     @java.lang.Override
     public String toString() {
@@ -153,7 +153,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
         switch (__field.id) {
         case _DATA1:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op_swift.StringPatch data1 = com.facebook.thrift.op_swift.StringPatch.read0(oprot);
+            com.facebook.thrift.op.StringPatch data1 = com.facebook.thrift.op.StringPatch.read0(oprot);
             builder.setData1(data1);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -161,7 +161,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
           break;
         case _DATA2:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op_swift.I32Patch data2 = com.facebook.thrift.op_swift.I32Patch.read0(oprot);
+            com.facebook.thrift.op.I32Patch data2 = com.facebook.thrift.op.I32Patch.read0(oprot);
             builder.setData2(data2);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

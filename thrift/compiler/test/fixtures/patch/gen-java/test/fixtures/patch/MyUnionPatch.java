@@ -25,8 +25,8 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
 
     @ThriftConstructor
     public MyUnionPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.StringPatch option1,
-        @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.I32Patch option2,
+        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE) final com.facebook.thrift.op.StringPatch option1,
+        @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE) final com.facebook.thrift.op.I32Patch option2,
         @com.facebook.swift.codec.ThriftField(value=3, name="option3", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnionValuePatch option3
     ) {
         this.option1 = option1;
@@ -43,25 +43,25 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     
     public static class Builder {
     
-        private com.facebook.thrift.op_swift.StringPatch option1 = null;
-        private com.facebook.thrift.op_swift.I32Patch option2 = null;
+        private com.facebook.thrift.op.StringPatch option1 = null;
+        private com.facebook.thrift.op.I32Patch option2 = null;
         private test.fixtures.patch.InnerUnionValuePatch option3 = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE)
-        public Builder setOption1(com.facebook.thrift.op_swift.StringPatch option1) {
+        public Builder setOption1(com.facebook.thrift.op.StringPatch option1) {
             this.option1 = option1;
             return this;
         }
     
-        public com.facebook.thrift.op_swift.StringPatch getOption1() { return option1; }
+        public com.facebook.thrift.op.StringPatch getOption1() { return option1; }
     
             @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE)
-        public Builder setOption2(com.facebook.thrift.op_swift.I32Patch option2) {
+        public Builder setOption2(com.facebook.thrift.op.I32Patch option2) {
             this.option2 = option2;
             return this;
         }
     
-        public com.facebook.thrift.op_swift.I32Patch getOption2() { return option2; }
+        public com.facebook.thrift.op.I32Patch getOption2() { return option2; }
     
             @com.facebook.swift.codec.ThriftField(value=3, name="option3", requiredness=Requiredness.NONE)
         public Builder setOption3(test.fixtures.patch.InnerUnionValuePatch option3) {
@@ -92,10 +92,10 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionPatch");
-    private final com.facebook.thrift.op_swift.StringPatch option1;
+    private final com.facebook.thrift.op.StringPatch option1;
     public static final int _OPTION1 = 1;
     private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRUCT, (short)1);
-        private final com.facebook.thrift.op_swift.I32Patch option2;
+        private final com.facebook.thrift.op.I32Patch option2;
     public static final int _OPTION2 = 2;
     private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.STRUCT, (short)2);
         private final test.fixtures.patch.InnerUnionValuePatch option3;
@@ -118,12 +118,12 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op_swift.StringPatch getOption1() { return option1; }
+    public com.facebook.thrift.op.StringPatch getOption1() { return option1; }
     
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op_swift.I32Patch getOption2() { return option2; }
+    public com.facebook.thrift.op.I32Patch getOption2() { return option2; }
     
     
     @Nullable
@@ -181,7 +181,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _OPTION1:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op_swift.StringPatch option1 = com.facebook.thrift.op_swift.StringPatch.read0(oprot);
+            com.facebook.thrift.op.StringPatch option1 = com.facebook.thrift.op.StringPatch.read0(oprot);
             builder.setOption1(option1);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -189,7 +189,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
           break;
         case _OPTION2:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op_swift.I32Patch option2 = com.facebook.thrift.op_swift.I32Patch.read0(oprot);
+            com.facebook.thrift.op.I32Patch option2 = com.facebook.thrift.op.I32Patch.read0(oprot);
             builder.setOption2(option2);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

@@ -5,7 +5,7 @@
     "cpp2": "apache.thrift.op",
     "go": "thrift.lib.thrift.patch",
     "java": "com.facebook.thrift.op",
-    "java.swift": "com.facebook.thrift.op_swift",
+    "java.swift": "com.facebook.thrift.op",
     "java2": "com.facebook.thrift.op",
     "py": "thrift.lib.thrift.patch",
     "py.asyncio": "apache_thrift_asyncio.patch",

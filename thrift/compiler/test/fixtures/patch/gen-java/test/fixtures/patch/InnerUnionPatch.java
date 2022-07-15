@@ -25,7 +25,7 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
 
     @ThriftConstructor
     public InnerUnionPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.BinaryPatch innerOption
+        @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE) final com.facebook.thrift.op.BinaryPatch innerOption
     ) {
         this.innerOption = innerOption;
     }
@@ -37,15 +37,15 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
     
     public static class Builder {
     
-        private com.facebook.thrift.op_swift.BinaryPatch innerOption = null;
+        private com.facebook.thrift.op.BinaryPatch innerOption = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE)
-        public Builder setInnerOption(com.facebook.thrift.op_swift.BinaryPatch innerOption) {
+        public Builder setInnerOption(com.facebook.thrift.op.BinaryPatch innerOption) {
             this.innerOption = innerOption;
             return this;
         }
     
-        public com.facebook.thrift.op_swift.BinaryPatch getInnerOption() { return innerOption; }
+        public com.facebook.thrift.op.BinaryPatch getInnerOption() { return innerOption; }
     
         public Builder() { }
         public Builder(InnerUnionPatch other) {
@@ -64,7 +64,7 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("InnerUnionPatch");
-    private final com.facebook.thrift.op_swift.BinaryPatch innerOption;
+    private final com.facebook.thrift.op.BinaryPatch innerOption;
     public static final int _INNEROPTION = 1;
     private static final TField INNER_OPTION_FIELD_DESC = new TField("innerOption", TType.STRUCT, (short)1);
     static {
@@ -78,7 +78,7 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op_swift.BinaryPatch getInnerOption() { return innerOption; }
+    public com.facebook.thrift.op.BinaryPatch getInnerOption() { return innerOption; }
     
     @java.lang.Override
     public String toString() {
@@ -125,7 +125,7 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _INNEROPTION:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op_swift.BinaryPatch innerOption = com.facebook.thrift.op_swift.BinaryPatch.read0(oprot);
+            com.facebook.thrift.op.BinaryPatch innerOption = com.facebook.thrift.op.BinaryPatch.read0(oprot);
             builder.setInnerOption(innerOption);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

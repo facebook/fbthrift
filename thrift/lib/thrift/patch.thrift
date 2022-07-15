@@ -27,7 +27,7 @@ package "facebook.com/thrift/op"
 namespace cpp2 apache.thrift.op
 namespace py3 apache.thrift.op
 namespace java com.facebook.thrift.op
-namespace java.swift com.facebook.thrift.op_swift
+namespace java.swift com.facebook.thrift.op
 namespace java2 com.facebook.thrift.op
 namespace py.asyncio apache_thrift_asyncio.patch
 namespace go thrift.lib.thrift.patch
