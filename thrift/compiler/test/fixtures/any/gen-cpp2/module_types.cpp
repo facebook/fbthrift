@@ -17,24 +17,33 @@ namespace cpp2 {
 //
 // To include in statically-linked libraries, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyStruct = (
+void __fbthrift_static_init_MyStruct() {
+  static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyStruct,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-FOLLY_EXPORT bool __fbthrift_static_init_MyUnion = (
+  (void)init;
+}
+void __fbthrift_static_init_MyUnion() {
+  static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyUnion,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-FOLLY_EXPORT bool __fbthrift_static_init_MyException = (
+  (void)init;
+}
+void __fbthrift_static_init_MyException() {
+  static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyException,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
+  (void)init;
+}
 } // cpp2
 
 namespace apache {

@@ -5,27 +5,24 @@
  *  @generated @nocommit
  */
 
-/**
- * Macro for marking functions as having public visibility from folly/CPortability.h.
- */
-#if defined(__GNUC__)
-#define FOLLY_EXPORT __attribute__((__visibility__("default")))
-#else
-#define FOLLY_EXPORT
-#endif
-
 namespace cpp2 {
-// Explicitly reference the static init varaibles.
+// Call all static init functions.
 //
 // If this file is always linked (e.g. link_whole), it will force
 // static linking to include the intialization logic.
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyStruct;
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyUnion;
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyException;
-FOLLY_EXPORT bool* __fbthrift_static_reg_module[] = {
-    &__fbthrift_static_init_MyStruct,
-    &__fbthrift_static_init_MyUnion,
-    &__fbthrift_static_init_MyException,
-    nullptr};
+void __fbthrift_static_init_MyStruct();
+void __fbthrift_static_init_MyUnion();
+void __fbthrift_static_init_MyException();
+namespace {
+struct StaticInit {
+  StaticInit() {
+    __fbthrift_static_init_MyStruct();
+    __fbthrift_static_init_MyUnion();
+    __fbthrift_static_init_MyException();
+  }
+};
+
+StaticInit staticInit;
+}
 
 } // cpp2
