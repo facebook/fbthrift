@@ -233,8 +233,8 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            reasonable: field_reasonable.unwrap_or_else(|| crate::types::Metasyntactic::FOO),
-            fine: field_fine.unwrap_or_else(|| crate::types::Metasyntactic::BAR),
+            reasonable: field_reasonable.unwrap_or(crate::types::Metasyntactic::FOO),
+            fine: field_fine.unwrap_or(crate::types::Metasyntactic::BAR),
             questionable: field_questionable.unwrap_or_else(|| crate::types::Metasyntactic(-1)),
             tags: field_tags.unwrap_or_else(|| ::std::collections::BTreeSet::new()),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),

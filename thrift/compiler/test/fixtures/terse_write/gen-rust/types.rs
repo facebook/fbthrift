@@ -387,7 +387,7 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            field1: field_field1.unwrap_or_else(|| 1),
+            field1: field_field1.unwrap_or(1),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }
@@ -1065,16 +1065,16 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            bool_field: field_bool_field.unwrap_or_else(|| true),
+            bool_field: field_bool_field.unwrap_or(true),
             byte_field: field_byte_field.unwrap_or_else(|| 1),
-            short_field: field_short_field.unwrap_or_else(|| 2),
-            int_field: field_int_field.unwrap_or_else(|| 3),
-            long_field: field_long_field.unwrap_or_else(|| 4),
-            float_field: field_float_field.unwrap_or_else(|| 5.0),
-            double_field: field_double_field.unwrap_or_else(|| 6.0),
+            short_field: field_short_field.unwrap_or(2),
+            int_field: field_int_field.unwrap_or(3),
+            long_field: field_long_field.unwrap_or(4),
+            float_field: field_float_field.unwrap_or(5.0),
+            double_field: field_double_field.unwrap_or(6.0),
             string_field: field_string_field.unwrap_or_else(|| "7".to_owned()),
             binary_field: field_binary_field.unwrap_or_else(|| "8".as_bytes().into()),
-            enum_field: field_enum_field.unwrap_or_else(|| crate::types::MyEnum::ME1),
+            enum_field: field_enum_field.unwrap_or(crate::types::MyEnum::ME1),
             list_field: field_list_field.unwrap_or_else(|| vec![
                     1,
                 ]),

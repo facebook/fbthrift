@@ -964,6 +964,7 @@ class mstch_rust_value : public mstch_base {
             {"value:enumVariant", &mstch_rust_value::enum_variant},
             {"value:empty?", &mstch_rust_value::is_empty},
             {"value:indent", &mstch_rust_value::indent},
+            {"value:simpleLiteral?", &mstch_rust_value::simple_literal},
         });
   }
   mstch::node type() {
@@ -1147,6 +1148,17 @@ class mstch_rust_value : public mstch_base {
     return false;
   }
   mstch::node indent() { return std::string(4 * depth_, ' '); }
+  mstch::node simple_literal() {
+    // Primitives have simple literals
+    if (type_->is_bool() || type_->is_any_int() || type_->is_floating_point()) {
+      return true;
+    }
+    // Enum variants as well
+    if (type_->is_enum()) {
+      return enum_variant();
+    }
+    return false;
+  }
 
  private:
   const t_const_value* const_value_;

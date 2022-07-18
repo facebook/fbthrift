@@ -1189,8 +1189,8 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            a: field_a.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
-            b: field_b.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
+            a: field_a.unwrap_or(crate::types::MyForwardRefEnum::NONZERO),
+            b: field_b.unwrap_or(crate::types::MyForwardRefEnum::NONZERO),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }
@@ -1347,7 +1347,7 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            z: field_z.unwrap_or_else(|| 4),
+            z: field_z.unwrap_or(4),
             n: field_n.unwrap_or_else(|| crate::types::TrivialNumeric {
                     a: 3,
                     b: true,
@@ -2413,7 +2413,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             MyBoolField: field_MyBoolField.unwrap_or_default(),
-            MyIntField: field_MyIntField.unwrap_or_else(|| 12),
+            MyIntField: field_MyIntField.unwrap_or(12),
             MyStringField: field_MyStringField.unwrap_or_else(|| "test".to_owned()),
             MyStringField2: field_MyStringField2.unwrap_or_default(),
             MyBinaryField: field_MyBinaryField.unwrap_or_default(),

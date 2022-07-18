@@ -711,7 +711,7 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            a: field_a.unwrap_or_else(|| 1234567),
+            a: field_a.unwrap_or(1234567),
             b: field_b.unwrap_or_else(|| "<uninitialized>".to_owned()),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })

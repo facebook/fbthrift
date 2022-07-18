@@ -295,7 +295,7 @@ where
         ::std::result::Result::Ok(Self {
             intField: field_intField.unwrap_or_default(),
             optionalIntField: field_optionalIntField,
-            intFieldWithDefault: field_intFieldWithDefault.unwrap_or_else(|| 13),
+            intFieldWithDefault: field_intFieldWithDefault.unwrap_or(13),
             setField: field_setField.unwrap_or_default(),
             optionalSetField: field_optionalSetField,
             mapField: field_mapField.unwrap_or_default(),

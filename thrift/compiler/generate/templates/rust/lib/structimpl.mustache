@@ -130,7 +130,12 @@ where
             {{field:rust_name}}: field_{{field:name}}{{!
                 }}{{^field:optional?}}{{!
                     }}{{#field:default}}{{!
-                        }}.unwrap_or_else(|| {{>lib/value}}){{!
+                        }}{{#value:simpleLiteral?}}{{!
+                            }}.unwrap_or({{>lib/value}}){{!
+                        }}{{/value:simpleLiteral?}}{{!
+                        }}{{^value:simpleLiteral?}}{{!
+                            }}.unwrap_or_else(|| {{>lib/value}}){{!
+                        }}{{/value:simpleLiteral?}}{{!
                     }}{{/field:default}}{{!
                     }}{{^field:default}}{{!
                         }}.unwrap_or_default(){{!

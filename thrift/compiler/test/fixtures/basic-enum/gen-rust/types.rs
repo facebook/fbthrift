@@ -514,7 +514,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             myEnum: field_myEnum.unwrap_or_default(),
-            myBigEnum: field_myBigEnum.unwrap_or_else(|| crate::types::MyBigEnum::ONE),
+            myBigEnum: field_myBigEnum.unwrap_or(crate::types::MyBigEnum::ONE),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }
