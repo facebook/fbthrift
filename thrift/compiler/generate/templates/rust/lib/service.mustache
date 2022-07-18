@@ -103,7 +103,7 @@
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("{{function:upcamel}}");
                 match self {
-                    {{function:upcamel}}StreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             {{#function:return_type}}{{>lib/ttype}}{{/function:return_type}},
@@ -113,7 +113,7 @@
                         p.write_field_end();
                     }{{!
                     }}{{#function:stream_exceptions}}
-                    {{function:upcamel}}StreamExn::{{field:rust_name}}(inner) => {
+                    Self::{{field:rust_name}}(inner) => {
                         p.write_field_begin(
                             "{{field:name}}",
                             {{#field:type}}{{>lib/ttype}}{{/field:type}},
@@ -123,7 +123,7 @@
                         p.write_field_end();
                     }{{!
                     }}{{/function:stream_exceptions}}
-                    {{function:upcamel}}StreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,

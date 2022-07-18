@@ -205,7 +205,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Numbers");
                 match self {
-                    NumbersStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -214,7 +214,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    NumbersStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,

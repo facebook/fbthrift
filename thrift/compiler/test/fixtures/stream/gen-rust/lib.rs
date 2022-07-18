@@ -71,7 +71,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Returnstream");
                 match self {
-                    ReturnstreamStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -80,7 +80,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ReturnstreamStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -256,7 +256,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Streamthrows");
                 match self {
-                    StreamthrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -265,7 +265,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    StreamthrowsStreamExn::e(inner) => {
+                    Self::e(inner) => {
                         p.write_field_begin(
                             "e",
                             ::fbthrift::TType::Struct,
@@ -274,7 +274,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    StreamthrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -443,7 +443,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Servicethrows");
                 match self {
-                    ServicethrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -452,7 +452,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ServicethrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -640,7 +640,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Boththrows");
                 match self {
-                    BoththrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -649,7 +649,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    BoththrowsStreamExn::e(inner) => {
+                    Self::e(inner) => {
                         p.write_field_begin(
                             "e",
                             ::fbthrift::TType::Struct,
@@ -658,7 +658,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    BoththrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -850,7 +850,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamstreamthrows");
                 match self {
-                    ResponseandstreamstreamthrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -859,7 +859,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamstreamthrowsStreamExn::e(inner) => {
+                    Self::e(inner) => {
                         p.write_field_begin(
                             "e",
                             ::fbthrift::TType::Struct,
@@ -868,7 +868,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamstreamthrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1162,7 +1162,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamservicethrows");
                 match self {
-                    ResponseandstreamservicethrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -1171,7 +1171,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamservicethrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1507,7 +1507,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamboththrows");
                 match self {
-                    ResponseandstreamboththrowsStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -1516,7 +1516,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamboththrowsStreamExn::e(inner) => {
+                    Self::e(inner) => {
                         p.write_field_begin(
                             "e",
                             ::fbthrift::TType::Struct,
@@ -1525,7 +1525,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamboththrowsStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1854,7 +1854,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("ReturnstreamFast");
                 match self {
-                    ReturnstreamFastStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -1863,7 +1863,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ReturnstreamFastStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,

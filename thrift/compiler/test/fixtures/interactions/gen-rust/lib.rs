@@ -337,7 +337,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Truthify");
                 match self {
-                    TruthifyStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -346,7 +346,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    TruthifyStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -876,7 +876,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Truthify");
                 match self {
-                    TruthifyStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -885,7 +885,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    TruthifyStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
@@ -1656,7 +1656,7 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Serialize");
                 match self {
-                    SerializeStreamExn::Success(inner) => {
+                    Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Stream,
@@ -1665,7 +1665,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    SerializeStreamExn::ApplicationException(_) => panic!(
+                    Self::ApplicationException(_) => panic!(
                         "Bad union Alt field {} id {}",
                         "ApplicationException",
                         -2147483648i32,
