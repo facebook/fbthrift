@@ -808,7 +808,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -865,7 +865,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "bounce_map",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -880,7 +880,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -937,7 +937,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "binary_keyed_map",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res

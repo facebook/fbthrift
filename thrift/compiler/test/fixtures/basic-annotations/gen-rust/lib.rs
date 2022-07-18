@@ -4035,7 +4035,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4091,7 +4091,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4106,7 +4106,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4162,7 +4162,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getRandomData",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4177,7 +4177,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4234,7 +4234,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "hasDataById",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4249,7 +4249,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4306,7 +4306,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "getDataById",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4321,7 +4321,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4379,7 +4379,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "putDataById",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4394,7 +4394,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4452,7 +4452,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "lobDataById",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4467,7 +4467,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4523,7 +4523,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "doNothing",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4845,7 +4845,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4901,7 +4901,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "ping",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -4916,7 +4916,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -4972,7 +4972,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "pong",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -5238,7 +5238,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -5294,7 +5294,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "pang",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -5562,7 +5562,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -5618,7 +5618,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "foo",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
@@ -5866,7 +5866,7 @@ pub mod server {
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
             reply_state: ::std::sync::Arc<::std::sync::Mutex<RS>>,
-            seqid: ::std::primitive::u32,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<()> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
@@ -5922,7 +5922,7 @@ pub mod server {
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                 "bar",
                 METHOD_NAME.as_cstr(),
-                seqid,
+                _seqid,
                 req_ctxt,
                 &mut ctx_stack,
                 res
