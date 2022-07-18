@@ -336,6 +336,90 @@ template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 }} // some::ns
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::ns::detail::DirectlyAdapted>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::some::ns::detail::DirectlyAdapted>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace some { namespace ns {namespace detail {
+
+
+
+DirectlyAdapted::DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :
+    __fbthrift_field_field(std::move(field__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void DirectlyAdapted::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_field = ::std::int32_t();
+  __isset = {};
+}
+
+void DirectlyAdapted::__fbthrift_clear_terse_fields() {
+}
+
+bool DirectlyAdapted::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool DirectlyAdapted::operator==(const DirectlyAdapted& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool DirectlyAdapted::operator<(const DirectlyAdapted& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
+  }
+  return false;
+}
+
+
+void swap(DirectlyAdapted& a, DirectlyAdapted& b) {
+  using ::std::swap;
+  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void DirectlyAdapted::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t DirectlyAdapted::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void DirectlyAdapted::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t DirectlyAdapted::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t DirectlyAdapted::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // namespace detail
+}} // some::ns
+
 namespace some { namespace ns { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }

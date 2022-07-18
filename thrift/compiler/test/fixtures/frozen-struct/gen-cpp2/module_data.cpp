@@ -57,5 +57,15 @@ const std::array<protocol::TType, 2> TStructDataStorage<::some::ns::ModuleB>::fi
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::some::ns::detail::DirectlyAdapted>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::some::ns::detail::DirectlyAdapted>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::some::ns::detail::DirectlyAdapted>::fields_types = {{
+  TType::T_I32,
+}};
+
 } // namespace thrift
 } // namespace apache

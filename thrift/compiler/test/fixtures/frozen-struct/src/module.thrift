@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+include "thrift/annotation/cpp.thrift"
 
 include "include1.thrift"
 include "include2.thrift"
@@ -35,4 +37,9 @@ enum EnumB {
 struct ModuleB {
   1: i32 i32Field;
   2: EnumB inclEnumB;
+}
+
+@cpp.Adapter{name = "my::Adapter"}
+struct DirectlyAdapted {
+  1: i32 field;
 }

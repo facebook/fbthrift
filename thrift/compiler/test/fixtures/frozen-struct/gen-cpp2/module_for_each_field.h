@@ -34,6 +34,14 @@ struct ForEachField<::some::ns::ModuleB> {
     f(1, static_cast<T&&>(t).inclEnumB_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::some::ns::detail::DirectlyAdapted> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache
