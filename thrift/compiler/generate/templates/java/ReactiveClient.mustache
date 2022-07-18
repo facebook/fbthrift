@@ -387,8 +387,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}exten
 
             return _rpc
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
-                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
-                .limitRequest(2){{#function:return_type}}{{^type:sink_has_first_response?}}
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{#function:return_type}}{{^type:sink_has_first_response?}}
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData()){{/type:sink_has_first_response?}}{{/function:return_type}}
                 .map(_p -> ResponseWrapper.create((({{#function:return_type}}{{> SinkResponseGeneric}}{{/function:return_type}})_p.getData()){{#function:return_type}}{{^type:sink_has_first_response?}}.getData(){{/type:sink_has_first_response?}}{{/function:return_type}}, _p.getHeaders(), _p.getBinaryHeaders()));
       }){{#function:return_type}}{{^type:sink_has_first_response?}}.single(){{/type:sink_has_first_response?}}{{/function:return_type}};
