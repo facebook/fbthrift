@@ -392,6 +392,51 @@ void validateFieldAdapter() {
   validate<Adapter, adapted_field_t<Adapter, FieldID, ThriftT, Struct>>();
 }
 
+template <
+    bool ZeroCopy,
+    typename Adapter,
+    typename AdaptedT,
+    typename Protocol,
+    typename FallbackF,
+    typename = void>
+struct adapter_serialized_size {
+  uint32_t operator()(Protocol&, const AdaptedT&, FallbackF f) { return f(); }
+};
+
+template <
+    bool ZeroCopy,
+    typename Adapter,
+    typename AdaptedT,
+    typename Protocol,
+    typename FallbackF>
+struct adapter_serialized_size<
+    ZeroCopy,
+    Adapter,
+    AdaptedT,
+    Protocol,
+    FallbackF,
+    folly::void_t<decltype(Adapter::template serializedSize<ZeroCopy>(
+        std::declval<Protocol&>(), std::declval<AdaptedT&>()))>> {
+  uint32_t operator()(Protocol& prot, const AdaptedT& val, FallbackF) {
+    return Adapter::template serializedSize<ZeroCopy>(prot, val);
+  }
+};
+
+template <
+    bool ZeroCopy,
+    typename Adapter,
+    typename AdaptedT,
+    typename Protocol,
+    typename FallbackF>
+uint32_t serializedSize(Protocol& prot, const AdaptedT& val, FallbackF f) {
+  return adapter_serialized_size<
+      ZeroCopy,
+      Adapter,
+      AdaptedT,
+      Protocol,
+      FallbackF>()(prot, val, f);
+}
+
 } // namespace adapt_detail
 
 template <typename AdaptedT>

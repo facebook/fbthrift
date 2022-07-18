@@ -185,3 +185,15 @@ struct HeapAllocated {}
 struct MoveOnly {
   1: HeapAllocated ptr;
 }
+
+@cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<true>"}
+typedef i64 CountingInt
+struct CountingStruct {
+  @cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<false>"}
+  1: optional i64 regularInt;
+  2: optional CountingInt countingInt;
+}
+
+service AdapterService {
+  CountingStruct count();
+}

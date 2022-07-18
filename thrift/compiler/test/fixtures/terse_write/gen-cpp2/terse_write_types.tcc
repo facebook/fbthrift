@@ -2791,11 +2791,11 @@ uint32_t AdaptedFields::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AdaptedFields");
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1))) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field1));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter>(*prot_, this->__fbthrift_field_field1, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field1));});
   }
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2))) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 2);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field2));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter>(*prot_, this->__fbthrift_field_field2, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field2));});
   }
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3))) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 3);
@@ -2811,11 +2811,11 @@ uint32_t AdaptedFields::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AdaptedFields");
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_field1))) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field1));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter>(*prot_, this->__fbthrift_field_field1, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field1));});
   }
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_field2))) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 2);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field2));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter>(*prot_, this->__fbthrift_field_field2, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter::toThrift(this->__fbthrift_field_field2));});
   }
   if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::get_field_tag<::apache::thrift::type::struct_t<::facebook::thrift::test::terse_write::AdaptedFields>, ::apache::thrift::field_id<3>>>(this->__fbthrift_field_field3))) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 3);

@@ -246,4 +246,20 @@ struct MoveOnlyAdapter {
   }
 };
 
+template <bool hasSerializedSize>
+struct CountingAdapter {
+  static inline int count = 0;
+  static int fromThrift(int i) { return i; }
+  static int fromThriftField(int i) { return i; }
+  static int toThrift(int i) {
+    ++count;
+    return i;
+  }
+  template <bool ZC, typename Protocol, bool Enable = hasSerializedSize>
+  static std::enable_if_t<Enable, uint32_t> serializedSize(
+      Protocol& prot, int) {
+    return prot.serializedSizeI64();
+  }
+};
+
 } // namespace apache::thrift::test

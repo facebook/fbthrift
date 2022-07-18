@@ -27,6 +27,9 @@
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <thrift/test/gen-cpp2/adapter_clients.h>
+#include <thrift/test/gen-cpp2/adapter_handlers.h>
 #include <thrift/test/gen-cpp2/adapter_terse_types.h>
 #include <thrift/test/gen-cpp2/adapter_types.h>
 
@@ -79,8 +82,6 @@ TEST_F(AdapterTest, HasInplaceToThrift) {
   EXPECT_FALSE(
       (adapt_detail::has_inplace_toThrift<OverloadedAdapter, Num>::value));
 
-  // Indirection currently defaults to the identity function if illformed.
-  AssertSameType<decltype(apply_indirection(std::declval<int&>())), int&>();
   EXPECT_TRUE((
       adapt_detail::has_inplace_toThrift<IndirectionAdapter<int>, int>::value));
 
@@ -786,6 +787,21 @@ TEST(AdaptTest, MoveOnlyAdapter) {
   EXPECT_FALSE(*objd.ptr());
   CompactSerializer::deserialize(objs, objd);
   EXPECT_TRUE(*objd.ptr());
+}
+
+TEST(AdaptTest, NumAdapterConversions) {
+  // When an adapter implements serializedSize we guarantee to only call
+  // toThrift once during deserialization.
+  struct Handler : apache::thrift::ServiceHandler<basic::AdapterService> {
+    void count(basic::CountingStruct& s) override {
+      s.regularInt().ensure();
+      s.countingInt().ensure();
+    }
+  };
+  basic::CountingStruct s;
+  makeTestClient(std::make_shared<Handler>())->sync_count(s);
+  EXPECT_EQ(CountingAdapter<false>::count, 2);
+  EXPECT_EQ(CountingAdapter<true>::count, 1);
 }
 
 } // namespace apache::thrift::test

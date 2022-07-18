@@ -7555,7 +7555,7 @@ uint32_t StructWithFieldAdapter::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("StructWithFieldAdapter");
   {
     xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_field));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter1>(*prot_, this->__fbthrift_field_field, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_field));});
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -7567,7 +7567,7 @@ uint32_t StructWithFieldAdapter::serializedSizeZC(Protocol_ const* prot_) const 
   xfer += prot_->serializedStructSize("StructWithFieldAdapter");
   {
     xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_field));
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter1>(*prot_, this->__fbthrift_field_field, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_field));});
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -7651,7 +7651,7 @@ uint32_t UnionWithTypedefFieldAdapter::serializedSize(Protocol_ const* prot_) co
     case UnionWithTypedefFieldAdapter::Type::field:
     {
       xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));
+      xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter1>(*prot_, value_.field, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));});
       break;
     }
     case UnionWithTypedefFieldAdapter::Type::__EMPTY__:;
@@ -7668,7 +7668,7 @@ uint32_t UnionWithTypedefFieldAdapter::serializedSizeZC(Protocol_ const* prot_) 
     case UnionWithTypedefFieldAdapter::Type::field:
     {
       xfer += prot_->serializedFieldSize("field", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));
+      xfer += ::apache::thrift::adapt_detail::serializedSize<false, my::Adapter1>(*prot_, value_.field, [&] {return ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.field));});
       break;
     }
     case UnionWithTypedefFieldAdapter::Type::__EMPTY__:;
