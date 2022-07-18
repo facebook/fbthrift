@@ -449,11 +449,8 @@ void Cpp2Connection::requestReceived(
        THRIFT_FLAG(server_header_reject_all))) {
     THRIFT_CONNECTION_EVENT(connection_rejected.header).log(context_);
 
-    // Make server_header_reject_all be log-only for now
-    if (worker_->getServer()->isHeaderDisabled()) {
-      disconnect("Rejecting Header connection");
-      return;
-    }
+    disconnect("Rejecting Header connection");
+    return;
   }
 
   using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
