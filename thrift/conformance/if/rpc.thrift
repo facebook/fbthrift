@@ -41,6 +41,14 @@ union ServerTestResult {
   1: RequestResponseServerTestResult requestResponse;
 }
 
+union ClientTestResult {
+  1: RequestResponseClientTestResult requestResponse;
+}
+
 struct RequestResponseServerTestResult {
   1: optional Request request;
+}
+
+struct RequestResponseClientTestResult {
+  1: optional Response response;
 }

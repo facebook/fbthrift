@@ -37,6 +37,10 @@ service ConformanceService {
   void sendTestCase(1: test_suite.TestCase testCase);
   rpc.ServerTestResult getTestResult();
 
+  // =================== Conformance framework - Only for Client Tests ===================
+  test_suite.TestCase getTestCase();
+  void sendTestResult(1: rpc.ClientTestResult result);
+
   // =================== Request-Response ===================
   rpc.Response requestResponse(1: rpc.Request req);
 }

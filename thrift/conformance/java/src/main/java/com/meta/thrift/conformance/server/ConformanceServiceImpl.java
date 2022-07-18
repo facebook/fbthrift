@@ -21,6 +21,7 @@ import com.facebook.thrift.client.RpcOptions;
 import com.facebook.thrift.util.SerializationProtocol;
 import org.apache.thrift.TException;
 import org.apache.thrift.conformance.Any;
+import org.apache.thrift.conformance.ClientTestResult;
 import org.apache.thrift.conformance.ConformanceService;
 import org.apache.thrift.conformance.Request;
 import org.apache.thrift.conformance.Response;
@@ -77,6 +78,14 @@ public class ConformanceServiceImpl implements ConformanceService {
 
   @Override
   public void sendTestCase(TestCase testCase) throws TException {}
+
+  @Override
+  public TestCase getTestCase() throws TException {
+    throw new TException("unimplemented");
+  }
+
+  @Override
+  public void sendTestResult(ClientTestResult result) throws TException {}
 
   @Override
   public Response requestResponse(Request request) throws TException {
