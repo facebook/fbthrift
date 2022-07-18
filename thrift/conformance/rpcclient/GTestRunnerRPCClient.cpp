@@ -20,12 +20,12 @@
 namespace apache::thrift::conformance {
 namespace {
 
-// std::map<std::string_view, std::string_view> getClientCmds() {
-//   return parseCmds(getEnvOrThrow("THRIFT_CONFORMANCE_CLIENT_BINARIES"));
-// }
+std::map<std::string_view, std::string_view> getClientCmds() {
+  return parseCmds(getEnvOrThrow("THRIFT_CONFORMANCE_CLIENT_BINARIES"));
+}
 
-// TODO: Register the tests with gtest once client process is implemented
-// THRIFT_RPC_CLIENT_CONFORMANCE_TEST(
-//    getSuites(), getClientCmds(), getNonconforming());
+// Register the tests with gtest.
+THRIFT_RPC_CLIENT_CONFORMANCE_TEST(
+    getSuites(), getClientCmds(), getNonconforming());
 } // namespace
 } // namespace apache::thrift::conformance
