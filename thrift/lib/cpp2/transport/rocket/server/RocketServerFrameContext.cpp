@@ -98,12 +98,12 @@ void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
 
 void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
   auto& connection = *connection_;
-  if (fullFrame.initialRequestN() != 2) {
+  if (fullFrame.initialRequestN() < 2) {
     connection.close(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
                 STREAMING_CONTRACT_VIOLATION,
-            "initialRequestN of Sink must be 2"));
+            "initialRequestN of Sink must be 2 or greater"));
   } else {
     auto& clientCallback =
         connection.createSinkClientCallback(streamId_, connection);
