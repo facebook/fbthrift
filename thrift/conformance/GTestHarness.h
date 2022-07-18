@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,21 +36,6 @@ namespace apache::thrift::conformance {
 // A map from name to ConformanceServiceAsyncClient provider.
 using client_fn_map =
     std::map<std::string_view, std::function<ConformanceServiceAsyncClient&()>>;
-
-// Names default to parent directory, or can be customized by appending
-// '#<name>' to the command. If the command itself has a '#' character in it,
-// appending an additional "#" will cause it to parse correctly.
-std::pair<std::string_view, std::string_view> parseNameAndCmd(
-    std::string_view entry);
-
-// Parses commands (and optionally custom names) seporated by ','
-std::map<std::string_view, std::string_view> parseCmds(
-    std::string_view cmdsStr);
-
-// Parses a set of non-conforming test names, seporated by '/n'
-//
-// Use # for comments.
-std::set<std::string> parseNonconforming(std::string_view data);
 
 // Runs a conformance test case against the given client.
 testing::AssertionResult RunTestCase(

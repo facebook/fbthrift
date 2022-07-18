@@ -21,6 +21,7 @@
 
 #include <fmt/core.h>
 #include <folly/lang/Exception.h>
+#include <thrift/conformance/Utils.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
@@ -29,41 +30,6 @@
 
 namespace apache::thrift::conformance {
 namespace {
-
-// From a newer version of gtest.
-//
-// TODO(afuller): Delete once gtest is updated.
-template <typename Factory>
-testing::TestInfo* RegisterTest(
-    const char* test_suite_name,
-    const char* test_name,
-    const char* type_param,
-    const char* value_param,
-    const char* file,
-    int line,
-    Factory factory) {
-  using TestT = typename std::remove_pointer<decltype(factory())>::type;
-
-  class FactoryImpl : public testing::internal::TestFactoryBase {
-   public:
-    explicit FactoryImpl(Factory f) : factory_(std::move(f)) {}
-    testing::Test* CreateTest() override { return factory_(); }
-
-   private:
-    Factory factory_;
-  };
-
-  return testing::internal::MakeAndRegisterTestInfo(
-      test_suite_name,
-      test_name,
-      type_param,
-      value_param,
-      testing::internal::CodeLocation(file, line),
-      testing::internal::GetTypeId<TestT>(),
-      TestT::SetUpTestCase,
-      TestT::TearDownTestCase,
-      new FactoryImpl{std::move(factory)});
-}
 
 testing::AssertionResult RunRoundTripTest(
     ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip) {
@@ -129,63 +95,6 @@ testing::AssertionResult RunRequestResponseTest(
 }
 
 } // namespace
-
-std::pair<std::string_view, std::string_view> parseNameAndCmd(
-    std::string_view entry) {
-  // Look for a custom name.
-  auto pos = entry.find_last_of("#/");
-  if (pos != std::string_view::npos && entry[pos] == '#') {
-    if (pos == entry.size() - 1) {
-      // Just a trailing delim, remove it.
-      entry = entry.substr(0, pos);
-    } else {
-      // Use the custom name.
-      return {entry.substr(pos + 1), entry.substr(0, pos)};
-    }
-  }
-
-  // No custom name, so use parent directory as name.
-  size_t stop = entry.find_last_of("\\/") - 1;
-  size_t start = entry.find_last_of("\\/", stop);
-  return {entry.substr(start + 1, stop - start), entry};
-}
-
-std::map<std::string_view, std::string_view> parseCmds(
-    std::string_view cmdsStr) {
-  std::map<std::string_view, std::string_view> result;
-  std::vector<folly::StringPiece> cmds;
-  folly::split(',', cmdsStr, cmds);
-  for (auto cmd : cmds) {
-    auto entry = parseNameAndCmd(folly::trimWhitespace(cmd));
-    auto res = result.emplace(entry);
-    if (!res.second) {
-      folly::throw_exception<std::invalid_argument>(fmt::format(
-          "Multiple servers have the name {}: {} vs {}",
-          entry.first,
-          res.first->second,
-          entry.second));
-    }
-  }
-  return result;
-}
-
-std::set<std::string> parseNonconforming(std::string_view data) {
-  std::vector<folly::StringPiece> lines;
-  folly::split("\n", data, lines);
-  std::set<std::string> result;
-  for (auto& line : lines) {
-    // Strip any comments.
-    if (auto pos = line.find_first_of('#'); pos != folly::StringPiece::npos) {
-      line = line.subpiece(0, pos);
-    }
-    // Add trimmed, non-empty lines.
-    line = folly::trimWhitespace(line);
-    if (!line.empty()) {
-      result.emplace(line);
-    }
-  }
-  return result;
-}
 
 testing::AssertionResult RunTestCase(
     ConformanceServiceAsyncClient& client, const TestCase& testCase) {
