@@ -80,20 +80,5 @@ FROZEN_CLEAR(::some::ns::ModuleB,
   FROZEN_CLEAR_FIELD(i32Field)
   FROZEN_CLEAR_FIELD(inclEnumB))
 
-FROZEN_CTOR(::some::ns::detail::DirectlyAdapted,
-  FROZEN_CTOR_FIELD(field, 1))
-FROZEN_MAXIMIZE(::some::ns::detail::DirectlyAdapted,
-  FROZEN_MAXIMIZE_FIELD(field))
-FROZEN_LAYOUT(::some::ns::detail::DirectlyAdapted,
-  FROZEN_LAYOUT_FIELD(field))
-FROZEN_FREEZE(::some::ns::detail::DirectlyAdapted,
-  FROZEN_FREEZE_FIELD(field))
-FROZEN_THAW(::some::ns::detail::DirectlyAdapted,
-  FROZEN_THAW_FIELD(field))
-FROZEN_DEBUG(::some::ns::detail::DirectlyAdapted,
-  FROZEN_DEBUG_FIELD(field))
-FROZEN_CLEAR(::some::ns::detail::DirectlyAdapted,
-  FROZEN_CLEAR_FIELD(field))
-
 
 }}} // apache::thrift::frozen

@@ -1172,7 +1172,9 @@ class mstch_cpp2_struct : public mstch_struct {
     return strct_->has_annotation("cpp.internal.deprecated._data.method");
   }
   mstch::node cpp_frozen2_exclude() {
-    return strct_->has_annotation("cpp.frozen2_exclude");
+    // TODO(dokwon): Fix frozen2 compatibility with adapter.
+    return strct_->has_annotation("cpp.frozen2_exclude") ||
+        context_->resolver().is_directly_adapted(*strct_);
   }
   mstch::node cpp_allocator_via() {
     if (const auto* name =
