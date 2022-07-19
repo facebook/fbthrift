@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package "apache.org/thrift/test"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/AdapterTest.h"
+
+package "apache.org/thrift/test"
 
 struct Foo {
   1: i32 field1;
