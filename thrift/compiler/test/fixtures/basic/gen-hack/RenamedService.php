@@ -81,8 +81,8 @@ class RenamedServiceAsyncClient extends \ThriftClientBase implements RenamedServ
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
     $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("FooService", "simple_rpc", $args);
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
     await $this->genAwaitResponse(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid, $rpc_options);
   }
@@ -103,8 +103,8 @@ class RenamedServiceClient extends \ThriftClientBase implements RenamedServiceCl
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FooService", "simple_rpc");
     $args = \fixtures\basic\RenamedService_simple_rpc_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("FooService", "simple_rpc", $args);
     $currentseqid = $this->sendImplHelper($args, "simple_rpc", false);
     await $this->genAwaitResponse(\fixtures\basic\RenamedService_simple_rpc_result::class, "simple_rpc", true, $currentseqid, $rpc_options);
   }

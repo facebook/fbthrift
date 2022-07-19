@@ -75,8 +75,8 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $args = MyServicePrioChild_pang_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang", $args);
     $currentseqid = $this->sendImplHelper($args, "pang", false);
     await $this->genAwaitResponse(MyServicePrioChild_pang_result::class, "pang", true, $currentseqid, $rpc_options);
   }
@@ -97,8 +97,8 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $args = MyServicePrioChild_pang_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang", $args);
     $currentseqid = $this->sendImplHelper($args, "pang", false);
     await $this->genAwaitResponse(MyServicePrioChild_pang_result::class, "pang", true, $currentseqid, $rpc_options);
   }

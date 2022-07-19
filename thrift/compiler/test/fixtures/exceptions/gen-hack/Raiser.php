@@ -156,8 +156,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $args = Raiser_doBland_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "doBland", $args);
     $currentseqid = $this->sendImplHelper($args, "doBland", false);
     await $this->genAwaitResponse(Raiser_doBland_result::class, "doBland", true, $currentseqid, $rpc_options);
   }
@@ -176,8 +176,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $args = Raiser_doRaise_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "doRaise", $args);
     $currentseqid = $this->sendImplHelper($args, "doRaise", false);
     await $this->genAwaitResponse(Raiser_doRaise_result::class, "doRaise", true, $currentseqid, $rpc_options);
   }
@@ -193,8 +193,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "get200");
     $args = Raiser_get200_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "get200", $args);
     $currentseqid = $this->sendImplHelper($args, "get200", false);
     return await $this->genAwaitResponse(Raiser_get200_result::class, "get200", false, $currentseqid, $rpc_options);
   }
@@ -213,8 +213,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "get500");
     $args = Raiser_get500_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "get500", $args);
     $currentseqid = $this->sendImplHelper($args, "get500", false);
     return await $this->genAwaitResponse(Raiser_get500_result::class, "get500", false, $currentseqid, $rpc_options);
   }
@@ -235,8 +235,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $args = Raiser_doBland_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "doBland", $args);
     $currentseqid = $this->sendImplHelper($args, "doBland", false);
     await $this->genAwaitResponse(Raiser_doBland_result::class, "doBland", true, $currentseqid, $rpc_options);
   }
@@ -255,8 +255,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $args = Raiser_doRaise_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "doRaise", $args);
     $currentseqid = $this->sendImplHelper($args, "doRaise", false);
     await $this->genAwaitResponse(Raiser_doRaise_result::class, "doRaise", true, $currentseqid, $rpc_options);
   }
@@ -272,8 +272,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "get200");
     $args = Raiser_get200_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "get200", $args);
     $currentseqid = $this->sendImplHelper($args, "get200", false);
     return await $this->genAwaitResponse(Raiser_get200_result::class, "get200", false, $currentseqid, $rpc_options);
   }
@@ -292,8 +292,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Raiser", "get500");
     $args = Raiser_get500_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("Raiser", "get500", $args);
     $currentseqid = $this->sendImplHelper($args, "get500", false);
     return await $this->genAwaitResponse(Raiser_get500_result::class, "get500", false, $currentseqid, $rpc_options);
   }

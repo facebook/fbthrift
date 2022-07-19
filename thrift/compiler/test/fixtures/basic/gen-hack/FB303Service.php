@@ -81,10 +81,10 @@ class FB303ServiceAsyncClient extends \ThriftClientBase implements FB303ServiceA
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc");
     $args = \fixtures\basic\FB303Service_renamed_rpc_args::fromShape(shape(
       'int_parameter' => $int_parameter,
     ));
+    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc", $args);
     $currentseqid = $this->sendImplHelper($args, "renamed_rpc", false);
     return await $this->genAwaitResponse(\fixtures\basic\FB303Service_renamed_rpc_result::class, "simple_rpc", false, $currentseqid, $rpc_options);
   }
@@ -105,10 +105,10 @@ class FB303ServiceClient extends \ThriftClientBase implements FB303ServiceClient
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc");
     $args = \fixtures\basic\FB303Service_renamed_rpc_args::fromShape(shape(
       'int_parameter' => $int_parameter,
     ));
+    await $this->asyncHandler_->genBefore("FB303Service", "renamed_rpc", $args);
     $currentseqid = $this->sendImplHelper($args, "renamed_rpc", false);
     return await $this->genAwaitResponse(\fixtures\basic\FB303Service_renamed_rpc_result::class, "simple_rpc", false, $currentseqid, $rpc_options);
   }

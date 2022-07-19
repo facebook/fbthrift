@@ -82,8 +82,8 @@ class BadServiceAsyncClient extends \ThriftClientBase implements BadServiceAsync
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("BadService", "bar");
     $args = BadService_bar_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("BadService", "bar", $args);
     $currentseqid = $this->sendImplHelper($args, "bar", false);
     return await $this->genAwaitResponse(BadService_bar_result::class, "bar", false, $currentseqid, $rpc_options);
   }
@@ -104,8 +104,8 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("BadService", "bar");
     $args = BadService_bar_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("BadService", "bar", $args);
     $currentseqid = $this->sendImplHelper($args, "bar", false);
     return await $this->genAwaitResponse(BadService_bar_result::class, "bar", false, $currentseqid, $rpc_options);
   }
@@ -146,7 +146,8 @@ class BadService_BadInteraction extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("BadService", "BadInteraction.foo");
+    $args = BadService_BadInteraction_foo_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("BadService", "BadInteraction.foo", $args);
     $currentseqid = $this->sendImpl_foo();
     await $this->genAwaitResponse(BadService_BadInteraction_foo_result::class, "foo", true, $currentseqid, $rpc_options);
   }

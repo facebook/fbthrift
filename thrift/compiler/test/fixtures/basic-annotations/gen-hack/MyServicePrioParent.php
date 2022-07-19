@@ -96,8 +96,8 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $args = MyServicePrioParent_ping_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping", $args);
     $currentseqid = $this->sendImplHelper($args, "ping", false);
     await $this->genAwaitResponse(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid, $rpc_options);
   }
@@ -113,8 +113,8 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $args = MyServicePrioParent_pong_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong", $args);
     $currentseqid = $this->sendImplHelper($args, "pong", false);
     await $this->genAwaitResponse(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid, $rpc_options);
   }
@@ -135,8 +135,8 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $args = MyServicePrioParent_ping_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping", $args);
     $currentseqid = $this->sendImplHelper($args, "ping", false);
     await $this->genAwaitResponse(MyServicePrioParent_ping_result::class, "ping", true, $currentseqid, $rpc_options);
   }
@@ -152,8 +152,8 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $args = MyServicePrioParent_pong_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong", $args);
     $currentseqid = $this->sendImplHelper($args, "pong", false);
     await $this->genAwaitResponse(MyServicePrioParent_pong_result::class, "pong", true, $currentseqid, $rpc_options);
   }

@@ -229,8 +229,8 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("C", "f");
     $args = C_f_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("C", "f", $args);
     $currentseqid = $this->sendImplHelper($args, "f", false);
     await $this->genAwaitResponse(C_f_result::class, "f", true, $currentseqid, $rpc_options);
   }
@@ -250,12 +250,12 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("C", "thing");
     $args = C_thing_args::fromShape(shape(
       'a' => $a,
       'b' => $b,
       'c' => $c,
     ));
+    await $this->asyncHandler_->genBefore("C", "thing", $args);
     $currentseqid = $this->sendImplHelper($args, "thing", false);
     return await $this->genAwaitResponse(C_thing_result::class, "thing", false, $currentseqid, $rpc_options);
   }
@@ -281,8 +281,8 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("C", "numbers");
     $args = C_numbers_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("C", "numbers", $args);
     $currentseqid = $this->sendImplHelper($args, "numbers", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -314,8 +314,8 @@ class CClient extends \ThriftClientBase implements CClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("C", "f");
     $args = C_f_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("C", "f", $args);
     $currentseqid = $this->sendImplHelper($args, "f", false);
     await $this->genAwaitResponse(C_f_result::class, "f", true, $currentseqid, $rpc_options);
   }
@@ -335,12 +335,12 @@ class CClient extends \ThriftClientBase implements CClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("C", "thing");
     $args = C_thing_args::fromShape(shape(
       'a' => $a,
       'b' => $b,
       'c' => $c,
     ));
+    await $this->asyncHandler_->genBefore("C", "thing", $args);
     $currentseqid = $this->sendImplHelper($args, "thing", false);
     return await $this->genAwaitResponse(C_thing_result::class, "thing", false, $currentseqid, $rpc_options);
   }
@@ -366,8 +366,8 @@ class CClient extends \ThriftClientBase implements CClientIf {
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("C", "numbers");
     $args = C_numbers_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("C", "numbers", $args);
     $currentseqid = $this->sendImplHelper($args, "numbers", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();

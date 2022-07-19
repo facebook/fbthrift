@@ -6749,7 +6749,6 @@ void t_hack_generator::_generate_current_seq_id(
     }
     out << ");\n";
   } else {
-    _generate_args(out, tservice, tfunction);
     out << indent() << "$currentseqid = ";
     _generate_sendImplHelper(out, tfunction);
   }
@@ -7064,9 +7063,10 @@ void t_hack_generator::_generate_service_client_child_fn(
         << "$rpc_options = $rpc_options->setInteractionId($this->interactionId);\n";
   }
 
+  _generate_args(out, tservice, tfunction);
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
-              << "\");\n";
+              << "\", $args);\n";
   _generate_current_seq_id(out, tservice, tfunction);
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
@@ -7151,9 +7151,10 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
   indent_down();
   indent(out) << ");\n\n";
 
+  _generate_args(out, tservice, tfunction);
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
-              << "\");\n";
+              << "\", $args);\n";
   _generate_current_seq_id(out, tservice, tfunction);
 
   out << indent() << "$msg = $out_transport->getBuffer();\n"
@@ -7250,9 +7251,10 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
   indent_down();
   indent(out) << ");\n\n";
 
+  _generate_args(out, tservice, tfunction);
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
-              << "\");\n";
+              << "\", $args);\n";
   _generate_current_seq_id(out, tservice, tfunction);
 
   out << indent() << "$msg = $out_transport->getBuffer();\n"

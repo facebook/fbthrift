@@ -103,11 +103,11 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Service1", "func");
     $args = Service1_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
     ));
+    await $this->asyncHandler_->genBefore("Service1", "func", $args);
     $currentseqid = $this->sendImplHelper($args, "func", false);
     return await $this->genAwaitResponse(Service1_func_result::class, "func", false, $currentseqid, $rpc_options);
   }
@@ -124,11 +124,11 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Service1", "func1");
     $args = Service1_func1_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
     ));
+    await $this->asyncHandler_->genBefore("Service1", "func1", $args);
     $currentseqid = $this->sendImplHelper($args, "func1", false);
     return await $this->genAwaitResponse(Service1_func1_result::class, "func1", false, $currentseqid, $rpc_options);
   }
@@ -150,11 +150,11 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Service1", "func");
     $args = Service1_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
     ));
+    await $this->asyncHandler_->genBefore("Service1", "func", $args);
     $currentseqid = $this->sendImplHelper($args, "func", false);
     return await $this->genAwaitResponse(Service1_func_result::class, "func", false, $currentseqid, $rpc_options);
   }
@@ -171,11 +171,11 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Service1", "func1");
     $args = Service1_func1_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
     ));
+    await $this->asyncHandler_->genBefore("Service1", "func1", $args);
     $currentseqid = $this->sendImplHelper($args, "func1", false);
     return await $this->genAwaitResponse(Service1_func1_result::class, "func1", false, $currentseqid, $rpc_options);
   }

@@ -1056,8 +1056,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "method");
     $args = SinkService_method_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "method", $args);
     $currentseqid = $this->sendImplHelper($args, "method", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1102,8 +1102,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
     $args = SinkService_methodAndReponse_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse", $args);
     $currentseqid = $this->sendImplHelper($args, "methodAndReponse", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1149,8 +1149,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
     $args = SinkService_methodThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1195,8 +1195,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
     $args = SinkService_methodSinkThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodSinkThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1241,8 +1241,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
     $args = SinkService_methodFinalThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodFinalThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1287,8 +1287,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
     $args = SinkService_methodBothThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodBothThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1333,8 +1333,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodFast");
     $args = SinkService_methodFast_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodFast", $args);
     $currentseqid = $this->sendImplHelper($args, "methodFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1384,8 +1384,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "method");
     $args = SinkService_method_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "method", $args);
     $currentseqid = $this->sendImplHelper($args, "method", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1430,8 +1430,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
     $args = SinkService_methodAndReponse_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse", $args);
     $currentseqid = $this->sendImplHelper($args, "methodAndReponse", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1477,8 +1477,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
     $args = SinkService_methodThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1523,8 +1523,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
     $args = SinkService_methodSinkThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodSinkThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1569,8 +1569,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
     $args = SinkService_methodFinalThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodFinalThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1615,8 +1615,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
     $args = SinkService_methodBothThrow_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow", $args);
     $currentseqid = $this->sendImplHelper($args, "methodBothThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1661,8 +1661,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("SinkService", "methodFast");
     $args = SinkService_methodFast_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("SinkService", "methodFast", $args);
     $currentseqid = $this->sendImplHelper($args, "methodFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();

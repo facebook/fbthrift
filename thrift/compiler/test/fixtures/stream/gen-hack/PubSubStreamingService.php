@@ -926,11 +926,11 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream");
     $args = PubSubStreamingService_returnstream_args::fromShape(shape(
       'i32_from' => $i32_from,
       'i32_to' => $i32_to,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream", $args);
     $currentseqid = $this->sendImplHelper($args, "returnstream", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -963,10 +963,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows");
     $args = PubSubStreamingService_streamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows", $args);
     $currentseqid = $this->sendImplHelper($args, "streamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1000,10 +1000,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows");
     $args = PubSubStreamingService_servicethrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows", $args);
     $currentseqid = $this->sendImplHelper($args, "servicethrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1037,10 +1037,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows");
     $args = PubSubStreamingService_boththrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows", $args);
     $currentseqid = $this->sendImplHelper($args, "boththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1073,10 +1073,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows");
     $args = PubSubStreamingService_responseandstreamstreamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1110,10 +1110,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows");
     $args = PubSubStreamingService_responseandstreamservicethrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamservicethrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1147,10 +1147,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows");
     $args = PubSubStreamingService_responseandstreamboththrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamboththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1184,11 +1184,11 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast");
     $args = PubSubStreamingService_returnstreamFast_args::fromShape(shape(
       'i32_from' => $i32_from,
       'i32_to' => $i32_to,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast", $args);
     $currentseqid = $this->sendImplHelper($args, "returnstreamFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1227,11 +1227,11 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream");
     $args = PubSubStreamingService_returnstream_args::fromShape(shape(
       'i32_from' => $i32_from,
       'i32_to' => $i32_to,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream", $args);
     $currentseqid = $this->sendImplHelper($args, "returnstream", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1264,10 +1264,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows");
     $args = PubSubStreamingService_streamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows", $args);
     $currentseqid = $this->sendImplHelper($args, "streamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1301,10 +1301,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows");
     $args = PubSubStreamingService_servicethrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "servicethrows", $args);
     $currentseqid = $this->sendImplHelper($args, "servicethrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1338,10 +1338,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows");
     $args = PubSubStreamingService_boththrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows", $args);
     $currentseqid = $this->sendImplHelper($args, "boththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1374,10 +1374,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows");
     $args = PubSubStreamingService_responseandstreamstreamthrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamstreamthrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1411,10 +1411,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows");
     $args = PubSubStreamingService_responseandstreamservicethrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamservicethrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamservicethrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1448,10 +1448,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows");
     $args = PubSubStreamingService_responseandstreamboththrows_args::fromShape(shape(
       'foo' => $foo,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamboththrows", $args);
     $currentseqid = $this->sendImplHelper($args, "responseandstreamboththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1485,11 +1485,11 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast");
     $args = PubSubStreamingService_returnstreamFast_args::fromShape(shape(
       'i32_from' => $i32_from,
       'i32_to' => $i32_to,
     ));
+    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast", $args);
     $currentseqid = $this->sendImplHelper($args, "returnstreamFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();

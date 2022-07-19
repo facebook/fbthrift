@@ -81,10 +81,10 @@ class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestS
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("TestService", "ping");
     $args = \hack_ns2\TestService_ping_args::fromShape(shape(
       'str_arg' => $str_arg,
     ));
+    await $this->asyncHandler_->genBefore("TestService", "ping", $args);
     $currentseqid = $this->sendImplHelper($args, "ping", false);
     return await $this->genAwaitResponse(\hack_ns2\TestService_ping_result::class, "ping", false, $currentseqid, $rpc_options);
   }
@@ -105,10 +105,10 @@ class TestServiceClient extends \FooHackServiceClient implements TestServiceClie
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("TestService", "ping");
     $args = \hack_ns2\TestService_ping_args::fromShape(shape(
       'str_arg' => $str_arg,
     ));
+    await $this->asyncHandler_->genBefore("TestService", "ping", $args);
     $currentseqid = $this->sendImplHelper($args, "ping", false);
     return await $this->genAwaitResponse(\hack_ns2\TestService_ping_result::class, "ping", false, $currentseqid, $rpc_options);
   }

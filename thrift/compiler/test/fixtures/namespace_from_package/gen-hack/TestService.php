@@ -81,10 +81,10 @@ class TestServiceAsyncClient extends \ThriftClientBase implements TestServiceAsy
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("TestService", "init");
     $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
       'int1' => $int1,
     ));
+    await $this->asyncHandler_->genBefore("TestService", "init", $args);
     $currentseqid = $this->sendImplHelper($args, "init", false);
     return await $this->genAwaitResponse(\namespace_from_package\module\TestService_init_result::class, "init", false, $currentseqid, $rpc_options);
   }
@@ -105,10 +105,10 @@ class TestServiceClient extends \ThriftClientBase implements TestServiceClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("TestService", "init");
     $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
       'int1' => $int1,
     ));
+    await $this->asyncHandler_->genBefore("TestService", "init", $args);
     $currentseqid = $this->sendImplHelper($args, "init", false);
     return await $this->genAwaitResponse(\namespace_from_package\module\TestService_init_result::class, "init", false, $currentseqid, $rpc_options);
   }

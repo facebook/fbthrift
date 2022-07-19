@@ -241,8 +241,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "foo");
     $args = MyService_foo_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "foo", $args);
     $currentseqid = $this->sendImplHelper($args, "foo", false);
     await $this->genAwaitResponse(MyService_foo_result::class, "foo", true, $currentseqid, $rpc_options);
   }
@@ -258,10 +258,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "interact");
     $args = MyService_interact_args::fromShape(shape(
       'arg' => $arg,
     ));
+    await $this->asyncHandler_->genBefore("MyService", "interact", $args);
     $currentseqid = $this->sendImplHelper($args, "interact", false);
     await $this->genAwaitResponse(MyService_interact_result::class, "interact", true, $currentseqid, $rpc_options);
   }
@@ -277,8 +277,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "interactFast");
     $args = MyService_interactFast_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "interactFast", $args);
     $currentseqid = $this->sendImplHelper($args, "interactFast", false);
     return await $this->genAwaitResponse(MyService_interactFast_result::class, "interactFast", false, $currentseqid, $rpc_options);
   }
@@ -302,8 +302,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "serialize");
     $args = MyService_serialize_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "serialize", $args);
     $currentseqid = $this->sendImplHelper($args, "serialize", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -333,8 +333,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "foo");
     $args = MyService_foo_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "foo", $args);
     $currentseqid = $this->sendImplHelper($args, "foo", false);
     await $this->genAwaitResponse(MyService_foo_result::class, "foo", true, $currentseqid, $rpc_options);
   }
@@ -350,10 +350,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "interact");
     $args = MyService_interact_args::fromShape(shape(
       'arg' => $arg,
     ));
+    await $this->asyncHandler_->genBefore("MyService", "interact", $args);
     $currentseqid = $this->sendImplHelper($args, "interact", false);
     await $this->genAwaitResponse(MyService_interact_result::class, "interact", true, $currentseqid, $rpc_options);
   }
@@ -369,8 +369,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "interactFast");
     $args = MyService_interactFast_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "interactFast", $args);
     $currentseqid = $this->sendImplHelper($args, "interactFast", false);
     return await $this->genAwaitResponse(MyService_interactFast_result::class, "interactFast", false, $currentseqid, $rpc_options);
   }
@@ -394,8 +394,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "serialize");
     $args = MyService_serialize_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "serialize", $args);
     $currentseqid = $this->sendImplHelper($args, "serialize", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -462,7 +462,8 @@ class MyService_MyInteraction extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate");
+    $args = MyService_MyInteraction_frobnicate_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate", $args);
     $currentseqid = $this->sendImpl_frobnicate();
     return await $this->genAwaitResponse(MyService_MyInteraction_frobnicate_result::class, "frobnicate", false, $currentseqid, $rpc_options);
   }
@@ -517,7 +518,8 @@ class MyService_MyInteraction extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping");
+    $args = MyService_MyInteraction_ping_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping", $args);
     $currentseqid = $this->sendImpl_ping();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -586,7 +588,8 @@ class MyService_MyInteraction extends \ThriftClientBase {
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.truthify");
+    $args = MyService_MyInteraction_truthify_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.truthify", $args);
     $currentseqid = $this->sendImpl_truthify();
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -744,7 +747,8 @@ $rpc_options->setInteractionId($this->interactionId);
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.encode");
+    $args = MyService_MyInteraction_encode_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.encode", $args);
     $currentseqid = $this->sendImpl_encode();
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -964,7 +968,8 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate");
+    $args = MyService_MyInteractionFast_frobnicate_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate", $args);
     $currentseqid = $this->sendImpl_frobnicate();
     return await $this->genAwaitResponse(MyService_MyInteractionFast_frobnicate_result::class, "frobnicate", false, $currentseqid, $rpc_options);
   }
@@ -1019,7 +1024,8 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping");
+    $args = MyService_MyInteractionFast_ping_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping", $args);
     $currentseqid = $this->sendImpl_ping();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -1088,7 +1094,8 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
       "Stream methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.truthify");
+    $args = MyService_MyInteractionFast_truthify_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.truthify", $args);
     $currentseqid = $this->sendImpl_truthify();
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1246,7 +1253,8 @@ $rpc_options->setInteractionId($this->interactionId);
       "Sink methods require nonnull channel and TMemoryBuffer transport"
     );
 
-    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.encode");
+    $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.encode", $args);
     $currentseqid = $this->sendImpl_encode();
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
@@ -1466,7 +1474,8 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     }
     $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
-    await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate");
+    $args = MyService_SerialInteraction_frobnicate_args::withDefaultValues();
+    await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate", $args);
     $currentseqid = $this->sendImpl_frobnicate();
     await $this->genAwaitResponse(MyService_SerialInteraction_frobnicate_result::class, "frobnicate", true, $currentseqid, $rpc_options);
   }

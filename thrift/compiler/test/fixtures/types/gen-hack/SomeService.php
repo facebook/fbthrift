@@ -96,10 +96,10 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $args = SomeService_bounce_map_args::fromShape(shape(
       'm' => $m,
     ));
+    await $this->asyncHandler_->genBefore("SomeService", "bounce_map", $args);
     $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
     return await $this->genAwaitResponse(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid, $rpc_options);
   }
@@ -115,10 +115,10 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $args = SomeService_binary_keyed_map_args::fromShape(shape(
       'r' => new Vector($r),
     ));
+    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map", $args);
     $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
     return await $this->genAwaitResponse(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid, $rpc_options);
   }
@@ -139,10 +139,10 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $args = SomeService_bounce_map_args::fromShape(shape(
       'm' => $m,
     ));
+    await $this->asyncHandler_->genBefore("SomeService", "bounce_map", $args);
     $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
     return await $this->genAwaitResponse(SomeService_bounce_map_result::class, "bounce_map", false, $currentseqid, $rpc_options);
   }
@@ -158,10 +158,10 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $args = SomeService_binary_keyed_map_args::fromShape(shape(
       'r' => new Vector($r),
     ));
+    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map", $args);
     $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
     return await $this->genAwaitResponse(SomeService_binary_keyed_map_result::class, "binary_keyed_map", false, $currentseqid, $rpc_options);
   }

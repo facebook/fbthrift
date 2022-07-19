@@ -159,12 +159,12 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $args = NestedContainers_mapList_args::fromShape(shape(
       'foo' => (new Map($foo))->map(
         $_val0 ==> new Vector($_val0)
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "mapList", $args);
     $currentseqid = $this->sendImplHelper($args, "mapList", false);
     await $this->genAwaitResponse(NestedContainers_mapList_result::class, "mapList", true, $currentseqid, $rpc_options);
   }
@@ -180,10 +180,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $args = NestedContainers_mapSet_args::fromShape(shape(
       'foo' => new Map($foo),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "mapSet", $args);
     $currentseqid = $this->sendImplHelper($args, "mapSet", false);
     await $this->genAwaitResponse(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid, $rpc_options);
   }
@@ -199,12 +199,12 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $args = NestedContainers_listMap_args::fromShape(shape(
       'foo' => (new Vector($foo))->map(
         $_val0 ==> new Map($_val0)
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "listMap", $args);
     $currentseqid = $this->sendImplHelper($args, "listMap", false);
     await $this->genAwaitResponse(NestedContainers_listMap_result::class, "listMap", true, $currentseqid, $rpc_options);
   }
@@ -220,10 +220,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $args = NestedContainers_listSet_args::fromShape(shape(
       'foo' => new Vector($foo),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "listSet", $args);
     $currentseqid = $this->sendImplHelper($args, "listSet", false);
     await $this->genAwaitResponse(NestedContainers_listSet_result::class, "listSet", true, $currentseqid, $rpc_options);
   }
@@ -239,7 +239,6 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $args = NestedContainers_turtles_args::fromShape(shape(
       'foo' => (new Vector($foo))->map(
         $_val0 ==> (new Vector($_val0))->map(
@@ -249,6 +248,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
         )
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "turtles", $args);
     $currentseqid = $this->sendImplHelper($args, "turtles", false);
     await $this->genAwaitResponse(NestedContainers_turtles_result::class, "turtles", true, $currentseqid, $rpc_options);
   }
@@ -269,12 +269,12 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $args = NestedContainers_mapList_args::fromShape(shape(
       'foo' => (new Map($foo))->map(
         $_val0 ==> new Vector($_val0)
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "mapList", $args);
     $currentseqid = $this->sendImplHelper($args, "mapList", false);
     await $this->genAwaitResponse(NestedContainers_mapList_result::class, "mapList", true, $currentseqid, $rpc_options);
   }
@@ -290,10 +290,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $args = NestedContainers_mapSet_args::fromShape(shape(
       'foo' => new Map($foo),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "mapSet", $args);
     $currentseqid = $this->sendImplHelper($args, "mapSet", false);
     await $this->genAwaitResponse(NestedContainers_mapSet_result::class, "mapSet", true, $currentseqid, $rpc_options);
   }
@@ -309,12 +309,12 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $args = NestedContainers_listMap_args::fromShape(shape(
       'foo' => (new Vector($foo))->map(
         $_val0 ==> new Map($_val0)
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "listMap", $args);
     $currentseqid = $this->sendImplHelper($args, "listMap", false);
     await $this->genAwaitResponse(NestedContainers_listMap_result::class, "listMap", true, $currentseqid, $rpc_options);
   }
@@ -330,10 +330,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $args = NestedContainers_listSet_args::fromShape(shape(
       'foo' => new Vector($foo),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "listSet", $args);
     $currentseqid = $this->sendImplHelper($args, "listSet", false);
     await $this->genAwaitResponse(NestedContainers_listSet_result::class, "listSet", true, $currentseqid, $rpc_options);
   }
@@ -349,7 +349,6 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $args = NestedContainers_turtles_args::fromShape(shape(
       'foo' => (new Vector($foo))->map(
         $_val0 ==> (new Vector($_val0))->map(
@@ -359,6 +358,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
         )
       ),
     ));
+    await $this->asyncHandler_->genBefore("NestedContainers", "turtles", $args);
     $currentseqid = $this->sendImplHelper($args, "turtles", false);
     await $this->genAwaitResponse(NestedContainers_turtles_result::class, "turtles", true, $currentseqid, $rpc_options);
   }

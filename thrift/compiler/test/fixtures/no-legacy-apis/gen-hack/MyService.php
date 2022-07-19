@@ -81,10 +81,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "query");
     $args = \fixtures\no-legacy-apis\MyService_query_args::fromShape(shape(
       'u' => $u,
     ));
+    await $this->asyncHandler_->genBefore("MyService", "query", $args);
     $currentseqid = $this->sendImplHelper($args, "query", false);
     return await $this->genAwaitResponse(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid, $rpc_options);
   }
@@ -105,10 +105,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "query");
     $args = \fixtures\no-legacy-apis\MyService_query_args::fromShape(shape(
       'u' => $u,
     ));
+    await $this->asyncHandler_->genBefore("MyService", "query", $args);
     $currentseqid = $this->sendImplHelper($args, "query", false);
     return await $this->genAwaitResponse(\fixtures\no-legacy-apis\MyService_query_result::class, "query", false, $currentseqid, $rpc_options);
   }

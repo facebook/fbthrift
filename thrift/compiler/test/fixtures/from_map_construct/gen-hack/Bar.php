@@ -91,7 +91,6 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Bar", "baz");
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a,
       'b' => (new Vector($b))->map(
@@ -101,6 +100,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
       'd' => $d,
       'e' => $e,
     ));
+    await $this->asyncHandler_->genBefore("Bar", "baz", $args);
     $currentseqid = $this->sendImplHelper($args, "baz", false);
     return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options);
   }
@@ -125,7 +125,6 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("Bar", "baz");
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a,
       'b' => (new Vector($b))->map(
@@ -135,6 +134,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
       'd' => $d,
       'e' => $e,
     ));
+    await $this->asyncHandler_->genBefore("Bar", "baz", $args);
     $currentseqid = $this->sendImplHelper($args, "baz", false);
     return await $this->genAwaitResponse(Bar_baz_result::class, "baz", false, $currentseqid, $rpc_options);
   }
