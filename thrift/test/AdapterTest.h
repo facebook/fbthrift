@@ -246,18 +246,17 @@ struct MoveOnlyAdapter {
   }
 };
 
-template <bool hasSerializedSize>
+template <bool hasSerializedSize, typename T>
 struct CountingAdapter {
   static inline int count = 0;
-  static int fromThrift(int i) { return i; }
-  static int fromThriftField(int i) { return i; }
-  static int toThrift(int i) {
+  static T fromThrift(T i) { return i; }
+  static T fromThriftField(T i) { return i; }
+  static T toThrift(T i) {
     ++count;
     return i;
   }
   template <bool ZC, typename Protocol, bool Enable = hasSerializedSize>
-  static std::enable_if_t<Enable, uint32_t> serializedSize(
-      Protocol& prot, int) {
+  static std::enable_if_t<Enable, uint32_t> serializedSize(Protocol& prot, T) {
     return prot.serializedSizeI64();
   }
 };

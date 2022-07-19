@@ -403,6 +403,10 @@ struct adapter_serialized_size {
   uint32_t operator()(Protocol&, const AdaptedT&, FallbackF f) { return f(); }
 };
 
+template <typename Adapter, typename AdaptedT, typename Protocol>
+using serialized_size_type = decltype(Adapter::template serializedSize<false>(
+    std::declval<Protocol&>(), std::declval<AdaptedT&>()));
+
 template <
     bool ZeroCopy,
     typename Adapter,
@@ -415,10 +419,61 @@ struct adapter_serialized_size<
     AdaptedT,
     Protocol,
     FallbackF,
-    folly::void_t<decltype(Adapter::template serializedSize<ZeroCopy>(
-        std::declval<Protocol&>(), std::declval<AdaptedT&>()))>> {
+    folly::void_t<serialized_size_type<Adapter, AdaptedT, Protocol>>> {
   uint32_t operator()(Protocol& prot, const AdaptedT& val, FallbackF) {
     return Adapter::template serializedSize<ZeroCopy>(prot, val);
+  }
+};
+
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, bool) {
+  return protocol.serializedSizeBool();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, int8_t) {
+  return protocol.serializedSizeByte();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, int16_t) {
+  return protocol.serializedSizeI16();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, int32_t) {
+  return protocol.serializedSizeI32();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, int64_t) {
+  return protocol.serializedSizeI64();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, double) {
+  return protocol.serializedSizeDouble();
+}
+template <typename Protocol>
+uint32_t serializedSizeFixed(Protocol& protocol, float) {
+  return protocol.serializedSizeFloat();
+}
+
+template <
+    bool ZeroCopy,
+    typename Adapter,
+    typename AdaptedT,
+    typename Protocol,
+    typename FallbackF>
+struct adapter_serialized_size<
+    ZeroCopy,
+    Adapter,
+    AdaptedT,
+    Protocol,
+    FallbackF,
+    std::enable_if_t<
+        !folly::
+            is_detected_v<serialized_size_type, Adapter, AdaptedT, Protocol> &&
+        std::is_arithmetic<decltype(Adapter::toThrift(
+            std::declval<AdaptedT&>()))>::value>> {
+  uint32_t operator()(Protocol& prot, const AdaptedT&, FallbackF) {
+    return serializedSizeFixed(
+        prot, decltype(Adapter::toThrift(std::declval<AdaptedT&>()))(0));
   }
 };
 

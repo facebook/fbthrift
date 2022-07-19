@@ -796,12 +796,14 @@ TEST(AdaptTest, NumAdapterConversions) {
     void count(basic::CountingStruct& s) override {
       s.regularInt().ensure();
       s.countingInt().ensure();
+      s.regularString().ensure();
     }
   };
   basic::CountingStruct s;
   makeTestClient(std::make_shared<Handler>())->sync_count(s);
-  EXPECT_EQ(CountingAdapter<false>::count, 2);
-  EXPECT_EQ(CountingAdapter<true>::count, 1);
+  EXPECT_EQ((CountingAdapter<false, int>::count), 1);
+  EXPECT_EQ((CountingAdapter<true, int>::count), 1);
+  EXPECT_EQ((CountingAdapter<false, std::string>::count), 2);
 }
 
 } // namespace apache::thrift::test

@@ -186,12 +186,16 @@ struct MoveOnly {
   1: HeapAllocated ptr;
 }
 
-@cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<true>"}
+@cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<true, int>"}
 typedef i64 CountingInt
 struct CountingStruct {
-  @cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<false>"}
+  @cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<false, int>"}
   1: optional i64 regularInt;
   2: optional CountingInt countingInt;
+  @cpp.Adapter{
+    name = "::apache::thrift::test::CountingAdapter<false, std::string>",
+  }
+  3: optional string regularString;
 }
 
 service AdapterService {
