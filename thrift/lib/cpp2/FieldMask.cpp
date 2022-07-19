@@ -15,7 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/FieldMask.h>
-#include <thrift/lib/thrift/gen-cpp2/protocol_constants.h>
 
 using apache::thrift::protocol::FieldIdToMask;
 
@@ -35,8 +34,7 @@ namespace detail {
 // Gets the mask of the given field id if it exists in the map, otherwise,
 // returns noneMask.
 const Mask& getMask(const FieldIdToMask& map, int16_t fieldId) {
-  return map.contains(fieldId) ? map.at(fieldId)
-                               : protocol_constants::noneMask();
+  return map.contains(fieldId) ? map.at(fieldId) : noneMask();
 }
 
 MaskRef MaskRef::get(FieldId id) const {
@@ -48,13 +46,13 @@ MaskRef MaskRef::get(FieldId id) const {
 }
 
 bool MaskRef::isAllMask() const {
-  return (is_exclusion && mask == protocol_constants::noneMask()) ||
-      (!is_exclusion && mask == protocol_constants::allMask());
+  return (is_exclusion && mask == noneMask()) ||
+      (!is_exclusion && mask == allMask());
 }
 
 bool MaskRef::isNoneMask() const {
-  return (is_exclusion && mask == protocol_constants::allMask()) ||
-      (!is_exclusion && mask == protocol_constants::noneMask());
+  return (is_exclusion && mask == allMask()) ||
+      (!is_exclusion && mask == noneMask());
 }
 
 bool MaskRef::isExclusive() const {

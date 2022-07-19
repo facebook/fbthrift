@@ -19,9 +19,19 @@
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/type/Field.h>
+#include <thrift/lib/thrift/gen-cpp2/field_mask_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/field_mask_types.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 
 namespace apache::thrift::protocol {
+// FieldMask constants
+inline const Mask& allMask() {
+  return field_mask_constants::allMask();
+}
+inline const Mask& noneMask() {
+  return field_mask_constants::noneMask();
+}
+
 // Removes masked fields in schemaless Thrift Object (Protocol Object).
 // Throws a runtime exception if the mask and object are incompatible.
 void clear(const Mask& mask, protocol::Object& t);

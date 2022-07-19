@@ -19,8 +19,6 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/protocol_detail.thrift"
 include "thrift/lib/thrift/id.thrift"
-include "thrift/annotation/cpp.thrift"
-cpp_include "folly/container/F14Map.h"
 
 @thrift.v1alpha
 package "facebook.com/thrift/protocol"
@@ -36,63 +34,9 @@ namespace py thrift.lib.thrift.protocol
 
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
-typedef map<i16, Mask> (cpp.template = "folly::F14VectorMap") FieldIdToMask
 
 typedef id.ExternId PathSegmentId // TODO(ytj): add adapter
 
 struct Path {
   1: list<PathSegmentId> path;
 }
-
-/**
- *  Overview
- *  --------
- *  Field Mask is a data structure that represents a subset of fields and
- *  nested fields of a thrift struct. The purpose is to provide utilities
- *  to manipulate these fields such as copying certain fields and nested fields
- *  from one struct instance to another.
- *
- *  The concept is similar to GraphQL’s field selectors, JSON:API’s Sparse
- *  Fieldsets and Protobuf’s FieldMask.
- *
- *  Implementation
- *  --------------
- *  It is a union data structure, which can represent the map of exclusive
- *  fields or the map of inclusive fields. The map maps from field id to the
- *  mask for the nested thrift struct. If it is set to excludes, the mask
- *  works by excluding all fields in the map. If the field is another thrift
- *  struct, it excludes the nested fields that are included in the nested mask.
- *  Includes works similarly by including the fields specified by the map.
- *
- *  Usage
- *  --------------
- *  // In thrift file
- *  struct Nested {
- *    1: i32 field_1;
- *    2: i32 field_2;
- *  }
- *
- *  struct Foo {
- *    10: Nested nested;
- *    20: i32 field_3;
- *  }
- *
- *  // Masks field_2 and field_3 of Foo in C++
- *  Mask mask1;
- *  mask1.includes_ref().ensure()[10].includes_ref().ensure()[2] = allMask;
- *  mask1.includes_ref().ensure()[20] = allMask;
- *
- *  // Alternatively we can exclude field_1 in Foo
- *  Mask mask2;
- *  mask2.excludes_ref().ensure()[10].includes_ref().ensure()[1] = allMask;
- *
- */
-// Inclusive fields should always be an even number.
-@cpp.ScopedEnumAsUnionType
-union Mask {
-  1: FieldIdToMask excludes; // Fields that will be excluded.
-  2: FieldIdToMask includes; // Fields that will be included.
-}
-
-const Mask allMask = {"excludes": {}}; // Masks all fields.
-const Mask noneMask = {"includes": {}}; // Masks no fields.

@@ -16,12 +16,12 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/FieldMask.h>
-#include <thrift/lib/thrift/gen-cpp2/protocol_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 #include <thrift/test/gen-cpp2/FieldMask_types.h>
 
+using apache::thrift::protocol::allMask;
 using apache::thrift::protocol::Mask;
-using apache::thrift::protocol::protocol_constants;
+using apache::thrift::protocol::noneMask;
 using namespace apache::thrift::protocol::detail;
 
 namespace apache::thrift::test {
@@ -38,50 +38,50 @@ TEST(FieldMaskTest, Example) {
   //                      6: excludes{}}}
   Mask m;
   auto& includes = m.includes_ref().emplace();
-  includes[7] = protocol_constants::allMask();
+  includes[7] = allMask();
   auto& nestedIncludes = includes[9].includes_ref().emplace();
-  nestedIncludes[5] = protocol_constants::allMask();
-  nestedIncludes[6] = protocol_constants::allMask();
-  includes[8] = protocol_constants::noneMask(); // not required
+  nestedIncludes[5] = allMask();
+  nestedIncludes[6] = allMask();
+  includes[8] = noneMask(); // not required
 }
 
 TEST(FieldMaskTest, Constant) {
-  EXPECT_EQ(protocol_constants::allMask().excludes_ref()->size(), 0);
-  EXPECT_EQ(protocol_constants::noneMask().includes_ref()->size(), 0);
+  EXPECT_EQ(allMask().excludes_ref()->size(), 0);
+  EXPECT_EQ(noneMask().includes_ref()->size(), 0);
 }
 
 TEST(FieldMaskTest, IsAllMask) {
-  EXPECT_TRUE((MaskRef{protocol_constants::allMask(), false}).isAllMask());
-  EXPECT_TRUE((MaskRef{protocol_constants::noneMask(), true}).isAllMask());
-  EXPECT_FALSE((MaskRef{protocol_constants::noneMask(), false}).isAllMask());
-  EXPECT_FALSE((MaskRef{protocol_constants::allMask(), true}).isAllMask());
+  EXPECT_TRUE((MaskRef{allMask(), false}).isAllMask());
+  EXPECT_TRUE((MaskRef{noneMask(), true}).isAllMask());
+  EXPECT_FALSE((MaskRef{noneMask(), false}).isAllMask());
+  EXPECT_FALSE((MaskRef{allMask(), true}).isAllMask());
   Mask m;
-  m.excludes_ref().emplace()[5] = protocol_constants::allMask();
+  m.excludes_ref().emplace()[5] = allMask();
   EXPECT_FALSE((MaskRef{m, false}).isAllMask());
   EXPECT_FALSE((MaskRef{m, true}).isAllMask());
 }
 
 TEST(FieldMaskTest, IsNoneMask) {
-  EXPECT_TRUE((MaskRef{protocol_constants::noneMask(), false}).isNoneMask());
-  EXPECT_TRUE((MaskRef{protocol_constants::allMask(), true}).isNoneMask());
-  EXPECT_FALSE((MaskRef{protocol_constants::allMask(), false}).isNoneMask());
-  EXPECT_FALSE((MaskRef{protocol_constants::noneMask(), true}).isNoneMask());
+  EXPECT_TRUE((MaskRef{noneMask(), false}).isNoneMask());
+  EXPECT_TRUE((MaskRef{allMask(), true}).isNoneMask());
+  EXPECT_FALSE((MaskRef{allMask(), false}).isNoneMask());
+  EXPECT_FALSE((MaskRef{noneMask(), true}).isNoneMask());
   Mask m;
-  m.excludes_ref().emplace()[5] = protocol_constants::noneMask();
+  m.excludes_ref().emplace()[5] = noneMask();
   EXPECT_FALSE((MaskRef{m, false}).isNoneMask());
   EXPECT_FALSE((MaskRef{m, true}).isNoneMask());
 }
 
 TEST(FieldMaskTest, IsExclusive) {
-  EXPECT_FALSE((MaskRef{protocol_constants::noneMask(), false}).isExclusive());
-  EXPECT_FALSE((MaskRef{protocol_constants::allMask(), true}).isExclusive());
-  EXPECT_TRUE((MaskRef{protocol_constants::allMask(), false}).isExclusive());
-  EXPECT_TRUE((MaskRef{protocol_constants::noneMask(), true}).isExclusive());
+  EXPECT_FALSE((MaskRef{noneMask(), false}).isExclusive());
+  EXPECT_FALSE((MaskRef{allMask(), true}).isExclusive());
+  EXPECT_TRUE((MaskRef{allMask(), false}).isExclusive());
+  EXPECT_TRUE((MaskRef{noneMask(), true}).isExclusive());
   Mask m;
-  m.includes_ref().emplace()[5] = protocol_constants::allMask();
+  m.includes_ref().emplace()[5] = allMask();
   EXPECT_FALSE((MaskRef{m, false}).isExclusive());
   EXPECT_TRUE((MaskRef{m, true}).isExclusive());
-  m.excludes_ref().emplace()[5] = protocol_constants::noneMask();
+  m.excludes_ref().emplace()[5] = noneMask();
   EXPECT_TRUE((MaskRef{m, false}).isExclusive());
   EXPECT_FALSE((MaskRef{m, true}).isExclusive());
 }
@@ -91,8 +91,8 @@ TEST(FieldMaskTest, MaskRefGetIncludes) {
   // includes{8: excludes{},
   //          9: includes{4: excludes{}}
   auto& includes = m.includes_ref().emplace();
-  includes[8] = protocol_constants::allMask();
-  includes[9].includes_ref().emplace()[4] = protocol_constants::allMask();
+  includes[8] = allMask();
+  includes[9].includes_ref().emplace()[4] = allMask();
 
   EXPECT_TRUE(
       (MaskRef{m, false}).get(FieldId{7}).isNoneMask()); // doesn't exist
@@ -121,8 +121,8 @@ TEST(FieldMaskTest, MaskRefGetExcludes) {
   // excludes{8: excludes{},
   //          9: includes{4: excludes{}}
   auto& excludes = m.excludes_ref().emplace();
-  excludes[8] = protocol_constants::allMask();
-  excludes[9].includes_ref().emplace()[4] = protocol_constants::allMask();
+  excludes[8] = allMask();
+  excludes[9].includes_ref().emplace()[4] = allMask();
 
   EXPECT_TRUE((MaskRef{m, false}).get(FieldId{7}).isAllMask()); // doesn't exist
   EXPECT_TRUE((MaskRef{m, true}).get(FieldId{7}).isNoneMask()); // doesn't exist
@@ -163,11 +163,11 @@ TEST(FieldMaskTest, SchemalessClear) {
   //           1: excludes{5: excludes{5: excludes{}},
   //                       1: excludes{}}}
   auto& includes = mask.includes_ref().emplace();
-  includes[2] = protocol_constants::allMask();
+  includes[2] = allMask();
   auto& nestedExcludes = includes[1].excludes_ref().emplace();
   nestedExcludes[5].excludes_ref().emplace()[5] =
-      protocol_constants::allMask(); // The object doesn't have this field.
-  nestedExcludes[1] = protocol_constants::allMask();
+      allMask(); // The object doesn't have this field.
+  nestedExcludes[1] = allMask();
   // This clears object[1][2] and object[2].
   protocol::clear(mask, barObject);
 
@@ -189,7 +189,7 @@ TEST(FieldMaskTest, SchemalessClearException) {
 
   Mask m1; // object[2] is not an object but has an object mask.
   auto& includes = m1.includes_ref().emplace();
-  includes[2].includes_ref().emplace()[4] = protocol_constants::noneMask();
+  includes[2].includes_ref().emplace()[4] = noneMask();
   EXPECT_THROW(protocol::clear(m1, bazObject), std::runtime_error);
 
   protocol::Object fooObject, barObject;
@@ -201,8 +201,8 @@ TEST(FieldMaskTest, SchemalessClearException) {
   Mask m2; // object[1][2] is not an object but has an object mask.
   auto& includes2 = m2.includes_ref().emplace();
   includes2[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
-      protocol_constants::allMask();
-  includes2[2] = protocol_constants::allMask();
+      allMask();
+  includes2[2] = allMask();
   EXPECT_THROW(protocol::clear(m2, barObject), std::runtime_error);
 }
 
@@ -231,7 +231,7 @@ TEST(FieldMaskTest, SchemalessCopySimpleIncludes) {
   Mask m;
   // includes{1: exludes{}}
   auto& includes = m.includes_ref().emplace();
-  includes[1] = protocol_constants::allMask();
+  includes[1] = allMask();
   testCopy(m, fooObject, barObject);
   // bar becomes bar{1: 10, 2: 20}
   ASSERT_TRUE(barObject.contains(FieldId{1}));
@@ -239,15 +239,15 @@ TEST(FieldMaskTest, SchemalessCopySimpleIncludes) {
   ASSERT_TRUE(barObject.contains(FieldId{2}));
   EXPECT_EQ(barObject.at(FieldId{2}).as_i32(), 20);
 
-  testCopy(protocol_constants::allMask(), fooObject, bazObject);
+  testCopy(allMask(), fooObject, bazObject);
   // baz becomes baz{1: 10}
   ASSERT_TRUE(bazObject.contains(FieldId{1}));
   EXPECT_EQ(bazObject.at(FieldId{1}).as_i32(), 10);
   ASSERT_FALSE(bazObject.contains(FieldId{2}));
 
   // includes{1: exludes{}, 2: excludes{}, 3: excludes{}}
-  includes[2] = protocol_constants::allMask();
-  includes[3] = protocol_constants::allMask(); // no-op
+  includes[2] = allMask();
+  includes[3] = allMask(); // no-op
   testCopy(m, barObject, bazObject);
   // baz becomes baz{1: 10, 2: 20}
   ASSERT_TRUE(bazObject.contains(FieldId{1}));
@@ -268,7 +268,7 @@ TEST(FieldMaskTest, SchemalessCopySimpleExcludes) {
 
   Mask m;
   // excludes{1: exludes{}}
-  m.excludes_ref().emplace()[1] = protocol_constants::allMask();
+  m.excludes_ref().emplace()[1] = allMask();
   testCopy(m, fooObject, barObject);
   // bar becomes bar{1: "30", 3: 40}
   ASSERT_TRUE(barObject.contains(FieldId{1}));
@@ -299,8 +299,7 @@ TEST(FieldMaskTest, SchemalessCopyNestedRecursive) {
 
   Mask m;
   // excludes{1: exludes{1: excludes{}}}
-  m.excludes_ref().emplace()[1].excludes_ref().emplace()[1] =
-      protocol_constants::allMask();
+  m.excludes_ref().emplace()[1].excludes_ref().emplace()[1] = allMask();
   testCopy(m, barObject, dst);
   // dst becomes
   // dst{1: {1: 10
@@ -330,8 +329,8 @@ TEST(FieldMaskTest, SchemalessCopyNestedAddField) {
   // includes{1: includes{2: excludes{}},
   //          2: excludes{}}
   auto& includes = m1.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[2] = allMask();
+  includes[2] = allMask();
 
   protocol::Object dst1;
   testCopy(m1, barObject, dst1);
@@ -349,10 +348,10 @@ TEST(FieldMaskTest, SchemalessCopyNestedAddField) {
   //          2: includes{}}
   auto& excludes = m2.excludes_ref().emplace();
   auto& nestedIncludes = excludes[1].includes_ref().emplace();
-  nestedIncludes[1] = protocol_constants::allMask();
-  nestedIncludes[2] = protocol_constants::allMask();
-  nestedIncludes[3] = protocol_constants::allMask();
-  excludes[2] = protocol_constants::noneMask();
+  nestedIncludes[1] = allMask();
+  nestedIncludes[2] = allMask();
+  nestedIncludes[3] = allMask();
+  excludes[2] = noneMask();
 
   protocol::Object dst2;
   testCopy(m2, barObject, dst2);
@@ -376,8 +375,8 @@ TEST(FieldMaskTest, SchemalessCopyNestedRemoveField) {
   // includes{1: includes{2: excludes{}},
   //          2: excludes{}}
   auto& includes = m.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[2] = allMask();
+  includes[2] = allMask();
 
   protocol::Object src;
   testCopy(m, src, barObject);
@@ -400,8 +399,7 @@ TEST(FieldMaskTest, SchemalessCopyException) {
   bazObject[FieldId{2}].emplace_object()[FieldId{3}].emplace_i32() = 40;
 
   Mask m1; // bar[2] is not an object but has an object mask.
-  m1.includes_ref().emplace()[2].includes_ref().emplace()[3] =
-      protocol_constants::allMask();
+  m1.includes_ref().emplace()[2].includes_ref().emplace()[3] = allMask();
   protocol::Object copy = barObject;
   EXPECT_THROW(protocol::copy(m1, copy, barObject), std::runtime_error);
   protocol::Object empty;
@@ -413,66 +411,60 @@ TEST(FieldMaskTest, SchemalessCopyException) {
 }
 
 TEST(FieldMaskTest, IsCompatibleWithSimple) {
-  EXPECT_TRUE(protocol::is_compatible_with<Foo>(protocol_constants::allMask()));
-  EXPECT_TRUE(
-      protocol::is_compatible_with<Foo>(protocol_constants::noneMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Foo>(allMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Foo>(noneMask()));
 
   Mask m;
   auto& includes = m.includes_ref().emplace();
-  includes[1] = protocol_constants::allMask();
+  includes[1] = allMask();
   EXPECT_TRUE(protocol::is_compatible_with<Foo>(m));
-  includes[3] = protocol_constants::noneMask();
+  includes[3] = noneMask();
   EXPECT_TRUE(protocol::is_compatible_with<Foo>(m));
 
-  includes[2] = protocol_constants::allMask(); // doesn't exist
+  includes[2] = allMask(); // doesn't exist
   EXPECT_FALSE(protocol::is_compatible_with<Foo>(m));
 }
 
 TEST(FieldMaskTest, IsCompatibleWithNested) {
-  EXPECT_TRUE(protocol::is_compatible_with<Bar>(protocol_constants::allMask()));
-  EXPECT_TRUE(
-      protocol::is_compatible_with<Bar>(protocol_constants::noneMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(allMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Bar>(noneMask()));
 
   // These are valid field masks for Bar.
   Mask m;
   // includes{1: excludes{}}
-  m.includes_ref().emplace()[1] = protocol_constants::allMask();
+  m.includes_ref().emplace()[1] = allMask();
   EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
   // includes{2: includes{}}
-  m.includes_ref().emplace()[2] = protocol_constants::noneMask();
+  m.includes_ref().emplace()[2] = noneMask();
   EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
   // includes{1: includes{1: excludes{}}, 2: excludes{}}
   auto& includes = m.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[1] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[1] = allMask();
+  includes[2] = allMask();
   EXPECT_TRUE(protocol::is_compatible_with<Bar>(m));
 
   // There are invalid field masks for Bar.
   // includes{3: excludes{}}
-  m.includes_ref().emplace()[3] = protocol_constants::allMask();
+  m.includes_ref().emplace()[3] = allMask();
   EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
   // includes{2: includes{1: includes{}}}
-  m.includes_ref().emplace()[2].includes_ref().emplace()[1] =
-      protocol_constants::noneMask();
+  m.includes_ref().emplace()[2].includes_ref().emplace()[1] = noneMask();
   EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
   // includes{1: excludes{2: excludes{}}}
-  m.includes_ref().emplace()[1].excludes_ref().emplace()[2] =
-      protocol_constants::allMask();
+  m.includes_ref().emplace()[1].excludes_ref().emplace()[2] = allMask();
   EXPECT_FALSE(protocol::is_compatible_with<Bar>(m));
 }
 
 TEST(FieldMaskTest, IsCompatibleWithAdaptedField) {
-  EXPECT_TRUE(protocol::is_compatible_with<Baz>(protocol_constants::allMask()));
-  EXPECT_TRUE(
-      protocol::is_compatible_with<Baz>(protocol_constants::noneMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Baz>(allMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<Baz>(noneMask()));
 
   Mask m;
   // includes{1: excludes{}}
-  m.includes_ref().emplace()[1] = protocol_constants::allMask();
+  m.includes_ref().emplace()[1] = allMask();
   EXPECT_TRUE(protocol::is_compatible_with<Baz>(m));
   // includes{1: includes{1: excludes{}}}
-  m.includes_ref().emplace()[1].includes_ref().emplace()[1] =
-      protocol_constants::allMask();
+  m.includes_ref().emplace()[1].includes_ref().emplace()[1] = allMask();
   // adapted struct field is treated as non struct field.
   EXPECT_FALSE(protocol::is_compatible_with<Baz>(m));
 }
@@ -482,8 +474,8 @@ TEST(FieldMaskTest, Ensure) {
   // mask = includes{1: includes{2: excludes{}},
   //                 2: excludes{}}
   auto& includes = mask.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[2] = allMask();
+  includes[2] = allMask();
 
   {
     Bar2 bar;
@@ -498,7 +490,7 @@ TEST(FieldMaskTest, Ensure) {
 
   // mask = includes{1: includes{2: excludes{}},
   //                 2: includes{}}
-  includes[2] = protocol_constants::noneMask();
+  includes[2] = noneMask();
 
   {
     Bar2 bar;
@@ -515,8 +507,8 @@ TEST(FieldMaskTest, Ensure) {
   //                             2: excludes{}}}
   auto& excludes = mask.excludes_ref().emplace();
   auto& nestedIncludes = excludes[1].includes_ref().emplace();
-  nestedIncludes[1] = protocol_constants::allMask();
-  nestedIncludes[2] = protocol_constants::allMask();
+  nestedIncludes[1] = allMask();
+  nestedIncludes[2] = allMask();
 
   {
     Bar2 bar;
@@ -537,13 +529,12 @@ TEST(FieldMaskTest, EnsureException) {
       .includes_ref()
       .emplace()[2]
       .excludes_ref()
-      .emplace()[1] = protocol_constants::noneMask();
+      .emplace()[1] = noneMask();
   Bar2 bar;
   EXPECT_THROW(ensure(mask, bar), std::runtime_error); // incompatible
 
   // includes{1: includes{1: excludes{}}}
-  mask.includes_ref().emplace()[1].includes_ref().emplace()[1] =
-      protocol_constants::allMask();
+  mask.includes_ref().emplace()[1].includes_ref().emplace()[1] = allMask();
   Baz baz;
   // adapted field cannot be masked.
   EXPECT_THROW(ensure(mask, baz), std::runtime_error);
@@ -554,8 +545,8 @@ TEST(FieldMaskTest, SchemafulClear) {
   // mask = includes{1: includes{2: excludes{}},
   //                 2: excludes{}}
   auto& includes = mask.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[2] = allMask();
+  includes[2] = allMask();
 
   {
     Bar2 bar;
@@ -578,11 +569,11 @@ TEST(FieldMaskTest, SchemafulClear) {
   {
     Bar2 bar;
     bar.field_4() = "Hello";
-    protocol::clear(protocol_constants::noneMask(), bar); // no-op
+    protocol::clear(noneMask(), bar); // no-op
     ASSERT_TRUE(bar.field_4().has_value());
     EXPECT_EQ(bar.field_4().value(), "Hello");
 
-    protocol::clear(protocol_constants::allMask(), bar);
+    protocol::clear(allMask(), bar);
     ASSERT_TRUE(bar.field_4().has_value());
     EXPECT_EQ(bar.field_4().value(), "");
   }
@@ -591,7 +582,7 @@ TEST(FieldMaskTest, SchemafulClear) {
   {
     Bar2 bar;
     bar.field_3().ensure();
-    protocol::clear(protocol_constants::allMask(), bar);
+    protocol::clear(allMask(), bar);
     EXPECT_FALSE(bar.field_3().has_value());
   }
   {
@@ -606,7 +597,7 @@ TEST(FieldMaskTest, SchemafulClear) {
     ASSERT_FALSE(bar.field_3()->field_2().has_value());
     ASSERT_FALSE(bar.field_4().has_value());
 
-    protocol::clear(protocol_constants::allMask(), bar);
+    protocol::clear(allMask(), bar);
     ASSERT_FALSE(bar.field_3().has_value());
     ASSERT_FALSE(bar.field_4().has_value());
   }
@@ -617,7 +608,7 @@ TEST(FieldMaskTest, SchemafulClearExcludes) {
   // mask2 = excludes{1: includes{1: excludes{}}}
   Mask mask;
   auto& excludes = mask.excludes_ref().emplace();
-  excludes[1].includes_ref().emplace()[1] = protocol_constants::allMask();
+  excludes[1].includes_ref().emplace()[1] = allMask();
   Bar bar;
   bar.foo().emplace().field1() = 1;
   bar.foo()->field2() = 2;
@@ -633,16 +624,15 @@ TEST(FieldMaskTest, SchemafulClearExcludes) {
 TEST(FieldMaskTest, SchemafulClearEdgeCase) {
   // Clear sets the field to intristic default even if the field isn't set.
   CustomDefault obj;
-  protocol::clear(protocol_constants::allMask(), obj);
+  protocol::clear(allMask(), obj);
   EXPECT_EQ(obj.field(), "");
 
   // Makes sure clear doesn't use has_value() for all fields.
   TerseWrite obj2;
-  protocol::clear(protocol_constants::allMask(), obj2);
+  protocol::clear(allMask(), obj2);
 
   Mask m;
-  m.includes_ref().emplace()[2].includes_ref().emplace()[1] =
-      protocol_constants::allMask();
+  m.includes_ref().emplace()[2].includes_ref().emplace()[1] = allMask();
   protocol::clear(m, obj2);
 }
 
@@ -650,14 +640,14 @@ TEST(FieldMaskTest, SchemafulClearException) {
   Bar2 bar;
   Mask m1; // m1 = includes{2: includes{4: includes{}}}
   auto& includes = m1.includes_ref().emplace();
-  includes[2].includes_ref().emplace()[4] = protocol_constants::noneMask();
+  includes[2].includes_ref().emplace()[4] = noneMask();
   EXPECT_THROW(protocol::clear(m1, bar), std::runtime_error);
 
   Mask m2; // m2 = includes{1: includes{2: includes{5: excludes{}}}}
   auto& includes2 = m2.includes_ref().emplace();
   includes2[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
-      protocol_constants::allMask();
-  includes2[2] = protocol_constants::allMask();
+      allMask();
+  includes2[2] = allMask();
   EXPECT_THROW(protocol::clear(m2, bar), std::runtime_error);
 }
 
@@ -672,8 +662,8 @@ TEST(FieldMaskTest, SchemafulCopy) {
   // includes{1: includes{2: excludes{}},
   //          2: excludes{}}
   auto& includes = mask.includes_ref().emplace();
-  includes[1].includes_ref().emplace()[2] = protocol_constants::allMask();
-  includes[2] = protocol_constants::allMask();
+  includes[1].includes_ref().emplace()[2] = allMask();
+  includes[2] = allMask();
 
   // copy empty
   {
@@ -725,7 +715,7 @@ TEST(FieldMaskTest, SchemafulCopy) {
     ASSERT_TRUE(dst.field_4().has_value());
     EXPECT_EQ(dst.field_4().value(), "40");
 
-    copy(protocol_constants::allMask(), empty, src);
+    copy(allMask(), empty, src);
     ASSERT_FALSE(src.field_3().has_value());
     EXPECT_EQ(src.field_4(), "");
   }
@@ -735,7 +725,7 @@ TEST(FieldMaskTest, SchemafulCopyExcludes) {
   // mask2 = excludes{1: includes{1: excludes{}}}
   Mask mask;
   auto& excludes = mask.excludes_ref().emplace();
-  excludes[1].includes_ref().emplace()[1] = protocol_constants::allMask();
+  excludes[1].includes_ref().emplace()[1] = allMask();
   Bar src, dst;
   src.foo().emplace().field1() = 1;
   src.foo()->field2() = 2;
@@ -751,12 +741,11 @@ TEST(FieldMaskTest, SchemafulCopyTerseWrite) {
   TerseWrite src, dst;
   src.field() = 4;
   src.foo()->field1() = 5;
-  protocol::copy(protocol_constants::allMask(), src, dst);
+  protocol::copy(allMask(), src, dst);
   EXPECT_EQ(dst, src);
 
   Mask m;
-  m.includes_ref().emplace()[2].includes_ref().emplace()[1] =
-      protocol_constants::allMask();
+  m.includes_ref().emplace()[2].includes_ref().emplace()[1] = allMask();
   protocol::copy(m, src, dst);
   EXPECT_EQ(dst, src);
 }
@@ -765,14 +754,14 @@ TEST(FieldMaskTest, SchemafulCopyException) {
   Bar2 src, dst;
   Mask m1; // m1 = includes{2: includes{4: includes{}}}
   auto& includes = m1.includes_ref().emplace();
-  includes[2].includes_ref().emplace()[4] = protocol_constants::noneMask();
+  includes[2].includes_ref().emplace()[4] = noneMask();
   EXPECT_THROW(protocol::copy(m1, src, dst), std::runtime_error);
 
   Mask m2; // m2 = includes{1: includes{2: includes{5: excludes{}}}}
   auto& includes2 = m2.includes_ref().emplace();
   includes2[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
-      protocol_constants::allMask();
-  includes2[2] = protocol_constants::allMask();
+      allMask();
+  includes2[2] = allMask();
   EXPECT_THROW(protocol::copy(m2, src, dst), std::runtime_error);
 }
 } // namespace apache::thrift::test
