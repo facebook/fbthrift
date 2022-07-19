@@ -2539,6 +2539,7 @@ AllocatorAware::AllocatorAware() :
 AllocatorAware::~AllocatorAware() {}
 
 AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
+    __fbthrift_alloc(other.get_allocator()),
     __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list)),
     __fbthrift_field_aa_set(std::move(other.__fbthrift_field_aa_set)),
     __fbthrift_field_aa_map(std::move(other.__fbthrift_field_aa_map)),
@@ -2728,6 +2729,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 AllocatorAware2::AllocatorAware2(const AllocatorAware2&) = default;
 AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2&) = default;
 AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
+    __fbthrift_alloc(other.get_allocator()),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {
 }

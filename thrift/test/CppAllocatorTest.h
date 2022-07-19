@@ -159,14 +159,14 @@ struct CountingAlloc : private std::allocator<T> {
 
   template <class U>
   friend bool operator==(
-      CountingAlloc<T> const&, CountingAlloc<U> const&) noexcept {
-    return true;
+      CountingAlloc<T> const& a, CountingAlloc<U> const& b) noexcept {
+    return a.counter_.get() == b.counter_.get(); // both point to same counter
   }
 
   template <class U>
   friend bool operator!=(
-      CountingAlloc<T> const&, CountingAlloc<U> const&) noexcept {
-    return false;
+      CountingAlloc<T> const& a, CountingAlloc<U> const& b) noexcept {
+    return !(a == b);
   }
 };
 

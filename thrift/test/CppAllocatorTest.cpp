@@ -207,3 +207,15 @@ TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRefCount) {
   // check propagation of allocator for containers with shared_ptr
   EXPECT_ALLOC(parent.allocVector_ref()->emplace_back(1));
 }
+
+TEST(CppAllocatorTest, MoveConstructorPreservesAllocator) {
+  ScopedCountingAlloc<> alloc;
+  CountingParent s0(alloc);
+  CountingParent s1;
+  EXPECT_EQ(s0.get_allocator(), alloc);
+  EXPECT_NE(s1.get_allocator(), alloc);
+  CountingParent s2 = std::move(s0);
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  s1 = std::move(s2);
+  EXPECT_NE(s1.get_allocator(), alloc);
+}
