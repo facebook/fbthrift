@@ -5081,7 +5081,8 @@ class AllocatorAware2 final  {
  public:
 
   AllocatorAware2() :
-      __fbthrift_field_not_a_container() {
+    __fbthrift_alloc(allocator_type()),
+    __fbthrift_field_not_a_container() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

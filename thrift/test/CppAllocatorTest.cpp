@@ -219,3 +219,15 @@ TEST(CppAllocatorTest, MoveConstructorPreservesAllocator) {
   s1 = std::move(s2);
   EXPECT_NE(s1.get_allocator(), alloc);
 }
+
+TEST(CppAllocatorTest, DefaultConstructor1allocator) {
+  CountingParent s;
+  ScopedCountingAlloc<> alloc = s.get_allocator();
+  EXPECT_ALLOC(s.aa_child_list()->emplace_back());
+  auto& child = s.aa_child_list()[0];
+  EXPECT_ALLOC(child.aa_list()->emplace_back(42));
+  child.aa_string() = "abcdefg"; // Regardless of short strings optimization
+  EXPECT_EQ(alloc, ScopedCountingAlloc<>(s.aa_child_list()->get_allocator()));
+  EXPECT_EQ(alloc, ScopedCountingAlloc<>(child.aa_list()->get_allocator()));
+  EXPECT_EQ(alloc, ScopedCountingAlloc<>(child.aa_string()->get_allocator()));
+}

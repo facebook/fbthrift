@@ -2530,9 +2530,14 @@ AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {
 }
 
 AllocatorAware::AllocatorAware() :
-      __fbthrift_field_not_a_container(),
-      aa_unique(folly::allocate_unique<::std::int32_t>(__fbthrift_alloc)),
-      aa_shared(std::allocate_shared<::std::int32_t>(__fbthrift_alloc)) {
+    __fbthrift_alloc(allocator_type()),
+    __fbthrift_field_aa_list(__fbthrift_alloc),
+    __fbthrift_field_aa_set(__fbthrift_alloc),
+    __fbthrift_field_aa_map(__fbthrift_alloc),
+    __fbthrift_field_aa_string(__fbthrift_alloc),
+    __fbthrift_field_not_a_container(),
+    aa_unique(folly::allocate_unique<::std::int32_t>(__fbthrift_alloc)),
+    aa_shared(std::allocate_shared<::std::int32_t>(__fbthrift_alloc)) {
 }
 
 

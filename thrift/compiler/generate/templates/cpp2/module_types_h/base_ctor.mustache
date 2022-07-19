@@ -14,18 +14,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%struct:cpp_underlying_name%>()<%!
-  %><%#struct:explicitly_constructed_fields%><% > common/colon_newline%><%!
-    %><%#field:type%><%!
-      %>      <%field:cpp_storage_name%>(<%!
-      %><%#field:cpp_ref?%><% > module_types_h/smart_ptr_constructor%><%/field:cpp_ref?%><%!
-      %><%^field:cpp_ref?%><%#field:value%><%!
-          Use value initialization when no custom default is provided.
-        %><% > field/default%><%/field:value%><%!
-      %><%/field:cpp_ref?%><%!
-      %>)<% > common/comma_newline%><%!
-    %><%/field:type%><%!
-  %><%/struct:explicitly_constructed_fields%><%!
+
+%><%#struct:cpp_allocator%><%^struct:cpp_allocator_via%><%!
+%><% > module_types_h/base_ctor_with_alloc_init_list%><%!
+%><%/struct:cpp_allocator_via%><%/struct:cpp_allocator%><%!
+  --------------- Empty constractor, else to the condition above (!alloc || alloc_via)
+%><%^struct:cpp_allocator%><%!
+%><% > module_types_h/base_ctor_no_alloc_init_list%><%!
+%><%/struct:cpp_allocator%><%!
+%><%#struct:cpp_allocator_via%><%!
+%><% > module_types_h/base_ctor_no_alloc_init_list%><%!
+%><%/struct:cpp_allocator_via%><%!
 %> {
   <%#struct:fields%><%#field:cpp_first_adapter%><%^field:opt_cpp_ref?%>
   ::apache::thrift::adapt_detail::construct<<%field:cpp_first_adapter%>, <%field:key%>>(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><%field:cpp_storage_name%>, *this);
