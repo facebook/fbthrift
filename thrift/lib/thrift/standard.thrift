@@ -240,16 +240,36 @@ union TypeUri {
 
 // Uniquely identifies a Thrift type.
 union TypeName {
+  // True(1) or False(0)
   1: Void boolType;
+
+  // 8-bit signed integer
   2: Void byteType;
+
+  // 16-bit signed integer
   3: Void i16Type;
+
+  // 32-bit signed integer
   4: Void i32Type;
+
+  // 64-bit signed integer
   5: Void i64Type;
+
+  // 32-bit floating point
   6: Void floatType;
+
+  // 64-bit floating point
   7: Void doubleType;
+
+  // UTF-8 encoded string
   8: Void stringType;
+
+  // Arbitrary byte string
   9: Void binaryType;
+
+  // 32-bit signed integer, with named values.
   10: TypeUri enumType;
+
   11: TypeUri structType;
   12: TypeUri unionType;
   13: TypeUri exceptionType;
