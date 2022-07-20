@@ -5089,6 +5089,7 @@ class AllocatorAware2 final  {
   AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg);
 
   AllocatorAware2(AllocatorAware2&&) noexcept;
+
   AllocatorAware2(const AllocatorAware2& src);
 
   explicit AllocatorAware2(const allocator_type& alloc) noexcept :

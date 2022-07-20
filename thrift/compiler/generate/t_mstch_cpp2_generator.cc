@@ -1070,9 +1070,6 @@ class mstch_cpp2_struct : public mstch_struct {
         !strct_->has_annotation("no_default_comparators");
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
-    if (strct_->has_annotation("cpp.allocator")) {
-      return true;
-    }
     for (auto const& f : strct_->fields()) {
       if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f) ||
           gen::cpp::type_resolver::find_first_adapter(f)) {
