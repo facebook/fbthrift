@@ -121,6 +121,9 @@ class Type : public detail::Wrap<TypeStruct> {
   friend bool operator!=(Type lhs, Type rhs) noexcept {
     return lhs.data_ != rhs.data_;
   }
+  friend bool operator<(Type lhs, Type rhs) noexcept {
+    return lhs.data_ < rhs.data_;
+  }
 
   static void checkName(const std::string& name);
 

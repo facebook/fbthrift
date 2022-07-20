@@ -258,7 +258,100 @@ struct Exception {
   2: Fields fields;
 }
 
-/** A list of definitions (Structs, Enums, etc), accessible by `DefinitionId`. */
+/**
+ * A container of exceptions.
+ *
+ * Changing the order of exceptions is always backward compatible.
+ */
+@thrift.Experimental // TODO: Adapt!
+typedef list<Exception> Exceptions
+
+/**
+ * A Thrift Param list. A param list is unnamed.
+ */
+// TODO(dokwon): Ensure a param list is unnamed.
+// TODO(dokwon): Consider replacing (or removing) 'Paramlist' with 'Fields'.
+struct Paramlist {
+  /**
+   * The fields, in the order as defined in the IDL/AST.
+   *
+   * Changing the order of the fields is always backward compatible.
+   */
+  1: Fields fields;
+}
+
+/** The function qualifier. */
+enum FunctionQualifier {
+  Unspecified = 0,
+  /** Client does not expect response back from server. */
+  OneWay = 1,
+  /** Safe to retry immediately after a transient failure. */
+  Idempotent = 2,
+  /** Always safe to retry. */
+  ReadOnly = 3,
+}
+
+/** A Thrift function return type. */
+// TODO(dokwon): Add stream, sink, and interaction support.
+union ReturnType {
+  1: type.Type thriftType;
+}
+
+/** A container of Thrift function return type. */
+typedef list<ReturnType> ReturnTypes
+
+/**
+ * A Thrift function.
+ *
+ *     {qualifier} { ... returnTypes ... } {definition.name}({paramlist}) throws ( ... exceptions ... )
+ */
+struct Function {
+  /** The qualifier for the function. */
+  // TODO(dokwon): Document compatibility semantics, and add conformance tests.
+  1: FunctionQualifier qualifier;
+
+  /** The list of return types of the function. */
+  // TODO(dokwon): Document compatibility semantics, and add conformance tests.
+  2: ReturnTypes returnTypes;
+
+  /** The definition attributes. */
+  @thrift.Mixin
+  3: Definition definition;
+
+  /** The paramlist of the function. */
+  4: Paramlist paramlist;
+
+  /** The exceptions of the function. */
+  5: Exceptions exceptions;
+}
+
+/**
+ * A container for the functions of a interface type (e.g. service and interaction).
+ *
+ * Changing the order of fields is always backward compatible.
+ */
+@thrift.Experimental // TODO: Adapt!
+typedef list<Function> Functions
+
+/**
+ * A Thrift service.
+ *
+ *     service {definition.name} { ... functions ... }
+ */
+struct Service {
+  /** The definition attributes. */
+  @thrift.Mixin
+  1: Definition definition;
+
+  /**
+   * The functions, in the order as defined in the IDL/AST.
+   *
+   * Changing the order of the fields is always backward compatible.
+   */
+  2: Functions functions;
+}
+
+/** A list of definitions (Structs, Enums, Services, etc), accessible by `DefinitionId`. */
 // TODO(afuller): As this can only be one of a fixed set of types, consider
 // adding 'union types' to Thrift and use that instead of Any.
 typedef any.AnyValueList DefinitionList
