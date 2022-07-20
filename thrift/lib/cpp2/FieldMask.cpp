@@ -29,6 +29,150 @@ void copy(
   (detail::MaskRef{mask, false}).copy(src, dst);
 }
 
+void insertIfNotNoneMask(
+    FieldIdToMask& map, int16_t fieldId, const Mask& mask) {
+  // This doesn't use isNoneMask() as we just want to remove includes{} mask
+  // rather than masks that logically contain no fields.
+  if (mask != noneMask()) {
+    map[fieldId] = mask;
+  }
+}
+
+// Implementation of FieldMask's Logical Operators
+// -----------------------------------------------
+// To implement the logical operators for Field Mask while keeping the code
+// manageable is to assume the Field Mask is not complement first, and apply
+// boolean algebra such as De Morgan's laws to handle all cases.
+// Logical operators for FieldMask easily by applying laws of boolean algebra.
+// If the result is a complement set, we can set that to excludes mask.
+// P and Q are the set of fields in the mask for lhs and rhs.
+
+// Intersect
+// - lhs = includes, rhs = includes : P·Q
+// - lhs = includes, rhs = excludes : P·~Q​=P-Q
+// - lhs = excludes, rhs = includes: ~P·Q=Q-P
+// - lhs = excludes, rhs = excludes: ~P·~Q​=~(P+Q)​
+// Union
+// - lhs = includes, rhs = includes : P+Q
+// - lhs = includes, rhs = excludes : P+~Q​=~(~P·Q)​=~(Q-P)​
+// - lhs = excludes, rhs = includes: ~P+Q=~(P·~Q)​​=~(P-Q)​
+// - lhs = excludes, rhs = excludes: ~P+~Q​=~(P·Q)​
+// Subtract
+// - lhs = includes, rhs = includes : P-Q
+// - lhs = includes, rhs = excludes : P-~Q​=P·Q
+// - lhs = excludes, rhs = includes: ~P-Q=~P·~Q​=~(P+Q)​
+// - lhs = excludes, rhs = excludes: ~P-~Q​=(~P·Q)=Q/P
+
+// Returns the intersection, union, or subtraction of the given FieldIdToMasks.
+// This basically treats the maps as inclusive sets.
+FieldIdToMask intersectMask(
+    const FieldIdToMask& lhs, const FieldIdToMask& rhs) {
+  FieldIdToMask map;
+  for (auto& [fieldId, lhsMask] : lhs) {
+    if (!rhs.contains(fieldId)) { // Only lhs contains the field.
+      continue;
+    }
+    // Both maps have the field, so the mask is their intersection.
+    insertIfNotNoneMask(map, fieldId, lhsMask & rhs.at(fieldId));
+  }
+  return map;
+}
+FieldIdToMask unionMask(const FieldIdToMask& lhs, const FieldIdToMask& rhs) {
+  FieldIdToMask map;
+  for (auto& [fieldId, lhsMask] : lhs) {
+    if (!rhs.contains(fieldId)) { // Only lhs contains the field.
+      insertIfNotNoneMask(map, fieldId, lhsMask);
+      continue;
+    }
+    // Both maps have the field, so the mask is their union.
+    insertIfNotNoneMask(map, fieldId, lhsMask | rhs.at(fieldId));
+  }
+  for (auto& [fieldId, rhsMask] : rhs) {
+    if (!lhs.contains(fieldId)) { // Only rhs contains the field.
+      insertIfNotNoneMask(map, fieldId, rhsMask);
+    }
+  }
+  return map;
+}
+FieldIdToMask subtractMask(const FieldIdToMask& lhs, const FieldIdToMask& rhs) {
+  FieldIdToMask map;
+  for (auto& [fieldId, lhsMask] : lhs) {
+    if (!rhs.contains(fieldId)) { // Only lhs contains the field.
+      insertIfNotNoneMask(map, fieldId, lhsMask);
+      continue;
+    }
+    // Both maps have the field, so the mask is their subtraction.
+    insertIfNotNoneMask(map, fieldId, lhsMask - rhs.at(fieldId));
+  }
+  return map;
+}
+
+Mask createIncludesMask(FieldIdToMask&& map) {
+  Mask mask;
+  mask.includes_ref() = map;
+  return mask;
+}
+Mask createExcludesMask(FieldIdToMask&& map) {
+  Mask mask;
+  mask.excludes_ref() = map;
+  return mask;
+}
+
+Mask operator&(const Mask& lhs, const Mask& rhs) {
+  if (lhs.includes_ref()) {
+    if (rhs.includes_ref()) { // lhs=includes rhs=includes
+      return createIncludesMask(intersectMask(
+          lhs.includes_ref().value(), rhs.includes_ref().value()));
+    }
+    // lhs=includes rhs=excludes
+    return createIncludesMask(
+        subtractMask(lhs.includes_ref().value(), rhs.excludes_ref().value()));
+  }
+  if (rhs.includes_ref()) { // lhs=excludes rhs=includes
+    return createIncludesMask(
+        subtractMask(rhs.includes_ref().value(), lhs.excludes_ref().value()));
+  }
+  // lhs=excludes rhs=excludes
+  return createExcludesMask(
+      unionMask(lhs.excludes_ref().value(), rhs.excludes_ref().value()));
+}
+Mask operator|(const Mask& lhs, const Mask& rhs) {
+  if (lhs.includes_ref()) {
+    if (rhs.includes_ref()) { // lhs=includes rhs=includes
+      return createIncludesMask(
+          unionMask(lhs.includes_ref().value(), rhs.includes_ref().value()));
+    }
+    // lhs=includes rhs=excludes
+    return createExcludesMask(
+        subtractMask(rhs.excludes_ref().value(), lhs.includes_ref().value()));
+  }
+  if (rhs.includes_ref()) { // lhs=excludes rhs=includes
+    return createExcludesMask(
+        subtractMask(lhs.excludes_ref().value(), rhs.includes_ref().value()));
+  }
+  // lhs=excludes rhs=excludes
+  return createExcludesMask(
+      intersectMask(lhs.excludes_ref().value(), rhs.excludes_ref().value()));
+}
+Mask operator-(const Mask& lhs, const Mask& rhs) {
+  if (lhs.includes_ref()) {
+    if (rhs.includes_ref()) { // lhs=includes rhs=includes
+      return createIncludesMask(
+          subtractMask(lhs.includes_ref().value(), rhs.includes_ref().value()));
+    }
+    // lhs=includes rhs=excludes
+    return createIncludesMask(
+        intersectMask(lhs.includes_ref().value(), rhs.excludes_ref().value()));
+  }
+  if (rhs.includes_ref()) { // lhs=excludes rhs=includes
+    return createExcludesMask(
+        unionMask(lhs.excludes_ref().value(), rhs.includes_ref().value()));
+  }
+  // lhs=excludes rhs=excludes
+  return createIncludesMask(
+      subtractMask(rhs.excludes_ref().value(), lhs.excludes_ref().value()));
+}
+
 namespace detail {
 
 // Gets the mask of the given field id if it exists in the map, otherwise,
@@ -151,6 +295,5 @@ void errorIfNotObject(const protocol::Value& value) {
     throw std::runtime_error("The field mask and object are incompatible.");
   }
 }
-
 } // namespace detail
 } // namespace apache::thrift::protocol

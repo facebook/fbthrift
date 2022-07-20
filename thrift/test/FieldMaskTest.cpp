@@ -16,7 +16,6 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/FieldMask.h>
-#include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 #include <thrift/test/gen-cpp2/FieldMask_types.h>
 
 using apache::thrift::protocol::allMask;
@@ -763,5 +762,280 @@ TEST(FieldMaskTest, SchemafulCopyException) {
       allMask();
   includes2[2] = allMask();
   EXPECT_THROW(protocol::copy(m2, src, dst), std::runtime_error);
+}
+
+TEST(FIeldMaskTest, LogicalOpSimple) {
+  // maskA = includes{1: excludes{},
+  //                  2: excludes{},
+  //                  3: includes{}}
+  Mask maskA;
+  {
+    auto& includes = maskA.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2] = allMask();
+    includes[3] = noneMask();
+  }
+
+  // maskB = includes{2: excludes{},
+  //                  3: excludes{}}
+  Mask maskB;
+  {
+    auto& includes = maskB.includes_ref().emplace();
+    includes[2] = allMask();
+    includes[3] = allMask();
+  }
+
+  // maskA | maskB == includes{1: excludes{},
+  //                           2: excludes{},
+  //                           3: excludes{}}
+  Mask maskUnion;
+  {
+    auto& includes = maskUnion.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2] = allMask();
+    includes[3] = allMask();
+  }
+  EXPECT_EQ(maskA | maskB, maskUnion);
+  EXPECT_EQ(maskB | maskA, maskUnion);
+
+  // maskA & maskB == includes{2: excludes{}}
+  Mask maskIntersect;
+  { maskIntersect.includes_ref().emplace()[2] = allMask(); }
+  EXPECT_EQ(maskA & maskB, maskIntersect);
+  EXPECT_EQ(maskB & maskA, maskIntersect);
+
+  // maskA - maskB == includes{1: excludes{}}
+  Mask maskSubtractAB;
+  { maskSubtractAB.includes_ref().emplace()[1] = allMask(); }
+  EXPECT_EQ(maskA - maskB, maskSubtractAB);
+
+  // maskB - maskA == includes{3: excludes{}}
+  Mask maskSubtractBA;
+  { maskSubtractBA.includes_ref().emplace()[3] = allMask(); }
+  EXPECT_EQ(maskB - maskA, maskSubtractBA);
+}
+
+TEST(FieldMaskTest, LogicalOpBothIncludes) {
+  // maskA = includes{1: includes{2: excludes{}},
+  //                  3: includes{4: excludes{},
+  //                              5: excludes{}}}
+  Mask maskA;
+  {
+    auto& includes = maskA.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2] = allMask();
+    auto& includes2 = includes[3].includes_ref().emplace();
+    includes2[4] = allMask();
+    includes2[5] = allMask();
+  }
+
+  // maskB = includes{1: excludes{},
+  //                  3: includes{5: excludes{},
+  //                              6: excludes{}},
+  //                  7: excludes{}}
+  Mask maskB;
+  {
+    auto& includes = maskB.includes_ref().emplace();
+    includes[1] = allMask();
+    auto& includes2 = includes[3].includes_ref().emplace();
+    includes2[5] = allMask();
+    includes2[6] = allMask();
+    includes[7] = allMask();
+  }
+
+  // maskA | maskB == includes{1: excludes{},
+  //                           3: includes{4: excludes{},
+  //                                       5: excludes{},
+  //                                       6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskUnion;
+  {
+    auto& includes = maskUnion.includes_ref().emplace();
+    includes[1] = allMask();
+    auto& includes2 = includes[3].includes_ref().emplace();
+    includes2[4] = allMask();
+    includes2[5] = allMask();
+    includes2[6] = allMask();
+    includes[7] = allMask();
+  }
+  EXPECT_EQ(maskA | maskB, maskUnion);
+  EXPECT_EQ(maskB | maskA, maskUnion);
+
+  // maskA & maskB == includes{1: includes{2: excludes{}},
+  //                           3: includes{5: excludes{}}}
+  Mask maskIntersect;
+  {
+    auto& includes = maskIntersect.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2] = allMask();
+    includes[3].includes_ref().emplace()[5] = allMask();
+  }
+  EXPECT_EQ(maskA & maskB, maskIntersect);
+  EXPECT_EQ(maskB & maskA, maskIntersect);
+
+  // maskA - maskB == includes{3: includes{4: excludes{}}}
+  Mask maskSubtractAB;
+  {
+    maskSubtractAB.includes_ref().emplace()[3].includes_ref().emplace()[4] =
+        allMask();
+  }
+  EXPECT_EQ(maskA - maskB, maskSubtractAB);
+
+  // maskB - maskA == includes{1: excludes{2: excludes{}},
+  //                           3: includes{6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskSubtractBA;
+  {
+    auto& includes = maskSubtractBA.includes_ref().emplace();
+    includes[1].excludes_ref().emplace()[2] = allMask();
+    auto& includes2 = includes[3].includes_ref().emplace();
+    includes2[6] = allMask();
+    includes[7] = allMask();
+  }
+  EXPECT_EQ(maskB - maskA, maskSubtractBA);
+}
+
+TEST(FieldMaskTest, LogicalOpBothExcludes) {
+  // maskA = excludes{1: excludes{2: excludes{}},
+  //                  3: includes{4: includes{},
+  //                              5: excludes{}}}
+  Mask maskA;
+  {
+    auto& excludes = maskA.excludes_ref().emplace();
+    excludes[1].excludes_ref().emplace()[2] = allMask();
+    auto& includes = excludes[3].includes_ref().emplace();
+    includes[4] = noneMask();
+    includes[5] = allMask();
+  }
+
+  // maskB = excludes{1: includes{},
+  //                  3: includes{5: excludes{},
+  //                              6: excludes{}},
+  //                  7: excludes{}}
+  Mask maskB;
+  {
+    auto& excludes = maskB.excludes_ref().emplace();
+    excludes[1] = noneMask();
+    auto& includes = excludes[3].includes_ref().emplace();
+    includes[5] = allMask();
+    includes[6] = allMask();
+    excludes[7] = allMask();
+  }
+
+  // maskA | maskB == excludes{3: includes{5: excludes{}}}
+  Mask maskUnion;
+  {
+    maskUnion.excludes_ref().emplace()[3].includes_ref().emplace()[5] =
+        allMask();
+  }
+  EXPECT_EQ(maskA | maskB, maskUnion);
+  EXPECT_EQ(maskB | maskA, maskUnion);
+
+  // maskA & maskB == excludes{1: excludes{2: excludes{}},
+  //                           3: includes{5: excludes{},
+  //                                       6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskIntersect;
+  {
+    auto& excludes = maskIntersect.excludes_ref().emplace();
+    excludes[1].excludes_ref().emplace()[2] = allMask();
+    auto& includes = excludes[3].includes_ref().emplace();
+    includes[5] = allMask();
+    includes[6] = allMask();
+    excludes[7] = allMask();
+  }
+  EXPECT_EQ(maskA & maskB, maskIntersect);
+  EXPECT_EQ(maskB & maskA, maskIntersect);
+
+  // maskA - maskB == includes{3: includes{6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskSubtractAB;
+  {
+    auto& includes = maskSubtractAB.includes_ref().emplace();
+    includes[3].includes_ref().emplace()[6] = allMask();
+    includes[7] = allMask();
+  }
+  EXPECT_EQ(maskA - maskB, maskSubtractAB);
+
+  // maskB - maskA == includes{1: excludes{2: excludes{}}}
+  Mask maskSubtractBA;
+  {
+    maskSubtractBA.includes_ref().emplace()[1].excludes_ref().emplace()[2] =
+        allMask();
+  }
+  EXPECT_EQ(maskB - maskA, maskSubtractBA);
+}
+
+TEST(FieldMaskTest, LogicalOpIncludesExcludes) {
+  // maskA = includes{1: includes{2: excludes{}},
+  //                  3: includes{4: excludes{},
+  //                              5: excludes{}}}
+  Mask maskA;
+  {
+    auto& includes = maskA.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2] = allMask();
+    auto& includes2 = includes[3].includes_ref().emplace();
+    includes2[4] = allMask();
+    includes2[5] = allMask();
+  }
+
+  // maskB = excludes{1: includes{},
+  //                  3: includes{5: excludes{},
+  //                              6: excludes{}},
+  //                  7: excludes{}}
+  Mask maskB;
+  {
+    auto& excludes = maskB.excludes_ref().emplace();
+    excludes[1] = noneMask();
+    auto& includes = excludes[3].includes_ref().emplace();
+    includes[5] = allMask();
+    includes[6] = allMask();
+    excludes[7] = allMask();
+  }
+
+  // maskA | maskB == excludes{3: includes{6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskUnion;
+  {
+    auto& excludes = maskUnion.excludes_ref().emplace();
+    excludes[3].includes_ref().emplace()[6] = allMask();
+    excludes[7] = allMask();
+  }
+  EXPECT_EQ(maskA | maskB, maskUnion);
+  EXPECT_EQ(maskB | maskA, maskUnion);
+
+  // maskA & maskB == includes{1: includes{2: excludes{}},
+  //                           3: includes{4: excludes{}}}
+  Mask maskIntersect;
+  {
+    auto& includes = maskIntersect.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2] = allMask();
+    includes[3].includes_ref().emplace()[4] = allMask();
+  }
+  EXPECT_EQ(maskA & maskB, maskIntersect);
+  EXPECT_EQ(maskB & maskA, maskIntersect);
+
+  // maskA - maskB == includes{3: includes{5: excludes{}}}
+  Mask maskSubtractAB;
+  {
+    maskSubtractAB.includes_ref().emplace()[3].includes_ref().emplace()[5] =
+        allMask();
+  }
+  EXPECT_EQ(maskA - maskB, maskSubtractAB);
+
+  // maskB - maskA == excludes{1: includes{2: excludes{}},
+  //                           3: includes{4: excludes{},
+  //                                       5: excludes{},
+  //                                       6: excludes{}},
+  //                           7: excludes{}}
+  Mask maskSubtractBA;
+  {
+    auto& excludes = maskSubtractBA.excludes_ref().emplace();
+    excludes[1].includes_ref().emplace()[2] = allMask();
+    auto& includes = excludes[3].includes_ref().emplace();
+    includes[4] = allMask();
+    includes[5] = allMask();
+    includes[6] = allMask();
+    excludes[7] = allMask();
+  }
+  EXPECT_EQ(maskB - maskA, maskSubtractBA);
 }
 } // namespace apache::thrift::test

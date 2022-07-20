@@ -306,4 +306,9 @@ void copy(const Mask& mask, const T& src, T& dst) {
       dst,
       detail::get_ordinal_sequence<T>{});
 }
+
+// Logical operators that can construct a new mask
+Mask operator&(const Mask&, const Mask&); // intersect
+Mask operator|(const Mask&, const Mask&); // union
+Mask operator-(const Mask&, const Mask&); // subtract
 } // namespace apache::thrift::protocol
