@@ -18,6 +18,12 @@ A **service** is an interface for RPC defined in Thrift. Each service has a set 
 
 A service can extend other services, inheriting the set of functions included in the inheriting service using the reserved keyword `extends`. Please refer to the [schema](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/schema.thrift) for more detail and syntax.
 
+## Request Response
+<!--- TODO: Request Response --->
+
+## Request No Response
+<!--- TODO: Request No Response --->
+
 ## Stream
 
 A **stream** is a communication abstraction between a client and server, where a server acts as the producer and the client acts as the consumer. It allows the flow of ordered messages from the server to the client. All messages in the stream have same payload object type. It may initially return an initial response specified in the IDL. The client can choose to cancel the stream at any time. The server can terminate the stream by sending the exception. Please refer to the [schema](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/schema.thrift) and the [protocol spec](../protocol/interface.md) for more information about streams.
@@ -28,4 +34,4 @@ A **sink** is similar to a stream, but the client acts as the producer and the s
 
 ## Interaction
 
-TODO: Interaction
+An **interaction** is a multi-request contract that keeps related methods together, manages states, and integrates with the routing layer to ensure those requests are sent over the same connection to the same host. It can be created using a **factory function** that returns an interaction. Or, a **constructor** that is generated using reserved keyword `performs`, and it generates a non-RPC constructor on the client and server. The server also listens to a **termination signal** that immediately is invoked instead of waiting for outstanding requests and streams unlike the destructor. Using annotations, it supports serial interaction that limits processing to a single method at a time and event base threading model that directly processes on the I/O thread instead of the server executor. Please refer to the [schema](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/schema.thrift) and the [protocol spec](../protocol/interface.md) for more information about interactions.
