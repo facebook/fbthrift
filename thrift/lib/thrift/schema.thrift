@@ -291,10 +291,43 @@ enum FunctionQualifier {
   ReadOnly = 3,
 }
 
+/**
+ * A Thrift stream type.
+ *
+ *     stream<{payload} throws (... exceptions ...)>
+ */
+struct Stream {
+  /** The payload from the stream. */
+  1: type.Type payload;
+  /** The exceptions from the stream. */
+  2: Exceptions exceptions;
+}
+
+/**
+ * A Thrift sink type.
+ *
+ *     sink<{payload} throws (... clientExceptions ...),
+ *          {finalResponse} throws (... serverExceptions ...)>
+ */
+struct Sink {
+  /** The payload from the sink. */
+  1: type.Type payload;
+  /** The exceptions from the client. */
+  2: Exceptions clientExceptions;
+  /** The final response from the sink. */
+  3: type.Type finalResponse;
+  /** The exceptions from the server. */
+  4: Exceptions serverExceptions;
+}
+
 /** A Thrift function return type. */
-// TODO(dokwon): Add stream, sink, and interaction support.
+// TODO(dokwon): Add interaction support.
 union ReturnType {
   1: type.Type thriftType;
+  /** The stream return type. */
+  2: Stream streamType;
+  /** The sink return type. */
+  3: Sink sinkType;
 }
 
 /** A container of Thrift function return type. */
