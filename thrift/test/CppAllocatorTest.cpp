@@ -208,16 +208,20 @@ TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRefCount) {
   EXPECT_ALLOC(parent.allocVector_ref()->emplace_back(1));
 }
 
-TEST(CppAllocatorTest, MoveConstructorPreservesAllocator) {
-  ScopedCountingAlloc<> alloc;
-  CountingParent s0(alloc);
-  CountingParent s1;
-  EXPECT_EQ(s0.get_allocator(), alloc);
-  EXPECT_NE(s1.get_allocator(), alloc);
-  CountingParent s2 = std::move(s0);
+TEST(CppAllocatorTest, CopyConstructorPropagatesAllocator) {
+  ScopedStatefulAlloc<> alloc(42);
+  AAStruct s1(alloc);
+  AAStruct s2(s1);
+  EXPECT_EQ(alloc, s1.get_allocator());
+  EXPECT_EQ(alloc, s2.get_allocator());
+}
+
+TEST(CppAllocatorTest, MoveConstructorPropagatesAllocator) {
+  ScopedStatefulAlloc<> alloc(42);
+  AAStruct s1(alloc);
+  AAStruct s2(std::move(s1));
+  EXPECT_EQ(s1.get_allocator(), alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
-  s1 = std::move(s2);
-  EXPECT_NE(s1.get_allocator(), alloc);
 }
 
 TEST(CppAllocatorTest, DefaultConstructor1allocator) {
