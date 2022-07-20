@@ -1,7 +1,7 @@
 ---
 state: draft
 created: 07-18-2022
-updated: 07-18-2022
+updated: 07-19-2022
 ---
 
 # Rocket Protocol
@@ -83,12 +83,38 @@ With an already established connection, the client must send a [REQUEST_STREAM](
     - RPC kind (SINGLE_REQUEST_STREAMING_RESPONSE)
 - Thrift serialized arguments from [Interface Protocol](interface.md)
 
+### Credit Mechanism
+
+Thrift streaming is flow-controlled using the [RSocket credit mechanism](https://rsocket.io/about/protocol/#reactive-streams-semantics). When a client requests a stream, it sends the server an initial number of credits in the request. The client can send more credits to the server by sending a [REQUEST_N](https://rsocket.io/about/protocol/#request_n-frame-0x08) frame of the following format:
+
+- Frame size (24 bit unsigned integer indicating the length of the *entire* frame)
+- Stream ID (32 bits)
+    - The stream ID of the existing stream that you would like to send credits for
+- Frame type (6 bits)
+    - Must be REQUEST_N (0x08)
+- Flags (10 bits)
+    - No flags should be set
+- Request N (32 bits)
+    - Unsigned integer representing the initial number of stream payloads to request. Value MUST be > 0. Max value is 2^31 - 1.
+
+Credits are cumulative on the server. The server must not send stream payloads if it has 0 credits until it receives more credits from the client.
+
+### Cancellation
+
+Thrift streaming supports cancellation from the client. Upon receiving the cancellation, the server should stop sending payloads to the client. The client can cancel a stream by sending a [CANCEL](https://rsocket.io/about/protocol/#cancel-frame-0x09) frame of the following format:
+
+- Frame size (24 bit unsigned integer indicating the length of the *entire* frame)
+- Stream ID (32 bits)
+    - The stream ID of the existing stream that you would like to cancel
+- Frame type (6 bits)
+    - Must be CANCEL (0x09)
+- Flags (10 bits)
+    - No flags should be set
+
 TODO:
 
 - Initial response sequence
 - Stream responses
-- Credits
-- Cancellation
 
 ## Sink
 
