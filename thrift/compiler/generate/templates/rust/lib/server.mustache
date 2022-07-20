@@ -354,14 +354,13 @@
                             ::std::result::Result::Ok(res) => {
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
                             },
-                            {{!TODO: How are we handling custom stream exceptions?}}
                             ::std::result::Result::Err(exn) => {
                                 let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
                             }
                         };
 
-                        {{!TODO: Does this work?}}
+                        {{!TODO: Does this work? This line also needs to handle stream exceptions.}}
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
 
                     })
@@ -372,11 +371,17 @@
                     Ok(())
                 },
                 _ => {
-                    {{!TODO: *Exn for stream response doesn't impl serialization.
-                            Consequently, can't serialize exceptions as well.
-                            We might need to add some logic to serialize service exceptions.
-                    }}
-                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                    {{!Service exceptions can go through the normal response channel}}
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    reply_state.lock().unwrap().send_reply(env);
+                    Ok(())
                 }
             }
             {{/function:returns_streams?}}

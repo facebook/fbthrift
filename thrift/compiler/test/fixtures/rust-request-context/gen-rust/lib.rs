@@ -75,13 +75,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(inner) => {
+                    PingExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -193,13 +193,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(inner) => {
+                    PingExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -310,13 +310,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetRandomData");
                 match self {
-                    GetRandomDataExn::Success(inner) => {
+                    GetRandomDataExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetRandomDataExn::ApplicationException(_aexn) => unreachable!(),
@@ -433,13 +433,13 @@ pub mod services {
                 }
                 p.write_struct_begin("HasDataById");
                 match self {
-                    HasDataByIdExn::Success(inner) => {
+                    HasDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Bool,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     HasDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -556,13 +556,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataById");
                 match self {
-                    GetDataByIdExn::Success(inner) => {
+                    GetDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -679,13 +679,13 @@ pub mod services {
                 }
                 p.write_struct_begin("PutDataById");
                 match self {
-                    PutDataByIdExn::Success(inner) => {
+                    PutDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     PutDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -796,13 +796,13 @@ pub mod services {
                 }
                 p.write_struct_begin("LobDataById");
                 match self {
-                    LobDataByIdExn::Success(inner) => {
+                    LobDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     LobDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -1026,6 +1026,22 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let StreamByIdExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("StreamById");
+                match self {
+                    StreamByIdExn::Success(_inner) => {
+                        unreachable!("Encoding for streaming is done separately");
+                    }
+                    StreamByIdExn::ApplicationException(_aexn) => unreachable!(),
+                }            }
+        }
 
 
         #[derive(Clone, Debug)]
@@ -1224,6 +1240,22 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithExceptionExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let StreamByIdWithExceptionExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("StreamByIdWithException");
+                match self {
+                    StreamByIdWithExceptionExn::Success(_inner) => {
+                        unreachable!("Encoding for streaming is done separately");
+                    }
+                    StreamByIdWithExceptionExn::ApplicationException(_aexn) => unreachable!(),
+                }            }
+        }
 
 
         #[derive(Clone, Debug)]
@@ -1523,6 +1555,22 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let StreamByIdWithResponseExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("StreamByIdWithResponse");
+                match self {
+                    StreamByIdWithResponseExn::Success(_inner) => {
+                        unreachable!("Encoding for streaming is done separately");
+                    }
+                    StreamByIdWithResponseExn::ApplicationException(_aexn) => unreachable!(),
+                }            }
+        }
 
     }
 }
@@ -4374,7 +4422,16 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamById",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    reply_state.lock().unwrap().send_reply(env);
+                    Ok(())
                 }
             }
         }
@@ -4466,7 +4523,16 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamByIdWithException",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    reply_state.lock().unwrap().send_reply(env);
+                    Ok(())
                 }
             }
         }
@@ -4567,7 +4633,16 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamByIdWithResponse",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    reply_state.lock().unwrap().send_reply(env);
+                    Ok(())
                 }
             }
         }

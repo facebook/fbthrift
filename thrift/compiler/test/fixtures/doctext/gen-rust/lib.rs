@@ -91,13 +91,13 @@ pub mod services {
                 }
                 p.write_struct_begin("F");
                 match self {
-                    FExn::Success(inner) => {
+                    FExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     FExn::ApplicationException(_aexn) => unreachable!(),
@@ -321,6 +321,22 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
+        impl<P> ::fbthrift::Serialize<P> for NumbersExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let NumbersExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("Numbers");
+                match self {
+                    NumbersExn::Success(_inner) => {
+                        unreachable!("Encoding for streaming is done separately");
+                    }
+                    NumbersExn::ApplicationException(_aexn) => unreachable!(),
+                }            }
+        }
 
 
         #[derive(Clone, Debug)]
@@ -393,13 +409,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Thing");
                 match self {
-                    ThingExn::Success(inner) => {
+                    ThingExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ThingExn::bang(inner) => {
@@ -1352,7 +1368,16 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    Err(::anyhow::anyhow!("TODO: Exception handling"))
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "numbers",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    reply_state.lock().unwrap().send_reply(env);
+                    Ok(())
                 }
             }
         }

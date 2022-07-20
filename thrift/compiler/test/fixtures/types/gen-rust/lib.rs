@@ -75,13 +75,13 @@ pub mod services {
                 }
                 p.write_struct_begin("BounceMap");
                 match self {
-                    BounceMapExn::Success(inner) => {
+                    BounceMapExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Map,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     BounceMapExn::ApplicationException(_aexn) => unreachable!(),
@@ -198,13 +198,13 @@ pub mod services {
                 }
                 p.write_struct_begin("BinaryKeyedMap");
                 match self {
-                    BinaryKeyedMapExn::Success(inner) => {
+                    BinaryKeyedMapExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Map,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     BinaryKeyedMapExn::ApplicationException(_aexn) => unreachable!(),

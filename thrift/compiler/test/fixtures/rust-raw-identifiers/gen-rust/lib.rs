@@ -74,13 +74,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Return");
                 match self {
-                    ReturnExn::Success(inner) => {
+                    ReturnExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ReturnExn::ApplicationException(_aexn) => unreachable!(),
@@ -191,13 +191,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Super");
                 match self {
-                    SuperExn::Success(inner) => {
+                    SuperExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     SuperExn::ApplicationException(_aexn) => unreachable!(),

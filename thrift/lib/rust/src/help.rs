@@ -114,6 +114,7 @@ where
     RES: ResultInfo + Serialize<P::Sizer> + Serialize<P::Serializer>,
 {
     Ok(serialize!(P, |p| {
+        // TODO: We at least need to write `res_type.message_type()` here?
         res.write(p);
     }))
 }

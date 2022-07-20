@@ -74,13 +74,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Init");
                 match self {
-                    InitExn::Success(inner) => {
+                    InitExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I64,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     InitExn::ApplicationException(_aexn) => unreachable!(),

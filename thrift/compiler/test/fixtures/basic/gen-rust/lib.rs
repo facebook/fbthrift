@@ -75,13 +75,13 @@ pub mod services {
                 }
                 p.write_struct_begin("SimpleRpc");
                 match self {
-                    SimpleRpcExn::Success(inner) => {
+                    SimpleRpcExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     SimpleRpcExn::ApplicationException(_aexn) => unreachable!(),
@@ -194,13 +194,13 @@ pub mod services {
                 }
                 p.write_struct_begin("SimpleRpc");
                 match self {
-                    SimpleRpcExn::Success(inner) => {
+                    SimpleRpcExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Struct,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     SimpleRpcExn::ApplicationException(_aexn) => unreachable!(),
@@ -319,13 +319,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(inner) => {
+                    PingExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -436,13 +436,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetRandomData");
                 match self {
-                    GetRandomDataExn::Success(inner) => {
+                    GetRandomDataExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetRandomDataExn::ApplicationException(_aexn) => unreachable!(),
@@ -559,13 +559,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Sink");
                 match self {
-                    SinkExn::Success(inner) => {
+                    SinkExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     SinkExn::ApplicationException(_aexn) => unreachable!(),
@@ -676,13 +676,13 @@ pub mod services {
                 }
                 p.write_struct_begin("PutDataById");
                 match self {
-                    PutDataByIdExn::Success(inner) => {
+                    PutDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     PutDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -793,13 +793,13 @@ pub mod services {
                 }
                 p.write_struct_begin("HasDataById");
                 match self {
-                    HasDataByIdExn::Success(inner) => {
+                    HasDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Bool,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     HasDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -916,13 +916,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataById");
                 match self {
-                    GetDataByIdExn::Success(inner) => {
+                    GetDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -1039,13 +1039,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DeleteDataById");
                 match self {
-                    DeleteDataByIdExn::Success(inner) => {
+                    DeleteDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     DeleteDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -1156,13 +1156,13 @@ pub mod services {
                 }
                 p.write_struct_begin("LobDataById");
                 match self {
-                    LobDataByIdExn::Success(inner) => {
+                    LobDataByIdExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     LobDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -1273,13 +1273,13 @@ pub mod services {
                 }
                 p.write_struct_begin("InvalidReturnForHack");
                 match self {
-                    InvalidReturnForHackExn::Success(inner) => {
+                    InvalidReturnForHackExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Set,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     InvalidReturnForHackExn::ApplicationException(_aexn) => unreachable!(),
@@ -1396,13 +1396,13 @@ pub mod services {
                 }
                 p.write_struct_begin("RpcSkippedCodegen");
                 match self {
-                    RpcSkippedCodegenExn::Success(inner) => {
+                    RpcSkippedCodegenExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     RpcSkippedCodegenExn::ApplicationException(_aexn) => unreachable!(),
@@ -1515,13 +1515,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataByKey0");
                 match self {
-                    GetDataByKey0Exn::Success(inner) => {
+                    GetDataByKey0Exn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByKey0Exn::ApplicationException(_aexn) => unreachable!(),
@@ -1638,13 +1638,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataByKey1");
                 match self {
-                    GetDataByKey1Exn::Success(inner) => {
+                    GetDataByKey1Exn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByKey1Exn::ApplicationException(_aexn) => unreachable!(),

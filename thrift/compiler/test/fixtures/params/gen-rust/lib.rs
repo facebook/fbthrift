@@ -71,13 +71,13 @@ pub mod services {
                 }
                 p.write_struct_begin("MapList");
                 match self {
-                    MapListExn::Success(inner) => {
+                    MapListExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     MapListExn::ApplicationException(_aexn) => unreachable!(),
@@ -188,13 +188,13 @@ pub mod services {
                 }
                 p.write_struct_begin("MapSet");
                 match self {
-                    MapSetExn::Success(inner) => {
+                    MapSetExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     MapSetExn::ApplicationException(_aexn) => unreachable!(),
@@ -305,13 +305,13 @@ pub mod services {
                 }
                 p.write_struct_begin("ListMap");
                 match self {
-                    ListMapExn::Success(inner) => {
+                    ListMapExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ListMapExn::ApplicationException(_aexn) => unreachable!(),
@@ -422,13 +422,13 @@ pub mod services {
                 }
                 p.write_struct_begin("ListSet");
                 match self {
-                    ListSetExn::Success(inner) => {
+                    ListSetExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ListSetExn::ApplicationException(_aexn) => unreachable!(),
@@ -539,13 +539,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Turtles");
                 match self {
-                    TurtlesExn::Success(inner) => {
+                    TurtlesExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     TurtlesExn::ApplicationException(_aexn) => unreachable!(),
