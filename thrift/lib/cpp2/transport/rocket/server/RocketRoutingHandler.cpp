@@ -146,7 +146,8 @@ void RocketRoutingHandler::handleConnection(
       worker->getEgressMemoryTracker(),
       cfg);
   onConnection(*connection);
-  connectionManager->addConnection(connection);
+  connectionManager->addConnection(
+      connection, /* idleTimeout */ false, /* connectionAgeTimeout */ true);
 
   if (auto* observer = server->getObserver()) {
     observer->connAccepted(tinfo);

@@ -18,6 +18,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <utility>
 
 #include <boost/cast.hpp>
@@ -69,6 +70,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestServiceAsyncClient.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
@@ -973,7 +975,12 @@ class HeaderOrRocketTest : public testing::Test {
  public:
   TransportType transport = TransportType::Rocket;
   Compression compression = Compression::Enabled;
-
+  auto makeStickyClient(
+      ScopedServerInterfaceThread& runner, folly::EventBase* evb) {
+    return runner.newStickyClient<TestServiceAsyncClient>(
+        evb,
+        [&](auto socket) mutable { return makeChannel(std::move(socket)); });
+  }
   auto makeClient(ScopedServerInterfaceThread& runner, folly::EventBase* evb) {
     return runner.newClient<TestServiceAsyncClient>(
         evb,
@@ -1746,6 +1753,24 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
   }));
   EXPECT_EQ(
       *folly::get_ptr(th.getHeaders(), "ex"), kServerQueueTimeoutErrorCode);
+}
+
+TEST_P(HeaderOrRocket, ConnectionAgeTimeout) {
+  using namespace std::chrono_literals;
+  folly::ScopedEventBaseThread clientEvbThread;
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(), "::1", 0, [](auto& server) {
+        server.setConnectionAgeTimeout(100ms);
+      });
+
+  auto client = makeStickyClient(runner, clientEvbThread.getEventBase());
+  std::string response;
+  std::this_thread::sleep_for(10ms);
+  // succeeds because connection is still a live
+  EXPECT_NO_THROW(client->sync_sendResponse(response, 200));
+  std::this_thread::sleep_for(200ms);
+  // throws an exception because connection is dropped
+  EXPECT_THROW(client->sync_sendResponse(response, 200), TTransportException);
 }
 
 INSTANTIATE_TEST_CASE_P(

@@ -669,6 +669,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       config.sslCacheOptions = *sslCacheOptions_;
     }
     config.connectionIdleTimeout = getIdleTimeout();
+    config.connectionAgeTimeout = getConnectionAgeTimeout();
     config.acceptBacklog = getListenBacklog();
     if (ticketSeeds_) {
       config.initialTicketSeeds = *ticketSeeds_;
