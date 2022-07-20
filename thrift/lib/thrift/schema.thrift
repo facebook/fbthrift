@@ -320,14 +320,33 @@ struct Sink {
   4: Exceptions serverExceptions;
 }
 
+/**
+ * A Thrift interaction.
+ *
+ *     interaction {definition.name} { ... functions ... }
+ */
+struct Interaction {
+  /** The definition attributes. */
+  @thrift.Mixin
+  1: Definition definition;
+
+  /**
+   * The functions, in the order as defined in the IDL/AST.
+   *
+   * Changing the order of the fields is always backward compatible.
+   */
+  2: Functions functions;
+}
+
 /** A Thrift function return type. */
-// TODO(dokwon): Add interaction support.
 union ReturnType {
   1: type.Type thriftType;
   /** The stream return type. */
   2: Stream streamType;
   /** The sink return type. */
   3: Sink sinkType;
+  /** The interaction return type. */
+  4: Interaction interactionType;
 }
 
 /** A container of Thrift function return type. */
@@ -430,9 +449,6 @@ struct Program {
    */
   // TODO(afuller): Fix type resolution order bugs in the parser to make this
   // comment true in all cases.
-  // TODO(afuller): Add support for all definitions, e.g. service, interface,
-  // etc. which currently show up as `void`, to preserve the ordering of the
-  // original definitions.
   4: id.DefinitionIds definitions;
 }
 
