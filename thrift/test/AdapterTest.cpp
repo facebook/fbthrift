@@ -787,6 +787,9 @@ TEST(AdaptTest, MoveOnlyAdapter) {
   EXPECT_FALSE(*objd.ptr());
   CompactSerializer::deserialize(objs, objd);
   EXPECT_TRUE(*objd.ptr());
+
+  EXPECT_FALSE(std::is_copy_constructible_v<basic::MoveOnly>);
+  EXPECT_FALSE(std::is_copy_constructible_v<basic::AlsoMoveOnly>);
 }
 
 TEST(AdaptTest, NumAdapterConversions) {

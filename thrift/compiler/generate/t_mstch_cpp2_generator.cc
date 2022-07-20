@@ -1122,6 +1122,7 @@ class mstch_cpp2_struct : public mstch_struct {
 
       if (!field->get_type()->has_annotation(
               {"cpp.noncopyable", "cpp2.noncopyable"}) &&
+          !has_move_only_adapter(field) &&
           !has_move_only_adapter(field->get_type())) {
         return true;
       }

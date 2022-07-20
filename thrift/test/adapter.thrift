@@ -186,6 +186,14 @@ struct MoveOnly {
   1: HeapAllocated ptr;
 }
 
+struct AlsoMoveOnly {
+  @cpp.Adapter{
+    name = "::apache::thrift::test::MoveOnlyAdapter",
+    moveOnly = true,
+  }
+  1: i64 ptr;
+}
+
 @cpp.Adapter{name = "::apache::thrift::test::CountingAdapter<true, int>"}
 typedef i64 CountingInt
 struct CountingStruct {
