@@ -59,38 +59,6 @@ public class TestServiceAsyncClientImpl extends AbstractThriftClient implements 
       initMethodHandler = methodHandlerMap.get("init");
     }
 
-    public TestServiceAsyncClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("TestService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    public TestServiceAsyncClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      initMethodHandler = methodHandlerMap.get("init");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

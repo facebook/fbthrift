@@ -59,38 +59,6 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
       queryMethodHandler = methodHandlerMap.get("query");
     }
 
-    public MyServiceAsyncClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("MyService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    public MyServiceAsyncClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      queryMethodHandler = methodHandlerMap.get("query");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

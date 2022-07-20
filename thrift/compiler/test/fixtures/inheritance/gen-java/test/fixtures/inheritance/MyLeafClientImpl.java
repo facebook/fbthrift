@@ -58,38 +58,6 @@ public class MyLeafClientImpl extends test.fixtures.inheritance.MyNodeClientImpl
       doLeafMethodHandler = methodHandlerMap.get("doLeaf");
     }
 
-    public MyLeafClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("MyLeaf", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    protected MyLeafClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      doLeafMethodHandler = methodHandlerMap.get("doLeaf");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

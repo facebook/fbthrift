@@ -63,39 +63,6 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
       getDataByKey1MethodHandler = methodHandlerMap.get("getDataByKey1");
     }
 
-    public DbMixedStackArgumentsAsyncClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("DbMixedStackArguments", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    public DbMixedStackArgumentsAsyncClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      getDataByKey0MethodHandler = methodHandlerMap.get("getDataByKey0");
-      getDataByKey1MethodHandler = methodHandlerMap.get("getDataByKey1");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

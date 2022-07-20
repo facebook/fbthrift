@@ -59,38 +59,6 @@ public class MyServicePrioChildAsyncClientImpl extends test.fixtures.basicannota
       pangMethodHandler = methodHandlerMap.get("pang");
     }
 
-    public MyServicePrioChildAsyncClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("MyServicePrioChild", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    public MyServicePrioChildAsyncClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      pangMethodHandler = methodHandlerMap.get("pang");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

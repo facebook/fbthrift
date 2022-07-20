@@ -27,14 +27,6 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     private ThriftMethodHandler fooMethodHandler;
     private ThriftMethodHandler interactMethodHandler;
     private ThriftMethodHandler interactFastMethodHandler;
-    // Interaction Handlers
-    private ThriftMethodHandler frobnicateIMethodHandler;
-    private ThriftMethodHandler pingIMethodHandler;
-    // Interaction Handlers
-    private ThriftMethodHandler frobnicateIMethodHandler;
-    private ThriftMethodHandler pingIMethodHandler;
-    // Interaction Handlers
-    private ThriftMethodHandler frobnicateIMethodHandler;
 
     // Method Exceptions
     private static final Class[] fooExceptions = new Class[] {
@@ -42,19 +34,6 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     private static final Class[] interactExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] interactFastExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    // Interaction Exceptions
-    private static final Class[] frobnicateIExceptions = new Class[] {
-        test.fixtures.interactions.CustomException.class, org.apache.thrift.TException.class};
-    private static final Class[] pingIExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    // Interaction Exceptions
-    private static final Class[] frobnicateIExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] pingIExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    // Interaction Exceptions
-    private static final Class[] frobnicateIExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public MyServiceClientImpl(
@@ -85,56 +64,6 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       fooMethodHandler = methodHandlerMap.get("foo");
       interactMethodHandler = methodHandlerMap.get("interact");
       interactFastMethodHandler = methodHandlerMap.get("interactFast");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
-      pingIMethodHandler = methodHandlerMap.get("ping");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
-      pingIMethodHandler = methodHandlerMap.get("ping");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
-    }
-
-    public MyServiceClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("MyService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    protected MyServiceClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      fooMethodHandler = methodHandlerMap.get("foo");
-      interactMethodHandler = methodHandlerMap.get("interact");
-      interactFastMethodHandler = methodHandlerMap.get("interactFast");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
-      pingIMethodHandler = methodHandlerMap.get("ping");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
-      pingIMethodHandler = methodHandlerMap.get("ping");
-      // Set interaction handlers
-      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
     }
 
     @java.lang.Override
@@ -218,207 +147,18 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    public class MyInteractionImpl implements MyInteraction {
-      private final long interactionId;
-
-      MyInteractionImpl(long interactionId) {
-        this.interactionId = interactionId;
-      }
-
-
-      public int frobnicate() throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
-        return frobnicateWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public int frobnicate(
-      RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
-        return frobnicateWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Integer> frobnicateWrapper(
-      RpcOptions _rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          if (t instanceof test.fixtures.interactions.CustomException) {
-            throw (test.fixtures.interactions.CustomException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-
-      public void ping() throws org.apache.thrift.TException {
-        pingWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public void ping(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
-        pingWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Void> pingWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(pingIMethodHandler, pingIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-      @java.lang.Override
-      public void close() {
-        activeInteractions.remove(interactionId);
-      }
-
-      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
-        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
-        if (activeInteractions.contains(interactionId)) {
-          builder.setInteractionId(interactionId);
-        } else {
-          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
-          activeInteractions.add(interactionId);
-        }
-        return builder.build();
-      }
-    }
-
     public MyInteraction createMyInteraction() {
-        return new MyInteractionImpl(interactionCounter.incrementAndGet());
+        throw new RuntimeException("create interaction is not supported");
     }
 
-
-    public class MyInteractionFastImpl implements MyInteractionFast {
-      private final long interactionId;
-
-      MyInteractionFastImpl(long interactionId) {
-        this.interactionId = interactionId;
-      }
-
-
-      public int frobnicate() throws org.apache.thrift.TException {
-        return frobnicateWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public int frobnicate(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
-        return frobnicateWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Integer> frobnicateWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-
-      public void ping() throws org.apache.thrift.TException {
-        pingWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public void ping(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
-        pingWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Void> pingWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(pingIMethodHandler, pingIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-      @java.lang.Override
-      public void close() {
-        activeInteractions.remove(interactionId);
-      }
-
-      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
-        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
-        if (activeInteractions.contains(interactionId)) {
-          builder.setInteractionId(interactionId);
-        } else {
-          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
-          activeInteractions.add(interactionId);
-        }
-        return builder.build();
-      }
-    }
 
     public MyInteractionFast createMyInteractionFast() {
-        return new MyInteractionFastImpl(interactionCounter.incrementAndGet());
+        throw new RuntimeException("create interaction is not supported");
     }
 
-
-    public class SerialInteractionImpl implements SerialInteraction {
-      private final long interactionId;
-
-      SerialInteractionImpl(long interactionId) {
-        this.interactionId = interactionId;
-      }
-
-
-      public void frobnicate() throws org.apache.thrift.TException {
-        frobnicateWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public void frobnicate(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
-        frobnicateWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Void> frobnicateWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-      @java.lang.Override
-      public void close() {
-        activeInteractions.remove(interactionId);
-      }
-
-      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
-        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
-        if (activeInteractions.contains(interactionId)) {
-          builder.setInteractionId(interactionId);
-        } else {
-          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
-          activeInteractions.add(interactionId);
-        }
-        return builder.build();
-      }
-    }
 
     public SerialInteraction createSerialInteraction() {
-        return new SerialInteractionImpl(interactionCounter.incrementAndGet());
+        throw new RuntimeException("create interaction is not supported");
     }
+
 }

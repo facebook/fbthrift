@@ -82,44 +82,6 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       doNothingMethodHandler = methodHandlerMap.get("doNothing");
     }
 
-    public MyServiceClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("MyService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    protected MyServiceClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      pingMethodHandler = methodHandlerMap.get("ping");
-      getRandomDataMethodHandler = methodHandlerMap.get("getRandomData");
-      hasDataByIdMethodHandler = methodHandlerMap.get("hasDataById");
-      getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
-      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
-      lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
-      doNothingMethodHandler = methodHandlerMap.get("doNothing");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

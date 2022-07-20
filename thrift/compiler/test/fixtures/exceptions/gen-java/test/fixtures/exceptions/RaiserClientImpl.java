@@ -70,41 +70,6 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
       get500MethodHandler = methodHandlerMap.get("get500");
     }
 
-    public RaiserClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("Raiser", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    protected RaiserClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      doBlandMethodHandler = methodHandlerMap.get("doBland");
-      doRaiseMethodHandler = methodHandlerMap.get("doRaise");
-      get200MethodHandler = methodHandlerMap.get("get200");
-      get500MethodHandler = methodHandlerMap.get("get500");
-    }
-
     @java.lang.Override
     public void close() {
         super.close();

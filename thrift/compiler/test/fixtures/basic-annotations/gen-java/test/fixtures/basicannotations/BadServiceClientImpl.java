@@ -25,14 +25,9 @@ public class BadServiceClientImpl extends AbstractThriftClient implements BadSer
 
     // Method Handlers
     private ThriftMethodHandler barMethodHandler;
-    // Interaction Handlers
-    private ThriftMethodHandler fooIMethodHandler;
 
     // Method Exceptions
     private static final Class[] barExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    // Interaction Exceptions
-    private static final Class[] fooIExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public BadServiceClientImpl(
@@ -61,42 +56,6 @@ public class BadServiceClientImpl extends AbstractThriftClient implements BadSer
 
       // Set method handlers
       barMethodHandler = methodHandlerMap.get("bar");
-      // Set interaction handlers
-      fooIMethodHandler = methodHandlerMap.get("foo");
-    }
-
-    public BadServiceClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("BadService", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    protected BadServiceClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      barMethodHandler = methodHandlerMap.get("bar");
-      // Set interaction handlers
-      fooIMethodHandler = methodHandlerMap.get("foo");
     }
 
     @java.lang.Override
@@ -129,54 +88,8 @@ public class BadServiceClientImpl extends AbstractThriftClient implements BadSer
       }
     }
 
-    public class BadInteractionImpl implements BadInteraction {
-      private final long interactionId;
-
-      BadInteractionImpl(long interactionId) {
-        this.interactionId = interactionId;
-      }
-
-
-      public void foo() throws org.apache.thrift.TException {
-        fooWrapper(RpcOptions.EMPTY).getData();
-      }
-
-      public void foo(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
-        fooWrapper(rpcOptions).getData();
-      }
-
-      public ResponseWrapper<Void> fooWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(fooIMethodHandler, fooIExceptions, rpcOptions));
-        } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          throw new org.apache.thrift.TException(t);
-        }
-      }
-
-      @java.lang.Override
-      public void close() {
-        activeInteractions.remove(interactionId);
-      }
-
-      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
-        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
-        if (activeInteractions.contains(interactionId)) {
-          builder.setInteractionId(interactionId);
-        } else {
-          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
-          activeInteractions.add(interactionId);
-        }
-        return builder.build();
-      }
-    }
-
     public BadInteraction createBadInteraction() {
-        return new BadInteractionImpl(interactionCounter.incrementAndGet());
+        throw new RuntimeException("create interaction is not supported");
     }
+
 }

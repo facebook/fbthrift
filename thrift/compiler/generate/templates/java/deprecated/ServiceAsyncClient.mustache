@@ -40,25 +40,12 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:singleRequestFunctions}}
     private ThriftMethodHandler {{function:javaName}}MethodHandler;
     {{/service:singleRequestFunctions}}
-    {{#service:interactions}}
-    // Interaction Handlers
-    {{#service:singleRequestFunctions}}
-    private ThriftMethodHandler {{function:javaName}}IMethodHandler;
-    {{/service:singleRequestFunctions}}
-    {{/service:interactions}}
 
     // Method Exceptions
     {{#service:singleRequestFunctions}}
     private static final Class[] {{function:javaName}}Exceptions = new Class[] {
         {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
     {{/service:singleRequestFunctions}}
-    {{#service:interactions}}
-    // Interaction Exceptions
-    {{#service:singleRequestFunctions}}
-    private static final Class[] {{function:javaName}}IExceptions = new Class[] {
-        {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
-    {{/service:singleRequestFunctions}}
-    {{/service:interactions}}
 
     public {{service:javaCapitalName}}AsyncClientImpl(
         RequestChannel channel,
@@ -88,52 +75,6 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{#service:singleRequestFunctions}}
       {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
       {{/service:singleRequestFunctions}}
-      {{#service:interactions}}
-      // Set interaction handlers
-      {{#service:singleRequestFunctions}}
-      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:singleRequestFunctions}}
-      {{/service:interactions}}
-    }
-
-    public {{service:javaCapitalName}}AsyncClientImpl(
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      this("{{service:name}}", headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
-    }
-
-    public {{service:javaCapitalName}}AsyncClientImpl(
-        String serviceName,
-        Map<String, String> headers,
-        Map<String, String> persistentHeaders,
-        Mono<? extends RpcClient> rpcClient,
-        ThriftServiceMetadata serviceMetadata,
-        ThriftCodecManager codecManager,
-        ProtocolId protocolId,
-        Map<Method, ThriftMethodHandler> methods) {
-      {{^service:extends}}super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(serviceName, headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
-
-      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
-      methods.forEach(
-          (key, value) -> {
-            methodHandlerMap.put(key.getName(), value);
-          });
-
-      // Set method handlers
-      {{#service:singleRequestFunctions}}
-      {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:singleRequestFunctions}}
-      {{#service:interactions}}
-      // Set interaction handlers
-      {{#service:singleRequestFunctions}}
-      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:singleRequestFunctions}}
-      {{/service:interactions}}
     }
 
     @java.lang.Override
@@ -169,62 +110,9 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{/service:singleRequestFunctions}}
     {{#service:interactions}}
 
-    public class {{service:name}}Impl implements {{service:name}} {
-      private final long interactionId;
-
-      {{service:name}}Impl(long interactionId) {
-        this.interactionId = interactionId;
-      }
-
-      {{#service:singleRequestFunctions}}
-      @java.lang.Override
-      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-          {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-          RpcOptions rpcOptions) {
-          return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
-      }
-
-      @java.lang.Override
-      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY));
-      }
-
-      @java.lang.Override
-      public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-        RpcOptions _rpcOptions) {
-        try {
-          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-      }
-
-      {{/service:singleRequestFunctions}}
-      @java.lang.Override
-      public void close() {
-        activeInteractions.remove(interactionId);
-      }
-
-      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
-        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
-        if (activeInteractions.contains(interactionId)) {
-          builder.setInteractionId(interactionId);
-        } else {
-          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
-          activeInteractions.add(interactionId);
-        }
-        return builder.build();
-      }
-    }
-
     public {{service:name}} create{{service:name}}() {
-        return new {{service:name}}Impl(interactionCounter.incrementAndGet());
+        throw new RuntimeException("create interaction is not supported");
     }
-    {{^last?}}
 
-    {{/last?}}
     {{/service:interactions}}
 }
