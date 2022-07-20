@@ -12,17 +12,19 @@ Types that send and/or receive [data](data.md) using [interface protocols](../pr
 
 A **service** is an interface for RPC defined in Thrift. Each service has a set of functions. Each **function** has a unique name and takes a list of arguments. A function can throw an exception if the server handler chooses to throw an exception or if there was an issue with the RPC itself. The list of arguments follows a similar rule to Thrift struct type with the exception of field qualifier. A function can be qualified with a **function qualifier** such as the following:
 
-- oneway: the client does not expect response back from server.
-- idempotent: safe to retry immediately after a transient failure.
-- readonly: always safe to retry.
+- `oneway`: the client does not expect response back from server.
+- `idempotent`: safe to retry immediately after a transient failure.
+- `readonly`: always safe to retry.
 
 A service can extend other services, inheriting the set of functions included in the inheriting service using the reserved keyword `extends`. Please refer to the [schema](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/schema.thrift) for more detail and syntax.
 
 ## Request Response
-<!--- TODO: Request Response --->
+
+A **request reponse** is a method that takes a single payload for the request and waits for a single payload for the response.
 
 ## Request No Response
-<!--- TODO: Request No Response --->
+
+A **request no response** is a method that takes a single payload for the request, but it does not wait for the response. It is enabled with `oneway` function qualifier keyword.
 
 ## Stream
 
