@@ -94,20 +94,14 @@ void errorIfNotCompatible(const Mask& mask) {
   }
 }
 
-template <typename T>
-using get_ordinal_sequence =
-    std::make_integer_sequence<size_t, type::field_size_v<type::struct_t<T>>>;
-
-// It uses type::native_type to extract the type as we don't support adapted
-// struct fields in field mask.
-template <typename StructTag, size_t I>
-using field_native_type =
-    type::native_type<type::get_field_type_tag<StructTag, field_ordinal<I>>>;
-
-template <typename StructTag, size_t... I>
-bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
-  std::unordered_set<FieldId> ids{
-      (type::get_field_id<StructTag, field_ordinal<I + 1>>())...};
+template <typename StructTag>
+bool validate_fields(MaskRef ref) {
+  // Get the field ids in the thrift struct type.
+  std::unordered_set<FieldId> ids;
+  ids.reserve(type::field_size_v<StructTag>);
+  type::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
+    ids.insert(type::get_field_id<StructTag, decltype(fieldOrdinalTag)>());
+  });
   const FieldIdToMask& map = ref.mask.includes_ref()
       ? ref.mask.includes_ref().value()
       : ref.mask.excludes_ref().value();
@@ -118,141 +112,136 @@ bool validate_fields(MaskRef ref, std::index_sequence<I...>) {
     }
   }
   // Validates each field in the struct.
-  return (... && validate_field<StructTag, I + 1>(ref));
-}
-
-template <typename StructTag, size_t I>
-bool validate_field(MaskRef ref) {
-  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
-  if (next.isAllMask() || next.isNoneMask()) {
-    return true;
-  }
-  // Check if the field is a thrift struct type.
-  using FieldType = field_native_type<StructTag, I>;
-  if constexpr (is_thrift_struct_v<FieldType>) {
-    // Need to validate the struct type.
-    return is_compatible_with<FieldType>(next.mask);
-  }
-  return false;
-}
-
-template <typename T, size_t... I>
-void ensure_fields(MaskRef ref, T& t, std::index_sequence<I...>) {
-  (ensure_field<T, I + 1>(ref, t), ...);
-}
-
-template <typename T, size_t I>
-void ensure_field(MaskRef ref, T& t) {
-  using StructTag = type::struct_t<T>;
-  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
-  if (next.isNoneMask()) {
-    return;
-  }
-  auto& field = op::get<StructTag, field_ordinal<I>>(t).ensure();
-  // Need to ensure the struct object.
-  using FieldType = field_native_type<StructTag, I>;
-  if constexpr (is_thrift_struct_v<FieldType>) {
-    return ensure_fields(next, field, get_ordinal_sequence<FieldType>{});
-  }
-}
-
-template <typename T, size_t... I>
-void clear_fields(MaskRef ref, T& t, std::index_sequence<I...>) {
-  (clear_field<T, I + 1>(ref, t), ...);
-}
-
-template <typename T, size_t I>
-void clear_field(MaskRef ref, T& t) {
-  using StructTag = type::struct_t<T>;
-  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
-  if (next.isNoneMask()) {
-    return;
-  }
-  // TODO(aoka): Support smart pointers and thrift box references.
-  auto field_ref = op::get<StructTag, field_ordinal<I>>(t);
-  if (next.isAllMask()) {
-    op::clear_field<type::get_field_tag<StructTag, field_ordinal<I>>>(
-        field_ref, t);
-    return;
-  }
-  if constexpr (apache::thrift::detail::is_optional_field_ref<
-                    decltype(field_ref)>::value) {
-    if (!field_ref.has_value()) {
+  bool isValid = true;
+  type::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
+    if (!isValid) { // short circuit
       return;
     }
-  }
-  // Need to clear the struct object.
-  using FieldType = field_native_type<StructTag, I>;
-  if constexpr (is_thrift_struct_v<FieldType>) {
-    clear_fields(next, field_ref.value(), get_ordinal_sequence<FieldType>{});
-  }
+    using OrdinalTag = decltype(fieldOrdinalTag);
+    MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
+    if (next.isAllMask() || next.isNoneMask()) {
+      return;
+    }
+    // Check if the field is a thrift struct type. It uses native_type
+    // as we don't support adapted struct fields in field mask.
+    using FieldType = type::get_field_native_type<StructTag, OrdinalTag>;
+    if constexpr (is_thrift_struct_v<FieldType>) {
+      // Need to validate the struct type.
+      isValid &= detail::validate_fields<type::struct_t<FieldType>>(next);
+      return;
+    }
+    isValid = false;
+  });
+  return isValid;
 }
 
-template <typename T, size_t... I>
-bool copy_fields(MaskRef ref, const T& src, T& dst, std::index_sequence<I...>) {
-  // This does not short circuit as it has to process all fields.
-  return (... | copy_field<T, I + 1>(ref, src, dst));
+template <typename T>
+void ensure_fields(MaskRef ref, T& t) {
+  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+    using StructTag = type::struct_t<T>;
+    using OrdinalTag = decltype(fieldOrdinalTag);
+    MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
+    if (next.isNoneMask()) {
+      return;
+    }
+    auto& field = op::get<StructTag, OrdinalTag>(t).ensure();
+    // Need to ensure the struct object.
+    using FieldType = type::get_field_native_type<StructTag, OrdinalTag>;
+    if constexpr (is_thrift_struct_v<FieldType>) {
+      return ensure_fields(next, field);
+    }
+  });
 }
 
-template <typename T, size_t I>
-bool copy_field(MaskRef ref, const T& src, T& dst) {
-  using StructTag = type::struct_t<T>;
-  MaskRef next = ref.get(type::get_field_id<StructTag, field_ordinal<I>>());
-  // Id doesn't exist in field mask, skip.
-  if (next.isNoneMask()) {
-    return false;
-  }
-  // TODO(aoka): Support smart pointers and thrift box references.
-  auto src_ref = op::get<StructTag, field_ordinal<I>>(src);
-  auto dst_ref = op::get<StructTag, field_ordinal<I>>(dst);
-  // Field ref has a value unless it is optional ref and not set.
-  bool srcHasValue = true;
-  bool dstHasValue = true;
-  if constexpr (apache::thrift::detail::is_optional_field_ref<
-                    decltype(src_ref)>::value) {
-    srcHasValue = src_ref.has_value();
-    dstHasValue = dst_ref.has_value();
-  }
-  if (!srcHasValue && !dstHasValue) { // skip
-    return false;
-  }
-  // Id that we want to copy.
-  if (next.isAllMask()) {
-    if (srcHasValue) {
-      dst_ref.copy_from(src_ref);
-      return true;
-    } else {
-      op::clear_field<type::get_field_tag<StructTag, field_ordinal<I>>>(
-          dst_ref, dst);
-      return false;
+template <typename T>
+void clear_fields(MaskRef ref, T& t) {
+  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+    using StructTag = type::struct_t<T>;
+    using OrdinalTag = decltype(fieldOrdinalTag);
+    MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
+    if (next.isNoneMask()) {
+      return;
     }
-  }
-  using FieldType = field_native_type<StructTag, I>;
-  if constexpr (is_thrift_struct_v<FieldType>) {
-    // Field doesn't exist in src, so just clear dst with the mask.
-    if (!srcHasValue) {
-      clear_fields(next, dst_ref.value(), get_ordinal_sequence<FieldType>{});
-      return false;
+    // TODO(aoka): Support smart pointers and thrift box references.
+    auto field_ref = op::get<StructTag, OrdinalTag>(t);
+    if (next.isAllMask()) {
+      op::clear_field<type::get_field_tag<StructTag, OrdinalTag>>(field_ref, t);
+      return;
     }
-    // Field exists in both src and dst, so call copy recursively.
-    if (dstHasValue) {
-      return copy_fields(
-          next,
-          src_ref.value(),
-          dst_ref.value(),
-          get_ordinal_sequence<FieldType>{});
+    if constexpr (apache::thrift::detail::is_optional_field_ref<
+                      decltype(field_ref)>::value) {
+      if (!field_ref.has_value()) {
+        return;
+      }
     }
-    // Field only exists in src. Need to construct object only if there's
-    // a field to add.
-    FieldType newObject;
-    bool constructObject = copy_fields(
-        next, src_ref.value(), newObject, get_ordinal_sequence<FieldType>{});
-    if (constructObject) {
-      dst_ref = std::move(newObject);
-      return true;
+    // Need to clear the struct object.
+    using FieldType = type::get_field_native_type<StructTag, OrdinalTag>;
+    if constexpr (is_thrift_struct_v<FieldType>) {
+      clear_fields(next, field_ref.value());
     }
-  }
-  return false;
+  });
+}
+
+// Returns true if it copied a field from src to dst.
+template <typename T>
+bool copy_fields(MaskRef ref, const T& src, T& dst) {
+  bool copied = false;
+  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+    using StructTag = type::struct_t<T>;
+    using OrdinalTag = decltype(fieldOrdinalTag);
+    MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
+    // Id doesn't exist in field mask, skip.
+    if (next.isNoneMask()) {
+      return;
+    }
+    // TODO(aoka): Support smart pointers and thrift box references.
+    auto src_ref = op::get<StructTag, OrdinalTag>(src);
+    auto dst_ref = op::get<StructTag, OrdinalTag>(dst);
+    // Field ref has a value unless it is optional ref and not set.
+    bool srcHasValue = true;
+    bool dstHasValue = true;
+    if constexpr (apache::thrift::detail::is_optional_field_ref<
+                      decltype(src_ref)>::value) {
+      srcHasValue = src_ref.has_value();
+      dstHasValue = dst_ref.has_value();
+    }
+    if (!srcHasValue && !dstHasValue) { // skip
+      return;
+    }
+    // Id that we want to copy.
+    if (next.isAllMask()) {
+      if (srcHasValue) {
+        dst_ref.copy_from(src_ref);
+        copied = true;
+      } else {
+        op::clear_field<type::get_field_tag<StructTag, OrdinalTag>>(
+            dst_ref, dst);
+      }
+      return;
+    }
+    using FieldType = type::get_field_native_type<StructTag, OrdinalTag>;
+    if constexpr (is_thrift_struct_v<FieldType>) {
+      // Field doesn't exist in src, so just clear dst with the mask.
+      if (!srcHasValue) {
+        clear_fields(next, dst_ref.value());
+        return;
+      }
+      // Field exists in both src and dst, so call copy recursively.
+      if (dstHasValue) {
+        copied |= copy_fields(next, src_ref.value(), dst_ref.value());
+        return;
+      }
+      // Field only exists in src. Need to construct object only if there's
+      // a field to add.
+      FieldType newObject;
+      bool constructObject = copy_fields(next, src_ref.value(), newObject);
+      if (constructObject) {
+        dst_ref = std::move(newObject);
+        copied = true;
+      }
+    }
+  });
+  return copied;
 }
 
 } // namespace detail
@@ -267,8 +256,7 @@ bool is_compatible_with(const Mask& mask) {
   if (ref.isAllMask() || ref.isNoneMask()) {
     return true;
   }
-  return detail::validate_fields<type::struct_t<T>>(
-      ref, detail::get_ordinal_sequence<T>{});
+  return detail::validate_fields<type::struct_t<T>>(ref);
 }
 
 // Ensures that the masked fields have value in the thrift struct.
@@ -278,8 +266,7 @@ template <typename T>
 void ensure(const Mask& mask, T& t) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::errorIfNotCompatible<T>(mask);
-  return detail::ensure_fields(
-      detail::MaskRef{mask, false}, t, detail::get_ordinal_sequence<T>{});
+  return detail::ensure_fields(detail::MaskRef{mask, false}, t);
 }
 
 // Clears masked fields in the thrift struct.
@@ -289,22 +276,17 @@ template <typename T>
 void clear(const Mask& mask, T& t) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::errorIfNotCompatible<T>(mask);
-  return detail::clear_fields(
-      detail::MaskRef{mask, false}, t, detail::get_ordinal_sequence<T>{});
+  return detail::clear_fields(detail::MaskRef{mask, false}, t);
 }
 
 // Copys masked fields from one thrift struct to another.
 // If the masked field doesn't exist in src, the field in dst will be removed.
 // Throws a runtime exception if the mask and objects are incompatible.
-template <class T>
+template <typename T>
 void copy(const Mask& mask, const T& src, T& dst) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
   detail::errorIfNotCompatible<T>(mask);
-  detail::copy_fields(
-      detail::MaskRef{mask, false},
-      src,
-      dst,
-      detail::get_ordinal_sequence<T>{});
+  detail::copy_fields(detail::MaskRef{mask, false}, src, dst);
 }
 
 // Logical operators that can construct a new mask

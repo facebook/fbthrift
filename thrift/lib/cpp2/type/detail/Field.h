@@ -104,6 +104,14 @@ struct MakeVoid {
   using apply = void;
 };
 
+template <size_t... I, typename F>
+void for_each_ordinal_impl(F f, std::index_sequence<I...>) {
+  // This doesn't use fold expression (from C++17) as this file is used in
+  // C++14 environment as well.
+  auto unused = {(f(field_ordinal<I + 1>()), 0)...};
+  static_cast<void>(unused);
+}
+
 } // namespace detail
 } // namespace type
 } // namespace thrift

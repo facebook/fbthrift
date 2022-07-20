@@ -75,6 +75,13 @@ FOLLY_INLINE_VARIABLE constexpr FieldId get_field_id_v =
 template <class Tag, class T>
 using get_field_native_type = native_type<get_field_tag<Tag, T>>;
 
+// It calls the given function with field_ordinal<1> to field_ordinal<N>.
+template <typename StructTag, typename F>
+void for_each_ordinal(F f) {
+  detail::for_each_ordinal_impl(
+      f, std::make_integer_sequence<size_t, type::field_size_v<StructTag>>{});
+}
+
 } // namespace type
 } // namespace thrift
 } // namespace apache
