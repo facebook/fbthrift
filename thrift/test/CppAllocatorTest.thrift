@@ -40,6 +40,27 @@ struct AlwaysThrowParent {
   1: AlwaysThrowChild (cpp.use_allocator) child;
 } (cpp.allocator = "::ScopedAlwaysThrowAlloc<>")
 
+struct ChildPmr {
+  1: list<i32> (cpp.use_allocator, cpp.template = "pmr::vector") aa_list;
+  2: set<i32> (cpp.use_allocator, cpp.template = "pmr::set") aa_set;
+  3: map<i32, i32> (cpp.use_allocator, cpp.template = "pmr::map") aa_map;
+  4: string (cpp.use_allocator, cpp.type = "pmr::string") aa_string;
+  5: i32 not_a_container;
+  6: list<i32> not_aa_list;
+  7: set<i32> not_aa_set;
+  8: map<i32, i32> not_aa_map;
+  9: string not_aa_string;
+} (cpp.allocator = "PmrByteAlloc")
+
+struct ParentPmr {
+  1: ChildPmr (cpp.use_allocator) child;
+  2: list<ChildPmr> (
+    cpp.use_allocator,
+    cpp.template = "pmr::vector",
+  ) aa_child_list;
+  3: list<ChildPmr> not_aa_child_list;
+} (cpp.allocator = "PmrByteAlloc")
+
 struct AAStruct {
   1: i32 foo;
 } (cpp.allocator = "::ScopedStatefulAlloc<>")
@@ -52,6 +73,18 @@ struct YesAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo (cpp.name = "bar");
 } (cpp.allocator = "::ScopedStatefulAlloc<>", cpp.allocator_via = "bar")
 
+struct AAStructPmr {
+  1: i32 foo;
+} (cpp.allocator = "PmrByteAlloc")
+
+struct NoAllocatorViaPmr {
+  1: AAStructPmr (cpp.use_allocator) foo;
+} (cpp.allocator = "PmrByteAlloc")
+
+struct YesAllocatorViaPmr {
+  1: AAStructPmr (cpp.use_allocator) foo (cpp.name = "bar");
+} (cpp.allocator = "PmrByteAlloc", cpp.allocator_via = "bar")
+
 struct HasContainerFields {
   1: list<i32> (
     cpp.use_allocator,
@@ -63,6 +96,12 @@ struct HasContainerFields {
     cpp.template = "::StatefulAllocMap",
   ) aa_map;
 } (cpp.allocator = "::ScopedStatefulAlloc<>")
+
+struct HasContainerFieldsPmr {
+  1: list<i32> (cpp.use_allocator, cpp.template = "pmr::vector") aa_list;
+  2: set<i32> (cpp.use_allocator, cpp.template = "pmr::set") aa_set;
+  3: map<i32, i32> (cpp.use_allocator, cpp.template = "pmr::map") aa_map;
+} (cpp.allocator = "PmrByteAlloc")
 
 typedef map<i32, i32> (
   cpp.use_allocator,
@@ -92,6 +131,29 @@ struct HasNestedContainerFields {
   1: StatefulAllocMapMap aa_map_of_map;
   2: StatefulAllocMapSet aa_map_of_set;
 } (cpp.allocator = "::ScopedStatefulAlloc<>")
+
+typedef map<i32, i32> (cpp.use_allocator, cpp.template = "pmr::map") PmrIntMap
+
+struct UsesTypedefPmr {
+  1: PmrIntMap aa_map;
+} (cpp.allocator = "PmrByteAlloc", cpp.allocator_via = "aa_map")
+
+typedef map<i32, PmrIntMap> (
+  cpp.use_allocator,
+  cpp.template = "pmr::map",
+) PmrMapMap
+
+typedef set<i32> (cpp.use_allocator, cpp.template = "pmr::set") PmrIntSet
+
+typedef map<i32, PmrIntSet> (
+  cpp.use_allocator,
+  cpp.template = "pmr::map",
+) PmrMapSet
+
+struct HasNestedContainerFieldsPmr {
+  1: PmrMapMap aa_map_of_map;
+  2: PmrMapSet aa_map_of_set;
+} (cpp.allocator = "PmrByteAlloc")
 
 struct HasSortedUniqueConstructibleFields {
   1: set<i32> (
@@ -123,6 +185,38 @@ struct CountingParent {
   ) aa_child_list;
   2: list<CountingChild> not_aa_child_list;
 } (cpp.allocator = "::ScopedCountingAlloc<>")
+
+struct PropagateAllAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateAllAlloc")
+
+struct PropagateNoneAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateNoneAlloc")
+
+struct PropagateOnlyCopyAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateOnlyCopyAlloc")
+
+struct PropagateOnlyMoveAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateOnlyMoveAlloc")
+
+struct PropagateOnlySwapAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateOnlySwapAlloc")
+
+struct PropagateCopyMoveAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateCopyMoveAlloc")
+
+struct PropagateCopySwapAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateCopySwapAlloc")
+
+struct PropagateMoveSwapAllocStruct {
+  1: i32 foo;
+} (cpp.allocator = "::PropagateMoveSwapAlloc")
 
 struct AlwaysThrowCppRefChild {
   1: i32 value1;

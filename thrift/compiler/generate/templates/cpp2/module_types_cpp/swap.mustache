@@ -31,6 +31,11 @@ void swap(Struct& a, Struct& b) {
 <%#struct:isset_fields?%>
   swap(a.__isset, b.__isset);
 <%/struct:isset_fields?%>
+<%#struct:cpp_allocator%>
+<%^struct:cpp_allocator_via%>
+  ::apache::thrift::detail::swap_allocators(a.__fbthrift_alloc, b.__fbthrift_alloc);
+<%/struct:cpp_allocator_via%>
+<%/struct:cpp_allocator%>
 <%^struct:fields?%>
   (void)a;
   (void)b;
