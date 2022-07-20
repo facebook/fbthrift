@@ -1,7 +1,7 @@
 ---
 state: draft
 created: 07-18-2022
-updated: 07-19-2022
+updated: 07-20-2022
 ---
 
 # Rocket Protocol
@@ -83,6 +83,40 @@ With an already established connection, the client must send a [REQUEST_STREAM](
     - RPC kind (SINGLE_REQUEST_STREAMING_RESPONSE)
 - Thrift serialized arguments from [Interface Protocol](interface.md)
 
+### Initial Response
+
+The initial response for a stream is distinct from [streaming responses](#stream-responses) and it must be sent from the server even if there is no initial response type specified in the IDL. The initial response should be sent using the same format as a regular [Request-Response response](#request-response) with the distinction that the Complete flag must only be set if the payload contains an exception.
+
+### Stream Responses
+
+Once a stream has been established, the server can send stream payloads to the client as long as it has credits remaining. Sending a stream payload must consume one credit on the server. To send a stream payload to the client, the server must send a [PAYLOAD](https://rsocket.io/about/protocol/#payload-frame-0x0a) frame of the following format:
+
+- Frame size (24 bit unsigned integer indicating the length of the *entire* frame)
+- Stream ID (32 bits)
+    - The stream ID of the existing stream on which you would like to send the payload
+- Frame type (6 bits)
+    - Must be PAYLOAD (0x0A)
+- Flags (10 bits)
+    - Metadata flag must be set
+    - Next flag must be set
+    - Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
+- Metadata size (24 bit unsigned integer indicating the length of metadata)
+- Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+- Thrift serialized result from [Interface Protocol](interface.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+
+### Stream Completion
+
+The server must complete a stream once it is done sending all stream payloads. Completing a stream does not require credits on the server. To send a stream completion to the client, the server must send a [PAYLOAD](https://rsocket.io/about/protocol/#payload-frame-0x0a) frame of the following format:
+
+- Frame size (24 bit unsigned integer indicating the length of the *entire* frame)
+- Stream ID (32 bits)
+    - The stream ID of the existing stream you would like to complete
+- Frame type (6 bits)
+    - Must be PAYLOAD (0x0A)
+- Flags (10 bits)
+    - Complete flag must be set
+- Empty metadata and data
+
 ### Credit Mechanism
 
 Thrift streaming is flow-controlled using the [RSocket credit mechanism](https://rsocket.io/about/protocol/#reactive-streams-semantics). When a client requests a stream, it sends the server an initial number of credits in the request. The client can send more credits to the server by sending a [REQUEST_N](https://rsocket.io/about/protocol/#request_n-frame-0x08) frame of the following format:
@@ -113,8 +147,8 @@ Thrift streaming supports cancellation from the client. Upon receiving the cance
 
 TODO:
 
-- Initial response sequence
-- Stream responses
+- Initial exception
+- Stream exception
 
 ## Sink
 
