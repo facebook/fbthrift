@@ -36,7 +36,6 @@ const std::string& type_resolver::get_type_name(
     const t_field& field, const t_structured& parent) {
   const t_type& type = *field.type();
 
-  // TODO (dokwon): Support composing adapters.
   if (auto* annotation = field.find_structured_annotation_or_null(
           "facebook.com/thrift/annotation/cpp/Adapter")) {
     if (auto* adaptedType =

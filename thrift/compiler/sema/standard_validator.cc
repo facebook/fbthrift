@@ -187,8 +187,6 @@ class adapter_checker {
       return;
     }
 
-    // TODO (dokwon): Do not allow composing unstructured adapter annotation on
-    // typedef as well.
     if (const auto* typedf = dynamic_cast<const t_typedef*>(&node)) {
       if (t_typedef::get_first_structured_annotation_or_null(
               &*typedf->type(), structured_adapter_annotation)) {
