@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import typing
-from enum import Enum
 
 from thrift.python.adapter import Adapter
 from thrift.python.exceptions import GeneratedError
@@ -102,7 +101,6 @@ class StructMeta(type, typing.Iterable[typing.Tuple[str, typing.Any]]): ...
 class UnionMeta(type): ...
 
 class Enum:
-    # pyre-ignore[35]: overriding the value field declared in enum
     value: int
     @staticmethod
     def __get_thrift_name__() -> str: ...
