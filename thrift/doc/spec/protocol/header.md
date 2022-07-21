@@ -1,7 +1,5 @@
 ---
 state: draft
-created: 07-18-2022
-updated: 07-18-2022
 ---
 
 # Header Protocol

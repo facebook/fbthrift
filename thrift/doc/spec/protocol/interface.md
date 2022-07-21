@@ -1,7 +1,5 @@
 ---
 state: draft
-created: 07-14-2022
-updated: 07-20-2022
 ---
 
 # Interface Protocol
