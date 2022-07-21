@@ -37,7 +37,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseFoo::TerseFoo(const TerseFoo&) = default;
 TerseFoo& TerseFoo::operator=(const TerseFoo&) = default;
-TerseFoo::TerseFoo(TerseFoo&& other) noexcept  :
+TerseFoo::TerseFoo(FOLLY_MAYBE_UNUSED TerseFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -86,10 +86,8 @@ bool TerseFoo::__fbthrift_is_empty() const {
  !(!this->__fbthrift_field_field4.empty());
 }
 
-bool TerseFoo::operator==(const TerseFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseFoo::operator==(FOLLY_MAYBE_UNUSED const TerseFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -105,10 +103,8 @@ bool TerseFoo::operator==(const TerseFoo& rhs) const {
   return true;
 }
 
-bool TerseFoo::operator<(const TerseFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseFoo::operator<(FOLLY_MAYBE_UNUSED const TerseFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -157,7 +153,7 @@ const ::std::vector<::std::int32_t>& TerseFoo::get_field4() const& {
 }
 
 
-void swap(TerseFoo& a, TerseFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED TerseFoo& a, FOLLY_MAYBE_UNUSED TerseFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());
@@ -231,7 +227,7 @@ TerseLazyFoo& TerseLazyFoo::operator=(const TerseLazyFoo& other) {
   return *this;
 }
 
-TerseLazyFoo::TerseLazyFoo(TerseLazyFoo&& other) noexcept  :
+TerseLazyFoo::TerseLazyFoo(FOLLY_MAYBE_UNUSED TerseLazyFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -383,10 +379,8 @@ bool TerseLazyFoo::__fbthrift_is_empty() const {
  !(!this->__fbthrift_field_field4.empty());
 }
 
-bool TerseLazyFoo::operator==(const TerseLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseLazyFoo::operator==(FOLLY_MAYBE_UNUSED const TerseLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -406,10 +400,8 @@ bool TerseLazyFoo::operator==(const TerseLazyFoo& rhs) const {
   return true;
 }
 
-bool TerseLazyFoo::operator<(const TerseLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseLazyFoo::operator<(FOLLY_MAYBE_UNUSED const TerseLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -446,7 +438,7 @@ const ::std::vector<::std::int32_t>& TerseLazyFoo::get_field2() const& {
 }
 
 
-void swap(TerseLazyFoo& a, TerseLazyFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED TerseLazyFoo& a, FOLLY_MAYBE_UNUSED TerseLazyFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());
@@ -492,7 +484,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseOptionalFoo::TerseOptionalFoo(const TerseOptionalFoo&) = default;
 TerseOptionalFoo& TerseOptionalFoo::operator=(const TerseOptionalFoo&) = default;
-TerseOptionalFoo::TerseOptionalFoo(TerseOptionalFoo&& other) noexcept  :
+TerseOptionalFoo::TerseOptionalFoo(FOLLY_MAYBE_UNUSED TerseOptionalFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -541,10 +533,8 @@ bool TerseOptionalFoo::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool TerseOptionalFoo::operator==(const TerseOptionalFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseOptionalFoo::operator==(FOLLY_MAYBE_UNUSED const TerseOptionalFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -560,10 +550,8 @@ bool TerseOptionalFoo::operator==(const TerseOptionalFoo& rhs) const {
   return true;
 }
 
-bool TerseOptionalFoo::operator<(const TerseOptionalFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseOptionalFoo::operator<(FOLLY_MAYBE_UNUSED const TerseOptionalFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -612,7 +600,7 @@ const ::std::vector<::std::int32_t>* TerseOptionalFoo::get_field4() const& {
 }
 
 
-void swap(TerseOptionalFoo& a, TerseOptionalFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED TerseOptionalFoo& a, FOLLY_MAYBE_UNUSED TerseOptionalFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -686,7 +674,7 @@ TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(const TerseOptionalLazyFoo
   return *this;
 }
 
-TerseOptionalLazyFoo::TerseOptionalLazyFoo(TerseOptionalLazyFoo&& other) noexcept  :
+TerseOptionalLazyFoo::TerseOptionalLazyFoo(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -838,10 +826,8 @@ bool TerseOptionalLazyFoo::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool TerseOptionalLazyFoo::operator==(const TerseOptionalLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseOptionalLazyFoo::operator==(FOLLY_MAYBE_UNUSED const TerseOptionalLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -861,10 +847,8 @@ bool TerseOptionalLazyFoo::operator==(const TerseOptionalLazyFoo& rhs) const {
   return true;
 }
 
-bool TerseOptionalLazyFoo::operator<(const TerseOptionalLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TerseOptionalLazyFoo::operator<(FOLLY_MAYBE_UNUSED const TerseOptionalLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -901,7 +885,7 @@ const ::std::vector<::std::int32_t>* TerseOptionalLazyFoo::get_field2() const& {
 }
 
 
-void swap(TerseOptionalLazyFoo& a, TerseOptionalLazyFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo& a, FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());

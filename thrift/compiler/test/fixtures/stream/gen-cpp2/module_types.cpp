@@ -43,7 +43,7 @@ FooStreamEx::FooStreamEx() {
 
 FooStreamEx::~FooStreamEx() {}
 
-FooStreamEx::FooStreamEx(FooStreamEx&& other) noexcept { (void)other; }
+FooStreamEx::FooStreamEx(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept {}
 FooStreamEx& FooStreamEx::operator=(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept {
     return *this;
 }
@@ -63,25 +63,19 @@ bool FooStreamEx::__fbthrift_is_empty() const {
   return true;
 }
 
-bool FooStreamEx::operator==(const FooStreamEx& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FooStreamEx::operator==(FOLLY_MAYBE_UNUSED const FooStreamEx& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool FooStreamEx::operator<(const FooStreamEx& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FooStreamEx::operator<(FOLLY_MAYBE_UNUSED const FooStreamEx& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(FooStreamEx& a, FooStreamEx& b) {
+void swap(FOLLY_MAYBE_UNUSED FooStreamEx& a, FOLLY_MAYBE_UNUSED FooStreamEx& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void FooStreamEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -127,7 +121,7 @@ FooEx::FooEx() {
 
 FooEx::~FooEx() {}
 
-FooEx::FooEx(FooEx&& other) noexcept { (void)other; }
+FooEx::FooEx(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {}
 FooEx& FooEx::operator=(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {
     return *this;
 }
@@ -147,25 +141,19 @@ bool FooEx::__fbthrift_is_empty() const {
   return true;
 }
 
-bool FooEx::operator==(const FooEx& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FooEx::operator==(FOLLY_MAYBE_UNUSED const FooEx& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool FooEx::operator<(const FooEx& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FooEx::operator<(FOLLY_MAYBE_UNUSED const FooEx& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(FooEx& a, FooEx& b) {
+void swap(FOLLY_MAYBE_UNUSED FooEx& a, FOLLY_MAYBE_UNUSED FooEx& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void FooEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

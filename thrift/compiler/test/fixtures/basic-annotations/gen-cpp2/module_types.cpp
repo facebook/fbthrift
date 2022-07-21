@@ -63,7 +63,7 @@ namespace cpp2 {
 
 MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(const MyStructNestedAnnotation&) = default;
-MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
+MyStructNestedAnnotation::MyStructNestedAnnotation(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept  :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
@@ -94,20 +94,16 @@ bool MyStructNestedAnnotation::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructNestedAnnotation::operator==(const MyStructNestedAnnotation& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructNestedAnnotation::operator==(FOLLY_MAYBE_UNUSED const MyStructNestedAnnotation& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
 }
 
-bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructNestedAnnotation::operator<(FOLLY_MAYBE_UNUSED const MyStructNestedAnnotation& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return lhs.name_ref() < rhs.name_ref();
   }
@@ -115,7 +111,7 @@ bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) co
 }
 
 
-void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation& a, FOLLY_MAYBE_UNUSED MyStructNestedAnnotation& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.__isset, b.__isset);
@@ -194,10 +190,8 @@ bool YourUnion::operator==(const YourUnion& rhs) const {
   }
 }
 
-bool YourUnion::operator<(const YourUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool YourUnion::operator<(FOLLY_MAYBE_UNUSED const YourUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -258,7 +252,7 @@ YourException::YourException() {
 
 YourException::~YourException() {}
 
-YourException::YourException(YourException&& other) noexcept { (void)other; }
+YourException::YourException(FOLLY_MAYBE_UNUSED YourException&& other) noexcept {}
 YourException& YourException::operator=(FOLLY_MAYBE_UNUSED YourException&& other) noexcept {
     return *this;
 }
@@ -278,25 +272,19 @@ bool YourException::__fbthrift_is_empty() const {
   return true;
 }
 
-bool YourException::operator==(const YourException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool YourException::operator==(FOLLY_MAYBE_UNUSED const YourException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool YourException::operator<(const YourException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool YourException::operator<(FOLLY_MAYBE_UNUSED const YourException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(YourException& a, YourException& b) {
+void swap(FOLLY_MAYBE_UNUSED YourException& a, FOLLY_MAYBE_UNUSED YourException& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void YourException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -377,7 +365,7 @@ YourStruct::YourStruct() :
 
 YourStruct::~YourStruct() {}
 
-YourStruct::YourStruct(YourStruct&& other) noexcept  :
+YourStruct::YourStruct(FOLLY_MAYBE_UNUSED YourStruct&& other) noexcept  :
     __fbthrift_field_majorVer(std::move(other.__fbthrift_field_majorVer)),
     __fbthrift_field_package(std::move(other.__fbthrift_field_package)),
     __fbthrift_field_annotation_with_quote(std::move(other.__fbthrift_field_annotation_with_quote)),
@@ -449,10 +437,8 @@ bool YourStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool YourStruct::operator==(const YourStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool YourStruct::operator==(FOLLY_MAYBE_UNUSED const YourStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
     return false;
   }
@@ -483,10 +469,8 @@ bool YourStruct::operator==(const YourStruct& rhs) const {
   return true;
 }
 
-bool YourStruct::operator<(const YourStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool YourStruct::operator<(FOLLY_MAYBE_UNUSED const YourStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
     return lhs.majorVer_ref() < rhs.majorVer_ref();
   }
@@ -526,7 +510,7 @@ std::deque<std::string> YourStruct::get_cpp_type_annotation() && {
 }
 
 
-void swap(YourStruct& a, YourStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED YourStruct& a, FOLLY_MAYBE_UNUSED YourStruct& b) {
   using ::std::swap;
   swap(a.majorVer_ref().value(), b.majorVer_ref().value());
   swap(a.package_ref().value(), b.package_ref().value());
@@ -584,7 +568,7 @@ namespace cpp2 {
 
 SecretStruct::SecretStruct(const SecretStruct&) = default;
 SecretStruct& SecretStruct::operator=(const SecretStruct&) = default;
-SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
+SecretStruct::SecretStruct(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept  :
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __fbthrift_field_password(std::move(other.__fbthrift_field_password)),
     __isset(other.__isset) {
@@ -620,10 +604,8 @@ bool SecretStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SecretStruct::operator==(const SecretStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SecretStruct::operator==(FOLLY_MAYBE_UNUSED const SecretStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
@@ -633,10 +615,8 @@ bool SecretStruct::operator==(const SecretStruct& rhs) const {
   return true;
 }
 
-bool SecretStruct::operator<(const SecretStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SecretStruct::operator<(FOLLY_MAYBE_UNUSED const SecretStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.id_ref() == rhs.id_ref())) {
     return lhs.id_ref() < rhs.id_ref();
   }
@@ -647,7 +627,7 @@ bool SecretStruct::operator<(const SecretStruct& rhs) const {
 }
 
 
-void swap(SecretStruct& a, SecretStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED SecretStruct& a, FOLLY_MAYBE_UNUSED SecretStruct& b) {
   using ::std::swap;
   swap(a.id_ref().value(), b.id_ref().value());
   swap(a.password_ref().value(), b.password_ref().value());

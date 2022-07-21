@@ -53,20 +53,16 @@ bool Foo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return lhs.bar_ref() < rhs.bar_ref();
   }
@@ -74,7 +70,7 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.bar_ref().value(), b.bar_ref().value());
 }

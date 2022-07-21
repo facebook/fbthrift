@@ -37,7 +37,7 @@ namespace cpp2 {
 
 InitialResponse::InitialResponse(const InitialResponse&) = default;
 InitialResponse& InitialResponse::operator=(const InitialResponse&) = default;
-InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
+InitialResponse::InitialResponse(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept  :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -68,20 +68,16 @@ bool InitialResponse::__fbthrift_is_empty() const {
   return false;
 }
 
-bool InitialResponse::operator==(const InitialResponse& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InitialResponse::operator==(FOLLY_MAYBE_UNUSED const InitialResponse& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
 }
 
-bool InitialResponse::operator<(const InitialResponse& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InitialResponse::operator<(FOLLY_MAYBE_UNUSED const InitialResponse& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return lhs.content_ref() < rhs.content_ref();
   }
@@ -89,7 +85,7 @@ bool InitialResponse::operator<(const InitialResponse& rhs) const {
 }
 
 
-void swap(InitialResponse& a, InitialResponse& b) {
+void swap(FOLLY_MAYBE_UNUSED InitialResponse& a, FOLLY_MAYBE_UNUSED InitialResponse& b) {
   using ::std::swap;
   swap(a.content_ref().value(), b.content_ref().value());
   swap(a.__isset, b.__isset);
@@ -132,7 +128,7 @@ namespace cpp2 {
 
 FinalResponse::FinalResponse(const FinalResponse&) = default;
 FinalResponse& FinalResponse::operator=(const FinalResponse&) = default;
-FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
+FinalResponse::FinalResponse(FOLLY_MAYBE_UNUSED FinalResponse&& other) noexcept  :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -163,20 +159,16 @@ bool FinalResponse::__fbthrift_is_empty() const {
   return false;
 }
 
-bool FinalResponse::operator==(const FinalResponse& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FinalResponse::operator==(FOLLY_MAYBE_UNUSED const FinalResponse& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
 }
 
-bool FinalResponse::operator<(const FinalResponse& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FinalResponse::operator<(FOLLY_MAYBE_UNUSED const FinalResponse& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return lhs.content_ref() < rhs.content_ref();
   }
@@ -184,7 +176,7 @@ bool FinalResponse::operator<(const FinalResponse& rhs) const {
 }
 
 
-void swap(FinalResponse& a, FinalResponse& b) {
+void swap(FOLLY_MAYBE_UNUSED FinalResponse& a, FOLLY_MAYBE_UNUSED FinalResponse& b) {
   using ::std::swap;
   swap(a.content_ref().value(), b.content_ref().value());
   swap(a.__isset, b.__isset);
@@ -227,7 +219,7 @@ namespace cpp2 {
 
 SinkPayload::SinkPayload(const SinkPayload&) = default;
 SinkPayload& SinkPayload::operator=(const SinkPayload&) = default;
-SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
+SinkPayload::SinkPayload(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept  :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -258,20 +250,16 @@ bool SinkPayload::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SinkPayload::operator==(const SinkPayload& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkPayload::operator==(FOLLY_MAYBE_UNUSED const SinkPayload& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
 }
 
-bool SinkPayload::operator<(const SinkPayload& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkPayload::operator<(FOLLY_MAYBE_UNUSED const SinkPayload& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.content_ref() == rhs.content_ref())) {
     return lhs.content_ref() < rhs.content_ref();
   }
@@ -279,7 +267,7 @@ bool SinkPayload::operator<(const SinkPayload& rhs) const {
 }
 
 
-void swap(SinkPayload& a, SinkPayload& b) {
+void swap(FOLLY_MAYBE_UNUSED SinkPayload& a, FOLLY_MAYBE_UNUSED SinkPayload& b) {
   using ::std::swap;
   swap(a.content_ref().value(), b.content_ref().value());
   swap(a.__isset, b.__isset);
@@ -322,7 +310,7 @@ namespace cpp2 {
 
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(const CompatibleWithKeywordSink&) = default;
-CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
+CompatibleWithKeywordSink::CompatibleWithKeywordSink(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept  :
     __fbthrift_field_sink(std::move(other.__fbthrift_field_sink)),
     __isset(other.__isset) {
 }
@@ -353,20 +341,16 @@ bool CompatibleWithKeywordSink::__fbthrift_is_empty() const {
   return false;
 }
 
-bool CompatibleWithKeywordSink::operator==(const CompatibleWithKeywordSink& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CompatibleWithKeywordSink::operator==(FOLLY_MAYBE_UNUSED const CompatibleWithKeywordSink& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.sink_ref() == rhs.sink_ref())) {
     return false;
   }
   return true;
 }
 
-bool CompatibleWithKeywordSink::operator<(const CompatibleWithKeywordSink& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CompatibleWithKeywordSink::operator<(FOLLY_MAYBE_UNUSED const CompatibleWithKeywordSink& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.sink_ref() == rhs.sink_ref())) {
     return lhs.sink_ref() < rhs.sink_ref();
   }
@@ -374,7 +358,7 @@ bool CompatibleWithKeywordSink::operator<(const CompatibleWithKeywordSink& rhs) 
 }
 
 
-void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b) {
+void swap(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink& a, FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink& b) {
   using ::std::swap;
   swap(a.sink_ref().value(), b.sink_ref().value());
   swap(a.__isset, b.__isset);
@@ -423,7 +407,7 @@ InitialException::InitialException() {
 
 InitialException::~InitialException() {}
 
-InitialException::InitialException(InitialException&& other) noexcept  :
+InitialException::InitialException(FOLLY_MAYBE_UNUSED InitialException&& other) noexcept  :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
@@ -454,20 +438,16 @@ bool InitialException::__fbthrift_is_empty() const {
   return false;
 }
 
-bool InitialException::operator==(const InitialException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InitialException::operator==(FOLLY_MAYBE_UNUSED const InitialException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
 }
 
-bool InitialException::operator<(const InitialException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InitialException::operator<(FOLLY_MAYBE_UNUSED const InitialException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return lhs.reason_ref() < rhs.reason_ref();
   }
@@ -475,7 +455,7 @@ bool InitialException::operator<(const InitialException& rhs) const {
 }
 
 
-void swap(InitialException& a, InitialException& b) {
+void swap(FOLLY_MAYBE_UNUSED InitialException& a, FOLLY_MAYBE_UNUSED InitialException& b) {
   using ::std::swap;
   swap(a.reason_ref().value(), b.reason_ref().value());
   swap(a.__isset, b.__isset);
@@ -524,7 +504,7 @@ SinkException1::SinkException1() {
 
 SinkException1::~SinkException1() {}
 
-SinkException1::SinkException1(SinkException1&& other) noexcept  :
+SinkException1::SinkException1(FOLLY_MAYBE_UNUSED SinkException1&& other) noexcept  :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
@@ -555,20 +535,16 @@ bool SinkException1::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SinkException1::operator==(const SinkException1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkException1::operator==(FOLLY_MAYBE_UNUSED const SinkException1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
 }
 
-bool SinkException1::operator<(const SinkException1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkException1::operator<(FOLLY_MAYBE_UNUSED const SinkException1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return lhs.reason_ref() < rhs.reason_ref();
   }
@@ -576,7 +552,7 @@ bool SinkException1::operator<(const SinkException1& rhs) const {
 }
 
 
-void swap(SinkException1& a, SinkException1& b) {
+void swap(FOLLY_MAYBE_UNUSED SinkException1& a, FOLLY_MAYBE_UNUSED SinkException1& b) {
   using ::std::swap;
   swap(a.reason_ref().value(), b.reason_ref().value());
   swap(a.__isset, b.__isset);
@@ -626,7 +602,7 @@ SinkException2::SinkException2() :
 
 SinkException2::~SinkException2() {}
 
-SinkException2::SinkException2(SinkException2&& other) noexcept  :
+SinkException2::SinkException2(FOLLY_MAYBE_UNUSED SinkException2&& other) noexcept  :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
@@ -657,20 +633,16 @@ bool SinkException2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SinkException2::operator==(const SinkException2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkException2::operator==(FOLLY_MAYBE_UNUSED const SinkException2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
 }
 
-bool SinkException2::operator<(const SinkException2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SinkException2::operator<(FOLLY_MAYBE_UNUSED const SinkException2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return lhs.reason_ref() < rhs.reason_ref();
   }
@@ -678,7 +650,7 @@ bool SinkException2::operator<(const SinkException2& rhs) const {
 }
 
 
-void swap(SinkException2& a, SinkException2& b) {
+void swap(FOLLY_MAYBE_UNUSED SinkException2& a, FOLLY_MAYBE_UNUSED SinkException2& b) {
   using ::std::swap;
   swap(a.reason_ref().value(), b.reason_ref().value());
   swap(a.__isset, b.__isset);

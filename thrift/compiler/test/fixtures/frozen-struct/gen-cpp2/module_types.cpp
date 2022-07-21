@@ -70,7 +70,7 @@ ModuleA::ModuleA() :
 
 ModuleA::~ModuleA() {}
 
-ModuleA::ModuleA(ModuleA&& other) noexcept  :
+ModuleA::ModuleA(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept  :
     __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
     __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
     __fbthrift_field_listField(std::move(other.__fbthrift_field_listField)),
@@ -126,10 +126,8 @@ bool ModuleA::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ModuleA::operator==(const ModuleA& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ModuleA::operator==(FOLLY_MAYBE_UNUSED const ModuleA& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return false;
   }
@@ -151,10 +149,8 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
   return true;
 }
 
-bool ModuleA::operator<(const ModuleA& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ModuleA::operator<(FOLLY_MAYBE_UNUSED const ModuleA& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return lhs.i32Field_ref() < rhs.i32Field_ref();
   }
@@ -209,7 +205,7 @@ const ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
 }
 
 
-void swap(ModuleA& a, ModuleA& b) {
+void swap(FOLLY_MAYBE_UNUSED ModuleA& a, FOLLY_MAYBE_UNUSED ModuleA& b) {
   using ::std::swap;
   swap(a.i32Field_ref().value(), b.i32Field_ref().value());
   swap(a.strField_ref().value(), b.strField_ref().value());
@@ -290,10 +286,8 @@ bool ModuleB::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ModuleB::operator==(const ModuleB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ModuleB::operator==(FOLLY_MAYBE_UNUSED const ModuleB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return false;
   }
@@ -303,10 +297,8 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
   return true;
 }
 
-bool ModuleB::operator<(const ModuleB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ModuleB::operator<(FOLLY_MAYBE_UNUSED const ModuleB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return lhs.i32Field_ref() < rhs.i32Field_ref();
   }
@@ -317,7 +309,7 @@ bool ModuleB::operator<(const ModuleB& rhs) const {
 }
 
 
-void swap(ModuleB& a, ModuleB& b) {
+void swap(FOLLY_MAYBE_UNUSED ModuleB& a, FOLLY_MAYBE_UNUSED ModuleB& b) {
   using ::std::swap;
   swap(a.i32Field_ref().value(), b.i32Field_ref().value());
   swap(a.inclEnumB_ref().value(), b.inclEnumB_ref().value());
@@ -380,20 +372,16 @@ bool DirectlyAdapted::__fbthrift_is_empty() const {
   return false;
 }
 
-bool DirectlyAdapted::operator==(const DirectlyAdapted& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool DirectlyAdapted::operator==(FOLLY_MAYBE_UNUSED const DirectlyAdapted& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
   return true;
 }
 
-bool DirectlyAdapted::operator<(const DirectlyAdapted& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool DirectlyAdapted::operator<(FOLLY_MAYBE_UNUSED const DirectlyAdapted& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return lhs.field_ref() < rhs.field_ref();
   }
@@ -401,7 +389,7 @@ bool DirectlyAdapted::operator<(const DirectlyAdapted& rhs) const {
 }
 
 
-void swap(DirectlyAdapted& a, DirectlyAdapted& b) {
+void swap(FOLLY_MAYBE_UNUSED DirectlyAdapted& a, FOLLY_MAYBE_UNUSED DirectlyAdapted& b) {
   using ::std::swap;
   swap(a.field_ref().value(), b.field_ref().value());
   swap(a.__isset, b.__isset);

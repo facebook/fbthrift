@@ -55,20 +55,16 @@ bool B::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool B::operator==(const B& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool B::operator==(FOLLY_MAYBE_UNUSED const B& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
   return true;
 }
 
-bool B::operator<(const B& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool B::operator<(FOLLY_MAYBE_UNUSED const B& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return lhs.field_ref() < rhs.field_ref();
   }
@@ -76,7 +72,7 @@ bool B::operator<(const B& rhs) const {
 }
 
 
-void swap(B& a, B& b) {
+void swap(FOLLY_MAYBE_UNUSED B& a, FOLLY_MAYBE_UNUSED B& b) {
   using ::std::swap;
   swap(a.field_ref().value_unchecked(), b.field_ref().value_unchecked());
   swap(a.__isset, b.__isset);
@@ -119,7 +115,7 @@ namespace apache { namespace thrift { namespace test {
 
 A::A(const A&) = default;
 A& A::operator=(const A&) = default;
-A::A(A&& other) noexcept  :
+A::A(FOLLY_MAYBE_UNUSED A&& other) noexcept  :
     __fbthrift_field_some_map(std::move(other.__fbthrift_field_some_map)),
     __isset(other.__isset) {
 }
@@ -150,10 +146,8 @@ bool A::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool A::operator==(const A& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool A::operator==(FOLLY_MAYBE_UNUSED const A& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.some_map_ref() == rhs.some_map_ref())) {
     return false;
   }
@@ -169,7 +163,7 @@ std::unordered_map<::std::int32_t, ::apache::thrift::test::B>* A::get_some_map()
 }
 
 
-void swap(A& a, A& b) {
+void swap(FOLLY_MAYBE_UNUSED A& a, FOLLY_MAYBE_UNUSED A& b) {
   using ::std::swap;
   swap(a.some_map_ref().value_unchecked(), b.some_map_ref().value_unchecked());
   swap(a.__isset, b.__isset);

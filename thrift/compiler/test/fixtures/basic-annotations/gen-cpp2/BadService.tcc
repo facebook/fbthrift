@@ -14,7 +14,7 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> GoodService_bar_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> GoodService_bar_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void GoodServiceAsyncProcessor::setUpAndProcess_bar(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void GoodServiceAsyncProcessor::setUpAndProcess_bar(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -70,12 +70,11 @@ apache::thrift::SerializedResponse GoodServiceAsyncProcessor::return_bar(apache:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void GoodServiceAsyncProcessor::throw_wrapped_bar(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void GoodServiceAsyncProcessor::throw_wrapped_bar(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "bar");
     return;
@@ -86,7 +85,7 @@ void GoodServiceAsyncProcessor::throw_wrapped_bar(apache::thrift::ResponseChanne
 typedef apache::thrift::ThriftPresult<false> GoodService_BadInteraction_foo_pargs;
 typedef apache::thrift::ThriftPresult<true> GoodService_BadInteraction_foo_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_, "BadInteraction")) {
     return;
   }
@@ -142,12 +141,11 @@ apache::thrift::SerializedResponse GoodServiceAsyncProcessor::return_BadInteract
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void GoodServiceAsyncProcessor::throw_wrapped_BadInteraction_foo(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void GoodServiceAsyncProcessor::throw_wrapped_BadInteraction_foo(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "BadInteraction.foo");
     return;

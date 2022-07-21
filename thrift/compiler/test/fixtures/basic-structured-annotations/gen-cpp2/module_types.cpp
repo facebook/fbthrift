@@ -67,7 +67,7 @@ const char* structured_annotation_inline::__fbthrift_thrift_uri() {
 
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
 structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
-structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
+structured_annotation_inline::structured_annotation_inline(FOLLY_MAYBE_UNUSED structured_annotation_inline&& other) noexcept  :
     __fbthrift_field_count(std::move(other.__fbthrift_field_count)),
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
@@ -103,10 +103,8 @@ bool structured_annotation_inline::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structured_annotation_inline::operator==(const structured_annotation_inline& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_inline::operator==(FOLLY_MAYBE_UNUSED const structured_annotation_inline& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.count_ref() == rhs.count_ref())) {
     return false;
   }
@@ -116,10 +114,8 @@ bool structured_annotation_inline::operator==(const structured_annotation_inline
   return true;
 }
 
-bool structured_annotation_inline::operator<(const structured_annotation_inline& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_inline::operator<(FOLLY_MAYBE_UNUSED const structured_annotation_inline& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.count_ref() == rhs.count_ref())) {
     return lhs.count_ref() < rhs.count_ref();
   }
@@ -130,7 +126,7 @@ bool structured_annotation_inline::operator<(const structured_annotation_inline&
 }
 
 
-void swap(structured_annotation_inline& a, structured_annotation_inline& b) {
+void swap(FOLLY_MAYBE_UNUSED structured_annotation_inline& a, FOLLY_MAYBE_UNUSED structured_annotation_inline& b) {
   using ::std::swap;
   swap(a.count_ref().value(), b.count_ref().value());
   swap(a.name_ref().value(), b.name_ref().value());
@@ -178,7 +174,7 @@ const char* structured_annotation_with_default::__fbthrift_thrift_uri() {
 
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
 structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
-structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
+structured_annotation_with_default::structured_annotation_with_default(FOLLY_MAYBE_UNUSED structured_annotation_with_default&& other) noexcept  :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
@@ -209,20 +205,16 @@ bool structured_annotation_with_default::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structured_annotation_with_default::operator==(const structured_annotation_with_default& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_with_default::operator==(FOLLY_MAYBE_UNUSED const structured_annotation_with_default& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
 }
 
-bool structured_annotation_with_default::operator<(const structured_annotation_with_default& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_with_default::operator<(FOLLY_MAYBE_UNUSED const structured_annotation_with_default& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return lhs.name_ref() < rhs.name_ref();
   }
@@ -230,7 +222,7 @@ bool structured_annotation_with_default::operator<(const structured_annotation_w
 }
 
 
-void swap(structured_annotation_with_default& a, structured_annotation_with_default& b) {
+void swap(FOLLY_MAYBE_UNUSED structured_annotation_with_default& a, FOLLY_MAYBE_UNUSED structured_annotation_with_default& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.__isset, b.__isset);
@@ -295,20 +287,16 @@ bool structured_annotation_forward::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structured_annotation_forward::operator==(const structured_annotation_forward& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_forward::operator==(FOLLY_MAYBE_UNUSED const structured_annotation_forward& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.count_ref() == rhs.count_ref())) {
     return false;
   }
   return true;
 }
 
-bool structured_annotation_forward::operator<(const structured_annotation_forward& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_forward::operator<(FOLLY_MAYBE_UNUSED const structured_annotation_forward& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.count_ref() == rhs.count_ref())) {
     return lhs.count_ref() < rhs.count_ref();
   }
@@ -316,7 +304,7 @@ bool structured_annotation_forward::operator<(const structured_annotation_forwar
 }
 
 
-void swap(structured_annotation_forward& a, structured_annotation_forward& b) {
+void swap(FOLLY_MAYBE_UNUSED structured_annotation_forward& a, FOLLY_MAYBE_UNUSED structured_annotation_forward& b) {
   using ::std::swap;
   swap(a.count_ref().value(), b.count_ref().value());
   swap(a.__isset, b.__isset);
@@ -363,7 +351,7 @@ const char* structured_annotation_recursive::__fbthrift_thrift_uri() {
 
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
 structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
-structured_annotation_recursive::structured_annotation_recursive(structured_annotation_recursive&& other) noexcept  :
+structured_annotation_recursive::structured_annotation_recursive(FOLLY_MAYBE_UNUSED structured_annotation_recursive&& other) noexcept  :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_recurse(std::move(other.__fbthrift_field_recurse)),
     __fbthrift_field_forward(std::move(other.__fbthrift_field_forward)),
@@ -404,10 +392,8 @@ bool structured_annotation_recursive::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structured_annotation_recursive::operator==(const structured_annotation_recursive& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_recursive::operator==(FOLLY_MAYBE_UNUSED const structured_annotation_recursive& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
@@ -420,10 +406,8 @@ bool structured_annotation_recursive::operator==(const structured_annotation_rec
   return true;
 }
 
-bool structured_annotation_recursive::operator<(const structured_annotation_recursive& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_recursive::operator<(FOLLY_MAYBE_UNUSED const structured_annotation_recursive& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return lhs.name_ref() < rhs.name_ref();
   }
@@ -453,7 +437,7 @@ const ::test::fixtures::basic-structured-annotations::structured_annotation_forw
 }
 
 
-void swap(structured_annotation_recursive& a, structured_annotation_recursive& b) {
+void swap(FOLLY_MAYBE_UNUSED structured_annotation_recursive& a, FOLLY_MAYBE_UNUSED structured_annotation_recursive& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.recurse_ref().value(), b.recurse_ref().value());
@@ -514,7 +498,7 @@ const char* structured_annotation_nested::__fbthrift_thrift_uri() {
 
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
 structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
-structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
+structured_annotation_nested::structured_annotation_nested(FOLLY_MAYBE_UNUSED structured_annotation_nested&& other) noexcept  :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_nest(std::move(other.__fbthrift_field_nest)),
     __isset(other.__isset) {
@@ -550,10 +534,8 @@ bool structured_annotation_nested::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structured_annotation_nested::operator==(const structured_annotation_nested& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_nested::operator==(FOLLY_MAYBE_UNUSED const structured_annotation_nested& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
@@ -563,10 +545,8 @@ bool structured_annotation_nested::operator==(const structured_annotation_nested
   return true;
 }
 
-bool structured_annotation_nested::operator<(const structured_annotation_nested& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structured_annotation_nested::operator<(FOLLY_MAYBE_UNUSED const structured_annotation_nested& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.name_ref() == rhs.name_ref())) {
     return lhs.name_ref() < rhs.name_ref();
   }
@@ -585,7 +565,7 @@ const ::test::fixtures::basic-structured-annotations::structured_annotation_with
 }
 
 
-void swap(structured_annotation_nested& a, structured_annotation_nested& b) {
+void swap(FOLLY_MAYBE_UNUSED structured_annotation_nested& a, FOLLY_MAYBE_UNUSED structured_annotation_nested& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.nest_ref().value(), b.nest_ref().value());
@@ -639,7 +619,7 @@ const char* MyStruct::__fbthrift_thrift_uri() {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_annotated_field(std::move(other.__fbthrift_field_annotated_field)),
     __fbthrift_field_annotated_type(std::move(other.__fbthrift_field_annotated_type)),
     __fbthrift_field_annotated_recursive(std::move(other.__fbthrift_field_annotated_recursive)),
@@ -685,10 +665,8 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.annotated_field_ref() == rhs.annotated_field_ref())) {
     return false;
   }
@@ -704,10 +682,8 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.annotated_field_ref() == rhs.annotated_field_ref())) {
     return lhs.annotated_field_ref() < rhs.annotated_field_ref();
   }
@@ -724,7 +700,7 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.annotated_field_ref().value(), b.annotated_field_ref().value());
   swap(a.annotated_type_ref().value(), b.annotated_type_ref().value());
@@ -780,7 +756,7 @@ MyException::MyException() {
 
 MyException::~MyException() {}
 
-MyException::MyException(MyException&& other) noexcept  :
+MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept  :
     __fbthrift_field_context(std::move(other.__fbthrift_field_context)),
     __isset(other.__isset) {
 }
@@ -811,20 +787,16 @@ bool MyException::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyException::operator==(const MyException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyException::operator==(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.context_ref() == rhs.context_ref())) {
     return false;
   }
   return true;
 }
 
-bool MyException::operator<(const MyException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyException::operator<(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.context_ref() == rhs.context_ref())) {
     return lhs.context_ref() < rhs.context_ref();
   }
@@ -832,7 +804,7 @@ bool MyException::operator<(const MyException& rhs) const {
 }
 
 
-void swap(MyException& a, MyException& b) {
+void swap(FOLLY_MAYBE_UNUSED MyException& a, FOLLY_MAYBE_UNUSED MyException& b) {
   using ::std::swap;
   swap(a.context_ref().value(), b.context_ref().value());
   swap(a.__isset, b.__isset);
@@ -924,10 +896,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
-bool MyUnion::operator<(const MyUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnion::operator<(FOLLY_MAYBE_UNUSED const MyUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }

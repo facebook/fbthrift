@@ -41,7 +41,7 @@ const char* MyData::__fbthrift_thrift_uri() {
 
 MyData::MyData(const MyData&) = default;
 MyData& MyData::operator=(const MyData&) = default;
-MyData::MyData(MyData&& other) noexcept  :
+MyData::MyData(FOLLY_MAYBE_UNUSED MyData&& other) noexcept  :
     __fbthrift_field_data1(std::move(other.__fbthrift_field_data1)),
     __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)) {
 }
@@ -75,10 +75,8 @@ bool MyData::__fbthrift_is_empty() const {
  ::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_data2);
 }
 
-bool MyData::operator==(const MyData& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyData::operator==(FOLLY_MAYBE_UNUSED const MyData& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.data1_ref() == rhs.data1_ref())) {
     return false;
   }
@@ -88,10 +86,8 @@ bool MyData::operator==(const MyData& rhs) const {
   return true;
 }
 
-bool MyData::operator<(const MyData& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyData::operator<(FOLLY_MAYBE_UNUSED const MyData& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.data1_ref() == rhs.data1_ref())) {
     return lhs.data1_ref() < rhs.data1_ref();
   }
@@ -102,7 +98,7 @@ bool MyData::operator<(const MyData& rhs) const {
 }
 
 
-void swap(MyData& a, MyData& b) {
+void swap(FOLLY_MAYBE_UNUSED MyData& a, FOLLY_MAYBE_UNUSED MyData& b) {
   using ::std::swap;
   swap(a.data1_ref().value(), b.data1_ref().value());
   swap(a.data2_ref().value(), b.data2_ref().value());
@@ -191,10 +187,8 @@ bool InnerUnion::operator==(const InnerUnion& rhs) const {
   }
 }
 
-bool InnerUnion::operator<(const InnerUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InnerUnion::operator<(FOLLY_MAYBE_UNUSED const InnerUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -304,10 +298,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
-bool MyUnion::operator<(const MyUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnion::operator<(FOLLY_MAYBE_UNUSED const MyUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -396,7 +388,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_boolVal(std::move(other.__fbthrift_field_boolVal)),
     __fbthrift_field_byteVal(std::move(other.__fbthrift_field_byteVal)),
     __fbthrift_field_i16Val(std::move(other.__fbthrift_field_i16Val)),
@@ -565,10 +557,8 @@ bool MyStruct::__fbthrift_is_empty() const {
  ::apache::thrift::op::isEmpty<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>>(this->__fbthrift_field_unionVal);
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.boolVal_ref() == rhs.boolVal_ref())) {
     return false;
   }
@@ -644,10 +634,8 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.boolVal_ref() == rhs.boolVal_ref())) {
     return lhs.boolVal_ref() < rhs.boolVal_ref();
   }
@@ -772,7 +760,7 @@ const ::test::fixtures::patch::MyUnion& MyStruct::get_unionVal() const& {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.boolVal_ref().value(), b.boolVal_ref().value());
   swap(a.byteVal_ref().value(), b.byteVal_ref().value());
@@ -873,7 +861,7 @@ MyDataPatchStruct& MyDataPatchStruct::operator=(const MyDataPatchStruct& other) 
   return *this;
 }
 
-MyDataPatchStruct::MyDataPatchStruct(MyDataPatchStruct&& other) noexcept  :
+MyDataPatchStruct::MyDataPatchStruct(FOLLY_MAYBE_UNUSED MyDataPatchStruct&& other) noexcept  :
     __fbthrift_field_data1(std::move(other.__fbthrift_field_data1)),
     __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)),
     __isset(other.__isset) {
@@ -913,10 +901,8 @@ bool MyDataPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyDataPatchStruct::operator==(const MyDataPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataPatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyDataPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_data1, rhs.__fbthrift_field_data1)) {
     return false;
   }
@@ -926,10 +912,8 @@ bool MyDataPatchStruct::operator==(const MyDataPatchStruct& rhs) const {
   return true;
 }
 
-bool MyDataPatchStruct::operator<(const MyDataPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyDataPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_data1, rhs.__fbthrift_field_data1)) {
     return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_data1, rhs.__fbthrift_field_data1);
   }
@@ -940,7 +924,7 @@ bool MyDataPatchStruct::operator<(const MyDataPatchStruct& rhs) const {
 }
 
 
-void swap(MyDataPatchStruct& a, MyDataPatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyDataPatchStruct& a, FOLLY_MAYBE_UNUSED MyDataPatchStruct& b) {
   using ::std::swap;
   swap(a.data1_ref().value(), b.data1_ref().value());
   swap(a.data2_ref().value(), b.data2_ref().value());
@@ -1013,7 +997,7 @@ MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(const MyDataValuePatch
   return *this;
 }
 
-MyDataValuePatchStruct::MyDataValuePatchStruct(MyDataValuePatchStruct&& other) noexcept  :
+MyDataValuePatchStruct::MyDataValuePatchStruct(FOLLY_MAYBE_UNUSED MyDataValuePatchStruct&& other) noexcept  :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
@@ -1055,10 +1039,8 @@ bool MyDataValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyDataValuePatchStruct::operator==(const MyDataValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyDataValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.assign_ref(), rhs.assign_ref()))) {
     return false;
   }
@@ -1071,10 +1053,8 @@ bool MyDataValuePatchStruct::operator==(const MyDataValuePatchStruct& rhs) const
   return true;
 }
 
-bool MyDataValuePatchStruct::operator<(const MyDataValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyDataValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.assign_ref(), rhs.assign_ref()))) {
     return ::apache::thrift::detail::pointer_less(lhs.assign_ref(), rhs.assign_ref());
   }
@@ -1088,7 +1068,7 @@ bool MyDataValuePatchStruct::operator<(const MyDataValuePatchStruct& rhs) const 
 }
 
 
-void swap(MyDataValuePatchStruct& a, MyDataValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyDataValuePatchStruct& a, FOLLY_MAYBE_UNUSED MyDataValuePatchStruct& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
   swap(a.clear_ref().value(), b.clear_ref().value());
@@ -1165,7 +1145,7 @@ OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(const 
   return *this;
 }
 
-OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(OptionalMyDataValuePatchStruct&& other) noexcept  :
+OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyDataValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1214,10 +1194,8 @@ bool OptionalMyDataValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyDataValuePatchStruct::operator==(const OptionalMyDataValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyDataValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyDataValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -1233,10 +1211,8 @@ bool OptionalMyDataValuePatchStruct::operator==(const OptionalMyDataValuePatchSt
   return true;
 }
 
-bool OptionalMyDataValuePatchStruct::operator<(const OptionalMyDataValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyDataValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyDataValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -1253,7 +1229,7 @@ bool OptionalMyDataValuePatchStruct::operator<(const OptionalMyDataValuePatchStr
 }
 
 
-void swap(OptionalMyDataValuePatchStruct& a, OptionalMyDataValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyDataValuePatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyDataValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -1331,7 +1307,7 @@ InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(const InnerUnionPatchStr
   return *this;
 }
 
-InnerUnionPatchStruct::InnerUnionPatchStruct(InnerUnionPatchStruct&& other) noexcept  :
+InnerUnionPatchStruct::InnerUnionPatchStruct(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct&& other) noexcept  :
     __fbthrift_field_innerOption(std::move(other.__fbthrift_field_innerOption)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
@@ -1364,20 +1340,16 @@ bool InnerUnionPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool InnerUnionPatchStruct::operator==(const InnerUnionPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InnerUnionPatchStruct::operator==(FOLLY_MAYBE_UNUSED const InnerUnionPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption)) {
     return false;
   }
   return true;
 }
 
-bool InnerUnionPatchStruct::operator<(const InnerUnionPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InnerUnionPatchStruct::operator<(FOLLY_MAYBE_UNUSED const InnerUnionPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption)) {
     return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::AssignPatchAdapter>(lhs.__fbthrift_field_innerOption, rhs.__fbthrift_field_innerOption);
   }
@@ -1385,7 +1357,7 @@ bool InnerUnionPatchStruct::operator<(const InnerUnionPatchStruct& rhs) const {
 }
 
 
-void swap(InnerUnionPatchStruct& a, InnerUnionPatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct& a, FOLLY_MAYBE_UNUSED InnerUnionPatchStruct& b) {
   using ::std::swap;
   swap(a.innerOption_ref().value(), b.innerOption_ref().value());
   swap(a.__isset, b.__isset);
@@ -1455,7 +1427,7 @@ InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(const InnerUni
   return *this;
 }
 
-InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(InnerUnionValuePatchStruct&& other) noexcept  :
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1505,10 +1477,8 @@ bool InnerUnionValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool InnerUnionValuePatchStruct::operator==(const InnerUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InnerUnionValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const InnerUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -1524,10 +1494,8 @@ bool InnerUnionValuePatchStruct::operator==(const InnerUnionValuePatchStruct& rh
   return true;
 }
 
-bool InnerUnionValuePatchStruct::operator<(const InnerUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool InnerUnionValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const InnerUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -1552,7 +1520,7 @@ const ::test::fixtures::patch::InnerUnion& InnerUnionValuePatchStruct::get_ensur
 }
 
 
-void swap(InnerUnionValuePatchStruct& a, InnerUnionValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct& a, FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -1636,7 +1604,7 @@ OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator
   return *this;
 }
 
-OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(OptionalInnerUnionValuePatchStruct&& other) noexcept  :
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1685,10 +1653,8 @@ bool OptionalInnerUnionValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalInnerUnionValuePatchStruct::operator==(const OptionalInnerUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalInnerUnionValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalInnerUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -1704,10 +1670,8 @@ bool OptionalInnerUnionValuePatchStruct::operator==(const OptionalInnerUnionValu
   return true;
 }
 
-bool OptionalInnerUnionValuePatchStruct::operator<(const OptionalInnerUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalInnerUnionValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalInnerUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -1724,7 +1688,7 @@ bool OptionalInnerUnionValuePatchStruct::operator<(const OptionalInnerUnionValue
 }
 
 
-void swap(OptionalInnerUnionValuePatchStruct& a, OptionalInnerUnionValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct& a, FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -1808,7 +1772,7 @@ MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& othe
   return *this;
 }
 
-MyUnionPatchStruct::MyUnionPatchStruct(MyUnionPatchStruct&& other) noexcept  :
+MyUnionPatchStruct::MyUnionPatchStruct(FOLLY_MAYBE_UNUSED MyUnionPatchStruct&& other) noexcept  :
     __fbthrift_field_option1(std::move(other.__fbthrift_field_option1)),
     __fbthrift_field_option2(std::move(other.__fbthrift_field_option2)),
     __fbthrift_field_option3(std::move(other.__fbthrift_field_option3)),
@@ -1855,10 +1819,8 @@ bool MyUnionPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyUnionPatchStruct::operator==(const MyUnionPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnionPatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyUnionPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_option1, rhs.__fbthrift_field_option1)) {
     return false;
   }
@@ -1871,10 +1833,8 @@ bool MyUnionPatchStruct::operator==(const MyUnionPatchStruct& rhs) const {
   return true;
 }
 
-bool MyUnionPatchStruct::operator<(const MyUnionPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnionPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyUnionPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_option1, rhs.__fbthrift_field_option1)) {
     return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::StringPatchAdapter>(lhs.__fbthrift_field_option1, rhs.__fbthrift_field_option1);
   }
@@ -1888,7 +1848,7 @@ bool MyUnionPatchStruct::operator<(const MyUnionPatchStruct& rhs) const {
 }
 
 
-void swap(MyUnionPatchStruct& a, MyUnionPatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyUnionPatchStruct& a, FOLLY_MAYBE_UNUSED MyUnionPatchStruct& b) {
   using ::std::swap;
   swap(a.option1_ref().value(), b.option1_ref().value());
   swap(a.option2_ref().value(), b.option2_ref().value());
@@ -1972,7 +1932,7 @@ MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(const MyUnionValuePa
   return *this;
 }
 
-MyUnionValuePatchStruct::MyUnionValuePatchStruct(MyUnionValuePatchStruct&& other) noexcept  :
+MyUnionValuePatchStruct::MyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED MyUnionValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2022,10 +1982,8 @@ bool MyUnionValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyUnionValuePatchStruct::operator==(const MyUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnionValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -2041,10 +1999,8 @@ bool MyUnionValuePatchStruct::operator==(const MyUnionValuePatchStruct& rhs) con
   return true;
 }
 
-bool MyUnionValuePatchStruct::operator<(const MyUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnionValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -2069,7 +2025,7 @@ const ::test::fixtures::patch::MyUnion& MyUnionValuePatchStruct::get_ensure() co
 }
 
 
-void swap(MyUnionValuePatchStruct& a, MyUnionValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyUnionValuePatchStruct& a, FOLLY_MAYBE_UNUSED MyUnionValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -2153,7 +2109,7 @@ OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(cons
   return *this;
 }
 
-OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(OptionalMyUnionValuePatchStruct&& other) noexcept  :
+OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyUnionValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2202,10 +2158,8 @@ bool OptionalMyUnionValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyUnionValuePatchStruct::operator==(const OptionalMyUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyUnionValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -2221,10 +2175,8 @@ bool OptionalMyUnionValuePatchStruct::operator==(const OptionalMyUnionValuePatch
   return true;
 }
 
-bool OptionalMyUnionValuePatchStruct::operator<(const OptionalMyUnionValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyUnionValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyUnionValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -2241,7 +2193,7 @@ bool OptionalMyUnionValuePatchStruct::operator<(const OptionalMyUnionValuePatchS
 }
 
 
-void swap(OptionalMyUnionValuePatchStruct& a, OptionalMyUnionValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyUnionValuePatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyUnionValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -2309,7 +2261,7 @@ const char* MyStructField21PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField21PatchStruct::MyStructField21PatchStruct(const MyStructField21PatchStruct&) = default;
 MyStructField21PatchStruct& MyStructField21PatchStruct::operator=(const MyStructField21PatchStruct&) = default;
-MyStructField21PatchStruct::MyStructField21PatchStruct(MyStructField21PatchStruct&& other) noexcept  :
+MyStructField21PatchStruct::MyStructField21PatchStruct(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct&& other) noexcept  :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_prepend(std::move(other.__fbthrift_field_prepend)),
@@ -2355,10 +2307,8 @@ bool MyStructField21PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructField21PatchStruct::operator==(const MyStructField21PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField21PatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyStructField21PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return false;
   }
@@ -2374,10 +2324,8 @@ bool MyStructField21PatchStruct::operator==(const MyStructField21PatchStruct& rh
   return true;
 }
 
-bool MyStructField21PatchStruct::operator<(const MyStructField21PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField21PatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructField21PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return lhs.assign_ref() < rhs.assign_ref();
   }
@@ -2418,7 +2366,7 @@ const ::std::vector<::std::int16_t>& MyStructField21PatchStruct::get_append() co
 }
 
 
-void swap(MyStructField21PatchStruct& a, MyStructField21PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField21PatchStruct& b) {
   using ::std::swap;
   swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
   swap(a.clear_ref().value(), b.clear_ref().value());
@@ -2485,7 +2433,7 @@ OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(OptionalMyStructField21PatchStruct&& other) noexcept  :
+OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2535,10 +2483,8 @@ bool OptionalMyStructField21PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyStructField21PatchStruct::operator==(const OptionalMyStructField21PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField21PatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyStructField21PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -2554,10 +2500,8 @@ bool OptionalMyStructField21PatchStruct::operator==(const OptionalMyStructField2
   return true;
 }
 
-bool OptionalMyStructField21PatchStruct::operator<(const OptionalMyStructField21PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField21PatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyStructField21PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -2582,7 +2526,7 @@ const ::std::vector<::std::int16_t>* OptionalMyStructField21PatchStruct::get_ens
 }
 
 
-void swap(OptionalMyStructField21PatchStruct& a, OptionalMyStructField21PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -2644,7 +2588,7 @@ const char* MyStructField22PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField22PatchStruct::MyStructField22PatchStruct(const MyStructField22PatchStruct&) = default;
 MyStructField22PatchStruct& MyStructField22PatchStruct::operator=(const MyStructField22PatchStruct&) = default;
-MyStructField22PatchStruct::MyStructField22PatchStruct(MyStructField22PatchStruct&& other) noexcept  :
+MyStructField22PatchStruct::MyStructField22PatchStruct(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct&& other) noexcept  :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_remove(std::move(other.__fbthrift_field_remove)),
@@ -2690,10 +2634,8 @@ bool MyStructField22PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructField22PatchStruct::operator==(const MyStructField22PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField22PatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyStructField22PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return false;
   }
@@ -2709,10 +2651,8 @@ bool MyStructField22PatchStruct::operator==(const MyStructField22PatchStruct& rh
   return true;
 }
 
-bool MyStructField22PatchStruct::operator<(const MyStructField22PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField22PatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructField22PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return lhs.assign_ref() < rhs.assign_ref();
   }
@@ -2753,7 +2693,7 @@ const ::std::set<::std::string>& MyStructField22PatchStruct::get_add() const& {
 }
 
 
-void swap(MyStructField22PatchStruct& a, MyStructField22PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField22PatchStruct& b) {
   using ::std::swap;
   swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
   swap(a.clear_ref().value(), b.clear_ref().value());
@@ -2820,7 +2760,7 @@ OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(OptionalMyStructField22PatchStruct&& other) noexcept  :
+OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2870,10 +2810,8 @@ bool OptionalMyStructField22PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyStructField22PatchStruct::operator==(const OptionalMyStructField22PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField22PatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyStructField22PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -2889,10 +2827,8 @@ bool OptionalMyStructField22PatchStruct::operator==(const OptionalMyStructField2
   return true;
 }
 
-bool OptionalMyStructField22PatchStruct::operator<(const OptionalMyStructField22PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField22PatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyStructField22PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -2917,7 +2853,7 @@ const ::std::set<::std::string>* OptionalMyStructField22PatchStruct::get_ensure(
 }
 
 
-void swap(OptionalMyStructField22PatchStruct& a, OptionalMyStructField22PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -2979,7 +2915,7 @@ const char* MyStructField23PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField23PatchStruct::MyStructField23PatchStruct(const MyStructField23PatchStruct&) = default;
 MyStructField23PatchStruct& MyStructField23PatchStruct::operator=(const MyStructField23PatchStruct&) = default;
-MyStructField23PatchStruct::MyStructField23PatchStruct(MyStructField23PatchStruct&& other) noexcept  :
+MyStructField23PatchStruct::MyStructField23PatchStruct(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct&& other) noexcept  :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_put(std::move(other.__fbthrift_field_put)),
@@ -3020,10 +2956,8 @@ bool MyStructField23PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructField23PatchStruct::operator==(const MyStructField23PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField23PatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyStructField23PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return false;
   }
@@ -3036,10 +2970,8 @@ bool MyStructField23PatchStruct::operator==(const MyStructField23PatchStruct& rh
   return true;
 }
 
-bool MyStructField23PatchStruct::operator<(const MyStructField23PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructField23PatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructField23PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.assign_ref() == rhs.assign_ref())) {
     return lhs.assign_ref() < rhs.assign_ref();
   }
@@ -3069,7 +3001,7 @@ const ::std::map<::std::string, ::std::string>& MyStructField23PatchStruct::get_
 }
 
 
-void swap(MyStructField23PatchStruct& a, MyStructField23PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField23PatchStruct& b) {
   using ::std::swap;
   swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
   swap(a.clear_ref().value(), b.clear_ref().value());
@@ -3135,7 +3067,7 @@ OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(OptionalMyStructField23PatchStruct&& other) noexcept  :
+OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -3185,10 +3117,8 @@ bool OptionalMyStructField23PatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyStructField23PatchStruct::operator==(const OptionalMyStructField23PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField23PatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyStructField23PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -3204,10 +3134,8 @@ bool OptionalMyStructField23PatchStruct::operator==(const OptionalMyStructField2
   return true;
 }
 
-bool OptionalMyStructField23PatchStruct::operator<(const OptionalMyStructField23PatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructField23PatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyStructField23PatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -3232,7 +3160,7 @@ const ::std::map<::std::string, ::std::string>* OptionalMyStructField23PatchStru
 }
 
 
-void swap(OptionalMyStructField23PatchStruct& a, OptionalMyStructField23PatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());
@@ -3373,7 +3301,7 @@ MyStructPatchStruct& MyStructPatchStruct::operator=(const MyStructPatchStruct& o
   return *this;
 }
 
-MyStructPatchStruct::MyStructPatchStruct(MyStructPatchStruct&& other) noexcept  :
+MyStructPatchStruct::MyStructPatchStruct(FOLLY_MAYBE_UNUSED MyStructPatchStruct&& other) noexcept  :
     __fbthrift_field_boolVal(std::move(other.__fbthrift_field_boolVal)),
     __fbthrift_field_byteVal(std::move(other.__fbthrift_field_byteVal)),
     __fbthrift_field_i16Val(std::move(other.__fbthrift_field_i16Val)),
@@ -3567,10 +3495,8 @@ bool MyStructPatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructPatchStruct::operator==(const MyStructPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructPatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyStructPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::BoolPatchAdapter>(lhs.__fbthrift_field_boolVal, rhs.__fbthrift_field_boolVal)) {
     return false;
   }
@@ -3646,10 +3572,8 @@ bool MyStructPatchStruct::operator==(const MyStructPatchStruct& rhs) const {
   return true;
 }
 
-bool MyStructPatchStruct::operator<(const MyStructPatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructPatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (::apache::thrift::adapt_detail::not_equal<::apache::thrift::op::detail::BoolPatchAdapter>(lhs.__fbthrift_field_boolVal, rhs.__fbthrift_field_boolVal)) {
     return ::apache::thrift::adapt_detail::less<::apache::thrift::op::detail::BoolPatchAdapter>(lhs.__fbthrift_field_boolVal, rhs.__fbthrift_field_boolVal);
   }
@@ -3726,7 +3650,7 @@ bool MyStructPatchStruct::operator<(const MyStructPatchStruct& rhs) const {
 }
 
 
-void swap(MyStructPatchStruct& a, MyStructPatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructPatchStruct& a, FOLLY_MAYBE_UNUSED MyStructPatchStruct& b) {
   using ::std::swap;
   swap(a.boolVal_ref().value(), b.boolVal_ref().value());
   swap(a.byteVal_ref().value(), b.byteVal_ref().value());
@@ -3953,7 +3877,7 @@ MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(const MyStructValu
   return *this;
 }
 
-MyStructValuePatchStruct::MyStructValuePatchStruct(MyStructValuePatchStruct&& other) noexcept  :
+MyStructValuePatchStruct::MyStructValuePatchStruct(FOLLY_MAYBE_UNUSED MyStructValuePatchStruct&& other) noexcept  :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
@@ -3995,10 +3919,8 @@ bool MyStructValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructValuePatchStruct::operator==(const MyStructValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const MyStructValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.assign_ref(), rhs.assign_ref()))) {
     return false;
   }
@@ -4011,10 +3933,8 @@ bool MyStructValuePatchStruct::operator==(const MyStructValuePatchStruct& rhs) c
   return true;
 }
 
-bool MyStructValuePatchStruct::operator<(const MyStructValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.assign_ref(), rhs.assign_ref()))) {
     return ::apache::thrift::detail::pointer_less(lhs.assign_ref(), rhs.assign_ref());
   }
@@ -4028,7 +3948,7 @@ bool MyStructValuePatchStruct::operator<(const MyStructValuePatchStruct& rhs) co
 }
 
 
-void swap(MyStructValuePatchStruct& a, MyStructValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructValuePatchStruct& a, FOLLY_MAYBE_UNUSED MyStructValuePatchStruct& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
   swap(a.clear_ref().value(), b.clear_ref().value());
@@ -4105,7 +4025,7 @@ OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(co
   return *this;
 }
 
-OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(OptionalMyStructValuePatchStruct&& other) noexcept  :
+OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructValuePatchStruct&& other) noexcept  :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -4154,10 +4074,8 @@ bool OptionalMyStructValuePatchStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalMyStructValuePatchStruct::operator==(const OptionalMyStructValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructValuePatchStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalMyStructValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return false;
   }
@@ -4173,10 +4091,8 @@ bool OptionalMyStructValuePatchStruct::operator==(const OptionalMyStructValuePat
   return true;
 }
 
-bool OptionalMyStructValuePatchStruct::operator<(const OptionalMyStructValuePatchStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalMyStructValuePatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyStructValuePatchStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.clear_ref() == rhs.clear_ref())) {
     return lhs.clear_ref() < rhs.clear_ref();
   }
@@ -4193,7 +4109,7 @@ bool OptionalMyStructValuePatchStruct::operator<(const OptionalMyStructValuePatc
 }
 
 
-void swap(OptionalMyStructValuePatchStruct& a, OptionalMyStructValuePatchStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalMyStructValuePatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructValuePatchStruct& b) {
   using ::std::swap;
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.patch_ref().value(), b.patch_ref().value());

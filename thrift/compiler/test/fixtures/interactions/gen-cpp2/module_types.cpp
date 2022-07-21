@@ -43,7 +43,7 @@ CustomException::CustomException() {
 
 CustomException::~CustomException() {}
 
-CustomException::CustomException(CustomException&& other) noexcept  :
+CustomException::CustomException(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept  :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }
@@ -74,20 +74,16 @@ bool CustomException::__fbthrift_is_empty() const {
   return false;
 }
 
-bool CustomException::operator==(const CustomException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CustomException::operator==(FOLLY_MAYBE_UNUSED const CustomException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
 }
 
-bool CustomException::operator<(const CustomException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CustomException::operator<(FOLLY_MAYBE_UNUSED const CustomException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
@@ -95,7 +91,7 @@ bool CustomException::operator<(const CustomException& rhs) const {
 }
 
 
-void swap(CustomException& a, CustomException& b) {
+void swap(FOLLY_MAYBE_UNUSED CustomException& a, FOLLY_MAYBE_UNUSED CustomException& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
   swap(a.__isset, b.__isset);

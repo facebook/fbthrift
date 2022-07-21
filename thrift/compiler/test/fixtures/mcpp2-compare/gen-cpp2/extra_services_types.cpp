@@ -61,7 +61,7 @@ containerStruct2::containerStruct2() :
 
 containerStruct2::~containerStruct2() {}
 
-containerStruct2::containerStruct2(containerStruct2&& other) noexcept  :
+containerStruct2::containerStruct2(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_req_fieldA(std::move(other.__fbthrift_field_req_fieldA)),
     __fbthrift_field_opt_fieldA(std::move(other.__fbthrift_field_opt_fieldA)),
@@ -148,10 +148,8 @@ bool containerStruct2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool containerStruct2::operator==(const containerStruct2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool containerStruct2::operator==(FOLLY_MAYBE_UNUSED const containerStruct2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -194,10 +192,8 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   return true;
 }
 
-bool containerStruct2::operator<(const containerStruct2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool containerStruct2::operator<(FOLLY_MAYBE_UNUSED const containerStruct2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -289,7 +285,7 @@ const ::std::set<::std::int32_t>* containerStruct2::get_opt_fieldC() const& {
 }
 
 
-void swap(containerStruct2& a, containerStruct2& b) {
+void swap(FOLLY_MAYBE_UNUSED containerStruct2& a, FOLLY_MAYBE_UNUSED containerStruct2& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.req_fieldA_ref().value(), b.req_fieldA_ref().value());

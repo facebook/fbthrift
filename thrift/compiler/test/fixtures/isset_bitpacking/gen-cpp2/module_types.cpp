@@ -37,7 +37,7 @@ namespace cpp2 {
 
 Default::Default(const Default&) = default;
 Default& Default::operator=(const Default&) = default;
-Default::Default(Default&& other) noexcept  :
+Default::Default(FOLLY_MAYBE_UNUSED Default&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -86,10 +86,8 @@ bool Default::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool Default::operator==(const Default& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Default::operator==(FOLLY_MAYBE_UNUSED const Default& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -105,10 +103,8 @@ bool Default::operator==(const Default& rhs) const {
   return true;
 }
 
-bool Default::operator<(const Default& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Default::operator<(FOLLY_MAYBE_UNUSED const Default& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -125,7 +121,7 @@ bool Default::operator<(const Default& rhs) const {
 }
 
 
-void swap(Default& a, Default& b) {
+void swap(FOLLY_MAYBE_UNUSED Default& a, FOLLY_MAYBE_UNUSED Default& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -171,7 +167,7 @@ namespace cpp2 {
 
 NonAtomic::NonAtomic(const NonAtomic&) = default;
 NonAtomic& NonAtomic::operator=(const NonAtomic&) = default;
-NonAtomic::NonAtomic(NonAtomic&& other) noexcept  :
+NonAtomic::NonAtomic(FOLLY_MAYBE_UNUSED NonAtomic&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -220,10 +216,8 @@ bool NonAtomic::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool NonAtomic::operator==(const NonAtomic& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NonAtomic::operator==(FOLLY_MAYBE_UNUSED const NonAtomic& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -239,10 +233,8 @@ bool NonAtomic::operator==(const NonAtomic& rhs) const {
   return true;
 }
 
-bool NonAtomic::operator<(const NonAtomic& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NonAtomic::operator<(FOLLY_MAYBE_UNUSED const NonAtomic& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -259,7 +251,7 @@ bool NonAtomic::operator<(const NonAtomic& rhs) const {
 }
 
 
-void swap(NonAtomic& a, NonAtomic& b) {
+void swap(FOLLY_MAYBE_UNUSED NonAtomic& a, FOLLY_MAYBE_UNUSED NonAtomic& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -305,7 +297,7 @@ namespace cpp2 {
 
 Atomic::Atomic(const Atomic&) = default;
 Atomic& Atomic::operator=(const Atomic&) = default;
-Atomic::Atomic(Atomic&& other) noexcept  :
+Atomic::Atomic(FOLLY_MAYBE_UNUSED Atomic&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -354,10 +346,8 @@ bool Atomic::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool Atomic::operator==(const Atomic& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Atomic::operator==(FOLLY_MAYBE_UNUSED const Atomic& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -373,10 +363,8 @@ bool Atomic::operator==(const Atomic& rhs) const {
   return true;
 }
 
-bool Atomic::operator<(const Atomic& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Atomic::operator<(FOLLY_MAYBE_UNUSED const Atomic& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -393,7 +381,7 @@ bool Atomic::operator<(const Atomic& rhs) const {
 }
 
 
-void swap(Atomic& a, Atomic& b) {
+void swap(FOLLY_MAYBE_UNUSED Atomic& a, FOLLY_MAYBE_UNUSED Atomic& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -439,7 +427,7 @@ namespace cpp2 {
 
 AtomicFoo::AtomicFoo(const AtomicFoo&) = default;
 AtomicFoo& AtomicFoo::operator=(const AtomicFoo&) = default;
-AtomicFoo::AtomicFoo(AtomicFoo&& other) noexcept  :
+AtomicFoo::AtomicFoo(FOLLY_MAYBE_UNUSED AtomicFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -488,10 +476,8 @@ bool AtomicFoo::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool AtomicFoo::operator==(const AtomicFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AtomicFoo::operator==(FOLLY_MAYBE_UNUSED const AtomicFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -507,10 +493,8 @@ bool AtomicFoo::operator==(const AtomicFoo& rhs) const {
   return true;
 }
 
-bool AtomicFoo::operator<(const AtomicFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AtomicFoo::operator<(FOLLY_MAYBE_UNUSED const AtomicFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -527,7 +511,7 @@ bool AtomicFoo::operator<(const AtomicFoo& rhs) const {
 }
 
 
-void swap(AtomicFoo& a, AtomicFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED AtomicFoo& a, FOLLY_MAYBE_UNUSED AtomicFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());

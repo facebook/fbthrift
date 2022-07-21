@@ -106,25 +106,19 @@ bool MyDataItem::__fbthrift_is_empty() const {
   return true;
 }
 
-bool MyDataItem::operator==(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataItem::operator==(FOLLY_MAYBE_UNUSED const MyDataItem& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool MyDataItem::operator<(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyDataItem::operator<(FOLLY_MAYBE_UNUSED const MyDataItem& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(MyDataItem& a, MyDataItem& b) {
+void swap(FOLLY_MAYBE_UNUSED MyDataItem& a, FOLLY_MAYBE_UNUSED MyDataItem& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -179,7 +173,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
     __fbthrift_field_MyDataField(std::move(other.__fbthrift_field_MyDataField)),
@@ -249,10 +243,8 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
@@ -283,10 +275,8 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
@@ -334,7 +324,7 @@ const ::std::set<float>& MyStruct::get_floatSet() const& {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
   swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
@@ -450,10 +440,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
-bool MyUnion::operator<(const MyUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnion::operator<(FOLLY_MAYBE_UNUSED const MyUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -548,20 +536,16 @@ bool ReservedKeyword::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ReservedKeyword::operator==(const ReservedKeyword& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ReservedKeyword::operator==(FOLLY_MAYBE_UNUSED const ReservedKeyword& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reserved_field_ref() == rhs.reserved_field_ref())) {
     return false;
   }
   return true;
 }
 
-bool ReservedKeyword::operator<(const ReservedKeyword& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ReservedKeyword::operator<(FOLLY_MAYBE_UNUSED const ReservedKeyword& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reserved_field_ref() == rhs.reserved_field_ref())) {
     return lhs.reserved_field_ref() < rhs.reserved_field_ref();
   }
@@ -569,7 +553,7 @@ bool ReservedKeyword::operator<(const ReservedKeyword& rhs) const {
 }
 
 
-void swap(ReservedKeyword& a, ReservedKeyword& b) {
+void swap(FOLLY_MAYBE_UNUSED ReservedKeyword& a, FOLLY_MAYBE_UNUSED ReservedKeyword& b) {
   using ::std::swap;
   swap(a.reserved_field_ref().value(), b.reserved_field_ref().value());
   swap(a.__isset, b.__isset);
@@ -656,10 +640,8 @@ bool UnionToBeRenamed::operator==(const UnionToBeRenamed& rhs) const {
   }
 }
 
-bool UnionToBeRenamed::operator<(const UnionToBeRenamed& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool UnionToBeRenamed::operator<(FOLLY_MAYBE_UNUSED const UnionToBeRenamed& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }

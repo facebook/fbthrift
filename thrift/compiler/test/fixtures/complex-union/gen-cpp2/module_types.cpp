@@ -102,10 +102,8 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   }
 }
 
-bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexUnion::operator<(FOLLY_MAYBE_UNUSED const ComplexUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -215,10 +213,8 @@ bool ListUnion::operator==(const ListUnion& rhs) const {
   }
 }
 
-bool ListUnion::operator<(const ListUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ListUnion::operator<(FOLLY_MAYBE_UNUSED const ListUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -322,10 +318,8 @@ bool DataUnion::operator==(const DataUnion& rhs) const {
   }
 }
 
-bool DataUnion::operator<(const DataUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool DataUnion::operator<(FOLLY_MAYBE_UNUSED const DataUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -383,7 +377,7 @@ namespace cpp2 {
 
 Val::Val(const Val&) = default;
 Val& Val::operator=(const Val&) = default;
-Val::Val(Val&& other) noexcept  :
+Val::Val(FOLLY_MAYBE_UNUSED Val&& other) noexcept  :
     __fbthrift_field_strVal(std::move(other.__fbthrift_field_strVal)),
     __fbthrift_field_intVal(std::move(other.__fbthrift_field_intVal)),
     __fbthrift_field_typedefValue(std::move(other.__fbthrift_field_typedefValue)),
@@ -424,10 +418,8 @@ bool Val::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Val::operator==(const Val& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Val::operator==(FOLLY_MAYBE_UNUSED const Val& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
     return false;
   }
@@ -440,10 +432,8 @@ bool Val::operator==(const Val& rhs) const {
   return true;
 }
 
-bool Val::operator<(const Val& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Val::operator<(FOLLY_MAYBE_UNUSED const Val& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
     return lhs.strVal_ref() < rhs.strVal_ref();
   }
@@ -465,7 +455,7 @@ const ::cpp2::containerTypedef& Val::get_typedefValue() const& {
 }
 
 
-void swap(Val& a, Val& b) {
+void swap(FOLLY_MAYBE_UNUSED Val& a, FOLLY_MAYBE_UNUSED Val& b) {
   using ::std::swap;
   swap(a.strVal_ref().value(), b.strVal_ref().value());
   swap(a.intVal_ref().value(), b.intVal_ref().value());
@@ -555,10 +545,8 @@ bool ValUnion::operator==(const ValUnion& rhs) const {
   }
 }
 
-bool ValUnion::operator<(const ValUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ValUnion::operator<(FOLLY_MAYBE_UNUSED const ValUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -672,10 +660,8 @@ bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
   }
 }
 
-bool VirtualComplexUnion::operator<(const VirtualComplexUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool VirtualComplexUnion::operator<(FOLLY_MAYBE_UNUSED const VirtualComplexUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -750,20 +736,16 @@ bool NonCopyableStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NonCopyableStruct::operator==(FOLLY_MAYBE_UNUSED const NonCopyableStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.num_ref() == rhs.num_ref())) {
     return false;
   }
   return true;
 }
 
-bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NonCopyableStruct::operator<(FOLLY_MAYBE_UNUSED const NonCopyableStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.num_ref() == rhs.num_ref())) {
     return lhs.num_ref() < rhs.num_ref();
   }
@@ -771,7 +753,7 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
 }
 
 
-void swap(NonCopyableStruct& a, NonCopyableStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED NonCopyableStruct& a, FOLLY_MAYBE_UNUSED NonCopyableStruct& b) {
   using ::std::swap;
   swap(a.num_ref().value(), b.num_ref().value());
   swap(a.__isset, b.__isset);
@@ -854,10 +836,8 @@ bool NonCopyableUnion::operator==(const NonCopyableUnion& rhs) const {
   }
 }
 
-bool NonCopyableUnion::operator<(const NonCopyableUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NonCopyableUnion::operator<(FOLLY_MAYBE_UNUSED const NonCopyableUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }

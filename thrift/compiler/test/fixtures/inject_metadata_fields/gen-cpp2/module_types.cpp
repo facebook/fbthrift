@@ -37,7 +37,7 @@ namespace cpp2 {
 
 Fields::Fields(const Fields&) = default;
 Fields& Fields::operator=(const Fields&) = default;
-Fields::Fields(Fields&& other) noexcept  :
+Fields::Fields(FOLLY_MAYBE_UNUSED Fields&& other) noexcept  :
     __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __isset(other.__isset) {
 }
@@ -68,20 +68,16 @@ bool Fields::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Fields::operator==(const Fields& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Fields::operator==(FOLLY_MAYBE_UNUSED const Fields& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return false;
   }
   return true;
 }
 
-bool Fields::operator<(const Fields& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Fields::operator<(FOLLY_MAYBE_UNUSED const Fields& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return lhs.injected_field_ref() < rhs.injected_field_ref();
   }
@@ -89,7 +85,7 @@ bool Fields::operator<(const Fields& rhs) const {
 }
 
 
-void swap(Fields& a, Fields& b) {
+void swap(FOLLY_MAYBE_UNUSED Fields& a, FOLLY_MAYBE_UNUSED Fields& b) {
   using ::std::swap;
   swap(a.injected_field_ref().value(), b.injected_field_ref().value());
   swap(a.__isset, b.__isset);
@@ -132,7 +128,7 @@ namespace cpp2 {
 
 FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct&) = default;
 FieldsInjectedToEmptyStruct& FieldsInjectedToEmptyStruct::operator=(const FieldsInjectedToEmptyStruct&) = default;
-FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct&& other) noexcept  :
+FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct&& other) noexcept  :
     __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __isset(other.__isset) {
 }
@@ -163,20 +159,16 @@ bool FieldsInjectedToEmptyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool FieldsInjectedToEmptyStruct::operator==(const FieldsInjectedToEmptyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedToEmptyStruct::operator==(FOLLY_MAYBE_UNUSED const FieldsInjectedToEmptyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return false;
   }
   return true;
 }
 
-bool FieldsInjectedToEmptyStruct::operator<(const FieldsInjectedToEmptyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedToEmptyStruct::operator<(FOLLY_MAYBE_UNUSED const FieldsInjectedToEmptyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return lhs.injected_field_ref() < rhs.injected_field_ref();
   }
@@ -184,7 +176,7 @@ bool FieldsInjectedToEmptyStruct::operator<(const FieldsInjectedToEmptyStruct& r
 }
 
 
-void swap(FieldsInjectedToEmptyStruct& a, FieldsInjectedToEmptyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct& b) {
   using ::std::swap;
   swap(a.injected_field_ref().value(), b.injected_field_ref().value());
   swap(a.__isset, b.__isset);
@@ -227,7 +219,7 @@ namespace cpp2 {
 
 FieldsInjectedToStruct::FieldsInjectedToStruct(const FieldsInjectedToStruct&) = default;
 FieldsInjectedToStruct& FieldsInjectedToStruct::operator=(const FieldsInjectedToStruct&) = default;
-FieldsInjectedToStruct::FieldsInjectedToStruct(FieldsInjectedToStruct&& other) noexcept  :
+FieldsInjectedToStruct::FieldsInjectedToStruct(FOLLY_MAYBE_UNUSED FieldsInjectedToStruct&& other) noexcept  :
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
     __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __isset(other.__isset) {
@@ -263,10 +255,8 @@ bool FieldsInjectedToStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool FieldsInjectedToStruct::operator==(const FieldsInjectedToStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedToStruct::operator==(FOLLY_MAYBE_UNUSED const FieldsInjectedToStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return false;
   }
@@ -276,10 +266,8 @@ bool FieldsInjectedToStruct::operator==(const FieldsInjectedToStruct& rhs) const
   return true;
 }
 
-bool FieldsInjectedToStruct::operator<(const FieldsInjectedToStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedToStruct::operator<(FOLLY_MAYBE_UNUSED const FieldsInjectedToStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return lhs.string_field_ref() < rhs.string_field_ref();
   }
@@ -290,7 +278,7 @@ bool FieldsInjectedToStruct::operator<(const FieldsInjectedToStruct& rhs) const 
 }
 
 
-void swap(FieldsInjectedToStruct& a, FieldsInjectedToStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED FieldsInjectedToStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedToStruct& b) {
   using ::std::swap;
   swap(a.string_field_ref().value(), b.string_field_ref().value());
   swap(a.injected_field_ref().value(), b.injected_field_ref().value());
@@ -334,7 +322,7 @@ namespace cpp2 {
 
 FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(const FieldsInjectedWithIncludedStruct&) = default;
 FieldsInjectedWithIncludedStruct& FieldsInjectedWithIncludedStruct::operator=(const FieldsInjectedWithIncludedStruct&) = default;
-FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(FieldsInjectedWithIncludedStruct&& other) noexcept  :
+FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct&& other) noexcept  :
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
     __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __fbthrift_field_injected_structured_annotation_field(std::move(other.__fbthrift_field_injected_structured_annotation_field)),
@@ -378,10 +366,8 @@ bool FieldsInjectedWithIncludedStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool FieldsInjectedWithIncludedStruct::operator==(const FieldsInjectedWithIncludedStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedWithIncludedStruct::operator==(FOLLY_MAYBE_UNUSED const FieldsInjectedWithIncludedStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return false;
   }
@@ -397,10 +383,8 @@ bool FieldsInjectedWithIncludedStruct::operator==(const FieldsInjectedWithInclud
   return true;
 }
 
-bool FieldsInjectedWithIncludedStruct::operator<(const FieldsInjectedWithIncludedStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool FieldsInjectedWithIncludedStruct::operator<(FOLLY_MAYBE_UNUSED const FieldsInjectedWithIncludedStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return lhs.string_field_ref() < rhs.string_field_ref();
   }
@@ -417,7 +401,7 @@ bool FieldsInjectedWithIncludedStruct::operator<(const FieldsInjectedWithInclude
 }
 
 
-void swap(FieldsInjectedWithIncludedStruct& a, FieldsInjectedWithIncludedStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct& b) {
   using ::std::swap;
   swap(a.string_field_ref().value(), b.string_field_ref().value());
   swap(a.injected_field_ref().value(), b.injected_field_ref().value());

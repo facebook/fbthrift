@@ -232,9 +232,8 @@ StructMetadata<::cpp2::B>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "func";
   auto func_ret_type = std::make_unique<Typedef>("module.MyI32", std::make_unique<Typedef>("module.MyI32", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{});
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
@@ -276,8 +275,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(::a
   response.context() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
-  (void) metadata;
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::genRecurse(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   ::apache::thrift::metadata::ThriftService module_Service;
   module_Service.name() = "module.Service";
   static const ThriftFunctionGenerator functions[] = {

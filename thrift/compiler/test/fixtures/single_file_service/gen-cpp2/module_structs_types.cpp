@@ -55,20 +55,16 @@ bool Foo::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.value_ref() == rhs.value_ref())) {
     return false;
   }
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.value_ref() == rhs.value_ref())) {
     return lhs.value_ref() < rhs.value_ref();
   }
@@ -76,7 +72,7 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.value_ref().value_unchecked(), b.value_ref().value_unchecked());
   swap(a.__isset, b.__isset);

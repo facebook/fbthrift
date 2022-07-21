@@ -90,10 +90,8 @@ bool Color::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Color::operator==(const Color& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Color::operator==(FOLLY_MAYBE_UNUSED const Color& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.red_ref() == rhs.red_ref())) {
     return false;
   }
@@ -109,10 +107,8 @@ bool Color::operator==(const Color& rhs) const {
   return true;
 }
 
-bool Color::operator<(const Color& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Color::operator<(FOLLY_MAYBE_UNUSED const Color& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.red_ref() == rhs.red_ref())) {
     return lhs.red_ref() < rhs.red_ref();
   }
@@ -129,7 +125,7 @@ bool Color::operator<(const Color& rhs) const {
 }
 
 
-void swap(Color& a, Color& b) {
+void swap(FOLLY_MAYBE_UNUSED Color& a, FOLLY_MAYBE_UNUSED Color& b) {
   using ::std::swap;
   swap(a.red_ref().value(), b.red_ref().value());
   swap(a.green_ref().value(), b.green_ref().value());
@@ -182,7 +178,7 @@ Vehicle::Vehicle() :
 
 Vehicle::~Vehicle() {}
 
-Vehicle::Vehicle(Vehicle&& other) noexcept  :
+Vehicle::Vehicle(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept  :
     __fbthrift_field_color(std::move(other.__fbthrift_field_color)),
     __fbthrift_field_licensePlate(std::move(other.__fbthrift_field_licensePlate)),
     __fbthrift_field_description(std::move(other.__fbthrift_field_description)),
@@ -233,10 +229,8 @@ bool Vehicle::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Vehicle::operator==(const Vehicle& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Vehicle::operator==(FOLLY_MAYBE_UNUSED const Vehicle& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.color_ref() == rhs.color_ref())) {
     return false;
   }
@@ -255,10 +249,8 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
   return true;
 }
 
-bool Vehicle::operator<(const Vehicle& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Vehicle::operator<(FOLLY_MAYBE_UNUSED const Vehicle& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.color_ref() == rhs.color_ref())) {
     return lhs.color_ref() < rhs.color_ref();
   }
@@ -286,7 +278,7 @@ const ::cpp2::Color& Vehicle::get_color() const& {
 }
 
 
-void swap(Vehicle& a, Vehicle& b) {
+void swap(FOLLY_MAYBE_UNUSED Vehicle& a, FOLLY_MAYBE_UNUSED Vehicle& b) {
   using ::std::swap;
   swap(a.color_ref().value(), b.color_ref().value());
   swap(a.licensePlate_ref().value_unchecked(), b.licensePlate_ref().value_unchecked());
@@ -349,7 +341,7 @@ Person::Person() :
 
 Person::~Person() {}
 
-Person::Person(Person&& other) noexcept  :
+Person::Person(FOLLY_MAYBE_UNUSED Person&& other) noexcept  :
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_age(std::move(other.__fbthrift_field_age)),
@@ -425,10 +417,8 @@ bool Person::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Person::operator==(const Person& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Person::operator==(FOLLY_MAYBE_UNUSED const Person& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
@@ -462,10 +452,8 @@ bool Person::operator==(const Person& rhs) const {
   return true;
 }
 
-bool Person::operator<(const Person& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Person::operator<(FOLLY_MAYBE_UNUSED const Person& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.id_ref() == rhs.id_ref())) {
     return lhs.id_ref() < rhs.id_ref();
   }
@@ -532,7 +520,7 @@ const ::std::vector<::cpp2::Vehicle>* Person::get_vehicles() const& {
 }
 
 
-void swap(Person& a, Person& b) {
+void swap(FOLLY_MAYBE_UNUSED Person& a, FOLLY_MAYBE_UNUSED Person& b) {
   using ::std::swap;
   swap(a.id_ref().value(), b.id_ref().value());
   swap(a.name_ref().value(), b.name_ref().value());

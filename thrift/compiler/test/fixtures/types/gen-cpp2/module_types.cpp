@@ -141,7 +141,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 decorated_struct::decorated_struct(const decorated_struct&) = default;
 decorated_struct& decorated_struct::operator=(const decorated_struct&) = default;
-decorated_struct::decorated_struct(decorated_struct&& other) noexcept  :
+decorated_struct::decorated_struct(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept  :
     __fbthrift_field_field(std::move(other.__fbthrift_field_field)),
     __isset(other.__isset) {
 }
@@ -172,20 +172,16 @@ bool decorated_struct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool decorated_struct::operator==(const decorated_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool decorated_struct::operator==(FOLLY_MAYBE_UNUSED const decorated_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
   return true;
 }
 
-bool decorated_struct::operator<(const decorated_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool decorated_struct::operator<(FOLLY_MAYBE_UNUSED const decorated_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return lhs.field_ref() < rhs.field_ref();
   }
@@ -193,7 +189,7 @@ bool decorated_struct::operator<(const decorated_struct& rhs) const {
 }
 
 
-void swap(decorated_struct& a, decorated_struct& b) {
+void swap(FOLLY_MAYBE_UNUSED decorated_struct& a, FOLLY_MAYBE_UNUSED decorated_struct& b) {
   using ::std::swap;
   swap(a.field_ref().value(), b.field_ref().value());
   swap(a.__isset, b.__isset);
@@ -242,7 +238,7 @@ ContainerStruct::ContainerStruct() {
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -308,10 +304,8 @@ bool ContainerStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ContainerStruct::operator==(FOLLY_MAYBE_UNUSED const ContainerStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -404,7 +398,7 @@ const ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH() 
 }
 
 
-void swap(ContainerStruct& a, ContainerStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED ContainerStruct& a, FOLLY_MAYBE_UNUSED ContainerStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.fieldB_ref().value(), b.fieldB_ref().value());
@@ -454,7 +448,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 CppTypeStruct::CppTypeStruct(const CppTypeStruct&) = default;
 CppTypeStruct& CppTypeStruct::operator=(const CppTypeStruct&) = default;
-CppTypeStruct::CppTypeStruct(CppTypeStruct&& other) noexcept  :
+CppTypeStruct::CppTypeStruct(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __isset(other.__isset) {
 }
@@ -485,20 +479,16 @@ bool CppTypeStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CppTypeStruct::operator==(FOLLY_MAYBE_UNUSED const CppTypeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
   return true;
 }
 
-bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CppTypeStruct::operator<(FOLLY_MAYBE_UNUSED const CppTypeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -514,7 +504,7 @@ std::list<int32_t> CppTypeStruct::get_fieldA() && {
 }
 
 
-void swap(CppTypeStruct& a, CppTypeStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED CppTypeStruct& a, FOLLY_MAYBE_UNUSED CppTypeStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.__isset, b.__isset);
@@ -557,7 +547,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 VirtualStruct::VirtualStruct(const VirtualStruct&) = default;
 VirtualStruct& VirtualStruct::operator=(const VirtualStruct&) = default;
-VirtualStruct::VirtualStruct(VirtualStruct&& other) noexcept  :
+VirtualStruct::VirtualStruct(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept  :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __isset(other.__isset) {
 }
@@ -588,20 +578,16 @@ bool VirtualStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool VirtualStruct::operator==(FOLLY_MAYBE_UNUSED const VirtualStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
   return true;
 }
 
-bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool VirtualStruct::operator<(FOLLY_MAYBE_UNUSED const VirtualStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
@@ -609,7 +595,7 @@ bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
 }
 
 
-void swap(VirtualStruct& a, VirtualStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED VirtualStruct& a, FOLLY_MAYBE_UNUSED VirtualStruct& b) {
   using ::std::swap;
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
   swap(a.__isset, b.__isset);
@@ -652,7 +638,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(const MyStructWithForwardRefEnum&) = default;
-MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&& other) noexcept  :
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum&& other) noexcept  :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -688,10 +674,8 @@ bool MyStructWithForwardRefEnum::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructWithForwardRefEnum::operator==(FOLLY_MAYBE_UNUSED const MyStructWithForwardRefEnum& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
@@ -701,10 +685,8 @@ bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rh
   return true;
 }
 
-bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStructWithForwardRefEnum::operator<(FOLLY_MAYBE_UNUSED const MyStructWithForwardRefEnum& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -715,7 +697,7 @@ bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs
 }
 
 
-void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum& a, FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
@@ -780,10 +762,8 @@ bool TrivialNumeric::__fbthrift_is_empty() const {
   return false;
 }
 
-bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialNumeric::operator==(FOLLY_MAYBE_UNUSED const TrivialNumeric& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
@@ -793,10 +773,8 @@ bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
   return true;
 }
 
-bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialNumeric::operator<(FOLLY_MAYBE_UNUSED const TrivialNumeric& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -807,7 +785,7 @@ bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
 }
 
 
-void swap(TrivialNumeric& a, TrivialNumeric& b) {
+void swap(FOLLY_MAYBE_UNUSED TrivialNumeric& a, FOLLY_MAYBE_UNUSED TrivialNumeric& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
@@ -872,10 +850,8 @@ bool TrivialNestedWithDefault::__fbthrift_is_empty() const {
   return false;
 }
 
-bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialNestedWithDefault::operator==(FOLLY_MAYBE_UNUSED const TrivialNestedWithDefault& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
@@ -885,10 +861,8 @@ bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) c
   return true;
 }
 
-bool TrivialNestedWithDefault::operator<(const TrivialNestedWithDefault& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialNestedWithDefault::operator<(FOLLY_MAYBE_UNUSED const TrivialNestedWithDefault& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.z_ref() == rhs.z_ref())) {
     return lhs.z_ref() < rhs.z_ref();
   }
@@ -907,7 +881,7 @@ const ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefaul
 }
 
 
-void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b) {
+void swap(FOLLY_MAYBE_UNUSED TrivialNestedWithDefault& a, FOLLY_MAYBE_UNUSED TrivialNestedWithDefault& b) {
   using ::std::swap;
   swap(a.z_ref().value(), b.z_ref().value());
   swap(a.n_ref().value(), b.n_ref().value());
@@ -957,7 +931,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ComplexString::ComplexString(const ComplexString&) = default;
 ComplexString& ComplexString::operator=(const ComplexString&) = default;
-ComplexString::ComplexString(ComplexString&& other) noexcept  :
+ComplexString::ComplexString(FOLLY_MAYBE_UNUSED ComplexString&& other) noexcept  :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -993,10 +967,8 @@ bool ComplexString::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ComplexString::operator==(const ComplexString& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexString::operator==(FOLLY_MAYBE_UNUSED const ComplexString& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
@@ -1006,10 +978,8 @@ bool ComplexString::operator==(const ComplexString& rhs) const {
   return true;
 }
 
-bool ComplexString::operator<(const ComplexString& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexString::operator<(FOLLY_MAYBE_UNUSED const ComplexString& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -1028,7 +998,7 @@ const ::std::map<::std::string, ::std::int32_t>& ComplexString::get_b() const& {
 }
 
 
-void swap(ComplexString& a, ComplexString& b) {
+void swap(FOLLY_MAYBE_UNUSED ComplexString& a, FOLLY_MAYBE_UNUSED ComplexString& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
@@ -1072,7 +1042,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ComplexNestedWithDefault::ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
 ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(const ComplexNestedWithDefault&) = default;
-ComplexNestedWithDefault::ComplexNestedWithDefault(ComplexNestedWithDefault&& other) noexcept  :
+ComplexNestedWithDefault::ComplexNestedWithDefault(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault&& other) noexcept  :
     __fbthrift_field_z(std::move(other.__fbthrift_field_z)),
     __fbthrift_field_n(std::move(other.__fbthrift_field_n)),
     __isset(other.__isset) {
@@ -1108,10 +1078,8 @@ bool ComplexNestedWithDefault::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexNestedWithDefault::operator==(FOLLY_MAYBE_UNUSED const ComplexNestedWithDefault& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
@@ -1121,10 +1089,8 @@ bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) c
   return true;
 }
 
-bool ComplexNestedWithDefault::operator<(const ComplexNestedWithDefault& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexNestedWithDefault::operator<(FOLLY_MAYBE_UNUSED const ComplexNestedWithDefault& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.z_ref() == rhs.z_ref())) {
     return lhs.z_ref() < rhs.z_ref();
   }
@@ -1143,7 +1109,7 @@ const ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefault
 }
 
 
-void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b) {
+void swap(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault& a, FOLLY_MAYBE_UNUSED ComplexNestedWithDefault& b) {
   using ::std::swap;
   swap(a.z_ref().value(), b.z_ref().value());
   swap(a.n_ref().value(), b.n_ref().value());
@@ -1193,7 +1159,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MinPadding::MinPadding(const MinPadding&) = default;
 MinPadding& MinPadding::operator=(const MinPadding&) = default;
-MinPadding::MinPadding(MinPadding&& other) noexcept  :
+MinPadding::MinPadding(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept  :
     __fbthrift_field_big(std::move(other.__fbthrift_field_big)),
     __fbthrift_field_biggish(std::move(other.__fbthrift_field_biggish)),
     __fbthrift_field_medium(std::move(other.__fbthrift_field_medium)),
@@ -1236,10 +1202,8 @@ bool MinPadding::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MinPadding::operator==(const MinPadding& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MinPadding::operator==(FOLLY_MAYBE_UNUSED const MinPadding& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.small_ref() == rhs.small_ref())) {
     return false;
   }
@@ -1258,10 +1222,8 @@ bool MinPadding::operator==(const MinPadding& rhs) const {
   return true;
 }
 
-bool MinPadding::operator<(const MinPadding& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MinPadding::operator<(FOLLY_MAYBE_UNUSED const MinPadding& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.small_ref() == rhs.small_ref())) {
     return lhs.small_ref() < rhs.small_ref();
   }
@@ -1281,7 +1243,7 @@ bool MinPadding::operator<(const MinPadding& rhs) const {
 }
 
 
-void swap(MinPadding& a, MinPadding& b) {
+void swap(FOLLY_MAYBE_UNUSED MinPadding& a, FOLLY_MAYBE_UNUSED MinPadding& b) {
   using ::std::swap;
   swap(a.small_ref().value(), b.small_ref().value());
   swap(a.big_ref().value(), b.big_ref().value());
@@ -1343,10 +1305,8 @@ bool MyDataItem::__fbthrift_is_empty() const {
 
 
 
-void swap(MyDataItem& a, MyDataItem& b) {
+void swap(FOLLY_MAYBE_UNUSED MyDataItem& a, FOLLY_MAYBE_UNUSED MyDataItem& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1386,7 +1346,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
     __fbthrift_field_majorVer(std::move(other.__fbthrift_field_majorVer)),
@@ -1442,7 +1402,7 @@ const ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const&
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
   swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
@@ -1512,20 +1472,16 @@ bool Renamed::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Renamed::operator==(const Renamed& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Renamed::operator==(FOLLY_MAYBE_UNUSED const Renamed& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
 }
 
-bool Renamed::operator<(const Renamed& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Renamed::operator<(FOLLY_MAYBE_UNUSED const Renamed& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return lhs.bar_ref() < rhs.bar_ref();
   }
@@ -1533,7 +1489,7 @@ bool Renamed::operator<(const Renamed& rhs) const {
 }
 
 
-void swap(Renamed& a, Renamed& b) {
+void swap(FOLLY_MAYBE_UNUSED Renamed& a, FOLLY_MAYBE_UNUSED Renamed& b) {
   using ::std::swap;
   swap(a.bar_ref().value(), b.bar_ref().value());
   swap(a.__isset, b.__isset);
@@ -1576,7 +1532,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 AnnotatedTypes::AnnotatedTypes(const AnnotatedTypes&) = default;
 AnnotatedTypes& AnnotatedTypes::operator=(const AnnotatedTypes&) = default;
-AnnotatedTypes::AnnotatedTypes(AnnotatedTypes&& other) noexcept  :
+AnnotatedTypes::AnnotatedTypes(FOLLY_MAYBE_UNUSED AnnotatedTypes&& other) noexcept  :
     __fbthrift_field_binary_field(std::move(other.__fbthrift_field_binary_field)),
     __fbthrift_field_list_field(std::move(other.__fbthrift_field_list_field)),
     __isset(other.__isset) {
@@ -1612,10 +1568,8 @@ bool AnnotatedTypes::__fbthrift_is_empty() const {
   return false;
 }
 
-bool AnnotatedTypes::operator==(const AnnotatedTypes& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AnnotatedTypes::operator==(FOLLY_MAYBE_UNUSED const AnnotatedTypes& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field)) {
     return false;
   }
@@ -1634,7 +1588,7 @@ const ::apache::thrift::fixtures::types::SomeListOfTypeMap& AnnotatedTypes::get_
 }
 
 
-void swap(AnnotatedTypes& a, AnnotatedTypes& b) {
+void swap(FOLLY_MAYBE_UNUSED AnnotatedTypes& a, FOLLY_MAYBE_UNUSED AnnotatedTypes& b) {
   using ::std::swap;
   swap(a.binary_field_ref().value(), b.binary_field_ref().value());
   swap(a.list_field_ref().value(), b.list_field_ref().value());
@@ -1678,7 +1632,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageStruct::ForwardUsageStruct(const ForwardUsageStruct&) = default;
 ForwardUsageStruct& ForwardUsageStruct::operator=(const ForwardUsageStruct&) = default;
-ForwardUsageStruct::ForwardUsageStruct(ForwardUsageStruct&& other) noexcept  :
+ForwardUsageStruct::ForwardUsageStruct(FOLLY_MAYBE_UNUSED ForwardUsageStruct&& other) noexcept  :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __isset(other.__isset) {
 }
@@ -1709,20 +1663,16 @@ bool ForwardUsageStruct::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageStruct::operator==(FOLLY_MAYBE_UNUSED const ForwardUsageStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
 }
 
-bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageStruct::operator<(FOLLY_MAYBE_UNUSED const ForwardUsageStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
@@ -1738,7 +1688,7 @@ const ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::g
 }
 
 
-void swap(ForwardUsageStruct& a, ForwardUsageStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED ForwardUsageStruct& a, FOLLY_MAYBE_UNUSED ForwardUsageStruct& b) {
   using ::std::swap;
   swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
   swap(a.__isset, b.__isset);
@@ -1798,7 +1748,7 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& other) {
   return *this;
 }
 
-ForwardUsageRoot::ForwardUsageRoot(ForwardUsageRoot&& other) noexcept  :
+ForwardUsageRoot::ForwardUsageRoot(FOLLY_MAYBE_UNUSED ForwardUsageRoot&& other) noexcept  :
     __fbthrift_field_ForwardUsageStruct(std::move(other.__fbthrift_field_ForwardUsageStruct)),
     ForwardUsageByRef(std::move(other.ForwardUsageByRef)),
     __isset(other.__isset) {
@@ -1834,10 +1784,8 @@ bool ForwardUsageRoot::__fbthrift_is_empty() const {
  !(this->ForwardUsageByRef);
 }
 
-bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageRoot::operator==(FOLLY_MAYBE_UNUSED const ForwardUsageRoot& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return false;
   }
@@ -1847,10 +1795,8 @@ bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
   return true;
 }
 
-bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageRoot::operator<(FOLLY_MAYBE_UNUSED const ForwardUsageRoot& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
@@ -1869,7 +1815,7 @@ const ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::g
 }
 
 
-void swap(ForwardUsageRoot& a, ForwardUsageRoot& b) {
+void swap(FOLLY_MAYBE_UNUSED ForwardUsageRoot& a, FOLLY_MAYBE_UNUSED ForwardUsageRoot& b) {
   using ::std::swap;
   swap(a.ForwardUsageStruct_ref().value_unchecked(), b.ForwardUsageStruct_ref().value_unchecked());
   swap(a.ForwardUsageByRef, b.ForwardUsageByRef);
@@ -1925,7 +1871,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageByRef::ForwardUsageByRef(const ForwardUsageByRef&) = default;
 ForwardUsageByRef& ForwardUsageByRef::operator=(const ForwardUsageByRef&) = default;
-ForwardUsageByRef::ForwardUsageByRef(ForwardUsageByRef&& other) noexcept  :
+ForwardUsageByRef::ForwardUsageByRef(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept  :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __isset(other.__isset) {
 }
@@ -1956,20 +1902,16 @@ bool ForwardUsageByRef::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageByRef::operator==(FOLLY_MAYBE_UNUSED const ForwardUsageByRef& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
 }
 
-bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ForwardUsageByRef::operator<(FOLLY_MAYBE_UNUSED const ForwardUsageByRef& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
@@ -1985,7 +1927,7 @@ const ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::ge
 }
 
 
-void swap(ForwardUsageByRef& a, ForwardUsageByRef& b) {
+void swap(FOLLY_MAYBE_UNUSED ForwardUsageByRef& a, FOLLY_MAYBE_UNUSED ForwardUsageByRef& b) {
   using ::std::swap;
   swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
   swap(a.__isset, b.__isset);
@@ -2047,25 +1989,19 @@ bool NoexceptMoveEmpty::__fbthrift_is_empty() const {
   return true;
 }
 
-bool NoexceptMoveEmpty::operator==(const NoexceptMoveEmpty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveEmpty::operator==(FOLLY_MAYBE_UNUSED const NoexceptMoveEmpty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool NoexceptMoveEmpty::operator<(const NoexceptMoveEmpty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveEmpty::operator<(FOLLY_MAYBE_UNUSED const NoexceptMoveEmpty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b) {
+void swap(FOLLY_MAYBE_UNUSED NoexceptMoveEmpty& a, FOLLY_MAYBE_UNUSED NoexceptMoveEmpty& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2123,20 +2059,16 @@ bool NoexceptMoveSimpleStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool NoexceptMoveSimpleStruct::operator==(const NoexceptMoveSimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveSimpleStruct::operator==(FOLLY_MAYBE_UNUSED const NoexceptMoveSimpleStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return false;
   }
   return true;
 }
 
-bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveSimpleStruct::operator<(FOLLY_MAYBE_UNUSED const NoexceptMoveSimpleStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return lhs.boolField_ref() < rhs.boolField_ref();
   }
@@ -2144,7 +2076,7 @@ bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) co
 }
 
 
-void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED NoexceptMoveSimpleStruct& a, FOLLY_MAYBE_UNUSED NoexceptMoveSimpleStruct& b) {
   using ::std::swap;
   swap(a.boolField_ref().value(), b.boolField_ref().value());
   swap(a.__isset, b.__isset);
@@ -2198,7 +2130,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
 
 NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
 
-NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept  :
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct&& other) noexcept  :
     __fbthrift_field_MyBoolField(std::move(other.__fbthrift_field_MyBoolField)),
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
@@ -2268,10 +2200,8 @@ bool NoexceptMoveComplexStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveComplexStruct::operator==(FOLLY_MAYBE_UNUSED const NoexceptMoveComplexStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return false;
   }
@@ -2302,10 +2232,8 @@ bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs)
   return true;
 }
 
-bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoexceptMoveComplexStruct::operator<(FOLLY_MAYBE_UNUSED const NoexceptMoveComplexStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return lhs.MyBoolField_ref() < rhs.MyBoolField_ref();
   }
@@ -2353,7 +2281,7 @@ const ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& Noe
 }
 
 
-void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct& a, FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct& b) {
   using ::std::swap;
   swap(a.MyBoolField_ref().value(), b.MyBoolField_ref().value());
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
@@ -2449,10 +2377,8 @@ bool NoExceptMoveUnion::operator==(const NoExceptMoveUnion& rhs) const {
   }
 }
 
-bool NoExceptMoveUnion::operator<(const NoExceptMoveUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool NoExceptMoveUnion::operator<(FOLLY_MAYBE_UNUSED const NoExceptMoveUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -2543,7 +2469,7 @@ AllocatorAware::AllocatorAware() :
 
 AllocatorAware::~AllocatorAware() {}
 
-AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
+AllocatorAware::AllocatorAware(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept  :
     __fbthrift_alloc(other.get_allocator()),
     __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list)),
     __fbthrift_field_aa_set(std::move(other.__fbthrift_field_aa_set)),
@@ -2603,10 +2529,8 @@ bool AllocatorAware::__fbthrift_is_empty() const {
   return false;
 }
 
-bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AllocatorAware::operator==(FOLLY_MAYBE_UNUSED const AllocatorAware& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
     return false;
   }
@@ -2631,10 +2555,8 @@ bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
   return true;
 }
 
-bool AllocatorAware::operator<(const AllocatorAware& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AllocatorAware::operator<(FOLLY_MAYBE_UNUSED const AllocatorAware& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
     return lhs.aa_list_ref() < rhs.aa_list_ref();
   }
@@ -2684,7 +2606,7 @@ const ::std::map<::std::int32_t, ::std::int32_t>& AllocatorAware::get_aa_map() c
 }
 
 
-void swap(AllocatorAware& a, AllocatorAware& b) {
+void swap(FOLLY_MAYBE_UNUSED AllocatorAware& a, FOLLY_MAYBE_UNUSED AllocatorAware& b) {
   using ::std::swap;
   swap(a.aa_list_ref().value(), b.aa_list_ref().value());
   swap(a.aa_set_ref().value(), b.aa_set_ref().value());
@@ -2733,7 +2655,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 AllocatorAware2::AllocatorAware2(const AllocatorAware2&) = default;
 AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2&) = default;
-AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
+AllocatorAware2::AllocatorAware2(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept  :
     __fbthrift_alloc(other.get_allocator()),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {
@@ -2765,20 +2687,16 @@ bool AllocatorAware2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool AllocatorAware2::operator==(const AllocatorAware2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AllocatorAware2::operator==(FOLLY_MAYBE_UNUSED const AllocatorAware2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
   return true;
 }
 
-bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AllocatorAware2::operator<(FOLLY_MAYBE_UNUSED const AllocatorAware2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return lhs.not_a_container_ref() < rhs.not_a_container_ref();
   }
@@ -2786,7 +2704,7 @@ bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
 }
 
 
-void swap(AllocatorAware2& a, AllocatorAware2& b) {
+void swap(FOLLY_MAYBE_UNUSED AllocatorAware2& a, FOLLY_MAYBE_UNUSED AllocatorAware2& b) {
   using ::std::swap;
   swap(a.not_a_container_ref().value(), b.not_a_container_ref().value());
   swap(a.__isset, b.__isset);
@@ -2829,7 +2747,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 TypedefStruct::TypedefStruct(const TypedefStruct&) = default;
 TypedefStruct& TypedefStruct::operator=(const TypedefStruct&) = default;
-TypedefStruct::TypedefStruct(TypedefStruct&& other) noexcept  :
+TypedefStruct::TypedefStruct(FOLLY_MAYBE_UNUSED TypedefStruct&& other) noexcept  :
     __fbthrift_field_i32_field(std::move(other.__fbthrift_field_i32_field)),
     __fbthrift_field_IntTypedef_field(std::move(other.__fbthrift_field_IntTypedef_field)),
     __fbthrift_field_UintTypedef_field(std::move(other.__fbthrift_field_UintTypedef_field)),
@@ -2870,10 +2788,8 @@ bool TypedefStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TypedefStruct::operator==(FOLLY_MAYBE_UNUSED const TypedefStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
     return false;
   }
@@ -2886,10 +2802,8 @@ bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
   return true;
 }
 
-bool TypedefStruct::operator<(const TypedefStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TypedefStruct::operator<(FOLLY_MAYBE_UNUSED const TypedefStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
     return lhs.i32_field_ref() < rhs.i32_field_ref();
   }
@@ -2903,7 +2817,7 @@ bool TypedefStruct::operator<(const TypedefStruct& rhs) const {
 }
 
 
-void swap(TypedefStruct& a, TypedefStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED TypedefStruct& a, FOLLY_MAYBE_UNUSED TypedefStruct& b) {
   using ::std::swap;
   swap(a.i32_field_ref().value(), b.i32_field_ref().value());
   swap(a.IntTypedef_field_ref().value(), b.IntTypedef_field_ref().value());
@@ -2966,20 +2880,16 @@ bool StructWithDoubleUnderscores::__fbthrift_is_empty() const {
   return false;
 }
 
-bool StructWithDoubleUnderscores::operator==(const StructWithDoubleUnderscores& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool StructWithDoubleUnderscores::operator==(FOLLY_MAYBE_UNUSED const StructWithDoubleUnderscores& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.__field_ref() == rhs.__field_ref())) {
     return false;
   }
   return true;
 }
 
-bool StructWithDoubleUnderscores::operator<(const StructWithDoubleUnderscores& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool StructWithDoubleUnderscores::operator<(FOLLY_MAYBE_UNUSED const StructWithDoubleUnderscores& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.__field_ref() == rhs.__field_ref())) {
     return lhs.__field_ref() < rhs.__field_ref();
   }
@@ -2987,7 +2897,7 @@ bool StructWithDoubleUnderscores::operator<(const StructWithDoubleUnderscores& r
 }
 
 
-void swap(StructWithDoubleUnderscores& a, StructWithDoubleUnderscores& b) {
+void swap(FOLLY_MAYBE_UNUSED StructWithDoubleUnderscores& a, FOLLY_MAYBE_UNUSED StructWithDoubleUnderscores& b) {
   using ::std::swap;
   swap(a.__field_ref().value(), b.__field_ref().value());
   swap(a.__isset, b.__isset);

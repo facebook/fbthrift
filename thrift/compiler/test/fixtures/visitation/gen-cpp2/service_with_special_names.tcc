@@ -68,7 +68,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_fields_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_fields_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -124,12 +124,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_get(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_get(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "get");
     return;
@@ -137,7 +136,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_get(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_getter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_getter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -193,12 +192,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_getter(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_getter(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "getter");
     return;
@@ -206,7 +204,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_getter(apache::thri
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_lists(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_lists(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -262,12 +260,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_lists(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_lists(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "lists");
     return;
@@ -275,7 +272,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_lists(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_maps(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_maps(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -331,12 +328,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_maps(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_maps(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "maps");
     return;
@@ -344,7 +340,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_maps(apache::thrift
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -400,12 +396,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_name(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_name(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "name");
     return;
@@ -413,7 +408,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_name(apache::thrift
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -469,12 +464,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "name_to_value");
     return;
@@ -482,7 +476,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_name_to_value(apach
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_names(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_names(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -538,12 +532,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_names(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_names(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "names");
     return;
@@ -551,7 +544,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_names(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -607,12 +600,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "prefix_tree");
     return;
@@ -620,7 +612,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_prefix_tree(apache:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_sets(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_sets(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -676,12 +668,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_sets(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_sets(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "sets");
     return;
@@ -689,7 +680,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_sets(apache::thrift
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_setter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_setter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -745,12 +736,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_setter(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_setter(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "setter");
     return;
@@ -758,7 +748,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_setter(apache::thri
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_str(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_str(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -814,12 +804,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_str(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_str(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "str");
     return;
@@ -827,7 +816,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_str(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_strings(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_strings(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -883,12 +872,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_strings(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_strings(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "strings");
     return;
@@ -896,7 +884,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_strings(apache::thr
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_type(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_type(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -952,12 +940,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_type(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_type(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "type");
     return;
@@ -965,7 +952,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_type(apache::thrift
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1021,12 +1008,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_value(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_value(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "value");
     return;
@@ -1034,7 +1020,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_value(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1090,12 +1076,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "value_to_name");
     return;
@@ -1103,7 +1088,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_value_to_name(apach
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_values(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_values(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1159,12 +1144,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_values(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_values(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "values");
     return;
@@ -1172,7 +1156,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_values(apache::thri
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_id(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_id(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1228,12 +1212,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_id(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_id(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "id");
     return;
@@ -1241,7 +1224,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_id(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_ids(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_ids(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1297,12 +1280,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_ids(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_ids(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "ids");
     return;
@@ -1310,7 +1292,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_ids(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1366,12 +1348,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "descriptor");
     return;
@@ -1379,7 +1360,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_descriptor(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1435,12 +1416,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "descriptors");
     return;
@@ -1448,7 +1428,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_descriptors(apache:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_key(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_key(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1504,12 +1484,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_key(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_key(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "key");
     return;
@@ -1517,7 +1496,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_key(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_keys(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_keys(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1573,12 +1552,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_keys(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_keys(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "keys");
     return;
@@ -1586,7 +1564,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_keys(apache::thrift
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1642,12 +1620,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "annotation");
     return;
@@ -1655,7 +1632,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_annotation(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1711,12 +1688,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "annotations");
     return;
@@ -1724,7 +1700,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_annotations(apache:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_member(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_member(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1780,12 +1756,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_member(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_member(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "member");
     return;
@@ -1793,7 +1768,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_member(apache::thri
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_members(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_members(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1849,12 +1824,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_members(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_members(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "members");
     return;
@@ -1862,7 +1836,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_members(apache::thr
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_field(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_field(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1918,12 +1892,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_field(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_field(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "field");
     return;
@@ -1931,7 +1904,7 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_field(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void service_with_special_namesAsyncProcessor::setUpAndProcess_fields(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void service_with_special_namesAsyncProcessor::setUpAndProcess_fields(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
@@ -1987,12 +1960,11 @@ apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::ret
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void service_with_special_namesAsyncProcessor::throw_wrapped_fields(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void service_with_special_namesAsyncProcessor::throw_wrapped_fields(apache::thrift::ResponseChannelRequest::UniquePtr req,FOLLY_MAYBE_UNUSED int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }
   {
-    (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "fields");
     return;

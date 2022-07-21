@@ -61,10 +61,8 @@ bool Foo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -77,10 +75,8 @@ bool Foo::operator==(const Foo& rhs) const {
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -94,7 +90,7 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());
@@ -163,10 +159,8 @@ bool Foo2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Foo2::operator==(const Foo2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo2::operator==(FOLLY_MAYBE_UNUSED const Foo2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -179,10 +173,8 @@ bool Foo2::operator==(const Foo2& rhs) const {
   return true;
 }
 
-bool Foo2::operator<(const Foo2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo2::operator<(FOLLY_MAYBE_UNUSED const Foo2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -196,7 +188,7 @@ bool Foo2::operator<(const Foo2& rhs) const {
 }
 
 
-void swap(Foo2& a, Foo2& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo2& a, FOLLY_MAYBE_UNUSED Foo2& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());

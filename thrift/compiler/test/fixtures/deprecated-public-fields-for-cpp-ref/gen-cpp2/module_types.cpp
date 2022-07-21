@@ -47,7 +47,7 @@ Foo& Foo::operator=(const Foo& other) {
   return *this;
 }
 
-Foo::Foo(Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __fbthrift_field_bar(std::move(other.__fbthrift_field_bar)) {
 }
@@ -79,10 +79,8 @@ bool Foo::__fbthrift_is_empty() const {
  !(this->__fbthrift_field_bar);
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.foo_ref(), rhs.foo_ref()))) {
     return false;
   }
@@ -92,10 +90,8 @@ bool Foo::operator==(const Foo& rhs) const {
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.foo_ref(), rhs.foo_ref()))) {
     return ::apache::thrift::detail::pointer_less(lhs.foo_ref(), rhs.foo_ref());
   }
@@ -106,7 +102,7 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_foo, b.__fbthrift_field_foo);
   swap(a.__fbthrift_field_bar, b.__fbthrift_field_bar);

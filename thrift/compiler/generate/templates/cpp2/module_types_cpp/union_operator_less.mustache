@@ -15,10 +15,8 @@
   limitations under the License.
 
 %>
-bool <%struct:cpp_underlying_name%>::operator<(const <%struct:cpp_underlying_name%>& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool <%struct:cpp_underlying_name%>::operator<(FOLLY_MAYBE_UNUSED const <%struct:cpp_underlying_name%>& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }

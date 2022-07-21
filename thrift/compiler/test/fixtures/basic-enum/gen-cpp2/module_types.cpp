@@ -136,10 +136,8 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return false;
   }
@@ -149,10 +147,8 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return lhs.myEnum_ref() < rhs.myEnum_ref();
   }
@@ -163,7 +159,7 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.myEnum_ref().value(), b.myEnum_ref().value());
   swap(a.myBigEnum_ref().value(), b.myBigEnum_ref().value());

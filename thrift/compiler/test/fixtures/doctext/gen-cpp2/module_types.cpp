@@ -81,20 +81,16 @@ bool A::__fbthrift_is_empty() const {
   return false;
 }
 
-bool A::operator==(const A& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool A::operator==(FOLLY_MAYBE_UNUSED const A& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.useless_field_ref() == rhs.useless_field_ref())) {
     return false;
   }
   return true;
 }
 
-bool A::operator<(const A& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool A::operator<(FOLLY_MAYBE_UNUSED const A& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.useless_field_ref() == rhs.useless_field_ref())) {
     return lhs.useless_field_ref() < rhs.useless_field_ref();
   }
@@ -102,7 +98,7 @@ bool A::operator<(const A& rhs) const {
 }
 
 
-void swap(A& a, A& b) {
+void swap(FOLLY_MAYBE_UNUSED A& a, FOLLY_MAYBE_UNUSED A& b) {
   using ::std::swap;
   swap(a.useless_field_ref().value(), b.useless_field_ref().value());
   swap(a.__isset, b.__isset);
@@ -190,10 +186,8 @@ bool U::operator==(const U& rhs) const {
   }
 }
 
-bool U::operator<(const U& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool U::operator<(FOLLY_MAYBE_UNUSED const U& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -256,7 +250,7 @@ Bang::Bang() {
 
 Bang::~Bang() {}
 
-Bang::Bang(Bang&& other) noexcept  :
+Bang::Bang(FOLLY_MAYBE_UNUSED Bang&& other) noexcept  :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }
@@ -287,20 +281,16 @@ bool Bang::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Bang::operator==(const Bang& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Bang::operator==(FOLLY_MAYBE_UNUSED const Bang& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
 }
 
-bool Bang::operator<(const Bang& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Bang::operator<(FOLLY_MAYBE_UNUSED const Bang& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
@@ -308,7 +298,7 @@ bool Bang::operator<(const Bang& rhs) const {
 }
 
 
-void swap(Bang& a, Bang& b) {
+void swap(FOLLY_MAYBE_UNUSED Bang& a, FOLLY_MAYBE_UNUSED Bang& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
   swap(a.__isset, b.__isset);

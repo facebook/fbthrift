@@ -185,20 +185,16 @@ bool SomeStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SomeStruct::operator==(const SomeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SomeStruct::operator==(FOLLY_MAYBE_UNUSED const SomeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
   return true;
 }
 
-bool SomeStruct::operator<(const SomeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SomeStruct::operator<(FOLLY_MAYBE_UNUSED const SomeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -206,7 +202,7 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
 }
 
 
-void swap(SomeStruct& a, SomeStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED SomeStruct& a, FOLLY_MAYBE_UNUSED SomeStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.__isset, b.__isset);

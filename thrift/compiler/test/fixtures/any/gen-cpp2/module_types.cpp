@@ -18,31 +18,28 @@ namespace cpp2 {
 // To include in statically-linked libraries, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
 void __fbthrift_static_init_MyStruct() {
-  static bool init = (
+  FOLLY_MAYBE_UNUSED static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyStruct,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-  (void)init;
 }
 void __fbthrift_static_init_MyUnion() {
-  static bool init = (
+  FOLLY_MAYBE_UNUSED static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyUnion,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-  (void)init;
 }
 void __fbthrift_static_init_MyException() {
-  static bool init = (
+  FOLLY_MAYBE_UNUSED static bool init = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyException,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(),
     false);
-  (void)init;
 }
 } // cpp2
 
@@ -75,7 +72,7 @@ const char* MyStruct::__fbthrift_thrift_uri() {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }
@@ -106,20 +103,16 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return false;
   }
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return lhs.myString_ref() < rhs.myString_ref();
   }
@@ -127,7 +120,7 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
   swap(a.__isset, b.__isset);
@@ -214,10 +207,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
-bool MyUnion::operator<(const MyUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyUnion::operator<(FOLLY_MAYBE_UNUSED const MyUnion& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -282,7 +273,7 @@ MyException::MyException() {
 
 MyException::~MyException() {}
 
-MyException::MyException(MyException&& other) noexcept  :
+MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept  :
     __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }
@@ -313,20 +304,16 @@ bool MyException::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyException::operator==(const MyException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyException::operator==(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return false;
   }
   return true;
 }
 
-bool MyException::operator<(const MyException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyException::operator<(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return lhs.myString_ref() < rhs.myString_ref();
   }
@@ -334,7 +321,7 @@ bool MyException::operator<(const MyException& rhs) const {
 }
 
 
-void swap(MyException& a, MyException& b) {
+void swap(FOLLY_MAYBE_UNUSED MyException& a, FOLLY_MAYBE_UNUSED MyException& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
   swap(a.__isset, b.__isset);

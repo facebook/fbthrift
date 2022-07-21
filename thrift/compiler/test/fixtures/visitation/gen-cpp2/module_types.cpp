@@ -196,10 +196,8 @@ bool union1::operator==(const union1& rhs) const {
   }
 }
 
-bool union1::operator<(const union1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool union1::operator<(FOLLY_MAYBE_UNUSED const union1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -315,10 +313,8 @@ bool union2::operator==(const union2& rhs) const {
   }
 }
 
-bool union2::operator<(const union2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool union2::operator<(FOLLY_MAYBE_UNUSED const union2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -434,10 +430,8 @@ bool union3::operator==(const union3& rhs) const {
   }
 }
 
-bool union3::operator<(const union3& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool union3::operator<(FOLLY_MAYBE_UNUSED const union3& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -498,7 +492,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 structA::structA(const structA&) = default;
 structA& structA::operator=(const structA&) = default;
-structA::structA(structA&& other) noexcept  :
+structA::structA(FOLLY_MAYBE_UNUSED structA&& other) noexcept  :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -534,10 +528,8 @@ bool structA::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structA::operator==(const structA& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structA::operator==(FOLLY_MAYBE_UNUSED const structA& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
@@ -547,10 +539,8 @@ bool structA::operator==(const structA& rhs) const {
   return true;
 }
 
-bool structA::operator<(const structA& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structA::operator<(FOLLY_MAYBE_UNUSED const structA& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -561,7 +551,7 @@ bool structA::operator<(const structA& rhs) const {
 }
 
 
-void swap(structA& a, structA& b) {
+void swap(FOLLY_MAYBE_UNUSED structA& a, FOLLY_MAYBE_UNUSED structA& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
@@ -665,10 +655,8 @@ bool unionA::operator==(const unionA& rhs) const {
   }
 }
 
-bool unionA::operator<(const unionA& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool unionA::operator<(FOLLY_MAYBE_UNUSED const unionA& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -758,10 +746,8 @@ bool structB::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structB::operator==(const structB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structB::operator==(FOLLY_MAYBE_UNUSED const structB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
@@ -771,10 +757,8 @@ bool structB::operator==(const structB& rhs) const {
   return true;
 }
 
-bool structB::operator<(const structB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structB::operator<(FOLLY_MAYBE_UNUSED const structB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.c_ref() == rhs.c_ref())) {
     return lhs.c_ref() < rhs.c_ref();
   }
@@ -785,7 +769,7 @@ bool structB::operator<(const structB& rhs) const {
 }
 
 
-void swap(structB& a, structB& b) {
+void swap(FOLLY_MAYBE_UNUSED structB& a, FOLLY_MAYBE_UNUSED structB& b) {
   using ::std::swap;
   swap(a.c_ref().value(), b.c_ref().value());
   swap(a.d_ref().value(), b.d_ref().value());
@@ -840,7 +824,7 @@ structC::structC() :
 
 structC::~structC() {}
 
-structC::structC(structC&& other) noexcept  :
+structC::structC(FOLLY_MAYBE_UNUSED structC&& other) noexcept  :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
@@ -1016,10 +1000,8 @@ bool structC::__fbthrift_is_empty() const {
   return false;
 }
 
-bool structC::operator==(const structC& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structC::operator==(FOLLY_MAYBE_UNUSED const structC& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
@@ -1113,10 +1095,8 @@ bool structC::operator==(const structC& rhs) const {
   return true;
 }
 
-bool structC::operator<(const structC& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool structC::operator<(FOLLY_MAYBE_UNUSED const structC& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -1403,7 +1383,7 @@ const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflecti
 }
 
 
-void swap(structC& a, structC& b) {
+void swap(FOLLY_MAYBE_UNUSED structC& a, FOLLY_MAYBE_UNUSED structC& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
@@ -1550,7 +1530,7 @@ struct1::struct1() :
 
 struct1::~struct1() {}
 
-struct1::struct1(struct1&& other) noexcept  :
+struct1::struct1(FOLLY_MAYBE_UNUSED struct1&& other) noexcept  :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -1604,10 +1584,8 @@ bool struct1::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct1::operator==(const struct1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct1::operator==(FOLLY_MAYBE_UNUSED const struct1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
@@ -1629,10 +1607,8 @@ bool struct1::operator==(const struct1& rhs) const {
   return true;
 }
 
-bool struct1::operator<(const struct1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct1::operator<(FOLLY_MAYBE_UNUSED const struct1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return lhs.field0_ref() < rhs.field0_ref();
   }
@@ -1671,7 +1647,7 @@ const ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
 }
 
 
-void swap(struct1& a, struct1& b) {
+void swap(FOLLY_MAYBE_UNUSED struct1& a, FOLLY_MAYBE_UNUSED struct1& b) {
   using ::std::swap;
   swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
@@ -1740,7 +1716,7 @@ struct2::struct2() :
 
 struct2::~struct2() {}
 
-struct2::struct2(struct2&& other) noexcept  :
+struct2::struct2(FOLLY_MAYBE_UNUSED struct2&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -1801,10 +1777,8 @@ bool struct2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct2::operator==(const struct2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct2::operator==(FOLLY_MAYBE_UNUSED const struct2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -1829,10 +1803,8 @@ bool struct2::operator==(const struct2& rhs) const {
   return true;
 }
 
-bool struct2::operator<(const struct2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct2::operator<(FOLLY_MAYBE_UNUSED const struct2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -1882,7 +1854,7 @@ const ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
 }
 
 
-void swap(struct2& a, struct2& b) {
+void swap(FOLLY_MAYBE_UNUSED struct2& a, FOLLY_MAYBE_UNUSED struct2& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.fieldB_ref().value(), b.fieldB_ref().value());
@@ -1958,7 +1930,7 @@ struct3::struct3() :
 
 struct3::~struct3() {}
 
-struct3::struct3(struct3&& other) noexcept  :
+struct3::struct3(FOLLY_MAYBE_UNUSED struct3&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -2074,10 +2046,8 @@ bool struct3::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct3::operator==(const struct3& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct3::operator==(FOLLY_MAYBE_UNUSED const struct3& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -2135,10 +2105,8 @@ bool struct3::operator==(const struct3& rhs) const {
   return true;
 }
 
-bool struct3::operator<(const struct3& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct3::operator<(FOLLY_MAYBE_UNUSED const struct3& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -2309,7 +2277,7 @@ const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& struct3::
 }
 
 
-void swap(struct3& a, struct3& b) {
+void swap(FOLLY_MAYBE_UNUSED struct3& a, FOLLY_MAYBE_UNUSED struct3& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.fieldB_ref().value(), b.fieldB_ref().value());
@@ -2431,7 +2399,7 @@ struct4& struct4::operator=(const struct4& other) {
   return *this;
 }
 
-struct4::struct4(struct4&& other) noexcept  :
+struct4::struct4(FOLLY_MAYBE_UNUSED struct4&& other) noexcept  :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -2475,10 +2443,8 @@ bool struct4::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct4::operator==(const struct4& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct4::operator==(FOLLY_MAYBE_UNUSED const struct4& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
@@ -2494,10 +2460,8 @@ bool struct4::operator==(const struct4& rhs) const {
   return true;
 }
 
-bool struct4::operator<(const struct4& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct4::operator<(FOLLY_MAYBE_UNUSED const struct4& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return lhs.field0_ref() < rhs.field0_ref();
   }
@@ -2514,7 +2478,7 @@ bool struct4::operator<(const struct4& rhs) const {
 }
 
 
-void swap(struct4& a, struct4& b) {
+void swap(FOLLY_MAYBE_UNUSED struct4& a, FOLLY_MAYBE_UNUSED struct4& b) {
   using ::std::swap;
   swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
@@ -2574,7 +2538,7 @@ struct5::struct5() :
 
 struct5::~struct5() {}
 
-struct5::struct5(struct5&& other) noexcept  :
+struct5::struct5(FOLLY_MAYBE_UNUSED struct5&& other) noexcept  :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -2624,10 +2588,8 @@ bool struct5::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct5::operator==(const struct5& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct5::operator==(FOLLY_MAYBE_UNUSED const struct5& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
@@ -2646,10 +2608,8 @@ bool struct5::operator==(const struct5& rhs) const {
   return true;
 }
 
-bool struct5::operator<(const struct5& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct5::operator<(FOLLY_MAYBE_UNUSED const struct5& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return lhs.field0_ref() < rhs.field0_ref();
   }
@@ -2685,7 +2645,7 @@ const ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
 }
 
 
-void swap(struct5& a, struct5& b) {
+void swap(FOLLY_MAYBE_UNUSED struct5& a, FOLLY_MAYBE_UNUSED struct5& b) {
   using ::std::swap;
   swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
@@ -2744,7 +2704,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 struct_binary::struct_binary(const struct_binary&) = default;
 struct_binary& struct_binary::operator=(const struct_binary&) = default;
-struct_binary::struct_binary(struct_binary&& other) noexcept  :
+struct_binary::struct_binary(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept  :
     __fbthrift_field_bi(std::move(other.__fbthrift_field_bi)),
     __isset(other.__isset) {
 }
@@ -2775,20 +2735,16 @@ bool struct_binary::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct_binary::operator==(const struct_binary& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_binary::operator==(FOLLY_MAYBE_UNUSED const struct_binary& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_bi, rhs.__fbthrift_field_bi)) {
     return false;
   }
   return true;
 }
 
-bool struct_binary::operator<(const struct_binary& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_binary::operator<(FOLLY_MAYBE_UNUSED const struct_binary& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_bi, rhs.__fbthrift_field_bi)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_bi, rhs.__fbthrift_field_bi);
   }
@@ -2796,7 +2752,7 @@ bool struct_binary::operator<(const struct_binary& rhs) const {
 }
 
 
-void swap(struct_binary& a, struct_binary& b) {
+void swap(FOLLY_MAYBE_UNUSED struct_binary& a, FOLLY_MAYBE_UNUSED struct_binary& b) {
   using ::std::swap;
   swap(a.bi_ref().value(), b.bi_ref().value());
   swap(a.__isset, b.__isset);
@@ -2863,10 +2819,8 @@ bool dep_A_struct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool dep_A_struct::operator==(FOLLY_MAYBE_UNUSED const dep_A_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
@@ -2879,10 +2833,8 @@ bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
   return true;
 }
 
-bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool dep_A_struct::operator<(FOLLY_MAYBE_UNUSED const dep_A_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.b_ref() == rhs.b_ref())) {
     return lhs.b_ref() < rhs.b_ref();
   }
@@ -2912,7 +2864,7 @@ const ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
 }
 
 
-void swap(dep_A_struct& a, dep_A_struct& b) {
+void swap(FOLLY_MAYBE_UNUSED dep_A_struct& a, FOLLY_MAYBE_UNUSED dep_A_struct& b) {
   using ::std::swap;
   swap(a.b_ref().value(), b.b_ref().value());
   swap(a.c_ref().value(), b.c_ref().value());
@@ -2993,10 +2945,8 @@ bool dep_B_struct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool dep_B_struct::operator==(FOLLY_MAYBE_UNUSED const dep_B_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
@@ -3009,10 +2959,8 @@ bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
   return true;
 }
 
-bool dep_B_struct::operator<(const dep_B_struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool dep_B_struct::operator<(FOLLY_MAYBE_UNUSED const dep_B_struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.b_ref() == rhs.b_ref())) {
     return lhs.b_ref() < rhs.b_ref();
   }
@@ -3042,7 +2990,7 @@ const ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
 }
 
 
-void swap(dep_B_struct& a, dep_B_struct& b) {
+void swap(FOLLY_MAYBE_UNUSED dep_B_struct& a, FOLLY_MAYBE_UNUSED dep_B_struct& b) {
   using ::std::swap;
   swap(a.b_ref().value(), b.b_ref().value());
   swap(a.c_ref().value(), b.c_ref().value());
@@ -3117,20 +3065,16 @@ bool annotated::__fbthrift_is_empty() const {
   return false;
 }
 
-bool annotated::operator==(const annotated& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool annotated::operator==(FOLLY_MAYBE_UNUSED const annotated& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
   return true;
 }
 
-bool annotated::operator<(const annotated& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool annotated::operator<(FOLLY_MAYBE_UNUSED const annotated& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.a_ref() == rhs.a_ref())) {
     return lhs.a_ref() < rhs.a_ref();
   }
@@ -3138,7 +3082,7 @@ bool annotated::operator<(const annotated& rhs) const {
 }
 
 
-void swap(annotated& a, annotated& b) {
+void swap(FOLLY_MAYBE_UNUSED annotated& a, FOLLY_MAYBE_UNUSED annotated& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.__isset, b.__isset);
@@ -3356,10 +3300,8 @@ bool union_with_special_names::operator==(const union_with_special_names& rhs) c
   }
 }
 
-bool union_with_special_names::operator<(const union_with_special_names& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool union_with_special_names::operator<(FOLLY_MAYBE_UNUSED const union_with_special_names& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }
@@ -3567,10 +3509,8 @@ bool struct_with_special_names::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_with_special_names::operator==(FOLLY_MAYBE_UNUSED const struct_with_special_names& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.get_ref() == rhs.get_ref())) {
     return false;
   }
@@ -3658,10 +3598,8 @@ bool struct_with_special_names::operator==(const struct_with_special_names& rhs)
   return true;
 }
 
-bool struct_with_special_names::operator<(const struct_with_special_names& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_with_special_names::operator<(FOLLY_MAYBE_UNUSED const struct_with_special_names& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.get_ref() == rhs.get_ref())) {
     return lhs.get_ref() < rhs.get_ref();
   }
@@ -3750,7 +3688,7 @@ bool struct_with_special_names::operator<(const struct_with_special_names& rhs) 
 }
 
 
-void swap(struct_with_special_names& a, struct_with_special_names& b) {
+void swap(FOLLY_MAYBE_UNUSED struct_with_special_names& a, FOLLY_MAYBE_UNUSED struct_with_special_names& b) {
   using ::std::swap;
   swap(a.get_ref().value(), b.get_ref().value());
   swap(a.getter_ref().value(), b.getter_ref().value());
@@ -3830,7 +3768,7 @@ struct_with_indirections::struct_with_indirections() :
 
 struct_with_indirections::~struct_with_indirections() {}
 
-struct_with_indirections::struct_with_indirections(struct_with_indirections&& other) noexcept  :
+struct_with_indirections::struct_with_indirections(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept  :
     __fbthrift_field_real(std::move(other.__fbthrift_field_real)),
     __fbthrift_field_fake(std::move(other.__fbthrift_field_fake)),
     __fbthrift_field_number(std::move(other.__fbthrift_field_number)),
@@ -3881,10 +3819,8 @@ bool struct_with_indirections::__fbthrift_is_empty() const {
   return false;
 }
 
-bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_with_indirections::operator==(FOLLY_MAYBE_UNUSED const struct_with_indirections& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.real_ref() == rhs.real_ref())) {
     return false;
   }
@@ -3903,10 +3839,8 @@ bool struct_with_indirections::operator==(const struct_with_indirections& rhs) c
   return true;
 }
 
-bool struct_with_indirections::operator<(const struct_with_indirections& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool struct_with_indirections::operator<(FOLLY_MAYBE_UNUSED const struct_with_indirections& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.real_ref() == rhs.real_ref())) {
     return lhs.real_ref() < rhs.real_ref();
   }
@@ -3926,7 +3860,7 @@ bool struct_with_indirections::operator<(const struct_with_indirections& rhs) co
 }
 
 
-void swap(struct_with_indirections& a, struct_with_indirections& b) {
+void swap(FOLLY_MAYBE_UNUSED struct_with_indirections& a, FOLLY_MAYBE_UNUSED struct_with_indirections& b) {
   using ::std::swap;
   swap(a.real_ref().value(), b.real_ref().value());
   swap(a.fake_ref().value(), b.fake_ref().value());

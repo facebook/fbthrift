@@ -55,20 +55,16 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.OtherStructField_ref() == rhs.OtherStructField_ref())) {
     return false;
   }
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.OtherStructField_ref() == rhs.OtherStructField_ref())) {
     return lhs.OtherStructField_ref() < rhs.OtherStructField_ref();
   }
@@ -84,7 +80,7 @@ const ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() cons
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.OtherStructField_ref().value(), b.OtherStructField_ref().value());
   swap(a.__isset, b.__isset);

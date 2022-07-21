@@ -84,10 +84,8 @@ bool SmallStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SmallStruct::operator==(const SmallStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SmallStruct::operator==(FOLLY_MAYBE_UNUSED const SmallStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.small_A_ref() == rhs.small_A_ref())) {
     return false;
   }
@@ -97,10 +95,8 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
   return true;
 }
 
-bool SmallStruct::operator<(const SmallStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SmallStruct::operator<(FOLLY_MAYBE_UNUSED const SmallStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.small_A_ref() == rhs.small_A_ref())) {
     return lhs.small_A_ref() < rhs.small_A_ref();
   }
@@ -111,7 +107,7 @@ bool SmallStruct::operator<(const SmallStruct& rhs) const {
 }
 
 
-void swap(SmallStruct& a, SmallStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED SmallStruct& a, FOLLY_MAYBE_UNUSED SmallStruct& b) {
   using ::std::swap;
   swap(a.small_A_ref().value(), b.small_A_ref().value());
   swap(a.small_B_ref().value(), b.small_B_ref().value());
@@ -231,7 +227,7 @@ containerStruct::containerStruct() :
 
 containerStruct::~containerStruct() {}
 
-containerStruct::containerStruct(containerStruct&& other) noexcept  :
+containerStruct::containerStruct(FOLLY_MAYBE_UNUSED containerStruct&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -362,10 +358,8 @@ bool containerStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool containerStruct::operator==(const containerStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool containerStruct::operator==(FOLLY_MAYBE_UNUSED const containerStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -435,10 +429,8 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   return true;
 }
 
-bool containerStruct::operator<(const containerStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool containerStruct::operator<(FOLLY_MAYBE_UNUSED const containerStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -605,7 +597,7 @@ const ::std::vector<::cpp2::IndirectionC>& containerStruct::get_fieldP() const& 
 }
 
 
-void swap(containerStruct& a, containerStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED containerStruct& a, FOLLY_MAYBE_UNUSED containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.fieldB_ref().value(), b.fieldB_ref().value());

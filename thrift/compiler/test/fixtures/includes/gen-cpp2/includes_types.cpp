@@ -58,10 +58,8 @@ bool Included::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Included::operator==(const Included& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Included::operator==(FOLLY_MAYBE_UNUSED const Included& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
@@ -71,10 +69,8 @@ bool Included::operator==(const Included& rhs) const {
   return true;
 }
 
-bool Included::operator<(const Included& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Included::operator<(FOLLY_MAYBE_UNUSED const Included& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
@@ -93,7 +89,7 @@ const ::cpp2::Foo& Included::get_MyTransitiveField() const& {
 }
 
 
-void swap(Included& a, Included& b) {
+void swap(FOLLY_MAYBE_UNUSED Included& a, FOLLY_MAYBE_UNUSED Included& b) {
   using ::std::swap;
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
   swap(a.MyTransitiveField_ref().value(), b.MyTransitiveField_ref().value());

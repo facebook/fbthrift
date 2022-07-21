@@ -37,7 +37,7 @@ namespace cpp2 {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
     __fbthrift_field_MyIncludedField(std::move(other.__fbthrift_field_MyIncludedField)),
     __fbthrift_field_MyOtherIncludedField(std::move(other.__fbthrift_field_MyOtherIncludedField)),
     __fbthrift_field_MyIncludedInt(std::move(other.__fbthrift_field_MyIncludedInt)),
@@ -78,10 +78,8 @@ bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIncludedField_ref() == rhs.MyIncludedField_ref())) {
     return false;
   }
@@ -94,10 +92,8 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.MyIncludedField_ref() == rhs.MyIncludedField_ref())) {
     return lhs.MyIncludedField_ref() < rhs.MyIncludedField_ref();
   }
@@ -127,7 +123,7 @@ const ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
 }
 
 
-void swap(MyStruct& a, MyStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedField_ref().value(), b.MyIncludedField_ref().value());
   swap(a.MyOtherIncludedField_ref().value(), b.MyOtherIncludedField_ref().value());

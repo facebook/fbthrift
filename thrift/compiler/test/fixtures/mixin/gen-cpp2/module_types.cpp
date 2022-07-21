@@ -37,7 +37,7 @@ namespace cpp2 {
 
 Mixin1::Mixin1(const Mixin1&) = default;
 Mixin1& Mixin1::operator=(const Mixin1&) = default;
-Mixin1::Mixin1(Mixin1&& other) noexcept  :
+Mixin1::Mixin1(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __isset(other.__isset) {
 }
@@ -68,20 +68,16 @@ bool Mixin1::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Mixin1::operator==(const Mixin1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin1::operator==(FOLLY_MAYBE_UNUSED const Mixin1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
   return true;
 }
 
-bool Mixin1::operator<(const Mixin1& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin1::operator<(FOLLY_MAYBE_UNUSED const Mixin1& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -89,7 +85,7 @@ bool Mixin1::operator<(const Mixin1& rhs) const {
 }
 
 
-void swap(Mixin1& a, Mixin1& b) {
+void swap(FOLLY_MAYBE_UNUSED Mixin1& a, FOLLY_MAYBE_UNUSED Mixin1& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.__isset, b.__isset);
@@ -132,7 +128,7 @@ namespace cpp2 {
 
 Mixin2::Mixin2(const Mixin2&) = default;
 Mixin2& Mixin2::operator=(const Mixin2&) = default;
-Mixin2::Mixin2(Mixin2&& other) noexcept  :
+Mixin2::Mixin2(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept  :
     __fbthrift_field_m1(std::move(other.__fbthrift_field_m1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __isset(other.__isset) {
@@ -168,10 +164,8 @@ bool Mixin2::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Mixin2::operator==(const Mixin2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin2::operator==(FOLLY_MAYBE_UNUSED const Mixin2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return false;
   }
@@ -181,10 +175,8 @@ bool Mixin2::operator==(const Mixin2& rhs) const {
   return true;
 }
 
-bool Mixin2::operator<(const Mixin2& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin2::operator<(FOLLY_MAYBE_UNUSED const Mixin2& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return lhs.m1_ref() < rhs.m1_ref();
   }
@@ -203,7 +195,7 @@ const ::cpp2::Mixin1& Mixin2::get_m1() const& {
 }
 
 
-void swap(Mixin2& a, Mixin2& b) {
+void swap(FOLLY_MAYBE_UNUSED Mixin2& a, FOLLY_MAYBE_UNUSED Mixin2& b) {
   using ::std::swap;
   swap(a.m1_ref().value(), b.m1_ref().value());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -253,7 +245,7 @@ namespace cpp2 {
 
 Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
 Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
-Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
+Mixin3Base::Mixin3Base(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept  :
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
     __isset(other.__isset) {
 }
@@ -284,20 +276,16 @@ bool Mixin3Base::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Mixin3Base::operator==(const Mixin3Base& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin3Base::operator==(FOLLY_MAYBE_UNUSED const Mixin3Base& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
   return true;
 }
 
-bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Mixin3Base::operator<(FOLLY_MAYBE_UNUSED const Mixin3Base& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return lhs.field3_ref() < rhs.field3_ref();
   }
@@ -305,7 +293,7 @@ bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
 }
 
 
-void swap(Mixin3Base& a, Mixin3Base& b) {
+void swap(FOLLY_MAYBE_UNUSED Mixin3Base& a, FOLLY_MAYBE_UNUSED Mixin3Base& b) {
   using ::std::swap;
   swap(a.field3_ref().value(), b.field3_ref().value());
   swap(a.__isset, b.__isset);
@@ -348,7 +336,7 @@ namespace cpp2 {
 
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
-Foo::Foo(Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
     __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __fbthrift_field_m2(std::move(other.__fbthrift_field_m2)),
     __fbthrift_field_m3(std::move(other.__fbthrift_field_m3)),
@@ -389,10 +377,8 @@ bool Foo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
@@ -405,10 +391,8 @@ bool Foo::operator==(const Foo& rhs) const {
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
@@ -438,7 +422,7 @@ const ::cpp2::Mixin3& Foo::get_m3() const& {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.field4_ref().value(), b.field4_ref().value());
   swap(a.m2_ref().value(), b.m2_ref().value());

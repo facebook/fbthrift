@@ -67,7 +67,7 @@ const char* SomeStruct::__fbthrift_thrift_uri() {
 
 SomeStruct::SomeStruct(const SomeStruct&) = default;
 SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
-SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :
+SomeStruct::SomeStruct(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept  :
     __fbthrift_field_reasonable(std::move(other.__fbthrift_field_reasonable)),
     __fbthrift_field_fine(std::move(other.__fbthrift_field_fine)),
     __fbthrift_field_questionable(std::move(other.__fbthrift_field_questionable)),
@@ -113,10 +113,8 @@ bool SomeStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SomeStruct::operator==(const SomeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SomeStruct::operator==(FOLLY_MAYBE_UNUSED const SomeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
     return false;
   }
@@ -132,10 +130,8 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
   return true;
 }
 
-bool SomeStruct::operator<(const SomeStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SomeStruct::operator<(FOLLY_MAYBE_UNUSED const SomeStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
     return lhs.reasonable_ref() < rhs.reasonable_ref();
   }
@@ -160,7 +156,7 @@ const ::std::set<::std::int32_t>& SomeStruct::get_tags() const& {
 }
 
 
-void swap(SomeStruct& a, SomeStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED SomeStruct& a, FOLLY_MAYBE_UNUSED SomeStruct& b) {
   using ::std::swap;
   swap(a.reasonable_ref().value(), b.reasonable_ref().value());
   swap(a.fine_ref().value(), b.fine_ref().value());

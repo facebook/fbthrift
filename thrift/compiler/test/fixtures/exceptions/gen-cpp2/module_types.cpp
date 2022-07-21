@@ -47,7 +47,7 @@ Fiery::Fiery(std::string __message) : Fiery() {
 
 Fiery::~Fiery() {}
 
-Fiery::Fiery(Fiery&& other) noexcept  :
+Fiery::Fiery(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept  :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)) {
 }
 
@@ -74,20 +74,16 @@ bool Fiery::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Fiery::operator==(const Fiery& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Fiery::operator==(FOLLY_MAYBE_UNUSED const Fiery& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
 }
 
-bool Fiery::operator<(const Fiery& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Fiery::operator<(FOLLY_MAYBE_UNUSED const Fiery& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
@@ -95,7 +91,7 @@ bool Fiery::operator<(const Fiery& rhs) const {
 }
 
 
-void swap(Fiery& a, Fiery& b) {
+void swap(FOLLY_MAYBE_UNUSED Fiery& a, FOLLY_MAYBE_UNUSED Fiery& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
 }
@@ -147,7 +143,7 @@ Serious::Serious(std::string __message) : Serious() {
 
 Serious::~Serious() {}
 
-Serious::Serious(Serious&& other) noexcept  :
+Serious::Serious(FOLLY_MAYBE_UNUSED Serious&& other) noexcept  :
     __fbthrift_field_sonnet(std::move(other.__fbthrift_field_sonnet)),
     __isset(other.__isset) {
 }
@@ -178,20 +174,16 @@ bool Serious::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool Serious::operator==(const Serious& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Serious::operator==(FOLLY_MAYBE_UNUSED const Serious& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.sonnet_ref() == rhs.sonnet_ref())) {
     return false;
   }
   return true;
 }
 
-bool Serious::operator<(const Serious& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Serious::operator<(FOLLY_MAYBE_UNUSED const Serious& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.sonnet_ref() == rhs.sonnet_ref())) {
     return lhs.sonnet_ref() < rhs.sonnet_ref();
   }
@@ -199,7 +191,7 @@ bool Serious::operator<(const Serious& rhs) const {
 }
 
 
-void swap(Serious& a, Serious& b) {
+void swap(FOLLY_MAYBE_UNUSED Serious& a, FOLLY_MAYBE_UNUSED Serious& b) {
   using ::std::swap;
   swap(a.sonnet_ref().value_unchecked(), b.sonnet_ref().value_unchecked());
   swap(a.__isset, b.__isset);
@@ -252,7 +244,7 @@ ComplexFieldNames::ComplexFieldNames(std::string __message) : ComplexFieldNames(
 
 ComplexFieldNames::~ComplexFieldNames() {}
 
-ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
+ComplexFieldNames::ComplexFieldNames(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept  :
     __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
     __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
@@ -288,10 +280,8 @@ bool ComplexFieldNames::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ComplexFieldNames::operator==(const ComplexFieldNames& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexFieldNames::operator==(FOLLY_MAYBE_UNUSED const ComplexFieldNames& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return false;
   }
@@ -301,10 +291,8 @@ bool ComplexFieldNames::operator==(const ComplexFieldNames& rhs) const {
   return true;
 }
 
-bool ComplexFieldNames::operator<(const ComplexFieldNames& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexFieldNames::operator<(FOLLY_MAYBE_UNUSED const ComplexFieldNames& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return lhs.error_message_ref() < rhs.error_message_ref();
   }
@@ -315,7 +303,7 @@ bool ComplexFieldNames::operator<(const ComplexFieldNames& rhs) const {
 }
 
 
-void swap(ComplexFieldNames& a, ComplexFieldNames& b) {
+void swap(FOLLY_MAYBE_UNUSED ComplexFieldNames& a, FOLLY_MAYBE_UNUSED ComplexFieldNames& b) {
   using ::std::swap;
   swap(a.error_message_ref().value(), b.error_message_ref().value());
   swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
@@ -369,7 +357,7 @@ CustomFieldNames::CustomFieldNames(std::string __message) : CustomFieldNames() {
 
 CustomFieldNames::~CustomFieldNames() {}
 
-CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
+CustomFieldNames::CustomFieldNames(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept  :
     __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
     __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
@@ -405,10 +393,8 @@ bool CustomFieldNames::__fbthrift_is_empty() const {
   return false;
 }
 
-bool CustomFieldNames::operator==(const CustomFieldNames& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CustomFieldNames::operator==(FOLLY_MAYBE_UNUSED const CustomFieldNames& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return false;
   }
@@ -418,10 +404,8 @@ bool CustomFieldNames::operator==(const CustomFieldNames& rhs) const {
   return true;
 }
 
-bool CustomFieldNames::operator<(const CustomFieldNames& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool CustomFieldNames::operator<(FOLLY_MAYBE_UNUSED const CustomFieldNames& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return lhs.error_message_ref() < rhs.error_message_ref();
   }
@@ -432,7 +416,7 @@ bool CustomFieldNames::operator<(const CustomFieldNames& rhs) const {
 }
 
 
-void swap(CustomFieldNames& a, CustomFieldNames& b) {
+void swap(FOLLY_MAYBE_UNUSED CustomFieldNames& a, FOLLY_MAYBE_UNUSED CustomFieldNames& b) {
   using ::std::swap;
   swap(a.error_message_ref().value(), b.error_message_ref().value());
   swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
@@ -487,7 +471,7 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) 
 
 ExceptionWithPrimitiveField::~ExceptionWithPrimitiveField() {}
 
-ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept  :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __fbthrift_field_error_code(std::move(other.__fbthrift_field_error_code)),
     __isset(other.__isset) {
@@ -523,10 +507,8 @@ bool ExceptionWithPrimitiveField::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ExceptionWithPrimitiveField::operator==(FOLLY_MAYBE_UNUSED const ExceptionWithPrimitiveField& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
@@ -536,10 +518,8 @@ bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& 
   return true;
 }
 
-bool ExceptionWithPrimitiveField::operator<(const ExceptionWithPrimitiveField& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ExceptionWithPrimitiveField::operator<(FOLLY_MAYBE_UNUSED const ExceptionWithPrimitiveField& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
@@ -550,7 +530,7 @@ bool ExceptionWithPrimitiveField::operator<(const ExceptionWithPrimitiveField& r
 }
 
 
-void swap(ExceptionWithPrimitiveField& a, ExceptionWithPrimitiveField& b) {
+void swap(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField& a, FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
   swap(a.error_code_ref().value(), b.error_code_ref().value());
@@ -600,7 +580,7 @@ Banal::Banal() {
 
 Banal::~Banal() {}
 
-Banal::Banal(Banal&& other) noexcept { (void)other; }
+Banal::Banal(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {}
 Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
     return *this;
 }
@@ -620,25 +600,19 @@ bool Banal::__fbthrift_is_empty() const {
   return true;
 }
 
-bool Banal::operator==(const Banal& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Banal::operator==(FOLLY_MAYBE_UNUSED const Banal& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool Banal::operator<(const Banal& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Banal::operator<(FOLLY_MAYBE_UNUSED const Banal& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(Banal& a, Banal& b) {
+void swap(FOLLY_MAYBE_UNUSED Banal& a, FOLLY_MAYBE_UNUSED Banal& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

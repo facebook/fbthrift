@@ -37,7 +37,7 @@ namespace apache { namespace thrift { namespace test {
 
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
-Foo::Foo(Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -83,10 +83,8 @@ bool Foo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Foo::operator==(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -102,10 +100,8 @@ bool Foo::operator==(const Foo& rhs) const {
   return true;
 }
 
-bool Foo::operator<(const Foo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -154,7 +150,7 @@ const ::std::vector<::std::int32_t>& Foo::get_field4() const& {
 }
 
 
-void swap(Foo& a, Foo& b) {
+void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());
@@ -230,7 +226,7 @@ LazyFoo& LazyFoo::operator=(const LazyFoo& other) {
   return *this;
 }
 
-LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
+LazyFoo::LazyFoo(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -379,10 +375,8 @@ bool LazyFoo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool LazyFoo::operator==(const LazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool LazyFoo::operator==(FOLLY_MAYBE_UNUSED const LazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -402,10 +396,8 @@ bool LazyFoo::operator==(const LazyFoo& rhs) const {
   return true;
 }
 
-bool LazyFoo::operator<(const LazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool LazyFoo::operator<(FOLLY_MAYBE_UNUSED const LazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -442,7 +434,7 @@ const ::std::vector<::std::int32_t>& LazyFoo::get_field2() const& {
 }
 
 
-void swap(LazyFoo& a, LazyFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED LazyFoo& a, FOLLY_MAYBE_UNUSED LazyFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value(), b.field1_ref().value());
   swap(a.field2_ref().value(), b.field2_ref().value());
@@ -488,7 +480,7 @@ namespace apache { namespace thrift { namespace test {
 
 OptionalFoo::OptionalFoo(const OptionalFoo&) = default;
 OptionalFoo& OptionalFoo::operator=(const OptionalFoo&) = default;
-OptionalFoo::OptionalFoo(OptionalFoo&& other) noexcept  :
+OptionalFoo::OptionalFoo(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -537,10 +529,8 @@ bool OptionalFoo::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool OptionalFoo::operator==(const OptionalFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalFoo::operator==(FOLLY_MAYBE_UNUSED const OptionalFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -556,10 +546,8 @@ bool OptionalFoo::operator==(const OptionalFoo& rhs) const {
   return true;
 }
 
-bool OptionalFoo::operator<(const OptionalFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalFoo::operator<(FOLLY_MAYBE_UNUSED const OptionalFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -608,7 +596,7 @@ const ::std::vector<::std::int32_t>* OptionalFoo::get_field4() const& {
 }
 
 
-void swap(OptionalFoo& a, OptionalFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalFoo& a, FOLLY_MAYBE_UNUSED OptionalFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -682,7 +670,7 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& other) {
   return *this;
 }
 
-OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
+OptionalLazyFoo::OptionalLazyFoo(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -834,10 +822,8 @@ bool OptionalLazyFoo::__fbthrift_is_empty() const {
  !(this->__isset.get(3));
 }
 
-bool OptionalLazyFoo::operator==(const OptionalLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalLazyFoo::operator==(FOLLY_MAYBE_UNUSED const OptionalLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
@@ -857,10 +843,8 @@ bool OptionalLazyFoo::operator==(const OptionalLazyFoo& rhs) const {
   return true;
 }
 
-bool OptionalLazyFoo::operator<(const OptionalLazyFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalLazyFoo::operator<(FOLLY_MAYBE_UNUSED const OptionalLazyFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
@@ -897,7 +881,7 @@ const ::std::vector<::std::int32_t>* OptionalLazyFoo::get_field2() const& {
 }
 
 
-void swap(OptionalLazyFoo& a, OptionalLazyFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalLazyFoo& a, FOLLY_MAYBE_UNUSED OptionalLazyFoo& b) {
   using ::std::swap;
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
@@ -979,7 +963,7 @@ LazyCppRef& LazyCppRef::operator=(const LazyCppRef& other) {
   return *this;
 }
 
-LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
+LazyCppRef::LazyCppRef(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept  :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -1215,10 +1199,8 @@ bool LazyCppRef::__fbthrift_is_empty() const {
   return false;
 }
 
-bool LazyCppRef::operator==(const LazyCppRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool LazyCppRef::operator==(FOLLY_MAYBE_UNUSED const LazyCppRef& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   lhs.field1_ref();
   rhs.field1_ref();
   if ((!::apache::thrift::detail::pointer_equal(lhs.field1_ref(), rhs.field1_ref()))) {
@@ -1242,10 +1224,8 @@ bool LazyCppRef::operator==(const LazyCppRef& rhs) const {
   return true;
 }
 
-bool LazyCppRef::operator<(const LazyCppRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool LazyCppRef::operator<(FOLLY_MAYBE_UNUSED const LazyCppRef& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   lhs.field1_ref();
   rhs.field1_ref();
   if ((!::apache::thrift::detail::pointer_equal(lhs.field1_ref(), rhs.field1_ref()))) {
@@ -1270,7 +1250,7 @@ bool LazyCppRef::operator<(const LazyCppRef& rhs) const {
 }
 
 
-void swap(LazyCppRef& a, LazyCppRef& b) {
+void swap(FOLLY_MAYBE_UNUSED LazyCppRef& a, FOLLY_MAYBE_UNUSED LazyCppRef& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
   swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
@@ -1322,7 +1302,7 @@ IndexedFoo::IndexedFoo() :
 
 IndexedFoo::~IndexedFoo() {}
 
-IndexedFoo::IndexedFoo(IndexedFoo&& other) noexcept  :
+IndexedFoo::IndexedFoo(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcept  :
     __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -1378,10 +1358,8 @@ bool IndexedFoo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool IndexedFoo::operator==(const IndexedFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool IndexedFoo::operator==(FOLLY_MAYBE_UNUSED const IndexedFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return false;
   }
@@ -1403,10 +1381,8 @@ bool IndexedFoo::operator==(const IndexedFoo& rhs) const {
   return true;
 }
 
-bool IndexedFoo::operator<(const IndexedFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool IndexedFoo::operator<(FOLLY_MAYBE_UNUSED const IndexedFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return lhs.serialized_data_size_ref() < rhs.serialized_data_size_ref();
   }
@@ -1469,7 +1445,7 @@ const ::std::map<::std::int16_t, ::std::int64_t>& IndexedFoo::get_field_id_to_si
 }
 
 
-void swap(IndexedFoo& a, IndexedFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED IndexedFoo& a, FOLLY_MAYBE_UNUSED IndexedFoo& b) {
   using ::std::swap;
   swap(a.serialized_data_size_ref().value(), b.serialized_data_size_ref().value());
   swap(a.field1_ref().value(), b.field1_ref().value());
@@ -1524,7 +1500,7 @@ OptionalIndexedFoo::OptionalIndexedFoo() :
 
 OptionalIndexedFoo::~OptionalIndexedFoo() {}
 
-OptionalIndexedFoo::OptionalIndexedFoo(OptionalIndexedFoo&& other) noexcept  :
+OptionalIndexedFoo::OptionalIndexedFoo(FOLLY_MAYBE_UNUSED OptionalIndexedFoo&& other) noexcept  :
     __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -1580,10 +1556,8 @@ bool OptionalIndexedFoo::__fbthrift_is_empty() const {
   return false;
 }
 
-bool OptionalIndexedFoo::operator==(const OptionalIndexedFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalIndexedFoo::operator==(FOLLY_MAYBE_UNUSED const OptionalIndexedFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return false;
   }
@@ -1605,10 +1579,8 @@ bool OptionalIndexedFoo::operator==(const OptionalIndexedFoo& rhs) const {
   return true;
 }
 
-bool OptionalIndexedFoo::operator<(const OptionalIndexedFoo& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalIndexedFoo::operator<(FOLLY_MAYBE_UNUSED const OptionalIndexedFoo& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return lhs.serialized_data_size_ref() < rhs.serialized_data_size_ref();
   }
@@ -1671,7 +1643,7 @@ const ::std::map<::std::int16_t, ::std::int64_t>& OptionalIndexedFoo::get_field_
 }
 
 
-void swap(OptionalIndexedFoo& a, OptionalIndexedFoo& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalIndexedFoo& a, FOLLY_MAYBE_UNUSED OptionalIndexedFoo& b) {
   using ::std::swap;
   swap(a.serialized_data_size_ref().value(), b.serialized_data_size_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
@@ -1732,25 +1704,19 @@ bool Empty::__fbthrift_is_empty() const {
   return true;
 }
 
-bool Empty::operator==(const Empty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Empty::operator==(FOLLY_MAYBE_UNUSED const Empty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool Empty::operator<(const Empty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Empty::operator<(FOLLY_MAYBE_UNUSED const Empty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(Empty& a, Empty& b) {
+void swap(FOLLY_MAYBE_UNUSED Empty& a, FOLLY_MAYBE_UNUSED Empty& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

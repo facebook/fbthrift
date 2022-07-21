@@ -81,20 +81,16 @@ bool AStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool AStruct::operator==(const AStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AStruct::operator==(FOLLY_MAYBE_UNUSED const AStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.FieldA_ref() == rhs.FieldA_ref())) {
     return false;
   }
   return true;
 }
 
-bool AStruct::operator<(const AStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AStruct::operator<(FOLLY_MAYBE_UNUSED const AStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.FieldA_ref() == rhs.FieldA_ref())) {
     return lhs.FieldA_ref() < rhs.FieldA_ref();
   }
@@ -102,7 +98,7 @@ bool AStruct::operator<(const AStruct& rhs) const {
 }
 
 
-void swap(AStruct& a, AStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED AStruct& a, FOLLY_MAYBE_UNUSED AStruct& b) {
   using ::std::swap;
   swap(a.FieldA_ref().value(), b.FieldA_ref().value());
   swap(a.__isset, b.__isset);
@@ -149,7 +145,7 @@ namespace a { namespace different { namespace ns {
 
 AStructB::AStructB(const AStructB&) = default;
 AStructB& AStructB::operator=(const AStructB&) = default;
-AStructB::AStructB(AStructB&& other) noexcept  :
+AStructB::AStructB(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept  :
     FieldA(std::move(other.FieldA)) {
 }
 
@@ -176,20 +172,16 @@ bool AStructB::__fbthrift_is_empty() const {
   return false;
 }
 
-bool AStructB::operator==(const AStructB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AStructB::operator==(FOLLY_MAYBE_UNUSED const AStructB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.FieldA_ref(), rhs.FieldA_ref()))) {
     return false;
   }
   return true;
 }
 
-bool AStructB::operator<(const AStructB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool AStructB::operator<(FOLLY_MAYBE_UNUSED const AStructB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if ((!::apache::thrift::detail::pointer_equal(lhs.FieldA_ref(), rhs.FieldA_ref()))) {
     return ::apache::thrift::detail::pointer_less(lhs.FieldA_ref(), rhs.FieldA_ref());
   }
@@ -197,7 +189,7 @@ bool AStructB::operator<(const AStructB& rhs) const {
 }
 
 
-void swap(AStructB& a, AStructB& b) {
+void swap(FOLLY_MAYBE_UNUSED AStructB& a, FOLLY_MAYBE_UNUSED AStructB& b) {
   using ::std::swap;
   swap(a.FieldA, b.FieldA);
 }

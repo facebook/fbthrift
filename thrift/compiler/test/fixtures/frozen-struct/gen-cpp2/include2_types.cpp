@@ -37,7 +37,7 @@ namespace some { namespace ns {
 
 IncludedB::IncludedB(const IncludedB&) = default;
 IncludedB& IncludedB::operator=(const IncludedB&) = default;
-IncludedB::IncludedB(IncludedB&& other) noexcept  :
+IncludedB::IncludedB(FOLLY_MAYBE_UNUSED IncludedB&& other) noexcept  :
     __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
     __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
     __isset(other.__isset) {
@@ -73,10 +73,8 @@ bool IncludedB::__fbthrift_is_empty() const {
   return false;
 }
 
-bool IncludedB::operator==(const IncludedB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool IncludedB::operator==(FOLLY_MAYBE_UNUSED const IncludedB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return false;
   }
@@ -86,10 +84,8 @@ bool IncludedB::operator==(const IncludedB& rhs) const {
   return true;
 }
 
-bool IncludedB::operator<(const IncludedB& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool IncludedB::operator<(FOLLY_MAYBE_UNUSED const IncludedB& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return lhs.i32Field_ref() < rhs.i32Field_ref();
   }
@@ -100,7 +96,7 @@ bool IncludedB::operator<(const IncludedB& rhs) const {
 }
 
 
-void swap(IncludedB& a, IncludedB& b) {
+void swap(FOLLY_MAYBE_UNUSED IncludedB& a, FOLLY_MAYBE_UNUSED IncludedB& b) {
   using ::std::swap;
   swap(a.i32Field_ref().value(), b.i32Field_ref().value());
   swap(a.strField_ref().value(), b.strField_ref().value());

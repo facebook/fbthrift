@@ -37,7 +37,7 @@ namespace module2 {
 
 Struct::Struct(const Struct&) = default;
 Struct& Struct::operator=(const Struct&) = default;
-Struct::Struct(Struct&& other) noexcept  :
+Struct::Struct(FOLLY_MAYBE_UNUSED Struct&& other) noexcept  :
     __fbthrift_field_first(std::move(other.__fbthrift_field_first)),
     __fbthrift_field_second(std::move(other.__fbthrift_field_second)),
     __isset(other.__isset) {
@@ -73,10 +73,8 @@ bool Struct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool Struct::operator==(const Struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Struct::operator==(FOLLY_MAYBE_UNUSED const Struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.first_ref() == rhs.first_ref())) {
     return false;
   }
@@ -86,10 +84,8 @@ bool Struct::operator==(const Struct& rhs) const {
   return true;
 }
 
-bool Struct::operator<(const Struct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Struct::operator<(FOLLY_MAYBE_UNUSED const Struct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.first_ref() == rhs.first_ref())) {
     return lhs.first_ref() < rhs.first_ref();
   }
@@ -116,7 +112,7 @@ const ::module1::Struct& Struct::get_second() const& {
 }
 
 
-void swap(Struct& a, Struct& b) {
+void swap(FOLLY_MAYBE_UNUSED Struct& a, FOLLY_MAYBE_UNUSED Struct& b) {
   using ::std::swap;
   swap(a.first_ref().value(), b.first_ref().value());
   swap(a.second_ref().value(), b.second_ref().value());
@@ -172,7 +168,7 @@ namespace module2 {
 
 BigStruct::BigStruct(const BigStruct&) = default;
 BigStruct& BigStruct::operator=(const BigStruct&) = default;
-BigStruct::BigStruct(BigStruct&& other) noexcept  :
+BigStruct::BigStruct(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept  :
     __fbthrift_field_s(std::move(other.__fbthrift_field_s)),
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __isset(other.__isset) {
@@ -208,10 +204,8 @@ bool BigStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool BigStruct::operator==(const BigStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool BigStruct::operator==(FOLLY_MAYBE_UNUSED const BigStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.s_ref() == rhs.s_ref())) {
     return false;
   }
@@ -221,10 +215,8 @@ bool BigStruct::operator==(const BigStruct& rhs) const {
   return true;
 }
 
-bool BigStruct::operator<(const BigStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool BigStruct::operator<(FOLLY_MAYBE_UNUSED const BigStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.s_ref() == rhs.s_ref())) {
     return lhs.s_ref() < rhs.s_ref();
   }
@@ -243,7 +235,7 @@ const ::module2::Struct& BigStruct::get_s() const& {
 }
 
 
-void swap(BigStruct& a, BigStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED BigStruct& a, FOLLY_MAYBE_UNUSED BigStruct& b) {
   using ::std::swap;
   swap(a.s_ref().value(), b.s_ref().value());
   swap(a.id_ref().value(), b.id_ref().value());

@@ -63,10 +63,8 @@ bool BasicTypes::__fbthrift_is_empty() const {
   return false;
 }
 
-bool BasicTypes::operator==(const BasicTypes& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool BasicTypes::operator==(FOLLY_MAYBE_UNUSED const BasicTypes& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.first_ref() == rhs.first_ref())) {
     return false;
   }
@@ -82,10 +80,8 @@ bool BasicTypes::operator==(const BasicTypes& rhs) const {
   return true;
 }
 
-bool BasicTypes::operator<(const BasicTypes& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool BasicTypes::operator<(FOLLY_MAYBE_UNUSED const BasicTypes& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.first_ref() == rhs.first_ref())) {
     return lhs.first_ref() < rhs.first_ref();
   }
@@ -102,7 +98,7 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
 }
 
 
-void swap(BasicTypes& a, BasicTypes& b) {
+void swap(FOLLY_MAYBE_UNUSED BasicTypes& a, FOLLY_MAYBE_UNUSED BasicTypes& b) {
   using ::std::swap;
   swap(a.first_ref().value(), b.first_ref().value());
   swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());

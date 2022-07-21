@@ -50,25 +50,19 @@ bool Empty::__fbthrift_is_empty() const {
   return true;
 }
 
-bool Empty::operator==(const Empty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Empty::operator==(FOLLY_MAYBE_UNUSED const Empty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return true;
 }
 
-bool Empty::operator<(const Empty& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Empty::operator<(FOLLY_MAYBE_UNUSED const Empty& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   return false;
 }
 
 
-void swap(Empty& a, Empty& b) {
+void swap(FOLLY_MAYBE_UNUSED Empty& a, FOLLY_MAYBE_UNUSED Empty& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
 }
 
 template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -143,10 +137,8 @@ bool Nada::operator==(const Nada& rhs) const {
   }
 }
 
-bool Nada::operator<(const Nada& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool Nada::operator<(FOLLY_MAYBE_UNUSED const Nada& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.getType() != rhs.getType()) {
     return lhs.getType() < rhs.getType();
   }

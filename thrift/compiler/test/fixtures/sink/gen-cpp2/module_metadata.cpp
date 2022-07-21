@@ -255,27 +255,24 @@ void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
     module_SinkException2.fields()->push_back(std::move(field));
   }
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_method(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_method(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "method";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodAndReponse(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodAndReponse(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodAndReponse";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"), std::make_unique<Struct<::cpp2::InitialResponse>>("module.InitialResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodThrow(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodThrow(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
@@ -290,36 +287,32 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodSinkThrow(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodSinkThrow(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodSinkThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodFinalThrow(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodFinalThrow(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodFinalThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodBothThrow(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodBothThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodFast(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen_methodFast(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
   func.name() = "methodFast";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct<::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct<::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type(), metadata);
@@ -337,8 +330,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen
   response.context() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
-  (void) metadata;
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::genRecurse(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   ::apache::thrift::metadata::ThriftService module_SinkService;
   module_SinkService.name() = "module.SinkService";
   static const ThriftFunctionGenerator functions[] = {

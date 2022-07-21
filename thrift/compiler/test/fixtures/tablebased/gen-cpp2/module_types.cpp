@@ -130,7 +130,7 @@ TrivialTypesStruct::TrivialTypesStruct() :
 
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
-TrivialTypesStruct::TrivialTypesStruct(TrivialTypesStruct&& other) noexcept  :
+TrivialTypesStruct::TrivialTypesStruct(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -181,10 +181,8 @@ bool TrivialTypesStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialTypesStruct::operator==(FOLLY_MAYBE_UNUSED const TrivialTypesStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -203,10 +201,8 @@ bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
   return true;
 }
 
-bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool TrivialTypesStruct::operator<(FOLLY_MAYBE_UNUSED const TrivialTypesStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
@@ -226,7 +222,7 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
 }
 
 
-void swap(TrivialTypesStruct& a, TrivialTypesStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED TrivialTypesStruct& a, FOLLY_MAYBE_UNUSED TrivialTypesStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value_unchecked(), b.fieldA_ref().value_unchecked());
   swap(a.fieldB_ref().value_unchecked(), b.fieldB_ref().value_unchecked());
@@ -311,7 +307,7 @@ ContainerStruct::ContainerStruct() {
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -377,10 +373,8 @@ bool ContainerStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ContainerStruct::operator==(FOLLY_MAYBE_UNUSED const ContainerStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
@@ -473,7 +467,7 @@ const ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& Container
 }
 
 
-void swap(ContainerStruct& a, ContainerStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED ContainerStruct& a, FOLLY_MAYBE_UNUSED ContainerStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
   swap(a.fieldB_ref().value(), b.fieldB_ref().value());

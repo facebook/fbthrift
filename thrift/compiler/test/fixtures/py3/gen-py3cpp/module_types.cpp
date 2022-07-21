@@ -96,7 +96,7 @@ SimpleException::SimpleException() :
 
 SimpleException::~SimpleException() {}
 
-SimpleException::SimpleException(SimpleException&& other) noexcept  :
+SimpleException::SimpleException(FOLLY_MAYBE_UNUSED SimpleException&& other) noexcept  :
     __fbthrift_field_err_code(std::move(other.__fbthrift_field_err_code)),
     __isset(other.__isset) {
 }
@@ -127,20 +127,16 @@ bool SimpleException::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SimpleException::operator==(const SimpleException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SimpleException::operator==(FOLLY_MAYBE_UNUSED const SimpleException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.err_code_ref() == rhs.err_code_ref())) {
     return false;
   }
   return true;
 }
 
-bool SimpleException::operator<(const SimpleException& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SimpleException::operator<(FOLLY_MAYBE_UNUSED const SimpleException& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.err_code_ref() == rhs.err_code_ref())) {
     return lhs.err_code_ref() < rhs.err_code_ref();
   }
@@ -148,7 +144,7 @@ bool SimpleException::operator<(const SimpleException& rhs) const {
 }
 
 
-void swap(SimpleException& a, SimpleException& b) {
+void swap(FOLLY_MAYBE_UNUSED SimpleException& a, FOLLY_MAYBE_UNUSED SimpleException& b) {
   using ::std::swap;
   swap(a.err_code_ref().value(), b.err_code_ref().value());
   swap(a.__isset, b.__isset);
@@ -201,7 +197,7 @@ OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& other) 
   return *this;
 }
 
-OptionalRefStruct::OptionalRefStruct(OptionalRefStruct&& other) noexcept  :
+OptionalRefStruct::OptionalRefStruct(FOLLY_MAYBE_UNUSED OptionalRefStruct&& other) noexcept  :
     optional_blob(std::move(other.optional_blob)),
     __isset(other.__isset) {
 }
@@ -232,20 +228,16 @@ bool OptionalRefStruct::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
 
-bool OptionalRefStruct::operator==(const OptionalRefStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalRefStruct::operator==(FOLLY_MAYBE_UNUSED const OptionalRefStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value() || (lhs.optional_blob_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob))) {
     return false;
   }
   return true;
 }
 
-bool OptionalRefStruct::operator<(const OptionalRefStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool OptionalRefStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalRefStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value() || (lhs.optional_blob_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob))) {
     return !lhs.optional_blob_ref().has_value() || (rhs.optional_blob_ref().has_value() && apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.optional_blob, rhs.optional_blob));
   }
@@ -253,7 +245,7 @@ bool OptionalRefStruct::operator<(const OptionalRefStruct& rhs) const {
 }
 
 
-void swap(OptionalRefStruct& a, OptionalRefStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED OptionalRefStruct& a, FOLLY_MAYBE_UNUSED OptionalRefStruct& b) {
   using ::std::swap;
   swap(a.optional_blob_ref().value_unchecked(), b.optional_blob_ref().value_unchecked());
   swap(a.__isset, b.__isset);
@@ -296,7 +288,7 @@ namespace py3 { namespace simple {
 
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
-SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
+SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept  :
     __fbthrift_field_is_on(std::move(other.__fbthrift_field_is_on)),
     __fbthrift_field_tiny_int(std::move(other.__fbthrift_field_tiny_int)),
     __fbthrift_field_small_int(std::move(other.__fbthrift_field_small_int)),
@@ -362,10 +354,8 @@ bool SimpleStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SimpleStruct::operator==(FOLLY_MAYBE_UNUSED const SimpleStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.is_on_ref() == rhs.is_on_ref())) {
     return false;
   }
@@ -393,10 +383,8 @@ bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
   return true;
 }
 
-bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool SimpleStruct::operator<(FOLLY_MAYBE_UNUSED const SimpleStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.is_on_ref() == rhs.is_on_ref())) {
     return lhs.is_on_ref() < rhs.is_on_ref();
   }
@@ -425,7 +413,7 @@ bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
 }
 
 
-void swap(SimpleStruct& a, SimpleStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED SimpleStruct& a, FOLLY_MAYBE_UNUSED SimpleStruct& b) {
   using ::std::swap;
   swap(a.is_on_ref().value(), b.is_on_ref().value());
   swap(a.tiny_int_ref().value(), b.tiny_int_ref().value());
@@ -483,7 +471,7 @@ ComplexStruct::ComplexStruct() :
 
 ComplexStruct::~ComplexStruct() {}
 
-ComplexStruct::ComplexStruct(ComplexStruct&& other) noexcept  :
+ComplexStruct::ComplexStruct(FOLLY_MAYBE_UNUSED ComplexStruct&& other) noexcept  :
     __fbthrift_field_structOne(std::move(other.__fbthrift_field_structOne)),
     __fbthrift_field_structTwo(std::move(other.__fbthrift_field_structTwo)),
     __fbthrift_field_an_integer(std::move(other.__fbthrift_field_an_integer)),
@@ -554,10 +542,8 @@ bool ComplexStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexStruct::operator==(FOLLY_MAYBE_UNUSED const ComplexStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.structOne_ref() == rhs.structOne_ref())) {
     return false;
   }
@@ -588,10 +574,8 @@ bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
   return true;
 }
 
-bool ComplexStruct::operator<(const ComplexStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool ComplexStruct::operator<(FOLLY_MAYBE_UNUSED const ComplexStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.structOne_ref() == rhs.structOne_ref())) {
     return lhs.structOne_ref() < rhs.structOne_ref();
   }
@@ -639,7 +623,7 @@ const ::py3::simple::SimpleStruct& ComplexStruct::get_structTwo() const& {
 }
 
 
-void swap(ComplexStruct& a, ComplexStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED ComplexStruct& a, FOLLY_MAYBE_UNUSED ComplexStruct& b) {
   using ::std::swap;
   swap(a.structOne_ref().value(), b.structOne_ref().value());
   swap(a.structTwo_ref().value(), b.structTwo_ref().value());
@@ -776,7 +760,7 @@ namespace py3 { namespace simple {
 
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
 BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;
-BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :
+BinaryUnionStruct::BinaryUnionStruct(FOLLY_MAYBE_UNUSED BinaryUnionStruct&& other) noexcept  :
     __fbthrift_field_u(std::move(other.__fbthrift_field_u)),
     __isset(other.__isset) {
 }
@@ -818,7 +802,7 @@ const ::py3::simple::BinaryUnion& BinaryUnionStruct::get_u() const& {
 }
 
 
-void swap(BinaryUnionStruct& a, BinaryUnionStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED BinaryUnionStruct& a, FOLLY_MAYBE_UNUSED BinaryUnionStruct& b) {
   using ::std::swap;
   swap(a.u_ref().value(), b.u_ref().value());
   swap(a.__isset, b.__isset);

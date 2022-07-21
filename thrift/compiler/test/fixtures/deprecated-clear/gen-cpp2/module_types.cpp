@@ -82,7 +82,7 @@ StructWithDefaultStruct::StructWithDefaultStruct() :
 
 StructWithDefaultStruct::~StructWithDefaultStruct() {}
 
-StructWithDefaultStruct::StructWithDefaultStruct(StructWithDefaultStruct&& other) noexcept  :
+StructWithDefaultStruct::StructWithDefaultStruct(FOLLY_MAYBE_UNUSED StructWithDefaultStruct&& other) noexcept  :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),
@@ -173,10 +173,8 @@ bool StructWithDefaultStruct::__fbthrift_is_empty() const {
   return false;
 }
 
-bool StructWithDefaultStruct::operator==(const StructWithDefaultStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool StructWithDefaultStruct::operator==(FOLLY_MAYBE_UNUSED const StructWithDefaultStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bool_field_ref() == rhs.bool_field_ref())) {
     return false;
   }
@@ -219,10 +217,8 @@ bool StructWithDefaultStruct::operator==(const StructWithDefaultStruct& rhs) con
   return true;
 }
 
-bool StructWithDefaultStruct::operator<(const StructWithDefaultStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
+bool StructWithDefaultStruct::operator<(FOLLY_MAYBE_UNUSED const StructWithDefaultStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
   if (!(lhs.bool_field_ref() == rhs.bool_field_ref())) {
     return lhs.bool_field_ref() < rhs.bool_field_ref();
   }
@@ -290,7 +286,7 @@ const ::std::map<::std::int16_t, ::std::int16_t>& StructWithDefaultStruct::get_m
 }
 
 
-void swap(StructWithDefaultStruct& a, StructWithDefaultStruct& b) {
+void swap(FOLLY_MAYBE_UNUSED StructWithDefaultStruct& a, FOLLY_MAYBE_UNUSED StructWithDefaultStruct& b) {
   using ::std::swap;
   swap(a.bool_field_ref().value(), b.bool_field_ref().value());
   swap(a.byte_field_ref().value(), b.byte_field_ref().value());
