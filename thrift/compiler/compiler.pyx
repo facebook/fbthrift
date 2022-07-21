@@ -22,8 +22,7 @@ from libcpp.vector cimport vector
 
 cdef extern from "thrift/compiler/diagnostic.h" namespace "apache::thrift::compiler":
     cpdef enum class DiagnosticLevel "apache::thrift::compiler::diagnostic_level":
-        failure
-        parse_error
+        error
         warning
         info
         debug

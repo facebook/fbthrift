@@ -33,8 +33,6 @@ namespace compiler {
 // A diagnostic level.
 enum class diagnostic_level {
   error,
-  failure = error,
-  parse_error = error,
   warning,
   info,
   debug,
