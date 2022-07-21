@@ -73,7 +73,7 @@ bool has_lazy_field(const t_structured& node) {
 }
 
 // Reports an existing name was redefined within the given parent node.
-void report_redef_failure(
+void report_redef_error(
     diagnostic_context& ctx,
     const char* kind,
     const std::string& name,
@@ -89,14 +89,14 @@ void report_redef_failure(
   });
 }
 
-void report_redef_failure(
+void report_redef_error(
     diagnostic_context& ctx,
     const char* kind,
     const std::string& name,
     const t_named& parent,
     const t_node& child,
     const t_node& existing) {
-  report_redef_failure(
+  report_redef_error(
       ctx, kind, name, ctx.program().path(), parent, child, existing);
 }
 
@@ -119,9 +119,9 @@ class redef_checker {
     if (const auto* existing = seen_.put(name, node)) {
       if (&node == &parent_ && existing == &parent_) {
         // The degenerate case where parent_ is conflicting with itself.
-        report_redef_failure(ctx_, kind_, name, parent_, child, *existing);
+        report_redef_error(ctx_, kind_, name, parent_, child, *existing);
       } else {
-        ctx_.failure(
+        ctx_.error(
             child,
             "{} `{}.{}` and `{}.{}` can not have same name in `{}`.",
             kind_,
@@ -142,8 +142,7 @@ class redef_checker {
   // For example, all functions in an interface.
   void check(const t_named& child) {
     if (const auto* existing = seen_.put(child)) {
-      report_redef_failure(
-          ctx_, kind_, child.name(), parent_, child, *existing);
+      report_redef_error(ctx_, kind_, child.name(), parent_, child, *existing);
     }
   }
   void check(t_named&& child) = delete;
@@ -183,14 +182,14 @@ class adapter_checker {
     try {
       adapter_annotation->get_value_from_structured_annotation("name");
     } catch (const std::exception& e) {
-      ctx_.failure("{}", e.what());
+      ctx_.error("{}", e.what());
       return;
     }
 
     if (const auto* typedf = dynamic_cast<const t_typedef*>(&node)) {
       if (t_typedef::get_first_structured_annotation_or_null(
               &*typedf->type(), structured_adapter_annotation)) {
-        ctx_.failure(
+        ctx_.error(
             "The `{}` annotation cannot be annotated more than once in all "
             "typedef levels in `{}`.",
             structured_adapter_annotation_error_name,
@@ -226,7 +225,7 @@ class adapter_checker {
 
     if (disallow_structured_annotations_on_both_field_and_typedef &&
         structured_annotation_on_field && structured_annotation_on_typedef) {
-      ctx_.failure(
+      ctx_.error(
           "`{}` cannot be applied on both field and typedef in `{}`.",
           structured_adapter_annotation_error_name,
           field.name());
@@ -235,7 +234,7 @@ class adapter_checker {
     if (structured_annotation_on_typedef || structured_annotation_on_field) {
       if (t_typedef::get_first_annotation_or_null(
               type, {unstructured_adapter_annotation})) {
-        ctx_.failure(
+        ctx_.error(
             "`{}` cannot be combined with `{}` in `{}`.",
             structured_adapter_annotation_error_name,
             unstructured_adapter_annotation,
@@ -305,7 +304,7 @@ void validate_extends_service_function_name_uniqueness(
   for (const auto& function : node.functions()) {
     if (const auto* existing_service =
             extends_metadata.function_name_to_service.find(function.name())) {
-      ctx.failure(
+      ctx.error(
           function,
           "Function `{0}.{2}` redefines `{1}.{2}`.",
           node.name(),
@@ -353,7 +352,7 @@ void validate_union_field_attributes(
     if (field.qualifier() != t_field_qualifier::none) {
       auto qual = field.qualifier() == t_field_qualifier::required ? "required"
                                                                    : "optional";
-      ctx.failure(
+      ctx.error(
           field,
           "Unions cannot contain qualified fields. Remove `{}` qualifier from "
           "field `{}`.",
@@ -403,7 +402,7 @@ void validate_mixin_field_attributes(
       ttype->get_name());
 
   if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
-    ctx.failure(
+    ctx.error(
         "Union `{}` cannot contain mixin field `{}`.",
         parent->name(),
         node.name());
@@ -412,7 +411,7 @@ void validate_mixin_field_attributes(
     // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
     // might throw `bad_field_access` if `bar` is inside optional mixin
     // field.
-    ctx.failure("Mixin field `{}` cannot be optional.", node.name());
+    ctx.error("Mixin field `{}` cannot be optional.", node.name());
   }
 }
 
@@ -457,7 +456,7 @@ void validate_enum_value_uniqueness(
 
 void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
   if (!node.has_value()) {
-    ctx.failure(
+    ctx.error(
         "The enum value, `{}`, must have an explicitly assigned value.",
         node.name());
   }
@@ -480,7 +479,7 @@ void validate_structured_annotation(
   for (const auto* annot : node.structured_annotations()) {
     auto result = seen.emplace(&annot->type().deref(), annot);
     if (!result.second) {
-      report_redef_failure(
+      report_redef_error(
           ctx,
           "Structured annotation",
           result.first->first->name(),
@@ -504,7 +503,7 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
         }
         auto result = uri_to_node.emplace(uri, &node);
         if (!result.second) {
-          report_redef_failure(
+          report_redef_error(
               ctx, "Thrift URI", uri, path, node, node, *result.first->second);
         }
       });
@@ -542,7 +541,7 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
 void validate_compatibility_with_lazy_field(
     diagnostic_context& ctx, const t_structured& node) {
   if (has_lazy_field(node) && node.has_annotation("cpp.methods")) {
-    ctx.failure(
+    ctx.error(
         "cpp.methods is incompatible with lazy deserialization in struct `{}`",
         node.get_name());
   }
@@ -552,7 +551,7 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
   if (node.find_structured_annotation_or_null(kCppRefUri) &&
       node.has_annotation(
           {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"})) {
-    ctx.failure(
+    ctx.error(
         "The @cpp.Ref annotation cannot be combined with the `cpp.ref` or "
         "`cpp.ref_type` annotations. Remove one of the annotations from `{}`.",
         node.name());
@@ -594,7 +593,7 @@ void validate_ref_unique_and_box_annotation(
   if (cpp2::is_unique_ref(&node)) {
     if (node.has_annotation({"cpp.ref", "cpp2.ref"})) {
       if (adapter_annotation) {
-        ctx.failure(
+        ctx.error(
             "cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box "
             "annotation instead in `{}` with @cpp.Adapter.",
             node.name());
@@ -607,7 +606,7 @@ void validate_ref_unique_and_box_annotation(
     }
     if (node.has_annotation({"cpp.ref_type", "cpp2.ref_type"})) {
       if (adapter_annotation) {
-        ctx.failure(
+        ctx.error(
             "cpp.ref_type = `unique`, cpp2.ref_type = `unique` are deprecated. "
             "Please use @thrift.Box annotation instead in `{}` with "
             "@cpp.Adapter.",
@@ -621,7 +620,7 @@ void validate_ref_unique_and_box_annotation(
     }
     if (node.find_structured_annotation_or_null(kCppRefUri) != nullptr) {
       if (adapter_annotation) {
-        ctx.failure(
+        ctx.error(
             "@cpp.Ref{{type = cpp.RefType.Unique}} is deprecated. Please use "
             "@thrift.Box annotation instead in `{}` with @cpp.Adapter.",
             node.name());
@@ -669,13 +668,13 @@ void validate_exception_php_annotations(
     const std::string& v = node.get_annotation("message");
     const auto* field = node.get_field_by_name(v);
     if (field == nullptr) {
-      ctx.failure(
+      ctx.error(
           "member specified as exception 'message' should be a valid "
           "struct member, '{}' in '{}' is not",
           v,
           node.name());
     } else if (!field->get_type()->is_string_or_binary()) {
-      ctx.failure(
+      ctx.error(
           "member specified as exception 'message' should be of type "
           "STRING, '{}' in '{}' is not",
           v,
@@ -717,7 +716,7 @@ void validate_stream_exceptions_return_type(
 void validate_interaction_factories(
     diagnostic_context& ctx, const t_function& node) {
   if (node.is_interaction_member() && node.returned_interaction()) {
-    ctx.failure("Nested interactions are forbidden: {}", node.name());
+    ctx.error("Nested interactions are forbidden: {}", node.name());
   }
 }
 
@@ -842,7 +841,7 @@ class reserved_ids_checker {
       }
     }
     for (auto id : out_of_range_ids) {
-      ctx_.failure(
+      ctx_.error(
           "Struct `{}` cannot have reserved id that is out of range: {}",
           node.name(),
           id);

@@ -50,7 +50,7 @@ namespace {
 
 TEST_F(PatchGeneratorTest, Empty) {
   // We do not error when the patch types cannot be found.
-  EXPECT_FALSE(results_.has_failure());
+  EXPECT_FALSE(results_.has_error());
   // Failures/warnings are produced lazily.
   EXPECT_EQ(results_.count(diagnostic_level::warning), 0);
 }

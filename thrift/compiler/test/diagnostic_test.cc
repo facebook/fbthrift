@@ -100,7 +100,7 @@ TEST_F(DiagnosticsEngineTest, warning_level) {
 
 TEST(DiagnosticResultsTest, empty) {
   diagnostic_results results;
-  EXPECT_FALSE(results.has_failure());
+  EXPECT_FALSE(results.has_error());
   for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
     EXPECT_EQ(results.count(static_cast<diagnostic_level>(i)), 0);
   }

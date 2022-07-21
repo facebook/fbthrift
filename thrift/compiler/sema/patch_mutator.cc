@@ -265,7 +265,7 @@ void generate_optional_patch(
       patch_generator::get_for(ctx, mctx).add_optional_patch(
           *annot, value_type, node);
     } else {
-      ctx.failure(
+      ctx.error(
           "Could not resolve the 'value' type, needed to generate the optional patch struct.");
     }
   }

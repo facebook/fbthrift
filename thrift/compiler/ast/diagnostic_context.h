@@ -115,10 +115,10 @@ class diagnostic_context : public diagnostics_engine,
     warning(*current(), msg, std::forward<T>(args)...);
   }
 
-  using diagnostics_engine::failure;
+  using diagnostics_engine::error;
   template <typename... T>
-  void failure(fmt::format_string<T...> msg, T&&... args) {
-    failure(*current(), msg, std::forward<T>(args)...);
+  void error(fmt::format_string<T...> msg, T&&... args) {
+    error(*current(), msg, std::forward<T>(args)...);
   }
 
   using diagnostics_engine::check;

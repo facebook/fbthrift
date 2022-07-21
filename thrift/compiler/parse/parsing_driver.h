@@ -216,12 +216,12 @@ class parsing_driver {
   }
 
   template <typename... T>
-  void failure(source_location loc, fmt::format_string<T...> msg, T&&... args) {
+  void error(source_location loc, fmt::format_string<T...> msg, T&&... args) {
     ctx_.report(loc, diagnostic_level::error, msg, std::forward<T>(args)...);
   }
 
   [[noreturn]] void end_parsing(fmt::string_view msg) {
-    failure(location(), "{}", msg);
+    error(location(), "{}", msg);
     end_parsing();
   }
 
@@ -405,7 +405,7 @@ class parsing_driver {
     using limits = std::numeric_limits<T>;
     if (mode == parsing_mode::PROGRAM &&
         (int_const < limits::min() || int_const > limits::max())) {
-      failure(
+      error(
           location(),
           "Integer constant {} outside the range of {} ([{}, {}]).",
           int_const,

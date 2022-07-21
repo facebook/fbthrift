@@ -96,8 +96,8 @@ class const_checker {
   std::string name_;
 
   template <typename... T>
-  void failure(fmt::format_string<T...> msg, T&&... args) {
-    diags_.failure(node_, msg, std::forward<T>(args)...);
+  void error(fmt::format_string<T...> msg, T&&... args) {
+    diags_.error(node_, msg, std::forward<T>(args)...);
   }
 
   template <typename... T>
@@ -106,19 +106,19 @@ class const_checker {
   }
 
   void report_value_precision() {
-    failure(
+    error(
         "value error: const `{}` cannot be represented precisely as `float` "
         "or `double`.",
         name_);
   }
 
   void report_value_mistmatch() {
-    failure(
+    error(
         "value error: const `{}` has an invalid custom default value.", name_);
   }
 
   void report_type_mismatch(const char* expected) {
-    failure("type error: const `{}` was declared as {}.", name_, expected);
+    error("type error: const `{}` was declared as {}.", name_, expected);
   }
 
   void report_type_mismatch_warning(const char* expected) {
@@ -177,7 +177,7 @@ class const_checker {
   void check_base_type(const t_base_type* type, const t_const_value* value) {
     switch (type->base_type()) {
       case t_base_type::type::t_void:
-        failure("type error: cannot declare a void const: {}", name_);
+        error("type error: cannot declare a void const: {}", name_);
         break;
       case t_base_type::type::t_string:
       case t_base_type::type::t_binary:
@@ -243,7 +243,7 @@ class const_checker {
     }
     auto const& map = value->get_map();
     if (map.size() > 1) {
-      failure(
+      error(
           "type error: const `{}` is a union and can't have more than one "
           "field set.",
           name_);
@@ -270,11 +270,11 @@ class const_checker {
       const std::vector<std::pair<t_const_value*, t_const_value*>>& map) {
     for (const auto& entry : map) {
       if (entry.first->get_type() != t_const_value::CV_STRING) {
-        failure("type error: `{}` field name must be string.", name_);
+        error("type error: `{}` field name must be string.", name_);
       }
       const auto* field = type->get_field_by_name(entry.first->get_string());
       if (field == nullptr) {
-        failure(
+        error(
             "type error: `{}` has no field `{}`.",
             type->name(),
             entry.first->get_string());

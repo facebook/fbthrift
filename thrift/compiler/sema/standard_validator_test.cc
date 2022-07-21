@@ -66,10 +66,10 @@ class StandardValidatorTest : public ::testing::Test {
     return result;
   }
 
-  diagnostic failure(int lineno, const std::string& msg) {
+  diagnostic error(int lineno, const std::string& msg) {
     return {diagnostic_level::error, msg, "/path/to/file.thrift", lineno};
   }
-  diagnostic failure(const std::string& msg) {
+  diagnostic error(const std::string& msg) {
     return {diagnostic_level::error, msg, "", 0};
   }
 
@@ -144,13 +144,13 @@ TEST_F(StandardValidatorTest, BadPriority) {
   EXPECT_THAT(
       validate(),
       ::testing::UnorderedElementsAre(
-          failure(
+          error(
               "Bad priority 'bad1'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
-          failure(
+          error(
               "Bad priority 'bad2'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
-          failure(
+          error(
               "Bad priority 'bad3'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"]."),
-          failure(
+          error(
               "Bad priority 'bad4'. Choose one of [\"HIGH_IMPORTANT\", \"HIGH\", \"IMPORTANT\", \"NORMAL\", \"BEST_EFFORT\"].")));
 }
 
@@ -203,8 +203,8 @@ TEST_F(StandardValidatorTest, ReapeatedNamesInService) {
   EXPECT_THAT(
       validate(),
       ::testing::UnorderedElementsAre(
-          failure(2, "Function `foo` is already defined for `Service`."),
-          failure(4, "Function `bar` is already defined for `Interaction`.")));
+          error(2, "Function `foo` is already defined for `Service`."),
+          error(4, "Function `bar` is already defined for `Interaction`.")));
 }
 
 TEST_F(StandardValidatorTest, RepeatedNameInExtendedService) {
@@ -233,7 +233,7 @@ TEST_F(StandardValidatorTest, RepeatedNameInExtendedService) {
   // An error will be found
   EXPECT_THAT(
       validate(),
-      ::testing::UnorderedElementsAre(failure(
+      ::testing::UnorderedElementsAre(error(
           1, "Function `Derived.baz` redefines `service file.Base.baz`.")));
 }
 
@@ -256,7 +256,7 @@ TEST_F(StandardValidatorTest, DuplicatedEnumValues) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure("Duplicate value `foo=1` with value `bar` in enum `foo`.")));
+          error("Duplicate value `foo=1` with value `bar` in enum `foo`.")));
 }
 
 TEST_F(StandardValidatorTest, RepeatedNamesInEnumValues) {
@@ -279,7 +279,7 @@ TEST_F(StandardValidatorTest, RepeatedNamesInEnumValues) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure(1, "Enum value `bar` is already defined for `foo`.")));
+          error(1, "Enum value `bar` is already defined for `foo`.")));
 }
 
 TEST_F(StandardValidatorTest, UnsetEnumValues) {
@@ -301,10 +301,10 @@ TEST_F(StandardValidatorTest, UnsetEnumValues) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure(
+          error(
               2,
               "The enum value, `Bar`, must have an explicitly assigned value."),
-          failure(
+          error(
               3,
               "The enum value, `Baz`, must have an explicitly assigned value.")));
 }
@@ -343,14 +343,14 @@ TEST_F(StandardValidatorTest, UnionFieldAttributes) {
       validate(),
       UnorderedElementsAre(
           // Qualified fields will have errors.
-          failure(
+          error(
               2,
               "Unions cannot contain qualified fields. Remove `required` qualifier from field `req`."),
-          failure(
+          error(
               3,
               "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`."),
           // Fields with cpp.mixing have errors.
-          failure(5, "Union `Union` cannot contain mixin field `mixin`.")));
+          error(5, "Union `Union` cannot contain mixin field `mixin`.")));
 }
 
 TEST_F(StandardValidatorTest, FieldId) {
@@ -370,7 +370,7 @@ TEST_F(StandardValidatorTest, FieldId) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure("Zero value (0) not allowed as a field id for `zero_id`"),
+          error("Zero value (0) not allowed as a field id for `zero_id`"),
           warning(
               1,
               "No field id specified for `implicit_id`, resulting protocol may have conflicts or not be backwards compatible!")));
@@ -415,10 +415,10 @@ TEST_F(StandardValidatorTest, MixinFieldType) {
   EXPECT_THAT(
       validate(diagnostic_params::only_failures()),
       UnorderedElementsAre(
-          failure(1, "Mixin field `struct_field` cannot be optional."),
-          failure(
+          error(1, "Mixin field `struct_field` cannot be optional."),
+          error(
               "Mixin field `except_field` type must be a struct or union. Found `Exception`."),
-          failure(
+          error(
               "Mixin field `other_field` type must be a struct or union. Found `i32`.")));
 }
 
@@ -444,7 +444,7 @@ TEST_F(StandardValidatorTest, RepeatedStructuredAnnotation) {
   // Only the third annotation is a duplicate.
   EXPECT_THAT(
       validate(diagnostic_params::only_failures()),
-      UnorderedElementsAre(failure(
+      UnorderedElementsAre(error(
           3, "Structured annotation `Foo` is already defined for `Bar`.")));
 }
 
@@ -496,19 +496,19 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure(
+          error(
               1,
               "value error: const `const_byte` has an invalid custom default value."),
-          failure(
+          error(
               1,
               "value error: const `const_short` has an invalid custom default value."),
-          failure(
+          error(
               1,
               "value error: const `const_integer` has an invalid custom default value."),
-          failure(
+          error(
               1,
               "value error: const `const_float` has an invalid custom default value."),
-          failure(
+          error(
               1,
               "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`.")));
 }

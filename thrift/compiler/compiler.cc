@@ -521,7 +521,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
     ctx.report(std::forward<decltype(diag)>(diag));
   }
   standard_validator()(ctx, *program->root_program());
-  if (result.detail.has_failure()) {
+  if (result.detail.has_error()) {
     return result;
   }
 
@@ -532,7 +532,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
       result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {
-    ctx.failure(*program->root_program(), "{}", e.what());
+    ctx.error(*program->root_program(), "{}", e.what());
   }
   ctx.end_visit(*program->root_program());
   return result;

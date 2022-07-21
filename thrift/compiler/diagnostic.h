@@ -110,7 +110,7 @@ class diagnostic_results {
   template <typename C>
   void add_all(C&& diags);
 
-  bool has_failure() const { return count(diagnostic_level::error) != 0; }
+  bool has_error() const { return count(diagnostic_level::error) != 0; }
   std::size_t count(diagnostic_level level) const {
     return counts_.at(static_cast<size_t>(level));
   }
@@ -234,12 +234,12 @@ class diagnostics_engine {
   }
 
   template <typename... T>
-  void failure(
+  void error(
       diagnostic_location loc, fmt::format_string<T...> msg, T&&... args) {
     report(loc.loc, diagnostic_level::error, msg, std::forward<T>(args)...);
   }
 
-  // Reports a failure and returns false, if the provided condition is false.
+  // Reports an error and returns false, if the provided condition is false.
   template <typename... T>
   bool check(
       bool condition,
@@ -247,7 +247,7 @@ class diagnostics_engine {
       fmt::format_string<T...> msg,
       T&&... args) {
     if (!condition) {
-      failure(loc, msg, std::forward<T>(args)...);
+      error(loc, msg, std::forward<T>(args)...);
     }
     return condition;
   }

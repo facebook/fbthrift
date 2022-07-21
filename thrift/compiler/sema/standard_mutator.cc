@@ -121,7 +121,7 @@ void mutate_inject_metadata_fields(
     type_string =
         annotation->get_value_from_structured_annotation("type").get_string();
   } catch (const std::exception& e) {
-    ctx.failure("{}", e.what());
+    ctx.error("{}", e.what());
     return;
   }
   // If the specified type and annotation are from the same program, append
@@ -132,7 +132,7 @@ void mutate_inject_metadata_fields(
 
   const auto* ttype = node.program()->scope()->find_type(type_string);
   if (!ttype) {
-    ctx.failure(
+    ctx.error(
         "Can not find expected type `{}` specified in "
         "`@internal.InjectMetadataFields` in the current scope. "
         "Please check the include.",
@@ -144,7 +144,7 @@ void mutate_inject_metadata_fields(
   // We only allow injecting fields from a struct type.
   if (structured == nullptr || ttype->is_union() || ttype->is_exception() ||
       ttype->is_paramlist()) {
-    ctx.failure(
+    ctx.error(
         "`{}` is not a struct type. `@internal.InjectMetadataFields` can be "
         "only used with a struct type.",
         type_string);
@@ -155,7 +155,7 @@ void mutate_inject_metadata_fields(
     try {
       injected_id = cpp2::get_internal_injected_field_id(field.id());
     } catch (const std::exception& e) {
-      ctx.failure("{}", e.what());
+      ctx.error("{}", e.what());
       // Iterate all fields to find more failures.
       continue;
     }
@@ -180,14 +180,14 @@ void normalize_return_type(
   auto& types = node.return_types();
   for (size_t i = 0; i < types.size(); ++i) {
     if (!types[i].resolve()) {
-      ctx.failure(node, "Failed to resolve return type of `{}`.", node.name());
+      ctx.error(node, "Failed to resolve return type of `{}`.", node.name());
       return;
     }
 
     const auto* type = types[i]->get_true_type();
     if (auto* interaction = dynamic_cast<const t_interaction*>(type)) {
       if (i != 0) {
-        ctx.failure(
+        ctx.error(
             "Interactions are only allowed as the leftmost return type: {}",
             type->get_full_name());
       }
@@ -205,7 +205,7 @@ void normalize_return_type(
       }
     } else if (auto* stream = dynamic_cast<const t_stream_response*>(type)) {
       if (i + 1 != types.size()) {
-        ctx.failure(
+        ctx.error(
             "Streams are only allowed as the rightmost return type: {}",
             type->get_full_name());
       }
@@ -216,7 +216,7 @@ void normalize_return_type(
       node.set_response_pos(i);
     } else if (auto* sink = dynamic_cast<const t_sink*>(type)) {
       if (i + 1 != types.size()) {
-        ctx.failure(
+        ctx.error(
             "Sinks are only allowed as the rightmost return type: {}",
             type->get_full_name());
       }
@@ -228,10 +228,10 @@ void normalize_return_type(
     } else if (
         dynamic_cast<const t_service*>(type) ||
         dynamic_cast<const t_exception*>(type)) {
-      ctx.failure("Invalid return type: {}", type->get_full_name());
+      ctx.error("Invalid return type: {}", type->get_full_name());
     } else {
       if (node.return_type()) {
-        ctx.failure("Too many return types: {}", type->get_full_name());
+        ctx.error("Too many return types: {}", type->get_full_name());
       }
       node.set_response_pos(i);
     }

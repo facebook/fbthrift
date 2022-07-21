@@ -423,7 +423,7 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
         location(), "'{}' is an experimental feature", feature);
     return true;
   }
-  failure(location(), "'{}' is an experimental feature.", feature);
+  error(location(), "'{}' is an experimental feature.", feature);
   return false;
 }
 
@@ -505,7 +505,7 @@ void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
       // avoid double reporting
       if (mode == parsing_mode::PROGRAM ||
           program != program_bundle->root_program()) {
-        ctx_.failure(
+        ctx_.error(
             *field,
             "Field identifier {} for \"{}\" has already been used.",
             field->get_key(),
@@ -573,7 +573,7 @@ t_type_ref parsing_driver::new_type_ref(
   // TODO(afuller): Remove this special case for const, which requires a
   // specific declaration order.
   if (!result.resolved() && is_const) {
-    failure(
+    error(
         location(),
         "The type '{}' is not defined yet. Types must be "
         "defined before the usage in constant values.",
@@ -656,12 +656,12 @@ void parsing_driver::set_package(std::string name) {
     return;
   }
   if (!program->package().empty()) {
-    failure(location(), "Package already specified.");
+    error(location(), "Package already specified.");
   }
   try {
     program->set_package(t_package(std::move(name)));
   } catch (const std::exception& e) {
-    failure(location(), "{}", e.what());
+    error(location(), "{}", e.what());
   }
 }
 
@@ -676,12 +676,12 @@ const t_type* parsing_driver::add_unnamed_typedef(
 
 void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {
   if (params.strict >= 192) {
-    ctx_.failure(
+    ctx_.error(
         field,
         "Implicit field keys are deprecated and not allowed with -strict");
   }
   if (next_id < t_field::min_id) {
-    ctx_.failure(
+    ctx_.error(
         field,
         "Cannot allocate an id for `{}`. Automatic field ids are exhausted.",
         field.name());
@@ -760,13 +760,13 @@ int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
     if (mode == parsing_mode::PROGRAM && val > i64max + 1) {
-      failure(location(), "integer constant -{} is too small", val);
+      error(location(), "integer constant -{} is too small", val);
     }
     return -val;
   }
 
   if (mode == parsing_mode::PROGRAM && val > i64max) {
-    failure(location(), "integer constant {} is too large", val);
+    error(location(), "integer constant {} is too large", val);
   }
   return val;
 }
@@ -797,7 +797,7 @@ const t_service* parsing_driver::find_service(const std::string& name) {
     if (auto* result = scope_cache->find_service(program->scope_name(name))) {
       return result;
     }
-    failure(location(), "Service \"{}\" has not been defined.", name);
+    error(location(), "Service \"{}\" has not been defined.", name);
   }
   return nullptr;
 }
@@ -849,7 +849,7 @@ void parsing_driver::set_parsed_definition() {
 void parsing_driver::validate_header_location() {
   if (programs_that_parsed_definition_.find(program->path()) !=
       programs_that_parsed_definition_.end()) {
-    failure(location(), "Headers must be specified before definitions.");
+    error(location(), "Headers must be specified before definitions.");
   }
 }
 
@@ -859,12 +859,12 @@ void parsing_driver::validate_header_annotations(
   // Ideally the failures below have to be handled by a grammar, but it's not
   // expressive enough to avoid conflicts when doing so.
   if (statement_attrs && statement_attrs->struct_annotations.get()) {
-    failure(
+    error(
         location(),
         "Structured annotations are not supported for a given entity.");
   }
   if (annotations) {
-    failure(location(), "Annotations are not supported for a given entity.");
+    error(location(), "Annotations are not supported for a given entity.");
   }
 }
 

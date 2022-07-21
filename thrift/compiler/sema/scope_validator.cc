@@ -107,7 +107,7 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
           annot_type->name());
     } else if (allowed.types.find(typeid(node)) == allowed.types.end()) {
       // Type mismatch.
-      ctx.failure(
+      ctx.error(
           *annot, "`{}` cannot annotate `{}`", annot_type->name(), node.name());
     }
   }
