@@ -27,7 +27,7 @@ Terns used classify types.
 
 ## Release States
 
-See [annotations/thrift.thrift]((https://github.com/facebook/fbthrift/tree/main/thrift/annotation/thrift.thrift))
+See [annotations/thrift.thrift](https://github.com/facebook/fbthrift/tree/main/thrift/annotation/thrift.thrift)
 
 - [Experimental](https://github.com/facebook/fbthrift/tree/main/thrift/annotation/thrift.thrift#Experimental)
 - [Beta](https://github.com/facebook/fbthrift/tree/main/thrift/annotation/thrift.thrift#Beta)
