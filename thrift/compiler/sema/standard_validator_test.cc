@@ -67,10 +67,10 @@ class StandardValidatorTest : public ::testing::Test {
   }
 
   diagnostic failure(int lineno, const std::string& msg) {
-    return {diagnostic_level::failure, msg, "/path/to/file.thrift", lineno};
+    return {diagnostic_level::error, msg, "/path/to/file.thrift", lineno};
   }
   diagnostic failure(const std::string& msg) {
-    return {diagnostic_level::failure, msg, "", 0};
+    return {diagnostic_level::error, msg, "", 0};
   }
 
   diagnostic warning(int lineno, const std::string& msg) {

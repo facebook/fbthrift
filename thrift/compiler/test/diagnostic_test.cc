@@ -25,12 +25,9 @@ TEST(DiagnosticTest, str) {
   EXPECT_EQ(
       diagnostic(diagnostic_level::debug, "m", "f", 1).str(), "[DEBUG:f:1] m");
   EXPECT_EQ(
-      diagnostic(diagnostic_level::failure, "m", "f", 0).str(),
-      "[FAILURE:f] m");
+      diagnostic(diagnostic_level::error, "m", "f", 0).str(), "[FAILURE:f] m");
   EXPECT_EQ(
       diagnostic(diagnostic_level::info, "m", "f", 1).str(), "[INFO:f:1] m");
-  EXPECT_EQ(
-      diagnostic(diagnostic_level::parse_error, "m", "f").str(), "[ERROR:f] m");
   EXPECT_EQ(
       diagnostic(diagnostic_level::warning, "m", "").str(), "[WARNING:] m");
 }

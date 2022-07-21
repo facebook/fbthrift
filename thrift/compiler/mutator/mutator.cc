@@ -108,7 +108,7 @@ static void match_type_with_const_value(
       auto tfield = struct_type->get_field_by_name(name);
       if (!tfield) {
         throw mutator_exception(
-            {diagnostic_level::failure,
+            {diagnostic_level::error,
              "field `" + name + "` does not exist.",
              program->path(),
              node->lineno()});

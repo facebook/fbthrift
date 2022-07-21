@@ -212,12 +212,12 @@ class parsing_driver {
   }
 
   void parse_error(source_location loc, fmt::string_view msg) {
-    ctx_.report(loc, diagnostic_level::parse_error, "{}", msg);
+    ctx_.report(loc, diagnostic_level::error, "{}", msg);
   }
 
   template <typename... T>
   void failure(source_location loc, fmt::format_string<T...> msg, T&&... args) {
-    ctx_.report(loc, diagnostic_level::failure, msg, std::forward<T>(args)...);
+    ctx_.report(loc, diagnostic_level::error, msg, std::forward<T>(args)...);
   }
 
   [[noreturn]] void end_parsing(fmt::string_view msg) {

@@ -196,7 +196,7 @@ parser::symbol_type lexer::report_error(
     fmt::format_string<T...> msg, T&&... args) {
   diags_->report(
       location(token_start_),
-      diagnostic_level::failure,
+      diagnostic_level::error,
       msg,
       std::forward<T>(args)...);
   return parser::make_tok_error(token_source_range());

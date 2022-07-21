@@ -26,9 +26,7 @@ namespace compiler {
 namespace {
 const char* level_to_string(diagnostic_level level) {
   switch (level) {
-    case diagnostic_level::parse_error:
-      return "ERROR";
-    case diagnostic_level::failure:
+    case diagnostic_level::error:
       return "FAILURE";
     case diagnostic_level::warning:
       return "WARNING";

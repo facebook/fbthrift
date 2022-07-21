@@ -176,7 +176,7 @@ class ScopeValidatorTest : public ::testing::Test {
         continue;
       }
       expected.emplace_back(
-          diagnostic_level::failure,
+          diagnostic_level::error,
           "`" + annot->name() + "` cannot annotate `" + node.name() + "`",
           "path/to/file.thrift",
           1);
@@ -258,11 +258,11 @@ TEST_F(ScopeValidatorTest, FieldWithTransitiveStructuredScope) {
   field.add_structured_annotation(inst(&annotMyNestedStructured));
   auto result = validate(field);
   std::vector<diagnostic> expected{
-      {diagnostic_level::failure,
+      {diagnostic_level::error,
        "`MyStructuredAnnot` cannot annotate `" + field.name() + "`",
        "path/to/file.thrift",
        1},
-      {diagnostic_level::failure,
+      {diagnostic_level::error,
        "`MyNestedStructuredAnnot` cannot annotate `" + field.name() + "`",
        "path/to/file.thrift",
        1}};

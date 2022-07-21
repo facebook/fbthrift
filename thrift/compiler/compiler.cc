@@ -351,7 +351,7 @@ bool generate(
 
       bool has_failure = false;
       for (const auto& d : diagnostics) {
-        has_failure = has_failure || (d.level() == diagnostic_level::failure);
+        has_failure = has_failure || d.level() == diagnostic_level::error;
         std::cerr << d << std::endl;
       }
       if (has_failure) {

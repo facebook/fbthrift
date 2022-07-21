@@ -83,7 +83,7 @@ void report_redef_failure(
     const t_node& /*existing*/) {
   // TODO(afuller): Use `existing` to provide more detail in the
   // diagnostic.
-  ctx.report(diagnostic_level::failure, child, path, [&](auto& o) {
+  ctx.report(diagnostic_level::error, child, path, [&](auto& o) {
     o << kind << " `" << name << "` is already defined for `" << parent.name()
       << "`.";
   });
@@ -521,7 +521,7 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
     ctx.report(
         node,
         ctx.has(context_type::no_legacy) && !ctx.has(context_type::experimental)
-            ? diagnostic_level::failure
+            ? diagnostic_level::error
             : diagnostic_level::warning,
         "No field id specified for `{}`, resulting protocol may have conflicts "
         "or not be backwards compatible!",
