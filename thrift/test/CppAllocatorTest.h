@@ -18,7 +18,6 @@
 
 #include <map>
 #include <memory>
-#include <memory_resource>
 #include <scoped_allocator>
 #include <set>
 #include <string>
@@ -26,8 +25,6 @@
 
 #include <folly/Memory.h>
 #include <folly/sorted_vector_types.h>
-
-using PmrByteAlloc = std::pmr::polymorphic_allocator<std::byte>;
 
 template <class T>
 struct AlwaysThrowAllocator : private std::allocator<T> {
@@ -92,6 +89,10 @@ struct StatefulAlloc : private std::allocator<T> {
   template <class U>
   explicit StatefulAlloc(const StatefulAlloc<U>& other) noexcept
       : state_(other.state_) {}
+
+  using propagate_on_container_copy_assignment = std::true_type;
+  using propagate_on_container_move_assignment = std::true_type;
+  using propagate_on_container_swap = std::true_type;
 
   int state_ = 0;
 
@@ -184,101 +185,6 @@ using CountingMap =
 
 using CountingString =
     std::basic_string<char, std::char_traits<char>, ScopedCountingAlloc<>>;
-
-struct CountingPmrResource : public std::pmr::memory_resource {
-  CountingPmrResource() : counter_(std::make_shared<int>(0)) {}
-  CountingPmrResource(const CountingPmrResource&) = default;
-  CountingPmrResource& operator=(const CountingPmrResource&) = default;
-
-  int getCount() const { return *counter_; }
-
- private:
-  std::shared_ptr<int> counter_;
-
-  void* do_allocate(size_t bytes, size_t alignment) override {
-    (*counter_)++;
-    return std::pmr::get_default_resource()->allocate(bytes, alignment);
-  }
-  void do_deallocate(void* p, size_t bytes, size_t alignment) override {
-    std::pmr::get_default_resource()->deallocate(p, bytes, alignment);
-  }
-  bool do_is_equal(const memory_resource&) const noexcept override {
-    return true;
-  }
-};
-
-using PropagateAllocBase = StatefulAlloc<char>;
-struct PropagateAllAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::true_type;
-  using propagate_on_container_move_assignment = std::true_type;
-  using propagate_on_container_swap = std::true_type;
-};
-
-struct PropagateNoneAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::false_type;
-  using propagate_on_container_move_assignment = std::false_type;
-  using propagate_on_container_swap = std::false_type;
-  PropagateNoneAlloc(const PropagateNoneAlloc&) = default;
-  PropagateNoneAlloc(PropagateNoneAlloc&&) = default;
-  PropagateNoneAlloc& operator=(const PropagateNoneAlloc&) = delete;
-  PropagateNoneAlloc& operator=(PropagateNoneAlloc&&) = delete;
-};
-
-struct PropagateOnlyCopyAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::true_type;
-  using propagate_on_container_move_assignment = std::false_type;
-  using propagate_on_container_swap = std::false_type;
-  PropagateOnlyCopyAlloc(const PropagateOnlyCopyAlloc&) = default;
-  PropagateOnlyCopyAlloc(PropagateOnlyCopyAlloc&&) = default;
-  PropagateOnlyCopyAlloc& operator=(const PropagateOnlyCopyAlloc&) = default;
-  PropagateOnlyCopyAlloc& operator=(PropagateOnlyCopyAlloc&&) = delete;
-};
-
-struct PropagateOnlyMoveAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::false_type;
-  using propagate_on_container_move_assignment = std::true_type;
-  using propagate_on_container_swap = std::false_type;
-  PropagateOnlyMoveAlloc(const PropagateOnlyMoveAlloc&) = default;
-  PropagateOnlyMoveAlloc(PropagateOnlyMoveAlloc&&) = default;
-  PropagateOnlyMoveAlloc& operator=(const PropagateOnlyMoveAlloc&) = delete;
-  PropagateOnlyMoveAlloc& operator=(PropagateOnlyMoveAlloc&&) = default;
-};
-
-struct PropagateOnlySwapAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::false_type;
-  using propagate_on_container_move_assignment = std::false_type;
-  using propagate_on_container_swap = std::true_type;
-};
-
-struct PropagateCopyMoveAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::true_type;
-  using propagate_on_container_move_assignment = std::true_type;
-  using propagate_on_container_swap = std::false_type;
-};
-
-struct PropagateCopySwapAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::true_type;
-  using propagate_on_container_move_assignment = std::false_type;
-  using propagate_on_container_swap = std::true_type;
-};
-
-struct PropagateMoveSwapAlloc : public PropagateAllocBase {
-  using PropagateAllocBase::PropagateAllocBase;
-  using propagate_on_container_copy_assignment = std::false_type;
-  using propagate_on_container_move_assignment = std::true_type;
-  using propagate_on_container_swap = std::true_type;
-  PropagateMoveSwapAlloc(const PropagateMoveSwapAlloc&) = default;
-  PropagateMoveSwapAlloc(PropagateMoveSwapAlloc&&) = default;
-  PropagateMoveSwapAlloc& operator=(const PropagateMoveSwapAlloc&) = delete;
-  PropagateMoveSwapAlloc& operator=(PropagateMoveSwapAlloc&&) = default;
-};
 
 template <class T>
 using CountingUniquePtr = std::unique_ptr<

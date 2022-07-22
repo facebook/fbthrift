@@ -15,12 +15,7 @@
   limitations under the License.
 
 %><%struct:cpp_underlying_name%>& <%struct:cpp_underlying_name%>::operator=(const <%struct:cpp_underlying_name%>& other) {
-  <%struct:cpp_underlying_name%> tmp(other<%#struct:cpp_allocator%><%^struct:cpp_allocator_via%>, __fbthrift_alloc<%/struct:cpp_allocator_via%><%/struct:cpp_allocator%>);
+  <%struct:cpp_underlying_name%> tmp(other);
   swap(*this, tmp);
-<%#struct:cpp_allocator%>
-<%^struct:cpp_allocator_via%>
-  ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
-<%/struct:cpp_allocator_via%>
-<%/struct:cpp_allocator%>
   return *this;
 }
