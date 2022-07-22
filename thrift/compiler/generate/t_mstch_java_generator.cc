@@ -22,8 +22,11 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/lib/java/util.h>
 
+#include <openssl/evp.h>
+#include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/detail/mustache/mstch.h>
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 
 using namespace std;
 
@@ -75,6 +78,61 @@ std::string get_java_swift_name(const Node* node) {
       "java.swift.name", java::mangle_java_name(node->get_name(), false));
 }
 
+struct MdCtxDeleter {
+  void operator()(EVP_MD_CTX* ctx) const { EVP_MD_CTX_free(ctx); }
+};
+using ctx_ptr = std::unique_ptr<EVP_MD_CTX, MdCtxDeleter>;
+
+ctx_ptr newMdContext() {
+  auto* ctx = EVP_MD_CTX_new();
+  return ctx_ptr(ctx);
+}
+
+std::string hash(std::string st) {
+  // Save an initalized context.
+  static EVP_MD_CTX* kBase = []() {
+    auto ctx = newMdContext();
+    EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr);
+    return ctx.release(); // Leaky singleton.
+  }();
+
+  // Copy the base context.
+  auto ctx = newMdContext();
+  EVP_MD_CTX_copy_ex(ctx.get(), kBase);
+  // Digest the st.
+  EVP_DigestUpdate(ctx.get(), st.data(), st.size());
+
+  // Get the result.
+  std::string result(EVP_MD_CTX_size(ctx.get()), 0);
+  uint32_t size;
+  EVP_DigestFinal_ex(
+      ctx.get(), reinterpret_cast<uint8_t*>(result.data()), &size);
+  assert(size == result.size()); // Should already be the correct size.
+  result.resize(size);
+  return result;
+}
+
+string toHex(const string& s) {
+  ostringstream ret;
+
+  unsigned int c;
+  for (string::size_type i = 0; i < s.length(); ++i) {
+    c = (unsigned int)(unsigned char)s[i];
+    ret << hex << setfill('0') << setw(2) << c;
+  }
+  return ret.str().substr(0, 8);
+}
+
+std::string str_type_list = "";
+std::string type_list_hash = "";
+
+struct type_mapping {
+  std::string uri;
+  std::string className;
+};
+
+std::vector<type_mapping> type_list;
+
 } // namespace
 
 class t_mstch_java_generator : public t_mstch_generator {
@@ -97,6 +155,30 @@ class t_mstch_java_generator : public t_mstch_generator {
    * Generate multiple Java items according to the given template. Writes
    * output to package_dir underneath the global output directory.
    */
+  template <typename T, typename Generator, typename Cache>
+  void generate_rpc_interfaces(
+      Generator const* generator,
+      Cache& c,
+      const t_program* program,
+      const std::vector<T*>& items) {
+    const auto& id = program->path();
+    if (!cache_->programs_.count(id)) {
+      cache_->programs_[id] = generators_->program_generator_->generate(
+          program, generators_, cache_);
+    }
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+
+    for (const T* item : items) {
+      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
+      const auto& item_id = id + item->get_name();
+      if (!c.count(item_id)) {
+        c[item_id] = generator->generate(item, generators_, cache_);
+      }
+
+      render_to_file(c[item_id], "Service", package_dir / filename);
+    }
+  }
 
   template <typename T, typename Generator, typename Cache>
   void generate_items(
@@ -113,14 +195,23 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
 
+    std::string package_name = get_namespace_or_default(*program_);
+
     for (const T* item : items) {
-      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
+      auto classname = java::mangle_java_name(item->get_name(), true);
+      auto filename = classname + ".java";
       const auto& item_id = id + item->get_name();
       if (!c.count(item_id)) {
         c[item_id] = generator->generate(item, generators_, cache_);
       }
 
       render_to_file(c[item_id], tpl_path, package_dir / filename);
+
+      auto uri = item->uri();
+      if (!uri.empty()) {
+        type_list.push_back(type_mapping{uri, package_name + "." + classname});
+        str_type_list += uri;
+      }
     }
   }
 
@@ -286,6 +377,22 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto placeholder_file_name = ".generated_" + program->name();
     write_output(package_dir / placeholder_file_name, "");
   }
+
+  void generate_type_list(const t_program* program) {
+    if (type_list.size() == 0) {
+      return;
+    }
+
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+
+    type_list_hash = toHex(hash(str_type_list));
+
+    std::string file_name = "__fbthrift_TypeList_" + type_list_hash + ".java";
+
+    const auto& prog = cached_program(program);
+    render_to_file(prog, "TypeList", package_dir / file_name);
+  }
 };
 
 class mstch_java_program : public mstch_program {
@@ -302,11 +409,24 @@ class mstch_java_program : public mstch_program {
             {"program:javaPackage", &mstch_java_program::java_package},
             {"program:constantClassName",
              &mstch_java_program::constant_class_name},
+            {"program:typeList", &mstch_java_program::list},
+            {"program:typeListHash", &mstch_java_program::list_hash},
         });
   }
   mstch::node java_package() { return get_namespace_or_default(*program_); }
   mstch::node constant_class_name() {
     return get_constants_class_name(*program_);
+  }
+  mstch::node list_hash() { return type_list_hash; }
+  mstch::node list() {
+    mstch::array a;
+    for (const auto& m : type_list) {
+      a.push_back(mstch::map{
+          {"uri", m.uri},
+          {"className", m.className},
+      });
+    }
+    return a;
   }
 };
 
@@ -341,6 +461,7 @@ class mstch_java_struct : public mstch_struct {
             {"struct:needsExceptionMessage?",
              &mstch_java_struct::needs_exception_message},
             {"struct:enableIsSet?", &mstch_java_struct::enable_is_set},
+            {"struct:hasTerseField?", &mstch_java_struct::has_terse_field},
         });
   }
   mstch::node java_package() {
@@ -359,6 +480,14 @@ class mstch_java_struct : public mstch_struct {
       }
     }
     return true;
+  }
+  mstch::node has_terse_field() {
+    for (const auto& field : strct_->fields()) {
+      if (field.qualifier() == t_field_qualifier::terse) {
+        return true;
+      }
+    }
+    return false;
   }
   mstch::node is_as_bean() {
     if (!strct_->is_xception() && !strct_->is_union()) {
@@ -559,36 +688,74 @@ class mstch_java_field : public mstch_field {
       : mstch_field(field, generators, cache, pos, index, field_context) {
     register_methods(
         this,
-        {
-            {"field:javaName", &mstch_java_field::java_name},
-            {"field:javaCapitalName", &mstch_java_field::java_capital_name},
-            {"field:javaDefaultValue", &mstch_java_field::java_default_value},
-            {"field:javaAllCapsName", &mstch_java_field::java_all_caps_name},
-            {"field:recursive?", &mstch_java_field::is_recursive_reference},
-            {"field:negativeId?", &mstch_java_field::is_negative_id},
-            {"field:javaAnnotations?", &mstch_java_field::has_java_annotations},
-            {"field:javaAnnotations", &mstch_java_field::java_annotations},
-            {"field:javaTFieldName", &mstch_java_field::java_tfield_name},
-            {"field:isNullableOrOptionalNotEnum?",
-             &mstch_java_field::is_nullable_or_optional_not_enum},
-            {"field:nestedDepth", &mstch_java_field::get_nested_depth},
-            {"field:nestedDepth++", &mstch_java_field::increment_nested_depth},
-            {"field:nestedDepth--", &mstch_java_field::decrement_nested_depth},
-            {"field:isFirstDepth?", &mstch_java_field::is_first_depth},
-            {"field:prevNestedDepth",
-             &mstch_java_field::preceding_nested_depth},
-            {"field:isContainer?", &mstch_java_field::is_container},
-            {"field:isNested?", &mstch_java_field::get_nested_container_flag},
-            {"field:setIsNested", &mstch_java_field::set_nested_container_flag},
-            {"field:typeFieldName", &mstch_java_field::type_field_name},
-            {"field:isSensitive?", &mstch_java_field::is_sensitive},
-            {"field:hasInitialValue?", &mstch_java_field::has_initial_value},
-            {"field:isPrimitive?", &mstch_java_field::is_primitive},
-        });
+        {{"field:javaName", &mstch_java_field::java_name},
+         {"field:javaCapitalName", &mstch_java_field::java_capital_name},
+         {"field:javaDefaultValue", &mstch_java_field::java_default_value},
+         {"field:javaAllCapsName", &mstch_java_field::java_all_caps_name},
+         {"field:recursive?", &mstch_java_field::is_recursive_reference},
+         {"field:negativeId?", &mstch_java_field::is_negative_id},
+         {"field:javaAnnotations?", &mstch_java_field::has_java_annotations},
+         {"field:javaAnnotations", &mstch_java_field::java_annotations},
+         {"field:javaTFieldName", &mstch_java_field::java_tfield_name},
+         {"field:isNullableOrOptionalNotEnum?",
+          &mstch_java_field::is_nullable_or_optional_not_enum},
+         {"field:isEnum?", &mstch_java_field::is_enum},
+         {"field:isObject?", &mstch_java_field::is_object},
+         {"field:isUnion?", &mstch_java_field::is_union},
+         {"field:nestedDepth", &mstch_java_field::get_nested_depth},
+         {"field:nestedDepth++", &mstch_java_field::increment_nested_depth},
+         {"field:nestedDepth--", &mstch_java_field::decrement_nested_depth},
+         {"field:isFirstDepth?", &mstch_java_field::is_first_depth},
+         {"field:prevNestedDepth", &mstch_java_field::preceding_nested_depth},
+         {"field:isContainer?", &mstch_java_field::is_container},
+         {"field:isNested?", &mstch_java_field::get_nested_container_flag},
+         {"field:setIsNested", &mstch_java_field::set_nested_container_flag},
+         {"field:typeFieldName", &mstch_java_field::type_field_name},
+         {"field:isSensitive?", &mstch_java_field::is_sensitive},
+         {"field:hasInitialValue?", &mstch_java_field::has_initial_value},
+         {"field:isPrimitive?", &mstch_java_field::is_primitive},
+         {"field:adapterClassName",
+          &mstch_java_field::get_structured_adapter_class_name},
+         {"field:typeClassName",
+          &mstch_java_field::get_structured_type_class_name},
+         {"field:hasAdapter?", &mstch_java_field::is_typedef_adapter}});
   }
 
   int32_t nestedDepth = 0;
   bool isNestedContainerFlag = false;
+
+  mstch::node is_typedef_adapter() {
+    auto type = field_->get_type();
+    if (type->is_typedef()) {
+      auto has_annotation = type->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/java/Adapter");
+      return has_annotation != nullptr;
+    } else {
+      return false;
+    }
+  }
+
+  mstch::node get_structured_adapter_class_name() {
+    return get_structed_annotation_attribute("adapterClassName");
+  }
+
+  mstch::node get_structured_type_class_name() {
+    return get_structed_annotation_attribute("typeClassName");
+  }
+
+  mstch::node get_structed_annotation_attribute(const std::string& field) {
+    auto type = field_->get_type();
+    if (auto annotation = type->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/java/Adapter")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == field) {
+          return item.second->get_string();
+        }
+      }
+    }
+
+    return nullptr;
+  }
 
   mstch::node has_initial_value() {
     if (field_->get_req() == t_field::e_req::optional) {
@@ -630,6 +797,22 @@ class mstch_java_field : public mstch_field {
         field_type->is_float() || field_type->is_i16() ||
         field_type->is_i32() || field_type->is_i64() ||
         field_type->is_double() || field_type->is_enum());
+  }
+
+  mstch::node is_enum() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_enum();
+  }
+
+  mstch::node is_object() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_struct() || field_type->is_exception() ||
+        field_type->is_union();
+  }
+
+  mstch::node is_union() {
+    const t_type* field_type = field_->get_type()->get_true_type();
+    return field_type->is_union();
   }
 
   mstch::node is_container() {
@@ -1105,18 +1288,19 @@ void t_mstch_java_generator::generate_program() {
         get_program(), generators_, cache_);
   }
 
+  str_type_list = "";
+  type_list_hash = "";
   generate_items(
       generators_->struct_generator_.get(),
       cache_->structs_,
       get_program(),
       get_program()->objects(),
       "Object");
-  generate_items(
+  generate_rpc_interfaces(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->services(),
-      "Service");
+      get_program()->services());
   generate_services(
       generators_->service_generator_.get(),
       cache_->services_,
@@ -1130,6 +1314,7 @@ void t_mstch_java_generator::generate_program() {
       "Enum");
   generate_constants(get_program());
   generate_placeholder(get_program());
+  generate_type_list(get_program());
 }
 
 void t_mstch_java_generator::set_mstch_generators() {

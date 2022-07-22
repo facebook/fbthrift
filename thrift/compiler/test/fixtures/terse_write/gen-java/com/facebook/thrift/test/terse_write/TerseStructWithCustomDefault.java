@@ -101,7 +101,7 @@ public final class TerseStructWithCustomDefault implements com.facebook.thrift.p
         private Map<Short, Short> mapField = ImmutableMap.<Short, Short>builder()
         .put((short)1, (short)1)
         .build();
-        private com.facebook.thrift.test.terse_write.MyStructWithCustomDefault structField = ;
+        private com.facebook.thrift.test.terse_write.MyStructWithCustomDefault structField = com.facebook.thrift.test.terse_write.MyStructWithCustomDefault.defaultInstance();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="bool_field", requiredness=Requiredness.NONE)
         public Builder setBoolField(boolean boolField) {
@@ -667,6 +667,9 @@ public final class TerseStructWithCustomDefault implements com.facebook.thrift.p
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.boolField)) {
         oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
         oprot.writeBool(this.boolField);
@@ -716,7 +719,8 @@ public final class TerseStructWithCustomDefault implements com.facebook.thrift.p
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryField));
         oprot.writeFieldEnd();
       }
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.enumField)) {
+      java.util.Objects.requireNonNull(this.enumField, "enumField must not be null");
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.enumField.getValue())) {
         oprot.writeFieldBegin(ENUM_FIELD_FIELD_DESC);
         oprot.writeI32(this.enumField == null ? 0 : this.enumField.getValue());
         oprot.writeFieldEnd();
@@ -759,12 +763,15 @@ public final class TerseStructWithCustomDefault implements com.facebook.thrift.p
         oprot.writeFieldEnd();
       }
       java.util.Objects.requireNonNull(this.structField, "structField must not be null");
-      
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.structField)) {
+      structStart = p.mark();
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
+        pos = p.mark();
         this.structField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
+        if (p.mark() - pos > p.getEmptyStructSize()) {
+          p.writeFieldEnd();    
+        } else {
+          p.rollback(structStart);
+        }    
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

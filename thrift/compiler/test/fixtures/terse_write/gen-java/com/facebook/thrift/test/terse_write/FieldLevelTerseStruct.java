@@ -131,7 +131,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         private List<Short> terseListField = com.facebook.thrift.util.IntrinsicDefaults.defaultList();
         private Set<Short> terseSetField = com.facebook.thrift.util.IntrinsicDefaults.defaultSet();
         private Map<Short, Short> terseMapField = com.facebook.thrift.util.IntrinsicDefaults.defaultMap();
-        private com.facebook.thrift.test.terse_write.MyStruct terseStructField = ;
+        private com.facebook.thrift.test.terse_write.MyStruct terseStructField = com.facebook.thrift.test.terse_write.MyStruct.defaultInstance();
         private boolean boolField = false;
         private byte byteField = 0;
         private short shortField = 0;
@@ -1177,6 +1177,9 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseBoolField)) {
         oprot.writeFieldBegin(TERSE_BOOL_FIELD_FIELD_DESC);
         oprot.writeBool(this.terseBoolField);
@@ -1226,7 +1229,8 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.terseBinaryField));
         oprot.writeFieldEnd();
       }
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseEnumField)) {
+      java.util.Objects.requireNonNull(this.terseEnumField, "terseEnumField must not be null");
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseEnumField.getValue())) {
         oprot.writeFieldBegin(TERSE_ENUM_FIELD_FIELD_DESC);
         oprot.writeI32(this.terseEnumField == null ? 0 : this.terseEnumField.getValue());
         oprot.writeFieldEnd();
@@ -1269,12 +1273,15 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         oprot.writeFieldEnd();
       }
       java.util.Objects.requireNonNull(this.terseStructField, "terseStructField must not be null");
-      
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.terseStructField)) {
+      structStart = p.mark();
         oprot.writeFieldBegin(TERSE_STRUCT_FIELD_FIELD_DESC);
+        pos = p.mark();
         this.terseStructField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
+        if (p.mark() - pos > p.getEmptyStructSize()) {
+          p.writeFieldEnd();    
+        } else {
+          p.rollback(structStart);
+        }    
       oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
       oprot.writeBool(this.boolField);
       oprot.writeFieldEnd();

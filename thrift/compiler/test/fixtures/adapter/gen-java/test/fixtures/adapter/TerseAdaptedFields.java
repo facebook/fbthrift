@@ -222,6 +222,9 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.intField)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(this.intField);

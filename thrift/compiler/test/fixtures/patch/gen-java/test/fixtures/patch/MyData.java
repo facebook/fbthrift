@@ -179,6 +179,9 @@ public final class MyData implements com.facebook.thrift.payload.ThriftSerializa
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       java.util.Objects.requireNonNull(this.data1, "data1 must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.data1)) {

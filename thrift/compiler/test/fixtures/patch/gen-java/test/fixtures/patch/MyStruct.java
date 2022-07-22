@@ -115,7 +115,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private double doubleVal = 0.;
         private String stringVal = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
         private byte[] binaryVal = com.facebook.thrift.util.IntrinsicDefaults.defaultByteArray();
-        private test.fixtures.patch.MyData structVal = ;
+        private test.fixtures.patch.MyData structVal = test.fixtures.patch.MyData.defaultInstance();
         private Boolean optBoolVal = null;
         private Byte optByteVal = null;
         private Short optI16Val = null;
@@ -129,7 +129,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private List<Short> optListVal = null;
         private Set<String> optSetVal = null;
         private Map<String, String> optMapVal = null;
-        private test.fixtures.patch.MyUnion unionVal = ;
+        private test.fixtures.patch.MyUnion unionVal = test.fixtures.patch.MyUnion.defaultInstance();
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(boolean boolVal) {
@@ -1002,6 +1002,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      int structStart = 0;
+      int pos = 0;
+      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.boolVal)) {
         oprot.writeFieldBegin(BOOL_VAL_FIELD_DESC);
         oprot.writeBool(this.boolVal);
@@ -1052,12 +1055,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         oprot.writeFieldEnd();
       }
       java.util.Objects.requireNonNull(this.structVal, "structVal must not be null");
-      
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.structVal)) {
+      structStart = p.mark();
         oprot.writeFieldBegin(STRUCT_VAL_FIELD_DESC);
+        pos = p.mark();
         this.structVal.write0(oprot);
-        oprot.writeFieldEnd();
-      }
+        if (p.mark() - pos > p.getEmptyStructSize()) {
+          p.writeFieldEnd();    
+        } else {
+          p.rollback(structStart);
+        }    
       if (this.optBoolVal != null) {
         oprot.writeFieldBegin(OPT_BOOL_VAL_FIELD_DESC);
         oprot.writeBool(this.optBoolVal);
@@ -1140,12 +1146,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         oprot.writeFieldEnd();
       }
       java.util.Objects.requireNonNull(this.unionVal, "unionVal must not be null");
-      
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(this.unionVal)) {
+      structStart = p.mark();
         oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
+        pos = p.mark();
         this.unionVal.write0(oprot);
-        oprot.writeFieldEnd();
-      }
+        if (p.mark() - pos > p.getEmptyStructSize()) {
+          p.writeFieldEnd();    
+        } else {
+          p.rollback(structStart);
+        }    
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
