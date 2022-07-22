@@ -25,22 +25,22 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ReturnstreamStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ReturnstreamStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ReturnstreamStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ReturnstreamStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ReturnstreamStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ReturnstreamStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ReturnstreamStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
                 }
             }
         }
@@ -48,15 +48,15 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ReturnstreamStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ReturnstreamStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ReturnstreamStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ReturnstreamStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ReturnstreamStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -216,25 +216,25 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for StreamthrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    StreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    StreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
-                    StreamthrowsStreamExn::e(exn) => exn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::e(exn) => exn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    StreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    StreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
-                    StreamthrowsStreamExn::e(exn) => exn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::e(exn) => exn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    StreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    StreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
-                    StreamthrowsStreamExn::e(exn) => exn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::e(exn) => exn.exn_is_declared(),
                 }
             }
         }
@@ -242,22 +242,22 @@ pub mod services {
         impl ::fbthrift::ResultInfo for StreamthrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    StreamthrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    StreamthrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
-                    StreamthrowsStreamExn::e(_exn) => fbthrift::ResultType::Error,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::e(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
 
         impl ::std::convert::From<crate::types::FooStreamEx> for StreamthrowsStreamExn {
             fn from(exn: crate::types::FooStreamEx) -> Self {
-                StreamthrowsStreamExn::e(exn)
+                Self::e(exn)
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for StreamthrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                StreamthrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -429,22 +429,22 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ServicethrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ServicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ServicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ServicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ServicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ServicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ServicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
                 }
             }
         }
@@ -452,15 +452,15 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ServicethrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ServicethrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ServicethrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ServicethrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ServicethrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -643,25 +643,25 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for BoththrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    BoththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    BoththrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
-                    BoththrowsStreamExn::e(exn) => exn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::e(exn) => exn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    BoththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    BoththrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
-                    BoththrowsStreamExn::e(exn) => exn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::e(exn) => exn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    BoththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    BoththrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
-                    BoththrowsStreamExn::e(exn) => exn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::e(exn) => exn.exn_is_declared(),
                 }
             }
         }
@@ -669,22 +669,22 @@ pub mod services {
         impl ::fbthrift::ResultInfo for BoththrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    BoththrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    BoththrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
-                    BoththrowsStreamExn::e(_exn) => fbthrift::ResultType::Error,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::e(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
 
         impl ::std::convert::From<crate::types::FooStreamEx> for BoththrowsStreamExn {
             fn from(exn: crate::types::FooStreamEx) -> Self {
-                BoththrowsStreamExn::e(exn)
+                Self::e(exn)
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for BoththrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                BoththrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -880,25 +880,25 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ResponseandstreamstreamthrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ResponseandstreamstreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
-                    ResponseandstreamstreamthrowsStreamExn::e(exn) => exn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::e(exn) => exn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ResponseandstreamstreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
-                    ResponseandstreamstreamthrowsStreamExn::e(exn) => exn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::e(exn) => exn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ResponseandstreamstreamthrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
-                    ResponseandstreamstreamthrowsStreamExn::e(exn) => exn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::e(exn) => exn.exn_is_declared(),
                 }
             }
         }
@@ -906,22 +906,22 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ResponseandstreamstreamthrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ResponseandstreamstreamthrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ResponseandstreamstreamthrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
-                    ResponseandstreamstreamthrowsStreamExn::e(_exn) => fbthrift::ResultType::Error,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::e(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
 
         impl ::std::convert::From<crate::types::FooStreamEx> for ResponseandstreamstreamthrowsStreamExn {
             fn from(exn: crate::types::FooStreamEx) -> Self {
-                ResponseandstreamstreamthrowsStreamExn::e(exn)
+                Self::e(exn)
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ResponseandstreamstreamthrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ResponseandstreamstreamthrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -1218,22 +1218,22 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ResponseandstreamservicethrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ResponseandstreamservicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ResponseandstreamservicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ResponseandstreamservicethrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
                 }
             }
         }
@@ -1241,15 +1241,15 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ResponseandstreamservicethrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ResponseandstreamservicethrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ResponseandstreamservicethrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ResponseandstreamservicethrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ResponseandstreamservicethrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -1580,25 +1580,25 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ResponseandstreamboththrowsStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ResponseandstreamboththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ResponseandstreamboththrowsStreamExn::ApplicationException(aexn) => aexn.exn_name(),
-                    ResponseandstreamboththrowsStreamExn::e(exn) => exn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::e(exn) => exn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ResponseandstreamboththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ResponseandstreamboththrowsStreamExn::ApplicationException(aexn) => aexn.exn_value(),
-                    ResponseandstreamboththrowsStreamExn::e(exn) => exn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::e(exn) => exn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ResponseandstreamboththrowsStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ResponseandstreamboththrowsStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
-                    ResponseandstreamboththrowsStreamExn::e(exn) => exn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::e(exn) => exn.exn_is_declared(),
                 }
             }
         }
@@ -1606,22 +1606,22 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ResponseandstreamboththrowsStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ResponseandstreamboththrowsStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ResponseandstreamboththrowsStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
-                    ResponseandstreamboththrowsStreamExn::e(_exn) => fbthrift::ResultType::Error,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::e(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
 
         impl ::std::convert::From<crate::types::FooStreamEx> for ResponseandstreamboththrowsStreamExn {
             fn from(exn: crate::types::FooStreamEx) -> Self {
-                ResponseandstreamboththrowsStreamExn::e(exn)
+                Self::e(exn)
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ResponseandstreamboththrowsStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ResponseandstreamboththrowsStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
@@ -1964,22 +1964,22 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for ReturnstreamFastStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    ReturnstreamFastStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    ReturnstreamFastStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    ReturnstreamFastStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    ReturnstreamFastStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    ReturnstreamFastStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    ReturnstreamFastStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
                 }
             }
         }
@@ -1987,15 +1987,15 @@ pub mod services {
         impl ::fbthrift::ResultInfo for ReturnstreamFastStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    ReturnstreamFastStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    ReturnstreamFastStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for ReturnstreamFastStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                ReturnstreamFastStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 

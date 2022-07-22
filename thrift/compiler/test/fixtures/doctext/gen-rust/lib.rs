@@ -159,22 +159,22 @@ pub mod services {
         impl ::fbthrift::ExceptionInfo for NumbersStreamExn {
             fn exn_name(&self) -> &'static str {
                 match self {
-                    NumbersStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
-                    NumbersStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_name(),
                 }
             }
 
             fn exn_value(&self) -> String {
                 match self {
-                    NumbersStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
-                    NumbersStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_value(),
                 }
             }
 
             fn exn_is_declared(&self) -> bool {
                 match self {
-                    NumbersStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
-                    NumbersStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    Self::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    Self::ApplicationException(aexn) => aexn.exn_is_declared(),
                 }
             }
         }
@@ -182,15 +182,15 @@ pub mod services {
         impl ::fbthrift::ResultInfo for NumbersStreamExn {
             fn result_type(&self) -> ::fbthrift::ResultType {
                 match self {
-                    NumbersStreamExn::Success(_) => ::fbthrift::ResultType::Return,
-                    NumbersStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    Self::Success(_) => ::fbthrift::ResultType::Return,
+                    Self::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for NumbersStreamExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
-                NumbersStreamExn::ApplicationException(exn)
+                Self::ApplicationException(exn)
             }
         }
 
