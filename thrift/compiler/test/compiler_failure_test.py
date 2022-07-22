@@ -2051,9 +2051,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Using adapters on const `Foo` is only allowed in the experimental mode.\n"
-            "[FAILURE:foo.thrift:9] Using adapters on const `Bar` is only allowed in the experimental mode.\n"
-            "[FAILURE:foo.thrift:14] Using adapters on const `Baz` is only allowed in the experimental mode.\n",
+            "[ERROR:foo.thrift:6] Using adapters on const `Foo` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:9] Using adapters on const `Bar` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:14] Using adapters on const `Baz` is only allowed in the experimental mode.\n",
         )
 
         write_file(
