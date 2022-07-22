@@ -27,7 +27,7 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::Foo>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.Foo", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -61,7 +61,7 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::Baz>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::Baz>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.Baz", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -89,7 +89,7 @@ StructMetadata<::cpp2::Baz>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::detail::DirectlyAdapted>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::detail::DirectlyAdapted>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.DirectlyAdapted", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -114,7 +114,7 @@ StructMetadata<::cpp2::detail::DirectlyAdapted>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::Bar>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::Bar>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.Bar", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -124,13 +124,13 @@ StructMetadata<::cpp2::Bar>::gen(ThriftMetadata& metadata) {
   module_Bar.is_union() = false;
   static const auto* const
   module_Bar_fields = new std::array<EncodedThriftField, 7>{{
-    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}, {"adaptedType", cvString(R"(my::Cpp::Type1)")}}).cv_struct_ref(), }},
-    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
-    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
-    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
-    {7, "adaptedStructField", false, std::make_unique<Typedef>("module.DirectlyAdapted", std::make_unique<Struct<::cpp2::detail::DirectlyAdapted>>("module.DirectlyAdapted"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::facebook::thrift::test::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}, {"adaptedType", cvString(R"(my::Cpp::Type1)")}}).cv_struct_ref(), }},
+    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::facebook::thrift::test::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
+    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Struct<::facebook::thrift::test::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Typedef>("module.FooWithAdapter", std::make_unique<Struct<::facebook::thrift::test::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::facebook::thrift::test::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
+    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::facebook::thrift::test::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
+    {7, "adaptedStructField", false, std::make_unique<Typedef>("module.DirectlyAdapted", std::make_unique<Struct<::facebook::thrift::test::detail::DirectlyAdapted>>("module.DirectlyAdapted"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   }};
   for (const auto& f : *module_Bar_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -144,7 +144,7 @@ StructMetadata<::cpp2::Bar>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::StructWithFieldAdapter>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::StructWithFieldAdapter>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.StructWithFieldAdapter", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -171,7 +171,7 @@ StructMetadata<::cpp2::StructWithFieldAdapter>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::TerseAdaptedFields>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::TerseAdaptedFields>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.TerseAdaptedFields", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -197,7 +197,7 @@ StructMetadata<::cpp2::TerseAdaptedFields>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::A>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.A", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -208,7 +208,7 @@ StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::B>::gen(ThriftMetadata& metadata) {
+StructMetadata<::facebook::thrift::test::B>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.B", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -218,7 +218,7 @@ StructMetadata<::cpp2::B>::gen(ThriftMetadata& metadata) {
   module_B.is_union() = false;
   static const auto* const
   module_B_fields = new std::array<EncodedThriftField, 1>{{
-    {1, "a", false, std::make_unique<Typedef>("module.AdaptedA", std::make_unique<Typedef>("module.AdaptedA", std::make_unique<Typedef>("module.A", std::make_unique<Struct<::cpp2::A>>("module.A"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {1, "a", false, std::make_unique<Typedef>("module.AdaptedA", std::make_unique<Typedef>("module.AdaptedA", std::make_unique<Typedef>("module.A", std::make_unique<Struct<::facebook::thrift::test::A>>("module.A"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   }};
   for (const auto& f : *module_B_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -231,8 +231,32 @@ StructMetadata<::cpp2::B>::gen(ThriftMetadata& metadata) {
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::facebook::thrift::test::MyStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
+  module_MyStruct.name() = "module.MyStruct";
+  module_MyStruct.is_union() = false;
+  static const auto* const
+  module_MyStruct_fields = new std::array<EncodedThriftField, 1>{{
+    {1, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *module_MyStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_MyStruct.fields()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen_func(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   func.name() = "func";
   auto func_ret_type = std::make_unique<Typedef>("module.MyI32", std::make_unique<Typedef>("module.MyI32", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter1)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{});
@@ -258,14 +282,14 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_fun
   module_Service_func_arg3_3.id() = 3;
   module_Service_func_arg3_3.name() = "arg3";
   module_Service_func_arg3_3.is_optional() = false;
-  auto module_Service_func_arg3_3_type = std::make_unique<Struct<::cpp2::Foo>>("module.Foo");
+  auto module_Service_func_arg3_3_type = std::make_unique<Struct<::facebook::thrift::test::Foo>>("module.Foo");
   module_Service_func_arg3_3_type->writeAndGenType(*module_Service_func_arg3_3.type(), metadata);
   func.arguments()->push_back(std::move(module_Service_func_arg3_3));
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -275,11 +299,11 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(::a
   response.context() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::genRecurse(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::genRecurse(FOLLY_MAYBE_UNUSED ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   ::apache::thrift::metadata::ThriftService module_Service;
   module_Service.name() = "module.Service";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen_func,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_Service);

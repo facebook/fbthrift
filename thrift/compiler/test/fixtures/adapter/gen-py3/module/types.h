@@ -20,7 +20,7 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
-    ::cpp2::Baz::Type>::namesmap() {
+    ::facebook::thrift::test::Baz::Type>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
     }
@@ -30,79 +30,79 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
 
 
 template<>
-void reset_field<::cpp2::Foo>(
-    ::cpp2::Foo& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::Foo>(
+    ::facebook::thrift::test::Foo& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.intField_ref().copy_from(default_inst<::cpp2::Foo>().intField_ref());
+      obj.intField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().intField_ref());
       return;
     case 1:
-      obj.optionalIntField_ref().copy_from(default_inst<::cpp2::Foo>().optionalIntField_ref());
+      obj.optionalIntField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().optionalIntField_ref());
       return;
     case 2:
-      obj.intFieldWithDefault_ref().copy_from(default_inst<::cpp2::Foo>().intFieldWithDefault_ref());
+      obj.intFieldWithDefault_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().intFieldWithDefault_ref());
       return;
     case 3:
-      obj.setField_ref().copy_from(default_inst<::cpp2::Foo>().setField_ref());
+      obj.setField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().setField_ref());
       return;
     case 4:
-      obj.optionalSetField_ref().copy_from(default_inst<::cpp2::Foo>().optionalSetField_ref());
+      obj.optionalSetField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().optionalSetField_ref());
       return;
     case 5:
-      obj.mapField_ref().copy_from(default_inst<::cpp2::Foo>().mapField_ref());
+      obj.mapField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().mapField_ref());
       return;
     case 6:
-      obj.optionalMapField_ref().copy_from(default_inst<::cpp2::Foo>().optionalMapField_ref());
+      obj.optionalMapField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().optionalMapField_ref());
       return;
     case 7:
-      obj.binaryField_ref().copy_from(default_inst<::cpp2::Foo>().binaryField_ref());
+      obj.binaryField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().binaryField_ref());
       return;
     case 8:
-      obj.longField_ref().copy_from(default_inst<::cpp2::Foo>().longField_ref());
+      obj.longField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().longField_ref());
       return;
     case 9:
-      obj.adaptedLongField_ref().copy_from(default_inst<::cpp2::Foo>().adaptedLongField_ref());
+      obj.adaptedLongField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().adaptedLongField_ref());
       return;
     case 10:
-      obj.doubleAdaptedField_ref().copy_from(default_inst<::cpp2::Foo>().doubleAdaptedField_ref());
+      obj.doubleAdaptedField_ref().copy_from(default_inst<::facebook::thrift::test::Foo>().doubleAdaptedField_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::Bar>(
-    ::cpp2::Bar& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::Bar>(
+    ::facebook::thrift::test::Bar& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.structField_ref().copy_from(default_inst<::cpp2::Bar>().structField_ref());
+      obj.structField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().structField_ref());
       return;
     case 1:
-      obj.optionalStructField_ref().copy_from(default_inst<::cpp2::Bar>().optionalStructField_ref());
+      obj.optionalStructField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().optionalStructField_ref());
       return;
     case 2:
-      obj.structListField_ref().copy_from(default_inst<::cpp2::Bar>().structListField_ref());
+      obj.structListField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().structListField_ref());
       return;
     case 3:
-      obj.optionalStructListField_ref().copy_from(default_inst<::cpp2::Bar>().optionalStructListField_ref());
+      obj.optionalStructListField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().optionalStructListField_ref());
       return;
     case 4:
-      obj.unionField_ref().copy_from(default_inst<::cpp2::Bar>().unionField_ref());
+      obj.unionField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().unionField_ref());
       return;
     case 5:
-      obj.optionalUnionField_ref().copy_from(default_inst<::cpp2::Bar>().optionalUnionField_ref());
+      obj.optionalUnionField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().optionalUnionField_ref());
       return;
     case 6:
-      obj.adaptedStructField_ref().copy_from(default_inst<::cpp2::Bar>().adaptedStructField_ref());
+      obj.adaptedStructField_ref().copy_from(default_inst<::facebook::thrift::test::Bar>().adaptedStructField_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::StructWithFieldAdapter>(
-    ::cpp2::StructWithFieldAdapter& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::StructWithFieldAdapter>(
+    ::facebook::thrift::test::StructWithFieldAdapter& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.field_ref().copy_from(default_inst<::cpp2::StructWithFieldAdapter>().field_ref());
+      obj.field_ref().copy_from(default_inst<::facebook::thrift::test::StructWithFieldAdapter>().field_ref());
       return;
     case 1:
       obj.shared_field_ref().reset();
@@ -111,47 +111,57 @@ void reset_field<::cpp2::StructWithFieldAdapter>(
       obj.opt_shared_field_ref().reset();
       return;
     case 3:
-      obj.opt_boxed_field_ref().copy_from(default_inst<::cpp2::StructWithFieldAdapter>().opt_boxed_field_ref());
+      obj.opt_boxed_field_ref().copy_from(default_inst<::facebook::thrift::test::StructWithFieldAdapter>().opt_boxed_field_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::TerseAdaptedFields>(
-    ::cpp2::TerseAdaptedFields& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::TerseAdaptedFields>(
+    ::facebook::thrift::test::TerseAdaptedFields& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.int_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().int_field_ref());
+      obj.int_field_ref().copy_from(default_inst<::facebook::thrift::test::TerseAdaptedFields>().int_field_ref());
       return;
     case 1:
-      obj.string_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().string_field_ref());
+      obj.string_field_ref().copy_from(default_inst<::facebook::thrift::test::TerseAdaptedFields>().string_field_ref());
       return;
     case 2:
-      obj.set_field_ref().copy_from(default_inst<::cpp2::TerseAdaptedFields>().set_field_ref());
+      obj.set_field_ref().copy_from(default_inst<::facebook::thrift::test::TerseAdaptedFields>().set_field_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::B>(
-    ::cpp2::B& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::B>(
+    ::facebook::thrift::test::B& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.a_ref().copy_from(default_inst<::cpp2::B>().a_ref());
+      obj.a_ref().copy_from(default_inst<::facebook::thrift::test::B>().a_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::A>(
-    ::cpp2::A& obj, uint16_t index) {
+void reset_field<::facebook::thrift::test::A>(
+    ::facebook::thrift::test::A& obj, uint16_t index) {
   switch (index) {
   }
 }
 
 template<>
+void reset_field<::facebook::thrift::test::MyStruct>(
+    ::facebook::thrift::test::MyStruct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.field_ref().copy_from(default_inst<::facebook::thrift::test::MyStruct>().field_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::Foo>::namesmap() {
+    ::facebook::thrift::test::Foo>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -161,7 +171,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::Baz>::namesmap() {
+    ::facebook::thrift::test::Baz>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -171,7 +181,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::Bar>::namesmap() {
+    ::facebook::thrift::test::Bar>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -181,7 +191,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::StructWithFieldAdapter>::namesmap() {
+    ::facebook::thrift::test::StructWithFieldAdapter>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -191,7 +201,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::TerseAdaptedFields>::namesmap() {
+    ::facebook::thrift::test::TerseAdaptedFields>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -201,7 +211,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::B>::namesmap() {
+    ::facebook::thrift::test::B>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -211,7 +221,17 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::A>::namesmap() {
+    ::facebook::thrift::test::A>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::test::MyStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

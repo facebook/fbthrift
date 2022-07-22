@@ -7,7 +7,9 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
@@ -18,7 +20,10 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<TerseAdaptedFields>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<B>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<A>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(response);
+  ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen(response);
   return metadata;
 }
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

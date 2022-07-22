@@ -9,12 +9,14 @@
 #include <src/gen-py3/module/services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 
 ServiceWrapper::ServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_module__services();
+    import_facebook__thrift__test__module__services();
   }
 
 
@@ -22,7 +24,7 @@ void ServiceWrapper::async_tm_func(
   std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback
     , std::unique_ptr<std::string> arg1
     , std::unique_ptr<std::string> arg2
-    , std::unique_ptr<::cpp2::Foo> arg3
+    , std::unique_ptr<::facebook::thrift::test::Foo> arg3
 ) {
   auto ctx = callback->getRequestContext();
   folly::via(
@@ -65,4 +67,6 @@ folly::SemiFuture<folly::Unit> ServiceWrapper::semifuture_onStopRequested() {
   );
   return std::move(future);
 }
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

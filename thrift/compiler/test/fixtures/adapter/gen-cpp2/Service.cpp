@@ -10,38 +10,38 @@
 #include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::Service>::getProcessor() {
-  return std::make_unique<::cpp2::ServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::getProcessor() {
+  return std::make_unique<::facebook::thrift::test::ServiceAsyncProcessor>(this);
 }
 
-apache::thrift::ServiceHandler<::cpp2::Service>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::Service>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::ServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
+apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::facebook::thrift::test::ServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::Service>::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-::cpp2::ServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::Service>::__fbthrift_serviceInfoHolder;
+::facebook::thrift::test::ServiceServiceInfoHolder apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::__fbthrift_serviceInfoHolder;
 
 
-::cpp2::MyI32 apache::thrift::ServiceHandler<::cpp2::Service>::func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
+::facebook::thrift::test::MyI32 apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::facebook::thrift::test::Foo> /*arg3*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("func");
 }
 
-folly::SemiFuture<::cpp2::MyI32> apache::thrift::ServiceHandler<::cpp2::Service>::semifuture_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+folly::SemiFuture<::facebook::thrift::test::MyI32> apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::semifuture_func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_func.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return func(std::move(p_arg1), std::move(p_arg2), std::move(p_arg3));
 }
 
-folly::Future<::cpp2::MyI32> apache::thrift::ServiceHandler<::cpp2::Service>::future_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+folly::Future<::facebook::thrift::test::MyI32> apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::future_func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_func.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_func(std::move(p_arg1), std::move(p_arg2), std::move(p_arg3)), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::Service>::async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::cpp2::MyI32>> callback, std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3) {
+void apache::thrift::ServiceHandler<::facebook::thrift::test::Service>::async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::facebook::thrift::test::MyI32>> callback, std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -83,9 +83,9 @@ void apache::thrift::ServiceHandler<::cpp2::Service>::async_tm_func(std::unique_
 }
 
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 
-::cpp2::MyI32 ServiceSvNull::func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) {
+::facebook::thrift::test::MyI32 ServiceSvNull::func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::facebook::thrift::test::Foo> /*arg3*/) {
   return 0;
 }
 
@@ -95,7 +95,7 @@ const char* ServiceAsyncProcessor::getServiceName() {
 }
 
 void ServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen(response);
 }
 
 void ServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -139,4 +139,4 @@ apache::thrift::ServiceRequestInfoMap ServiceServiceInfoHolder::staticRequestInf
 
   return requestInfoMap;
 }
-} // cpp2
+}}} // facebook::thrift::test

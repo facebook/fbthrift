@@ -160,7 +160,7 @@
       }
     },
     "Adapter" : {
-      "lineno" : 65,
+      "lineno" : 66,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -168,11 +168,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/Adapter",
           "source_range" : {
             "begin" : {
-              "line" : 100,
+              "line" : 101,
               "column" : 4
             },
             "end" : {
-              "line" : 100,
+              "line" : 101,
               "column" : 61
             }
           }
@@ -181,7 +181,8 @@
       "structured_annotations" : {
         "scope.Field" : {  },
         "scope.Typedef" : {  },
-        "scope.Structured" : {  }
+        "scope.Structured" : {  },
+        "scope.Const" : {  }
       },
       "fields" : {
         "name" : {
@@ -190,11 +191,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 86,
+              "line" : 87,
               "column" : 3
             },
             "end" : {
-              "line" : 86,
+              "line" : 87,
               "column" : 17
             }
           }
@@ -205,11 +206,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 89,
+              "line" : 90,
               "column" : 3
             },
             "end" : {
-              "line" : 89,
+              "line" : 90,
               "column" : 24
             }
           }
@@ -220,11 +221,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 96,
+              "line" : 97,
               "column" : 3
             },
             "end" : {
-              "line" : 96,
+              "line" : 97,
               "column" : 27
             }
           }
@@ -236,11 +237,11 @@
           "default_value" : "detail",
           "source_range" : {
             "begin" : {
-              "line" : 97,
+              "line" : 98,
               "column" : 3
             },
             "end" : {
-              "line" : 97,
+              "line" : 98,
               "column" : 38
             }
           }
@@ -251,11 +252,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 99,
+              "line" : 100,
               "column" : 3
             },
             "end" : {
-              "line" : 99,
+              "line" : 100,
               "column" : 19
             }
           }
@@ -267,13 +268,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 100,
+          "line" : 101,
           "column" : 62
         }
       }
     },
     "PackIsset" : {
-      "lineno" : 103,
+      "lineno" : 104,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -281,11 +282,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/PackIsset",
           "source_range" : {
             "begin" : {
-              "line" : 105,
+              "line" : 106,
               "column" : 4
             },
             "end" : {
-              "line" : 105,
+              "line" : 106,
               "column" : 63
             }
           }
@@ -302,11 +303,11 @@
           "default_value" : true,
           "source_range" : {
             "begin" : {
-              "line" : 104,
+              "line" : 105,
               "column" : 3
             },
             "end" : {
-              "line" : 104,
+              "line" : 105,
               "column" : 24
             }
           }
@@ -314,17 +315,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 102,
+          "line" : 103,
           "column" : 1
         },
         "end" : {
-          "line" : 105,
+          "line" : 106,
           "column" : 64
         }
       }
     },
     "MinimizePadding" : {
-      "lineno" : 108,
+      "lineno" : 109,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -332,11 +333,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/MinimizePadding",
           "source_range" : {
             "begin" : {
-              "line" : 109,
+              "line" : 110,
               "column" : 3
             },
             "end" : {
-              "line" : 109,
+              "line" : 110,
               "column" : 68
             }
           }
@@ -350,17 +351,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 107,
+          "line" : 108,
           "column" : 1
         },
         "end" : {
-          "line" : 110,
+          "line" : 111,
           "column" : 2
         }
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 113,
+      "lineno" : 114,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -368,11 +369,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
           "source_range" : {
             "begin" : {
-              "line" : 114,
+              "line" : 115,
               "column" : 3
             },
             "end" : {
-              "line" : 114,
+              "line" : 115,
               "column" : 73
             }
           }
@@ -386,17 +387,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 112,
+          "line" : 113,
           "column" : 1
         },
         "end" : {
-          "line" : 115,
+          "line" : 116,
           "column" : 2
         }
       }
     },
     "ScopedEnumAsUnionType" : {
-      "lineno" : 118,
+      "lineno" : 119,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -404,11 +405,11 @@
           "value" : "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType",
           "source_range" : {
             "begin" : {
-              "line" : 119,
+              "line" : 120,
               "column" : 3
             },
             "end" : {
-              "line" : 119,
+              "line" : 120,
               "column" : 74
             }
           }
@@ -422,11 +423,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 117,
+          "line" : 118,
           "column" : 1
         },
         "end" : {
-          "line" : 120,
+          "line" : 121,
           "column" : 2
         }
       }

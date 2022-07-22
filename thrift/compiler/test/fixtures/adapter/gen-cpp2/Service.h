@@ -26,7 +26,7 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 class Service;
 class ServiceAsyncProcessor;
 
@@ -35,39 +35,43 @@ class ServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
-} // cpp2
+}}} // facebook::thrift::test
 
 namespace apache::thrift {
 template <>
-class ServiceHandler<::cpp2::Service> : public apache::thrift::ServerInterface {
+class ServiceHandler<::facebook::thrift::test::Service> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "Service"; }
 
-  typedef ::cpp2::ServiceAsyncProcessor ProcessorType;
+  static const char* __fbthrift_thrift_uri() {
+    return "facebook.com/thrift/test/Service";
+  }
+
+  typedef ::facebook::thrift::test::ServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
 
-  virtual ::cpp2::MyI32 func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/);
-  virtual folly::Future<::cpp2::MyI32> future_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
-  virtual folly::SemiFuture<::cpp2::MyI32> semifuture_func(std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
-  virtual void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::cpp2::MyI32>> callback, std::unique_ptr<::cpp2::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::cpp2::Foo> p_arg3);
+  virtual ::facebook::thrift::test::MyI32 func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::facebook::thrift::test::Foo> /*arg3*/);
+  virtual folly::Future<::facebook::thrift::test::MyI32> future_func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3);
+  virtual folly::SemiFuture<::facebook::thrift::test::MyI32> semifuture_func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3);
+  virtual void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::facebook::thrift::test::MyI32>> callback, std::unique_ptr<::facebook::thrift::test::StringWithAdapter> p_arg1, std::unique_ptr<::std::string> p_arg2, std::unique_ptr<::facebook::thrift::test::Foo> p_arg3);
  private:
-  static ::cpp2::ServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::facebook::thrift::test::ServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_func{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 using ServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<Service> instead")]] = ::apache::thrift::ServiceHandler<Service>;
-} // cpp2
-namespace cpp2 {
+}}} // facebook::thrift::test
+namespace facebook { namespace thrift { namespace test {
 class ServiceSvNull : public ServiceSvIf {
  public:
-  ::cpp2::MyI32 func(std::unique_ptr<::cpp2::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::cpp2::Foo> /*arg3*/) override;
+  ::facebook::thrift::test::MyI32 func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::facebook::thrift::test::Foo> /*arg3*/) override;
 };
 
 class ServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -76,7 +80,7 @@ class ServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  ::apache::thrift::ServiceHandler<::cpp2::Service>* iface_;
+  ::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -96,13 +100,13 @@ class ServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <typename ProtocolIn_, typename ProtocolOut_>
   void executeRequest_func(apache::thrift::ServerRequest&& serverRequest);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::SerializedResponse return_func(apache::thrift::ContextStack* ctx, ::cpp2::MyI32 const& _return);
+  static apache::thrift::SerializedResponse return_func(apache::thrift::ContextStack* ctx, ::facebook::thrift::test::MyI32 const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_func(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  ServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::Service>* iface) :
+  ServiceAsyncProcessor(::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>* iface) :
       iface_(iface) {}
   ~ServiceAsyncProcessor() override {}
 };
 
-} // cpp2
+}}} // facebook::thrift::test

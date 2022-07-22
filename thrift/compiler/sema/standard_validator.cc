@@ -464,6 +464,11 @@ void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
 
 void validate_const_type_and_value(diagnostic_context& ctx, const t_const& c) {
   check_const_rec(ctx, c, &c.type().deref(), c.value());
+  ctx.check(
+      !c.find_structured_annotation_or_null(kCppAdapterUri) ||
+          ctx.has(context_type::experimental),
+      "Using adapters on const `{}` is only allowed in the experimental mode.",
+      c.name());
 }
 
 void validate_field_default_value(

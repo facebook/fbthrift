@@ -24,6 +24,9 @@ include "thrift/annotation/python.thrift"
 include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/hack.thrift"
 
+@thrift.Experimental
+package "facebook.com/thrift/test"
+
 @hack.Adapter{name = '\Adapter2'}
 @cpp.Adapter{name = 'my::Adapter2'}
 typedef set<string> (py.adapter = 'my.Adapter2') SetWithAdapter
@@ -178,3 +181,16 @@ service Service {
     3: Foo arg3,
   );
 }
+
+@cpp.Adapter{name = "MyVarAdapter"}
+const i32 var1 = 10;
+
+@cpp.Adapter{name = "MyVarAdapter"}
+const string var2 = "20";
+
+struct MyStruct {
+  1: i32 field;
+}
+
+@cpp.Adapter{name = "MyVarAdapter"}
+const MyStruct var3 = MyStruct{field = 30};

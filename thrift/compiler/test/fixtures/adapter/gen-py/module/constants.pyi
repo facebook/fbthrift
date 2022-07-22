@@ -13,3 +13,6 @@ import thrift.annotation.hack.ttypes
 import my
 from module.ttypes import *
 
+var1: int
+var2: str
+var3: MyStruct

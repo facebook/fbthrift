@@ -7,7 +7,9 @@
 
 #include <src/gen-py3/module/clients_wrapper.h>
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 
 
 folly::Future<int32_t>
@@ -15,8 +17,8 @@ ServiceClientWrapper::func(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_arg1,
     std::string arg_arg2,
-    ::cpp2::Foo arg_arg3) {
-  auto* client = static_cast<::cpp2::ServiceAsyncClient*>(async_client_.get());
+    ::facebook::thrift::test::Foo arg_arg3) {
+  auto* client = static_cast<::facebook::thrift::test::ServiceAsyncClient*>(async_client_.get());
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
@@ -31,4 +33,6 @@ ServiceClientWrapper::func(
   return _future;
 }
 
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

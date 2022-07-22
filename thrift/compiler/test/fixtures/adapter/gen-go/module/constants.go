@@ -28,7 +28,14 @@ var _ = cpp0.GoUnusedProtection__
 var _ = python1.GoUnusedProtection__
 var _ = thrift2.GoUnusedProtection__
 var _ = hack3.GoUnusedProtection__
+const Var1 = 10
+const Var2 = "20"
+var Var3 *MyStruct
 
 func init() {
+Var3 = &MyStruct{
+  Field: 30,
+}
+
 }
 

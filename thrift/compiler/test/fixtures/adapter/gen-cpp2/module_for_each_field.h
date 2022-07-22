@@ -14,7 +14,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::cpp2::Foo> {
+struct ForEachField<::facebook::thrift::test::Foo> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).intField_ref()...);
@@ -32,7 +32,7 @@ struct ForEachField<::cpp2::Foo> {
 };
 
 template <>
-struct ForEachField<::cpp2::Baz> {
+struct ForEachField<::facebook::thrift::test::Baz> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).intField_ref()...);
@@ -44,7 +44,7 @@ struct ForEachField<::cpp2::Baz> {
 };
 
 template <>
-struct ForEachField<::cpp2::detail::DirectlyAdapted> {
+struct ForEachField<::facebook::thrift::test::detail::DirectlyAdapted> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).field_ref()...);
@@ -52,7 +52,7 @@ struct ForEachField<::cpp2::detail::DirectlyAdapted> {
 };
 
 template <>
-struct ForEachField<::cpp2::Bar> {
+struct ForEachField<::facebook::thrift::test::Bar> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).structField_ref()...);
@@ -66,7 +66,7 @@ struct ForEachField<::cpp2::Bar> {
 };
 
 template <>
-struct ForEachField<::cpp2::StructWithFieldAdapter> {
+struct ForEachField<::facebook::thrift::test::StructWithFieldAdapter> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).field_ref()...);
@@ -77,7 +77,7 @@ struct ForEachField<::cpp2::StructWithFieldAdapter> {
 };
 
 template <>
-struct ForEachField<::cpp2::TerseAdaptedFields> {
+struct ForEachField<::facebook::thrift::test::TerseAdaptedFields> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).int_field_ref()...);
@@ -87,17 +87,25 @@ struct ForEachField<::cpp2::TerseAdaptedFields> {
 };
 
 template <>
-struct ForEachField<::cpp2::A> {
+struct ForEachField<::facebook::thrift::test::A> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::cpp2::B> {
+struct ForEachField<::facebook::thrift::test::B> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).a_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::facebook::thrift::test::MyStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field_ref()...);
   }
 };
 } // namespace detail

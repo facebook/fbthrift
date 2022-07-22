@@ -10,10 +10,28 @@
 
 #include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_types.h"
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 
 struct module_constants {
 
+  static constexpr ::std::int32_t const var1_ = static_cast<::std::int32_t>(10);
+
+  static constexpr ::std::int32_t var1() {
+    return var1_;
+  }
+
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to
+  // prevent unnecessary allocations
+
+  static constexpr char const * const var2_ = "20";
+
+  static constexpr char const * var2() {
+    return var2_;
+  }
+
+  static ::facebook::thrift::test::MyStruct const& var3();
+
 };
 
-} // cpp2
+}}} // facebook::thrift::test

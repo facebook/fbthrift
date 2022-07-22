@@ -4,8 +4,21 @@
 #![recursion_limit = "100000000"]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals, unused_crate_dependencies, clippy::type_complexity)]
 
+pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
+
+/// Constant definitions for `module`.
+pub mod consts {
+    pub const var1: ::std::primitive::i32 = 10;
+
+    pub const var2: &::std::primitive::str = "20";
+
+    pub static var3: ::once_cell::sync::Lazy<crate::types::MyStruct> = ::once_cell::sync::Lazy::new(|| crate::types::MyStruct {
+            field: 30,
+            ..::std::default::Default::default()
+        });
+}
 
 pub mod types;
 

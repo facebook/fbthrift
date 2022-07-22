@@ -15,9 +15,11 @@
 #include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 #include "thrift/annotation/gen-cpp2/hack_metadata.h"
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 class Service;
-} // namespace cpp2
+}}} // namespace facebook::thrift::test
 
 namespace apache {
 namespace thrift {
@@ -25,47 +27,52 @@ namespace detail {
 namespace md {
 
 template <>
-class StructMetadata<::cpp2::Foo> {
+class StructMetadata<::facebook::thrift::test::Foo> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::Baz> {
+class StructMetadata<::facebook::thrift::test::Baz> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::detail::DirectlyAdapted> {
+class StructMetadata<::facebook::thrift::test::detail::DirectlyAdapted> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::Bar> {
+class StructMetadata<::facebook::thrift::test::Bar> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::StructWithFieldAdapter> {
+class StructMetadata<::facebook::thrift::test::StructWithFieldAdapter> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::TerseAdaptedFields> {
+class StructMetadata<::facebook::thrift::test::TerseAdaptedFields> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::A> {
+class StructMetadata<::facebook::thrift::test::A> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::B> {
+class StructMetadata<::facebook::thrift::test::B> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>> {
+class StructMetadata<::facebook::thrift::test::MyStruct> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:

@@ -111,6 +111,9 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       NAMES_TO_IDS.put("setField", 3);
       THRIFT_NAMES_TO_IDS.put("set_field", 3);
       FIELD_METADATA.put(3, SET_FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/TerseAdaptedFields"), 
+        TerseAdaptedFields.class, TerseAdaptedFields::read0));
     }
     
     

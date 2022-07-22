@@ -10,9 +10,9 @@
 
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
-namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::cpp2::StringWithAdapter*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::structure, ::cpp2::Foo*>> Service_func_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::cpp2::MyI32*>> Service_func_presult;
+namespace facebook { namespace thrift { namespace test {
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::facebook::thrift::test::StringWithAdapter*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::structure, ::facebook::thrift::test::Foo*>> Service_func_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::facebook::thrift::test::MyI32*>> Service_func_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ServiceAsyncProcessor::setUpAndProcess_func(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, FOLLY_MAYBE_UNUSED apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -28,12 +28,12 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::Service_func_pargs args;
-  auto uarg_arg1 = std::make_unique<::cpp2::StringWithAdapter>();
+  ::facebook::thrift::test::Service_func_pargs args;
+  auto uarg_arg1 = std::make_unique<::facebook::thrift::test::StringWithAdapter>();
   args.get<0>().value = uarg_arg1.get();
   auto uarg_arg2 = std::make_unique<::std::string>();
   args.get<1>().value = uarg_arg2.get();
-  auto uarg_arg3 = std::make_unique<::cpp2::Foo>();
+  auto uarg_arg3 = std::make_unique<::facebook::thrift::test::Foo>();
   args.get<2>().value = uarg_arg3.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Service.func", serverRequest.requestContext()));
   try {
@@ -51,7 +51,7 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
   }
   auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::cpp2::MyI32>>(
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::facebook::thrift::test::MyI32>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
     , std::move(ctxStack)
     , return_func<ProtocolIn_,ProtocolOut_>
@@ -67,10 +67,10 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse ServiceAsyncProcessor::return_func(apache::thrift::ContextStack* ctx, ::cpp2::MyI32 const& _return) {
+apache::thrift::SerializedResponse ServiceAsyncProcessor::return_func(apache::thrift::ContextStack* ctx, ::facebook::thrift::test::MyI32 const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::Service_func_presult result;
-  result.get<0>().value = const_cast<::cpp2::MyI32*>(&_return);
+  ::facebook::thrift::test::Service_func_presult result;
+  result.get<0>().value = const_cast<::facebook::thrift::test::MyI32*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
 }
@@ -88,4 +88,4 @@ void ServiceAsyncProcessor::throw_wrapped_func(apache::thrift::ResponseChannelRe
 }
 
 
-} // cpp2
+}}} // facebook::thrift::test

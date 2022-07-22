@@ -71,6 +71,9 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
       NAMES_TO_IDS.put("field", 1);
       THRIFT_NAMES_TO_IDS.put("field", 1);
       FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/DirectlyAdapted"), 
+        DirectlyAdapted.class, DirectlyAdapted::read0));
     }
     
     

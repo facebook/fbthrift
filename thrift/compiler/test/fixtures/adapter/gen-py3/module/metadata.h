@@ -11,6 +11,10 @@
 
 #include "src/gen-cpp2/module_metadata.h"
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata();
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

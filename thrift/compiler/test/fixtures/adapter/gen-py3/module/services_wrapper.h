@@ -16,7 +16,9 @@
 
 #include <memory>
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 
 class ServiceWrapper : virtual public ServiceSvIf {
   protected:
@@ -27,11 +29,13 @@ class ServiceWrapper : virtual public ServiceSvIf {
     void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback
         , std::unique_ptr<std::string> arg1
         , std::unique_ptr<std::string> arg2
-        , std::unique_ptr<::cpp2::Foo> arg3
+        , std::unique_ptr<::facebook::thrift::test::Foo> arg3
     ) override;
 folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
 folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> ServiceInterface(PyObject *if_object, folly::Executor *exc);
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

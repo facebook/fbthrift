@@ -131,6 +131,9 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
       NAMES_TO_IDS.put("optBoxedField", 4);
       THRIFT_NAMES_TO_IDS.put("opt_boxed_field", 4);
       FIELD_METADATA.put(4, OPT_BOXED_FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/StructWithFieldAdapter"), 
+        StructWithFieldAdapter.class, StructWithFieldAdapter::read0));
     }
     
     

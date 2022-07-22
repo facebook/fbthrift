@@ -4,3 +4,21 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated @nocommit
  */
+
+#include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_constants.h"
+
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
+
+namespace facebook { namespace thrift { namespace test {
+
+constexpr ::std::int32_t const module_constants::var1_;
+
+constexpr char const * const module_constants::var2_;
+
+::facebook::thrift::test::MyStruct const& module_constants::var3() {
+  static folly::Indestructible<::facebook::thrift::test::MyStruct> const instance(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(30))));
+  return *instance;
+}
+
+}}} // facebook::thrift::test

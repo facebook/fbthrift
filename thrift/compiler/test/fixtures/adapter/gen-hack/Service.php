@@ -6,10 +6,13 @@
  *  @generated
  */
 
+namespace thrift\test;
+
 /**
  * Original thrift service:-
  * Service
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Service'))>>
 interface ServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -18,13 +21,14 @@ interface ServiceAsyncIf extends \IThriftAsyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32>;
+  public function func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): Awaitable<\thrift\test\MyI32>;
 }
 
 /**
  * Original thrift service:-
  * Service
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Service'))>>
 interface ServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -33,13 +37,14 @@ interface ServiceIf extends \IThriftSyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): MyI32;
+  public function func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): \thrift\test\MyI32;
 }
 
 /**
  * Original thrift service:-
  * Service
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Service'))>>
 interface ServiceAsyncClientIf extends ServiceAsyncIf {
 }
 
@@ -47,6 +52,7 @@ interface ServiceAsyncClientIf extends ServiceAsyncIf {
  * Original thrift service:-
  * Service
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Service'))>>
 interface ServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -55,7 +61,7 @@ interface ServiceClientIf extends \IThriftSyncIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32>;
+  public function func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): Awaitable<\thrift\test\MyI32>;
 }
 
 /**
@@ -77,20 +83,20 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public async function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32> {
+  public async function func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): Awaitable<\thrift\test\MyI32> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    $args = Service_func_args::fromShape(shape(
+    $args = \thrift\test\Service_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
       'arg3' => $arg3,
     ));
     await $this->asyncHandler_->genBefore("Service", "func", $args);
     $currentseqid = $this->sendImplHelper($args, "func", false);
-    return await $this->genAwaitResponse(Service_func_result::class, "func", false, $currentseqid, $rpc_options);
+    return await $this->genAwaitResponse(\thrift\test\Service_func_result::class, "func", false, $currentseqid, $rpc_options);
   }
 
 }
@@ -105,33 +111,33 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
    *        2: string arg2,
    *        3: Foo arg3);
    */
-  public async function func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): Awaitable<MyI32> {
+  public async function func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): Awaitable<\thrift\test\MyI32> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    $args = Service_func_args::fromShape(shape(
+    $args = \thrift\test\Service_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
       'arg3' => $arg3,
     ));
     await $this->asyncHandler_->genBefore("Service", "func", $args);
     $currentseqid = $this->sendImplHelper($args, "func", false);
-    return await $this->genAwaitResponse(Service_func_result::class, "func", false, $currentseqid, $rpc_options);
+    return await $this->genAwaitResponse(\thrift\test\Service_func_result::class, "func", false, $currentseqid, $rpc_options);
   }
 
   /* send and recv functions */
-  public function send_func(StringWithAdapter $arg1, string $arg2, ?Foo $arg3): int {
-    $args = Service_func_args::fromShape(shape(
+  public function send_func(\thrift\test\StringWithAdapter $arg1, string $arg2, ?\thrift\test\Foo $arg3): int {
+    $args = \thrift\test\Service_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
       'arg3' => $arg3,
     ));
     return $this->sendImplHelper($args, "func", false);
   }
-  public function recv_func(?int $expectedsequenceid = null): MyI32 {
-    return $this->recvImplHelper(Service_func_result::class, "func", false, $expectedsequenceid);
+  public function recv_func(?int $expectedsequenceid = null): \thrift\test\MyI32 {
+    return $this->recvImplHelper(\thrift\test\Service_func_result::class, "func", false, $expectedsequenceid);
   }
 }
 
@@ -153,7 +159,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     3 => shape(
       'var' => 'arg3',
       'type' => \TType::STRUCT,
-      'class' => Foo::class,
+      'class' => \thrift\test\Foo::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -163,22 +169,22 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   ];
 
   const type TConstructorShape = shape(
-    ?'arg1' => ?StringWithAdapter,
+    ?'arg1' => ?\thrift\test\StringWithAdapter,
     ?'arg2' => ?string,
-    ?'arg3' => ?Foo,
+    ?'arg3' => ?\thrift\test\Foo,
   );
 
   const type TShape = shape(
-    'arg1' => StringWithAdapter,
+    'arg1' => \thrift\test\StringWithAdapter,
     'arg2' => string,
-    ?'arg3' => ?Foo::TShape,
+    ?'arg3' => ?\thrift\test\Foo::TShape,
   );
   const int STRUCTURAL_ID = 4977133747708930688;
-  public StringWithAdapter $arg1;
+  public \thrift\test\StringWithAdapter $arg1;
   public string $arg2;
-  public ?Foo $arg3;
+  public ?\thrift\test\Foo $arg3;
 
-  public function __construct(?StringWithAdapter $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null)[] {
+  public function __construct(?\thrift\test\StringWithAdapter $arg1 = null, ?string $arg2 = null, ?\thrift\test\Foo $arg3 = null)[] {
     $this->arg1 = $arg1 ?? \Adapter1::fromThrift('');
     $this->arg2 = $arg2 ?? '';
     $this->arg3 = $arg3;
@@ -201,26 +207,26 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.func_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.StringWithAdapter",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.StringWithAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                 )
                               ),
                             )
@@ -234,23 +240,23 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
               "name" => "arg1",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "arg2",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "module.Foo",
                     )
@@ -288,7 +294,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     return new static(
       $shape['arg1'],
       $shape['arg2'],
-      Shapes::idx($shape, 'arg3') === null ? null : (Foo::__fromShape($shape['arg3'])),
+      Shapes::idx($shape, 'arg3') === null ? null : (\thrift\test\Foo::__fromShape($shape['arg3'])),
     );
   }
 
@@ -311,21 +317,21 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     }
 
     if (idx($parsed, 'arg1') !== null) {
-      $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, StringWithAdapter>($parsed['arg1']);
+      $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\StringWithAdapter>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
       $this->arg2 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg2']);
     }
     if (idx($parsed, 'arg3') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Foo>($parsed['arg3']));
-      $_tmp1 = Foo::withDefaultValues();
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['arg3']));
+      $_tmp1 = \thrift\test\Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg3 = $_tmp1;
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\StringWithAdapter>();
   }
 
 }
@@ -333,7 +339,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
 class Service_func_result extends \ThriftSyncStructWithResult {
   use \ThriftSerializationTrait;
 
-  const type TResult = MyI32;
+  const type TResult = \thrift\test\MyI32;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
@@ -372,26 +378,26 @@ class Service_func_result extends \ThriftSyncStructWithResult {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Service_func_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.MyI32",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.MyI32",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                                 )
                               ),
                             )
@@ -431,7 +437,7 @@ class Service_func_result extends \ThriftSyncStructWithResult {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, MyI32>($parsed['success']);
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\MyI32>($parsed['success']);
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -441,33 +447,33 @@ class Service_func_result extends \ThriftSyncStructWithResult {
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, MyI32>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\MyI32>();
   }
 
 }
 
 class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
-    return tmeta_ThriftService::fromShape(
+    return \tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.Service",
         "functions" => vec[
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "func",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.MyI32",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.MyI32",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                                 )
                               ),
                             )
@@ -479,22 +485,22 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                        "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                           shape(
                             "name" => "module.StringWithAdapter",
-                            "underlyingType" => tmeta_ThriftType::fromShape(
+                            "underlyingType" => \tmeta_ThriftType::fromShape(
                               shape(
-                                "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                   shape(
                                     "name" => "module.StringWithAdapter",
-                                    "underlyingType" => tmeta_ThriftType::fromShape(
+                                    "underlyingType" => \tmeta_ThriftType::fromShape(
                                       shape(
-                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                       )
                                     ),
                                   )
@@ -508,23 +514,23 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                     "name" => "arg1",
                   )
                 ),
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 2,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                       )
                     ),
                     "name" => "arg2",
                   )
                 ),
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 3,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                        "t_struct" => \tmeta_ThriftStructType::fromShape(
                           shape(
                             "name" => "module.Foo",
                           )
@@ -560,7 +566,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
             'enums' => dict[
             ],
             'structs' => dict[
-              'module.Foo' => Foo::getStructMetadata(),
+              'module.Foo' => \thrift\test\Foo::getStructMetadata(),
             ],
             'exceptions' => dict[
             ],

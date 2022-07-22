@@ -53,6 +53,9 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("longField", 9);
       THRIFT_NAMES_TO_IDS.put("longField", 9);
       FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/Baz"), 
+        Baz.class, Baz::read0));
     }
 
     private java.lang.Object value;

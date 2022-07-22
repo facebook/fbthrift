@@ -25,7 +25,9 @@
 #include <set>
 #include <vector>
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace test {
 
 class ServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
@@ -35,8 +37,10 @@ class ServiceClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_arg1,
       std::string arg_arg2,
-      ::cpp2::Foo arg_arg3);
+      ::facebook::thrift::test::Foo arg_arg3);
 };
 
 
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace test

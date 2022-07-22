@@ -544,6 +544,10 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
+        '\thrift\annotation\TConst' => \thrift\annotation\TConst::fromShape(
+          shape(
+          )
+        ),
       ],
       'fields' => dict[
       ],

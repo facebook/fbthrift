@@ -12,14 +12,14 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::cpp2::Baz::Type, 5> TEnumDataStorage<::cpp2::Baz::Type>::values = {{
+const std::array<::facebook::thrift::test::Baz::Type, 5> TEnumDataStorage<::facebook::thrift::test::Baz::Type>::values = {{
   type::intField,
   type::setField,
   type::mapField,
   type::binaryField,
   type::longField,
 }};
-const std::array<folly::StringPiece, 5> TEnumDataStorage<::cpp2::Baz::Type>::names = {{
+const std::array<folly::StringPiece, 5> TEnumDataStorage<::facebook::thrift::test::Baz::Type>::names = {{
   "intField",
   "setField",
   "mapField",
@@ -27,7 +27,7 @@ const std::array<folly::StringPiece, 5> TEnumDataStorage<::cpp2::Baz::Type>::nam
   "longField",
 }};
 
-const std::array<folly::StringPiece, 11> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+const std::array<folly::StringPiece, 11> TStructDataStorage<::facebook::thrift::test::Foo>::fields_names = {{
   "intField",
   "optionalIntField",
   "intFieldWithDefault",
@@ -40,7 +40,7 @@ const std::array<folly::StringPiece, 11> TStructDataStorage<::cpp2::Foo>::fields
   "adaptedLongField",
   "doubleAdaptedField",
 }};
-const std::array<int16_t, 11> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+const std::array<int16_t, 11> TStructDataStorage<::facebook::thrift::test::Foo>::fields_ids = {{
   1,
   2,
   3,
@@ -53,7 +53,7 @@ const std::array<int16_t, 11> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   10,
   11,
 }};
-const std::array<protocol::TType, 11> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+const std::array<protocol::TType, 11> TStructDataStorage<::facebook::thrift::test::Foo>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
@@ -67,21 +67,21 @@ const std::array<protocol::TType, 11> TStructDataStorage<::cpp2::Foo>::fields_ty
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 5> TStructDataStorage<::cpp2::Baz>::fields_names = {{
+const std::array<folly::StringPiece, 5> TStructDataStorage<::facebook::thrift::test::Baz>::fields_names = {{
   "intField",
   "setField",
   "mapField",
   "binaryField",
   "longField",
 }};
-const std::array<int16_t, 5> TStructDataStorage<::cpp2::Baz>::fields_ids = {{
+const std::array<int16_t, 5> TStructDataStorage<::facebook::thrift::test::Baz>::fields_ids = {{
   1,
   4,
   6,
   8,
   9,
 }};
-const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Baz>::fields_types = {{
+const std::array<protocol::TType, 5> TStructDataStorage<::facebook::thrift::test::Baz>::fields_types = {{
   TType::T_I32,
   TType::T_SET,
   TType::T_MAP,
@@ -89,17 +89,17 @@ const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Baz>::fields_typ
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::detail::DirectlyAdapted>::fields_names = {{
   "field",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::facebook::thrift::test::detail::DirectlyAdapted>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::detail::DirectlyAdapted>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::detail::DirectlyAdapted>::fields_types = {{
   TType::T_I32,
 }};
 
-const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::Bar>::fields_names = {{
+const std::array<folly::StringPiece, 7> TStructDataStorage<::facebook::thrift::test::Bar>::fields_names = {{
   "structField",
   "optionalStructField",
   "structListField",
@@ -108,7 +108,7 @@ const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::Bar>::fields_
   "optionalUnionField",
   "adaptedStructField",
 }};
-const std::array<int16_t, 7> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
+const std::array<int16_t, 7> TStructDataStorage<::facebook::thrift::test::Bar>::fields_ids = {{
   1,
   2,
   3,
@@ -117,7 +117,7 @@ const std::array<int16_t, 7> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
   6,
   7,
 }};
-const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::Bar>::fields_types = {{
+const std::array<protocol::TType, 7> TStructDataStorage<::facebook::thrift::test::Bar>::fields_types = {{
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_LIST,
@@ -127,56 +127,66 @@ const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::Bar>::fields_typ
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::facebook::thrift::test::StructWithFieldAdapter>::fields_names = {{
   "field",
   "shared_field",
   "opt_shared_field",
   "opt_boxed_field",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::facebook::thrift::test::StructWithFieldAdapter>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::facebook::thrift::test::StructWithFieldAdapter>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
 }};
 
-const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_names = {{
+const std::array<folly::StringPiece, 3> TStructDataStorage<::facebook::thrift::test::TerseAdaptedFields>::fields_names = {{
   "int_field",
   "string_field",
   "set_field",
 }};
-const std::array<int16_t, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_ids = {{
+const std::array<int16_t, 3> TStructDataStorage<::facebook::thrift::test::TerseAdaptedFields>::fields_ids = {{
   1,
   2,
   3,
 }};
-const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::TerseAdaptedFields>::fields_types = {{
+const std::array<protocol::TType, 3> TStructDataStorage<::facebook::thrift::test::TerseAdaptedFields>::fields_types = {{
   TType::T_I32,
   TType::T_STRING,
   TType::T_SET,
 }};
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::A>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::facebook::thrift::test::A>::fields_names = {{
 }};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::A>::fields_ids = {{
+const std::array<int16_t, 0> TStructDataStorage<::facebook::thrift::test::A>::fields_ids = {{
 }};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::A>::fields_types = {{
+const std::array<protocol::TType, 0> TStructDataStorage<::facebook::thrift::test::A>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::B>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::B>::fields_names = {{
   "a",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::B>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::facebook::thrift::test::B>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::B>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::B>::fields_types = {{
   TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::MyStruct>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::facebook::thrift::test::MyStruct>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::MyStruct>::fields_types = {{
+  TType::T_I32,
 }};
 
 } // namespace thrift

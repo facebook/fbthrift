@@ -20,13 +20,13 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 class Service;
-} // cpp2
+}}} // facebook::thrift::test
 namespace apache::thrift {
 
 template <>
-class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
+class Client<::facebook::thrift::test::Service> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -34,44 +34,48 @@ class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
     return "Service";
   }
 
+  static const char* __fbthrift_thrift_uri() {
+    return "facebook.com/thrift/test/Service";
+  }
 
-  virtual void func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual void func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
+
+  virtual void func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual void func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
  protected:
-  void funcImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3, bool stealRpcOptions = false);
+  void funcImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3, bool stealRpcOptions = false);
  public:
 
-  virtual ::cpp2::MyI32 sync_func(const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual ::cpp2::MyI32 sync_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
+  virtual ::facebook::thrift::test::MyI32 sync_func(const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual ::facebook::thrift::test::MyI32 sync_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
 
-  virtual folly::Future<::cpp2::MyI32> future_func(const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual folly::SemiFuture<::cpp2::MyI32> semifuture_func(const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual folly::Future<::cpp2::MyI32> future_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual folly::SemiFuture<::cpp2::MyI32> semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual folly::Future<std::pair<::cpp2::MyI32, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
-  virtual folly::SemiFuture<std::pair<::cpp2::MyI32, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
+  virtual folly::Future<::facebook::thrift::test::MyI32> future_func(const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual folly::SemiFuture<::facebook::thrift::test::MyI32> semifuture_func(const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual folly::Future<::facebook::thrift::test::MyI32> future_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual folly::SemiFuture<::facebook::thrift::test::MyI32> semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual folly::Future<std::pair<::facebook::thrift::test::MyI32, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
+  virtual folly::SemiFuture<std::pair<::facebook::thrift::test::MyI32, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
   template <int = 0>
-  folly::coro::Task<::cpp2::MyI32> co_func(const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+  folly::coro::Task<::facebook::thrift::test::MyI32> co_func(const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3) {
     return co_func<false>(nullptr, p_arg1, p_arg2, p_arg3);
   }
   template <int = 0>
-  folly::coro::Task<::cpp2::MyI32> co_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+  folly::coro::Task<::facebook::thrift::test::MyI32> co_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3) {
     return co_func<true>(&rpcOptions, p_arg1, p_arg2, p_arg3);
   }
 #else
-  folly::coro::Task<::cpp2::MyI32> co_func(const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+  folly::coro::Task<::facebook::thrift::test::MyI32> co_func(const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3) {
     co_return co_await folly::coro::detachOnCancel(semifuture_func(p_arg1, p_arg2, p_arg3));
   }
-  folly::coro::Task<::cpp2::MyI32> co_func(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+  folly::coro::Task<::facebook::thrift::test::MyI32> co_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3) {
     co_return co_await folly::coro::detachOnCancel(semifuture_func(rpcOptions, p_arg1, p_arg2, p_arg3));
   }
 #endif
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::cpp2::MyI32> co_func(apache::thrift::RpcOptions* rpcOptions, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+  folly::coro::Task<::facebook::thrift::test::MyI32> co_func(apache::thrift::RpcOptions* rpcOptions, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -108,7 +112,7 @@ class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
-    ::cpp2::MyI32 _return;
+    ::facebook::thrift::test::MyI32 _return;
     if (auto ew = recv_wrapped_func(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -117,23 +121,23 @@ class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
+  virtual void func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
 
 
-  static folly::exception_wrapper recv_wrapped_func(::cpp2::MyI32& _return, ::apache::thrift::ClientReceiveState& state);
-  static ::cpp2::MyI32 recv_func(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_func(::facebook::thrift::test::MyI32& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::facebook::thrift::test::MyI32 recv_func(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual ::cpp2::MyI32 recv_instance_func(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_func(::cpp2::MyI32& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::facebook::thrift::test::MyI32 recv_instance_func(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_func(::facebook::thrift::test::MyI32& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
-  void funcT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
+  void funcT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::facebook::thrift::test::StringWithAdapter& p_arg1, const ::std::string& p_arg2, const ::facebook::thrift::test::Foo& p_arg3);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> funcCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace facebook { namespace thrift { namespace test {
 using ServiceAsyncClient [[deprecated("Use apache::thrift::Client<Service> instead")]] = ::apache::thrift::Client<Service>;
-} // cpp2
+}}} // facebook::thrift::test

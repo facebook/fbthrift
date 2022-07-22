@@ -62,6 +62,7 @@ struct DisableLazyChecksum {} (
 @scope.Field
 @scope.Typedef
 @scope.Structured
+@scope.Const
 struct Adapter {
   // The name of a C++ adapter type used to convert between Thrift and native
   // C++ representation. The Adapter either Type adapter of Field adapter that

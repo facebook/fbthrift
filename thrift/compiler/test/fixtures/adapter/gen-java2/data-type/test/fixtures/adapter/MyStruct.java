@@ -20,18 +20,18 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@com.facebook.swift.codec.ThriftStruct(value="DirectlyAdapted", builder=DirectlyAdapted.Builder.class)
-public final class DirectlyAdapted implements com.facebook.thrift.payload.ThriftSerializable {
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+public final class MyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
-    public DirectlyAdapted(
+    public MyStruct(
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE) final int field
     ) {
         this.field = field;
     }
     
     @ThriftConstructor
-    protected DirectlyAdapted() {
+    protected MyStruct() {
       this.field = 0;
     }
     
@@ -48,13 +48,13 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
         public int getField() { return field; }
     
         public Builder() { }
-        public Builder(DirectlyAdapted other) {
+        public Builder(MyStruct other) {
             this.field = other.field;
         }
     
         @ThriftConstructor
-        public DirectlyAdapted build() {
-            DirectlyAdapted result = new DirectlyAdapted (
+        public MyStruct build() {
+            MyStruct result = new MyStruct (
                 this.field
             );
             return result;
@@ -63,7 +63,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
-    private static final TStruct STRUCT_DESC = new TStruct("DirectlyAdapted");
+    private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final int field;
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
@@ -72,8 +72,8 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
       THRIFT_NAMES_TO_IDS.put("field", 1);
       FIELD_METADATA.put(1, FIELD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/DirectlyAdapted"), 
-        DirectlyAdapted.class, DirectlyAdapted::read0));
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     
@@ -96,7 +96,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
             return false;
         }
     
-        DirectlyAdapted other = (DirectlyAdapted)o;
+        MyStruct other = (MyStruct)o;
     
         return
             Objects.equals(field, other.field) &&
@@ -111,14 +111,14 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     }
     
     
-    public static com.facebook.thrift.payload.Reader<DirectlyAdapted> asReader() {
-      return DirectlyAdapted::read0;
+    public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
+      return MyStruct::read0;
     }
     
-    public static DirectlyAdapted read0(TProtocol oprot) throws TException {
+    public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(DirectlyAdapted.NAMES_TO_IDS, DirectlyAdapted.THRIFT_NAMES_TO_IDS, DirectlyAdapted.FIELD_METADATA);
-      DirectlyAdapted.Builder builder = new DirectlyAdapted.Builder();
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
         if (__field.type == TType.STOP) { break; }
@@ -150,11 +150,11 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
       oprot.writeStructEnd();
     }
     
-    private static class _DirectlyAdaptedLazy {
-        private static final DirectlyAdapted _DEFAULT = new DirectlyAdapted.Builder().build();
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
     
-    public static DirectlyAdapted defaultInstance() {
-        return  _DirectlyAdaptedLazy._DEFAULT;
+    public static MyStruct defaultInstance() {
+        return  _MyStructLazy._DEFAULT;
     }
 }

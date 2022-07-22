@@ -2025,6 +2025,66 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:main.thrift:3] Type `header.Bar` not defined.\n",
         )
 
+    def test_adapting_variable(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/cpp.thrift"
+                include "thrift/annotation/thrift.thrift"
+
+                package "facebook.com/thrift/test"
+
+                @cpp.Adapter{name="MyAdapter"}
+                const i32 Foo = 10;
+
+                @cpp.Adapter{name="MyAdapter"}
+                const string Bar = "20";
+
+                struct MyStruct { 1: i32 field; }
+
+                @cpp.Adapter{name="MyAdapter"}
+                const MyStruct Baz = MyStruct{field=30};
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] Using adapters on const `Foo` is only allowed in the experimental mode.\n"
+            "[FAILURE:foo.thrift:9] Using adapters on const `Bar` is only allowed in the experimental mode.\n"
+            "[FAILURE:foo.thrift:14] Using adapters on const `Baz` is only allowed in the experimental mode.\n",
+        )
+
+        write_file(
+            "bar.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/cpp.thrift"
+                include "thrift/annotation/thrift.thrift"
+
+                @thrift.Experimental
+                package "facebook.com/thrift/test"
+
+                @cpp.Adapter{name="MyAdapter"}
+                const i32 Foo = 10;
+
+                @cpp.Adapter{name="MyAdapter"}
+                const string Bar = "20";
+
+                struct MyStruct { 1: i32 field; }
+
+                @cpp.Adapter{name="MyAdapter"}
+                const MyStruct Baz = MyStruct{field=30};
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("bar.thrift")
+        self.assertEqual(ret, 0)
+
     def test_rpc_param_invalid_key_type(self):
         write_file(
             "foo.thrift",

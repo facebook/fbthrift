@@ -6,17 +6,19 @@
  *  @generated
  */
 
+namespace thrift\test;
+
 type SetWithAdapter = \Adapter2::THackType;
 type StringWithAdapter = \Adapter1::THackType;
-type ListWithElemAdapter = Vector<StringWithAdapter>;
+type ListWithElemAdapter = Vector<\thrift\test\StringWithAdapter>;
 type ListWithElemAdapter_withAdapter = \Adapter2::THackType;
 type MyI64 = int;
-type DoubleTypedefI64 = MyI64;
+type DoubleTypedefI64 = \thrift\test\MyI64;
 type MyI32 = \Adapter1::THackType;
 type FooWithAdapter = \Adapter1::THackType;
 type StructWithAdapter = \Adapter2::THackType;
 type UnionWithAdapter = \Adapter2::THackType;
-type AdaptedA = A;
+type AdaptedA = \thrift\test\A;
 /**
  * Original thrift struct:-
  * Foo
@@ -139,28 +141,28 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'intField' => ?\Adapter1::THackType,
     ?'optionalIntField' => ?\Adapter1::THackType,
     ?'intFieldWithDefault' => ?\Adapter1::THackType,
-    ?'setField' => ?SetWithAdapter,
-    ?'optionalSetField' => ?SetWithAdapter,
+    ?'setField' => ?\thrift\test\SetWithAdapter,
+    ?'optionalSetField' => ?\thrift\test\SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?MyI64,
-    ?'adaptedLongField' => ?MyI64,
-    ?'doubleAdaptedField' => ?DoubleTypedefI64,
+    ?'longField' => ?\thrift\test\MyI64,
+    ?'adaptedLongField' => ?\thrift\test\MyI64,
+    ?'doubleAdaptedField' => ?\thrift\test\DoubleTypedefI64,
   );
 
   const type TShape = shape(
     'intField' => \Adapter1::THackType,
     ?'optionalIntField' => ?\Adapter1::THackType,
     'intFieldWithDefault' => \Adapter1::THackType,
-    'setField' => SetWithAdapter,
-    ?'optionalSetField' => ?SetWithAdapter,
+    'setField' => \thrift\test\SetWithAdapter,
+    ?'optionalSetField' => ?\thrift\test\SetWithAdapter,
     'mapField' => \Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     'binaryField' => \Adapter1::THackType,
-    'longField' => MyI64,
-    'adaptedLongField' => MyI64,
-    'doubleAdaptedField' => DoubleTypedefI64,
+    'longField' => \thrift\test\MyI64,
+    'adaptedLongField' => \thrift\test\MyI64,
+    'doubleAdaptedField' => \thrift\test\DoubleTypedefI64,
   );
   const int STRUCTURAL_ID = 5127579417322622320;
   /**
@@ -182,12 +184,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 4: set<string> setField
    */
-  public SetWithAdapter $setField;
+  public \thrift\test\SetWithAdapter $setField;
   /**
    * Original thrift field:-
    * 5: set<string> optionalSetField
    */
-  public ?SetWithAdapter $optionalSetField;
+  public ?\thrift\test\SetWithAdapter $optionalSetField;
   /**
    * Original thrift field:-
    * 6: map<string, list<string>> mapField
@@ -207,19 +209,19 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 9: i64 longField
    */
-  public MyI64 $longField;
+  public \thrift\test\MyI64 $longField;
   /**
    * Original thrift field:-
    * 10: i64 adaptedLongField
    */
-  public MyI64 $adaptedLongField;
+  public \thrift\test\MyI64 $adaptedLongField;
   /**
    * Original thrift field:-
    * 11: i64 doubleAdaptedField
    */
-  public DoubleTypedefI64 $doubleAdaptedField;
+  public \thrift\test\DoubleTypedefI64 $doubleAdaptedField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?SetWithAdapter $setField = null, ?SetWithAdapter $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?MyI64 $longField = null, ?MyI64 $adaptedLongField = null, ?DoubleTypedefI64 $doubleAdaptedField = null)[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\thrift\test\SetWithAdapter $setField = null, ?\thrift\test\SetWithAdapter $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?\thrift\test\MyI64 $longField = null, ?\thrift\test\MyI64 $adaptedLongField = null, ?\thrift\test\DoubleTypedefI64 $doubleAdaptedField = null)[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -258,59 +260,59 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Foo",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "intField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "optionalIntField",
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "intFieldWithDefault",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.SetWithAdapter",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_set" => tmeta_ThriftSetType::fromShape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
                             shape(
-                              "valueType" => tmeta_ThriftType::fromShape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                 )
                               ),
                             )
@@ -324,21 +326,21 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "setField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.SetWithAdapter",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_set" => tmeta_ThriftSetType::fromShape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
                             shape(
-                              "valueType" => tmeta_ThriftType::fromShape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                 )
                               ),
                             )
@@ -353,45 +355,45 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.ListWithElemAdapter_withAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.ListWithElemAdapter_withAdapter",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                             shape(
                                               "name" => "module.ListWithElemAdapter",
-                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_list" => tmeta_ThriftListType::fromShape(
+                                                  "t_list" => \tmeta_ThriftListType::fromShape(
                                                     shape(
-                                                      "valueType" => tmeta_ThriftType::fromShape(
+                                                      "valueType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                             shape(
                                                               "name" => "module.StringWithAdapter",
-                                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                 )
                                                               ),
                                                             )
@@ -421,45 +423,45 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "mapField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 7,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.ListWithElemAdapter_withAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.ListWithElemAdapter_withAdapter",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                             shape(
                                               "name" => "module.ListWithElemAdapter",
-                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_list" => tmeta_ThriftListType::fromShape(
+                                                  "t_list" => \tmeta_ThriftListType::fromShape(
                                                     shape(
-                                                      "valueType" => tmeta_ThriftType::fromShape(
+                                                      "valueType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                             shape(
                                                               "name" => "module.StringWithAdapter",
-                                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                 )
                                                               ),
                                                             )
@@ -490,28 +492,28 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "binaryField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 9,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.MyI64",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                         )
                       ),
                     )
@@ -521,17 +523,17 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "longField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 10,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.MyI64",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                         )
                       ),
                     )
@@ -541,22 +543,22 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "adaptedLongField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 11,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.DoubleTypedefI64",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.MyI64",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                                 )
                               ),
                             )
@@ -826,7 +828,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       }
     }
     if (idx($parsed, 'setField') !== null) {
-      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['setField']);
+      $_json6 = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\SetWithAdapter>($parsed['setField']);
       $_container7 = Set {};
       foreach($_json6 as $_key4 => $_value5) {
         $_elem8 = '';
@@ -836,7 +838,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->setField = $_container7;
     }
     if (idx($parsed, 'optionalSetField') !== null) {
-      $_json12 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['optionalSetField']);
+      $_json12 = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\SetWithAdapter>($parsed['optionalSetField']);
       $_container13 = Set {};
       foreach($_json12 as $_key10 => $_value11) {
         $_elem14 = '';
@@ -846,7 +848,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optionalSetField = $_container13;
     }
     if (idx($parsed, 'mapField') !== null) {
-      $_json18 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['mapField']);
+      $_json18 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \thrift\test\ListWithElemAdapter_withAdapter>>($parsed['mapField']);
       $_container19 = Map {};
       foreach($_json18 as $_key16 => $_value17) {
         $_value20 = Vector {};
@@ -863,7 +865,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->mapField = $_container19;
     }
     if (idx($parsed, 'optionalMapField') !== null) {
-      $_json30 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['optionalMapField']);
+      $_json30 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \thrift\test\ListWithElemAdapter_withAdapter>>($parsed['optionalMapField']);
       $_container31 = Map {};
       foreach($_json30 as $_key28 => $_value29) {
         $_value32 = Vector {};
@@ -883,23 +885,23 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->binaryField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binaryField']);
     }
     if (idx($parsed, 'longField') !== null) {
-      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['longField']);
+      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\MyI64>($parsed['longField']);
     }
     if (idx($parsed, 'adaptedLongField') !== null) {
-      $this->adaptedLongField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['adaptedLongField']);
+      $this->adaptedLongField = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\MyI64>($parsed['adaptedLongField']);
     }
     if (idx($parsed, 'doubleAdaptedField') !== null) {
-      $this->doubleAdaptedField = HH\FIXME\UNSAFE_CAST<mixed, DoubleTypedefI64>($parsed['doubleAdaptedField']);
+      $this->doubleAdaptedField = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\DoubleTypedefI64>($parsed['doubleAdaptedField']);
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\StringWithAdapter>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, ListWithElemAdapter_withAdapter>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, SetWithAdapter>();
-    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, ListWithElemAdapter_withAdapter>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, \thrift\test\ListWithElemAdapter_withAdapter>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, \thrift\test\SetWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \thrift\test\ListWithElemAdapter_withAdapter>>();
   }
 
 }
@@ -917,7 +919,8 @@ enum BazEnum: int {
  * Original thrift struct:-
  * Baz
  */
-class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapishSyncStruct {
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Baz'))>>
+class Baz implements \IThriftSyncStruct, \IThriftUnion<\thrift\test\BazEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -982,18 +985,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   const type TConstructorShape = shape(
     ?'intField' => ?\Adapter1::THackType,
-    ?'setField' => ?SetWithAdapter,
+    ?'setField' => ?\thrift\test\SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?MyI64,
+    ?'longField' => ?\thrift\test\MyI64,
   );
 
   const type TShape = shape(
     ?'intField' => ?\Adapter1::THackType,
-    ?'setField' => ?SetWithAdapter,
+    ?'setField' => ?\thrift\test\SetWithAdapter,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
-    ?'longField' => ?MyI64,
+    ?'longField' => ?\thrift\test\MyI64,
   );
   const int STRUCTURAL_ID = 8924052603013047554;
   /**
@@ -1005,7 +1008,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
    * Original thrift field:-
    * 4: set<string> setField
    */
-  public ?SetWithAdapter $setField;
+  public ?\thrift\test\SetWithAdapter $setField;
   /**
    * Original thrift field:-
    * 6: map<string, list<string>> mapField
@@ -1020,30 +1023,30 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
    * Original thrift field:-
    * 9: i64 longField
    */
-  public ?MyI64 $longField;
-  protected BazEnum $_type = BazEnum::_EMPTY_;
+  public ?\thrift\test\MyI64 $longField;
+  protected \thrift\test\BazEnum $_type = \thrift\test\BazEnum::_EMPTY_;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?SetWithAdapter $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?MyI64 $longField = null)[] {
-    $this->_type = BazEnum::_EMPTY_;
+  public function __construct(?\Adapter1::THackType $intField = null, ?\thrift\test\SetWithAdapter $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?\thrift\test\MyI64 $longField = null)[] {
+    $this->_type = \thrift\test\BazEnum::_EMPTY_;
     if ($intField !== null) {
       $this->intField = $intField;
-      $this->_type = BazEnum::intField;
+      $this->_type = \thrift\test\BazEnum::intField;
     }
     if ($setField !== null) {
       $this->setField = $setField;
-      $this->_type = BazEnum::setField;
+      $this->_type = \thrift\test\BazEnum::setField;
     }
     if ($mapField !== null) {
       $this->mapField = $mapField;
-      $this->_type = BazEnum::mapField;
+      $this->_type = \thrift\test\BazEnum::mapField;
     }
     if ($binaryField !== null) {
       $this->binaryField = $binaryField;
-      $this->_type = BazEnum::binaryField;
+      $this->_type = \thrift\test\BazEnum::binaryField;
     }
     if ($longField !== null) {
       $this->longField = $longField;
-      $this->_type = BazEnum::longField;
+      $this->_type = \thrift\test\BazEnum::longField;
     }
   }
 
@@ -1065,36 +1068,36 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     return 'Baz';
   }
 
-  public function getType()[]: BazEnum {
+  public function getType()[]: \thrift\test\BazEnum {
     return $this->_type;
   }
 
   public function reset()[write_props]: void {
     switch ($this->_type) {
-      case BazEnum::intField:
+      case \thrift\test\BazEnum::intField:
         $this->intField = null;
         break;
-      case BazEnum::setField:
+      case \thrift\test\BazEnum::setField:
         $this->setField = null;
         break;
-      case BazEnum::mapField:
+      case \thrift\test\BazEnum::mapField:
         $this->mapField = null;
         break;
-      case BazEnum::binaryField:
+      case \thrift\test\BazEnum::binaryField:
         $this->binaryField = null;
         break;
-      case BazEnum::longField:
+      case \thrift\test\BazEnum::longField:
         $this->longField = null;
         break;
-      case BazEnum::_EMPTY_:
+      case \thrift\test\BazEnum::_EMPTY_:
         break;
     }
-    $this->_type = BazEnum::_EMPTY_;
+    $this->_type = \thrift\test\BazEnum::_EMPTY_;
   }
 
   public function set_intField(\Adapter1::THackType $intField)[write_props]: this {
     $this->reset();
-    $this->_type = BazEnum::intField;
+    $this->_type = \thrift\test\BazEnum::intField;
     $this->intField = $intField;
     return $this;
   }
@@ -1105,27 +1108,27 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   public function getx_intField()[]: \Adapter1::THackType {
     invariant(
-      $this->_type === BazEnum::intField,
+      $this->_type === \thrift\test\BazEnum::intField,
       'get_intField called on an instance of Baz whose current type is %s',
       (string)$this->_type,
     );
     return $this->intField as nonnull;
   }
 
-  public function set_setField(SetWithAdapter $setField)[write_props]: this {
+  public function set_setField(\thrift\test\SetWithAdapter $setField)[write_props]: this {
     $this->reset();
-    $this->_type = BazEnum::setField;
+    $this->_type = \thrift\test\BazEnum::setField;
     $this->setField = $setField;
     return $this;
   }
 
-  public function get_setField()[]: ?SetWithAdapter {
+  public function get_setField()[]: ?\thrift\test\SetWithAdapter {
     return $this->setField;
   }
 
-  public function getx_setField()[]: SetWithAdapter {
+  public function getx_setField()[]: \thrift\test\SetWithAdapter {
     invariant(
-      $this->_type === BazEnum::setField,
+      $this->_type === \thrift\test\BazEnum::setField,
       'get_setField called on an instance of Baz whose current type is %s',
       (string)$this->_type,
     );
@@ -1134,7 +1137,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   public function set_mapField(\Adapter3::THackType $mapField)[write_props]: this {
     $this->reset();
-    $this->_type = BazEnum::mapField;
+    $this->_type = \thrift\test\BazEnum::mapField;
     $this->mapField = $mapField;
     return $this;
   }
@@ -1145,7 +1148,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   public function getx_mapField()[]: \Adapter3::THackType {
     invariant(
-      $this->_type === BazEnum::mapField,
+      $this->_type === \thrift\test\BazEnum::mapField,
       'get_mapField called on an instance of Baz whose current type is %s',
       (string)$this->_type,
     );
@@ -1154,7 +1157,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   public function set_binaryField(\Adapter1::THackType $binaryField)[write_props]: this {
     $this->reset();
-    $this->_type = BazEnum::binaryField;
+    $this->_type = \thrift\test\BazEnum::binaryField;
     $this->binaryField = $binaryField;
     return $this;
   }
@@ -1165,27 +1168,27 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
 
   public function getx_binaryField()[]: \Adapter1::THackType {
     invariant(
-      $this->_type === BazEnum::binaryField,
+      $this->_type === \thrift\test\BazEnum::binaryField,
       'get_binaryField called on an instance of Baz whose current type is %s',
       (string)$this->_type,
     );
     return $this->binaryField as nonnull;
   }
 
-  public function set_longField(MyI64 $longField)[write_props]: this {
+  public function set_longField(\thrift\test\MyI64 $longField)[write_props]: this {
     $this->reset();
-    $this->_type = BazEnum::longField;
+    $this->_type = \thrift\test\BazEnum::longField;
     $this->longField = $longField;
     return $this;
   }
 
-  public function get_longField()[]: ?MyI64 {
+  public function get_longField()[]: ?\thrift\test\MyI64 {
     return $this->longField;
   }
 
-  public function getx_longField()[]: MyI64 {
+  public function getx_longField()[]: \thrift\test\MyI64 {
     invariant(
-      $this->_type === BazEnum::longField,
+      $this->_type === \thrift\test\BazEnum::longField,
       'get_longField called on an instance of Baz whose current type is %s',
       (string)$this->_type,
     );
@@ -1193,36 +1196,36 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Baz",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "intField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.SetWithAdapter",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_set" => tmeta_ThriftSetType::fromShape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
                             shape(
-                              "valueType" => tmeta_ThriftType::fromShape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                 )
                               ),
                             )
@@ -1236,45 +1239,45 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
               "name" => "setField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
                     shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                         )
                       ),
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.ListWithElemAdapter_withAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.ListWithElemAdapter_withAdapter",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                             shape(
                                               "name" => "module.ListWithElemAdapter",
-                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_list" => tmeta_ThriftListType::fromShape(
+                                                  "t_list" => \tmeta_ThriftListType::fromShape(
                                                     shape(
-                                                      "valueType" => tmeta_ThriftType::fromShape(
+                                                      "valueType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                             shape(
                                                               "name" => "module.StringWithAdapter",
-                                                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                 )
                                                               ),
                                                             )
@@ -1304,28 +1307,28 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
               "name" => "mapField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "binaryField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 9,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.MyI64",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                         )
                       ),
                     )
@@ -1455,7 +1458,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
   }
 
   public function readFromJson(string $jsonText): void {
-    $this->_type = BazEnum::_EMPTY_;
+    $this->_type = \thrift\test\BazEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
     if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
@@ -1469,10 +1472,10 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       } else {
         $this->intField = (int)$_tmp0;
       }
-      $this->_type = BazEnum::intField;
+      $this->_type = \thrift\test\BazEnum::intField;
     }
     if (idx($parsed, 'setField') !== null) {
-      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, SetWithAdapter>($parsed['setField']);
+      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\SetWithAdapter>($parsed['setField']);
       $_container5 = Set {};
       foreach($_json4 as $_key2 => $_value3) {
         $_elem6 = '';
@@ -1480,10 +1483,10 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         $_container5->add($_elem6);
       }
       $this->setField = $_container5;
-      $this->_type = BazEnum::setField;
+      $this->_type = \thrift\test\BazEnum::setField;
     }
     if (idx($parsed, 'mapField') !== null) {
-      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, ListWithElemAdapter_withAdapter>>($parsed['mapField']);
+      $_json10 = HH\FIXME\UNSAFE_CAST<mixed, Map<string, \thrift\test\ListWithElemAdapter_withAdapter>>($parsed['mapField']);
       $_container11 = Map {};
       foreach($_json10 as $_key8 => $_value9) {
         $_value12 = Vector {};
@@ -1498,25 +1501,25 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         $_container11[$_key8] = $_value12;
       }
       $this->mapField = $_container11;
-      $this->_type = BazEnum::mapField;
+      $this->_type = \thrift\test\BazEnum::mapField;
     }
     if (idx($parsed, 'binaryField') !== null) {
       $this->binaryField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binaryField']);
-      $this->_type = BazEnum::binaryField;
+      $this->_type = \thrift\test\BazEnum::binaryField;
     }
     if (idx($parsed, 'longField') !== null) {
-      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, MyI64>($parsed['longField']);
-      $this->_type = BazEnum::longField;
+      $this->longField = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\MyI64>($parsed['longField']);
+      $this->_type = \thrift\test\BazEnum::longField;
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, StringWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\StringWithAdapter>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, ListWithElemAdapter_withAdapter>();
-    \ThriftUtil::requireSameType<\Adapter2::TThriftType, SetWithAdapter>();
-    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, ListWithElemAdapter_withAdapter>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, \thrift\test\ListWithElemAdapter_withAdapter>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, \thrift\test\SetWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \thrift\test\ListWithElemAdapter_withAdapter>>();
   }
 
 }
@@ -1525,6 +1528,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
  * Original thrift struct:-
  * Bar
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Bar'))>>
 class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1533,13 +1537,13 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'structField',
       'adapter' => \Adapter1::class,
       'type' => \TType::STRUCT,
-      'class' => Foo::class,
+      'class' => \thrift\test\Foo::class,
     ),
     2 => shape(
       'var' => 'optionalStructField',
       'adapter' => \Adapter1::class,
       'type' => \TType::STRUCT,
-      'class' => Foo::class,
+      'class' => \thrift\test\Foo::class,
     ),
     3 => shape(
       'var' => 'structListField',
@@ -1548,7 +1552,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'elem' => shape(
         'adapter' => \Adapter1::class,
         'type' => \TType::STRUCT,
-        'class' => Foo::class,
+        'class' => \thrift\test\Foo::class,
       ),
       'format' => 'collection',
     ),
@@ -1559,7 +1563,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'elem' => shape(
         'adapter' => \Adapter1::class,
         'type' => \TType::STRUCT,
-        'class' => Foo::class,
+        'class' => \thrift\test\Foo::class,
       ),
       'format' => 'collection',
     ),
@@ -1567,18 +1571,18 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'unionField',
       'adapter' => \Adapter1::class,
       'type' => \TType::STRUCT,
-      'class' => Baz::class,
+      'class' => \thrift\test\Baz::class,
     ),
     6 => shape(
       'var' => 'optionalUnionField',
       'adapter' => \Adapter1::class,
       'type' => \TType::STRUCT,
-      'class' => Baz::class,
+      'class' => \thrift\test\Baz::class,
     ),
     7 => shape(
       'var' => 'adaptedStructField',
       'type' => \TType::STRUCT,
-      'class' => DirectlyAdapted::class,
+      'class' => \thrift\test\DirectlyAdapted::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1594,21 +1598,21 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   const type TConstructorShape = shape(
     ?'structField' => ?\Adapter1::THackType,
     ?'optionalStructField' => ?\Adapter1::THackType,
-    ?'structListField' => ?Vector<FooWithAdapter>,
-    ?'optionalStructListField' => ?Vector<FooWithAdapter>,
+    ?'structListField' => ?Vector<\thrift\test\FooWithAdapter>,
+    ?'optionalStructListField' => ?Vector<\thrift\test\FooWithAdapter>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
-    ?'adaptedStructField' => ?DirectlyAdapted,
+    ?'adaptedStructField' => ?\thrift\test\DirectlyAdapted,
   );
 
   const type TShape = shape(
     ?'structField' => ?\Adapter1::THackType,
     ?'optionalStructField' => ?\Adapter1::THackType,
-    'structListField' => vec<FooWithAdapter>,
-    ?'optionalStructListField' => ?vec<FooWithAdapter>,
+    'structListField' => vec<\thrift\test\FooWithAdapter>,
+    ?'optionalStructListField' => ?vec<\thrift\test\FooWithAdapter>,
     ?'unionField' => ?\Adapter1::THackType,
     ?'optionalUnionField' => ?\Adapter1::THackType,
-    ?'adaptedStructField' => ?DirectlyAdapted::TShape,
+    ?'adaptedStructField' => ?\thrift\test\DirectlyAdapted::TShape,
   );
   const int STRUCTURAL_ID = 7938871189708910014;
   /**
@@ -1625,12 +1629,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 3: list<struct module.Foo> structListField
    */
-  public Vector<FooWithAdapter> $structListField;
+  public Vector<\thrift\test\FooWithAdapter> $structListField;
   /**
    * Original thrift field:-
    * 4: list<struct module.Foo> optionalStructListField
    */
-  public ?Vector<FooWithAdapter> $optionalStructListField;
+  public ?Vector<\thrift\test\FooWithAdapter> $optionalStructListField;
   /**
    * Original thrift field:-
    * 5: struct module.Baz unionField
@@ -1645,9 +1649,9 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * Original thrift field:-
    * 7: struct module.DirectlyAdapted adaptedStructField
    */
-  public ?DirectlyAdapted $adaptedStructField;
+  public ?\thrift\test\DirectlyAdapted $adaptedStructField;
 
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<FooWithAdapter> $structListField = null, ?Vector<FooWithAdapter> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null, ?DirectlyAdapted $adaptedStructField = null)[] {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\thrift\test\FooWithAdapter> $structListField = null, ?Vector<\thrift\test\FooWithAdapter> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null, ?\thrift\test\DirectlyAdapted $adaptedStructField = null)[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
@@ -1678,21 +1682,21 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Bar",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.Foo",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Foo",
                             )
@@ -1706,17 +1710,17 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "structField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.Foo",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Foo",
                             )
@@ -1731,26 +1735,26 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.FooWithAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.FooWithAdapter",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                                             shape(
                                               "name" => "module.Foo",
                                             )
@@ -1772,26 +1776,26 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "structListField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.FooWithAdapter",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.FooWithAdapter",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                                             shape(
                                               "name" => "module.Foo",
                                             )
@@ -1814,17 +1818,17 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.Baz",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Baz",
                             )
@@ -1838,17 +1842,17 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "unionField",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 6,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.Baz",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Baz",
                             )
@@ -1863,17 +1867,17 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 7,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.DirectlyAdapted",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.DirectlyAdapted",
                             )
@@ -1974,17 +1978,17 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'structField') === null ? null : (Foo::__fromShape($shape['structField'])),
-      Shapes::idx($shape, 'optionalStructField') === null ? null : (Foo::__fromShape($shape['optionalStructField'])),
+      Shapes::idx($shape, 'structField') === null ? null : (\thrift\test\Foo::__fromShape($shape['structField'])),
+      Shapes::idx($shape, 'optionalStructField') === null ? null : (\thrift\test\Foo::__fromShape($shape['optionalStructField'])),
       (new Vector($shape['structListField']))->map(
-        $val0 ==> Foo::__fromShape($val0),
+        $val0 ==> \thrift\test\Foo::__fromShape($val0),
       ),
       Shapes::idx($shape, 'optionalStructListField') === null ? null : ((new Vector($shape['optionalStructListField']))->map(
-        $val1 ==> Foo::__fromShape($val1),
+        $val1 ==> \thrift\test\Foo::__fromShape($val1),
       )),
-      Shapes::idx($shape, 'unionField') === null ? null : (Baz::__fromShape($shape['unionField'])),
-      Shapes::idx($shape, 'optionalUnionField') === null ? null : (Baz::__fromShape($shape['optionalUnionField'])),
-      Shapes::idx($shape, 'adaptedStructField') === null ? null : (DirectlyAdapted::__fromShape($shape['adaptedStructField'])),
+      Shapes::idx($shape, 'unionField') === null ? null : (\thrift\test\Baz::__fromShape($shape['unionField'])),
+      Shapes::idx($shape, 'optionalUnionField') === null ? null : (\thrift\test\Baz::__fromShape($shape['optionalUnionField'])),
+      Shapes::idx($shape, 'adaptedStructField') === null ? null : (\thrift\test\DirectlyAdapted::__fromShape($shape['adaptedStructField'])),
     );
   }
 
@@ -2017,24 +2021,24 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'structField') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Foo>($parsed['structField']));
-      $_tmp1 = Foo::withDefaultValues();
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['structField']));
+      $_tmp1 = \thrift\test\Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->structField = $_tmp1;
     }
     if (idx($parsed, 'optionalStructField') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Foo>($parsed['optionalStructField']));
-      $_tmp3 = Foo::withDefaultValues();
+      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['optionalStructField']));
+      $_tmp3 = \thrift\test\Foo::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->optionalStructField = $_tmp3;
     }
     if (idx($parsed, 'structListField') !== null) {
-      $_json7 = HH\FIXME\UNSAFE_CAST<mixed, Vector<FooWithAdapter>>($parsed['structListField']);
+      $_json7 = HH\FIXME\UNSAFE_CAST<mixed, Vector<\thrift\test\FooWithAdapter>>($parsed['structListField']);
       $_container8 = Vector {};
       foreach($_json7 as $_key5 => $_value6) {
-        $_elem9 = Foo::withDefaultValues();
+        $_elem9 = \thrift\test\Foo::withDefaultValues();
         $_tmp10 = json_encode($_value6);
-        $_tmp11 = Foo::withDefaultValues();
+        $_tmp11 = \thrift\test\Foo::withDefaultValues();
         $_tmp11->readFromJson($_tmp10);
         $_elem9 = $_tmp11;
         $_container8 []= $_elem9;
@@ -2042,12 +2046,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->structListField = $_container8;
     }
     if (idx($parsed, 'optionalStructListField') !== null) {
-      $_json15 = HH\FIXME\UNSAFE_CAST<mixed, Vector<FooWithAdapter>>($parsed['optionalStructListField']);
+      $_json15 = HH\FIXME\UNSAFE_CAST<mixed, Vector<\thrift\test\FooWithAdapter>>($parsed['optionalStructListField']);
       $_container16 = Vector {};
       foreach($_json15 as $_key13 => $_value14) {
-        $_elem17 = Foo::withDefaultValues();
+        $_elem17 = \thrift\test\Foo::withDefaultValues();
         $_tmp18 = json_encode($_value14);
-        $_tmp19 = Foo::withDefaultValues();
+        $_tmp19 = \thrift\test\Foo::withDefaultValues();
         $_tmp19->readFromJson($_tmp18);
         $_elem17 = $_tmp19;
         $_container16 []= $_elem17;
@@ -2055,29 +2059,29 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optionalStructListField = $_container16;
     }
     if (idx($parsed, 'unionField') !== null) {
-      $_tmp20 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Baz>($parsed['unionField']));
-      $_tmp21 = Baz::withDefaultValues();
+      $_tmp20 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['unionField']));
+      $_tmp21 = \thrift\test\Baz::withDefaultValues();
       $_tmp21->readFromJson($_tmp20);
       $this->unionField = $_tmp21;
     }
     if (idx($parsed, 'optionalUnionField') !== null) {
-      $_tmp22 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, Baz>($parsed['optionalUnionField']));
-      $_tmp23 = Baz::withDefaultValues();
+      $_tmp22 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['optionalUnionField']));
+      $_tmp23 = \thrift\test\Baz::withDefaultValues();
       $_tmp23->readFromJson($_tmp22);
       $this->optionalUnionField = $_tmp23;
     }
     if (idx($parsed, 'adaptedStructField') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, DirectlyAdapted>($parsed['adaptedStructField']));
-      $_tmp25 = DirectlyAdapted::withDefaultValues();
+      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\DirectlyAdapted>($parsed['adaptedStructField']));
+      $_tmp25 = \thrift\test\DirectlyAdapted::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->adaptedStructField = $_tmp25;
     }
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, Baz>();
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
-    \ThriftUtil::requireSameType<\Adapter1::TThriftType, FooWithAdapter>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\Baz>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\Foo>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, \thrift\test\FooWithAdapter>();
   }
 
 }
@@ -2086,6 +2090,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * DirectlyAdapted
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/DirectlyAdapted'))>>
 class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2132,16 +2137,16 @@ class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.DirectlyAdapted",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "field",
@@ -2205,6 +2210,7 @@ class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * StructWithFieldAdapter
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/StructWithFieldAdapter'))>>
 class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2293,50 +2299,50 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.StructWithFieldAdapter",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "shared_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "opt_shared_field",
               "is_optional" => true,
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "opt_boxed_field",
@@ -2485,6 +2491,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
  * Original thrift struct:-
  * TerseAdaptedFields
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/TerseAdaptedFields'))>>
 class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2564,42 +2571,42 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.TerseAdaptedFields",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "int_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "string_field",
             )
           ),
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
                     shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                         )
                       ),
                     )
@@ -2725,6 +2732,7 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
  * Original thrift struct:-
  * B
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/B'))>>
 class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2732,7 +2740,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     1 => shape(
       'var' => 'a',
       'type' => \TType::STRUCT,
-      'class' => A::class,
+      'class' => \thrift\test\A::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -2740,20 +2748,20 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?AdaptedA,
+    ?'a' => ?\thrift\test\AdaptedA,
   );
 
   const type TShape = shape(
-    ?'a' => ?AdaptedA,
+    ?'a' => ?\thrift\test\AdaptedA,
   );
   const int STRUCTURAL_ID = 1135805466744601735;
   /**
    * Original thrift field:-
    * 1: struct module.A a
    */
-  public ?AdaptedA $a;
+  public ?\thrift\test\AdaptedA $a;
 
-  public function __construct(?AdaptedA $a = null)[] {
+  public function __construct(?\thrift\test\AdaptedA $a = null)[] {
     $this->a = $a;
   }
 
@@ -2772,31 +2780,31 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.B",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.AdaptedA",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                             shape(
                               "name" => "module.AdaptedA",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                     shape(
                                       "name" => "module.A",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                                             shape(
                                               "name" => "module.A",
                                             )
@@ -2844,7 +2852,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'a') === null ? null : (A::__fromShape($shape['a'])),
+      Shapes::idx($shape, 'a') === null ? null : (\thrift\test\A::__fromShape($shape['a'])),
     );
   }
 
@@ -2865,8 +2873,8 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, AdaptedA>($parsed['a']));
-      $_tmp1 = A::withDefaultValues();
+      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\AdaptedA>($parsed['a']));
+      $_tmp1 = \thrift\test\A::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->a = $_tmp1;
     }
@@ -2878,6 +2886,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * A
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/A'))>>
 class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2910,7 +2919,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.A",
         "is_union" => false,
@@ -2946,6 +2955,120 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * MyStruct
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/MyStruct'))>>
+class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'field',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'field' => ?int,
+  );
+
+  const type TShape = shape(
+    'field' => int,
+  );
+  const int STRUCTURAL_ID = 7035499037608086885;
+  /**
+   * Original thrift field:-
+   * 1: i32 field
+   */
+  public int $field;
+
+  public function __construct(?int $field = null)[] {
+    $this->field = $field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyStruct';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyStruct",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'field' => $this->field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'field') !== null) {
+      $_tmp0 = (int)HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['field']);
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->field = (int)$_tmp0;
+      }
+    }
   }
 
 }
