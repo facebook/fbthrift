@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Specification
 
 Thrift supports clients/servers/readers/writers/etc, written in different languages, using different libraries, often developed and maintained by different teams. A basic example is a Java Thrift client invoking functions implemented by a C++ Thrift server. In order to have predictable and reliable behavior in such a heterogeneous environment, all Thrift libraries must support the same protocols and semantics.
