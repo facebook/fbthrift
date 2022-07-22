@@ -63,7 +63,7 @@ namespace cpp2 {
 
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
 MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(const MyStructFloatFieldThrowExp&) = default;
-MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept  :
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept :
     __fbthrift_field_myLongField(std::move(other.__fbthrift_field_myLongField)),
     __fbthrift_field_MyByteField(std::move(other.__fbthrift_field_MyByteField)),
     __fbthrift_field_myStringField(std::move(other.__fbthrift_field_myStringField)),
@@ -190,7 +190,7 @@ namespace cpp2 {
 
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
-MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept  :
+MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept :
     __fbthrift_field_myLongField(std::move(other.__fbthrift_field_myLongField)),
     __fbthrift_field_mapListOfFloats(std::move(other.__fbthrift_field_mapListOfFloats)),
     __isset(other.__isset) {
@@ -379,7 +379,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
     __fbthrift_field_MyDataField(std::move(other.__fbthrift_field_MyDataField)),
@@ -959,7 +959,7 @@ namespace cpp2 {
 
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
-SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept  :
+SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept :
     __fbthrift_field_age(std::move(other.__fbthrift_field_age)),
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
@@ -1068,7 +1068,7 @@ ComplexNestedStruct::ComplexNestedStruct() {
 
 ComplexNestedStruct::~ComplexNestedStruct() {}
 
-ComplexNestedStruct::ComplexNestedStruct(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept  :
+ComplexNestedStruct::ComplexNestedStruct(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept :
     __fbthrift_field_setOfSetOfInt(std::move(other.__fbthrift_field_setOfSetOfInt)),
     __fbthrift_field_listofListOfListOfListOfEnum(std::move(other.__fbthrift_field_listofListOfListOfListOfEnum)),
     __fbthrift_field_listOfListOfMyStruct(std::move(other.__fbthrift_field_listOfListOfMyStruct)),
@@ -1731,7 +1731,7 @@ defaultStruct::defaultStruct() :
 
 defaultStruct::~defaultStruct() {}
 
-defaultStruct::defaultStruct(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept  :
+defaultStruct::defaultStruct(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept :
     __fbthrift_field_myLongDFset(std::move(other.__fbthrift_field_myLongDFset)),
     __fbthrift_field_myLongDF(std::move(other.__fbthrift_field_myLongDF)),
     __fbthrift_field_portDFset(std::move(other.__fbthrift_field_portDFset)),
@@ -2194,7 +2194,7 @@ MyStructTypeDef::MyStructTypeDef() :
 
 MyStructTypeDef::~MyStructTypeDef() {}
 
-MyStructTypeDef::MyStructTypeDef(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept  :
+MyStructTypeDef::MyStructTypeDef(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept :
     __fbthrift_field_myLongField(std::move(other.__fbthrift_field_myLongField)),
     __fbthrift_field_myLongTypeDef(std::move(other.__fbthrift_field_myLongTypeDef)),
     __fbthrift_field_myStringField(std::move(other.__fbthrift_field_myStringField)),
@@ -2550,7 +2550,7 @@ namespace cpp2 {
 
 TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
 TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
-TypeRemapped::TypeRemapped(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept  :
+TypeRemapped::TypeRemapped(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept :
     __fbthrift_field_lsMap(std::move(other.__fbthrift_field_lsMap)),
     __fbthrift_field_ioMap(std::move(other.__fbthrift_field_ioMap)),
     __fbthrift_field_BigInteger(std::move(other.__fbthrift_field_BigInteger)),
@@ -2699,7 +2699,7 @@ emptyXcep::emptyXcep() {
 
 emptyXcep::~emptyXcep() {}
 
-emptyXcep::emptyXcep(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {}
+emptyXcep::emptyXcep(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept{}
 emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
     return *this;
 }
@@ -2778,7 +2778,7 @@ reqXcep::reqXcep() :
 
 reqXcep::~reqXcep() {}
 
-reqXcep::reqXcep(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept  :
+reqXcep::reqXcep(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __fbthrift_field_errorCode(std::move(other.__fbthrift_field_errorCode)) {
 }
@@ -2882,7 +2882,7 @@ optXcep::optXcep() :
 
 optXcep::~optXcep() {}
 
-optXcep::optXcep(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept  :
+optXcep::optXcep(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __fbthrift_field_errorCode(std::move(other.__fbthrift_field_errorCode)),
     __isset(other.__isset) {
@@ -2993,7 +2993,7 @@ complexException::complexException() :
 
 complexException::~complexException() {}
 
-complexException::complexException(FOLLY_MAYBE_UNUSED complexException&& other) noexcept  :
+complexException::complexException(FOLLY_MAYBE_UNUSED complexException&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __fbthrift_field_listStrings(std::move(other.__fbthrift_field_listStrings)),
     __fbthrift_field_errorEnum(std::move(other.__fbthrift_field_errorEnum)),

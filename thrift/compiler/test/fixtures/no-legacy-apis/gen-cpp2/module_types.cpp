@@ -67,7 +67,7 @@ const char* MyStruct::__fbthrift_thrift_uri() {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_myIntField(std::move(other.__fbthrift_field_myIntField)),
     __fbthrift_field_myStringField(std::move(other.__fbthrift_field_myStringField)),
     __isset(other.__isset) {

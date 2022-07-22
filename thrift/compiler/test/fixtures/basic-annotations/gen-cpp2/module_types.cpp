@@ -63,7 +63,7 @@ namespace cpp2 {
 
 MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(const MyStructNestedAnnotation&) = default;
-MyStructNestedAnnotation::MyStructNestedAnnotation(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept  :
+MyStructNestedAnnotation::MyStructNestedAnnotation(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
@@ -252,7 +252,7 @@ YourException::YourException() {
 
 YourException::~YourException() {}
 
-YourException::YourException(FOLLY_MAYBE_UNUSED YourException&& other) noexcept {}
+YourException::YourException(FOLLY_MAYBE_UNUSED YourException&& other) noexcept{}
 YourException& YourException::operator=(FOLLY_MAYBE_UNUSED YourException&& other) noexcept {
     return *this;
 }
@@ -357,7 +357,7 @@ YourStruct::YourStruct() :
 
 YourStruct::~YourStruct() {}
 
-YourStruct::YourStruct(FOLLY_MAYBE_UNUSED YourStruct&& other) noexcept  :
+YourStruct::YourStruct(FOLLY_MAYBE_UNUSED YourStruct&& other) noexcept :
     __fbthrift_field_majorVer(std::move(other.__fbthrift_field_majorVer)),
     __fbthrift_field_package(std::move(other.__fbthrift_field_package)),
     __fbthrift_field_annotation_with_quote(std::move(other.__fbthrift_field_annotation_with_quote)),
@@ -560,7 +560,7 @@ namespace cpp2 {
 
 SecretStruct::SecretStruct(const SecretStruct&) = default;
 SecretStruct& SecretStruct::operator=(const SecretStruct&) = default;
-SecretStruct::SecretStruct(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept  :
+SecretStruct::SecretStruct(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept :
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __fbthrift_field_password(std::move(other.__fbthrift_field_password)),
     __isset(other.__isset) {

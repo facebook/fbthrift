@@ -41,7 +41,7 @@ const char* MyData::__fbthrift_thrift_uri() {
 
 MyData::MyData(const MyData&) = default;
 MyData& MyData::operator=(const MyData&) = default;
-MyData::MyData(FOLLY_MAYBE_UNUSED MyData&& other) noexcept  :
+MyData::MyData(FOLLY_MAYBE_UNUSED MyData&& other) noexcept :
     __fbthrift_field_data1(std::move(other.__fbthrift_field_data1)),
     __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)) {
 }
@@ -388,7 +388,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_boolVal(std::move(other.__fbthrift_field_boolVal)),
     __fbthrift_field_byteVal(std::move(other.__fbthrift_field_byteVal)),
     __fbthrift_field_i16Val(std::move(other.__fbthrift_field_i16Val)),
@@ -860,7 +860,7 @@ MyDataPatchStruct& MyDataPatchStruct::operator=(const MyDataPatchStruct& other) 
   return *this;
 }
 
-MyDataPatchStruct::MyDataPatchStruct(FOLLY_MAYBE_UNUSED MyDataPatchStruct&& other) noexcept  :
+MyDataPatchStruct::MyDataPatchStruct(FOLLY_MAYBE_UNUSED MyDataPatchStruct&& other) noexcept :
     __fbthrift_field_data1(std::move(other.__fbthrift_field_data1)),
     __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)),
     __isset(other.__isset) {
@@ -995,7 +995,7 @@ MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(const MyDataValuePatch
   return *this;
 }
 
-MyDataValuePatchStruct::MyDataValuePatchStruct(FOLLY_MAYBE_UNUSED MyDataValuePatchStruct&& other) noexcept  :
+MyDataValuePatchStruct::MyDataValuePatchStruct(FOLLY_MAYBE_UNUSED MyDataValuePatchStruct&& other) noexcept :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
@@ -1141,7 +1141,7 @@ OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(const 
   return *this;
 }
 
-OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyDataValuePatchStruct&& other) noexcept  :
+OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyDataValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1303,7 +1303,7 @@ InnerUnionPatchStruct& InnerUnionPatchStruct::operator=(const InnerUnionPatchStr
   return *this;
 }
 
-InnerUnionPatchStruct::InnerUnionPatchStruct(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct&& other) noexcept  :
+InnerUnionPatchStruct::InnerUnionPatchStruct(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct&& other) noexcept :
     __fbthrift_field_innerOption(std::move(other.__fbthrift_field_innerOption)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
@@ -1420,7 +1420,7 @@ InnerUnionValuePatchStruct& InnerUnionValuePatchStruct::operator=(const InnerUni
   return *this;
 }
 
-InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct&& other) noexcept  :
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED InnerUnionValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1595,7 +1595,7 @@ OptionalInnerUnionValuePatchStruct& OptionalInnerUnionValuePatchStruct::operator
   return *this;
 }
 
-OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct&& other) noexcept  :
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalInnerUnionValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -1761,7 +1761,7 @@ MyUnionPatchStruct& MyUnionPatchStruct::operator=(const MyUnionPatchStruct& othe
   return *this;
 }
 
-MyUnionPatchStruct::MyUnionPatchStruct(FOLLY_MAYBE_UNUSED MyUnionPatchStruct&& other) noexcept  :
+MyUnionPatchStruct::MyUnionPatchStruct(FOLLY_MAYBE_UNUSED MyUnionPatchStruct&& other) noexcept :
     __fbthrift_field_option1(std::move(other.__fbthrift_field_option1)),
     __fbthrift_field_option2(std::move(other.__fbthrift_field_option2)),
     __fbthrift_field_option3(std::move(other.__fbthrift_field_option3)),
@@ -1918,7 +1918,7 @@ MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(const MyUnionValuePa
   return *this;
 }
 
-MyUnionValuePatchStruct::MyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED MyUnionValuePatchStruct&& other) noexcept  :
+MyUnionValuePatchStruct::MyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED MyUnionValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2093,7 +2093,7 @@ OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(cons
   return *this;
 }
 
-OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyUnionValuePatchStruct&& other) noexcept  :
+OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyUnionValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2245,7 +2245,7 @@ const char* MyStructField21PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField21PatchStruct::MyStructField21PatchStruct(const MyStructField21PatchStruct&) = default;
 MyStructField21PatchStruct& MyStructField21PatchStruct::operator=(const MyStructField21PatchStruct&) = default;
-MyStructField21PatchStruct::MyStructField21PatchStruct(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct&& other) noexcept  :
+MyStructField21PatchStruct::MyStructField21PatchStruct(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct&& other) noexcept :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_prepend(std::move(other.__fbthrift_field_prepend)),
@@ -2414,7 +2414,7 @@ OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct&& other) noexcept  :
+OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2569,7 +2569,7 @@ const char* MyStructField22PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField22PatchStruct::MyStructField22PatchStruct(const MyStructField22PatchStruct&) = default;
 MyStructField22PatchStruct& MyStructField22PatchStruct::operator=(const MyStructField22PatchStruct&) = default;
-MyStructField22PatchStruct::MyStructField22PatchStruct(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct&& other) noexcept  :
+MyStructField22PatchStruct::MyStructField22PatchStruct(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct&& other) noexcept :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_remove(std::move(other.__fbthrift_field_remove)),
@@ -2738,7 +2738,7 @@ OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct&& other) noexcept  :
+OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -2893,7 +2893,7 @@ const char* MyStructField23PatchStruct::__fbthrift_thrift_uri() {
 
 MyStructField23PatchStruct::MyStructField23PatchStruct(const MyStructField23PatchStruct&) = default;
 MyStructField23PatchStruct& MyStructField23PatchStruct::operator=(const MyStructField23PatchStruct&) = default;
-MyStructField23PatchStruct::MyStructField23PatchStruct(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct&& other) noexcept  :
+MyStructField23PatchStruct::MyStructField23PatchStruct(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct&& other) noexcept :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_put(std::move(other.__fbthrift_field_put)),
@@ -3042,7 +3042,7 @@ OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator
   return *this;
 }
 
-OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct&& other) noexcept  :
+OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
@@ -3253,7 +3253,7 @@ MyStructPatchStruct& MyStructPatchStruct::operator=(const MyStructPatchStruct& o
   return *this;
 }
 
-MyStructPatchStruct::MyStructPatchStruct(FOLLY_MAYBE_UNUSED MyStructPatchStruct&& other) noexcept  :
+MyStructPatchStruct::MyStructPatchStruct(FOLLY_MAYBE_UNUSED MyStructPatchStruct&& other) noexcept :
     __fbthrift_field_boolVal(std::move(other.__fbthrift_field_boolVal)),
     __fbthrift_field_byteVal(std::move(other.__fbthrift_field_byteVal)),
     __fbthrift_field_i16Val(std::move(other.__fbthrift_field_i16Val)),
@@ -3828,7 +3828,7 @@ MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(const MyStructValu
   return *this;
 }
 
-MyStructValuePatchStruct::MyStructValuePatchStruct(FOLLY_MAYBE_UNUSED MyStructValuePatchStruct&& other) noexcept  :
+MyStructValuePatchStruct::MyStructValuePatchStruct(FOLLY_MAYBE_UNUSED MyStructValuePatchStruct&& other) noexcept :
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
@@ -3974,7 +3974,7 @@ OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(co
   return *this;
 }
 
-OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructValuePatchStruct&& other) noexcept  :
+OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(FOLLY_MAYBE_UNUSED OptionalMyStructValuePatchStruct&& other) noexcept :
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
     __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),

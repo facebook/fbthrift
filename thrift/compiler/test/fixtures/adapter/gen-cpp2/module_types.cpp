@@ -94,7 +94,7 @@ Foo::Foo() :
 
 Foo::~Foo() {}
 
-Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept :
     __fbthrift_field_intField(std::move(other.__fbthrift_field_intField)),
     __fbthrift_field_optionalIntField(std::move(other.__fbthrift_field_optionalIntField)),
     __fbthrift_field_intFieldWithDefault(std::move(other.__fbthrift_field_intFieldWithDefault)),
@@ -503,7 +503,7 @@ Bar::Bar() {
 
 Bar::~Bar() {}
 
-Bar::Bar(FOLLY_MAYBE_UNUSED Bar&& other) noexcept  :
+Bar::Bar(FOLLY_MAYBE_UNUSED Bar&& other) noexcept :
     __fbthrift_field_structField(std::move(other.__fbthrift_field_structField)),
     __fbthrift_field_optionalStructField(std::move(other.__fbthrift_field_optionalStructField)),
     __fbthrift_field_structListField(std::move(other.__fbthrift_field_structListField)),
@@ -712,7 +712,7 @@ StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldA
   return *this;
 }
 
-StructWithFieldAdapter::StructWithFieldAdapter(FOLLY_MAYBE_UNUSED StructWithFieldAdapter&& other) noexcept  :
+StructWithFieldAdapter::StructWithFieldAdapter(FOLLY_MAYBE_UNUSED StructWithFieldAdapter&& other) noexcept :
     __fbthrift_field_field(std::move(other.__fbthrift_field_field)),
     shared_field(std::move(other.shared_field)),
     opt_shared_field(std::move(other.opt_shared_field)),
@@ -857,7 +857,7 @@ TerseAdaptedFields& TerseAdaptedFields::operator=(const TerseAdaptedFields& othe
   return *this;
 }
 
-TerseAdaptedFields::TerseAdaptedFields(FOLLY_MAYBE_UNUSED TerseAdaptedFields&& other) noexcept  :
+TerseAdaptedFields::TerseAdaptedFields(FOLLY_MAYBE_UNUSED TerseAdaptedFields&& other) noexcept :
     __fbthrift_field_int_field(std::move(other.__fbthrift_field_int_field)),
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
     __fbthrift_field_set_field(std::move(other.__fbthrift_field_set_field)) {
@@ -1051,7 +1051,7 @@ B& B::operator=(const B& other) {
   return *this;
 }
 
-B::B(FOLLY_MAYBE_UNUSED B&& other) noexcept  :
+B::B(FOLLY_MAYBE_UNUSED B&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);

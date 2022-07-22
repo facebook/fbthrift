@@ -37,7 +37,7 @@ namespace apache { namespace thrift { namespace test {
 
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
-Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -223,7 +223,7 @@ LazyFoo& LazyFoo::operator=(const LazyFoo& other) {
   return *this;
 }
 
-LazyFoo::LazyFoo(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept  :
+LazyFoo::LazyFoo(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -477,7 +477,7 @@ namespace apache { namespace thrift { namespace test {
 
 OptionalFoo::OptionalFoo(const OptionalFoo&) = default;
 OptionalFoo& OptionalFoo::operator=(const OptionalFoo&) = default;
-OptionalFoo::OptionalFoo(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noexcept  :
+OptionalFoo::OptionalFoo(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -664,7 +664,7 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& other) {
   return *this;
 }
 
-OptionalLazyFoo::OptionalLazyFoo(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept  :
+OptionalLazyFoo::OptionalLazyFoo(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -957,7 +957,7 @@ LazyCppRef& LazyCppRef::operator=(const LazyCppRef& other) {
   return *this;
 }
 
-LazyCppRef::LazyCppRef(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept  :
+LazyCppRef::LazyCppRef(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -1296,7 +1296,7 @@ IndexedFoo::IndexedFoo() :
 
 IndexedFoo::~IndexedFoo() {}
 
-IndexedFoo::IndexedFoo(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcept  :
+IndexedFoo::IndexedFoo(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcept :
     __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -1494,7 +1494,7 @@ OptionalIndexedFoo::OptionalIndexedFoo() :
 
 OptionalIndexedFoo::~OptionalIndexedFoo() {}
 
-OptionalIndexedFoo::OptionalIndexedFoo(FOLLY_MAYBE_UNUSED OptionalIndexedFoo&& other) noexcept  :
+OptionalIndexedFoo::OptionalIndexedFoo(FOLLY_MAYBE_UNUSED OptionalIndexedFoo&& other) noexcept :
     __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),

@@ -96,7 +96,7 @@ SimpleException::SimpleException() :
 
 SimpleException::~SimpleException() {}
 
-SimpleException::SimpleException(FOLLY_MAYBE_UNUSED SimpleException&& other) noexcept  :
+SimpleException::SimpleException(FOLLY_MAYBE_UNUSED SimpleException&& other) noexcept :
     __fbthrift_field_err_code(std::move(other.__fbthrift_field_err_code)),
     __isset(other.__isset) {
 }
@@ -197,7 +197,7 @@ OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& other) 
   return *this;
 }
 
-OptionalRefStruct::OptionalRefStruct(FOLLY_MAYBE_UNUSED OptionalRefStruct&& other) noexcept  :
+OptionalRefStruct::OptionalRefStruct(FOLLY_MAYBE_UNUSED OptionalRefStruct&& other) noexcept :
     optional_blob(std::move(other.optional_blob)),
     __isset(other.__isset) {
 }
@@ -288,7 +288,7 @@ namespace py3 { namespace simple {
 
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
-SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept  :
+SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept :
     __fbthrift_field_is_on(std::move(other.__fbthrift_field_is_on)),
     __fbthrift_field_tiny_int(std::move(other.__fbthrift_field_tiny_int)),
     __fbthrift_field_small_int(std::move(other.__fbthrift_field_small_int)),
@@ -471,7 +471,7 @@ ComplexStruct::ComplexStruct() :
 
 ComplexStruct::~ComplexStruct() {}
 
-ComplexStruct::ComplexStruct(FOLLY_MAYBE_UNUSED ComplexStruct&& other) noexcept  :
+ComplexStruct::ComplexStruct(FOLLY_MAYBE_UNUSED ComplexStruct&& other) noexcept :
     __fbthrift_field_structOne(std::move(other.__fbthrift_field_structOne)),
     __fbthrift_field_structTwo(std::move(other.__fbthrift_field_structTwo)),
     __fbthrift_field_an_integer(std::move(other.__fbthrift_field_an_integer)),
@@ -760,7 +760,7 @@ namespace py3 { namespace simple {
 
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
 BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;
-BinaryUnionStruct::BinaryUnionStruct(FOLLY_MAYBE_UNUSED BinaryUnionStruct&& other) noexcept  :
+BinaryUnionStruct::BinaryUnionStruct(FOLLY_MAYBE_UNUSED BinaryUnionStruct&& other) noexcept :
     __fbthrift_field_u(std::move(other.__fbthrift_field_u)),
     __isset(other.__isset) {
 }

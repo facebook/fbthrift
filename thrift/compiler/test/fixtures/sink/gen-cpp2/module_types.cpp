@@ -37,7 +37,7 @@ namespace cpp2 {
 
 InitialResponse::InitialResponse(const InitialResponse&) = default;
 InitialResponse& InitialResponse::operator=(const InitialResponse&) = default;
-InitialResponse::InitialResponse(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept  :
+InitialResponse::InitialResponse(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -128,7 +128,7 @@ namespace cpp2 {
 
 FinalResponse::FinalResponse(const FinalResponse&) = default;
 FinalResponse& FinalResponse::operator=(const FinalResponse&) = default;
-FinalResponse::FinalResponse(FOLLY_MAYBE_UNUSED FinalResponse&& other) noexcept  :
+FinalResponse::FinalResponse(FOLLY_MAYBE_UNUSED FinalResponse&& other) noexcept :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -219,7 +219,7 @@ namespace cpp2 {
 
 SinkPayload::SinkPayload(const SinkPayload&) = default;
 SinkPayload& SinkPayload::operator=(const SinkPayload&) = default;
-SinkPayload::SinkPayload(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept  :
+SinkPayload::SinkPayload(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept :
     __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
@@ -310,7 +310,7 @@ namespace cpp2 {
 
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(const CompatibleWithKeywordSink&) = default;
-CompatibleWithKeywordSink::CompatibleWithKeywordSink(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept  :
+CompatibleWithKeywordSink::CompatibleWithKeywordSink(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept :
     __fbthrift_field_sink(std::move(other.__fbthrift_field_sink)),
     __isset(other.__isset) {
 }
@@ -407,7 +407,7 @@ InitialException::InitialException() {
 
 InitialException::~InitialException() {}
 
-InitialException::InitialException(FOLLY_MAYBE_UNUSED InitialException&& other) noexcept  :
+InitialException::InitialException(FOLLY_MAYBE_UNUSED InitialException&& other) noexcept :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
@@ -504,7 +504,7 @@ SinkException1::SinkException1() {
 
 SinkException1::~SinkException1() {}
 
-SinkException1::SinkException1(FOLLY_MAYBE_UNUSED SinkException1&& other) noexcept  :
+SinkException1::SinkException1(FOLLY_MAYBE_UNUSED SinkException1&& other) noexcept :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }
@@ -602,7 +602,7 @@ SinkException2::SinkException2() :
 
 SinkException2::~SinkException2() {}
 
-SinkException2::SinkException2(FOLLY_MAYBE_UNUSED SinkException2&& other) noexcept  :
+SinkException2::SinkException2(FOLLY_MAYBE_UNUSED SinkException2&& other) noexcept :
     __fbthrift_field_reason(std::move(other.__fbthrift_field_reason)),
     __isset(other.__isset) {
 }

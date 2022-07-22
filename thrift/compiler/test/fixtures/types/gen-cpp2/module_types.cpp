@@ -141,7 +141,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 decorated_struct::decorated_struct(const decorated_struct&) = default;
 decorated_struct& decorated_struct::operator=(const decorated_struct&) = default;
-decorated_struct::decorated_struct(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept  :
+decorated_struct::decorated_struct(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept :
     __fbthrift_field_field(std::move(other.__fbthrift_field_field)),
     __isset(other.__isset) {
 }
@@ -238,7 +238,7 @@ ContainerStruct::ContainerStruct() {
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept  :
+ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -448,7 +448,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 CppTypeStruct::CppTypeStruct(const CppTypeStruct&) = default;
 CppTypeStruct& CppTypeStruct::operator=(const CppTypeStruct&) = default;
-CppTypeStruct::CppTypeStruct(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept  :
+CppTypeStruct::CppTypeStruct(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __isset(other.__isset) {
 }
@@ -547,7 +547,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 VirtualStruct::VirtualStruct(const VirtualStruct&) = default;
 VirtualStruct& VirtualStruct::operator=(const VirtualStruct&) = default;
-VirtualStruct::VirtualStruct(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept  :
+VirtualStruct::VirtualStruct(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __isset(other.__isset) {
 }
@@ -638,7 +638,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(const MyStructWithForwardRefEnum&) = default;
-MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum&& other) noexcept  :
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -931,7 +931,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ComplexString::ComplexString(const ComplexString&) = default;
 ComplexString& ComplexString::operator=(const ComplexString&) = default;
-ComplexString::ComplexString(FOLLY_MAYBE_UNUSED ComplexString&& other) noexcept  :
+ComplexString::ComplexString(FOLLY_MAYBE_UNUSED ComplexString&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -1042,7 +1042,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ComplexNestedWithDefault::ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
 ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(const ComplexNestedWithDefault&) = default;
-ComplexNestedWithDefault::ComplexNestedWithDefault(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault&& other) noexcept  :
+ComplexNestedWithDefault::ComplexNestedWithDefault(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault&& other) noexcept :
     __fbthrift_field_z(std::move(other.__fbthrift_field_z)),
     __fbthrift_field_n(std::move(other.__fbthrift_field_n)),
     __isset(other.__isset) {
@@ -1159,7 +1159,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MinPadding::MinPadding(const MinPadding&) = default;
 MinPadding& MinPadding::operator=(const MinPadding&) = default;
-MinPadding::MinPadding(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept  :
+MinPadding::MinPadding(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept :
     __fbthrift_field_big(std::move(other.__fbthrift_field_big)),
     __fbthrift_field_biggish(std::move(other.__fbthrift_field_biggish)),
     __fbthrift_field_medium(std::move(other.__fbthrift_field_medium)),
@@ -1346,7 +1346,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
     __fbthrift_field_majorVer(std::move(other.__fbthrift_field_majorVer)),
@@ -1532,7 +1532,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 AnnotatedTypes::AnnotatedTypes(const AnnotatedTypes&) = default;
 AnnotatedTypes& AnnotatedTypes::operator=(const AnnotatedTypes&) = default;
-AnnotatedTypes::AnnotatedTypes(FOLLY_MAYBE_UNUSED AnnotatedTypes&& other) noexcept  :
+AnnotatedTypes::AnnotatedTypes(FOLLY_MAYBE_UNUSED AnnotatedTypes&& other) noexcept :
     __fbthrift_field_binary_field(std::move(other.__fbthrift_field_binary_field)),
     __fbthrift_field_list_field(std::move(other.__fbthrift_field_list_field)),
     __isset(other.__isset) {
@@ -1632,7 +1632,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageStruct::ForwardUsageStruct(const ForwardUsageStruct&) = default;
 ForwardUsageStruct& ForwardUsageStruct::operator=(const ForwardUsageStruct&) = default;
-ForwardUsageStruct::ForwardUsageStruct(FOLLY_MAYBE_UNUSED ForwardUsageStruct&& other) noexcept  :
+ForwardUsageStruct::ForwardUsageStruct(FOLLY_MAYBE_UNUSED ForwardUsageStruct&& other) noexcept :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __isset(other.__isset) {
 }
@@ -1748,7 +1748,7 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& other) {
   return *this;
 }
 
-ForwardUsageRoot::ForwardUsageRoot(FOLLY_MAYBE_UNUSED ForwardUsageRoot&& other) noexcept  :
+ForwardUsageRoot::ForwardUsageRoot(FOLLY_MAYBE_UNUSED ForwardUsageRoot&& other) noexcept :
     __fbthrift_field_ForwardUsageStruct(std::move(other.__fbthrift_field_ForwardUsageStruct)),
     ForwardUsageByRef(std::move(other.ForwardUsageByRef)),
     __isset(other.__isset) {
@@ -1871,7 +1871,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageByRef::ForwardUsageByRef(const ForwardUsageByRef&) = default;
 ForwardUsageByRef& ForwardUsageByRef::operator=(const ForwardUsageByRef&) = default;
-ForwardUsageByRef::ForwardUsageByRef(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept  :
+ForwardUsageByRef::ForwardUsageByRef(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __isset(other.__isset) {
 }
@@ -2130,7 +2130,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
 
 NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
 
-NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct&& other) noexcept  :
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct&& other) noexcept :
     __fbthrift_field_MyBoolField(std::move(other.__fbthrift_field_MyBoolField)),
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
@@ -2467,7 +2467,7 @@ AllocatorAware::AllocatorAware() :
 
 AllocatorAware::~AllocatorAware() {}
 
-AllocatorAware::AllocatorAware(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept  :
+AllocatorAware::AllocatorAware(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept :
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list)),
     __fbthrift_field_aa_set(std::move(other.__fbthrift_field_aa_set)),
@@ -2666,7 +2666,7 @@ AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2& other) {
   return *this;
 }
 
-AllocatorAware2::AllocatorAware2(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept  :
+AllocatorAware2::AllocatorAware2(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept :
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {
@@ -2760,7 +2760,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 TypedefStruct::TypedefStruct(const TypedefStruct&) = default;
 TypedefStruct& TypedefStruct::operator=(const TypedefStruct&) = default;
-TypedefStruct::TypedefStruct(FOLLY_MAYBE_UNUSED TypedefStruct&& other) noexcept  :
+TypedefStruct::TypedefStruct(FOLLY_MAYBE_UNUSED TypedefStruct&& other) noexcept :
     __fbthrift_field_i32_field(std::move(other.__fbthrift_field_i32_field)),
     __fbthrift_field_IntTypedef_field(std::move(other.__fbthrift_field_IntTypedef_field)),
     __fbthrift_field_UintTypedef_field(std::move(other.__fbthrift_field_UintTypedef_field)),

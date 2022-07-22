@@ -47,7 +47,7 @@ Fiery::Fiery(std::string __message) : Fiery() {
 
 Fiery::~Fiery() {}
 
-Fiery::Fiery(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept  :
+Fiery::Fiery(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)) {
 }
 
@@ -143,7 +143,7 @@ Serious::Serious(std::string __message) : Serious() {
 
 Serious::~Serious() {}
 
-Serious::Serious(FOLLY_MAYBE_UNUSED Serious&& other) noexcept  :
+Serious::Serious(FOLLY_MAYBE_UNUSED Serious&& other) noexcept :
     __fbthrift_field_sonnet(std::move(other.__fbthrift_field_sonnet)),
     __isset(other.__isset) {
 }
@@ -244,7 +244,7 @@ ComplexFieldNames::ComplexFieldNames(std::string __message) : ComplexFieldNames(
 
 ComplexFieldNames::~ComplexFieldNames() {}
 
-ComplexFieldNames::ComplexFieldNames(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept  :
+ComplexFieldNames::ComplexFieldNames(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept :
     __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
     __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
@@ -357,7 +357,7 @@ CustomFieldNames::CustomFieldNames(std::string __message) : CustomFieldNames() {
 
 CustomFieldNames::~CustomFieldNames() {}
 
-CustomFieldNames::CustomFieldNames(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept  :
+CustomFieldNames::CustomFieldNames(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept :
     __fbthrift_field_error_message(std::move(other.__fbthrift_field_error_message)),
     __fbthrift_field_internal_error_message(std::move(other.__fbthrift_field_internal_error_message)),
     __isset(other.__isset) {
@@ -471,7 +471,7 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) 
 
 ExceptionWithPrimitiveField::~ExceptionWithPrimitiveField() {}
 
-ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept  :
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __fbthrift_field_error_code(std::move(other.__fbthrift_field_error_code)),
     __isset(other.__isset) {
@@ -580,7 +580,7 @@ Banal::Banal() {
 
 Banal::~Banal() {}
 
-Banal::Banal(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {}
+Banal::Banal(FOLLY_MAYBE_UNUSED Banal&& other) noexcept{}
 Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
     return *this;
 }

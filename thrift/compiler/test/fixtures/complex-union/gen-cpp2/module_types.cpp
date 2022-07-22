@@ -377,7 +377,7 @@ namespace cpp2 {
 
 Val::Val(const Val&) = default;
 Val& Val::operator=(const Val&) = default;
-Val::Val(FOLLY_MAYBE_UNUSED Val&& other) noexcept  :
+Val::Val(FOLLY_MAYBE_UNUSED Val&& other) noexcept :
     __fbthrift_field_strVal(std::move(other.__fbthrift_field_strVal)),
     __fbthrift_field_intVal(std::move(other.__fbthrift_field_intVal)),
     __fbthrift_field_typedefValue(std::move(other.__fbthrift_field_typedefValue)),

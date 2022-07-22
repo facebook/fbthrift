@@ -43,7 +43,7 @@ FooStreamEx::FooStreamEx() {
 
 FooStreamEx::~FooStreamEx() {}
 
-FooStreamEx::FooStreamEx(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept {}
+FooStreamEx::FooStreamEx(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept{}
 FooStreamEx& FooStreamEx::operator=(FOLLY_MAYBE_UNUSED FooStreamEx&& other) noexcept {
     return *this;
 }
@@ -121,7 +121,7 @@ FooEx::FooEx() {
 
 FooEx::~FooEx() {}
 
-FooEx::FooEx(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {}
+FooEx::FooEx(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept{}
 FooEx& FooEx::operator=(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {
     return *this;
 }

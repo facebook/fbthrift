@@ -232,7 +232,7 @@ StructLevelTerseStruct::StructLevelTerseStruct() :
 
 StructLevelTerseStruct::~StructLevelTerseStruct() {}
 
-StructLevelTerseStruct::StructLevelTerseStruct(FOLLY_MAYBE_UNUSED StructLevelTerseStruct&& other) noexcept  :
+StructLevelTerseStruct::StructLevelTerseStruct(FOLLY_MAYBE_UNUSED StructLevelTerseStruct&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),
@@ -550,7 +550,7 @@ FieldLevelTerseStruct::FieldLevelTerseStruct() :
 
 FieldLevelTerseStruct::~FieldLevelTerseStruct() {}
 
-FieldLevelTerseStruct::FieldLevelTerseStruct(FOLLY_MAYBE_UNUSED FieldLevelTerseStruct&& other) noexcept  :
+FieldLevelTerseStruct::FieldLevelTerseStruct(FOLLY_MAYBE_UNUSED FieldLevelTerseStruct&& other) noexcept :
     __fbthrift_field_terse_bool_field(std::move(other.__fbthrift_field_terse_bool_field)),
     __fbthrift_field_terse_byte_field(std::move(other.__fbthrift_field_terse_byte_field)),
     __fbthrift_field_terse_short_field(std::move(other.__fbthrift_field_terse_short_field)),
@@ -1061,7 +1061,7 @@ TerseStructWithCustomDefault::TerseStructWithCustomDefault() :
 
 TerseStructWithCustomDefault::~TerseStructWithCustomDefault() {}
 
-TerseStructWithCustomDefault::TerseStructWithCustomDefault(FOLLY_MAYBE_UNUSED TerseStructWithCustomDefault&& other) noexcept  :
+TerseStructWithCustomDefault::TerseStructWithCustomDefault(FOLLY_MAYBE_UNUSED TerseStructWithCustomDefault&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),
@@ -1372,7 +1372,7 @@ AdaptedFields& AdaptedFields::operator=(const AdaptedFields& other) {
   return *this;
 }
 
-AdaptedFields::AdaptedFields(FOLLY_MAYBE_UNUSED AdaptedFields&& other) noexcept  :
+AdaptedFields::AdaptedFields(FOLLY_MAYBE_UNUSED AdaptedFields&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)) {
@@ -1505,7 +1505,7 @@ TerseException::TerseException(std::string __message) : TerseException() {
 
 TerseException::~TerseException() {}
 
-TerseException::TerseException(FOLLY_MAYBE_UNUSED TerseException&& other) noexcept  :
+TerseException::TerseException(FOLLY_MAYBE_UNUSED TerseException&& other) noexcept :
     __fbthrift_field_msg(std::move(other.__fbthrift_field_msg)) {
 }
 

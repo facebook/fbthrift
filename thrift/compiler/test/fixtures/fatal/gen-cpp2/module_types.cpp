@@ -492,7 +492,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 structA::structA(const structA&) = default;
 structA& structA::operator=(const structA&) = default;
-structA::structA(FOLLY_MAYBE_UNUSED structA&& other) noexcept  :
+structA::structA(FOLLY_MAYBE_UNUSED structA&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -824,7 +824,7 @@ structC::structC() :
 
 structC::~structC() {}
 
-structC::structC(FOLLY_MAYBE_UNUSED structC&& other) noexcept  :
+structC::structC(FOLLY_MAYBE_UNUSED structC&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
@@ -1530,7 +1530,7 @@ struct1::struct1() :
 
 struct1::~struct1() {}
 
-struct1::struct1(FOLLY_MAYBE_UNUSED struct1&& other) noexcept  :
+struct1::struct1(FOLLY_MAYBE_UNUSED struct1&& other) noexcept :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -1716,7 +1716,7 @@ struct2::struct2() :
 
 struct2::~struct2() {}
 
-struct2::struct2(FOLLY_MAYBE_UNUSED struct2&& other) noexcept  :
+struct2::struct2(FOLLY_MAYBE_UNUSED struct2&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -1930,7 +1930,7 @@ struct3::struct3() :
 
 struct3::~struct3() {}
 
-struct3::struct3(FOLLY_MAYBE_UNUSED struct3&& other) noexcept  :
+struct3::struct3(FOLLY_MAYBE_UNUSED struct3&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -2398,7 +2398,7 @@ struct4& struct4::operator=(const struct4& other) {
   return *this;
 }
 
-struct4::struct4(FOLLY_MAYBE_UNUSED struct4&& other) noexcept  :
+struct4::struct4(FOLLY_MAYBE_UNUSED struct4&& other) noexcept :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -2537,7 +2537,7 @@ struct5::struct5() :
 
 struct5::~struct5() {}
 
-struct5::struct5(FOLLY_MAYBE_UNUSED struct5&& other) noexcept  :
+struct5::struct5(FOLLY_MAYBE_UNUSED struct5&& other) noexcept :
     __fbthrift_field_field0(std::move(other.__fbthrift_field_field0)),
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
@@ -2703,7 +2703,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 struct_binary::struct_binary(const struct_binary&) = default;
 struct_binary& struct_binary::operator=(const struct_binary&) = default;
-struct_binary::struct_binary(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept  :
+struct_binary::struct_binary(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept :
     __fbthrift_field_bi(std::move(other.__fbthrift_field_bi)),
     __isset(other.__isset) {
 }
@@ -3767,7 +3767,7 @@ struct_with_indirections::struct_with_indirections() :
 
 struct_with_indirections::~struct_with_indirections() {}
 
-struct_with_indirections::struct_with_indirections(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept  :
+struct_with_indirections::struct_with_indirections(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept :
     __fbthrift_field_real(std::move(other.__fbthrift_field_real)),
     __fbthrift_field_fake(std::move(other.__fbthrift_field_fake)),
     __fbthrift_field_number(std::move(other.__fbthrift_field_number)),

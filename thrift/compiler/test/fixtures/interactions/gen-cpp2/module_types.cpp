@@ -43,7 +43,7 @@ CustomException::CustomException() {
 
 CustomException::~CustomException() {}
 
-CustomException::CustomException(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept  :
+CustomException::CustomException(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }

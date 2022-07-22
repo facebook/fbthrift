@@ -229,7 +229,7 @@ MyField::MyField() :
 
 MyField::~MyField() {}
 
-MyField::MyField(FOLLY_MAYBE_UNUSED MyField&& other) noexcept  :
+MyField::MyField(FOLLY_MAYBE_UNUSED MyField&& other) noexcept :
     opt_value(std::move(other.opt_value)),
     value(std::move(other.value)),
     req_value(std::move(other.req_value)),
@@ -416,7 +416,7 @@ MyStruct& MyStruct::operator=(const MyStruct& other) {
   return *this;
 }
 
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     opt_ref(std::move(other.opt_ref)),
     ref(std::move(other.ref)),
     req_ref(std::move(other.req_ref)) {
@@ -555,7 +555,7 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& other) {
   return *this;
 }
 
-StructWithUnion::StructWithUnion(FOLLY_MAYBE_UNUSED StructWithUnion&& other) noexcept  :
+StructWithUnion::StructWithUnion(FOLLY_MAYBE_UNUSED StructWithUnion&& other) noexcept :
     u(std::move(other.u)),
     aDouble(std::move(other.aDouble)),
     __fbthrift_field_f(std::move(other.__fbthrift_field_f)),
@@ -688,7 +688,7 @@ namespace cpp2 {
 
 RecursiveStruct::RecursiveStruct(const RecursiveStruct&) = default;
 RecursiveStruct& RecursiveStruct::operator=(const RecursiveStruct&) = default;
-RecursiveStruct::RecursiveStruct(FOLLY_MAYBE_UNUSED RecursiveStruct&& other) noexcept  :
+RecursiveStruct::RecursiveStruct(FOLLY_MAYBE_UNUSED RecursiveStruct&& other) noexcept :
     __fbthrift_field_mes(std::move(other.__fbthrift_field_mes)),
     __isset(other.__isset) {
 }
@@ -816,7 +816,7 @@ StructWithContainers::StructWithContainers() :
 
 StructWithContainers::~StructWithContainers() {}
 
-StructWithContainers::StructWithContainers(FOLLY_MAYBE_UNUSED StructWithContainers&& other) noexcept  :
+StructWithContainers::StructWithContainers(FOLLY_MAYBE_UNUSED StructWithContainers&& other) noexcept :
     list_ref(std::move(other.list_ref)),
     set_ref(std::move(other.set_ref)),
     map_ref(std::move(other.map_ref)),
@@ -957,7 +957,7 @@ namespace cpp2 {
 
 StructWithSharedConst::StructWithSharedConst(const StructWithSharedConst&) = default;
 StructWithSharedConst& StructWithSharedConst::operator=(const StructWithSharedConst&) = default;
-StructWithSharedConst::StructWithSharedConst(FOLLY_MAYBE_UNUSED StructWithSharedConst&& other) noexcept  :
+StructWithSharedConst::StructWithSharedConst(FOLLY_MAYBE_UNUSED StructWithSharedConst&& other) noexcept :
     opt_shared_const(std::move(other.opt_shared_const)),
     shared_const(std::move(other.shared_const)),
     req_shared_const(std::move(other.req_shared_const)) {
@@ -1161,7 +1161,7 @@ StructWithRef& StructWithRef::operator=(const StructWithRef& other) {
   return *this;
 }
 
-StructWithRef::StructWithRef(FOLLY_MAYBE_UNUSED StructWithRef&& other) noexcept  :
+StructWithRef::StructWithRef(FOLLY_MAYBE_UNUSED StructWithRef&& other) noexcept :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {
@@ -1284,7 +1284,7 @@ namespace cpp2 {
 
 StructWithBox::StructWithBox(const StructWithBox&) = default;
 StructWithBox& StructWithBox::operator=(const StructWithBox&) = default;
-StructWithBox::StructWithBox(FOLLY_MAYBE_UNUSED StructWithBox&& other) noexcept  :
+StructWithBox::StructWithBox(FOLLY_MAYBE_UNUSED StructWithBox&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)) {
@@ -1413,7 +1413,7 @@ StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefT
   return *this;
 }
 
-StructWithRefTypeUnique::StructWithRefTypeUnique(FOLLY_MAYBE_UNUSED StructWithRefTypeUnique&& other) noexcept  :
+StructWithRefTypeUnique::StructWithRefTypeUnique(FOLLY_MAYBE_UNUSED StructWithRefTypeUnique&& other) noexcept :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {
@@ -1536,7 +1536,7 @@ namespace cpp2 {
 
 StructWithRefTypeShared::StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
 StructWithRefTypeShared& StructWithRefTypeShared::operator=(const StructWithRefTypeShared&) = default;
-StructWithRefTypeShared::StructWithRefTypeShared(FOLLY_MAYBE_UNUSED StructWithRefTypeShared&& other) noexcept  :
+StructWithRefTypeShared::StructWithRefTypeShared(FOLLY_MAYBE_UNUSED StructWithRefTypeShared&& other) noexcept :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {
@@ -1659,7 +1659,7 @@ namespace cpp2 {
 
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
 StructWithRefTypeSharedConst& StructWithRefTypeSharedConst::operator=(const StructWithRefTypeSharedConst&) = default;
-StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(FOLLY_MAYBE_UNUSED StructWithRefTypeSharedConst&& other) noexcept  :
+StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(FOLLY_MAYBE_UNUSED StructWithRefTypeSharedConst&& other) noexcept :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {
@@ -1791,7 +1791,7 @@ StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCt
   return *this;
 }
 
-StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(FOLLY_MAYBE_UNUSED StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept  :
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(FOLLY_MAYBE_UNUSED StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept :
     def_field(std::move(other.def_field)) {
 }
 
@@ -1907,7 +1907,7 @@ StructWithString::StructWithString() :
 
 StructWithString::~StructWithString() {}
 
-StructWithString::StructWithString(FOLLY_MAYBE_UNUSED StructWithString&& other) noexcept  :
+StructWithString::StructWithString(FOLLY_MAYBE_UNUSED StructWithString&& other) noexcept :
     def_unique_string_ref(std::move(other.def_unique_string_ref)),
     def_shared_string_ref(std::move(other.def_shared_string_ref)),
     def_shared_string_const_ref(std::move(other.def_shared_string_const_ref)),

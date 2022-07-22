@@ -37,7 +37,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseFoo::TerseFoo(const TerseFoo&) = default;
 TerseFoo& TerseFoo::operator=(const TerseFoo&) = default;
-TerseFoo::TerseFoo(FOLLY_MAYBE_UNUSED TerseFoo&& other) noexcept  :
+TerseFoo::TerseFoo(FOLLY_MAYBE_UNUSED TerseFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -224,7 +224,7 @@ TerseLazyFoo& TerseLazyFoo::operator=(const TerseLazyFoo& other) {
   return *this;
 }
 
-TerseLazyFoo::TerseLazyFoo(FOLLY_MAYBE_UNUSED TerseLazyFoo&& other) noexcept  :
+TerseLazyFoo::TerseLazyFoo(FOLLY_MAYBE_UNUSED TerseLazyFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -481,7 +481,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseOptionalFoo::TerseOptionalFoo(const TerseOptionalFoo&) = default;
 TerseOptionalFoo& TerseOptionalFoo::operator=(const TerseOptionalFoo&) = default;
-TerseOptionalFoo::TerseOptionalFoo(FOLLY_MAYBE_UNUSED TerseOptionalFoo&& other) noexcept  :
+TerseOptionalFoo::TerseOptionalFoo(FOLLY_MAYBE_UNUSED TerseOptionalFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -668,7 +668,7 @@ TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(const TerseOptionalLazyFoo
   return *this;
 }
 
-TerseOptionalLazyFoo::TerseOptionalLazyFoo(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo&& other) noexcept  :
+TerseOptionalLazyFoo::TerseOptionalLazyFoo(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),

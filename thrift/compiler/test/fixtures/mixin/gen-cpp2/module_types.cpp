@@ -37,7 +37,7 @@ namespace cpp2 {
 
 Mixin1::Mixin1(const Mixin1&) = default;
 Mixin1& Mixin1::operator=(const Mixin1&) = default;
-Mixin1::Mixin1(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept  :
+Mixin1::Mixin1(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __isset(other.__isset) {
 }
@@ -128,7 +128,7 @@ namespace cpp2 {
 
 Mixin2::Mixin2(const Mixin2&) = default;
 Mixin2& Mixin2::operator=(const Mixin2&) = default;
-Mixin2::Mixin2(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept  :
+Mixin2::Mixin2(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept :
     __fbthrift_field_m1(std::move(other.__fbthrift_field_m1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __isset(other.__isset) {
@@ -245,7 +245,7 @@ namespace cpp2 {
 
 Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
 Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
-Mixin3Base::Mixin3Base(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept  :
+Mixin3Base::Mixin3Base(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept :
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
     __isset(other.__isset) {
 }
@@ -336,7 +336,7 @@ namespace cpp2 {
 
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
-Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept :
     __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __fbthrift_field_m2(std::move(other.__fbthrift_field_m2)),
     __fbthrift_field_m3(std::move(other.__fbthrift_field_m3)),

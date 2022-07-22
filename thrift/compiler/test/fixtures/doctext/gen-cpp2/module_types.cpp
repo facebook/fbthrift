@@ -250,7 +250,7 @@ Bang::Bang() {
 
 Bang::~Bang() {}
 
-Bang::Bang(FOLLY_MAYBE_UNUSED Bang&& other) noexcept  :
+Bang::Bang(FOLLY_MAYBE_UNUSED Bang&& other) noexcept :
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
     __isset(other.__isset) {
 }

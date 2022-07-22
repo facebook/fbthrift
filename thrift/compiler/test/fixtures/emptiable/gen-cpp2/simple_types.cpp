@@ -142,7 +142,7 @@ EmptiableStruct::EmptiableStruct() :
 
 EmptiableStruct::~EmptiableStruct() {}
 
-EmptiableStruct::EmptiableStruct(FOLLY_MAYBE_UNUSED EmptiableStruct&& other) noexcept  :
+EmptiableStruct::EmptiableStruct(FOLLY_MAYBE_UNUSED EmptiableStruct&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),
@@ -453,7 +453,7 @@ EmptiableTerseStruct::EmptiableTerseStruct() :
 
 EmptiableTerseStruct::~EmptiableTerseStruct() {}
 
-EmptiableTerseStruct::EmptiableTerseStruct(FOLLY_MAYBE_UNUSED EmptiableTerseStruct&& other) noexcept  :
+EmptiableTerseStruct::EmptiableTerseStruct(FOLLY_MAYBE_UNUSED EmptiableTerseStruct&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),
@@ -759,7 +759,7 @@ NotEmptiableStruct::NotEmptiableStruct() :
 
 NotEmptiableStruct::~NotEmptiableStruct() {}
 
-NotEmptiableStruct::NotEmptiableStruct(FOLLY_MAYBE_UNUSED NotEmptiableStruct&& other) noexcept  :
+NotEmptiableStruct::NotEmptiableStruct(FOLLY_MAYBE_UNUSED NotEmptiableStruct&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),

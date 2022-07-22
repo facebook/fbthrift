@@ -145,7 +145,7 @@ namespace a { namespace different { namespace ns {
 
 AStructB::AStructB(const AStructB&) = default;
 AStructB& AStructB::operator=(const AStructB&) = default;
-AStructB::AStructB(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept  :
+AStructB::AStructB(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept :
     FieldA(std::move(other.FieldA)) {
 }
 

@@ -61,7 +61,7 @@ containerStruct2::containerStruct2() :
 
 containerStruct2::~containerStruct2() {}
 
-containerStruct2::containerStruct2(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept  :
+containerStruct2::containerStruct2(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_req_fieldA(std::move(other.__fbthrift_field_req_fieldA)),
     __fbthrift_field_opt_fieldA(std::move(other.__fbthrift_field_opt_fieldA)),

@@ -37,7 +37,7 @@ namespace module2 {
 
 Struct::Struct(const Struct&) = default;
 Struct& Struct::operator=(const Struct&) = default;
-Struct::Struct(FOLLY_MAYBE_UNUSED Struct&& other) noexcept  :
+Struct::Struct(FOLLY_MAYBE_UNUSED Struct&& other) noexcept :
     __fbthrift_field_first(std::move(other.__fbthrift_field_first)),
     __fbthrift_field_second(std::move(other.__fbthrift_field_second)),
     __isset(other.__isset) {
@@ -168,7 +168,7 @@ namespace module2 {
 
 BigStruct::BigStruct(const BigStruct&) = default;
 BigStruct& BigStruct::operator=(const BigStruct&) = default;
-BigStruct::BigStruct(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept  :
+BigStruct::BigStruct(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept :
     __fbthrift_field_s(std::move(other.__fbthrift_field_s)),
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __isset(other.__isset) {

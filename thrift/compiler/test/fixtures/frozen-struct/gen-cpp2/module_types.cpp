@@ -70,7 +70,7 @@ ModuleA::ModuleA() :
 
 ModuleA::~ModuleA() {}
 
-ModuleA::ModuleA(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept  :
+ModuleA::ModuleA(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept :
     __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
     __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
     __fbthrift_field_listField(std::move(other.__fbthrift_field_listField)),

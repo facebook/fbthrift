@@ -37,7 +37,7 @@ namespace cpp2 {
 
 Default::Default(const Default&) = default;
 Default& Default::operator=(const Default&) = default;
-Default::Default(FOLLY_MAYBE_UNUSED Default&& other) noexcept  :
+Default::Default(FOLLY_MAYBE_UNUSED Default&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -167,7 +167,7 @@ namespace cpp2 {
 
 NonAtomic::NonAtomic(const NonAtomic&) = default;
 NonAtomic& NonAtomic::operator=(const NonAtomic&) = default;
-NonAtomic::NonAtomic(FOLLY_MAYBE_UNUSED NonAtomic&& other) noexcept  :
+NonAtomic::NonAtomic(FOLLY_MAYBE_UNUSED NonAtomic&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -297,7 +297,7 @@ namespace cpp2 {
 
 Atomic::Atomic(const Atomic&) = default;
 Atomic& Atomic::operator=(const Atomic&) = default;
-Atomic::Atomic(FOLLY_MAYBE_UNUSED Atomic&& other) noexcept  :
+Atomic::Atomic(FOLLY_MAYBE_UNUSED Atomic&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
@@ -427,7 +427,7 @@ namespace cpp2 {
 
 AtomicFoo::AtomicFoo(const AtomicFoo&) = default;
 AtomicFoo& AtomicFoo::operator=(const AtomicFoo&) = default;
-AtomicFoo::AtomicFoo(FOLLY_MAYBE_UNUSED AtomicFoo&& other) noexcept  :
+AtomicFoo::AtomicFoo(FOLLY_MAYBE_UNUSED AtomicFoo&& other) noexcept :
     __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),

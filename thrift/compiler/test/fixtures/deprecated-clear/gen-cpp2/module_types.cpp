@@ -82,7 +82,7 @@ StructWithDefaultStruct::StructWithDefaultStruct() :
 
 StructWithDefaultStruct::~StructWithDefaultStruct() {}
 
-StructWithDefaultStruct::StructWithDefaultStruct(FOLLY_MAYBE_UNUSED StructWithDefaultStruct&& other) noexcept  :
+StructWithDefaultStruct::StructWithDefaultStruct(FOLLY_MAYBE_UNUSED StructWithDefaultStruct&& other) noexcept :
     __fbthrift_field_bool_field(std::move(other.__fbthrift_field_bool_field)),
     __fbthrift_field_byte_field(std::move(other.__fbthrift_field_byte_field)),
     __fbthrift_field_short_field(std::move(other.__fbthrift_field_short_field)),

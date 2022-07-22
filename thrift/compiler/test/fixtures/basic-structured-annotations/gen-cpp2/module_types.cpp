@@ -67,7 +67,7 @@ const char* structured_annotation_inline::__fbthrift_thrift_uri() {
 
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
 structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
-structured_annotation_inline::structured_annotation_inline(FOLLY_MAYBE_UNUSED structured_annotation_inline&& other) noexcept  :
+structured_annotation_inline::structured_annotation_inline(FOLLY_MAYBE_UNUSED structured_annotation_inline&& other) noexcept :
     __fbthrift_field_count(std::move(other.__fbthrift_field_count)),
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
@@ -174,7 +174,7 @@ const char* structured_annotation_with_default::__fbthrift_thrift_uri() {
 
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
 structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
-structured_annotation_with_default::structured_annotation_with_default(FOLLY_MAYBE_UNUSED structured_annotation_with_default&& other) noexcept  :
+structured_annotation_with_default::structured_annotation_with_default(FOLLY_MAYBE_UNUSED structured_annotation_with_default&& other) noexcept :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
@@ -351,7 +351,7 @@ const char* structured_annotation_recursive::__fbthrift_thrift_uri() {
 
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
 structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
-structured_annotation_recursive::structured_annotation_recursive(FOLLY_MAYBE_UNUSED structured_annotation_recursive&& other) noexcept  :
+structured_annotation_recursive::structured_annotation_recursive(FOLLY_MAYBE_UNUSED structured_annotation_recursive&& other) noexcept :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_recurse(std::move(other.__fbthrift_field_recurse)),
     __fbthrift_field_forward(std::move(other.__fbthrift_field_forward)),
@@ -498,7 +498,7 @@ const char* structured_annotation_nested::__fbthrift_thrift_uri() {
 
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
 structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
-structured_annotation_nested::structured_annotation_nested(FOLLY_MAYBE_UNUSED structured_annotation_nested&& other) noexcept  :
+structured_annotation_nested::structured_annotation_nested(FOLLY_MAYBE_UNUSED structured_annotation_nested&& other) noexcept :
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_nest(std::move(other.__fbthrift_field_nest)),
     __isset(other.__isset) {
@@ -619,7 +619,7 @@ const char* MyStruct::__fbthrift_thrift_uri() {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_annotated_field(std::move(other.__fbthrift_field_annotated_field)),
     __fbthrift_field_annotated_type(std::move(other.__fbthrift_field_annotated_type)),
     __fbthrift_field_annotated_recursive(std::move(other.__fbthrift_field_annotated_recursive)),
@@ -756,7 +756,7 @@ MyException::MyException() {
 
 MyException::~MyException() {}
 
-MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept  :
+MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept :
     __fbthrift_field_context(std::move(other.__fbthrift_field_context)),
     __isset(other.__isset) {
 }

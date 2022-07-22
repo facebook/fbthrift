@@ -72,7 +72,7 @@ const char* MyStruct::__fbthrift_thrift_uri() {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }
@@ -273,7 +273,7 @@ MyException::MyException() {
 
 MyException::~MyException() {}
 
-MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept  :
+MyException::MyException(FOLLY_MAYBE_UNUSED MyException&& other) noexcept :
     __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }

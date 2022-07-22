@@ -124,7 +124,7 @@ Internship::Internship() :
 
 Internship::~Internship() {}
 
-Internship::Internship(FOLLY_MAYBE_UNUSED Internship&& other) noexcept  :
+Internship::Internship(FOLLY_MAYBE_UNUSED Internship&& other) noexcept :
     __fbthrift_field_weeks(std::move(other.__fbthrift_field_weeks)),
     __fbthrift_field_title(std::move(other.__fbthrift_field_title)),
     __fbthrift_field_employer(std::move(other.__fbthrift_field_employer)),
@@ -346,7 +346,7 @@ namespace cpp2 {
 
 struct1::struct1(const struct1&) = default;
 struct1& struct1::operator=(const struct1&) = default;
-struct1::struct1(FOLLY_MAYBE_UNUSED struct1&& other) noexcept  :
+struct1::struct1(FOLLY_MAYBE_UNUSED struct1&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
@@ -449,7 +449,7 @@ namespace cpp2 {
 
 struct2::struct2(const struct2&) = default;
 struct2& struct2::operator=(const struct2&) = default;
-struct2::struct2(FOLLY_MAYBE_UNUSED struct2&& other) noexcept  :
+struct2::struct2(FOLLY_MAYBE_UNUSED struct2&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
@@ -598,7 +598,7 @@ namespace cpp2 {
 
 struct3::struct3(const struct3&) = default;
 struct3& struct3::operator=(const struct3&) = default;
-struct3::struct3(FOLLY_MAYBE_UNUSED struct3&& other) noexcept  :
+struct3::struct3(FOLLY_MAYBE_UNUSED struct3&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
@@ -727,7 +727,7 @@ namespace cpp2 {
 
 struct4::struct4(const struct4&) = default;
 struct4& struct4::operator=(const struct4&) = default;
-struct4::struct4(FOLLY_MAYBE_UNUSED struct4&& other) noexcept  :
+struct4::struct4(FOLLY_MAYBE_UNUSED struct4&& other) noexcept :
     __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
     __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __fbthrift_field_c(std::move(other.__fbthrift_field_c)),

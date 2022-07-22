@@ -37,7 +37,7 @@ namespace some { namespace ns {
 
 IncludedB::IncludedB(const IncludedB&) = default;
 IncludedB& IncludedB::operator=(const IncludedB&) = default;
-IncludedB::IncludedB(FOLLY_MAYBE_UNUSED IncludedB&& other) noexcept  :
+IncludedB::IncludedB(FOLLY_MAYBE_UNUSED IncludedB&& other) noexcept :
     __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
     __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
     __isset(other.__isset) {

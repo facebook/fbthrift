@@ -178,7 +178,7 @@ Vehicle::Vehicle() :
 
 Vehicle::~Vehicle() {}
 
-Vehicle::Vehicle(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept  :
+Vehicle::Vehicle(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept :
     __fbthrift_field_color(std::move(other.__fbthrift_field_color)),
     __fbthrift_field_licensePlate(std::move(other.__fbthrift_field_licensePlate)),
     __fbthrift_field_description(std::move(other.__fbthrift_field_description)),
@@ -341,7 +341,7 @@ Person::Person() :
 
 Person::~Person() {}
 
-Person::Person(FOLLY_MAYBE_UNUSED Person&& other) noexcept  :
+Person::Person(FOLLY_MAYBE_UNUSED Person&& other) noexcept :
     __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __fbthrift_field_age(std::move(other.__fbthrift_field_age)),

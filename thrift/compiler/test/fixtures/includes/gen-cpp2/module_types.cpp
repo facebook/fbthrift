@@ -37,7 +37,7 @@ namespace cpp2 {
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_MyIncludedField(std::move(other.__fbthrift_field_MyIncludedField)),
     __fbthrift_field_MyOtherIncludedField(std::move(other.__fbthrift_field_MyOtherIncludedField)),
     __fbthrift_field_MyIncludedInt(std::move(other.__fbthrift_field_MyIncludedInt)),

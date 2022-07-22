@@ -126,7 +126,7 @@ TrivialTypesStruct::TrivialTypesStruct() :
 
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
-TrivialTypesStruct::TrivialTypesStruct(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept  :
+TrivialTypesStruct::TrivialTypesStruct(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
@@ -303,7 +303,7 @@ ContainerStruct::ContainerStruct() {
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept  :
+ContainerStruct::ContainerStruct(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),

@@ -47,7 +47,7 @@ Foo& Foo::operator=(const Foo& other) {
   return *this;
 }
 
-Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept  :
+Foo::Foo(FOLLY_MAYBE_UNUSED Foo&& other) noexcept :
     __fbthrift_field_foo(std::move(other.__fbthrift_field_foo)),
     __fbthrift_field_bar(std::move(other.__fbthrift_field_bar)) {
 }

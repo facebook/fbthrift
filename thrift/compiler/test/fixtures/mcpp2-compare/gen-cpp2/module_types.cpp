@@ -401,7 +401,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept  :
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
     __fbthrift_field_MyBoolField(std::move(other.__fbthrift_field_MyBoolField)),
     __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
     __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
@@ -1158,7 +1158,7 @@ AnException::AnException(std::string __message) : AnException() {
 
 AnException::~AnException() {}
 
-AnException::AnException(FOLLY_MAYBE_UNUSED AnException&& other) noexcept  :
+AnException::AnException(FOLLY_MAYBE_UNUSED AnException&& other) noexcept :
     __fbthrift_field_code(std::move(other.__fbthrift_field_code)),
     __fbthrift_field_req_code(std::move(other.__fbthrift_field_req_code)),
     __fbthrift_field_message2(std::move(other.__fbthrift_field_message2)),
@@ -1558,7 +1558,7 @@ AnotherException::AnotherException() :
 
 AnotherException::~AnotherException() {}
 
-AnotherException::AnotherException(FOLLY_MAYBE_UNUSED AnotherException&& other) noexcept  :
+AnotherException::AnotherException(FOLLY_MAYBE_UNUSED AnotherException&& other) noexcept :
     __fbthrift_field_code(std::move(other.__fbthrift_field_code)),
     __fbthrift_field_req_code(std::move(other.__fbthrift_field_req_code)),
     __fbthrift_field_message(std::move(other.__fbthrift_field_message)),
@@ -2560,7 +2560,7 @@ MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& other) {
   return *this;
 }
 
-MyIncludedStruct::MyIncludedStruct(FOLLY_MAYBE_UNUSED MyIncludedStruct&& other) noexcept  :
+MyIncludedStruct::MyIncludedStruct(FOLLY_MAYBE_UNUSED MyIncludedStruct&& other) noexcept :
     __fbthrift_field_MyIncludedInt(std::move(other.__fbthrift_field_MyIncludedInt)),
     __fbthrift_field_MyIncludedStruct(std::move(other.__fbthrift_field_MyIncludedStruct)),
     ARefField(std::move(other.ARefField)),
@@ -3304,7 +3304,7 @@ ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainer
   return *this;
 }
 
-ComplexContainerStruct::ComplexContainerStruct(FOLLY_MAYBE_UNUSED ComplexContainerStruct&& other) noexcept  :
+ComplexContainerStruct::ComplexContainerStruct(FOLLY_MAYBE_UNUSED ComplexContainerStruct&& other) noexcept :
     __fbthrift_field_map_of_iobufs(std::move(other.__fbthrift_field_map_of_iobufs)),
     __fbthrift_field_map_of_iobuf_ptrs(std::move(other.__fbthrift_field_map_of_iobuf_ptrs)),
     __isset(other.__isset) {

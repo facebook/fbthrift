@@ -67,7 +67,7 @@ const char* SomeStruct::__fbthrift_thrift_uri() {
 
 SomeStruct::SomeStruct(const SomeStruct&) = default;
 SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
-SomeStruct::SomeStruct(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept  :
+SomeStruct::SomeStruct(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept :
     __fbthrift_field_reasonable(std::move(other.__fbthrift_field_reasonable)),
     __fbthrift_field_fine(std::move(other.__fbthrift_field_fine)),
     __fbthrift_field_questionable(std::move(other.__fbthrift_field_questionable)),
