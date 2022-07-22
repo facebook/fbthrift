@@ -2434,6 +2434,7 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
+    __fbthrift_alloc(srcObj.__fbthrift_alloc),
     __fbthrift_field_aa_list(srcObj.__fbthrift_field_aa_list),
     __fbthrift_field_aa_set(srcObj.__fbthrift_field_aa_set),
     __fbthrift_field_aa_map(srcObj.__fbthrift_field_aa_map),
@@ -2446,8 +2447,9 @@ AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
 }
 
 AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {
-  AllocatorAware tmp(other);
+  AllocatorAware tmp(other, __fbthrift_alloc);
   swap(*this, tmp);
+  ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
   return *this;
 }
 
@@ -2466,7 +2468,7 @@ AllocatorAware::AllocatorAware() :
 AllocatorAware::~AllocatorAware() {}
 
 AllocatorAware::AllocatorAware(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept  :
-    __fbthrift_alloc(other.get_allocator()),
+    __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list)),
     __fbthrift_field_aa_set(std::move(other.__fbthrift_field_aa_set)),
     __fbthrift_field_aa_map(std::move(other.__fbthrift_field_aa_map)),
@@ -2486,6 +2488,7 @@ AllocatorAware& AllocatorAware::operator=(FOLLY_MAYBE_UNUSED AllocatorAware&& ot
     this->aa_unique = std::move(other.aa_unique);
     this->aa_shared = std::move(other.aa_shared);
     __isset = other.__isset;
+  ::apache::thrift::detail::move_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
     return *this;
 }
 
@@ -2612,6 +2615,7 @@ void swap(FOLLY_MAYBE_UNUSED AllocatorAware& a, FOLLY_MAYBE_UNUSED AllocatorAwar
   swap(a.aa_unique, b.aa_unique);
   swap(a.aa_shared, b.aa_shared);
   swap(a.__isset, b.__isset);
+  ::apache::thrift::detail::swap_allocators(a.__fbthrift_alloc, b.__fbthrift_alloc);
 }
 
 template void AllocatorAware::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2649,10 +2653,21 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::transl
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-AllocatorAware2::AllocatorAware2(const AllocatorAware2&) = default;
-AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2&) = default;
+AllocatorAware2::AllocatorAware2(const AllocatorAware2& srcObj) :
+    __fbthrift_alloc(srcObj.__fbthrift_alloc),
+    __fbthrift_field_not_a_container(srcObj.__fbthrift_field_not_a_container),
+    __isset(srcObj.__isset) {
+}
+
+AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2& other) {
+  AllocatorAware2 tmp(other, __fbthrift_alloc);
+  swap(*this, tmp);
+  ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
+  return *this;
+}
+
 AllocatorAware2::AllocatorAware2(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept  :
-    __fbthrift_alloc(other.get_allocator()),
+    __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {
 }
@@ -2660,6 +2675,7 @@ AllocatorAware2::AllocatorAware2(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noe
 AllocatorAware2& AllocatorAware2::operator=(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept {
     this->__fbthrift_field_not_a_container = std::move(other.__fbthrift_field_not_a_container);
     __isset = other.__isset;
+  ::apache::thrift::detail::move_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
     return *this;
 }
 
@@ -2704,6 +2720,7 @@ void swap(FOLLY_MAYBE_UNUSED AllocatorAware2& a, FOLLY_MAYBE_UNUSED AllocatorAwa
   using ::std::swap;
   swap(a.not_a_container_ref().value(), b.not_a_container_ref().value());
   swap(a.__isset, b.__isset);
+  ::apache::thrift::detail::swap_allocators(a.__fbthrift_alloc, b.__fbthrift_alloc);
 }
 
 template void AllocatorAware2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

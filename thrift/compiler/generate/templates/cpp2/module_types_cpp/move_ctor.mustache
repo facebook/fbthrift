@@ -19,7 +19,7 @@
 %><%#struct:fields?%> :
 <%#struct:cpp_allocator%>
 <%^struct:cpp_allocator_via%>
-    __fbthrift_alloc(other.get_allocator()),
+    __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
 <%/struct:cpp_allocator_via%>
 <%/struct:cpp_allocator%>
 <%#struct:fields_in_layout_order%>
