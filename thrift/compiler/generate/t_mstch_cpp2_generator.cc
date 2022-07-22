@@ -536,9 +536,11 @@ class mstch_cpp2_type : public mstch_type {
     return context_->resolver().get_namespaced_name(
         *type_->get_program(), *type_);
   }
-  mstch::node cpp_type() { return context_->resolver().get_type_name(*type_); }
+  mstch::node cpp_type() {
+    return context_->resolver().get_native_type(*type_);
+  }
   mstch::node cpp_standard_type() {
-    return context_->resolver().get_standard_type_name(*type_);
+    return context_->resolver().get_standard_type(*type_);
   }
   mstch::node cpp_adapter() {
     if (const auto* adapter =
@@ -686,7 +688,8 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_type() {
     assert(field_context_->strct);
-    return context_->resolver().get_type_name(*field_, *field_context_->strct);
+    return context_->resolver().get_native_type(
+        *field_, *field_context_->strct);
   }
   mstch::node cpp_storage_name() {
     if (!is_eligible_for_storage_name_mangling()) {
@@ -697,7 +700,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_storage_type() {
     assert(field_context_->strct);
-    return context_->resolver().get_storage_type_name(
+    return context_->resolver().get_storage_type(
         *field_, *field_context_->strct);
   }
   mstch::node eligible_for_storage_name_mangling() {
@@ -710,7 +713,7 @@ class mstch_cpp2_field : public mstch_field {
     // TODO(afuller): Remove this once all non-field_ref based accessors have
     // been removed.
     assert(field_context_->strct);
-    return context_->resolver().get_storage_type_name(
+    return context_->resolver().get_storage_type(
         *field_, *field_context_->strct);
   }
   mstch::node has_deprecated_accessors() {
