@@ -6,15 +6,15 @@ Types that can be (de)serialized using [data protocols](../protocol/data.md).
 
 Type | Encoding
 ---|---
-bool | True(1) or False(0)
-byte | 8-bit signed integer[^1]
-i16 | 16-bit signed integer[^1]
-i32, enum | 32-bit signed integer[^1]
-i64 | 64-bit signed integer[^1]
-float | 32-bit floating point[^2]
-double | 64-bit floating point[^2]
-string | UTF-8 encoded string[^3]
-binary | Arbitrary byte string
+`bool` | True(1) or False(0)
+`byte` | 8-bit signed integer[^1]
+`i16` | 16-bit signed integer[^1]
+`i32`, `enum` | 32-bit signed integer[^1]
+`i64` | 64-bit signed integer[^1]
+`float` | 32-bit floating point[^2]
+`double` | 64-bit floating point[^2]
+`string` | UTF-8 encoded string[^3]
+`binary` | Arbitrary byte string
 
 [^1]: [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
 
@@ -73,6 +73,25 @@ A given hash function **must** be able to hash all primitive types directly. All
 
     hash(2.0) == hash(2.0f) == hash(2)
     hash(-0.0) == hash(0.0f) == hash(0)
+
+## Container Types
+
+Type | Definition
+---|---
+`list<{type}>` | Ordered container of `{type}` values.
+`set<{type}>` | Unordered container of unique `{type}` values.
+`map<{key}, {value}>` | Unordered container of (`{key}`, `{value}`) pairs, where all `{key}`‘s are unique.
+
+Set and map keys can be any Thrift type; however, storing `NaN` in a key value is not supported and leads to implementation-specific UB (as `NaN` is not equal to itself, so it can never be ‘found’).
+
+## Container Operators
+
+All container operators are defined based on values they contain:
+
+- **default** - An empty container.
+- **identical** - Two containers are identical if they contain pairwise identical elements. For list, the elements must also be in the same order.
+- **equal** - Two containers are equal if they contain pairwise equal elements. For list, the elements must also be in the same order.
+- **hash** - Unordered accumulation, for set and map, and ordered accumulation for list and map key-value pairs, of hashes of all contained elements.
 
 ## Standard Data Types
 
