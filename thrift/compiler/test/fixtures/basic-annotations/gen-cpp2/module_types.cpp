@@ -328,25 +328,17 @@ const char* YourStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct";
 }
 
-YourStruct::YourStruct(const YourStruct& srcObj) {
-  __fbthrift_field_majorVer = srcObj.__fbthrift_field_majorVer;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_package = srcObj.__fbthrift_field_package;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_annotation_with_quote = srcObj.__fbthrift_field_annotation_with_quote;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_class_ = srcObj.__fbthrift_field_class_;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_annotation_with_trailing_comma = srcObj.__fbthrift_field_annotation_with_trailing_comma;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_empty_annotations = srcObj.__fbthrift_field_empty_annotations;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_my_enum = srcObj.__fbthrift_field_my_enum;
-  __isset.set(6,srcObj.__isset.get(6));
-  __fbthrift_field_cpp_type_annotation = srcObj.__fbthrift_field_cpp_type_annotation;
-  __isset.set(7,srcObj.__isset.get(7));
-  __fbthrift_field_my_union = srcObj.__fbthrift_field_my_union;
-  __isset.set(8,srcObj.__isset.get(8));
+YourStruct::YourStruct(const YourStruct& srcObj) :
+    __fbthrift_field_majorVer(srcObj.__fbthrift_field_majorVer),
+    __fbthrift_field_package(srcObj.__fbthrift_field_package),
+    __fbthrift_field_annotation_with_quote(srcObj.__fbthrift_field_annotation_with_quote),
+    __fbthrift_field_class_(srcObj.__fbthrift_field_class_),
+    __fbthrift_field_annotation_with_trailing_comma(srcObj.__fbthrift_field_annotation_with_trailing_comma),
+    __fbthrift_field_empty_annotations(srcObj.__fbthrift_field_empty_annotations),
+    __fbthrift_field_my_enum(srcObj.__fbthrift_field_my_enum),
+    __fbthrift_field_cpp_type_annotation(srcObj.__fbthrift_field_cpp_type_annotation),
+    __fbthrift_field_my_union(srcObj.__fbthrift_field_my_union),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<StaticCast, 9>(__fbthrift_field_my_union, *this);
 }
 

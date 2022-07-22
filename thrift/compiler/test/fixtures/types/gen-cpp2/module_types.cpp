@@ -1735,11 +1735,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::trans
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
-  __fbthrift_field_ForwardUsageStruct = srcObj.__fbthrift_field_ForwardUsageStruct;
-  __isset.set(0,srcObj.__isset.get(0));
-  ForwardUsageByRef = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
+ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) :
+    __fbthrift_field_ForwardUsageStruct(srcObj.__fbthrift_field_ForwardUsageStruct),
+    ForwardUsageByRef(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef)),
+    __isset(srcObj.__isset) {
 }
 
 ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& other) {
@@ -2433,20 +2433,16 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) {
-  __fbthrift_field_aa_list = srcObj.__fbthrift_field_aa_list;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_aa_set = srcObj.__fbthrift_field_aa_set;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_aa_map = srcObj.__fbthrift_field_aa_map;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_aa_string = srcObj.__fbthrift_field_aa_string;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_not_a_container = srcObj.__fbthrift_field_not_a_container;
-  __isset.set(4,srcObj.__isset.get(4));
-  aa_unique = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::integral>(srcObj.aa_unique);
-  aa_shared = srcObj.aa_shared;
+AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
+    __fbthrift_field_aa_list(srcObj.__fbthrift_field_aa_list),
+    __fbthrift_field_aa_set(srcObj.__fbthrift_field_aa_set),
+    __fbthrift_field_aa_map(srcObj.__fbthrift_field_aa_map),
+    __fbthrift_field_aa_string(srcObj.__fbthrift_field_aa_string),
+    __fbthrift_field_not_a_container(srcObj.__fbthrift_field_not_a_container),
+    aa_unique(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::integral>(srcObj.aa_unique)),
+    aa_shared(srcObj.aa_shared),
+    __isset(srcObj.__isset) {
 }
 
 AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {

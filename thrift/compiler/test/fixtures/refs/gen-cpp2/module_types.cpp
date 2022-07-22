@@ -190,25 +190,25 @@ void TccStructTraits<::cpp2::MyField>::translateFieldName(
 
 namespace cpp2 {
 
-MyField::MyField(const MyField& srcObj) {
-  opt_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::integral>(srcObj.opt_value);
-  value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::integral>(srcObj.value);
-  req_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::integral>(srcObj.req_value);
-  opt_enum_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::enumeration>(srcObj.opt_enum_value);
-  enum_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::enumeration>(srcObj.enum_value);
-  req_enum_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::enumeration>(srcObj.req_enum_value);
-  opt_str_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::string>(srcObj.opt_str_value);
-  str_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::string>(srcObj.str_value);
-  req_str_value = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::string>(srcObj.req_str_value);
+MyField::MyField(const MyField& srcObj) :
+    opt_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::integral>(srcObj.opt_value)),
+    value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::integral>(srcObj.value)),
+    req_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::integral>(srcObj.req_value)),
+    opt_enum_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::enumeration>(srcObj.opt_enum_value)),
+    enum_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::enumeration>(srcObj.enum_value)),
+    req_enum_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::enumeration>(srcObj.req_enum_value)),
+    opt_str_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(srcObj.opt_str_value)),
+    str_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(srcObj.str_value)),
+    req_str_value(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(srcObj.req_str_value)) {
 }
 
 MyField& MyField::operator=(const MyField& other) {
@@ -401,13 +401,13 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-MyStruct::MyStruct(const MyStruct& srcObj) {
-  opt_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.opt_ref);
-  ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.ref);
-  req_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.req_ref);
+MyStruct::MyStruct(const MyStruct& srcObj) :
+    opt_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.opt_ref)),
+    ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.ref)),
+    req_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.req_ref)) {
 }
 
 MyStruct& MyStruct::operator=(const MyStruct& other) {
@@ -540,13 +540,13 @@ void TccStructTraits<::cpp2::StructWithUnion>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
-  u = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::variant>(srcObj.u);
-  aDouble = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
-  __fbthrift_field_f = srcObj.__fbthrift_field_f;
-  __isset.set(0,srcObj.__isset.get(0));
+StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) :
+    u(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::variant>(srcObj.u)),
+    aDouble(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::floating_point>(srcObj.aDouble)),
+    __fbthrift_field_f(srcObj.__fbthrift_field_f),
+    __isset(srcObj.__isset) {
 }
 
 StructWithUnion& StructWithUnion::operator=(const StructWithUnion& other) {
@@ -785,17 +785,17 @@ void TccStructTraits<::cpp2::StructWithContainers>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
-  list_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref);
-  set_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>(srcObj.set_ref);
-  map_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>(srcObj.map_ref);
-  list_ref_unique = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref_unique);
-  set_ref_shared = srcObj.set_ref_shared;
-  list_ref_shared_const = srcObj.list_ref_shared_const;
+StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) :
+    list_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref)),
+    set_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>(srcObj.set_ref)),
+    map_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>(srcObj.map_ref)),
+    list_ref_unique(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref_unique)),
+    set_ref_shared(srcObj.set_ref_shared),
+    list_ref_shared_const(srcObj.list_ref_shared_const) {
 }
 
 StructWithContainers& StructWithContainers::operator=(const StructWithContainers& other) {
@@ -1146,13 +1146,13 @@ void TccStructTraits<::cpp2::StructWithRef>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithRef::StructWithRef(const StructWithRef& srcObj) {
-  def_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.def_field);
-  opt_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.opt_field);
-  req_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.req_field);
+StructWithRef::StructWithRef(const StructWithRef& srcObj) :
+    def_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.def_field)),
+    opt_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.opt_field)),
+    req_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.req_field)) {
 }
 
 StructWithRef& StructWithRef::operator=(const StructWithRef& other) {
@@ -1398,13 +1398,13 @@ void TccStructTraits<::cpp2::StructWithRefTypeUnique>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& srcObj) {
-  def_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.def_field);
-  opt_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.opt_field);
-  req_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.req_field);
+StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& srcObj) :
+    def_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.def_field)),
+    opt_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.opt_field)),
+    req_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.req_field)) {
 }
 
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& other) {
@@ -1780,9 +1780,9 @@ void TccStructTraits<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translat
 
 namespace cpp2 {
 
-StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& srcObj) {
-  def_field = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.def_field);
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& srcObj) :
+    def_field(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.def_field)) {
 }
 
 StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& other) {
@@ -1880,14 +1880,14 @@ void TccStructTraits<::cpp2::StructWithString>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithString::StructWithString(const StructWithString& srcObj) {
-  def_unique_string_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::string>(srcObj.def_unique_string_ref);
-  def_shared_string_ref = srcObj.def_shared_string_ref;
-  def_shared_string_const_ref = srcObj.def_shared_string_const_ref;
-  unique_string_ref = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::string>(srcObj.unique_string_ref);
-  shared_string_ref = srcObj.shared_string_ref;
+StructWithString::StructWithString(const StructWithString& srcObj) :
+    def_unique_string_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(srcObj.def_unique_string_ref)),
+    def_shared_string_ref(srcObj.def_shared_string_ref),
+    def_shared_string_const_ref(srcObj.def_shared_string_const_ref),
+    unique_string_ref(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(srcObj.unique_string_ref)),
+    shared_string_ref(srcObj.shared_string_ref) {
 }
 
 StructWithString& StructWithString::operator=(const StructWithString& other) {

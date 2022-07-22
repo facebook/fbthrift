@@ -1357,10 +1357,10 @@ const char* AdaptedFields::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/AdaptedFields";
 }
 
-AdaptedFields::AdaptedFields(const AdaptedFields& srcObj) {
-  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
+AdaptedFields::AdaptedFields(const AdaptedFields& srcObj) :
+    __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    __fbthrift_field_field3(srcObj.__fbthrift_field_field3) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_field1, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter, 2>(__fbthrift_field_field2, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter, 3>(__fbthrift_field_field3, *this);

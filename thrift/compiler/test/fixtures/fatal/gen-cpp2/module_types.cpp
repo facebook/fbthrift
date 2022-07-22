@@ -2383,14 +2383,13 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct4>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-struct4::struct4(const struct4& srcObj) {
-  __fbthrift_field_field0 = srcObj.__fbthrift_field_field0;
-  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(1,srcObj.__isset.get(1));
-  field3 = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.field3);
+struct4::struct4(const struct4& srcObj) :
+    __fbthrift_field_field0(srcObj.__fbthrift_field_field0),
+    __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    field3(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.field3)),
+    __isset(srcObj.__isset) {
 }
 
 struct4& struct4::operator=(const struct4& other) {
@@ -3905,9 +3904,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::trans
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
-  __fbthrift_field_field = srcObj.__fbthrift_field_field;
-  __isset.set(0,srcObj.__isset.get(0));
+StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) :
+    __fbthrift_field_field(srcObj.__fbthrift_field_field),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
 }
 

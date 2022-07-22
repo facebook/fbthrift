@@ -39,29 +39,19 @@ const char* Foo::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo";
 }
 
-Foo::Foo(const Foo& srcObj) {
-  __fbthrift_field_intField = srcObj.__fbthrift_field_intField;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_optionalIntField = srcObj.__fbthrift_field_optionalIntField;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_intFieldWithDefault = srcObj.__fbthrift_field_intFieldWithDefault;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_setField = srcObj.__fbthrift_field_setField;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_optionalSetField = srcObj.__fbthrift_field_optionalSetField;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_mapField = srcObj.__fbthrift_field_mapField;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_optionalMapField = srcObj.__fbthrift_field_optionalMapField;
-  __isset.set(6,srcObj.__isset.get(6));
-  __fbthrift_field_binaryField = srcObj.__fbthrift_field_binaryField;
-  __isset.set(7,srcObj.__isset.get(7));
-  __fbthrift_field_longField = srcObj.__fbthrift_field_longField;
-  __isset.set(8,srcObj.__isset.get(8));
-  __fbthrift_field_adaptedLongField = srcObj.__fbthrift_field_adaptedLongField;
-  __isset.set(9,srcObj.__isset.get(9));
-  __fbthrift_field_doubleAdaptedField = srcObj.__fbthrift_field_doubleAdaptedField;
-  __isset.set(10,srcObj.__isset.get(10));
+Foo::Foo(const Foo& srcObj) :
+    __fbthrift_field_intField(srcObj.__fbthrift_field_intField),
+    __fbthrift_field_optionalIntField(srcObj.__fbthrift_field_optionalIntField),
+    __fbthrift_field_intFieldWithDefault(srcObj.__fbthrift_field_intFieldWithDefault),
+    __fbthrift_field_setField(srcObj.__fbthrift_field_setField),
+    __fbthrift_field_optionalSetField(srcObj.__fbthrift_field_optionalSetField),
+    __fbthrift_field_mapField(srcObj.__fbthrift_field_mapField),
+    __fbthrift_field_optionalMapField(srcObj.__fbthrift_field_optionalMapField),
+    __fbthrift_field_binaryField(srcObj.__fbthrift_field_binaryField),
+    __fbthrift_field_longField(srcObj.__fbthrift_field_longField),
+    __fbthrift_field_adaptedLongField(srcObj.__fbthrift_field_adaptedLongField),
+    __fbthrift_field_doubleAdaptedField(srcObj.__fbthrift_field_doubleAdaptedField),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_intField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalIntField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_intFieldWithDefault, *this);
@@ -480,21 +470,15 @@ void TccStructTraits<::cpp2::Bar>::translateFieldName(
 
 namespace cpp2 {
 
-Bar::Bar(const Bar& srcObj) {
-  __fbthrift_field_structField = srcObj.__fbthrift_field_structField;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_optionalStructField = srcObj.__fbthrift_field_optionalStructField;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_structListField = srcObj.__fbthrift_field_structListField;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_optionalStructListField = srcObj.__fbthrift_field_optionalStructListField;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_unionField = srcObj.__fbthrift_field_unionField;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_optionalUnionField = srcObj.__fbthrift_field_optionalUnionField;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_adaptedStructField = srcObj.__fbthrift_field_adaptedStructField;
-  __isset.set(6,srcObj.__isset.get(6));
+Bar::Bar(const Bar& srcObj) :
+    __fbthrift_field_structField(srcObj.__fbthrift_field_structField),
+    __fbthrift_field_optionalStructField(srcObj.__fbthrift_field_optionalStructField),
+    __fbthrift_field_structListField(srcObj.__fbthrift_field_structListField),
+    __fbthrift_field_optionalStructListField(srcObj.__fbthrift_field_optionalStructListField),
+    __fbthrift_field_unionField(srcObj.__fbthrift_field_unionField),
+    __fbthrift_field_optionalUnionField(srcObj.__fbthrift_field_optionalUnionField),
+    __fbthrift_field_adaptedStructField(srcObj.__fbthrift_field_adaptedStructField),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
@@ -710,12 +694,12 @@ void TccStructTraits<::cpp2::StructWithFieldAdapter>::translateFieldName(
 
 namespace cpp2 {
 
-StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
-  __fbthrift_field_field = srcObj.__fbthrift_field_field;
-  __isset.set(0,srcObj.__isset.get(0));
-  shared_field = srcObj.shared_field;
-  opt_shared_field = srcObj.opt_shared_field;
-  __fbthrift_field_opt_boxed_field = srcObj.__fbthrift_field_opt_boxed_field;
+StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) :
+    __fbthrift_field_field(srcObj.__fbthrift_field_field),
+    shared_field(srcObj.shared_field),
+    opt_shared_field(srcObj.opt_shared_field),
+    __fbthrift_field_opt_boxed_field(srcObj.__fbthrift_field_opt_boxed_field),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(*shared_field, *this);
   if (opt_shared_field) ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(*opt_shared_field, *this);
@@ -858,10 +842,10 @@ void TccStructTraits<::cpp2::TerseAdaptedFields>::translateFieldName(
 
 namespace cpp2 {
 
-TerseAdaptedFields::TerseAdaptedFields(const TerseAdaptedFields& srcObj) {
-  __fbthrift_field_int_field = srcObj.__fbthrift_field_int_field;
-  __fbthrift_field_string_field = srcObj.__fbthrift_field_string_field;
-  __fbthrift_field_set_field = srcObj.__fbthrift_field_set_field;
+TerseAdaptedFields::TerseAdaptedFields(const TerseAdaptedFields& srcObj) :
+    __fbthrift_field_int_field(srcObj.__fbthrift_field_int_field),
+    __fbthrift_field_string_field(srcObj.__fbthrift_field_string_field),
+    __fbthrift_field_set_field(srcObj.__fbthrift_field_set_field) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_int_field, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_string_field, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_set_field, *this);
@@ -1055,9 +1039,9 @@ void TccStructTraits<::cpp2::B>::translateFieldName(
 
 namespace cpp2 {
 
-B::B(const B& srcObj) {
-  __fbthrift_field_a = srcObj.__fbthrift_field_a;
-  __isset.set(0,srcObj.__isset.get(0));
+B::B(const B& srcObj) :
+    __fbthrift_field_a(srcObj.__fbthrift_field_a),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);
 }
 

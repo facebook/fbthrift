@@ -194,21 +194,20 @@ void TccStructTraits<::apache::thrift::test::LazyFoo>::translateFieldName(
 
 namespace apache { namespace thrift { namespace test {
 
-LazyFoo::LazyFoo(const LazyFoo& srcObj) {
+LazyFoo::LazyFoo(const LazyFoo& srcObj) :
+    __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    __fbthrift_field_field3(srcObj.__fbthrift_field_field3),
+    __fbthrift_field_field4(srcObj.__fbthrift_field_field4),
+    __isset(srcObj.__isset) {
   const auto relaxed = std::memory_order_relaxed;
   auto lock = folly::make_shared_lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
-  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(1,srcObj.__isset.get(1));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
   }
-  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
-  __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
@@ -216,8 +215,6 @@ LazyFoo::LazyFoo(const LazyFoo& srcObj) {
       __fbthrift_serializedData_.field4 = src->clone();
     }
   }
-  __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
-  __isset.set(3,srcObj.__isset.get(3));
 }
 
 LazyFoo& LazyFoo::operator=(const LazyFoo& other) {
@@ -640,28 +637,25 @@ void TccStructTraits<::apache::thrift::test::OptionalLazyFoo>::translateFieldNam
 
 namespace apache { namespace thrift { namespace test {
 
-OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) {
+OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) :
+    __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    __fbthrift_field_field3(srcObj.__fbthrift_field_field3),
+    __fbthrift_field_field4(srcObj.__fbthrift_field_field4),
+    __isset(srcObj.__isset) {
   const auto relaxed = std::memory_order_relaxed;
   auto lock = folly::make_shared_lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
-  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(1,srcObj.__isset.get(1));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
   }
-  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
-  __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field4 = srcObj.__fbthrift_serializedData_.field4;
   }
-  __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
-  __isset.set(3,srcObj.__isset.get(3));
 }
 
 OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& other) {
@@ -925,7 +919,13 @@ void TccStructTraits<::apache::thrift::test::LazyCppRef>::translateFieldName(
 
 namespace apache { namespace thrift { namespace test {
 
-LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) {
+LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) :
+    __fbthrift_field_field1(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.__fbthrift_field_field1)),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    __fbthrift_field_field3(srcObj.__fbthrift_field_field3),
+    __fbthrift_field_field4(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.__fbthrift_field_field4)) {
   const auto relaxed = std::memory_order_relaxed;
   auto lock = folly::make_shared_lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
@@ -934,27 +934,21 @@ LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) {
     __fbthrift_isDeserialized_.field1.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field1 = srcObj.__fbthrift_serializedData_.field1;
   }
-  __fbthrift_field_field1 = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.__fbthrift_field_field1);
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field2.load(relaxed);
     __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field2 = srcObj.__fbthrift_serializedData_.field2;
   }
-  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
   }
-  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
     __fbthrift_serializedData_.field4 = srcObj.__fbthrift_serializedData_.field4;
   }
-  __fbthrift_field_field4 = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.__fbthrift_field_field4);
 }
 
 LazyCppRef& LazyCppRef::operator=(const LazyCppRef& other) {

@@ -364,28 +364,19 @@ void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-MyStruct::MyStruct(const MyStruct& srcObj) {
-  __fbthrift_field_MyBoolField = srcObj.__fbthrift_field_MyBoolField;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_MyIntField = srcObj.__fbthrift_field_MyIntField;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_MyStringField = srcObj.__fbthrift_field_MyStringField;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_MyStringField2 = srcObj.__fbthrift_field_MyStringField2;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_MyBinaryField = srcObj.__fbthrift_field_MyBinaryField;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_MyBinaryField2 = srcObj.__fbthrift_field_MyBinaryField2;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_MyBinaryField3 = srcObj.__fbthrift_field_MyBinaryField3;
-  __fbthrift_field_MyBinaryListField4 = srcObj.__fbthrift_field_MyBinaryListField4;
-  __isset.set(6,srcObj.__isset.get(6));
-  __fbthrift_field_MyMapEnumAndInt = srcObj.__fbthrift_field_MyMapEnumAndInt;
-  __isset.set(7,srcObj.__isset.get(7));
-  __fbthrift_field_MyCustomField = srcObj.__fbthrift_field_MyCustomField;
-  __isset.set(8,srcObj.__isset.get(8));
-  __fbthrift_field_MyOptCustomField = srcObj.__fbthrift_field_MyOptCustomField;
-  __isset.set(9,srcObj.__isset.get(9));
+MyStruct::MyStruct(const MyStruct& srcObj) :
+    __fbthrift_field_MyBoolField(srcObj.__fbthrift_field_MyBoolField),
+    __fbthrift_field_MyIntField(srcObj.__fbthrift_field_MyIntField),
+    __fbthrift_field_MyStringField(srcObj.__fbthrift_field_MyStringField),
+    __fbthrift_field_MyStringField2(srcObj.__fbthrift_field_MyStringField2),
+    __fbthrift_field_MyBinaryField(srcObj.__fbthrift_field_MyBinaryField),
+    __fbthrift_field_MyBinaryField2(srcObj.__fbthrift_field_MyBinaryField2),
+    __fbthrift_field_MyBinaryField3(srcObj.__fbthrift_field_MyBinaryField3),
+    __fbthrift_field_MyBinaryListField4(srcObj.__fbthrift_field_MyBinaryListField4),
+    __fbthrift_field_MyMapEnumAndInt(srcObj.__fbthrift_field_MyMapEnumAndInt),
+    __fbthrift_field_MyCustomField(srcObj.__fbthrift_field_MyCustomField),
+    __fbthrift_field_MyOptCustomField(srcObj.__fbthrift_field_MyOptCustomField),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
@@ -1120,38 +1111,25 @@ void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-AnException::AnException(const AnException& srcObj) {
-  __fbthrift_field_code = srcObj.__fbthrift_field_code;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_req_code = srcObj.__fbthrift_field_req_code;
-  __fbthrift_field_message2 = srcObj.__fbthrift_field_message2;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_req_message = srcObj.__fbthrift_field_req_message;
-  __fbthrift_field_exception_list = srcObj.__fbthrift_field_exception_list;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_exception_set = srcObj.__fbthrift_field_exception_set;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_exception_map = srcObj.__fbthrift_field_exception_map;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_req_exception_map = srcObj.__fbthrift_field_req_exception_map;
-  __fbthrift_field_enum_field = srcObj.__fbthrift_field_enum_field;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_enum_container = srcObj.__fbthrift_field_enum_container;
-  __isset.set(6,srcObj.__isset.get(6));
-  __fbthrift_field_a_struct = srcObj.__fbthrift_field_a_struct;
-  __isset.set(7,srcObj.__isset.get(7));
-  __fbthrift_field_a_set_struct = srcObj.__fbthrift_field_a_set_struct;
-  __isset.set(8,srcObj.__isset.get(8));
-  __fbthrift_field_a_union_list = srcObj.__fbthrift_field_a_union_list;
-  __isset.set(9,srcObj.__isset.get(9));
-  __fbthrift_field_union_typedef = srcObj.__fbthrift_field_union_typedef;
-  __isset.set(10,srcObj.__isset.get(10));
-  __fbthrift_field_a_union_typedef_list = srcObj.__fbthrift_field_a_union_typedef_list;
-  __isset.set(11,srcObj.__isset.get(11));
-  __fbthrift_field_MyCustomField = srcObj.__fbthrift_field_MyCustomField;
-  __isset.set(12,srcObj.__isset.get(12));
-  __fbthrift_field_MyOptCustomField = srcObj.__fbthrift_field_MyOptCustomField;
-  __isset.set(13,srcObj.__isset.get(13));
+AnException::AnException(const AnException& srcObj) :
+    __fbthrift_field_code(srcObj.__fbthrift_field_code),
+    __fbthrift_field_req_code(srcObj.__fbthrift_field_req_code),
+    __fbthrift_field_message2(srcObj.__fbthrift_field_message2),
+    __fbthrift_field_req_message(srcObj.__fbthrift_field_req_message),
+    __fbthrift_field_exception_list(srcObj.__fbthrift_field_exception_list),
+    __fbthrift_field_exception_set(srcObj.__fbthrift_field_exception_set),
+    __fbthrift_field_exception_map(srcObj.__fbthrift_field_exception_map),
+    __fbthrift_field_req_exception_map(srcObj.__fbthrift_field_req_exception_map),
+    __fbthrift_field_enum_field(srcObj.__fbthrift_field_enum_field),
+    __fbthrift_field_enum_container(srcObj.__fbthrift_field_enum_container),
+    __fbthrift_field_a_struct(srcObj.__fbthrift_field_a_struct),
+    __fbthrift_field_a_set_struct(srcObj.__fbthrift_field_a_set_struct),
+    __fbthrift_field_a_union_list(srcObj.__fbthrift_field_a_union_list),
+    __fbthrift_field_union_typedef(srcObj.__fbthrift_field_union_typedef),
+    __fbthrift_field_a_union_typedef_list(srcObj.__fbthrift_field_a_union_typedef_list),
+    __fbthrift_field_MyCustomField(srcObj.__fbthrift_field_MyCustomField),
+    __fbthrift_field_MyOptCustomField(srcObj.__fbthrift_field_MyOptCustomField),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(__fbthrift_field_MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(__fbthrift_field_MyOptCustomField, *this);
 }
@@ -2567,14 +2545,13 @@ void TccStructTraits<::some::valid::ns::MyIncludedStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
-  __fbthrift_field_MyIncludedInt = srcObj.__fbthrift_field_MyIncludedInt;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_MyIncludedStruct = srcObj.__fbthrift_field_MyIncludedStruct;
-  __isset.set(1,srcObj.__isset.get(1));
-  ARefField = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.ARefField);
-  __fbthrift_field_ARequiredField = srcObj.__fbthrift_field_ARequiredField;
+MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) :
+    __fbthrift_field_MyIncludedInt(srcObj.__fbthrift_field_MyIncludedInt),
+    __fbthrift_field_MyIncludedStruct(srcObj.__fbthrift_field_MyIncludedStruct),
+    ARefField(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.ARefField)),
+    __fbthrift_field_ARequiredField(srcObj.__fbthrift_field_ARequiredField),
+    __isset(srcObj.__isset) {
 }
 
 MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& other) {
@@ -3314,12 +3291,11 @@ void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldN
 
 namespace some { namespace valid { namespace ns {
 
-ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) {
-  __fbthrift_field_map_of_iobufs = srcObj.__fbthrift_field_map_of_iobufs;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.__fbthrift_field_map_of_iobuf_ptrs);
-  __isset.set(1,srcObj.__isset.get(1));
+ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) :
+    __fbthrift_field_map_of_iobufs(srcObj.__fbthrift_field_map_of_iobufs),
+    __fbthrift_field_map_of_iobuf_ptrs(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.__fbthrift_field_map_of_iobuf_ptrs)),
+    __isset(srcObj.__isset) {
 }
 
 ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& other) {

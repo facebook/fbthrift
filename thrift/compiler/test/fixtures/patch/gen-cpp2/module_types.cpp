@@ -846,11 +846,10 @@ const char* MyDataPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataPatch";
 }
 
-MyDataPatchStruct::MyDataPatchStruct(const MyDataPatchStruct& srcObj) {
-  __fbthrift_field_data1 = srcObj.__fbthrift_field_data1;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_data2 = srcObj.__fbthrift_field_data2;
-  __isset.set(1,srcObj.__isset.get(1));
+MyDataPatchStruct::MyDataPatchStruct(const MyDataPatchStruct& srcObj) :
+    __fbthrift_field_data1(srcObj.__fbthrift_field_data1),
+    __fbthrift_field_data2(srcObj.__fbthrift_field_data2),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_data1, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_data2, *this);
 }
@@ -982,12 +981,11 @@ const char* MyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataValuePatch";
 }
 
-MyDataValuePatchStruct::MyDataValuePatchStruct(const MyDataValuePatchStruct& srcObj) {
-  __fbthrift_field_assign = srcObj.__fbthrift_field_assign;
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
+MyDataValuePatchStruct::MyDataValuePatchStruct(const MyDataValuePatchStruct& srcObj) :
+    __fbthrift_field_assign(srcObj.__fbthrift_field_assign),
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
 }
 
@@ -1127,14 +1125,12 @@ const char* OptionalMyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyDataValuePatch";
 }
 
-OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(const OptionalMyDataValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(2,srcObj.__isset.get(2));
+OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(const OptionalMyDataValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -1295,9 +1291,9 @@ const char* InnerUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/InnerUnionPatch";
 }
 
-InnerUnionPatchStruct::InnerUnionPatchStruct(const InnerUnionPatchStruct& srcObj) {
-  __fbthrift_field_innerOption = srcObj.__fbthrift_field_innerOption;
-  __isset.set(0,srcObj.__isset.get(0));
+InnerUnionPatchStruct::InnerUnionPatchStruct(const InnerUnionPatchStruct& srcObj) :
+    __fbthrift_field_innerOption(srcObj.__fbthrift_field_innerOption),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
 }
 
@@ -1408,15 +1404,12 @@ const char* InnerUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/InnerUnionValuePatch";
 }
 
-InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(const InnerUnionValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(3,srcObj.__isset.get(3));
+InnerUnionValuePatchStruct::InnerUnionValuePatchStruct(const InnerUnionValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -1586,14 +1579,12 @@ const char* OptionalInnerUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalInnerUnionValuePatch";
 }
 
-OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(const OptionalInnerUnionValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(2,srcObj.__isset.get(2));
+OptionalInnerUnionValuePatchStruct::OptionalInnerUnionValuePatchStruct(const OptionalInnerUnionValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -1754,13 +1745,11 @@ const char* MyUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionPatch";
 }
 
-MyUnionPatchStruct::MyUnionPatchStruct(const MyUnionPatchStruct& srcObj) {
-  __fbthrift_field_option1 = srcObj.__fbthrift_field_option1;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_option2 = srcObj.__fbthrift_field_option2;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_option3 = srcObj.__fbthrift_field_option3;
-  __isset.set(2,srcObj.__isset.get(2));
+MyUnionPatchStruct::MyUnionPatchStruct(const MyUnionPatchStruct& srcObj) :
+    __fbthrift_field_option1(srcObj.__fbthrift_field_option1),
+    __fbthrift_field_option2(srcObj.__fbthrift_field_option2),
+    __fbthrift_field_option3(srcObj.__fbthrift_field_option3),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_option3, *this);
@@ -1913,15 +1902,12 @@ const char* MyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionValuePatch";
 }
 
-MyUnionValuePatchStruct::MyUnionValuePatchStruct(const MyUnionValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(3,srcObj.__isset.get(3));
+MyUnionValuePatchStruct::MyUnionValuePatchStruct(const MyUnionValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -2091,14 +2077,12 @@ const char* OptionalMyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyUnionValuePatch";
 }
 
-OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(const OptionalMyUnionValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(2,srcObj.__isset.get(2));
+OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(const OptionalMyUnionValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -2414,15 +2398,12 @@ const char* OptionalMyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField21Patch";
 }
 
-OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(const OptionalMyStructField21PatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(3,srcObj.__isset.get(3));
+OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(const OptionalMyStructField21PatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -2741,15 +2722,12 @@ const char* OptionalMyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField22Patch";
 }
 
-OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(const OptionalMyStructField22PatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(3,srcObj.__isset.get(3));
+OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(const OptionalMyStructField22PatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -3048,15 +3026,12 @@ const char* OptionalMyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField23Patch";
 }
 
-OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(const OptionalMyStructField23PatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(3,srcObj.__isset.get(3));
+OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(const OptionalMyStructField23PatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }
@@ -3220,55 +3195,32 @@ const char* MyStructPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructPatch";
 }
 
-MyStructPatchStruct::MyStructPatchStruct(const MyStructPatchStruct& srcObj) {
-  __fbthrift_field_boolVal = srcObj.__fbthrift_field_boolVal;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_byteVal = srcObj.__fbthrift_field_byteVal;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_i16Val = srcObj.__fbthrift_field_i16Val;
-  __isset.set(2,srcObj.__isset.get(2));
-  __fbthrift_field_i32Val = srcObj.__fbthrift_field_i32Val;
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_i64Val = srcObj.__fbthrift_field_i64Val;
-  __isset.set(4,srcObj.__isset.get(4));
-  __fbthrift_field_floatVal = srcObj.__fbthrift_field_floatVal;
-  __isset.set(5,srcObj.__isset.get(5));
-  __fbthrift_field_doubleVal = srcObj.__fbthrift_field_doubleVal;
-  __isset.set(6,srcObj.__isset.get(6));
-  __fbthrift_field_stringVal = srcObj.__fbthrift_field_stringVal;
-  __isset.set(7,srcObj.__isset.get(7));
-  __fbthrift_field_binaryVal = srcObj.__fbthrift_field_binaryVal;
-  __isset.set(8,srcObj.__isset.get(8));
-  __fbthrift_field_structVal = srcObj.__fbthrift_field_structVal;
-  __isset.set(9,srcObj.__isset.get(9));
-  __fbthrift_field_optBoolVal = srcObj.__fbthrift_field_optBoolVal;
-  __isset.set(10,srcObj.__isset.get(10));
-  __fbthrift_field_optByteVal = srcObj.__fbthrift_field_optByteVal;
-  __isset.set(11,srcObj.__isset.get(11));
-  __fbthrift_field_optI16Val = srcObj.__fbthrift_field_optI16Val;
-  __isset.set(12,srcObj.__isset.get(12));
-  __fbthrift_field_optI32Val = srcObj.__fbthrift_field_optI32Val;
-  __isset.set(13,srcObj.__isset.get(13));
-  __fbthrift_field_optI64Val = srcObj.__fbthrift_field_optI64Val;
-  __isset.set(14,srcObj.__isset.get(14));
-  __fbthrift_field_optFloatVal = srcObj.__fbthrift_field_optFloatVal;
-  __isset.set(15,srcObj.__isset.get(15));
-  __fbthrift_field_optDoubleVal = srcObj.__fbthrift_field_optDoubleVal;
-  __isset.set(16,srcObj.__isset.get(16));
-  __fbthrift_field_optStringVal = srcObj.__fbthrift_field_optStringVal;
-  __isset.set(17,srcObj.__isset.get(17));
-  __fbthrift_field_optBinaryVal = srcObj.__fbthrift_field_optBinaryVal;
-  __isset.set(18,srcObj.__isset.get(18));
-  __fbthrift_field_optStructVal = srcObj.__fbthrift_field_optStructVal;
-  __isset.set(19,srcObj.__isset.get(19));
-  __fbthrift_field_optListVal = srcObj.__fbthrift_field_optListVal;
-  __isset.set(20,srcObj.__isset.get(20));
-  __fbthrift_field_optSetVal = srcObj.__fbthrift_field_optSetVal;
-  __isset.set(21,srcObj.__isset.get(21));
-  __fbthrift_field_optMapVal = srcObj.__fbthrift_field_optMapVal;
-  __isset.set(22,srcObj.__isset.get(22));
-  __fbthrift_field_unionVal = srcObj.__fbthrift_field_unionVal;
-  __isset.set(23,srcObj.__isset.get(23));
+MyStructPatchStruct::MyStructPatchStruct(const MyStructPatchStruct& srcObj) :
+    __fbthrift_field_boolVal(srcObj.__fbthrift_field_boolVal),
+    __fbthrift_field_byteVal(srcObj.__fbthrift_field_byteVal),
+    __fbthrift_field_i16Val(srcObj.__fbthrift_field_i16Val),
+    __fbthrift_field_i32Val(srcObj.__fbthrift_field_i32Val),
+    __fbthrift_field_i64Val(srcObj.__fbthrift_field_i64Val),
+    __fbthrift_field_floatVal(srcObj.__fbthrift_field_floatVal),
+    __fbthrift_field_doubleVal(srcObj.__fbthrift_field_doubleVal),
+    __fbthrift_field_stringVal(srcObj.__fbthrift_field_stringVal),
+    __fbthrift_field_binaryVal(srcObj.__fbthrift_field_binaryVal),
+    __fbthrift_field_structVal(srcObj.__fbthrift_field_structVal),
+    __fbthrift_field_optBoolVal(srcObj.__fbthrift_field_optBoolVal),
+    __fbthrift_field_optByteVal(srcObj.__fbthrift_field_optByteVal),
+    __fbthrift_field_optI16Val(srcObj.__fbthrift_field_optI16Val),
+    __fbthrift_field_optI32Val(srcObj.__fbthrift_field_optI32Val),
+    __fbthrift_field_optI64Val(srcObj.__fbthrift_field_optI64Val),
+    __fbthrift_field_optFloatVal(srcObj.__fbthrift_field_optFloatVal),
+    __fbthrift_field_optDoubleVal(srcObj.__fbthrift_field_optDoubleVal),
+    __fbthrift_field_optStringVal(srcObj.__fbthrift_field_optStringVal),
+    __fbthrift_field_optBinaryVal(srcObj.__fbthrift_field_optBinaryVal),
+    __fbthrift_field_optStructVal(srcObj.__fbthrift_field_optStructVal),
+    __fbthrift_field_optListVal(srcObj.__fbthrift_field_optListVal),
+    __fbthrift_field_optSetVal(srcObj.__fbthrift_field_optSetVal),
+    __fbthrift_field_optMapVal(srcObj.__fbthrift_field_optMapVal),
+    __fbthrift_field_unionVal(srcObj.__fbthrift_field_unionVal),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::BoolPatchAdapter, 1>(__fbthrift_field_boolVal, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_byteVal, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 3>(__fbthrift_field_i16Val, *this);
@@ -3862,12 +3814,11 @@ const char* MyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructValuePatch";
 }
 
-MyStructValuePatchStruct::MyStructValuePatchStruct(const MyStructValuePatchStruct& srcObj) {
-  __fbthrift_field_assign = srcObj.__fbthrift_field_assign;
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
+MyStructValuePatchStruct::MyStructValuePatchStruct(const MyStructValuePatchStruct& srcObj) :
+    __fbthrift_field_assign(srcObj.__fbthrift_field_assign),
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
 }
 
@@ -4007,14 +3958,12 @@ const char* OptionalMyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructValuePatch";
 }
 
-OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(const OptionalMyStructValuePatchStruct& srcObj) {
-  __fbthrift_field_clear = srcObj.__fbthrift_field_clear;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_patch = srcObj.__fbthrift_field_patch;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_ensure = srcObj.__fbthrift_field_ensure;
-  __fbthrift_field_patchAfter = srcObj.__fbthrift_field_patchAfter;
-  __isset.set(2,srcObj.__isset.get(2));
+OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(const OptionalMyStructValuePatchStruct& srcObj) :
+    __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
+    __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
+    __fbthrift_field_ensure(srcObj.__fbthrift_field_ensure),
+    __fbthrift_field_patchAfter(srcObj.__fbthrift_field_patchAfter),
+    __isset(srcObj.__isset) {
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 3>(__fbthrift_field_patch, *this);
   ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructValuePatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
 }

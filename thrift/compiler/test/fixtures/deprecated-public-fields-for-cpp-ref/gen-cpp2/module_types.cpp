@@ -35,10 +35,10 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
-Foo::Foo(const Foo& srcObj) {
-  __fbthrift_field_foo = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::structure>(srcObj.__fbthrift_field_foo);
-  __fbthrift_field_bar = srcObj.__fbthrift_field_bar;
+Foo::Foo(const Foo& srcObj) :
+    __fbthrift_field_foo(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::structure>(srcObj.__fbthrift_field_foo)),
+    __fbthrift_field_bar(srcObj.__fbthrift_field_bar) {
 }
 
 Foo& Foo::operator=(const Foo& other) {

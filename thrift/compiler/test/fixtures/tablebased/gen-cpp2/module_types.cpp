@@ -102,18 +102,14 @@ FOLLY_POP_WARNING
 
 namespace test { namespace fixtures { namespace tablebased {
 
-TrivialTypesStruct::TrivialTypesStruct(const TrivialTypesStruct& srcObj) {
-  __fbthrift_field_fieldA = srcObj.__fbthrift_field_fieldA;
-  __isset.set(0,srcObj.__isset.get(0));
-  __fbthrift_field_fieldB = srcObj.__fbthrift_field_fieldB;
-  __isset.set(1,srcObj.__isset.get(1));
-  __fbthrift_field_fieldC = srcObj.__fbthrift_field_fieldC;
-  __isset.set(2,srcObj.__isset.get(2));
-  fieldD = ::apache::thrift::detail::st::copy_field<
-        ::apache::thrift::type_class::binary>(srcObj.fieldD);
-  __isset.set(3,srcObj.__isset.get(3));
-  __fbthrift_field_fieldE = srcObj.__fbthrift_field_fieldE;
-  __isset.set(4,srcObj.__isset.get(4));
+TrivialTypesStruct::TrivialTypesStruct(const TrivialTypesStruct& srcObj) :
+    __fbthrift_field_fieldA(srcObj.__fbthrift_field_fieldA),
+    __fbthrift_field_fieldB(srcObj.__fbthrift_field_fieldB),
+    __fbthrift_field_fieldC(srcObj.__fbthrift_field_fieldC),
+    fieldD(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::binary>(srcObj.fieldD)),
+    __fbthrift_field_fieldE(srcObj.__fbthrift_field_fieldE),
+    __isset(srcObj.__isset) {
 }
 
 TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& other) {
