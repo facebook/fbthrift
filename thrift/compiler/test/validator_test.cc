@@ -50,7 +50,7 @@ TEST_F(ValidatorTest, run_validator) {
   t_program program("/path/to/file.thrift");
   auto errors = run_validator<fake_validator>(&program);
   EXPECT_EQ(1, errors.size());
-  EXPECT_EQ("[FAILURE:/path/to/file.thrift:50] sadface", errors.front().str());
+  EXPECT_EQ("[ERROR:/path/to/file.thrift:50] sadface", errors.front().str());
 }
 
 TEST_F(ValidatorTest, DuplicatedStructNames) {
@@ -64,7 +64,7 @@ TEST_F(ValidatorTest, DuplicatedStructNames) {
   auto errors = run_validator<struct_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:42] Redefinition of type `Foo`.",
+      "[ERROR:/path/to/file.thrift:42] Redefinition of type `Foo`.",
       errors.front().str());
 }
 
@@ -81,7 +81,7 @@ TEST_F(ValidatorTest, NestedInteractions) {
   auto errors = run_validator<interactions_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:42] Nested interactions are forbidden.",
+      "[ERROR:/path/to/file.thrift:42] Nested interactions are forbidden.",
       errors.front().str());
 }
 
@@ -118,9 +118,9 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   auto errors = run_validator<interactions_validator>(&program);
   EXPECT_EQ(2, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:1] Only interactions can be performed.",
+      "[ERROR:/path/to/file.thrift:1] Only interactions can be performed.",
       errors.front().str());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`.",
+      "[ERROR:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`.",
       errors.at(1).str());
 }

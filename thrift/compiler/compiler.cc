@@ -349,12 +349,12 @@ bool generate(
       generator->fill_validator_list(validators);
       validators.traverse(&program);
 
-      bool has_failure = false;
+      bool has_error = false;
       for (const auto& d : diagnostics) {
-        has_failure = has_failure || d.level() == diagnostic_level::error;
+        has_error = has_error || d.level() == diagnostic_level::error;
         std::cerr << d << std::endl;
       }
-      if (has_failure) {
+      if (has_error) {
         success = false;
         continue;
       }

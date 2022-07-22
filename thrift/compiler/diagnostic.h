@@ -149,8 +149,8 @@ struct diagnostic_params {
     }
   }
 
-  // Params that only collect failures.
-  static diagnostic_params only_failures() { return {false, false, 0}; }
+  // Params that only collect errors.
+  static diagnostic_params only_errors() { return {false, false, 0}; }
   static diagnostic_params strict() { return {false, false, 2}; }
   static diagnostic_params keep_all() { return {true, true, 2}; }
 };

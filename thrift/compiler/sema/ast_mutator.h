@@ -31,7 +31,7 @@ namespace compiler {
 using mutator_context = visitor_context;
 
 // An AST mutator is a ast_visitor that collects diagnostics and can
-// change the ast.
+// change the AST.
 class ast_mutator
     : public basic_ast_visitor<false, diagnostic_context&, mutator_context&> {
   using base = basic_ast_visitor<false, diagnostic_context&, mutator_context&>;
@@ -91,19 +91,17 @@ struct ast_mutators {
   // Tries to resolve any unresolved type references, returning true if
   // successful.
   //
-  // Any failures are reported to ctx.
-  bool resolve_all_types(diagnostic_context& ctx, t_program_bundle& bundle) {
+  // Any errors are reported via diags.
+  bool resolve_all_types(diagnostics_engine& diags, t_program_bundle& bundle) {
     bool success = true;
-    ctx.begin_visit(*bundle.root_program());
     for (auto& td : bundle.root_program()->scope()->placeholder_typedefs()) {
-      success |= ctx.check(
+      success |= diags.check(
           td.resolve(),
           td,
           "{} `{}` not defined.",
           td.generated() ? "Expected generated type" : "Type",
           td.name());
     }
-    ctx.end_visit(*bundle.root_program());
     return success;
   }
 };

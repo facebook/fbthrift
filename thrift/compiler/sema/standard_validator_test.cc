@@ -413,7 +413,7 @@ TEST_F(StandardValidatorTest, MixinFieldType) {
   program_.add_struct(std::move(foo));
 
   EXPECT_THAT(
-      validate(diagnostic_params::only_failures()),
+      validate(diagnostic_params::only_errors()),
       UnorderedElementsAre(
           error(1, "Mixin field `struct_field` cannot be optional."),
           error(
@@ -443,7 +443,7 @@ TEST_F(StandardValidatorTest, RepeatedStructuredAnnotation) {
 
   // Only the third annotation is a duplicate.
   EXPECT_THAT(
-      validate(diagnostic_params::only_failures()),
+      validate(diagnostic_params::only_errors()),
       UnorderedElementsAre(error(
           3, "Structured annotation `Foo` is already defined for `Bar`.")));
 }

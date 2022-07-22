@@ -70,7 +70,7 @@ class lexer {
 
   void start_token() { token_start_ = ptr_; }
 
-  // Reports a failure if the parsed value cannot fit in the widest supported
+  // Reports an error if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
   yy::parser::symbol_type make_int_constant(int offset, int base);
   yy::parser::symbol_type make_float_constant();

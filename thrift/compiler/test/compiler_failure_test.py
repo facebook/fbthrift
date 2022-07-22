@@ -74,7 +74,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] Package already specified.\n",
+            "[ERROR:foo.thrift:2] Package already specified.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -105,7 +105,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:7] No field id specified for `field1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[ERROR:foo.thrift:7] No field id specified for `field1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:8] No field id specified for `field2`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:15] No field id specified for `field4`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
@@ -135,7 +135,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n",
+            "[ERROR:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n",
         )
         self.assertEqual(ret, 1)
 
@@ -197,7 +197,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[WARNING:foo.thrift:4] Nonpositive field id (-32) differs from what would be auto-assigned by thrift (-3).\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[FAILURE:foo.thrift:5] Reserved field id (-33) cannot be used for `f4`.\n",
+            "[ERROR:foo.thrift:5] Reserved field id (-33) cannot be used for `f4`.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -226,9 +226,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (-32) differs from what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n"
+            "[ERROR:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n"
             "[WARNING:foo.thrift:3] No field id specified for `f2`, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[FAILURE:foo.thrift:3] Reserved field id (-33) cannot be used for `f2`.\n",
+            "[ERROR:foo.thrift:3] Reserved field id (-33) cannot be used for `f2`.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -247,9 +247,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:34] Cannot allocate an id for `field_32`. Automatic field ids are exhausted.\n"
+            "[ERROR:foo.thrift:34] Cannot allocate an id for `field_32`. Automatic field ids are exhausted.\n"
             + "".join(lines)
-            + "[FAILURE:foo.thrift:34] Reserved field id (-33) cannot be used for `field_32`.\n",
+            + "[ERROR:foo.thrift:34] Reserved field id (-33) cannot be used for `field_32`.\n",
         )
 
     def test_out_of_range_field_ids(self):
@@ -280,7 +280,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("overflow.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:overflow.thrift:4] Integer constant 32768 outside the range of field ids ([-32768, 32767]).\n"
+            "[ERROR:overflow.thrift:4] Integer constant 32768 outside the range of field ids ([-32768, 32767]).\n"
             "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
             "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -2.\n"
             "[WARNING:overflow.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
@@ -290,9 +290,9 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("underflow.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:underflow.thrift:4] Integer constant -32769 outside the range of field ids ([-32768, 32767]).\n"
+            "[ERROR:underflow.thrift:4] Integer constant -32769 outside the range of field ids ([-32768, 32767]).\n"
             "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
-            '[FAILURE:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n'
+            '[ERROR:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n'
             "[WARNING:underflow.thrift:2] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 1)
@@ -313,7 +313,7 @@ class CompilerFailureTest(unittest.TestCase):
         # TODO(afuller): Report a diagnostic instead.
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Oneway methods must have void return type: bar\n",
+            "[ERROR:foo.thrift:3] Oneway methods must have void return type: bar\n",
         )
         self.assertEqual(ret, 1)
 
@@ -335,7 +335,7 @@ class CompilerFailureTest(unittest.TestCase):
         # TODO(afuller): Report a diagnostic instead.
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:5] Oneway methods can't throw exceptions: baz\n",
+            "[ERROR:foo.thrift:5] Oneway methods can't throw exceptions: baz\n",
         )
         self.assertEqual(ret, 1)
 
@@ -381,7 +381,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant 2147483648 outside the range of enum values ([-2147483648, 2147483647]).\n",
+            "[ERROR:foo.thrift:3] Integer constant 2147483648 outside the range of enum values ([-2147483648, 2147483647]).\n",
         )
 
     def test_enum_underflow(self):
@@ -400,7 +400,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant -2147483649 outside the range of enum values ([-2147483648, 2147483647]).\n",
+            "[ERROR:foo.thrift:3] Integer constant -2147483649 outside the range of enum values ([-2147483648, 2147483647]).\n",
         )
 
     def assertConstError(self, type, value, expected):
@@ -420,18 +420,18 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertConstError(
             "i64",
             "9223372036854775808",  # max int64 + 1
-            "[FAILURE:foo.thrift:1] integer constant 9223372036854775808 is too large\n"
+            "[ERROR:foo.thrift:1] integer constant 9223372036854775808 is too large\n"
             "[WARNING:foo.thrift:1] 64-bit constant -9223372036854775808 may not work in all languages\n",
         )
         self.assertConstError(
             "i64",
             "18446744073709551615",  # max uint64
-            "[FAILURE:foo.thrift:1] integer constant 18446744073709551615 is too large\n",
+            "[ERROR:foo.thrift:1] integer constant 18446744073709551615 is too large\n",
         )
         self.assertConstError(
             "i64",
             "18446744073709551616",  # max uint64 + 1
-            "[FAILURE:foo.thrift:1] integer constant 18446744073709551616 is too large\n",
+            "[ERROR:foo.thrift:1] integer constant 18446744073709551616 is too large\n",
         )
 
     def test_double_overflow(self):
@@ -442,19 +442,19 @@ class CompilerFailureTest(unittest.TestCase):
             self.assertConstError(
                 "double",
                 f"{value}",
-                f"[FAILURE:foo.thrift:1] floating-point constant {value} is out of range\n",
+                f"[ERROR:foo.thrift:1] floating-point constant {value} is out of range\n",
             )
             self.assertConstError(
                 "double",
                 f"-{value}",
-                f"[FAILURE:foo.thrift:1] floating-point constant {value} is out of range\n",
+                f"[ERROR:foo.thrift:1] floating-point constant {value} is out of range\n",
             )
 
     def test_integer_underflow(self):
         self.assertConstError(
             "i64",
             "-9223372036854775809",
-            "[FAILURE:foo.thrift:1] integer constant -9223372036854775809 is too small\n"
+            "[ERROR:foo.thrift:1] integer constant -9223372036854775809 is too small\n"
             "[WARNING:foo.thrift:1] 64-bit constant 9223372036854775807 may not work in all languages\n",
         )
 
@@ -466,12 +466,12 @@ class CompilerFailureTest(unittest.TestCase):
             self.assertConstError(
                 "double",
                 f"{value}",
-                f"[FAILURE:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
+                f"[ERROR:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
             )
             self.assertConstError(
                 "double",
                 f"-{value}",
-                f"[FAILURE:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
+                f"[ERROR:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
             )
 
     def test_const_wrong_type(self):
@@ -496,16 +496,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] type error: const `wrongInt` was declared as i32.\n"
+            "[ERROR:foo.thrift:1] type error: const `wrongInt` was declared as i32.\n"
             "[WARNING:foo.thrift:2] type error: const `wrongSet` was declared as set. This will become an error in future versions of thrift.\n"
             "[WARNING:foo.thrift:3] type error: const `wrongMap` was declared as map. This will become an error in future versions of thrift.\n"
             "[WARNING:foo.thrift:4] type error: map `wierdMap` initialized with empty list.\n"
             "[WARNING:foo.thrift:5] type error: set `wierdSet` initialized with empty map.\n"
             "[WARNING:foo.thrift:6] type error: list `wierdList` initialized with empty map.\n"
-            "[FAILURE:foo.thrift:7] type error: const `badValList<elem>` was declared as string.\n"
-            "[FAILURE:foo.thrift:8] type error: const `badValSet<elem>` was declared as string.\n"
-            "[FAILURE:foo.thrift:9] type error: const `badValMap<key>` was declared as string.\n"
-            "[FAILURE:foo.thrift:9] type error: const `badValMap<val>` was declared as i32.\n",
+            "[ERROR:foo.thrift:7] type error: const `badValList<elem>` was declared as string.\n"
+            "[ERROR:foo.thrift:8] type error: const `badValSet<elem>` was declared as string.\n"
+            "[ERROR:foo.thrift:9] type error: const `badValMap<key>` was declared as string.\n"
+            "[ERROR:foo.thrift:9] type error: const `badValMap<val>` was declared as i32.\n",
         )
 
     def test_struct_fields_wrong_type(self):
@@ -530,9 +530,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] type error: const `.val` was declared as i32.\n"
+            "[ERROR:foo.thrift:6] type error: const `.val` was declared as i32.\n"
             "[WARNING:foo.thrift:6] type error: const `.otherVal` was declared as list. This will become an error in future versions of thrift.\n"
-            "[FAILURE:foo.thrift:8] type error: const `badInt` was declared as i32.\n",
+            "[ERROR:foo.thrift:8] type error: const `badInt` was declared as i32.\n",
         )
 
     def test_duplicate_method_name(self):
@@ -551,7 +551,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Function `meh` is already defined for `MyS`.\n"
+            err, "[ERROR:foo.thrift:3] Function `meh` is already defined for `MyS`.\n"
         )
 
     def test_duplicate_method_name_base_base(self):
@@ -593,8 +593,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:baz.thrift:3] Function `MyS.lol` redefines `service foo.MySBB.lol`.\n"
-            "[FAILURE:baz.thrift:4] Function `MyS.meh` redefines `service bar.MySB.meh`.\n",
+            "[ERROR:baz.thrift:3] Function `MyS.lol` redefines `service foo.MySBB.lol`.\n"
+            "[ERROR:baz.thrift:4] Function `MyS.meh` redefines `service bar.MySB.meh`.\n",
         )
 
     def test_duplicate_enum_value_name(self):
@@ -612,7 +612,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Enum value `Bar` is already defined for `Foo`.\n",
+            "[ERROR:foo.thrift:3] Enum value `Bar` is already defined for `Foo`.\n",
         )
 
     def test_duplicate_enum_value(self):
@@ -630,7 +630,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Duplicate value `Baz=1` with value `Bar` in enum `Foo`.\n",
+            "[ERROR:foo.thrift:3] Duplicate value `Baz=1` with value `Bar` in enum `Foo`.\n",
         )
 
     def test_unset_enum_value(self):
@@ -649,8 +649,8 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] The enum value, `Bar`, must have an explicitly assigned value.\n"
-            "[FAILURE:foo.thrift:4] The enum value, `Baz`, must have an explicitly assigned value.\n",
+            "[ERROR:foo.thrift:3] The enum value, `Bar`, must have an explicitly assigned value.\n"
+            "[ERROR:foo.thrift:4] The enum value, `Baz`, must have an explicitly assigned value.\n",
         )
 
     def test_circular_include_dependencies(self):
@@ -681,7 +681,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:5] Circular dependency found: "
+            "[ERROR:bar.thrift:5] Circular dependency found: "
             "file `foo.thrift` is already parsed.\n",
         )
 
@@ -700,9 +700,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
-        self.assertEqual(
-            err, "[FAILURE:foo.thrift:2] Type `Random.Type` not defined.\n"
-        )
+        self.assertEqual(err, "[ERROR:foo.thrift:2] Type `Random.Type` not defined.\n")
 
     def test_field_names_uniqueness(self):
         write_file(
@@ -722,7 +720,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:4] Field `a` is already defined for `Foo`.\n"
+            err, "[ERROR:foo.thrift:4] Field `a` is already defined for `Foo`.\n"
         )
 
     def test_mixin_field_names_uniqueness(self):
@@ -745,7 +743,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:5] Field `B.i` and `A.i` can not have same name in `C`.\n",
+            "[ERROR:foo.thrift:5] Field `B.i` and `A.i` can not have same name in `C`.\n",
         )
 
         write_file(
@@ -767,7 +765,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:5] Field `C.i` and `A.i` can not have same name in `C`.\n",
+            "[ERROR:bar.thrift:5] Field `C.i` and `A.i` can not have same name in `C`.\n",
         )
 
     def test_struct_optional_refs(self):
@@ -824,11 +822,11 @@ class CompilerFailureTest(unittest.TestCase):
                 """
                 [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field1`.
                 [WARNING:foo.thrift:6] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field2`.
-                [FAILURE:foo.thrift:9] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
+                [ERROR:foo.thrift:9] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
                 [WARNING:foo.thrift:9] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field3`.
                 [WARNING:foo.thrift:9] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field3`.
                 [WARNING:foo.thrift:12] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field4`.
-                [FAILURE:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
+                [ERROR:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
             """
             ),
         )
@@ -870,16 +868,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
+            "[ERROR:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
             "`cpp.adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:7] `@hack.Adapter` cannot be combined with "
+            "[ERROR:foo.thrift:7] `@hack.Adapter` cannot be combined with "
             "`hack.adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:10] key `name` not found.\n"
-            "[FAILURE:foo.thrift:13] cpp.ref, cpp2.ref are deprecated. "
+            "[ERROR:foo.thrift:10] key `name` not found.\n"
+            "[ERROR:foo.thrift:13] cpp.ref, cpp2.ref are deprecated. "
             "Please use @thrift.Box annotation instead in `my_field3` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:16] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            "[ERROR:foo.thrift:16] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
             "are deprecated. Please use @thrift.Box annotation instead in `my_field4` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:19] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
+            "[ERROR:foo.thrift:19] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
             "Please use @thrift.Box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
@@ -923,17 +921,17 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:18] `@cpp.Adapter` cannot be combined with "
+            "[ERROR:foo.thrift:18] `@cpp.Adapter` cannot be combined with "
             "`cpp.adapter` in `my_field1`.\n"
-            "[FAILURE:foo.thrift:18] `@hack.Adapter` cannot be combined with "
+            "[ERROR:foo.thrift:18] `@hack.Adapter` cannot be combined with "
             "`hack.adapter` in `my_field1`.\n"
-            "[FAILURE:foo.thrift:4] key `name` not found.\n"
-            "[FAILURE:foo.thrift:4] key `name` not found.\n"
-            "[FAILURE:foo.thrift:12] The `@cpp.Adapter` annotation cannot be annotated more "
+            "[ERROR:foo.thrift:4] key `name` not found.\n"
+            "[ERROR:foo.thrift:4] key `name` not found.\n"
+            "[ERROR:foo.thrift:12] The `@cpp.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n"
-            "[FAILURE:foo.thrift:12] The `@hack.Adapter` annotation cannot be annotated more "
+            "[ERROR:foo.thrift:12] The `@hack.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n"
-            "[FAILURE:foo.thrift:25] The `@cpp.Adapter` annotation cannot be annotated more "
+            "[ERROR:foo.thrift:25] The `@cpp.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleAdapted`.\n",
         )
 
@@ -954,7 +952,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] Mixin field `i` type must be a struct or union. Found `i32`.\n",
+            "[ERROR:foo.thrift:2] Mixin field `i` type must be a struct or union. Found `i32`.\n",
         )
 
     def test_mixin_in_union(self):
@@ -974,7 +972,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Union `B` cannot contain mixin field `a`.\n"
+            err, "[ERROR:foo.thrift:3] Union `B` cannot contain mixin field `a`.\n"
         )
 
     def test_mixin_with_cpp_ref(self):
@@ -997,7 +995,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [FAILURE:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
+                [ERROR:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
                 [WARNING:foo.thrift:3] `cpp.ref` field `a` must be optional if it is recursive.
                 [WARNING:foo.thrift:3] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `a`.
                 """
@@ -1024,7 +1022,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [FAILURE:foo.thrift:4] Tablebased serialization is incompatible with isset bitpacking for struct `D`
+                [ERROR:foo.thrift:4] Tablebased serialization is incompatible with isset bitpacking for struct `D`
                 """
             ),
         )
@@ -1063,7 +1061,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] `SumService.sum` use of "
+            "[ERROR:foo.thrift:2] `SumService.sum` use of "
             "cpp.coroutine and stack_arguments together is disallowed.\n",
         )
 
@@ -1101,7 +1099,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:3] Mixin field `a` cannot be optional.\n"
+                "[ERROR:foo.thrift:3] Mixin field `a` cannot be optional.\n"
             ),
         )
 
@@ -1138,8 +1136,8 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             # TODO(afuller): Fix t_scope to not include the locally defined Foo as
             # `foo.Foo`, which override the included foo.Foo definition.
-            "[FAILURE:foo.thrift:7] Structured annotation `Foo` is already defined for `Annotated`.\n"
-            "[FAILURE:foo.thrift:8] Structured annotation `Foo` is already defined for `Annotated`.\n",
+            "[ERROR:foo.thrift:7] Structured annotation `Foo` is already defined for `Annotated`.\n"
+            "[ERROR:foo.thrift:8] Structured annotation `Foo` is already defined for `Annotated`.\n",
         )
 
     def test_structured_annotations_type_resolved(self):
@@ -1169,7 +1167,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] The type 'TooForward' "
+            "[ERROR:foo.thrift:6] The type 'TooForward' "
             "is not defined yet. Types must be defined before the usage in "
             "constant values.\n",
         )
@@ -1202,7 +1200,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] `types_cpp_splits=5` is misconfigured: "
+            "[ERROR:foo.thrift] `types_cpp_splits=5` is misconfigured: "
             "it can not be greater than number of object, which is 4.\n",
         )
 
@@ -1213,7 +1211,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] Invalid types_cpp_splits value: `3a`\n",
+            "[ERROR:foo.thrift] Invalid types_cpp_splits value: `3a`\n",
         )
 
     def test_invalid_splits(self):
@@ -1233,7 +1231,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] Invalid types_cpp_splits value: `1a`\n",
+            "[ERROR:foo.thrift] Invalid types_cpp_splits value: `1a`\n",
         )
 
     def test_too_many_client_splits(self):
@@ -1265,7 +1263,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] `client_cpp_splits=3` (For service MyService2) is misconfigured: it can not be greater than number of functions, which is 2.\n",
+            "[ERROR:foo.thrift:6] `client_cpp_splits=3` (For service MyService2) is misconfigured: it can not be greater than number of functions, which is 2.\n",
         )
 
     def test_invalid_client_splits(self):
@@ -1293,7 +1291,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] Invalid pair `MyService1:3:1` in client_cpp_splits value: `MyService1:3:1,MyService2:2`\n",
+            "[ERROR:foo.thrift:1] Invalid pair `MyService1:3:1` in client_cpp_splits value: `MyService1:3:1,MyService2:2`\n",
         )
 
         ret, out, err = self.run_thrift(
@@ -1323,9 +1321,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:2] Integral field `field` can not be"
+                "[ERROR:foo.thrift:2] Integral field `field` can not be"
                 " marked as lazy, since doing so won't bring any benefit.\n"
-                "[FAILURE:foo.thrift:6] Floating point field `field` can not be"
+                "[ERROR:foo.thrift:6] Floating point field `field` can not be"
                 " marked as lazy, since doing so won't bring any benefit.\n"
             ),
         )
@@ -1353,10 +1351,10 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:4] Non-exception type, `A`, in throws.\n"
-                "[FAILURE:foo.thrift:5] Non-exception type, `A`, in throws.\n"
-                "[FAILURE:foo.thrift:6] Non-exception type, `A`, in throws.\n"
-                "[FAILURE:foo.thrift:7] Non-exception type, `A`, in throws.\n"
+                "[ERROR:foo.thrift:4] Non-exception type, `A`, in throws.\n"
+                "[ERROR:foo.thrift:5] Non-exception type, `A`, in throws.\n"
+                "[ERROR:foo.thrift:6] Non-exception type, `A`, in throws.\n"
+                "[ERROR:foo.thrift:7] Non-exception type, `A`, in throws.\n"
             ),
         )
 
@@ -1379,7 +1377,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[WARNING:foo.thrift:2] cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `field`.\n"
-                "[FAILURE:foo.thrift:2] The `cpp.box` annotation cannot be combined "
+                "[ERROR:foo.thrift:2] The `cpp.box` annotation cannot be combined "
                 "with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the "
                 "annotations from `field`.\n"
             ),
@@ -1404,7 +1402,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[WARNING:foo.thrift:2] cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `field`.\n"
-                "[FAILURE:foo.thrift:2] The `cpp.box` annotation can only be used with "
+                "[ERROR:foo.thrift:2] The `cpp.box` annotation can only be used with "
                 "optional fields. Make sure `field` is optional.\n"
             ),
         )
@@ -1426,7 +1424,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            textwrap.dedent("[FAILURE:foo.thrift:3] field `foo` does not exist.\n"),
+            textwrap.dedent("[ERROR:foo.thrift:3] field `foo` does not exist.\n"),
         )
 
     def test_annotation_scopes(self):
@@ -1475,9 +1473,9 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """
                 [WARNING:foo.thrift:17] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
-                [FAILURE:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
+                [ERROR:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
+                [ERROR:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
+                [ERROR:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
                 """
             ),
         )
@@ -1488,9 +1486,9 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [FAILURE:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
+                [ERROR:foo.thrift:19] `FieldAnnot` cannot annotate `TestStruct`
+                [ERROR:foo.thrift:21] `EnumAnnot` cannot annotate `TestStruct`
+                [ERROR:foo.thrift:24] `StructAnnot` cannot annotate `test_field`
                 """
             ),
         )
@@ -1512,7 +1510,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"
+                "[ERROR:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"
             ),
         )
 
@@ -1539,7 +1537,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                '[FAILURE:foo.thrift:3] Field identifier 1 for "field2" has already been used.\n'
+                '[ERROR:foo.thrift:3] Field identifier 1 for "field2" has already been used.\n'
             ),
         )
 
@@ -1588,9 +1586,9 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [FAILURE:file2.thrift:2] Thrift URI `facebook.com/thrift/annotation/Foo` is already defined for `Foo2`.
-                [FAILURE:main.thrift:3] Thrift URI `facebook.com/thrift/annotation/Bar` is already defined for `Bar2`.
-                [FAILURE:main.thrift:7] Thrift URI `facebook.com/thrift/annotation/Baz` is already defined for `Baz2`.
+                [ERROR:file2.thrift:2] Thrift URI `facebook.com/thrift/annotation/Foo` is already defined for `Foo2`.
+                [ERROR:main.thrift:3] Thrift URI `facebook.com/thrift/annotation/Bar` is already defined for `Bar2`.
+                [ERROR:main.thrift:7] Thrift URI `facebook.com/thrift/annotation/Baz` is already defined for `Baz2`.
                 """
             ),
         )
@@ -1703,9 +1701,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "[ERROR:foo.thrift:6] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `optional` qualifier from field `field2`.\n"
-            "[FAILURE:foo.thrift:8] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "[ERROR:foo.thrift:8] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `required` qualifier from field `field3`.\n",
         )
 
@@ -1734,8 +1732,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Nested interactions are forbidden.\n"
-            "[FAILURE:foo.thrift:10] Nested interactions are forbidden: foo\n",
+            "[ERROR:foo.thrift:6] Nested interactions are forbidden.\n"
+            "[ERROR:foo.thrift:10] Nested interactions are forbidden: foo\n",
         )
 
     def test_interaction_oneway_factory(self):
@@ -1759,7 +1757,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Oneway methods must have void return type: foo\n",
+            "[ERROR:foo.thrift:6] Oneway methods must have void return type: foo\n",
         )
 
     def test_interaction_return_type_order(self):
@@ -1785,9 +1783,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
-            "[FAILURE:foo.thrift:7] Too many return types: i32\n"
-            "[FAILURE:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
+            "[ERROR:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[ERROR:foo.thrift:7] Too many return types: i32\n"
+            "[ERROR:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
         )
 
     def test_interaction_in_return_type(self):
@@ -1813,9 +1811,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
-            "[FAILURE:foo.thrift:7] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
-            "[FAILURE:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
+            "[ERROR:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[ERROR:foo.thrift:7] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[ERROR:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
         )
 
     # Time complexity of for_each_transitive_field should be O(1)
@@ -1935,16 +1933,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:bar.thrift:36] Nonpositive value (-1) not allowed as a field id.\n"
-            "[FAILURE:bar.thrift:16] Can not find expected type `foo.Fields` specified"
+            "[ERROR:bar.thrift:16] Can not find expected type `foo.Fields` specified"
             " in `@internal.InjectMetadataFields` in the current scope. Please check the include.\n"
-            "[FAILURE:bar.thrift:19] key `type` not found.\n"
-            "[FAILURE:bar.thrift:22] `bar.UnionFields` is not a struct type. "
+            "[ERROR:bar.thrift:19] key `type` not found.\n"
+            "[ERROR:bar.thrift:22] `bar.UnionFields` is not a struct type. "
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:25] `bar.MyI64` is not a struct type. "
+            "[ERROR:bar.thrift:25] `bar.MyI64` is not a struct type. "
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:42] Field id `-1` does not mapped to valid internal id.\n"
-            "[FAILURE:bar.thrift:42] Field id `1000` does not mapped to valid internal id.\n"
-            "[FAILURE:bar.thrift] Field `field1` is already defined for `Injected5`.\n",
+            "[ERROR:bar.thrift:42] Field id `-1` does not mapped to valid internal id.\n"
+            "[ERROR:bar.thrift:42] Field id `1000` does not mapped to valid internal id.\n"
+            "[ERROR:bar.thrift] Field `field1` is already defined for `Injected5`.\n",
         )
 
     def test_set_invalid_elem_type(self):
@@ -1964,7 +1962,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: set<float> set_of_float.\n",
+            "[ERROR:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: set<float> set_of_float.\n",
         )
 
     def test_map_invalid_key_type(self):
@@ -1983,7 +1981,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: map<float, i32> map_of_float_to_int.\n",
+            "[ERROR:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: map<float, i32> map_of_float_to_int.\n",
         )
 
     def test_rpc_return_invalid_key_type(self):
@@ -2001,7 +1999,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
+            "[ERROR:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
         )
 
     def test_undefined_type(self):
@@ -2021,8 +2019,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:main.thrift:3] Failed to resolve return type of `func`.\n"
-            "[FAILURE:main.thrift:3] Type `header.Bar` not defined.\n",
+            "[ERROR:main.thrift:3] Failed to resolve return type of `func`.\n"
+            "[ERROR:main.thrift:3] Type `header.Bar` not defined.\n",
         )
 
     def test_adapting_variable(self):
@@ -2100,7 +2098,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
+            "[ERROR:foo.thrift:1] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
         )
 
     def test_reserved_ids(self):
@@ -2165,16 +2163,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Fields in IdList cannot use reserved ids: 3\n"
-            "[FAILURE:foo.thrift:9] Fields in IdRanges cannot use reserved ids: 10\n"
-            "[FAILURE:foo.thrift:21] Fields in UnionWithBadId cannot use reserved ids: 3\n"
-            "[FAILURE:foo.thrift:33] For each (start: end) in id_ranges, we must have start < end. Got (5: 3), annotated on InvalidIdRange\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50001\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50000\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -40000\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 40000\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50000\n"
-            "[FAILURE:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50001\n"
-            "[FAILURE:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
-            "[FAILURE:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
+            "[ERROR:foo.thrift:3] Fields in IdList cannot use reserved ids: 3\n"
+            "[ERROR:foo.thrift:9] Fields in IdRanges cannot use reserved ids: 10\n"
+            "[ERROR:foo.thrift:21] Fields in UnionWithBadId cannot use reserved ids: 3\n"
+            "[ERROR:foo.thrift:33] For each (start: end) in id_ranges, we must have start < end. Got (5: 3), annotated on InvalidIdRange\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50001\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -50000\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: -40000\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 40000\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50000\n"
+            "[ERROR:foo.thrift:45] Struct `Message` cannot have reserved id that is out of range: 50001\n"
+            "[ERROR:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
+            "[ERROR:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
         )

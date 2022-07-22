@@ -856,7 +856,7 @@ void parsing_driver::validate_header_location() {
 void parsing_driver::validate_header_annotations(
     std::unique_ptr<t_def_attrs> statement_attrs,
     std::unique_ptr<t_annotations> annotations) {
-  // Ideally the failures below have to be handled by a grammar, but it's not
+  // Ideally the errors below have to be handled by a grammar, but it's not
   // expressive enough to avoid conflicts when doing so.
   if (statement_attrs && statement_attrs->struct_annotations.get()) {
     error(

@@ -27,7 +27,7 @@ namespace {
 const char* level_to_string(diagnostic_level level) {
   switch (level) {
     case diagnostic_level::error:
-      return "FAILURE";
+      return "ERROR";
     case diagnostic_level::warning:
       return "WARNING";
     case diagnostic_level::info:

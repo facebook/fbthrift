@@ -103,7 +103,7 @@ class diagnostic_context : public diagnostics_engine,
 
   static diagnostic_context ignore_all(source_manager& sm) {
     return diagnostic_context(
-        sm, [](const diagnostic&) {}, diagnostic_params::only_failures());
+        sm, [](const diagnostic&) {}, diagnostic_params::only_errors());
   }
 
   // A cache for traversal-specific metadata.

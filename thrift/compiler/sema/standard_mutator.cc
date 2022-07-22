@@ -156,7 +156,7 @@ void mutate_inject_metadata_fields(
       injected_id = cpp2::get_internal_injected_field_id(field.id());
     } catch (const std::exception& e) {
       ctx.error("{}", e.what());
-      // Iterate all fields to find more failures.
+      // Iterate all fields to find more errors.
       continue;
     }
     std::unique_ptr<t_field> cloned_field = field.clone_DO_NOT_USE();

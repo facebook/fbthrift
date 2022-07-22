@@ -50,7 +50,7 @@ class CompilerFailureTest(unittest.TestCase):
     def _expected_enum_value_name_err(self, *args):
         errors = [
             (
-                f"[FAILURE:foo.thrift:{lineno}] "
+                f"[ERROR:foo.thrift:{lineno}] "
                 f"'{name}' should not be used as an enum/union field name in thrift-py3. "
                 'Use a different name or annotate the field with `(py3.name="<new_py_name>")`\n'
             )
