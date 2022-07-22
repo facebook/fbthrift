@@ -110,6 +110,9 @@ public final class FutureUtil {
       if (!future.isCancelled()) {
         try {
           final T t = future.get();
+          if (t == null) {
+            return Mono.empty();
+          }
           return Mono.just(t);
         } catch (Throwable t) {
           if (t instanceof ExecutionException) {
@@ -133,7 +136,11 @@ public final class FutureUtil {
                 if (!future.isCancelled()) {
                   try {
                     final T t = future.get();
-                    sink.success(t);
+                    if (t == null) {
+                      sink.success();
+                    } else {
+                      sink.success(t);
+                    }
                   } catch (Throwable t) {
                     if (t instanceof ExecutionException) {
                       sink.error(t.getCause());
