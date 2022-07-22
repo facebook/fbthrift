@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/type/Field.h>
+#include <thrift/lib/cpp2/type/detail/Wrap.h>
 #include <thrift/lib/thrift/gen-cpp2/field_mask_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/field_mask_types.h>
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
@@ -244,6 +245,27 @@ bool copy_fields(MaskRef ref, const T& src, T& dst) {
   return copied;
 }
 
+// This converts ident list to a field mask with a single field.
+template <typename T>
+Mask path(const Mask& other) {
+  // This is the base case as there is no more ident.
+  return other;
+}
+template <typename T, typename Ident, typename... Idents>
+Mask path(const Mask& other) {
+  if constexpr (is_thrift_struct_v<T>) {
+    Mask mask;
+    using field_id_tag = type::get_field_id<type::struct_t<T>, Ident>;
+    if constexpr (!std::is_void_v<field_id_tag>) {
+      FieldId fieldId = field_id_tag();
+      using FieldType = type::get_field_native_type<type::struct_t<T>, Ident>;
+      mask.includes_ref().emplace()[static_cast<int16_t>(fieldId)] =
+          path<FieldType, Idents...>(other);
+      return mask;
+    }
+  }
+  throw std::runtime_error("field doesn't exist");
+}
 } // namespace detail
 
 // Returns whether field mask is compatible with thrift struct T.
@@ -293,4 +315,38 @@ void copy(const Mask& mask, const T& src, T& dst) {
 Mask operator&(const Mask&, const Mask&); // intersect
 Mask operator|(const Mask&, const Mask&); // union
 Mask operator-(const Mask&, const Mask&); // subtract
+
+// This converts ident (field name type) to field id automatically which makes
+// FieldMask easier for end-users to construct and use.
+// Example:
+//   MaskWrapper<T> mask(MaskWrapperInit::all); // start with allMask
+//   mask.includes<ident1, ident2>(anotherMask);
+//   mask.excludes<ident3>(anotherMask);
+//   mask.toThrift();  // --> reference to the underlying FieldMask.
+enum class MaskWrapperInit { all, none };
+
+template <typename T>
+struct MaskWrapper : type::detail::Wrap<Mask> {
+  MaskWrapper() = delete;
+  // Constructs a new MaskWrapper with allMask or noneMask.
+  explicit MaskWrapper(MaskWrapperInit init) {
+    data_ = init == MaskWrapperInit::all ? allMask() : noneMask();
+  }
+  // Includes the field specified by the list of Idents with the given mask.
+  // The field is t.ident1().ident2() ...
+  // Throws runtime exception if the field doesn't exist.
+  template <typename... Ident>
+  void includes(const Mask& mask = allMask()) {
+    data_ = data_ | detail::path<T, Ident...>(mask);
+  }
+
+  // Excludes the field specified by the list of Idents with the given mask.
+  // The field is t.ident1().ident2() ...
+  // Throws runtime exception if the field doesn't exist.
+  template <typename... Ident>
+  void excludes(const Mask& mask = allMask()) {
+    data_ = data_ - detail::path<T, Ident...>(mask);
+  }
+};
+
 } // namespace apache::thrift::protocol

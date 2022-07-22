@@ -20,6 +20,8 @@
 
 using apache::thrift::protocol::allMask;
 using apache::thrift::protocol::Mask;
+using apache::thrift::protocol::MaskWrapper;
+using apache::thrift::protocol::MaskWrapperInit;
 using apache::thrift::protocol::noneMask;
 using namespace apache::thrift::protocol::detail;
 
@@ -1037,5 +1039,253 @@ TEST(FieldMaskTest, LogicalOpIncludesExcludes) {
     excludes[7] = allMask();
   }
   EXPECT_EQ(maskB - maskA, maskSubtractBA);
+}
+
+TEST(FieldMaskTest, MaskWrapperSimple) {
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+    wrapper.excludes();
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+    wrapper.includes();
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+    wrapper.excludes(noneMask());
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+    wrapper.includes();
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+    wrapper.excludes();
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+    wrapper.includes(noneMask());
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+  }
+
+  // Test includes
+  {
+    // includes{1: excludes{},
+    //          3: excludes{}}
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field1>();
+    wrapper.includes<tag::field2>();
+    Mask expected;
+    auto& includes = expected.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[3] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    EXPECT_THROW(wrapper.includes<tag::foo>(), std::runtime_error);
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    wrapper.includes<tag::field1>();
+    wrapper.includes<tag::field2>();
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+  }
+  {
+    // includes{1: excludes{}}
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field1>();
+    wrapper.includes<tag::field1>(); // including twice is fine
+    Mask expected;
+    expected.includes_ref().emplace()[1] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+
+  // Test excludes
+  {
+    // excludes{3: excludes{}}
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field1>(noneMask());
+    wrapper.excludes<tag::field2>();
+    Mask expected;
+    expected.excludes_ref().emplace()[3] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    EXPECT_THROW(wrapper.excludes<tag::foos>(), std::runtime_error);
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    wrapper.excludes<tag::field1>();
+    wrapper.excludes<tag::field2>();
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+  }
+  {
+    // excludes{3: excludes{}}
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field2>();
+    wrapper.excludes<tag::field2>(); // excluding twice is fine
+    Mask expected;
+    expected.excludes_ref().emplace()[3] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+
+  // Test includes and excludes
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field2>();
+    wrapper.excludes<tag::field2>(); // excluding the field we included
+    EXPECT_EQ(wrapper.toThrift(), noneMask());
+  }
+  {
+    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field2>();
+    wrapper.includes<tag::field2>(); // including the field we excluded
+    EXPECT_EQ(wrapper.toThrift(), allMask());
+  }
+}
+
+TEST(FieldMaskTest, MaskWrapperNested) {
+  // Test includes
+  {
+    // includes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field_3, tag::field_1>();
+    Mask expected;
+    expected.includes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // includes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field_3, tag::field_1>();
+    wrapper.includes<tag::field_3, tag::field_1>(); // including twice is fine
+    Mask expected;
+    expected.includes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // includes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    Mask nestedMask;
+    nestedMask.includes_ref().emplace()[1] = allMask();
+    wrapper.includes<tag::field_3>(nestedMask);
+    Mask expected;
+    expected.includes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // includes{1: includes{1: excludes{},
+    //                      2: excludes{}},
+    //          2: excludes{}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field_4>();
+    wrapper.includes<tag::field_3, tag::field_1>();
+    wrapper.includes<tag::field_3, tag::field_2>();
+    Mask expected;
+    auto& includes = expected.includes_ref().emplace();
+    includes[2] = allMask();
+    auto& includes2 = includes[1].includes_ref().emplace();
+    includes2[1] = allMask();
+    includes2[2] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // includes{1: excludes{}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field_3, tag::field_1>();
+    wrapper.includes<tag::field_3>();
+    Mask expected;
+    expected.includes_ref().emplace()[1] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    EXPECT_THROW(
+        (wrapper.includes<tag::field_3, tag::field_4>()), std::runtime_error);
+  }
+
+  // Test excludes
+  {
+    // excludes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field_3, tag::field_1>();
+    Mask expected;
+    expected.excludes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // excludes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field_3, tag::field_1>();
+    wrapper.excludes<tag::field_3, tag::field_1>(); // excluding twice is fine
+    Mask expected;
+    expected.excludes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // excludes{1: includes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    Mask nestedMask;
+    nestedMask.includes_ref().emplace()[1] = allMask();
+    wrapper.excludes<tag::field_3>(nestedMask);
+    Mask expected;
+    expected.excludes_ref().emplace()[1].includes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // excludes{1: includes{1: excludes{},
+    //                      2: excludes{}},
+    //          2: excludes{}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field_4>();
+    wrapper.excludes<tag::field_3, tag::field_1>();
+    wrapper.excludes<tag::field_3, tag::field_2>();
+    Mask expected;
+    auto& excludes = expected.excludes_ref().emplace();
+    excludes[2] = allMask();
+    auto& includes = excludes[1].includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // excludes{1: excludes{}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field_3, tag::field_1>();
+    wrapper.excludes<tag::field_3>();
+    Mask expected;
+    expected.excludes_ref().emplace()[1] = allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    EXPECT_THROW(
+        (wrapper.excludes<tag::field_3, tag::field_4>()), std::runtime_error);
+  }
+
+  // Test includes and excludes
+  {
+    // includes{1: excludes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::field_3>();
+    wrapper.excludes<tag::field_3, tag::field_1>();
+    Mask expected;
+    expected.includes_ref().emplace()[1].excludes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
+  {
+    // excludes{1: excludes{1: excludes{}}}
+    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::field_3>();
+    wrapper.includes<tag::field_3, tag::field_1>();
+    Mask expected;
+    expected.excludes_ref().emplace()[1].excludes_ref().emplace()[1] =
+        allMask();
+    EXPECT_EQ(wrapper.toThrift(), expected);
+  }
 }
 } // namespace apache::thrift::test
