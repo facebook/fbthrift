@@ -1,19 +1,23 @@
+---
+state: draft
+---
+
 # Annotations
 
 ## Structured Annotations
 
-Structured annotations are structural constants attached to the named IDL entities, typically representing some metadata or altering the compiler behavior. They have a value-only semantic and are specified via `@Annotation{key1=value1, key2=value2}` syntax before the [Definitions](../index.md). Each definition may have several annotations with no duplicates allowed. `@Annotation` can be used as a syntactic sugar for `@Annotation{}`.
+Structured annotations are structural constants attached to the named IDL entities, typically representing some metadata or altering the compiler behavior. They are specified via `@Annotation{key1=value1, key2=value2, ...}` syntax before the [Definitions](../index.md). Each definition may have several annotations with no duplicates allowed. `@Annotation` can be used as a syntactic sugar for `@Annotation{}`.
 
 ### Grammar
 
 ```
-`StructuredAnnotations ::= NonEmptyStructuredAnnotationList | NULL
+StructuredAnnotations ::= NonEmptyStructuredAnnotationList | ""
 
 NonEmptyStructuredAnnotationList ::=
     NonEmptyStructuredAnnotationList StructuredAnnotation
   | StructuredAnnotation
 
-StructuredAnnotation ::= "@" ConstStruct | "@" ConstStructType`
+StructuredAnnotation ::= "@" ConstStruct | "@" ConstStructType
 ```
 
 ### Examples
@@ -21,7 +25,7 @@ StructuredAnnotation ::= "@" ConstStruct | "@" ConstStructType`
 Here's a comprehensive list of various annotated entities.
 
 ```
-`struct FirstAnnotation {
+struct FirstAnnotation {
   1: string name;
   2: i64 count = 1;
 }
@@ -69,7 +73,7 @@ enum MyEnum {
 @FirstAnnotation{name="my_hack_enum"}
 const map<string, string> MyConst = {
   "ENUMERATOR": "value",
-}`
+}
 ```
 
 ## Unstructured Annotations (Deprecated)
@@ -77,7 +81,7 @@ const map<string, string> MyConst = {
 Unstructured annotations are structured as key-value pairs where the key is a string and the value is either a string or a const structure. They may be applied to [definitions](../index.md) in the Thrift language, following that construct.
 
 ```
-`Annotations ::=
+Annotations ::=
   "(" AnnotationList ["," | ";"] ")" |
   "(" ")"
 
@@ -86,7 +90,7 @@ AnnotationList ::=
   Annotation
 
 Annotation ::=
-  Name [ "=" ( Name | StringLiteral ) ]`
+  Name [ "=" ( Name | StringLiteral ) ]
 ```
 
 If a value is not present, then the default value of `"1"` (a string) is assumed.
