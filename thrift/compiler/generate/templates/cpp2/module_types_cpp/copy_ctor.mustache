@@ -17,6 +17,11 @@
 %><%struct:cpp_underlying_name%>::<%struct:cpp_underlying_name%>(const <%struct:cpp_underlying_name%>& srcObj)<%!
 %><%^struct:fields?%>{}<%/struct:fields?%><%!
 %><%#struct:fields?%> :
+<%#struct:cpp_allocator%>
+<%^struct:cpp_allocator_via%>
+    __fbthrift_alloc(srcObj.__fbthrift_alloc),
+<%/struct:cpp_allocator_via%>
+<%/struct:cpp_allocator%>
 <%#struct:fields_in_layout_order%>
 <%^field:transitively_refers_to_unique?%>
     <%field:cpp_storage_name%>(srcObj.<%field:cpp_storage_name%>)<%^last?%>,

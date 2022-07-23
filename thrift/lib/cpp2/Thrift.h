@@ -28,6 +28,8 @@
 #include <folly/functional/Invoke.h>
 
 #include <cstdint>
+#include <memory>
+#include <type_traits>
 
 namespace apache {
 namespace thrift {
@@ -377,6 +379,52 @@ enum LazyDeserializationState : uint8_t { // Bitfield.
   UNTAINTED = 1 << 0,
   DESERIALIZED = 1 << 1,
 };
+
+template <typename Alloc>
+void move_allocator_impl(std::false_type, Alloc&, Alloc&) {}
+
+template <typename Alloc>
+void move_allocator_impl(std::true_type, Alloc& dst, Alloc& other) {
+  dst = std::move(other);
+}
+
+template <typename Alloc>
+void move_allocator(Alloc& dst, Alloc& other) {
+  using alloc_traits = std::allocator_traits<Alloc>;
+  using pocma = typename alloc_traits::propagate_on_container_move_assignment;
+  move_allocator_impl(pocma{}, dst, other);
+}
+
+template <typename Alloc>
+void copy_allocator_impl(std::false_type, Alloc&, const Alloc&) {}
+
+template <typename Alloc>
+void copy_allocator_impl(std::true_type, Alloc& dst, const Alloc& other) {
+  dst = other;
+}
+
+template <typename Alloc>
+void copy_allocator(Alloc& dst, const Alloc& other) {
+  using alloc_traits = std::allocator_traits<Alloc>;
+  using pocca = typename alloc_traits::propagate_on_container_copy_assignment;
+  copy_allocator_impl(pocca{}, dst, other);
+}
+
+template <typename Alloc>
+void swap_allocators_impl(std::false_type, Alloc&, Alloc&) {}
+
+template <typename Alloc>
+void swap_allocators_impl(std::true_type, Alloc& a, Alloc& b) {
+  using namespace std;
+  swap(a, b);
+}
+
+template <typename Alloc>
+void swap_allocators(Alloc& a, Alloc& b) {
+  using alloc_traits = std::allocator_traits<Alloc>;
+  using pocs = typename alloc_traits::propagate_on_container_swap;
+  swap_allocators_impl(pocs{}, a, b);
+}
 
 } // namespace detail
 

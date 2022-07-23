@@ -48,6 +48,11 @@
 <%#struct:isset_fields?%>
     __isset = other.__isset;
 <%/struct:isset_fields?%>
+<%#struct:cpp_allocator%>
+<%^struct:cpp_allocator_via%>
+  ::apache::thrift::detail::move_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
+<%/struct:cpp_allocator_via%>
+<%/struct:cpp_allocator%>
     return *this;
 }
 
