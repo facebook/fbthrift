@@ -22,6 +22,14 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#if __has_include(<thrift/lib/thrift/gen-cpp2/any_rep_types.h>)
+#include <thrift/lib/cpp2/type/Any.h>
+#include <thrift/lib/cpp2/type/AnyRef.h>
+#include <thrift/lib/cpp2/type/AnyValue.h>
+#include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/TypeRegistry.h>
+#define THRIFT_ANY_AVAILABLE
+#endif
 
 using namespace std;
 using namespace folly;
@@ -46,6 +54,38 @@ namespace ac {
 [[noreturn]] void throw_app_exn(char const* const msg) {
   throw TApplicationException(msg);
 }
+
+folly::exception_wrapper try_extract_any_exception(
+    const apache::thrift::transport::THeader::StringToStringMap& headers) {
+#ifdef THRIFT_ANY_AVAILABLE
+  auto anyexTypePtr = folly::get_ptr(
+      headers, std::string(apache::thrift::detail::kHeaderAnyexType));
+  if (!anyexTypePtr) {
+    return {};
+  }
+  auto anyexPtr = folly::get_ptr(
+      headers, std::string(apache::thrift::detail::kHeaderAnyex));
+  if (!anyexPtr) {
+    return {};
+  }
+
+  try {
+    type::SemiAny builder;
+    builder.type() = type::Type(type::exception_c{}, *anyexTypePtr);
+    builder.protocol() = type::Protocol::get<type::StandardProtocol::Compact>();
+    builder.data() = *protocol::base64Decode(*anyexPtr);
+    type::AnyData data(builder);
+    if (auto ew = apache::thrift::type::TypeRegistry::generated()
+                      .load(data)
+                      .asExceptionWrapper()) {
+      return ew;
+    }
+  } catch (...) {
+  }
+#endif
+  return {};
+}
+
 } // namespace ac
 } // namespace detail
 

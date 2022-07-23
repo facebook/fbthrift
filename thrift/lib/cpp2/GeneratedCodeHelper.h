@@ -45,14 +45,6 @@
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
-#if __has_include(<thrift/lib/thrift/gen-cpp2/any_rep_types.h>)
-#include <thrift/lib/cpp2/type/Any.h>
-#include <thrift/lib/cpp2/type/AnyRef.h>
-#include <thrift/lib/cpp2/type/AnyValue.h>
-#include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/TypeRegistry.h>
-#define THRIFT_ANY_AVAILABLE
-#endif
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -490,6 +482,9 @@ folly::exception_wrapper extract_exn(PResult& result) {
   return ew;
 }
 
+folly::exception_wrapper try_extract_any_exception(
+    const apache::thrift::transport::THeader::StringToStringMap& headers);
+
 template <typename Protocol, typename PResult>
 folly::exception_wrapper recv_wrapped_helper(
     Protocol* prot, ClientReceiveState& state, PResult& result) {
@@ -509,33 +504,12 @@ folly::exception_wrapper recv_wrapped_helper(
     //       "corrupted response");
     // }
     if (mtype == MessageType::T_EXCEPTION) {
-#ifdef THRIFT_ANY_AVAILABLE
       if (state.header()) {
-        auto anyexTypePtr = folly::get_ptr(
-            state.header()->getHeaders(),
-            std::string(apache::thrift::detail::kHeaderAnyexType));
-        auto anyexPtr = folly::get_ptr(
-            state.header()->getHeaders(),
-            std::string(apache::thrift::detail::kHeaderAnyex));
-
-        if (anyexTypePtr && anyexPtr) {
-          try {
-            type::SemiAny builder;
-            builder.type() = type::Type(type::exception_c{}, *anyexTypePtr);
-            builder.protocol() =
-                type::Protocol::get<type::StandardProtocol::Compact>();
-            builder.data() = *protocol::base64Decode(*anyexPtr);
-            type::AnyData data(builder);
-            if (auto ew = apache::thrift::type::TypeRegistry::generated()
-                              .load(data)
-                              .asExceptionWrapper()) {
-              return ew;
-            }
-          } catch (...) {
-          }
+        if (auto anyEx =
+                try_extract_any_exception(state.header()->getHeaders())) {
+          return anyEx;
         }
       }
-#endif
       TApplicationException x;
       apache::thrift::detail::deserializeExceptionBody(prot, &x);
       return folly::exception_wrapper(std::move(x));
