@@ -240,10 +240,40 @@ struct Union {
   2: Fields fields;
 }
 
+/** The error kind. */
+enum ErrorKind {
+  /** The error kind was not specified. The associated RPC might succeed if retried. */
+  Unspecified = 0,
+  /** The associated RPC might succeed if retried. */
+  Transient = 1,
+  /** The server state must be change for the associated RPC to have any chance of succeeding. */
+  Stateful = 2,
+  /** The associated RPC can never succeed and should not be retried. */
+  Permanent = 3,
+}
+
+/** The error blame. */
+enum ErrorBlame {
+  /** The blame for the error was not specified. */
+  Unspecified = 0,
+  /** The error was the fault of the server. */
+  Server = 1,
+  /** The error was the fault of the client's request. */
+  Client = 2,
+}
+
+/** The error safety. */
+enum ErrorSafety {
+  /** The safety for the error was not specified. */
+  Unspecified = 0,
+  /** The failed RPC has no side effects. */
+  Safe = 1,
+}
+
 /**
  * A Thrift exception.
  *
- *   exception {definition.name} { ... fields ... }
+ *  {safety} {kind} {blame} exception {definition.name} { ... fields ... }
  */
 struct Exception {
   /** The definition attributes. */
@@ -256,6 +286,15 @@ struct Exception {
    * Changing the order of the fields is always backward compatible.
    */
   2: Fields fields;
+
+  /** The safety of the exception. */
+  3: ErrorSafety safety;
+
+  /** The error kind of the exception. */
+  4: ErrorKind kind;
+
+  /** The fault attribution of the exception. */
+  5: ErrorBlame blame;
 }
 
 /**
