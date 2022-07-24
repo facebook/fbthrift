@@ -213,9 +213,12 @@ A contiguous buffer means several advantages:
 * For offline use (serializing Thrift struct to disk, etc.), `mmap`able data.
 * To read values from buffer after serialization, location of the value is already known (think of a C struct), so values can be extracted in-place. Using specialized API is sometimes required.
 
+### Debug Protocol
+
+This protocol prints the Thrift object as a human readable, nicely indented string. It is write only now, you cannot deserialize from such a string. There is no guarantee that the format won't change -- it might be evolved in a non-backward compatible way. It should only be used for logging.
+
 ## Deprecated
 
 - JSON. This protocol serializes Thrift objects into JSON objects (see [yaml](../experimental/yaml.md)).
 - SimpleJSON. This protocol is similar with JSON, it is simpler because it doesn't output verbose field type (see [yaml](../experimental/yaml.md)).
-* Debug. This protocol prints the Thrift object as a human readable, nicely indented string. It is write only now, you cannot deserialize from such a string.
 * Phpserialize. This protocol serializes Thrift objects into PHP's "serialize" format. It is write only now, you cannot deserialize from PHP.
