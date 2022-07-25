@@ -2447,7 +2447,7 @@ AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
 }
 
 AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {
-  AllocatorAware tmp(other, __fbthrift_alloc);
+  AllocatorAware tmp(other, get_allocator());
   swap(*this, tmp);
   ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
   return *this;
@@ -2660,7 +2660,7 @@ AllocatorAware2::AllocatorAware2(const AllocatorAware2& srcObj) :
 }
 
 AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2& other) {
-  AllocatorAware2 tmp(other, __fbthrift_alloc);
+  AllocatorAware2 tmp(other, get_allocator());
   swap(*this, tmp);
   ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
   return *this;
