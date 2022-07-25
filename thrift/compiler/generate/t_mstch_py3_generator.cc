@@ -36,8 +36,10 @@ namespace {
 
 std::vector<t_function*> lifecycleFunctions() {
   static t_function onStartServing_{
-      nullptr, t_base_type::t_void(), "onStartServing"},
-      onStopRequested_{nullptr, t_base_type::t_void(), "onStopRequested"};
+      nullptr, t_base_type::t_void(), "onStartServing"};
+  static t_function onStopRequested_{
+      nullptr, t_base_type::t_void(), "onStopRequested"};
+
   return {&onStartServing_, &onStopRequested_};
 }
 
@@ -395,7 +397,7 @@ class mstch_py3_program : public mstch_program {
     visit_types_for_typedefs();
     visit_types_for_mixin_fields();
 
-    for (auto func : lifecycleFunctions()) {
+    for (const auto* func : lifecycleFunctions()) {
       addFunctionByUniqueReturnType(func);
     }
   }
@@ -1008,9 +1010,10 @@ class mstch_py3_struct : public mstch_struct {
 
   mstch::node fields_and_mixin_fields() {
     std::vector<t_field const*> fields = py3_fields_;
-    for (auto m : cpp2::get_mixins_and_members(*strct_)) {
+    for (const auto& m : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(m.member);
     }
+
     return generate_fields(fields);
   }
 
