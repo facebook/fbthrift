@@ -83,11 +83,9 @@ public class MyServiceRpcServerHandler
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dofoo(
     MyService.Reactive _delegate,
-    String _name,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
     java.util.List<com.facebook.thrift.payload.Reader> _readers,
-    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object>_data = _payload.getData(_readers);
           java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
@@ -173,11 +171,9 @@ public class MyServiceRpcServerHandler
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dointeract(
     MyService.Reactive _delegate,
-    String _name,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
     java.util.List<com.facebook.thrift.payload.Reader> _readers,
-    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object>_data = _payload.getData(_readers);
           java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
@@ -266,11 +262,9 @@ oprot.writeI32(_iter0);
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dointeractFast(
     MyService.Reactive _delegate,
-    String _name,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
     java.util.List<com.facebook.thrift.payload.Reader> _readers,
-    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object>_data = _payload.getData(_readers);
           java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
@@ -328,29 +322,35 @@ oprot.writeI32(_iter0);
   public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 
+    com.facebook.swift.service.ContextChain _chain;
+    try {
+      _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    } catch (Throwable _t) {
+      org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(_t.getMessage());
+      com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), null);
+      return reactor.core.publisher.Mono.just(_serverResponsePayload);
+    }
+
     reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
         case "foo":
-          _result = _dofoo(_delegate, _name, _payload, _fooReaders, _eventHandlers);
+          _result = _dofoo(_delegate, _payload, _fooReaders, _chain);
         break;
         case "interact":
-          _result = _dointeract(_delegate, _name, _payload, _interactReaders, _eventHandlers);
+          _result = _dointeract(_delegate, _payload, _interactReaders, _chain);
         break;
         case "interactFast":
-          _result = _dointeractFast(_delegate, _name, _payload, _interactFastReaders, _eventHandlers);
+          _result = _dointeractFast(_delegate, _payload, _interactFastReaders, _chain);
         break;
         default: {
-            final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
             _chain.preRead();
-
             org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name);
             com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
             return reactor.core.publisher.Mono.just(_serverResponsePayload);
         }
       }
     } catch (org.apache.thrift.TApplicationException _tApplicationException) {
-      final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
       com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
       return reactor.core.publisher.Mono.just(_serverResponsePayload);
     } catch (Throwable _t) {
@@ -363,6 +363,13 @@ oprot.writeI32(_iter0);
   @Override
   public reactor.core.publisher.Mono<Void> singleRequestNoResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
+
+    com.facebook.swift.service.ContextChain _chain;
+    try {
+      _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    } catch (Throwable _t) {
+      return reactor.core.publisher.Mono.error(_t);
+    }
 
     reactor.core.publisher.Mono<Void> _result;
     try {
