@@ -1942,7 +1942,7 @@ class CompilerFailureTest(unittest.TestCase):
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
             "[ERROR:bar.thrift:42] Field id `-1` does not mapped to valid internal id.\n"
             "[ERROR:bar.thrift:42] Field id `1000` does not mapped to valid internal id.\n"
-            "[ERROR:bar.thrift] Field `field1` is already defined for `Injected5`.\n",
+            "[ERROR:bar.thrift:11] Field `field1` is already defined for `Injected5`.\n",
         )
 
     def test_set_invalid_elem_type(self):

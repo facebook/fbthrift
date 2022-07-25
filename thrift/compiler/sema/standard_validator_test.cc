@@ -167,7 +167,7 @@ TEST_F(StandardValidatorTest, ReapeatedNamesInService) {
         &t_base_type::t_void(),
         "foo",
         std::make_unique<t_paramlist>(&program_));
-    fn2->set_lineno(2);
+    fn2->set_src_range({loc + 1, loc + 1});
     service->add_function(std::move(fn1));
     service->add_function(std::move(fn2));
     service->add_function(std::make_unique<t_function>(
@@ -184,12 +184,12 @@ TEST_F(StandardValidatorTest, ReapeatedNamesInService) {
         &t_base_type::t_void(),
         "bar",
         std::make_unique<t_paramlist>(&program_));
-    fn1->set_lineno(3);
+    fn1->set_src_range({loc + 2, loc + 2});
     auto fn2 = std::make_unique<t_function>(
         &t_base_type::t_void(),
         "bar",
         std::make_unique<t_paramlist>(&program_));
-    fn2->set_lineno(4);
+    fn2->set_src_range({loc + 3, loc + 3});
 
     interaction->add_function(std::make_unique<t_function>(
         &t_base_type::t_void(),
@@ -272,7 +272,7 @@ TEST_F(StandardValidatorTest, RepeatedNamesInEnumValues) {
 
   // Add enum_value with repeated name.
   auto enum_value_3 = std::make_unique<t_enum_value>("bar", 3);
-  enum_value_3->set_lineno(1);
+  enum_value_3->set_src_range({loc, loc});
   tenum_ptr->append(std::move(enum_value_3));
 
   // An error will be found.
@@ -435,7 +435,9 @@ TEST_F(StandardValidatorTest, RepeatedStructuredAnnotation) {
       &program_, &t_base_type::t_i32(), "Bar", &scope);
   bar->add_structured_annotation(inst(other_foo.get(), 1));
   bar->add_structured_annotation(inst(foo.get(), 2));
-  bar->add_structured_annotation(inst(foo.get(), 3));
+  auto annot = inst(foo.get(), 3);
+  annot->set_src_range({loc + 2, loc + 2});
+  bar->add_structured_annotation(std::move(annot));
 
   program_.add_def(std::move(foo));
   program_.add_def(std::move(bar));

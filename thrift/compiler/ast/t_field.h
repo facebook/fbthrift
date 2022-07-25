@@ -96,6 +96,7 @@ class t_field final : public t_named {
    */
   std::unique_ptr<t_field> clone_DO_NOT_USE() const {
     auto clone = std::make_unique<t_field>(type_, name_, id_);
+    clone->set_src_range(src_range());
 
     if (value_) {
       clone->value_ = value_->clone();

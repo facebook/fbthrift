@@ -16,19 +16,19 @@
 
 #pragma once
 
-#include <functional>
-#include <string>
+#include <map>
 #include <type_traits>
 #include <typeindex>
 #include <utility>
 
 #include <thrift/compiler/ast/ast_visitor.h>
-#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/diagnostic.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class t_node;
 
 // A cache for metadata associated with an AST node.
 //
@@ -93,11 +93,6 @@ class node_metadata_cache {
 // A context aware reporter for diagnostic results.
 class diagnostic_context : public diagnostics_engine,
                            public const_visitor_context {
- private:
-  template <typename With>
-  using if_with =
-      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
-
  public:
   using diagnostics_engine::diagnostics_engine;
 
@@ -128,79 +123,6 @@ class diagnostic_context : public diagnostics_engine,
   }
 
   using diagnostics_engine::report;
-
-  // TODO(afuller): Remove all deprecated overloads below.
-  void report(
-      diagnostic_level level,
-      int lineno,
-      std::string text,
-      std::string name = "") {
-    report({level, std::move(text), program().path(), lineno, std::move(name)});
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(
-      diagnostic_level level, int lineno, std::string name, With&& with) {
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    report({level, o.str(), program().path(), lineno, std::move(name)});
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(diagnostic_level level, int lineno, With&& with) {
-    report(level, lineno, {}, std::forward<With>(with));
-  }
-
-  void report(diagnostic_level level, const t_node& node, std::string msg) {
-    report(level, node.lineno(), std::move(msg));
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(diagnostic_level level, const t_node& node, With&& with) {
-    report(level, node.lineno(), std::forward<With>(with));
-  }
-
-  void report(
-      diagnostic_level level,
-      std::string name,
-      const t_node& node,
-      std::string msg) {
-    report(level, node.lineno(), std::move(msg), std::move(name));
-  }
-
-  template <typename With>
-  void report(
-      diagnostic_level level,
-      std::string name,
-      const t_node& node,
-      std::string msg,
-      With&& with) {
-    report(
-        level,
-        node.lineno(),
-        {},
-        std::move(msg),
-        std::move(name),
-        std::forward<With>(with));
-  }
-
-  // TODO(ytj): use path in t_node and delete this function overload
-  template <typename With>
-  void report(
-      diagnostic_level level,
-      const t_node& node,
-      std::string path,
-      With&& with) {
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    report({level, o.str(), std::move(path), node.lineno(), {}});
-  }
-
-  template <typename With>
-  void report(diagnostic_level level, With&& with) {
-    assert(current() != nullptr);
-    report(level, current()->lineno(), std::forward<With>(with));
-  }
 
  private:
   node_metadata_cache cache_;

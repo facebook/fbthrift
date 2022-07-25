@@ -36,7 +36,7 @@ TEST_F(AstMutatorTest, Output) {
   mutator.add_program_visitor([](diagnostic_context& ctx,
                                  mutator_context& mctx,
                                  t_program& program) {
-    ctx.report(diagnostic_level::info, program, "test");
+    ctx.report(program, diagnostic_level::info, "test");
     EXPECT_EQ(mctx.current(), &program);
     EXPECT_EQ(mctx.parent(), nullptr);
     EXPECT_EQ(mctx.root(), &program);
@@ -47,12 +47,14 @@ TEST_F(AstMutatorTest, Output) {
   source_manager source_mgr;
   diagnostic_results results;
   diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
+  auto loc = source_mgr.add_string(program.path(), "").start;
+  program.set_src_range({loc, loc});
   mutator_context mctx;
   mutator(ctx, mctx, program);
   EXPECT_THAT(
       results.diagnostics(),
-      UnorderedElementsAre(diagnostic(
-          diagnostic_level::info, "test", program.path(), program.lineno())));
+      UnorderedElementsAre(
+          diagnostic(diagnostic_level::info, "test", program.path(), 1)));
   ASSERT_EQ(program.services().size(), 1);
   EXPECT_EQ(program.services().front()->name(), "MagicService");
 }

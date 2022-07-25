@@ -46,18 +46,20 @@ TEST_F(AstValidatorTest, Output) {
   ast_validator validator;
   validator.add_program_visitor(
       [](diagnostic_context& ctx, const t_program& program) {
-        ctx.report(diagnostic_level::info, program, "test");
+        ctx.report(program, diagnostic_level::info, "test");
       });
 
   t_program program("path/to/program.thrift");
   source_manager source_mgr;
+  auto loc = source_mgr.add_string(program.path(), "").start;
+  program.set_src_range({loc, loc});
   diagnostic_results results;
   diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
   validator(ctx, program);
   EXPECT_THAT(
       results.diagnostics(),
-      UnorderedElementsAre(diagnostic(
-          diagnostic_level::info, "test", program.path(), program.lineno())));
+      UnorderedElementsAre(
+          diagnostic(diagnostic_level::info, "test", program.path(), 1)));
 }
 
 } // namespace

@@ -287,8 +287,11 @@ class basic_ast_visitor {
     auto make_func = [&](auto& arg) {
       return std::function<void()>([&] { ast_detail::end_visit(node, arg); });
     };
-    std::function<void()> funcs[] = {make_func(args)...};
-    for (int i = sizeof...(args); i > 0; --i) {
+    (void)make_func; // Suppress the dead store warning for zero args.
+    constexpr size_t num_args = sizeof...(args);
+    std::function<void()> funcs[num_args > 0 ? num_args : 1] = {
+        make_func(args)...};
+    for (size_t i = num_args; i > 0; --i) {
       funcs[i - 1]();
     }
   }

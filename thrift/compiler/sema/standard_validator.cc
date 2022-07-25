@@ -74,38 +74,29 @@ bool has_lazy_field(const t_structured& node) {
 
 // Reports an existing name was redefined within the given parent node.
 void report_redef_error(
-    diagnostic_context& ctx,
+    diagnostics_engine& diags,
     const char* kind,
     const std::string& name,
-    const std::string& path,
     const t_named& parent,
     const t_node& child,
     const t_node& /*existing*/) {
   // TODO(afuller): Use `existing` to provide more detail in the
   // diagnostic.
-  ctx.report(diagnostic_level::error, child, path, [&](auto& o) {
-    o << kind << " `" << name << "` is already defined for `" << parent.name()
-      << "`.";
-  });
-}
-
-void report_redef_error(
-    diagnostic_context& ctx,
-    const char* kind,
-    const std::string& name,
-    const t_named& parent,
-    const t_node& child,
-    const t_node& existing) {
-  report_redef_error(
-      ctx, kind, name, ctx.program().path(), parent, child, existing);
+  diags.report(
+      child,
+      diagnostic_level::error,
+      "{} `{}` is already defined for `{}`.",
+      kind,
+      name,
+      parent.name());
 }
 
 // Helper for checking for the redefinition of a name in the context of a node.
 class redef_checker {
  public:
   redef_checker(
-      diagnostic_context& ctx, const char* kind, const t_named& parent)
-      : ctx_(ctx), kind_(kind), parent_(parent) {}
+      diagnostics_engine& diags, const char* kind, const t_named& parent)
+      : diags_(diags), kind_(kind), parent_(parent) {}
 
   // Checks if the given `name`, derived from `node` via `child`, has already
   // been defined.
@@ -119,9 +110,9 @@ class redef_checker {
     if (const auto* existing = seen_.put(name, node)) {
       if (&node == &parent_ && existing == &parent_) {
         // The degenerate case where parent_ is conflicting with itself.
-        report_redef_error(ctx_, kind_, name, parent_, child, *existing);
+        report_redef_error(diags_, kind_, name, parent_, child, *existing);
       } else {
-        ctx_.error(
+        diags_.error(
             child,
             "{} `{}.{}` and `{}.{}` can not have same name in `{}`.",
             kind_,
@@ -142,7 +133,8 @@ class redef_checker {
   // For example, all functions in an interface.
   void check(const t_named& child) {
     if (const auto* existing = seen_.put(child)) {
-      report_redef_error(ctx_, kind_, child.name(), parent_, child, *existing);
+      report_redef_error(
+          diags_, kind_, child.name(), parent_, child, *existing);
     }
   }
   void check(t_named&& child) = delete;
@@ -155,7 +147,7 @@ class redef_checker {
   }
 
  private:
-  diagnostic_context& ctx_;
+  diagnostics_engine& diags_;
   const char* kind_;
   const t_named& parent_;
 
@@ -499,23 +491,22 @@ void validate_structured_annotation(
 void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
   // TODO: use string_view as map key
   std::unordered_map<std::string, const t_named*> uri_to_node;
-  basic_ast_visitor<true, const std::string&> visit;
-  visit.add_definition_visitor(
-      [&](const std::string& path, const t_named& node) {
-        const auto& uri = node.uri();
-        if (uri.empty() || uri == t_named::kTransitiveUri) {
-          return;
-        }
-        auto result = uri_to_node.emplace(uri, &node);
-        if (!result.second) {
-          report_redef_error(
-              ctx, "Thrift URI", uri, path, node, node, *result.first->second);
-        }
-      });
+  basic_ast_visitor<true> visit;
+  visit.add_definition_visitor([&](const t_named& node) {
+    const auto& uri = node.uri();
+    if (uri.empty() || uri == t_named::kTransitiveUri) {
+      return;
+    }
+    auto result = uri_to_node.emplace(uri, &node);
+    if (!result.second) {
+      report_redef_error(
+          ctx, "Thrift URI", uri, node, node, *result.first->second);
+    }
+  });
   for (const auto* p : prog.get_included_programs()) {
-    visit(p->path(), *p);
+    visit(*p);
   }
-  visit(prog.path(), prog);
+  visit(prog);
 }
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
