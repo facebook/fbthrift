@@ -34,3 +34,15 @@ service PingService {
   PingResponse pingException(1: PingRequest key) throws (1: CustomException ex);
   void pingVoid(1: PingRequest key);
 }
+
+service ExtendedPing extends PingService {
+  void pingExtended(1: PingRequest key);
+}
+
+service PingA {
+  PingResponse pingA(1: PingRequest key);
+}
+
+service PingB {
+  PingResponse pingB(1: PingRequest key);
+}
