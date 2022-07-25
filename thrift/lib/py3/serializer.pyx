@@ -77,7 +77,7 @@ def deserialize_from_header(structKlass, buf not None):
     cdef size_t needed = 0
     cdef unique_ptr[cIOBuf] cbuf
     try:
-        cbuf = header.removeHeader(&queue, needed, pheaders)
+        cbuf = _fbthrift_iobuf.move(header.removeHeader(&queue, needed, pheaders))
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None
     if cbuf == NULL:
