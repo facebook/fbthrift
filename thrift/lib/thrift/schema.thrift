@@ -427,7 +427,7 @@ typedef list<Function> Functions
 /**
  * A Thrift service.
  *
- *     service {definition.name} { ... functions ... }
+ *     service {definition.name} [extends {inheritedService}] { ... functions ... }
  */
 struct Service {
   /** The definition attributes. */
@@ -440,6 +440,11 @@ struct Service {
    * Changing the order of the fields is always backward compatible.
    */
   2: Functions functions;
+
+  /** The service that it inherits functions from. */
+  @thrift.Deprecated
+  @thrift.Box
+  3: optional Service inheritedService;
 }
 
 /** A list of definitions (Structs, Enums, Services, etc), accessible by `DefinitionId`. */
