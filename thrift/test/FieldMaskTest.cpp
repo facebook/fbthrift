@@ -1288,4 +1288,21 @@ TEST(FieldMaskTest, MaskWrapperNested) {
     EXPECT_EQ(wrapper.toThrift(), expected);
   }
 }
+
+TEST(FieldMaskTest, ReverseMask) {
+  EXPECT_EQ(reverseMask(allMask()), noneMask());
+  EXPECT_EQ(reverseMask(noneMask()), allMask());
+  // inclusiveMask and exclusiveMask are reverse of each other.
+  Mask inclusiveMask;
+  auto& includes = inclusiveMask.includes_ref().emplace();
+  includes[1] = allMask();
+  includes[2].includes_ref().emplace()[3] = allMask();
+  Mask exclusiveMask;
+  auto& excludes = exclusiveMask.excludes_ref().emplace();
+  excludes[1] = allMask();
+  excludes[2].includes_ref().emplace()[3] = allMask();
+
+  EXPECT_EQ(reverseMask(inclusiveMask), exclusiveMask);
+  EXPECT_EQ(reverseMask(exclusiveMask), inclusiveMask);
+}
 } // namespace apache::thrift::test

@@ -31,6 +31,9 @@ inline const Mask& noneMask() {
   return field_mask_constants::noneMask();
 }
 
+// Constructs a new FieldMask that is reverse of the given mask.
+Mask reverseMask(const Mask& mask);
+
 // Removes masked fields in schemaless Thrift Object (Protocol Object).
 // Throws a runtime exception if the mask and object are incompatible.
 void clear(const Mask& mask, protocol::Object& t);

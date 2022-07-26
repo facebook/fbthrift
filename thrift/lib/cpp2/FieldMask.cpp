@@ -20,6 +20,16 @@ using apache::thrift::protocol::FieldIdToMask;
 
 namespace apache::thrift::protocol {
 
+Mask reverseMask(const Mask& mask) {
+  Mask reverse;
+  if (mask.includes_ref()) {
+    reverse.excludes_ref() = mask.includes_ref().value();
+  } else {
+    reverse.includes_ref() = mask.excludes_ref().value();
+  }
+  return reverse;
+}
+
 void clear(const Mask& mask, protocol::Object& obj) {
   (detail::MaskRef{mask, false}).clear(obj);
 }
