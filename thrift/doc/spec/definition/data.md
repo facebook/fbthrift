@@ -4,7 +4,7 @@ Types that can be (de)serialized using [data protocols](../protocol/data.md).
 
 ## Primitive Types
 
-Type | Encoding
+Type | Definition
 ---|---
 `bool` | True(1) or False(0)
 `byte` | 8-bit signed integer[^1]
@@ -22,12 +22,19 @@ Type | Encoding
 
 [^3]: [UTF-8 encoding](https://en.wikipedia.org/wiki/UTF-8)
 
+Each primitive type defines an intrinsic default:
+
+- numbers → 0
+- string, binary → “”
+
 ### Enum
 
 Enums are `i32` with named values. Enums *can* represent unnamed values. In ‘open’ enum languages, like C++, this is natively supported. For ‘closed’ enum languages, like Java, special care **must** be taken to allow any value to be read or written to an enum field, even if the value has no name (or the name is not known). Such languages **should** add:
 
 - an explicit `Unrecognized` enum value, which is returned for any unnamed value; and,
 - auxiliary methods for get/setting the underlying i32 value.
+
+If no name is declared for the default/0 value, Thrift uses `Unspecified`.
 
 ### Floating Point
 
@@ -39,16 +46,9 @@ While a Thrift `string` **must** always be valid UTF-8, it is treated is identic
 
 ## Primitive Operators
 
-### default
-
-Each primitive type defines an intrinsic default:
-
-- numbers → 0
-- string, binary → “”
-
 ### identical
 
-Primitive types are identical, if their logical representations are identical. This produces the same results as equal in all cases except floating point, which has two exceptions:
+Primitive values are identical, if their logical representations are identical. This produces the same results as equal in all cases except floating point, which has two exceptions:
 
     identical(NaN, NaN) == true
     identical(-0.0, 0.0) == false
@@ -60,12 +60,16 @@ Same-type equality follows the semantic rules defined by that type’s specifica
     equal(NaN, NaN) == false
     equal(-0.0, 0.0) == true
 
-Additionally, different numeric types can be tested for equality, in which case they are considered equal when they semantically represent equal numbers:
+Additionally, values of different numeric types can be tested for equality, in which case they are considered equal if they semantically represent equal numbers:
 
     equal(2.0, 2.0f) == equal(2.0f, 2) == true
     equal(-0.0, 0.0f) == equal(-0.0f, 0) == true
 
 Equal between other primitive types is ill-defined, and not supported.
+
+### empty
+
+A primitive value is considered **empty** if it is **identical** to its intrinsic default.
 
 ### hash
 
@@ -88,10 +92,39 @@ Set and map keys can be any Thrift type; however, storing `NaN` in a key value i
 
 All container operators are defined based on values they contain:
 
-- **default** - An empty container.
 - **identical** - Two containers are identical if they contain pairwise identical elements. For list, the elements must also be in the same order.
 - **equal** - Two containers are equal if they contain pairwise equal elements. For list, the elements must also be in the same order.
+- **empty** - A container is **empty** if it contains no elements.
 - **hash** - Unordered accumulation, for set and map, and ordered accumulation for list and map key-value pairs, of hashes of all contained elements.
+
+## Structured Types
+
+Type | Definition
+---|---
+[field](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#Field) | a (id, value) pair.
+`struct` | Unordered container of fields. Both field names and ids are unique.
+`exception` | Same as `struct`, except can be thrown.
+`union` | Similar to `struct`, except at most 1 field can be set.
+
+Structured types have both a 'custom' and 'intrinsic' default value, where the 'intrinsic' default of the structure type ignores all [field](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#Field) custom default values. Custom defaults are **only** used when constructing a new structured value, accessing the 'default' of a structured type, or parsing a field with [`Fill`](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#FieldQualifier.Fill) semantics (the default pre-v1). They are ignored in all other contexts. For example, if a structured value is 'cleared', all of its fields are set to their intrinsic defaults, ignoring all specified custom defaults.
+
+## Structured Operators
+
+Thrift only considers a [field](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#Field)'s `id` and `value` in operators. Similar to `map` operators, structured operators are defined recursively based on the (id, value) pairs of the fields the structured value 'contains':
+
+- **identical** - Two structured values are identical if they contain pairwise identical field (id, value) pairs.
+- **equal** - Two structured values are equal if they contain pairwise equal field (id, value) pairs.
+- **empty** - A structured value is **empty** if all of its fields are **empty**.
+- **hash** - Unordered accumulation of, the ordered accumulation of, all non-**empty** field (id, value) pair hashes.
+
+A field is **empty** if:
+
+- it is an [`Optional`](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#FieldQualifier.Optional) or `union` field, and the value is 'unset'; or,
+- it is a [`Terse`](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#FieldQualifier.Terse) field, and the value is **empty**.
+
+When a field is **empty**, no data is written for it; otherwise, the `id` and value are written. When all fields are **empty**, no data is written when serializing the structured value.
+
+**Note** that, a structured type with a [`Fill`](https://github.com/facebook/fbthrift/tree/main/thrift/lib/thrift/schema.thrift#FieldQualifier.Fill) field (the default before v1), cannot represent an **empty** value, and will **always** output data when serialized.
 
 ## Standard Data Types
 
