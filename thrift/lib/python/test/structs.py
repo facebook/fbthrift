@@ -71,6 +71,13 @@ class StructTests(unittest.TestCase):
         dif_int = copy.copy(x.an_int)
         self.assertEqual(x.an_int, dif_int)
 
+    def test_deepcopy(self) -> None:
+        x = easy(val=1, an_int=Integers(small=300), name="bar", val_list=[1, 2, 3, 4])
+        dif = copy.deepcopy(x)
+        self.assertEqual(x.val, dif.val)
+        self.assertEqual(x.val_list, dif.val_list)
+        self.assertEqual(x.name, dif.name)
+
     def test_hashability(self) -> None:
         hash(easy())
 
@@ -258,7 +265,7 @@ class StructTests(unittest.TestCase):
 
     def test_to_python(self) -> None:
         e = easy()
-        self.assertEquals(e, e._to_python())
+        self.assertEqual(e, e._to_python())
 
 
 class NumericalConversionsTests(unittest.TestCase):

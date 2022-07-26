@@ -434,6 +434,9 @@ cdef class Struct(StructOrUnion):
         # deep copy the instance
         return self._fbthrift_create(copy.deepcopy(self._fbthrift_data))
 
+    def __deepcopy__(Struct self, _):
+        return self.__copy__()
+
     def __eq__(Struct self, other):
         if type(other) != type(self):
             return False
