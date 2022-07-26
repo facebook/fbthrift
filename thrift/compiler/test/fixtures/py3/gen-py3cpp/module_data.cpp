@@ -27,6 +27,17 @@ const std::array<folly::StringPiece, 5> TEnumDataStorage<::py3::simple::AnEnum>:
   "FOUR",
 }};
 
+const std::array<::py3::simple::AnEnumRenamed, 3> TEnumDataStorage<::py3::simple::AnEnumRenamed>::values = {{
+  type::name,
+  type::value,
+  type::normal,
+}};
+const std::array<folly::StringPiece, 3> TEnumDataStorage<::py3::simple::AnEnumRenamed>::names = {{
+  "name",
+  "value",
+  "normal",
+}};
+
 const std::array<::py3::simple::Flags, 4> TEnumDataStorage<::py3::simple::Flags>::values = {{
   type::flag_A,
   type::flag_B,

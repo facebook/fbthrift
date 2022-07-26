@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,12 @@ enum AnEnum {
   TWO = 2,
   THREE = 3,
   FOUR = 4,
+}
+
+enum AnEnumRenamed {
+  name = 0 (py3.name = "name_"),
+  value = 1 (py3.name = "value_"),
+  normal = 2 (py3.name = "renamed_"),
 }
 
 enum Flags {
@@ -116,6 +122,7 @@ const map<string, SimpleStruct> A_CONST_MAP = {
     "real": 99.9,
   },
 };
+const map<AnEnumRenamed, i32> ANOTHER_CONST_MAP = {name: 0,value: 1,normal: 2,};
 
 service SimpleService {
   i32 get_five();

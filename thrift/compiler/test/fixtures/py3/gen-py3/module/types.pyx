@@ -99,6 +99,48 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> AnEnum, <PyTypeObject*> __AnEnumMeta)
 
 
+cdef __EnumData __AnEnumRenamed_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cAnEnumRenamed](), AnEnumRenamed)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __AnEnumRenamedMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __AnEnumRenamed_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __AnEnumRenamed_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __AnEnumRenamed_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __AnEnumRenamed_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class AnEnumRenamed(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __AnEnumRenamed_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cAnEnumRenamed].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.AnEnumRenamed"
+
+
+__SetMetaClass(<PyTypeObject*> AnEnumRenamed, <PyTypeObject*> __AnEnumRenamedMeta)
+
+
 cdef __EnumFlagsData __Flags_enum_data  = __EnumFlagsData._fbthrift_create(thrift.py3.types.createEnumFlagsData[cFlags](), Flags)
 
 
@@ -2968,6 +3010,102 @@ cdef class List__Map__i32_double(thrift.py3.types.List):
 
 Sequence.register(List__Map__i32_double)
 
+@__cython.auto_pickle(False)
+cdef class Map__AnEnumRenamed_i32(thrift.py3.types.Map):
+    def __init__(self, items=None):
+        if isinstance(items, Map__AnEnumRenamed_i32):
+            self._cpp_obj = (<Map__AnEnumRenamed_i32> items)._cpp_obj
+        else:
+            self._cpp_obj = Map__AnEnumRenamed_i32._make_instance(items)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cmap[cAnEnumRenamed,cint32_t]] c_items):
+        __fbthrift_inst = <Map__AnEnumRenamed_i32>Map__AnEnumRenamed_i32.__new__(Map__AnEnumRenamed_i32)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(Map__AnEnumRenamed_i32 self):
+        cdef shared_ptr[cmap[cAnEnumRenamed,cint32_t]] cpp_obj = make_shared[cmap[cAnEnumRenamed,cint32_t]](
+            deref(self._cpp_obj)
+        )
+        return Map__AnEnumRenamed_i32._fbthrift_create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[cmap[cAnEnumRenamed,cint32_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[cAnEnumRenamed,cint32_t]] c_inst = make_shared[cmap[cAnEnumRenamed,cint32_t]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, AnEnumRenamed):
+                    raise TypeError(f"{key!r} is not of type AnEnumRenamed")
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                item = <cint32_t> item
+
+                deref(c_inst)[<cAnEnumRenamed><int>key] = item
+        return c_inst
+
+    cdef _check_key_type(self, key):
+        if not self or key is None:
+            return
+        if isinstance(key, AnEnumRenamed):
+            return key
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        key = self._check_key_type(key)
+        if key is None:
+            raise err
+        cdef cAnEnumRenamed ckey = <cAnEnumRenamed><int>key
+        if not __map_contains(self._cpp_obj, ckey):
+            raise err
+        cdef cint32_t citem = 0
+        __map_getitem(self._cpp_obj, ckey, citem)
+        return citem
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cAnEnumRenamed,cint32_t]] itr = __map_iter[cmap[cAnEnumRenamed,cint32_t]](self._cpp_obj)
+        cdef cAnEnumRenamed citem
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextKey(self._cpp_obj, citem)
+            yield translate_cpp_enum_to_python(AnEnumRenamed, <int> citem)
+
+    def __contains__(self, key):
+        key = self._check_key_type(key)
+        if key is None:
+            return False
+        cdef cAnEnumRenamed ckey = <cAnEnumRenamed><int>key
+        return __map_contains(self._cpp_obj, ckey)
+
+    def values(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cAnEnumRenamed,cint32_t]] itr = __map_iter[cmap[cAnEnumRenamed,cint32_t]](self._cpp_obj)
+        cdef cint32_t citem = 0
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextValue(self._cpp_obj, citem)
+            yield citem
+
+    def items(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cAnEnumRenamed,cint32_t]] itr = __map_iter[cmap[cAnEnumRenamed,cint32_t]](self._cpp_obj)
+        cdef cAnEnumRenamed ckey
+        cdef cint32_t citem = 0
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextItem(self._cpp_obj, ckey, citem)
+            yield (translate_cpp_enum_to_python(AnEnumRenamed, <int> ckey), citem)
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Map__AnEnumRenamed_i32()
+
+Mapping.register(Map__AnEnumRenamed_i32)
+
 A_BOOL = True
 A_BYTE = 8
 THE_ANSWER = 42
@@ -2982,6 +3120,7 @@ WORD_LIST = List__string._fbthrift_create(constant_shared_ptr(cWORD_LIST()))
 SOME_MAP = List__Map__i32_double._fbthrift_create(constant_shared_ptr(cSOME_MAP()))
 DIGITS = Set__i32._fbthrift_create(constant_shared_ptr(cDIGITS()))
 A_CONST_MAP = Map__string_SimpleStruct._fbthrift_create(constant_shared_ptr(cA_CONST_MAP()))
+ANOTHER_CONST_MAP = Map__AnEnumRenamed_i32._fbthrift_create(constant_shared_ptr(cANOTHER_CONST_MAP()))
 IOBufPtr = _fbthrift_iobuf.IOBuf
 IOBuf = _fbthrift_iobuf.IOBuf
 foo_bar = bytes

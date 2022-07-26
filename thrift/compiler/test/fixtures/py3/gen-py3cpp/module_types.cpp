@@ -40,6 +40,32 @@ FOLLY_POP_WARNING
 
 namespace apache { namespace thrift {
 
+constexpr std::size_t const TEnumTraits<::py3::simple::AnEnumRenamed>::size;
+folly::Range<::py3::simple::AnEnumRenamed const*> const TEnumTraits<::py3::simple::AnEnumRenamed>::values = folly::range(TEnumDataStorage<::py3::simple::AnEnumRenamed>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::py3::simple::AnEnumRenamed>::names = folly::range(TEnumDataStorage<::py3::simple::AnEnumRenamed>::names);
+
+bool TEnumTraits<::py3::simple::AnEnumRenamed>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::py3::simple::AnEnumRenamed>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace py3 { namespace simple {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _AnEnumRenamed_EnumMapFactory::ValuesToNamesMapType _AnEnumRenamed_VALUES_TO_NAMES = _AnEnumRenamed_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumRenamed_EnumMapFactory::NamesToValuesMapType _AnEnumRenamed_NAMES_TO_VALUES = _AnEnumRenamed_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}} // py3::simple
+
+namespace apache { namespace thrift {
+
 constexpr std::size_t const TEnumTraits<::py3::simple::Flags>::size;
 folly::Range<::py3::simple::Flags const*> const TEnumTraits<::py3::simple::Flags>::values = folly::range(TEnumDataStorage<::py3::simple::Flags>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::py3::simple::Flags>::names = folly::range(TEnumDataStorage<::py3::simple::Flags>::names);

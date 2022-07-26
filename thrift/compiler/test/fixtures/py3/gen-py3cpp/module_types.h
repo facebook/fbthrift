@@ -138,6 +138,14 @@ enum class AnEnum {
 
 
 
+enum class AnEnumRenamed {
+  name = 0,
+  value = 1,
+  normal = 2,
+};
+
+
+
 enum class Flags {
   flag_A = 1,
   flag_B = 2,
@@ -152,6 +160,8 @@ enum class Flags {
 namespace std {
 template<> struct hash<::py3::simple::AnEnum> :
   ::apache::thrift::detail::enum_hash<::py3::simple::AnEnum> {};
+template<> struct hash<::py3::simple::AnEnumRenamed> :
+  ::apache::thrift::detail::enum_hash<::py3::simple::AnEnumRenamed> {};
 template<> struct hash<::py3::simple::Flags> :
   ::apache::thrift::detail::enum_hash<::py3::simple::Flags> {};
 } // std
@@ -184,6 +194,34 @@ template <> struct TEnumTraits<::py3::simple::AnEnum> {
   }
   static constexpr type min() { return type::None; }
   static constexpr type max() { return type::FOUR; }
+};
+
+
+template <> struct TEnumDataStorage<::py3::simple::AnEnumRenamed>;
+
+template <> struct TEnumTraits<::py3::simple::AnEnumRenamed> {
+  using type = ::py3::simple::AnEnumRenamed;
+
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::name; }
+  static constexpr type max() { return type::normal; }
 };
 
 
@@ -225,6 +263,13 @@ using _AnEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnum>;
 extern const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES;
+#endif
+using _AnEnumRenamed_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumRenamed>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _AnEnumRenamed_EnumMapFactory::ValuesToNamesMapType _AnEnumRenamed_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _AnEnumRenamed_EnumMapFactory::NamesToValuesMapType _AnEnumRenamed_NAMES_TO_VALUES;
 #endif
 using _Flags_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Flags>;
 #ifndef ANDROID

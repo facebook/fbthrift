@@ -32,6 +32,20 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::py3::simple::AnEnumRenamed>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+      {"name_", "name"},
+      {"value_", "value"},
+      {"renamed_", "normal"},
+    }
+  };
+  return *pairs;
+}
+
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::py3::simple::Flags>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {

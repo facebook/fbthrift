@@ -13,6 +13,7 @@ namespace simple {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<AnEnum>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<AnEnumRenamed>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<Flags>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<SimpleException>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalRefStruct>::gen(metadata);

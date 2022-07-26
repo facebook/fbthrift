@@ -19,6 +19,13 @@ template <> struct TEnumDataStorage<::py3::simple::AnEnum> {
   static const std::array<folly::StringPiece, size> names;
 };
 
+template <> struct TEnumDataStorage<::py3::simple::AnEnumRenamed> {
+  using type = ::py3::simple::AnEnumRenamed;
+  static constexpr const std::size_t size = 3;
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
+};
+
 template <> struct TEnumDataStorage<::py3::simple::Flags> {
   using type = ::py3::simple::Flags;
   static constexpr const std::size_t size = 4;

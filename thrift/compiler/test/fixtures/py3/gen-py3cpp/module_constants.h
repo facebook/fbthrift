@@ -82,6 +82,8 @@ struct module_constants {
 
   static ::std::map<::std::string, ::py3::simple::SimpleStruct> const& A_CONST_MAP();
 
+  static ::std::map<::py3::simple::AnEnumRenamed, ::std::int32_t> const& ANOTHER_CONST_MAP();
+
 };
 
 }} // py3::simple

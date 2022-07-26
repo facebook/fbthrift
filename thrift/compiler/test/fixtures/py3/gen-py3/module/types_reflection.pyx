@@ -488,3 +488,11 @@ cdef __ListSpec get_reflection__List__Map__i32_double():
         kind=__NumberType.NOT_A_NUMBER,
     )
 
+cdef __MapSpec get_reflection__Map__AnEnumRenamed_i32():
+    return __MapSpec._fbthrift_create(
+        key=_module_types.AnEnumRenamed,
+        key_kind=__NumberType.NOT_A_NUMBER,
+        value=int,
+        value_kind=__NumberType.I32,
+    )
+

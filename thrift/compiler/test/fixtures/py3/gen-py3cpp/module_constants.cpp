@@ -69,4 +69,11 @@ constexpr ::std::string const module_constants::SOME_BYTES_;
   return *instance;
 }
 
+::std::map<::py3::simple::AnEnumRenamed, ::std::int32_t> const& module_constants::ANOTHER_CONST_MAP() {
+  static folly::Indestructible<::std::map<::py3::simple::AnEnumRenamed, ::std::int32_t>> const instance(std::initializer_list<std::pair<const ::py3::simple::AnEnumRenamed, ::std::int32_t>>{{ ::py3::simple::AnEnumRenamed::name, 0},
+  { ::py3::simple::AnEnumRenamed::value, 1},
+  { ::py3::simple::AnEnumRenamed::normal, 2}});
+  return *instance;
+}
+
 }} // py3::simple

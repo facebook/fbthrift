@@ -392,6 +392,17 @@ class AnEnum(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_AnEnum()
+class AnEnumRenamed(_fbthrift_python_types.Enum, enum.Enum):
+    name_ = 0
+    value_ = 1
+    renamed_ = 2
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.AnEnumRenamed"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.thrift_metadata.gen_metadata_enum_AnEnumRenamed()
 class Flags(_fbthrift_python_types.Enum, enum.Flag):
     flag_A = 1
     flag_B = 2
@@ -456,6 +467,8 @@ SOME_MAP = _fbthrift_python_types.List(_fbthrift_python_types.MapTypeInfo(_fbthr
 DIGITS = _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo_i32, (1, 2, 3, 4, 5, ))
 
 A_CONST_MAP = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.StructTypeInfo(SimpleStruct), {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))})
+
+ANOTHER_CONST_MAP = _fbthrift_python_types.Map(_fbthrift_python_types.EnumTypeInfo(AnEnumRenamed), _fbthrift_python_types.typeinfo_i32, {AnEnumRenamed.name: 0, AnEnumRenamed.value: 1, AnEnumRenamed.normal: 2})
 
 IOBufPtr = _fbthrift_iobuf.IOBuf
 IOBuf = _fbthrift_iobuf.IOBuf

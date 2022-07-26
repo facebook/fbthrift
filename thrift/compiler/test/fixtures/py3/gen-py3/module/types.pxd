@@ -56,6 +56,9 @@ cdef extern from "src/gen-py3cpp/module_types.h" namespace "::py3::simple":
     cdef cppclass cAnEnum "::py3::simple::AnEnum":
         pass
 
+    cdef cppclass cAnEnumRenamed "::py3::simple::AnEnumRenamed":
+        pass
+
     cdef cppclass cFlags "::py3::simple::Flags":
         pass
 
@@ -64,6 +67,10 @@ cdef extern from "src/gen-py3cpp/module_types.h" namespace "::py3::simple":
 
 
 cdef class AnEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef class AnEnumRenamed(thrift.py3.types.CompiledEnum):
     pass
 
 
@@ -411,6 +418,13 @@ cdef class List__Map__i32_double(thrift.py3.types.List):
     @staticmethod
     cdef shared_ptr[vector[cmap[cint32_t,double]]] _make_instance(object items) except *
 
+cdef class Map__AnEnumRenamed_i32(thrift.py3.types.Map):
+    cdef shared_ptr[cmap[cAnEnumRenamed,cint32_t]] _cpp_obj
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cmap[cAnEnumRenamed,cint32_t]])
+    @staticmethod
+    cdef shared_ptr[cmap[cAnEnumRenamed,cint32_t]] _make_instance(object items) except *
+
 
 cdef extern from "src/gen-py3cpp/module_constants.h" namespace "::py3::simple":
     cdef cbool cA_BOOL "::py3::simple::module_constants::A_BOOL"
@@ -427,3 +441,4 @@ cdef extern from "src/gen-py3cpp/module_constants.h" namespace "::py3::simple":
     cdef vector[cmap[cint32_t,double]] cSOME_MAP "::py3::simple::module_constants::SOME_MAP"()
     cdef cset[cint32_t] cDIGITS "::py3::simple::module_constants::DIGITS"()
     cdef cmap[string,cSimpleStruct] cA_CONST_MAP "::py3::simple::module_constants::A_CONST_MAP"()
+    cdef cmap[cAnEnumRenamed,cint32_t] cANOTHER_CONST_MAP "::py3::simple::module_constants::ANOTHER_CONST_MAP"()

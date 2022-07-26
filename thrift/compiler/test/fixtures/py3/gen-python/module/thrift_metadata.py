@@ -799,6 +799,24 @@ def _fbthrift_gen_metadata_enum_AnEnum(metadata_struct: _fbthrift_metadata.Thrif
 
 def gen_metadata_enum_AnEnum() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_enum_AnEnum(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+def _fbthrift_gen_metadata_enum_AnEnumRenamed(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.AnEnumRenamed"
+
+    if qualified_name in metadata_struct.enums:
+        return metadata_struct
+    elements = {
+        0: "name",
+        1: "value",
+        2: "normal",
+    }
+    enum_dict = dict(metadata_struct.enums)
+    enum_dict[qualified_name] = _fbthrift_metadata.ThriftEnum(name=qualified_name, elements=elements, structured_annotations=[])
+    new_struct = metadata_struct(enums=enum_dict)
+
+    return new_struct
+
+def gen_metadata_enum_AnEnumRenamed() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_enum_AnEnumRenamed(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 def _fbthrift_gen_metadata_enum_Flags(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.Flags"
 
@@ -822,6 +840,7 @@ def gen_metadata_enum_Flags() -> _fbthrift_metadata.ThriftMetadata:
 def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_enum_AnEnum(meta)
+    meta = _fbthrift_gen_metadata_enum_AnEnumRenamed(meta)
     meta = _fbthrift_gen_metadata_enum_Flags(meta)
     meta = _fbthrift_gen_metadata_exception_SimpleException(meta)
     meta = _fbthrift_gen_metadata_struct_OptionalRefStruct(meta)

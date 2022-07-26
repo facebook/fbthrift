@@ -71,3 +71,5 @@ cdef __ListSpec get_reflection__List__AnEnum()
 cdef __MapSpec get_reflection__Map__i32_double()
 
 cdef __ListSpec get_reflection__List__Map__i32_double()
+
+cdef __MapSpec get_reflection__Map__AnEnumRenamed_i32()

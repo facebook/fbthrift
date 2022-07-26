@@ -35,6 +35,11 @@ class EnumMetadata<::py3::simple::AnEnum> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class EnumMetadata<::py3::simple::AnEnumRenamed> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class EnumMetadata<::py3::simple::Flags> {
  public:
   static void gen(ThriftMetadata& metadata);
