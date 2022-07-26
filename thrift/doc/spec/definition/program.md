@@ -96,4 +96,4 @@ IncludeDeclaration:
 
 ## Abstract Syntax Tree (AST)
 
-How a program is represented, abstractly. <!--- TODO --->
+The parsed Thrift code is represented as an [Abstract Syntax Tree](https://github.com/facebook/fbthrift/tree/main/thrift/compiler/ast) that starts from `t_program` for each thrift file.
