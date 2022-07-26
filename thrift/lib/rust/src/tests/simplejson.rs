@@ -19,8 +19,8 @@
 use super::BOOL_VALUES;
 use super::DOUBLE_VALUES;
 use super::INT64_VALUES;
+use crate::simplejson_protocol;
 use crate::simplejson_protocol::SimpleJsonProtocolDeserializer;
-use crate::simplejson_protocol::{self};
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
 use crate::Deserialize;
