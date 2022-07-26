@@ -16,7 +16,6 @@
 
 pub use crate::hasher::Hasher;
 use anyhow::Result;
-use std::option::Option;
 use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq)]
