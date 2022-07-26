@@ -100,7 +100,8 @@ int main(int argc, char* argv[]) {
 
   facebook::services::ServiceFramework instance("ZeroCopyServer");
 
-  instance.addThriftService(server, handler.get(), FLAGS_port);
+  // TODO(T123377436) CodeFrameworks Migration - Binary Contract
+  instance.addPrimaryThriftService(server, handler.get());
   instance.go();
 
   return 0;
