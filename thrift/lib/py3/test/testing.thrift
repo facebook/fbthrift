@@ -143,9 +143,9 @@ union ValueOrError {
 }
 
 struct easy {
+  3: optional string name;
   1: i32 val;
   2: I32List val_list;
-  3: optional string name;
   4: Integers an_int;
 } (anno1 = "foo", bar)
 

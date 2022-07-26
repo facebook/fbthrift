@@ -24,14 +24,6 @@ class ComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
             None,  # adapter class
         ),
         (
-            5,  # id
-            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "stringValue",  # name
-            _fbthrift_python_types.typeinfo_string,  # typeinfo
-            None,  # default value
-            None,  # adapter class
-        ),
-        (
             2,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "intListValue",  # name
@@ -44,6 +36,14 @@ class ComplexUnion(metaclass=_fbthrift_python_types.UnionMeta):
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "stringListValue",  # name
             lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_string),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "stringValue",  # name
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),

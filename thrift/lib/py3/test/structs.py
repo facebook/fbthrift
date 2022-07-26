@@ -108,21 +108,21 @@ class StructTests(unittest.TestCase):
 
     def test_str(self) -> None:
         self.assertEqual(
-            "easy(val=0, val_list=i[], name=None, an_int=Integers(type=EMPTY, value=None))",
+            "easy(name=None, val=0, val_list=i[], an_int=Integers(type=EMPTY, value=None))",
             str(easy()),
         )
         self.assertEqual(
-            "easy(val=0, val_list=i[], name=None, an_int=Integers(type=EMPTY, value=None))",
+            "easy(name=None, val=0, val_list=i[], an_int=Integers(type=EMPTY, value=None))",
             repr(easy()),
         )
 
         x = easy(val=1, an_int=Integers(small=300), name="foo", val_list=[1, 2, 3, 4])
         self.assertEqual(
-            "easy(val=1, val_list=i[1, 2, 3, 4], name='foo', an_int=Integers(type=small, value=300))",
+            "easy(name='foo', val=1, val_list=i[1, 2, 3, 4], an_int=Integers(type=small, value=300))",
             str(x),
         )
         self.assertEqual(
-            "easy(val=1, val_list=i[1, 2, 3, 4], name='foo', an_int=Integers(type=small, value=300))",
+            "easy(name='foo', val=1, val_list=i[1, 2, 3, 4], an_int=Integers(type=small, value=300))",
             repr(x),
         )
 

@@ -764,6 +764,9 @@ class mstch_python_struct : public mstch_struct {
     for (auto m : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(m.member);
     }
+    std::sort(fields.begin(), fields.end(), [](const auto* m, const auto* n) {
+      return m->id() < n->id();
+    });
     return generate_fields(fields);
   }
 

@@ -1148,17 +1148,17 @@ class MyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
             None,  # adapter class
         ),
         (
-            10,  # id
+            9,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "prepend",  # name
+            "append",  # name
             lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
-            9,  # id
+            10,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "append",  # name
+            "prepend",  # name
             lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class

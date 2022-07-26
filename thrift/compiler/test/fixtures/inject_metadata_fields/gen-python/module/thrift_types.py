@@ -100,17 +100,17 @@ class FieldsInjectedToEmptyStruct(metaclass=_fbthrift_python_types.StructMeta):
 class FieldsInjectedToStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
-            1,  # id
+            -1100,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "string_field",  # name
+            "injected_field",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
-            -1100,  # id
+            1,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "injected_field",  # name
+            "string_field",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
@@ -148,17 +148,9 @@ class FieldsInjectedToStruct(metaclass=_fbthrift_python_types.StructMeta):
 class FieldsInjectedWithIncludedStruct(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
-            1,  # id
-            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "string_field",  # name
-            _fbthrift_python_types.typeinfo_string,  # typeinfo
-            None,  # default value
-            None,  # adapter class
-        ),
-        (
-            -1100,  # id
-            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "injected_field",  # name
+            -1102,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "injected_unstructured_annotation_field",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
@@ -172,9 +164,17 @@ class FieldsInjectedWithIncludedStruct(metaclass=_fbthrift_python_types.StructMe
             None,  # adapter class
         ),
         (
-            -1102,  # id
-            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
-            "injected_unstructured_annotation_field",  # name
+            -1100,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "injected_field",  # name
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "string_field",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
