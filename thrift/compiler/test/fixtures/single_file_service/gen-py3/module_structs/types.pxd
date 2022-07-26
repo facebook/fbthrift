@@ -68,7 +68,7 @@ cdef extern from "src/gen-cpp2/module_structs_types_custom_protocol.h" namespace
         bint operator>(cFoo&)
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
-        __optional_field_ref[cint32_t] value_ref()
+        __optional_field_ref[cint32_t] value_ref "value_ref" ()
 
 
 

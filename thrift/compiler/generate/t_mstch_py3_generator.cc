@@ -857,6 +857,7 @@ class mstch_py3_field : public mstch_field {
             {"field:hasModifiedName?", &mstch_py3_field::hasModifiedName},
             {"field:hasPyName?", &mstch_py3_field::hasPyName},
             {"field:boxed_ref?", &mstch_py3_field::boxed_ref},
+            {"field:has_ref_api?", &mstch_py3_field::hasRefApi},
         });
   }
 
@@ -898,6 +899,19 @@ class mstch_py3_field : public mstch_field {
 
   mstch::node boxed_ref() {
     return gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed;
+  }
+
+  mstch::node hasRefApi() {
+    const t_struct* parentStruct = mstch_field::field_context_->strct;
+
+    // Known bug (T126232678) mixin fields do not contain
+    // a valid pointer to the top level struct
+    if (parentStruct == nullptr) {
+      // Mixin fields do not support NoLegacy annotation
+      return true;
+    }
+
+    return (parentStruct->is_union() || generate_legacy_api(*parentStruct));
   }
 
  protected:

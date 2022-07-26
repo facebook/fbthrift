@@ -45,10 +45,10 @@ void reset_field<::test::fixtures::nolegacy::TestError>(
     ::test::fixtures::nolegacy::TestError& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.test_enum_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestError>().test_enum_ref());
+      obj.test_enum().copy_from(default_inst<::test::fixtures::nolegacy::TestError>().test_enum());
       return;
     case 1:
-      obj.code_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestError>().code_ref());
+      obj.code().copy_from(default_inst<::test::fixtures::nolegacy::TestError>().code());
       return;
   }
 }
@@ -58,7 +58,7 @@ void reset_field<::test::fixtures::nolegacy::TestMixin>(
     ::test::fixtures::nolegacy::TestMixin& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.field1_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestMixin>().field1_ref());
+      obj.field1().copy_from(default_inst<::test::fixtures::nolegacy::TestMixin>().field1());
       return;
   }
 }
@@ -68,16 +68,16 @@ void reset_field<::test::fixtures::nolegacy::TestStruct>(
     ::test::fixtures::nolegacy::TestStruct& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.bar_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().bar_ref());
+      obj.bar().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().bar());
       return;
     case 1:
-      obj.baropt_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().baropt_ref());
+      obj.baropt().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().baropt());
       return;
     case 2:
-      obj.test_error_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().test_error_ref());
+      obj.test_error().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().test_error());
       return;
     case 3:
-      obj.test_mixin_ref().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().test_mixin_ref());
+      obj.test_mixin().copy_from(default_inst<::test::fixtures::nolegacy::TestStruct>().test_mixin());
       return;
   }
 }

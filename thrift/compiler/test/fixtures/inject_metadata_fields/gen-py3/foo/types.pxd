@@ -69,9 +69,9 @@ cdef extern from "gen-cpp2/foo_types_custom_protocol.h" namespace "::cpp2":
         bint operator>(cFields&)
         bint operator<=(cFields&)
         bint operator>=(cFields&)
-        __field_ref[string] injected_field_ref()
-        __optional_field_ref[string] injected_structured_annotation_field_ref()
-        __optional_field_ref[string] injected_unstructured_annotation_field_ref()
+        __field_ref[string] injected_field_ref "injected_field_ref" ()
+        __optional_field_ref[string] injected_structured_annotation_field_ref "injected_structured_annotation_field_ref" ()
+        __optional_field_ref[string] injected_unstructured_annotation_field_ref "injected_unstructured_annotation_field_ref" ()
 
 
 

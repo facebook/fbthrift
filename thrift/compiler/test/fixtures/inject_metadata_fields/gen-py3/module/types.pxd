@@ -70,7 +70,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFields&)
         bint operator<=(cFields&)
         bint operator>=(cFields&)
-        __field_ref[string] injected_field_ref()
+        __field_ref[string] injected_field_ref "injected_field_ref" ()
 
 
     cdef cppclass cFieldsInjectedToEmptyStruct "::cpp2::FieldsInjectedToEmptyStruct":
@@ -82,7 +82,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFieldsInjectedToEmptyStruct&)
         bint operator<=(cFieldsInjectedToEmptyStruct&)
         bint operator>=(cFieldsInjectedToEmptyStruct&)
-        __field_ref[string] injected_field_ref()
+        __field_ref[string] injected_field_ref "injected_field_ref" ()
 
 
     cdef cppclass cFieldsInjectedToStruct "::cpp2::FieldsInjectedToStruct":
@@ -94,8 +94,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFieldsInjectedToStruct&)
         bint operator<=(cFieldsInjectedToStruct&)
         bint operator>=(cFieldsInjectedToStruct&)
-        __field_ref[string] string_field_ref()
-        __field_ref[string] injected_field_ref()
+        __field_ref[string] string_field_ref "string_field_ref" ()
+        __field_ref[string] injected_field_ref "injected_field_ref" ()
 
 
     cdef cppclass cFieldsInjectedWithIncludedStruct "::cpp2::FieldsInjectedWithIncludedStruct":
@@ -107,10 +107,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFieldsInjectedWithIncludedStruct&)
         bint operator<=(cFieldsInjectedWithIncludedStruct&)
         bint operator>=(cFieldsInjectedWithIncludedStruct&)
-        __field_ref[string] string_field_ref()
-        __field_ref[string] injected_field_ref()
-        __optional_field_ref[string] injected_structured_annotation_field_ref()
-        __optional_field_ref[string] injected_unstructured_annotation_field_ref()
+        __field_ref[string] string_field_ref "string_field_ref" ()
+        __field_ref[string] injected_field_ref "injected_field_ref" ()
+        __optional_field_ref[string] injected_structured_annotation_field_ref "injected_structured_annotation_field_ref" ()
+        __optional_field_ref[string] injected_unstructured_annotation_field_ref "injected_unstructured_annotation_field_ref" ()
 
 
 

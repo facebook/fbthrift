@@ -81,8 +81,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cTestError&)
         bint operator<=(cTestError&)
         bint operator>=(cTestError&)
-        __field_ref[cTestEnum] test_enum_ref()
-        __field_ref[cint32_t] code_ref()
+        __field_ref[cTestEnum] test_enum_ref "test_enum" ()
+        __field_ref[cint32_t] code_ref "code" ()
 
 
     cdef cppclass cTestMixin "::test::fixtures::nolegacy::TestMixin":
@@ -94,7 +94,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cTestMixin&)
         bint operator<=(cTestMixin&)
         bint operator>=(cTestMixin&)
-        __field_ref[string] field1_ref()
+        __field_ref[string] field1_ref "field1" ()
 
 
     cdef cppclass cTestStruct "::test::fixtures::nolegacy::TestStruct":
@@ -106,11 +106,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cTestStruct&)
         bint operator<=(cTestStruct&)
         bint operator>=(cTestStruct&)
-        __field_ref[string] bar_ref()
-        __optional_field_ref[string] baropt_ref()
-        __field_ref[cTestError] test_error_ref()
-        __field_ref[cTestMixin] test_mixin_ref()
-        __field_ref[string] field1_ref()
+        __field_ref[string] bar_ref "bar" ()
+        __optional_field_ref[string] baropt_ref "baropt" ()
+        __field_ref[cTestError] test_error_ref "test_error" ()
+        __field_ref[cTestMixin] test_mixin_ref "test_mixin" ()
+        __field_ref[string] field1_ref "field1_ref" ()
 
     cdef enum cTestUnion__type "::test::fixtures::nolegacy::TestUnion::Type":
         cTestUnion__type___EMPTY__ "::test::fixtures::nolegacy::TestUnion::Type::__EMPTY__",
@@ -127,10 +127,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cTestUnion&)
         bint operator>=(cTestUnion&)
         cTestUnion__type getType() const
-        const cTestEnum& get_enumVal() const
-        cTestEnum& set_enumVal(const cTestEnum&)
-        const cTestStruct& get_structVal() const
-        cTestStruct& set_structVal(const cTestStruct&)
+        const cTestEnum& get_enumVal "get_enumVal" () const
+        cTestEnum& set_enumVal "set_enumVal" (const cTestEnum&)
+        const cTestStruct& get_structVal "get_structVal" () const
+        cTestStruct& set_structVal "set_structVal" (const cTestStruct&)
 
 
 

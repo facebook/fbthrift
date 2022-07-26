@@ -81,8 +81,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __field_ref[cint64_t] myIntField_ref()
-        __field_ref[string] myStringField_ref()
+        __field_ref[cint64_t] myIntField_ref "myIntField_ref" ()
+        __field_ref[string] myStringField_ref "myStringField_ref" ()
 
     cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::test::fixtures::basic::MyUnion::Type::__EMPTY__",
@@ -99,10 +99,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const cMyEnum& get_myEnum() const
-        cMyEnum& set_myEnum(const cMyEnum&)
-        const cMyStruct& get_myDataItem() const
-        cMyStruct& set_myDataItem(const cMyStruct&)
+        const cMyEnum& get_myEnum "get_myEnum" () const
+        cMyEnum& set_myEnum "set_myEnum" (const cMyEnum&)
+        const cMyStruct& get_myDataItem "get_myDataItem" () const
+        cMyStruct& set_myDataItem "set_myDataItem" (const cMyStruct&)
 
 
 

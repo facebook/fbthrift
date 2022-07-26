@@ -80,10 +80,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cColor&)
         bint operator<=(cColor&)
         bint operator>=(cColor&)
-        __field_ref[double] red_ref()
-        __field_ref[double] green_ref()
-        __field_ref[double] blue_ref()
-        __field_ref[double] alpha_ref()
+        __field_ref[double] red_ref "red_ref" ()
+        __field_ref[double] green_ref "green_ref" ()
+        __field_ref[double] blue_ref "blue_ref" ()
+        __field_ref[double] alpha_ref "alpha_ref" ()
 
 
     cdef cppclass cVehicle "::cpp2::Vehicle":
@@ -95,11 +95,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVehicle&)
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
-        __field_ref[cColor] color_ref()
-        __optional_field_ref[string] licensePlate_ref()
-        __optional_field_ref[string] description_ref()
-        __optional_field_ref[string] name_ref()
-        __optional_field_ref[cbool] hasAC_ref()
+        __field_ref[cColor] color_ref "color_ref" ()
+        __optional_field_ref[string] licensePlate_ref "licensePlate_ref" ()
+        __optional_field_ref[string] description_ref "description_ref" ()
+        __optional_field_ref[string] name_ref "name_ref" ()
+        __optional_field_ref[cbool] hasAC_ref "hasAC_ref" ()
 
 
     cdef cppclass cPerson "::cpp2::Person":
@@ -111,16 +111,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cPerson&)
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
-        __field_ref[cint64_t] id_ref()
-        __field_ref[string] name_ref()
-        __optional_field_ref[cint16_t] age_ref()
-        __optional_field_ref[string] address_ref()
-        __optional_field_ref[cColor] favoriteColor_ref()
-        __optional_field_ref[cset[cint64_t]] friends_ref()
-        __optional_field_ref[cint64_t] bestFriend_ref()
-        __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
-        __optional_field_ref[cAnimal] afraidOfAnimal_ref()
-        __optional_field_ref[vector[cVehicle]] vehicles_ref()
+        __field_ref[cint64_t] id_ref "id_ref" ()
+        __field_ref[string] name_ref "name_ref" ()
+        __optional_field_ref[cint16_t] age_ref "age_ref" ()
+        __optional_field_ref[string] address_ref "address_ref" ()
+        __optional_field_ref[cColor] favoriteColor_ref "favoriteColor_ref" ()
+        __optional_field_ref[cset[cint64_t]] friends_ref "friends_ref" ()
+        __optional_field_ref[cint64_t] bestFriend_ref "bestFriend_ref" ()
+        __optional_field_ref[cmap[cAnimal,string]] petNames_ref "petNames_ref" ()
+        __optional_field_ref[cAnimal] afraidOfAnimal_ref "afraidOfAnimal_ref" ()
+        __optional_field_ref[vector[cVehicle]] vehicles_ref "vehicles_ref" ()
 
 
 

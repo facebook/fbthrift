@@ -68,7 +68,7 @@ cdef extern from "gen-cpp2/c_types_custom_protocol.h" namespace "::cpp2":
         bint operator>(cC&)
         bint operator<=(cC&)
         bint operator>=(cC&)
-        __field_ref[cint64_t] i_ref()
+        __field_ref[cint64_t] i_ref "i_ref" ()
 
 
 

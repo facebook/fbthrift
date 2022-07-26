@@ -68,7 +68,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInitialResponse&)
         bint operator<=(cInitialResponse&)
         bint operator>=(cInitialResponse&)
-        __field_ref[string] content_ref()
+        __field_ref[string] content_ref "content_ref" ()
 
 
     cdef cppclass cFinalResponse "::cpp2::FinalResponse":
@@ -80,7 +80,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFinalResponse&)
         bint operator<=(cFinalResponse&)
         bint operator>=(cFinalResponse&)
-        __field_ref[string] content_ref()
+        __field_ref[string] content_ref "content_ref" ()
 
 
     cdef cppclass cSinkPayload "::cpp2::SinkPayload":
@@ -92,7 +92,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkPayload&)
         bint operator<=(cSinkPayload&)
         bint operator>=(cSinkPayload&)
-        __field_ref[string] content_ref()
+        __field_ref[string] content_ref "content_ref" ()
 
 
     cdef cppclass cCompatibleWithKeywordSink "::cpp2::CompatibleWithKeywordSink":
@@ -104,7 +104,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cCompatibleWithKeywordSink&)
         bint operator<=(cCompatibleWithKeywordSink&)
         bint operator>=(cCompatibleWithKeywordSink&)
-        __field_ref[string] sink_ref()
+        __field_ref[string] sink_ref "sink_ref" ()
 
 
     cdef cppclass cInitialException "::cpp2::InitialException"(cTException):
@@ -116,7 +116,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInitialException&)
         bint operator<=(cInitialException&)
         bint operator>=(cInitialException&)
-        __field_ref[string] reason_ref()
+        __field_ref[string] reason_ref "reason_ref" ()
 
 
     cdef cppclass cSinkException1 "::cpp2::SinkException1"(cTException):
@@ -128,7 +128,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkException1&)
         bint operator<=(cSinkException1&)
         bint operator>=(cSinkException1&)
-        __field_ref[string] reason_ref()
+        __field_ref[string] reason_ref "reason_ref" ()
 
 
     cdef cppclass cSinkException2 "::cpp2::SinkException2"(cTException):
@@ -140,7 +140,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkException2&)
         bint operator<=(cSinkException2&)
         bint operator>=(cSinkException2&)
-        __field_ref[cint64_t] reason_ref()
+        __field_ref[cint64_t] reason_ref "reason_ref" ()
 
 
 

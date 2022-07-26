@@ -68,7 +68,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFiery&)
         bint operator<=(cFiery&)
         bint operator>=(cFiery&)
-        __required_field_ref[string] message_ref()
+        __required_field_ref[string] message_ref "message_ref" ()
 
 
     cdef cppclass cSerious "::cpp2::Serious"(cTException):
@@ -80,7 +80,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSerious&)
         bint operator<=(cSerious&)
         bint operator>=(cSerious&)
-        __optional_field_ref[string] sonnet_ref()
+        __optional_field_ref[string] sonnet_ref "sonnet_ref" ()
 
 
     cdef cppclass cComplexFieldNames "::cpp2::ComplexFieldNames"(cTException):
@@ -92,8 +92,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cComplexFieldNames&)
         bint operator<=(cComplexFieldNames&)
         bint operator>=(cComplexFieldNames&)
-        __field_ref[string] error_message_ref()
-        __field_ref[string] internal_error_message_ref()
+        __field_ref[string] error_message_ref "error_message_ref" ()
+        __field_ref[string] internal_error_message_ref "internal_error_message_ref" ()
 
 
     cdef cppclass cCustomFieldNames "::cpp2::CustomFieldNames"(cTException):
@@ -105,8 +105,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cCustomFieldNames&)
         bint operator<=(cCustomFieldNames&)
         bint operator>=(cCustomFieldNames&)
-        __field_ref[string] error_message_ref()
-        __field_ref[string] internal_error_message_ref()
+        __field_ref[string] error_message_ref "error_message_ref" ()
+        __field_ref[string] internal_error_message_ref "internal_error_message_ref" ()
 
 
     cdef cppclass cExceptionWithPrimitiveField "::cpp2::ExceptionWithPrimitiveField"(cTException):
@@ -118,8 +118,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cExceptionWithPrimitiveField&)
         bint operator<=(cExceptionWithPrimitiveField&)
         bint operator>=(cExceptionWithPrimitiveField&)
-        __field_ref[string] message_ref()
-        __field_ref[cint32_t] error_code_ref()
+        __field_ref[string] message_ref "message_ref" ()
+        __field_ref[cint32_t] error_code_ref "error_code_ref" ()
 
 
     cdef cppclass cBanal "::cpp2::Banal"(cTException):

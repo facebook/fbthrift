@@ -88,15 +88,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __field_ref[cint64_t] MyIntField_ref()
-        __field_ref[string] MyStringField_ref()
-        __field_ref[cMyDataItem] MyDataField_ref()
-        __field_ref[cMyEnum] myEnum_ref()
-        __field_ref[cbool] oneway_ref()
-        __field_ref[cbool] readonly_ref()
-        __field_ref[cbool] idempotent_ref()
-        __field_ref[cset[float]] floatSet_ref()
-        __field_ref[string] no_hack_codegen_field_ref()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
+        __field_ref[string] MyStringField_ref "MyStringField_ref" ()
+        __field_ref[cMyDataItem] MyDataField_ref "MyDataField_ref" ()
+        __field_ref[cMyEnum] myEnum_ref "myEnum_ref" ()
+        __field_ref[cbool] oneway_ref "oneway_ref" ()
+        __field_ref[cbool] readonly_ref "readonly_ref" ()
+        __field_ref[cbool] idempotent_ref "idempotent_ref" ()
+        __field_ref[cset[float]] floatSet_ref "floatSet_ref" ()
+        __field_ref[string] no_hack_codegen_field_ref "no_hack_codegen_field_ref" ()
 
 
     cdef cppclass cMyDataItem "::test::fixtures::basic::MyDataItem":
@@ -126,14 +126,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const cMyEnum& get_myEnum() const
-        cMyEnum& set_myEnum(const cMyEnum&)
-        const cMyStruct& get_myStruct() const
-        cMyStruct& set_myStruct(const cMyStruct&)
-        const cMyDataItem& get_myDataItem() const
-        cMyDataItem& set_myDataItem(const cMyDataItem&)
-        const cset[float]& get_floatSet() const
-        cset[float]& set_floatSet(const cset[float]&)
+        const cMyEnum& get_myEnum "get_myEnum" () const
+        cMyEnum& set_myEnum "set_myEnum" (const cMyEnum&)
+        const cMyStruct& get_myStruct "get_myStruct" () const
+        cMyStruct& set_myStruct "set_myStruct" (const cMyStruct&)
+        const cMyDataItem& get_myDataItem "get_myDataItem" () const
+        cMyDataItem& set_myDataItem "set_myDataItem" (const cMyDataItem&)
+        const cset[float]& get_floatSet "get_floatSet" () const
+        cset[float]& set_floatSet "set_floatSet" (const cset[float]&)
 
 
     cdef cppclass cReservedKeyword "::test::fixtures::basic::ReservedKeyword":
@@ -145,7 +145,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cReservedKeyword&)
         bint operator<=(cReservedKeyword&)
         bint operator>=(cReservedKeyword&)
-        __field_ref[cint32_t] reserved_field_ref()
+        __field_ref[cint32_t] reserved_field_ref "reserved_field_ref" ()
 
     cdef enum cUnionToBeRenamed__type "::test::fixtures::basic::UnionToBeRenamed::Type":
         cUnionToBeRenamed__type___EMPTY__ "::test::fixtures::basic::UnionToBeRenamed::Type::__EMPTY__",
@@ -161,8 +161,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cUnionToBeRenamed&)
         bint operator>=(cUnionToBeRenamed&)
         cUnionToBeRenamed__type getType() const
-        const cint32_t& get_reserved_field() const
-        cint32_t& set_reserved_field(const cint32_t&)
+        const cint32_t& get_reserved_field "get_reserved_field" () const
+        cint32_t& set_reserved_field "set_reserved_field" (const cint32_t&)
 
 
 

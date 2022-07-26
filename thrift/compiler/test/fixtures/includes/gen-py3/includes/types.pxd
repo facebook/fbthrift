@@ -69,8 +69,8 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
         bint operator>(cIncluded&)
         bint operator<=(cIncluded&)
         bint operator>=(cIncluded&)
-        __field_ref[cint64_t] MyIntField_ref()
-        __field_ref[_transitive_types.cFoo] MyTransitiveField_ref()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
+        __field_ref[_transitive_types.cFoo] MyTransitiveField_ref "MyTransitiveField_ref" ()
 
 
 

@@ -69,7 +69,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __field_ref[string] field_ref()
+        __field_ref[string] field_ref "field_ref" ()
 
 
     cdef cppclass cCombo "::cpp2::Combo":
@@ -81,10 +81,10 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cCombo&)
         bint operator<=(cCombo&)
         bint operator>=(cCombo&)
-        __field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
-        __field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
-        __field_ref[vector[cMyStruct]] ourMyStructList_ref()
-        __field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
+        __field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref "listOfOurMyStructLists_ref" ()
+        __field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref "theirMyStructList_ref" ()
+        __field_ref[vector[cMyStruct]] ourMyStructList_ref "ourMyStructList_ref" ()
+        __field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref "listOfTheirMyStructList_ref" ()
 
 
 

@@ -118,7 +118,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStructNestedAnnotation&)
         bint operator<=(cMyStructNestedAnnotation&)
         bint operator>=(cMyStructNestedAnnotation&)
-        __field_ref[string] name_ref()
+        __field_ref[string] name_ref "name_ref" ()
 
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
@@ -130,8 +130,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSecretStruct&)
         bint operator<=(cSecretStruct&)
         bint operator>=(cSecretStruct&)
-        __field_ref[cint64_t] id_ref()
-        __field_ref[string] password_ref()
+        __field_ref[cint64_t] id_ref "id_ref" ()
+        __field_ref[string] password_ref "password_ref" ()
 
 
 

@@ -69,9 +69,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFoo&)
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
-        __field_ref[cint32_t] field1_ref()
-        __field_ref[cint32_t] field2_ref()
-        __field_ref[cint32_t] field3_ref()
+        __field_ref[cint32_t] field1_ref "field1_ref" ()
+        __field_ref[cint32_t] field2_ref "field2_ref" ()
+        __field_ref[cint32_t] field3_ref "field3_ref" ()
 
 
     cdef cppclass cFoo2 "::cpp2::Foo2":
@@ -83,9 +83,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFoo2&)
         bint operator<=(cFoo2&)
         bint operator>=(cFoo2&)
-        __field_ref[cint32_t] field1_ref()
-        __field_ref[cint32_t] field2_ref()
-        __field_ref[cint32_t] field3_ref()
+        __field_ref[cint32_t] field1_ref "field1_ref" ()
+        __field_ref[cint32_t] field2_ref "field2_ref" ()
+        __field_ref[cint32_t] field3_ref "field3_ref" ()
 
 
 

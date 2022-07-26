@@ -429,7 +429,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         cASimpleStruct(const cASimpleStruct&) except +
         bint operator==(cASimpleStruct&)
         bint operator!=(cASimpleStruct&)
-        __field_ref[cint64_t] boolField_ref()
+        __field_ref[cint64_t] boolField_ref "boolField_ref" ()
 
 
     cdef cppclass cASimpleStructNoexcept "::some::valid::ns::ASimpleStructNoexcept":
@@ -441,7 +441,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cASimpleStructNoexcept&)
         bint operator<=(cASimpleStructNoexcept&)
         bint operator>=(cASimpleStructNoexcept&)
-        __field_ref[cint64_t] boolField_ref()
+        __field_ref[cint64_t] boolField_ref "boolField_ref" ()
 
 
     cdef cppclass cMyStruct "::some::valid::ns::MyStruct":
@@ -453,17 +453,17 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __field_ref[cbool] MyBoolField_ref()
-        __field_ref[cint64_t] MyIntField_ref()
-        __field_ref[string] MyStringField_ref()
-        __field_ref[string] MyStringField2_ref()
-        __field_ref[string] MyBinaryField_ref()
-        __optional_field_ref[string] MyBinaryField2_ref()
-        __required_field_ref[string] MyBinaryField3_ref()
-        __field_ref[vector[string]] MyBinaryListField4_ref()
-        __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
-        __field_ref[_folly_IOBuf] MyCustomField_ref()
-        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
+        __field_ref[cbool] MyBoolField_ref "MyBoolField_ref" ()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
+        __field_ref[string] MyStringField_ref "MyStringField_ref" ()
+        __field_ref[string] MyStringField2_ref "MyStringField2_ref" ()
+        __field_ref[string] MyBinaryField_ref "MyBinaryField_ref" ()
+        __optional_field_ref[string] MyBinaryField2_ref "MyBinaryField2_ref" ()
+        __required_field_ref[string] MyBinaryField3_ref "MyBinaryField3_ref" ()
+        __field_ref[vector[string]] MyBinaryListField4_ref "MyBinaryListField4_ref" ()
+        __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref "MyMapEnumAndInt_ref" ()
+        __field_ref[_folly_IOBuf] MyCustomField_ref "MyCustomField_ref" ()
+        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref "MyOptCustomField_ref" ()
 
     cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
@@ -480,10 +480,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cSimpleUnion&)
         bint operator>=(cSimpleUnion&)
         cSimpleUnion__type getType() const
-        const cint64_t& get_intValue() const
-        cint64_t& set_intValue(const cint64_t&)
-        const string& get_stringValue() const
-        string& set_stringValue(const string&)
+        const cint64_t& get_intValue "get_intValue" () const
+        cint64_t& set_intValue "set_intValue" (const cint64_t&)
+        const string& get_stringValue "get_stringValue" () const
+        string& set_stringValue "set_stringValue" (const string&)
 
     cdef enum cComplexUnion__type "::some::valid::ns::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "::some::valid::ns::ComplexUnion::Type::__EMPTY__",
@@ -526,62 +526,62 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cComplexUnion&)
         bint operator>=(cComplexUnion&)
         cComplexUnion__type getType() const
-        const cint64_t& get_intValue() const
-        cint64_t& set_intValue(const cint64_t&)
-        const cint64_t& get_opt_intValue() const
-        cint64_t& set_opt_intValue(const cint64_t&)
-        const string& get_stringValue() const
-        string& set_stringValue(const string&)
-        const string& get_opt_stringValue() const
-        string& set_opt_stringValue(const string&)
-        const cint16_t& get_intValue2() const
-        cint16_t& set_intValue2(const cint16_t&)
-        const cint32_t& get_intValue3() const
-        cint32_t& set_intValue3(const cint32_t&)
-        const double& get_doubelValue() const
-        double& set_doubelValue(const double&)
-        const cbool& get_boolValue() const
-        cbool& set_boolValue(const cbool&)
-        const vector[cint32_t]& get_union_list() const
-        vector[cint32_t]& set_union_list(const vector[cint32_t]&)
-        const cset[cint64_t]& get_union_set() const
-        cset[cint64_t]& set_union_set(const cset[cint64_t]&)
-        const cmap[string,cint32_t]& get_union_map() const
-        cmap[string,cint32_t]& set_union_map(const cmap[string,cint32_t]&)
-        const cmap[string,cint32_t]& get_opt_union_map() const
-        cmap[string,cint32_t]& set_opt_union_map(const cmap[string,cint32_t]&)
-        const cMyEnumA& get_enum_field() const
-        cMyEnumA& set_enum_field(const cMyEnumA&)
-        const vector[cMyEnumA]& get_enum_container() const
-        vector[cMyEnumA]& set_enum_container(const vector[cMyEnumA]&)
-        const cMyStruct& get_a_struct() const
-        cMyStruct& set_a_struct(const cMyStruct&)
-        const cset[cMyStruct]& get_a_set_struct() const
-        cset[cMyStruct]& set_a_set_struct(const cset[cMyStruct]&)
-        const cSimpleUnion& get_a_union() const
-        cSimpleUnion& set_a_union(const cSimpleUnion&)
-        const cSimpleUnion& get_opt_a_union() const
-        cSimpleUnion& set_opt_a_union(const cSimpleUnion&)
-        const vector[cSimpleUnion]& get_a_union_list() const
-        vector[cSimpleUnion]& set_a_union_list(const vector[cSimpleUnion]&)
-        const cset[cSimpleUnion]& get_a_union_typedef() const
-        cset[cSimpleUnion]& set_a_union_typedef(const cset[cSimpleUnion]&)
-        const vector[cset[cSimpleUnion]]& get_a_union_typedef_list() const
-        vector[cset[cSimpleUnion]]& set_a_union_typedef_list(const vector[cset[cSimpleUnion]]&)
-        const string& get_MyBinaryField() const
-        string& set_MyBinaryField(const string&)
-        const string& get_MyBinaryField2() const
-        string& set_MyBinaryField2(const string&)
-        const vector[string]& get_MyBinaryListField4() const
-        vector[string]& set_MyBinaryListField4(const vector[string]&)
-        const unique_ptr[cMyStruct]& get_ref_field() const
-        unique_ptr[cMyStruct]& set_ref_field(const cMyStruct&)
-        const shared_ptr[const cMyStruct]& get_ref_field2() const
-        shared_ptr[const cMyStruct]& set_ref_field2(const cMyStruct&)
-        const cAnException& get_excp_field() const
-        cAnException& set_excp_field(const cAnException&)
-        const _folly_IOBuf& get_MyCustomField() const
-        _folly_IOBuf& set_MyCustomField(const _folly_IOBuf&)
+        const cint64_t& get_intValue "get_intValue" () const
+        cint64_t& set_intValue "set_intValue" (const cint64_t&)
+        const cint64_t& get_opt_intValue "get_opt_intValue" () const
+        cint64_t& set_opt_intValue "set_opt_intValue" (const cint64_t&)
+        const string& get_stringValue "get_stringValue" () const
+        string& set_stringValue "set_stringValue" (const string&)
+        const string& get_opt_stringValue "get_opt_stringValue" () const
+        string& set_opt_stringValue "set_opt_stringValue" (const string&)
+        const cint16_t& get_intValue2 "get_intValue2" () const
+        cint16_t& set_intValue2 "set_intValue2" (const cint16_t&)
+        const cint32_t& get_intValue3 "get_intValue3" () const
+        cint32_t& set_intValue3 "set_intValue3" (const cint32_t&)
+        const double& get_doubelValue "get_doubelValue" () const
+        double& set_doubelValue "set_doubelValue" (const double&)
+        const cbool& get_boolValue "get_boolValue" () const
+        cbool& set_boolValue "set_boolValue" (const cbool&)
+        const vector[cint32_t]& get_union_list "get_union_list" () const
+        vector[cint32_t]& set_union_list "set_union_list" (const vector[cint32_t]&)
+        const cset[cint64_t]& get_union_set "get_union_set" () const
+        cset[cint64_t]& set_union_set "set_union_set" (const cset[cint64_t]&)
+        const cmap[string,cint32_t]& get_union_map "get_union_map" () const
+        cmap[string,cint32_t]& set_union_map "set_union_map" (const cmap[string,cint32_t]&)
+        const cmap[string,cint32_t]& get_opt_union_map "get_opt_union_map" () const
+        cmap[string,cint32_t]& set_opt_union_map "set_opt_union_map" (const cmap[string,cint32_t]&)
+        const cMyEnumA& get_enum_field "get_enum_field" () const
+        cMyEnumA& set_enum_field "set_enum_field" (const cMyEnumA&)
+        const vector[cMyEnumA]& get_enum_container "get_enum_container" () const
+        vector[cMyEnumA]& set_enum_container "set_enum_container" (const vector[cMyEnumA]&)
+        const cMyStruct& get_a_struct "get_a_struct" () const
+        cMyStruct& set_a_struct "set_a_struct" (const cMyStruct&)
+        const cset[cMyStruct]& get_a_set_struct "get_a_set_struct" () const
+        cset[cMyStruct]& set_a_set_struct "set_a_set_struct" (const cset[cMyStruct]&)
+        const cSimpleUnion& get_a_union "get_a_union" () const
+        cSimpleUnion& set_a_union "set_a_union" (const cSimpleUnion&)
+        const cSimpleUnion& get_opt_a_union "get_opt_a_union" () const
+        cSimpleUnion& set_opt_a_union "set_opt_a_union" (const cSimpleUnion&)
+        const vector[cSimpleUnion]& get_a_union_list "get_a_union_list" () const
+        vector[cSimpleUnion]& set_a_union_list "set_a_union_list" (const vector[cSimpleUnion]&)
+        const cset[cSimpleUnion]& get_a_union_typedef "get_a_union_typedef" () const
+        cset[cSimpleUnion]& set_a_union_typedef "set_a_union_typedef" (const cset[cSimpleUnion]&)
+        const vector[cset[cSimpleUnion]]& get_a_union_typedef_list "get_a_union_typedef_list" () const
+        vector[cset[cSimpleUnion]]& set_a_union_typedef_list "set_a_union_typedef_list" (const vector[cset[cSimpleUnion]]&)
+        const string& get_MyBinaryField "get_MyBinaryField" () const
+        string& set_MyBinaryField "set_MyBinaryField" (const string&)
+        const string& get_MyBinaryField2 "get_MyBinaryField2" () const
+        string& set_MyBinaryField2 "set_MyBinaryField2" (const string&)
+        const vector[string]& get_MyBinaryListField4 "get_MyBinaryListField4" () const
+        vector[string]& set_MyBinaryListField4 "set_MyBinaryListField4" (const vector[string]&)
+        const unique_ptr[cMyStruct]& get_ref_field "get_ref_field" () const
+        unique_ptr[cMyStruct]& set_ref_field "set_ref_field" (const cMyStruct&)
+        const shared_ptr[const cMyStruct]& get_ref_field2 "get_ref_field2" () const
+        shared_ptr[const cMyStruct]& set_ref_field2 "set_ref_field2" (const cMyStruct&)
+        const cAnException& get_excp_field "get_excp_field" () const
+        cAnException& set_excp_field "set_excp_field" (const cAnException&)
+        const _folly_IOBuf& get_MyCustomField "get_MyCustomField" () const
+        _folly_IOBuf& set_MyCustomField "set_MyCustomField" (const _folly_IOBuf&)
 
 
     cdef cppclass cAnException "::some::valid::ns::AnException"(cTException):
@@ -593,23 +593,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAnException&)
         bint operator<=(cAnException&)
         bint operator>=(cAnException&)
-        __field_ref[cint32_t] code_ref()
-        __required_field_ref[cint32_t] req_code_ref()
-        __field_ref[string] message2_ref()
-        __required_field_ref[string] req_message_ref()
-        __field_ref[vector[cint32_t]] exception_list_ref()
-        __field_ref[cset[cint64_t]] exception_set_ref()
-        __field_ref[cmap[string,cint32_t]] exception_map_ref()
-        __required_field_ref[cmap[string,cint32_t]] req_exception_map_ref()
-        __field_ref[cMyEnumA] enum_field_ref()
-        __field_ref[vector[cMyEnumA]] enum_container_ref()
-        __field_ref[cMyStruct] a_struct_ref()
-        __field_ref[cset[cMyStruct]] a_set_struct_ref()
-        __field_ref[vector[cSimpleUnion]] a_union_list_ref()
-        __field_ref[cset[cSimpleUnion]] union_typedef_ref()
-        __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
-        __field_ref[_folly_IOBuf] MyCustomField_ref()
-        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
+        __field_ref[cint32_t] code_ref "code_ref" ()
+        __required_field_ref[cint32_t] req_code_ref "req_code_ref" ()
+        __field_ref[string] message2_ref "message2_ref" ()
+        __required_field_ref[string] req_message_ref "req_message_ref" ()
+        __field_ref[vector[cint32_t]] exception_list_ref "exception_list_ref" ()
+        __field_ref[cset[cint64_t]] exception_set_ref "exception_set_ref" ()
+        __field_ref[cmap[string,cint32_t]] exception_map_ref "exception_map_ref" ()
+        __required_field_ref[cmap[string,cint32_t]] req_exception_map_ref "req_exception_map_ref" ()
+        __field_ref[cMyEnumA] enum_field_ref "enum_field_ref" ()
+        __field_ref[vector[cMyEnumA]] enum_container_ref "enum_container_ref" ()
+        __field_ref[cMyStruct] a_struct_ref "a_struct_ref" ()
+        __field_ref[cset[cMyStruct]] a_set_struct_ref "a_set_struct_ref" ()
+        __field_ref[vector[cSimpleUnion]] a_union_list_ref "a_union_list_ref" ()
+        __field_ref[cset[cSimpleUnion]] union_typedef_ref "union_typedef_ref" ()
+        __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref "a_union_typedef_list_ref" ()
+        __field_ref[_folly_IOBuf] MyCustomField_ref "MyCustomField_ref" ()
+        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref "MyOptCustomField_ref" ()
 
 
     cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException):
@@ -621,9 +621,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAnotherException&)
         bint operator<=(cAnotherException&)
         bint operator>=(cAnotherException&)
-        __field_ref[cint32_t] code_ref()
-        __required_field_ref[cint32_t] req_code_ref()
-        __field_ref[string] message_ref()
+        __field_ref[cint32_t] code_ref "code_ref" ()
+        __required_field_ref[cint32_t] req_code_ref "req_code_ref" ()
+        __field_ref[string] message_ref "message_ref" ()
 
 
     cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct":
@@ -634,52 +634,52 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(ccontainerStruct&)
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
-        __field_ref[cbool] fieldA_ref()
-        __required_field_ref[cbool] req_fieldA_ref()
-        __optional_field_ref[cbool] opt_fieldA_ref()
-        __field_ref[cmap[string,cbool]] fieldB_ref()
-        __required_field_ref[cmap[string,cbool]] req_fieldB_ref()
-        __optional_field_ref[cmap[string,cbool]] opt_fieldB_ref()
-        __field_ref[cset[cint32_t]] fieldC_ref()
-        __required_field_ref[cset[cint32_t]] req_fieldC_ref()
-        __optional_field_ref[cset[cint32_t]] opt_fieldC_ref()
-        __field_ref[string] fieldD_ref()
-        __field_ref[string] fieldE_ref()
-        __required_field_ref[string] req_fieldE_ref()
-        __optional_field_ref[string] opt_fieldE_ref()
-        __field_ref[vector[vector[cint32_t]]] fieldF_ref()
-        __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
-        __field_ref[vector[cset[cint32_t]]] fieldH_ref()
-        __field_ref[cbool] fieldI_ref()
-        __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
-        __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
-        __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
-        __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
-        __field_ref[cint32_t] fieldN_ref()
-        __field_ref[vector[cmap[cEmpty,cMyStruct]]] fieldO_ref()
-        __field_ref[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] fieldP_ref()
-        __field_ref[cMyEnumA] fieldQ_ref()
-        __field_ref[cMyEnumA] fieldR_ref()
-        __required_field_ref[cMyEnumA] req_fieldR_ref()
-        __optional_field_ref[cMyEnumA] opt_fieldR_ref()
-        __field_ref[cMyEnumA] fieldS_ref()
-        __field_ref[vector[cMyEnumA]] fieldT_ref()
-        __field_ref[vector[cMyEnumA]] fieldU_ref()
-        __field_ref[cMyStruct] fieldV_ref()
-        __required_field_ref[cMyStruct] req_fieldV_ref()
-        __optional_field_ref[cMyStruct] opt_fieldV_ref()
-        __field_ref[cset[cMyStruct]] fieldW_ref()
-        __field_ref[cComplexUnion] fieldX_ref()
-        __required_field_ref[cComplexUnion] req_fieldX_ref()
-        __optional_field_ref[cComplexUnion] opt_fieldX_ref()
-        __field_ref[vector[cComplexUnion]] fieldY_ref()
-        __field_ref[cset[cSimpleUnion]] fieldZ_ref()
-        __field_ref[vector[cset[cSimpleUnion]]] fieldAA_ref()
-        __field_ref[cmap[Bar,Baz]] fieldAB_ref()
-        __field_ref[cMyEnumB] fieldAC_ref()
-        __field_ref[_includes_types.cAnEnum] fieldAD_ref()
-        __field_ref[cmap[string,cint32_t]] fieldAE_ref()
-        __field_ref[FooBar] fieldSD_ref()
+        __field_ref[cbool] fieldA_ref "fieldA_ref" ()
+        __required_field_ref[cbool] req_fieldA_ref "req_fieldA_ref" ()
+        __optional_field_ref[cbool] opt_fieldA_ref "opt_fieldA_ref" ()
+        __field_ref[cmap[string,cbool]] fieldB_ref "fieldB_ref" ()
+        __required_field_ref[cmap[string,cbool]] req_fieldB_ref "req_fieldB_ref" ()
+        __optional_field_ref[cmap[string,cbool]] opt_fieldB_ref "opt_fieldB_ref" ()
+        __field_ref[cset[cint32_t]] fieldC_ref "fieldC_ref" ()
+        __required_field_ref[cset[cint32_t]] req_fieldC_ref "req_fieldC_ref" ()
+        __optional_field_ref[cset[cint32_t]] opt_fieldC_ref "opt_fieldC_ref" ()
+        __field_ref[string] fieldD_ref "fieldD_ref" ()
+        __field_ref[string] fieldE_ref "fieldE_ref" ()
+        __required_field_ref[string] req_fieldE_ref "req_fieldE_ref" ()
+        __optional_field_ref[string] opt_fieldE_ref "opt_fieldE_ref" ()
+        __field_ref[vector[vector[cint32_t]]] fieldF_ref "fieldF_ref" ()
+        __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref "fieldG_ref" ()
+        __field_ref[vector[cset[cint32_t]]] fieldH_ref "fieldH_ref" ()
+        __field_ref[cbool] fieldI_ref "fieldI_ref" ()
+        __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref "fieldJ_ref" ()
+        __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref "fieldK_ref" ()
+        __field_ref[cset[cset[cset[cbool]]]] fieldL_ref "fieldL_ref" ()
+        __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref "fieldM_ref" ()
+        __field_ref[cint32_t] fieldN_ref "fieldN_ref" ()
+        __field_ref[vector[cmap[cEmpty,cMyStruct]]] fieldO_ref "fieldO_ref" ()
+        __field_ref[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] fieldP_ref "fieldP_ref" ()
+        __field_ref[cMyEnumA] fieldQ_ref "fieldQ_ref" ()
+        __field_ref[cMyEnumA] fieldR_ref "fieldR_ref" ()
+        __required_field_ref[cMyEnumA] req_fieldR_ref "req_fieldR_ref" ()
+        __optional_field_ref[cMyEnumA] opt_fieldR_ref "opt_fieldR_ref" ()
+        __field_ref[cMyEnumA] fieldS_ref "fieldS_ref" ()
+        __field_ref[vector[cMyEnumA]] fieldT_ref "fieldT_ref" ()
+        __field_ref[vector[cMyEnumA]] fieldU_ref "fieldU_ref" ()
+        __field_ref[cMyStruct] fieldV_ref "fieldV_ref" ()
+        __required_field_ref[cMyStruct] req_fieldV_ref "req_fieldV_ref" ()
+        __optional_field_ref[cMyStruct] opt_fieldV_ref "opt_fieldV_ref" ()
+        __field_ref[cset[cMyStruct]] fieldW_ref "fieldW_ref" ()
+        __field_ref[cComplexUnion] fieldX_ref "fieldX_ref" ()
+        __required_field_ref[cComplexUnion] req_fieldX_ref "req_fieldX_ref" ()
+        __optional_field_ref[cComplexUnion] opt_fieldX_ref "opt_fieldX_ref" ()
+        __field_ref[vector[cComplexUnion]] fieldY_ref "fieldY_ref" ()
+        __field_ref[cset[cSimpleUnion]] fieldZ_ref "fieldZ_ref" ()
+        __field_ref[vector[cset[cSimpleUnion]]] fieldAA_ref "fieldAA_ref" ()
+        __field_ref[cmap[Bar,Baz]] fieldAB_ref "fieldAB_ref" ()
+        __field_ref[cMyEnumB] fieldAC_ref "fieldAC_ref" ()
+        __field_ref[_includes_types.cAnEnum] fieldAD_ref "fieldAD_ref" ()
+        __field_ref[cmap[string,cint32_t]] fieldAE_ref "fieldAE_ref" ()
+        __field_ref[FooBar] fieldSD_ref "fieldSD_ref" ()
 
 
     cdef cppclass cMyIncludedStruct "::some::valid::ns::MyIncludedStruct":
@@ -691,56 +691,56 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cMyIncludedStruct&)
         bint operator<=(cMyIncludedStruct&)
         bint operator>=(cMyIncludedStruct&)
-        __field_ref[cint64_t] MyIncludedInt_ref()
-        __field_ref[_includes_types.cAStruct] MyIncludedStruct_ref()
-        unique_ptr[_includes_types.cAStruct] ARefField_ref()
-        __required_field_ref[_includes_types.cAStruct] ARequiredField_ref()
+        __field_ref[cint64_t] MyIncludedInt_ref "MyIncludedInt_ref" ()
+        __field_ref[_includes_types.cAStruct] MyIncludedStruct_ref "MyIncludedStruct_ref" ()
+        unique_ptr[_includes_types.cAStruct] ARefField_ref "ARefField_ref" ()
+        __required_field_ref[_includes_types.cAStruct] ARequiredField_ref "ARequiredField_ref" ()
 
 
     cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct":
         cAnnotatedStruct() except +
         bint operator==(cAnnotatedStruct&)
         bint operator!=(cAnnotatedStruct&)
-        __field_ref[ccontainerStruct] no_annotation_ref()
-        unique_ptr[ccontainerStruct] cpp_unique_ref_ref()
-        unique_ptr[ccontainerStruct] cpp2_unique_ref_ref()
-        unique_ptr[cmap[cint32_t,vector[string]]] container_with_ref_ref()
-        unique_ptr[ccontainerStruct] req_cpp_unique_ref_ref()
-        unique_ptr[ccontainerStruct] req_cpp2_unique_ref_ref()
-        unique_ptr[vector[string]] req_container_with_ref_ref()
-        unique_ptr[ccontainerStruct] opt_cpp_unique_ref_ref()
-        unique_ptr[ccontainerStruct] opt_cpp2_unique_ref_ref()
-        unique_ptr[cset[cint32_t]] opt_container_with_ref_ref()
-        unique_ptr[ccontainerStruct] ref_type_unique_ref()
-        shared_ptr[ccontainerStruct] ref_type_shared_ref()
-        shared_ptr[const cmap[cint32_t,vector[string]]] ref_type_const_ref()
-        shared_ptr[ccontainerStruct] req_ref_type_shared_ref()
-        shared_ptr[const ccontainerStruct] req_ref_type_const_ref()
-        unique_ptr[vector[string]] req_ref_type_unique_ref()
-        shared_ptr[const ccontainerStruct] opt_ref_type_const_ref()
-        unique_ptr[ccontainerStruct] opt_ref_type_unique_ref()
-        shared_ptr[cset[cint32_t]] opt_ref_type_shared_ref()
-        __field_ref[CppFakeI32] base_type_ref()
-        __field_ref[folly_small_vector_int64_t_8] list_type_ref()
-        __field_ref[folly_sorted_vector_set_std_string] set_type_ref()
-        __field_ref[FakeMap] map_type_ref()
-        __field_ref[std_unordered_map_std_string_containerStruct] map_struct_type_ref()
-        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_ref()
-        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_ref()
-        __field_ref[std_list[cint32_t]] list_i32_template_ref()
-        __field_ref[std_deque[string]] list_string_template_ref()
-        __field_ref[folly_sorted_vector_set[string]] set_template_ref()
-        __field_ref[folly_sorted_vector_map[cint64_t,string]] map_template_ref()
-        __field_ref[std_list[cint32_t]] typedef_list_template_ref()
-        __field_ref[std_deque[string]] typedef_deque_template_ref()
-        __field_ref[folly_sorted_vector_set[string]] typedef_set_template_ref()
-        __field_ref[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref()
-        __field_ref[Foo] indirection_a_ref()
-        __field_ref[vector[Bar]] indirection_b_ref()
-        __field_ref[cset[Baz]] indirection_c_ref()
-        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_val_ref()
-        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_val_ref()
-        __field_ref[ccontainerStruct] struct_struct_ref()
+        __field_ref[ccontainerStruct] no_annotation_ref "no_annotation_ref" ()
+        unique_ptr[ccontainerStruct] cpp_unique_ref_ref "cpp_unique_ref_ref" ()
+        unique_ptr[ccontainerStruct] cpp2_unique_ref_ref "cpp2_unique_ref_ref" ()
+        unique_ptr[cmap[cint32_t,vector[string]]] container_with_ref_ref "container_with_ref_ref" ()
+        unique_ptr[ccontainerStruct] req_cpp_unique_ref_ref "req_cpp_unique_ref_ref" ()
+        unique_ptr[ccontainerStruct] req_cpp2_unique_ref_ref "req_cpp2_unique_ref_ref" ()
+        unique_ptr[vector[string]] req_container_with_ref_ref "req_container_with_ref_ref" ()
+        unique_ptr[ccontainerStruct] opt_cpp_unique_ref_ref "opt_cpp_unique_ref_ref" ()
+        unique_ptr[ccontainerStruct] opt_cpp2_unique_ref_ref "opt_cpp2_unique_ref_ref" ()
+        unique_ptr[cset[cint32_t]] opt_container_with_ref_ref "opt_container_with_ref_ref" ()
+        unique_ptr[ccontainerStruct] ref_type_unique_ref "ref_type_unique_ref" ()
+        shared_ptr[ccontainerStruct] ref_type_shared_ref "ref_type_shared_ref" ()
+        shared_ptr[const cmap[cint32_t,vector[string]]] ref_type_const_ref "ref_type_const_ref" ()
+        shared_ptr[ccontainerStruct] req_ref_type_shared_ref "req_ref_type_shared_ref" ()
+        shared_ptr[const ccontainerStruct] req_ref_type_const_ref "req_ref_type_const_ref" ()
+        unique_ptr[vector[string]] req_ref_type_unique_ref "req_ref_type_unique_ref" ()
+        shared_ptr[const ccontainerStruct] opt_ref_type_const_ref "opt_ref_type_const_ref" ()
+        unique_ptr[ccontainerStruct] opt_ref_type_unique_ref "opt_ref_type_unique_ref" ()
+        shared_ptr[cset[cint32_t]] opt_ref_type_shared_ref "opt_ref_type_shared_ref" ()
+        __field_ref[CppFakeI32] base_type_ref "base_type_ref" ()
+        __field_ref[folly_small_vector_int64_t_8] list_type_ref "list_type_ref" ()
+        __field_ref[folly_sorted_vector_set_std_string] set_type_ref "set_type_ref" ()
+        __field_ref[FakeMap] map_type_ref "map_type_ref" ()
+        __field_ref[std_unordered_map_std_string_containerStruct] map_struct_type_ref "map_struct_type_ref" ()
+        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_ref "iobuf_type_ref" ()
+        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_ref "iobuf_ptr_ref" ()
+        __field_ref[std_list[cint32_t]] list_i32_template_ref "list_i32_template_ref" ()
+        __field_ref[std_deque[string]] list_string_template_ref "list_string_template_ref" ()
+        __field_ref[folly_sorted_vector_set[string]] set_template_ref "set_template_ref" ()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] map_template_ref "map_template_ref" ()
+        __field_ref[std_list[cint32_t]] typedef_list_template_ref "typedef_list_template_ref" ()
+        __field_ref[std_deque[string]] typedef_deque_template_ref "typedef_deque_template_ref" ()
+        __field_ref[folly_sorted_vector_set[string]] typedef_set_template_ref "typedef_set_template_ref" ()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref "typedef_map_template_ref" ()
+        __field_ref[Foo] indirection_a_ref "indirection_a_ref" ()
+        __field_ref[vector[Bar]] indirection_b_ref "indirection_b_ref" ()
+        __field_ref[cset[Baz]] indirection_c_ref "indirection_c_ref" ()
+        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_val_ref "iobuf_type_val_ref" ()
+        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_val_ref "iobuf_ptr_val_ref" ()
+        __field_ref[ccontainerStruct] struct_struct_ref "struct_struct_ref" ()
 
 
     cdef cppclass cComplexContainerStruct "::some::valid::ns::ComplexContainerStruct":
@@ -752,8 +752,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cComplexContainerStruct&)
         bint operator<=(cComplexContainerStruct&)
         bint operator>=(cComplexContainerStruct&)
-        __field_ref[cmap[string,_fbthrift_iobuf.cIOBuf]] map_of_iobufs_ref()
-        __field_ref[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
+        __field_ref[cmap[string,_fbthrift_iobuf.cIOBuf]] map_of_iobufs_ref "map_of_iobufs_ref" ()
+        __field_ref[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref "map_of_iobuf_ptrs_ref" ()
 
 
     cdef cppclass cFloatStruct "::some::valid::ns::FloatStruct":
@@ -765,8 +765,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cFloatStruct&)
         bint operator<=(cFloatStruct&)
         bint operator>=(cFloatStruct&)
-        __field_ref[float] floatField_ref()
-        __field_ref[double] doubleField_ref()
+        __field_ref[float] floatField_ref "floatField_ref" ()
+        __field_ref[double] doubleField_ref "doubleField_ref" ()
 
     cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::Type":
         cFloatUnion__type___EMPTY__ "::some::valid::ns::FloatUnion::Type::__EMPTY__",
@@ -783,10 +783,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cFloatUnion&)
         bint operator>=(cFloatUnion&)
         cFloatUnion__type getType() const
-        const float& get_floatSide() const
-        float& set_floatSide(const float&)
-        const double& get_doubleSide() const
-        double& set_doubleSide(const double&)
+        const float& get_floatSide "get_floatSide" () const
+        float& set_floatSide "set_floatSide" (const float&)
+        const double& get_doubleSide "get_doubleSide" () const
+        double& set_doubleSide "set_doubleSide" (const double&)
 
 
     cdef cppclass cAllRequiredNoExceptMoveCtrStruct "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct":
@@ -798,7 +798,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator<=(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
-        __required_field_ref[cint64_t] intField_ref()
+        __required_field_ref[cint64_t] intField_ref "intField_ref" ()
 
 
 

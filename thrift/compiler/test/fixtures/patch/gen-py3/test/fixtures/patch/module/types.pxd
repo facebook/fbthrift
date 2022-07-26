@@ -72,8 +72,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyData&)
         bint operator<=(cMyData&)
         bint operator>=(cMyData&)
-        __terse_field_ref[string] data1_ref()
-        __terse_field_ref[cint32_t] data2_ref()
+        __terse_field_ref[string] data1_ref "data1_ref" ()
+        __terse_field_ref[cint32_t] data2_ref "data2_ref" ()
 
     cdef enum cInnerUnion__type "::test::fixtures::patch::InnerUnion::Type":
         cInnerUnion__type___EMPTY__ "::test::fixtures::patch::InnerUnion::Type::__EMPTY__",
@@ -89,8 +89,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cInnerUnion&)
         bint operator>=(cInnerUnion&)
         cInnerUnion__type getType() const
-        const string& get_innerOption() const
-        string& set_innerOption(const string&)
+        const string& get_innerOption "get_innerOption" () const
+        string& set_innerOption "set_innerOption" (const string&)
 
     cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::test::fixtures::patch::MyUnion::Type::__EMPTY__",
@@ -108,12 +108,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const string& get_option1() const
-        string& set_option1(const string&)
-        const cint32_t& get_option2() const
-        cint32_t& set_option2(const cint32_t&)
-        const cInnerUnion& get_option3() const
-        cInnerUnion& set_option3(const cInnerUnion&)
+        const string& get_option1 "get_option1" () const
+        string& set_option1 "set_option1" (const string&)
+        const cint32_t& get_option2 "get_option2" () const
+        cint32_t& set_option2 "set_option2" (const cint32_t&)
+        const cInnerUnion& get_option3 "get_option3" () const
+        cInnerUnion& set_option3 "set_option3" (const cInnerUnion&)
 
 
     cdef cppclass cMyStruct "::test::fixtures::patch::MyStruct":
@@ -125,30 +125,30 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __terse_field_ref[cbool] boolVal_ref()
-        __terse_field_ref[cint8_t] byteVal_ref()
-        __terse_field_ref[cint16_t] i16Val_ref()
-        __terse_field_ref[cint32_t] i32Val_ref()
-        __terse_field_ref[cint64_t] i64Val_ref()
-        __terse_field_ref[float] floatVal_ref()
-        __terse_field_ref[double] doubleVal_ref()
-        __terse_field_ref[string] stringVal_ref()
-        __terse_field_ref[_folly_IOBuf] binaryVal_ref()
-        __terse_field_ref[cMyData] structVal_ref()
-        __optional_field_ref[cbool] optBoolVal_ref()
-        __optional_field_ref[cint8_t] optByteVal_ref()
-        __optional_field_ref[cint16_t] optI16Val_ref()
-        __optional_field_ref[cint32_t] optI32Val_ref()
-        __optional_field_ref[cint64_t] optI64Val_ref()
-        __optional_field_ref[float] optFloatVal_ref()
-        __optional_field_ref[double] optDoubleVal_ref()
-        __optional_field_ref[string] optStringVal_ref()
-        __optional_field_ref[_folly_IOBuf] optBinaryVal_ref()
-        __optional_field_ref[cMyData] optStructVal_ref()
-        __optional_field_ref[vector[cint16_t]] optListVal_ref()
-        __optional_field_ref[cset[string]] optSetVal_ref()
-        __optional_field_ref[cmap[string,string]] optMapVal_ref()
-        __terse_field_ref[cMyUnion] unionVal_ref()
+        __terse_field_ref[cbool] boolVal_ref "boolVal_ref" ()
+        __terse_field_ref[cint8_t] byteVal_ref "byteVal_ref" ()
+        __terse_field_ref[cint16_t] i16Val_ref "i16Val_ref" ()
+        __terse_field_ref[cint32_t] i32Val_ref "i32Val_ref" ()
+        __terse_field_ref[cint64_t] i64Val_ref "i64Val_ref" ()
+        __terse_field_ref[float] floatVal_ref "floatVal_ref" ()
+        __terse_field_ref[double] doubleVal_ref "doubleVal_ref" ()
+        __terse_field_ref[string] stringVal_ref "stringVal_ref" ()
+        __terse_field_ref[_folly_IOBuf] binaryVal_ref "binaryVal_ref" ()
+        __terse_field_ref[cMyData] structVal_ref "structVal_ref" ()
+        __optional_field_ref[cbool] optBoolVal_ref "optBoolVal_ref" ()
+        __optional_field_ref[cint8_t] optByteVal_ref "optByteVal_ref" ()
+        __optional_field_ref[cint16_t] optI16Val_ref "optI16Val_ref" ()
+        __optional_field_ref[cint32_t] optI32Val_ref "optI32Val_ref" ()
+        __optional_field_ref[cint64_t] optI64Val_ref "optI64Val_ref" ()
+        __optional_field_ref[float] optFloatVal_ref "optFloatVal_ref" ()
+        __optional_field_ref[double] optDoubleVal_ref "optDoubleVal_ref" ()
+        __optional_field_ref[string] optStringVal_ref "optStringVal_ref" ()
+        __optional_field_ref[_folly_IOBuf] optBinaryVal_ref "optBinaryVal_ref" ()
+        __optional_field_ref[cMyData] optStructVal_ref "optStructVal_ref" ()
+        __optional_field_ref[vector[cint16_t]] optListVal_ref "optListVal_ref" ()
+        __optional_field_ref[cset[string]] optSetVal_ref "optSetVal_ref" ()
+        __optional_field_ref[cmap[string,string]] optMapVal_ref "optMapVal_ref" ()
+        __terse_field_ref[cMyUnion] unionVal_ref "unionVal_ref" ()
 
 
 

@@ -145,24 +145,24 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
         {{#field:has_ref_accessor?}}
         {{#field:optional?}}
         __optional_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
-            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+            }}{{field:py_name}}_ref "{{> types/field_cppname}}" ()
         {{/field:optional?}}
         {{#field:required?}}
         __required_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
-            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+            }}{{field:py_name}}_ref "{{> types/field_cppname}}" ()
         {{/field:required?}}
         {{#field:opt_in_req_out?}}
         __field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
-            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+            }}{{field:py_name}}_ref "{{> types/field_cppname}}" ()
         {{/field:opt_in_req_out?}}
         {{#field:terse?}}
         __terse_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
-            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+            }}{{field:py_name}}_ref "{{> types/field_cppname}}" ()
         {{/field:terse?}}
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
         {{#field:reference?}}
-        {{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}} {{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}} {{field:py_name}}_ref "{{> types/field_cppname}}" ()
         {{/field:reference?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields_and_mixin_fields}}
@@ -170,10 +170,10 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
     {{#struct:py3_fields}}
-        {{#field:type}}const {{> types/cython_cpp_struct_field_type}}& get_{{field:py_name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
+        {{#field:type}}const {{> types/cython_cpp_struct_field_type}}& get_{{field:py_name}} "get_{{field:cppName}}" () const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
-        {{#field:type}}{{> types/cython_cpp_struct_field_type}}& set_{{field:py_name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/cython_cpp_type}}&){{/field:type}}
+        {{#field:type}}{{> types/cython_cpp_struct_field_type}}& set_{{field:py_name}} "set_{{field:cppName}}" (const {{> types/cython_cpp_type}}&){{/field:type}}
     {{/struct:py3_fields}}{{/struct:union?}}
 
 {{/program:structs}}

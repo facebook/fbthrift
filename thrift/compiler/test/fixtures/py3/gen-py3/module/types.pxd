@@ -89,7 +89,7 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator>(cSimpleException&)
         bint operator<=(cSimpleException&)
         bint operator>=(cSimpleException&)
-        __field_ref[cint16_t] err_code_ref()
+        __field_ref[cint16_t] err_code_ref "err_code_ref" ()
 
 
     cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct":
@@ -101,7 +101,7 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator>(cOptionalRefStruct&)
         bint operator<=(cOptionalRefStruct&)
         bint operator>=(cOptionalRefStruct&)
-        __optional_field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] optional_blob_ref()
+        __optional_field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] optional_blob_ref "optional_blob_ref" ()
 
 
     cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct":
@@ -113,13 +113,13 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator>(cSimpleStruct&)
         bint operator<=(cSimpleStruct&)
         bint operator>=(cSimpleStruct&)
-        __field_ref[cbool] is_on_ref()
-        __field_ref[cint8_t] tiny_int_ref()
-        __field_ref[cint16_t] small_int_ref()
-        __field_ref[cint32_t] nice_sized_int_ref()
-        __field_ref[cint64_t] big_int_ref()
-        __field_ref[double] real_ref()
-        __field_ref[float] smaller_real_ref()
+        __field_ref[cbool] is_on_ref "is_on_ref" ()
+        __field_ref[cint8_t] tiny_int_ref "tiny_int_ref" ()
+        __field_ref[cint16_t] small_int_ref "small_int_ref" ()
+        __field_ref[cint32_t] nice_sized_int_ref "nice_sized_int_ref" ()
+        __field_ref[cint64_t] big_int_ref "big_int_ref" ()
+        __field_ref[double] real_ref "real_ref" ()
+        __field_ref[float] smaller_real_ref "smaller_real_ref" ()
 
 
     cdef cppclass cComplexStruct "::py3::simple::ComplexStruct":
@@ -131,15 +131,15 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator>(cComplexStruct&)
         bint operator<=(cComplexStruct&)
         bint operator>=(cComplexStruct&)
-        __field_ref[cSimpleStruct] structOne_ref()
-        __field_ref[cSimpleStruct] structTwo_ref()
-        __field_ref[cint32_t] an_integer_ref()
-        __field_ref[string] name_ref()
-        __field_ref[cAnEnum] an_enum_ref()
-        __field_ref[string] some_bytes_ref()
-        __field_ref[string] sender_ref "from_ref"()
-        __field_ref[string] cdef__ref "cdef_ref"()
-        __field_ref[foo_Bar] bytes_with_cpp_type_ref()
+        __field_ref[cSimpleStruct] structOne_ref "structOne_ref" ()
+        __field_ref[cSimpleStruct] structTwo_ref "structTwo_ref" ()
+        __field_ref[cint32_t] an_integer_ref "an_integer_ref" ()
+        __field_ref[string] name_ref "name_ref" ()
+        __field_ref[cAnEnum] an_enum_ref "an_enum_ref" ()
+        __field_ref[string] some_bytes_ref "some_bytes_ref" ()
+        __field_ref[string] sender_ref "from_ref" ()
+        __field_ref[string] cdef__ref "cdef_ref" ()
+        __field_ref[foo_Bar] bytes_with_cpp_type_ref "bytes_with_cpp_type_ref" ()
 
     cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::Type":
         cBinaryUnion__type___EMPTY__ "::py3::simple::BinaryUnion::Type::__EMPTY__",
@@ -149,14 +149,14 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         cBinaryUnion() except +
         cBinaryUnion(const cBinaryUnion&) except +
         cBinaryUnion__type getType() const
-        const _fbthrift_iobuf.cIOBuf& get_iobuf_val() const
-        _fbthrift_iobuf.cIOBuf& set_iobuf_val(const _fbthrift_iobuf.cIOBuf&)
+        const _fbthrift_iobuf.cIOBuf& get_iobuf_val "get_iobuf_val" () const
+        _fbthrift_iobuf.cIOBuf& set_iobuf_val "set_iobuf_val" (const _fbthrift_iobuf.cIOBuf&)
 
 
     cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct":
         cBinaryUnionStruct() except +
         cBinaryUnionStruct(const cBinaryUnionStruct&) except +
-        __field_ref[cBinaryUnion] u_ref()
+        __field_ref[cBinaryUnion] u_ref "u_ref" ()
 
 
 

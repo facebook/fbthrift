@@ -69,7 +69,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMixin1&)
         bint operator<=(cMixin1&)
         bint operator>=(cMixin1&)
-        __field_ref[string] field1_ref()
+        __field_ref[string] field1_ref "field1_ref" ()
 
 
     cdef cppclass cMixin2 "::cpp2::Mixin2":
@@ -81,9 +81,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMixin2&)
         bint operator<=(cMixin2&)
         bint operator>=(cMixin2&)
-        __field_ref[cMixin1] m1_ref()
-        __optional_field_ref[string] field2_ref()
-        __field_ref[string] field1_ref()
+        __field_ref[cMixin1] m1_ref "m1_ref" ()
+        __optional_field_ref[string] field2_ref "field2_ref" ()
+        __field_ref[string] field1_ref "field1_ref" ()
 
 
     cdef cppclass cMixin3Base "::cpp2::Mixin3Base":
@@ -95,7 +95,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMixin3Base&)
         bint operator<=(cMixin3Base&)
         bint operator>=(cMixin3Base&)
-        __field_ref[string] field3_ref()
+        __field_ref[string] field3_ref "field3_ref" ()
 
 
     cdef cppclass cFoo "::cpp2::Foo":
@@ -107,13 +107,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFoo&)
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
-        __field_ref[string] field4_ref()
-        __field_ref[cMixin2] m2_ref()
-        __field_ref[cMixin3Base] m3_ref()
-        __field_ref[cMixin1] m1_ref()
-        __optional_field_ref[string] field2_ref()
-        __field_ref[string] field1_ref()
-        __field_ref[string] field3_ref()
+        __field_ref[string] field4_ref "field4_ref" ()
+        __field_ref[cMixin2] m2_ref "m2_ref" ()
+        __field_ref[cMixin3Base] m3_ref "m3_ref" ()
+        __field_ref[cMixin1] m1_ref "m1_ref" ()
+        __optional_field_ref[string] field2_ref "field2_ref" ()
+        __field_ref[string] field1_ref "field1_ref" ()
+        __field_ref[string] field3_ref "field3_ref" ()
 
 
 

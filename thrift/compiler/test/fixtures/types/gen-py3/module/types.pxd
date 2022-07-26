@@ -404,7 +404,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cdecorated_struct&)
         bint operator<=(cdecorated_struct&)
         bint operator>=(cdecorated_struct&)
-        __field_ref[string] field_ref()
+        __field_ref[string] field_ref "field_ref" ()
 
 
     cdef cppclass cContainerStruct "::apache::thrift::fixtures::types::ContainerStruct":
@@ -412,14 +412,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cContainerStruct(const cContainerStruct&) except +
         bint operator==(cContainerStruct&)
         bint operator!=(cContainerStruct&)
-        __field_ref[vector[cint32_t]] fieldA_ref()
-        __field_ref[std_list[cint32_t]] fieldB_ref()
-        __field_ref[std_deque[cint32_t]] fieldC_ref()
-        __field_ref[folly_fbvector[cint32_t]] fieldD_ref()
-        __field_ref[folly_small_vector[cint32_t]] fieldE_ref()
-        __field_ref[folly_sorted_vector_set[cint32_t]] fieldF_ref()
-        __field_ref[folly_sorted_vector_map[cint32_t,string]] fieldG_ref()
-        __field_ref[std_unordered_map[cint32_t,string]] fieldH_ref()
+        __field_ref[vector[cint32_t]] fieldA_ref "fieldA_ref" ()
+        __field_ref[std_list[cint32_t]] fieldB_ref "fieldB_ref" ()
+        __field_ref[std_deque[cint32_t]] fieldC_ref "fieldC_ref" ()
+        __field_ref[folly_fbvector[cint32_t]] fieldD_ref "fieldD_ref" ()
+        __field_ref[folly_small_vector[cint32_t]] fieldE_ref "fieldE_ref" ()
+        __field_ref[folly_sorted_vector_set[cint32_t]] fieldF_ref "fieldF_ref" ()
+        __field_ref[folly_sorted_vector_map[cint32_t,string]] fieldG_ref "fieldG_ref" ()
+        __field_ref[std_unordered_map[cint32_t,string]] fieldH_ref "fieldH_ref" ()
 
 
     cdef cppclass cCppTypeStruct "::apache::thrift::fixtures::types::CppTypeStruct":
@@ -431,7 +431,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cCppTypeStruct&)
         bint operator<=(cCppTypeStruct&)
         bint operator>=(cCppTypeStruct&)
-        __field_ref[std_list_int32_t] fieldA_ref()
+        __field_ref[std_list_int32_t] fieldA_ref "fieldA_ref" ()
 
 
     cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct":
@@ -443,7 +443,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cVirtualStruct&)
         bint operator<=(cVirtualStruct&)
         bint operator>=(cVirtualStruct&)
-        __field_ref[cint64_t] MyIntField_ref()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
 
 
     cdef cppclass cMyStructWithForwardRefEnum "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum":
@@ -455,8 +455,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cMyStructWithForwardRefEnum&)
         bint operator<=(cMyStructWithForwardRefEnum&)
         bint operator>=(cMyStructWithForwardRefEnum&)
-        __field_ref[cMyForwardRefEnum] a_ref()
-        __field_ref[cMyForwardRefEnum] b_ref()
+        __field_ref[cMyForwardRefEnum] a_ref "a_ref" ()
+        __field_ref[cMyForwardRefEnum] b_ref "b_ref" ()
 
 
     cdef cppclass cTrivialNumeric "::apache::thrift::fixtures::types::TrivialNumeric":
@@ -468,8 +468,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cTrivialNumeric&)
         bint operator<=(cTrivialNumeric&)
         bint operator>=(cTrivialNumeric&)
-        __field_ref[cint32_t] a_ref()
-        __field_ref[cbool] b_ref()
+        __field_ref[cint32_t] a_ref "a_ref" ()
+        __field_ref[cbool] b_ref "b_ref" ()
 
 
     cdef cppclass cTrivialNestedWithDefault "::apache::thrift::fixtures::types::TrivialNestedWithDefault":
@@ -481,8 +481,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cTrivialNestedWithDefault&)
         bint operator<=(cTrivialNestedWithDefault&)
         bint operator>=(cTrivialNestedWithDefault&)
-        __field_ref[cint32_t] z_ref()
-        __field_ref[cTrivialNumeric] n_ref()
+        __field_ref[cint32_t] z_ref "z_ref" ()
+        __field_ref[cTrivialNumeric] n_ref "n_ref" ()
 
 
     cdef cppclass cComplexString "::apache::thrift::fixtures::types::ComplexString":
@@ -494,8 +494,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cComplexString&)
         bint operator<=(cComplexString&)
         bint operator>=(cComplexString&)
-        __field_ref[string] a_ref()
-        __field_ref[cmap[string,cint32_t]] b_ref()
+        __field_ref[string] a_ref "a_ref" ()
+        __field_ref[cmap[string,cint32_t]] b_ref "b_ref" ()
 
 
     cdef cppclass cComplexNestedWithDefault "::apache::thrift::fixtures::types::ComplexNestedWithDefault":
@@ -507,8 +507,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cComplexNestedWithDefault&)
         bint operator<=(cComplexNestedWithDefault&)
         bint operator>=(cComplexNestedWithDefault&)
-        __field_ref[string] z_ref()
-        __field_ref[cComplexString] n_ref()
+        __field_ref[string] z_ref "z_ref" ()
+        __field_ref[cComplexString] n_ref "n_ref" ()
 
 
     cdef cppclass cMinPadding "::apache::thrift::fixtures::types::MinPadding":
@@ -520,20 +520,20 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cMinPadding&)
         bint operator<=(cMinPadding&)
         bint operator>=(cMinPadding&)
-        __required_field_ref[cint8_t] small_ref()
-        __required_field_ref[cint64_t] big_ref()
-        __required_field_ref[cint16_t] medium_ref()
-        __required_field_ref[cint32_t] biggish_ref()
-        __required_field_ref[cint8_t] tiny_ref()
+        __required_field_ref[cint8_t] small_ref "small_ref" ()
+        __required_field_ref[cint64_t] big_ref "big_ref" ()
+        __required_field_ref[cint16_t] medium_ref "medium_ref" ()
+        __required_field_ref[cint32_t] biggish_ref "biggish_ref" ()
+        __required_field_ref[cint8_t] tiny_ref "tiny_ref" ()
 
 
     cdef cppclass cMyStruct "::apache::thrift::fixtures::types::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
-        __field_ref[cint64_t] MyIntField_ref()
-        __field_ref[string] MyStringField_ref()
-        __field_ref[cint64_t] majorVer_ref()
-        __field_ref[cMyDataItem] data_ref()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
+        __field_ref[string] MyStringField_ref "MyStringField_ref" ()
+        __field_ref[cint64_t] majorVer_ref "majorVer_ref" ()
+        __field_ref[cMyDataItem] data_ref "data_ref" ()
 
 
     cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem":
@@ -550,7 +550,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cRenaming&)
         bint operator<=(cRenaming&)
         bint operator>=(cRenaming&)
-        __field_ref[cint64_t] foo_ref "bar_ref"()
+        __field_ref[cint64_t] foo_ref "bar_ref" ()
 
 
     cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes":
@@ -558,8 +558,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cAnnotatedTypes(const cAnnotatedTypes&) except +
         bint operator==(cAnnotatedTypes&)
         bint operator!=(cAnnotatedTypes&)
-        __field_ref[string] binary_field_ref()
-        __field_ref[vector[std_unordered_map[cint32_t,string]]] list_field_ref()
+        __field_ref[string] binary_field_ref "binary_field_ref" ()
+        __field_ref[vector[std_unordered_map[cint32_t,string]]] list_field_ref "list_field_ref" ()
 
 
     cdef cppclass cForwardUsageRoot "::apache::thrift::fixtures::types::ForwardUsageRoot":
@@ -571,8 +571,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cForwardUsageRoot&)
         bint operator<=(cForwardUsageRoot&)
         bint operator>=(cForwardUsageRoot&)
-        __optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref()
-        unique_ptr[cForwardUsageByRef] ForwardUsageByRef_ref()
+        __optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref "ForwardUsageStruct_ref" ()
+        unique_ptr[cForwardUsageByRef] ForwardUsageByRef_ref "ForwardUsageByRef_ref" ()
 
 
     cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct":
@@ -584,7 +584,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cForwardUsageStruct&)
         bint operator<=(cForwardUsageStruct&)
         bint operator>=(cForwardUsageStruct&)
-        __optional_field_ref[cForwardUsageRoot] foo_ref()
+        __optional_field_ref[cForwardUsageRoot] foo_ref "foo_ref" ()
 
 
     cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef":
@@ -596,7 +596,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cForwardUsageByRef&)
         bint operator<=(cForwardUsageByRef&)
         bint operator>=(cForwardUsageByRef&)
-        __optional_field_ref[cForwardUsageRoot] foo_ref()
+        __optional_field_ref[cForwardUsageRoot] foo_ref "foo_ref" ()
 
 
     cdef cppclass cNoexceptMoveEmpty "::apache::thrift::fixtures::types::NoexceptMoveEmpty":
@@ -619,7 +619,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cNoexceptMoveSimpleStruct&)
         bint operator<=(cNoexceptMoveSimpleStruct&)
         bint operator>=(cNoexceptMoveSimpleStruct&)
-        __field_ref[cint64_t] boolField_ref()
+        __field_ref[cint64_t] boolField_ref "boolField_ref" ()
 
 
     cdef cppclass cNoexceptMoveComplexStruct "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct":
@@ -631,15 +631,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cNoexceptMoveComplexStruct&)
         bint operator<=(cNoexceptMoveComplexStruct&)
         bint operator>=(cNoexceptMoveComplexStruct&)
-        __field_ref[cbool] MyBoolField_ref()
-        __field_ref[cint64_t] MyIntField_ref()
-        __field_ref[string] MyStringField_ref()
-        __field_ref[string] MyStringField2_ref()
-        __field_ref[string] MyBinaryField_ref()
-        __optional_field_ref[string] MyBinaryField2_ref()
-        __required_field_ref[string] MyBinaryField3_ref()
-        __field_ref[vector[string]] MyBinaryListField4_ref()
-        __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        __field_ref[cbool] MyBoolField_ref "MyBoolField_ref" ()
+        __field_ref[cint64_t] MyIntField_ref "MyIntField_ref" ()
+        __field_ref[string] MyStringField_ref "MyStringField_ref" ()
+        __field_ref[string] MyStringField2_ref "MyStringField2_ref" ()
+        __field_ref[string] MyBinaryField_ref "MyBinaryField_ref" ()
+        __optional_field_ref[string] MyBinaryField2_ref "MyBinaryField2_ref" ()
+        __required_field_ref[string] MyBinaryField3_ref "MyBinaryField3_ref" ()
+        __field_ref[vector[string]] MyBinaryListField4_ref "MyBinaryListField4_ref" ()
+        __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref "MyMapEnumAndInt_ref" ()
 
     cdef enum cNoExceptMoveUnion__type "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type":
         cNoExceptMoveUnion__type___EMPTY__ "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::__EMPTY__",
@@ -656,10 +656,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cNoExceptMoveUnion&)
         bint operator>=(cNoExceptMoveUnion&)
         cNoExceptMoveUnion__type getType() const
-        const string& get_string_field() const
-        string& set_string_field(const string&)
-        const cint32_t& get_i32_field() const
-        cint32_t& set_i32_field(const cint32_t&)
+        const string& get_string_field "get_string_field" () const
+        string& set_string_field "set_string_field" (const string&)
+        const cint32_t& get_i32_field "get_i32_field" () const
+        cint32_t& set_i32_field "set_i32_field" (const cint32_t&)
 
 
     cdef cppclass cAllocatorAware "::apache::thrift::fixtures::types::AllocatorAware":
@@ -671,13 +671,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cAllocatorAware&)
         bint operator<=(cAllocatorAware&)
         bint operator>=(cAllocatorAware&)
-        __field_ref[vector[cint32_t]] aa_list_ref()
-        __field_ref[cset[cint32_t]] aa_set_ref()
-        __field_ref[cmap[cint32_t,cint32_t]] aa_map_ref()
-        __field_ref[string] aa_string_ref()
-        __field_ref[cint32_t] not_a_container_ref()
-        unique_ptr[cint32_t] aa_unique_ref()
-        shared_ptr[cint32_t] aa_shared_ref()
+        __field_ref[vector[cint32_t]] aa_list_ref "aa_list_ref" ()
+        __field_ref[cset[cint32_t]] aa_set_ref "aa_set_ref" ()
+        __field_ref[cmap[cint32_t,cint32_t]] aa_map_ref "aa_map_ref" ()
+        __field_ref[string] aa_string_ref "aa_string_ref" ()
+        __field_ref[cint32_t] not_a_container_ref "not_a_container_ref" ()
+        unique_ptr[cint32_t] aa_unique_ref "aa_unique_ref" ()
+        shared_ptr[cint32_t] aa_shared_ref "aa_shared_ref" ()
 
 
     cdef cppclass cAllocatorAware2 "::apache::thrift::fixtures::types::AllocatorAware2":
@@ -689,7 +689,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cAllocatorAware2&)
         bint operator<=(cAllocatorAware2&)
         bint operator>=(cAllocatorAware2&)
-        __field_ref[cint32_t] not_a_container_ref()
+        __field_ref[cint32_t] not_a_container_ref "not_a_container_ref" ()
 
 
     cdef cppclass cTypedefStruct "::apache::thrift::fixtures::types::TypedefStruct":
@@ -701,9 +701,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cTypedefStruct&)
         bint operator<=(cTypedefStruct&)
         bint operator>=(cTypedefStruct&)
-        __field_ref[cint32_t] i32_field_ref()
-        __field_ref[cint32_t] IntTypedef_field_ref()
-        __field_ref[cint32_t] UintTypedef_field_ref()
+        __field_ref[cint32_t] i32_field_ref "i32_field_ref" ()
+        __field_ref[cint32_t] IntTypedef_field_ref "IntTypedef_field_ref" ()
+        __field_ref[cint32_t] UintTypedef_field_ref "UintTypedef_field_ref" ()
 
 
     cdef cppclass cStructWithDoubleUnderscores "::apache::thrift::fixtures::types::StructWithDoubleUnderscores":
@@ -715,7 +715,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cStructWithDoubleUnderscores&)
         bint operator<=(cStructWithDoubleUnderscores&)
         bint operator>=(cStructWithDoubleUnderscores&)
-        __field_ref[cint32_t] __field_ref()
+        __field_ref[cint32_t] __field_ref "__field_ref" ()
 
 
 

@@ -82,7 +82,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStruct&)
         bint operator<=(cAStruct&)
         bint operator>=(cAStruct&)
-        __field_ref[cint32_t] FieldA_ref()
+        __field_ref[cint32_t] FieldA_ref "FieldA_ref" ()
 
 
     cdef cppclass cAStructB "::a::different::ns::AStructB":
@@ -94,7 +94,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStructB&)
         bint operator<=(cAStructB&)
         bint operator>=(cAStructB&)
-        shared_ptr[const cAStruct] FieldA_ref()
+        shared_ptr[const cAStruct] FieldA_ref "FieldA_ref" ()
 
 
 

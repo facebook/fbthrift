@@ -94,11 +94,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInternship&)
         bint operator<=(cInternship&)
         bint operator>=(cInternship&)
-        __required_field_ref[cint32_t] weeks_ref()
-        __field_ref[string] title_ref()
-        __optional_field_ref[cCompany] employer_ref()
-        __optional_field_ref[double] compensation_ref()
-        __optional_field_ref[string] school_ref()
+        __required_field_ref[cint32_t] weeks_ref "weeks_ref" ()
+        __field_ref[string] title_ref "title_ref" ()
+        __optional_field_ref[cCompany] employer_ref "employer_ref" ()
+        __optional_field_ref[double] compensation_ref "compensation_ref" ()
+        __optional_field_ref[string] school_ref "school_ref" ()
 
 
     cdef cppclass cRange "::cpp2::Range":
@@ -110,8 +110,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cRange&)
         bint operator<=(cRange&)
         bint operator>=(cRange&)
-        __required_field_ref[cint32_t] min_ref()
-        __required_field_ref[cint32_t] max_ref()
+        __required_field_ref[cint32_t] min_ref "min_ref" ()
+        __required_field_ref[cint32_t] max_ref "max_ref" ()
 
 
     cdef cppclass cstruct1 "::cpp2::struct1":
@@ -123,8 +123,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct1&)
         bint operator<=(cstruct1&)
         bint operator>=(cstruct1&)
-        __field_ref[cint32_t] a_ref()
-        __field_ref[string] b_ref()
+        __field_ref[cint32_t] a_ref "a_ref" ()
+        __field_ref[string] b_ref "b_ref" ()
 
 
     cdef cppclass cstruct2 "::cpp2::struct2":
@@ -136,10 +136,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct2&)
         bint operator<=(cstruct2&)
         bint operator>=(cstruct2&)
-        __field_ref[cint32_t] a_ref()
-        __field_ref[string] b_ref()
-        __field_ref[cstruct1] c_ref()
-        __field_ref[vector[cint32_t]] d_ref()
+        __field_ref[cint32_t] a_ref "a_ref" ()
+        __field_ref[string] b_ref "b_ref" ()
+        __field_ref[cstruct1] c_ref "c_ref" ()
+        __field_ref[vector[cint32_t]] d_ref "d_ref" ()
 
 
     cdef cppclass cstruct3 "::cpp2::struct3":
@@ -151,9 +151,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct3&)
         bint operator<=(cstruct3&)
         bint operator>=(cstruct3&)
-        __field_ref[string] a_ref()
-        __field_ref[cint32_t] b_ref()
-        __field_ref[cstruct2] c_ref()
+        __field_ref[string] a_ref "a_ref" ()
+        __field_ref[cint32_t] b_ref "b_ref" ()
+        __field_ref[cstruct2] c_ref "c_ref" ()
 
 
     cdef cppclass cstruct4 "::cpp2::struct4":
@@ -165,9 +165,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct4&)
         bint operator<=(cstruct4&)
         bint operator>=(cstruct4&)
-        __field_ref[cint32_t] a_ref()
-        __optional_field_ref[double] b_ref()
-        __optional_field_ref[cint8_t] c_ref()
+        __field_ref[cint32_t] a_ref "a_ref" ()
+        __optional_field_ref[double] b_ref "b_ref" ()
+        __optional_field_ref[cint8_t] c_ref "c_ref" ()
 
     cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",
@@ -184,10 +184,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cunion1&)
         bint operator>=(cunion1&)
         cunion1__type getType() const
-        const cint32_t& get_i() const
-        cint32_t& set_i(const cint32_t&)
-        const double& get_d() const
-        double& set_d(const double&)
+        const cint32_t& get_i "get_i" () const
+        cint32_t& set_i "set_i" (const cint32_t&)
+        const double& get_d "get_d" () const
+        double& set_d "set_d" (const double&)
 
     cdef enum cunion2__type "::cpp2::union2::Type":
         cunion2__type___EMPTY__ "::cpp2::union2::Type::__EMPTY__",
@@ -206,14 +206,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cunion2&)
         bint operator>=(cunion2&)
         cunion2__type getType() const
-        const cint32_t& get_i() const
-        cint32_t& set_i(const cint32_t&)
-        const double& get_d() const
-        double& set_d(const double&)
-        const cstruct1& get_s() const
-        cstruct1& set_s(const cstruct1&)
-        const cunion1& get_u() const
-        cunion1& set_u(const cunion1&)
+        const cint32_t& get_i "get_i" () const
+        cint32_t& set_i "set_i" (const cint32_t&)
+        const double& get_d "get_d" () const
+        double& set_d "set_d" (const double&)
+        const cstruct1& get_s "get_s" () const
+        cstruct1& set_s "set_s" (const cstruct1&)
+        const cunion1& get_u "get_u" () const
+        cunion1& set_u "set_u" (const cunion1&)
 
 
 

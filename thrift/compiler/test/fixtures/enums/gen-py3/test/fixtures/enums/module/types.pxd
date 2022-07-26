@@ -81,10 +81,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cSomeStruct&)
         bint operator<=(cSomeStruct&)
         bint operator>=(cSomeStruct&)
-        __field_ref[cMetasyntactic] reasonable_ref()
-        __field_ref[cMetasyntactic] fine_ref()
-        __field_ref[cMetasyntactic] questionable_ref()
-        __field_ref[cset[cint32_t]] tags_ref()
+        __field_ref[cMetasyntactic] reasonable_ref "reasonable_ref" ()
+        __field_ref[cMetasyntactic] fine_ref "fine_ref" ()
+        __field_ref[cMetasyntactic] questionable_ref "questionable_ref" ()
+        __field_ref[cset[cint32_t]] tags_ref "tags_ref" ()
 
 
 

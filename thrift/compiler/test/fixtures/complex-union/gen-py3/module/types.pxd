@@ -77,18 +77,18 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cComplexUnion&)
         bint operator>=(cComplexUnion&)
         cComplexUnion__type getType() const
-        const cint64_t& get_intValue() const
-        cint64_t& set_intValue(const cint64_t&)
-        const string& get_stringValue() const
-        string& set_stringValue(const string&)
-        const vector[cint64_t]& get_intListValue() const
-        vector[cint64_t]& set_intListValue(const vector[cint64_t]&)
-        const vector[string]& get_stringListValue() const
-        vector[string]& set_stringListValue(const vector[string]&)
-        const cmap[cint16_t,string]& get_typedefValue() const
-        cmap[cint16_t,string]& set_typedefValue(const cmap[cint16_t,string]&)
-        const unique_ptr[string]& get_stringRef() const
-        unique_ptr[string]& set_stringRef(const string&)
+        const cint64_t& get_intValue "get_intValue" () const
+        cint64_t& set_intValue "set_intValue" (const cint64_t&)
+        const string& get_stringValue "get_stringValue" () const
+        string& set_stringValue "set_stringValue" (const string&)
+        const vector[cint64_t]& get_intListValue "get_intListValue" () const
+        vector[cint64_t]& set_intListValue "set_intListValue" (const vector[cint64_t]&)
+        const vector[string]& get_stringListValue "get_stringListValue" () const
+        vector[string]& set_stringListValue "set_stringListValue" (const vector[string]&)
+        const cmap[cint16_t,string]& get_typedefValue "get_typedefValue" () const
+        cmap[cint16_t,string]& set_typedefValue "set_typedefValue" (const cmap[cint16_t,string]&)
+        const unique_ptr[string]& get_stringRef "get_stringRef" () const
+        unique_ptr[string]& set_stringRef "set_stringRef" (const string&)
 
     cdef enum cListUnion__type "::cpp2::ListUnion::Type":
         cListUnion__type___EMPTY__ "::cpp2::ListUnion::Type::__EMPTY__",
@@ -105,10 +105,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cListUnion&)
         bint operator>=(cListUnion&)
         cListUnion__type getType() const
-        const vector[cint64_t]& get_intListValue() const
-        vector[cint64_t]& set_intListValue(const vector[cint64_t]&)
-        const vector[string]& get_stringListValue() const
-        vector[string]& set_stringListValue(const vector[string]&)
+        const vector[cint64_t]& get_intListValue "get_intListValue" () const
+        vector[cint64_t]& set_intListValue "set_intListValue" (const vector[cint64_t]&)
+        const vector[string]& get_stringListValue "get_stringListValue" () const
+        vector[string]& set_stringListValue "set_stringListValue" (const vector[string]&)
 
     cdef enum cDataUnion__type "::cpp2::DataUnion::Type":
         cDataUnion__type___EMPTY__ "::cpp2::DataUnion::Type::__EMPTY__",
@@ -125,10 +125,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cDataUnion&)
         bint operator>=(cDataUnion&)
         cDataUnion__type getType() const
-        const string& get_binaryData() const
-        string& set_binaryData(const string&)
-        const string& get_stringData() const
-        string& set_stringData(const string&)
+        const string& get_binaryData "get_binaryData" () const
+        string& set_binaryData "set_binaryData" (const string&)
+        const string& get_stringData "get_stringData" () const
+        string& set_stringData "set_stringData" (const string&)
 
 
     cdef cppclass cVal "::cpp2::Val":
@@ -140,9 +140,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVal&)
         bint operator<=(cVal&)
         bint operator>=(cVal&)
-        __field_ref[string] strVal_ref()
-        __field_ref[cint32_t] intVal_ref()
-        __field_ref[cmap[cint16_t,string]] typedefValue_ref()
+        __field_ref[string] strVal_ref "strVal_ref" ()
+        __field_ref[cint32_t] intVal_ref "intVal_ref" ()
+        __field_ref[cmap[cint16_t,string]] typedefValue_ref "typedefValue_ref" ()
 
     cdef enum cValUnion__type "::cpp2::ValUnion::Type":
         cValUnion__type___EMPTY__ "::cpp2::ValUnion::Type::__EMPTY__",
@@ -159,10 +159,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cValUnion&)
         bint operator>=(cValUnion&)
         cValUnion__type getType() const
-        const cVal& get_v1() const
-        cVal& set_v1(const cVal&)
-        const cVal& get_v2() const
-        cVal& set_v2(const cVal&)
+        const cVal& get_v1 "get_v1" () const
+        cVal& set_v1 "set_v1" (const cVal&)
+        const cVal& get_v2 "get_v2" () const
+        cVal& set_v2 "set_v2" (const cVal&)
 
     cdef enum cVirtualComplexUnion__type "::cpp2::VirtualComplexUnion::Type":
         cVirtualComplexUnion__type___EMPTY__ "::cpp2::VirtualComplexUnion::Type::__EMPTY__",
@@ -179,10 +179,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cVirtualComplexUnion&)
         bint operator>=(cVirtualComplexUnion&)
         cVirtualComplexUnion__type getType() const
-        const string& get_thingOne() const
-        string& set_thingOne(const string&)
-        const string& get_thingTwo() const
-        string& set_thingTwo(const string&)
+        const string& get_thingOne "get_thingOne" () const
+        string& set_thingOne "set_thingOne" (const string&)
+        const string& get_thingTwo "get_thingTwo" () const
+        string& set_thingTwo "set_thingTwo" (const string&)
 
 
     cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct":
@@ -193,7 +193,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cNonCopyableStruct&)
         bint operator<=(cNonCopyableStruct&)
         bint operator>=(cNonCopyableStruct&)
-        __field_ref[cint64_t] num_ref()
+        __field_ref[cint64_t] num_ref "num_ref" ()
 
     cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
         cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",
@@ -208,8 +208,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cNonCopyableUnion&)
         bint operator>=(cNonCopyableUnion&)
         cNonCopyableUnion__type getType() const
-        const cNonCopyableStruct& get_s() const
-        cNonCopyableStruct& set_s(const cNonCopyableStruct&)
+        const cNonCopyableStruct& get_s "get_s" () const
+        cNonCopyableStruct& set_s "set_s" (const cNonCopyableStruct&)
 
 
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
