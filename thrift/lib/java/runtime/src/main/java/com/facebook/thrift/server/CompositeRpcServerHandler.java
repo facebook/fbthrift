@@ -52,11 +52,12 @@ public class CompositeRpcServerHandler implements RpcServerHandler {
     for (Map.Entry<String, RpcServerHandler> entry : handler.getMethodMap().entrySet()) {
       if (methodMap.containsKey(entry.getKey())) {
         throw new IllegalArgumentException(
-            "CompositeRpcServerHandler already contains "
-                + "an entry for a service method called "
+            "Error when attempting to add "
                 + entry.getKey()
-                + " provide by implementation "
-                + handler.getClass().getName());
+                + " to CompositeRpcServerHandler from "
+                + handler.getClass().getName()
+                + " due to a duplicated entry from "
+                + methodMap.get(entry.getKey()).getClass().getName());
       }
 
       methodMap.put(entry.getKey(), entry.getValue());
