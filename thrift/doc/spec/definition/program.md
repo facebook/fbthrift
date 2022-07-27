@@ -1,36 +1,100 @@
 ---
-state: draft
+state: experimental
 ---
 
 # Programs
 
+A program consists of:
+
+1. optional [includes](#includes),
+1. the [package](#package) for the program,
+1. optional [namespace](#namespaces) overrides, and
+1. [definitions](#definitions).
+
 ## Universal Names
 
-A Universal Name **must** be a valid [URI](https://tools.ietf.org/html/rfc3986) that meets the following criteria:
+A Universal Name uniquely identifies a Thrift [definition](index.md), regardless of which program it is defined in. It **must** be a valid [URI](https://tools.ietf.org/html/rfc3986) that meets the following criteria:
 
 - **Must not** have a scheme; "fbthrift://" is implied.
-- Include a valid case-insensitive domain name as the 'authority'.
-- Are case sensitive
-- **Must** have 2 or more path segments
-  - One segment **must** include the package name
-  - One segment **must** include the type
+- **Must** include a domain name as the 'authority', with at least 2 domain labels.
+- **Must** include a path (with at least 2 path segments for a definition).
 - **Must not** have a query or a fragment.
-- **Must** be in the canonical form:
+- **Must** be in the following canonical/normalized form:
   - Domain name labels **must** be lowercase ASCII letters, numbers, -, or _.
   - Path segments **must** be ASCII letters, numbers, -, or _.
 
-## Packages
+## Includes
 
-A package declaration contains a Universal Name as package name and optionally program annotations
+Thrift allows including other Thrift files to use any of its consts and types. These can be referenced from another file by prepending the filename to the definition's name (i.e., `Filename.Identifier`).
+
+```
+IncludeDeclaration:
+    include "{Path}/{Filename}.thrift"
+```
+
+- [Path](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_271) and [Filename](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_170) **must** be valid POSIX portable pathname and filename.
+
+*Note* a program cannot include multiple files with the same file name, only differing by path.
+
+## Package
+
+A package declaration defines the default [Universal Name](#universal-names) and optional annotations, under which all [definitions](#definitions) in the program are declared:
 
 ```
 PackageDeclaration:
-    {Annotations} package "Domain/Identifier{/Identifier}";
+    {Annotations}
+    package "Domain/Identifier{/Identifier}";
 ```
 
-## Universal Name for [definitions](../index.md)
+For example:
 
-[Definitions](../index.md) **may** have an unstructured annotation `thrift.uri` as an Universal Name. It **must** be globally unique. If a Universal Name is not specified, one will be generated using a package `{package}/{identifier}`. For example,
+```
+include "thrift/annotations/thrift.thrift"
+
+@thrift.Testing // Indicates all definitions in the program are for tests only.
+package "test.dev/testing"
+
+ // Has the universal name "test.dev/testing/MyInt" and inherits `@thrift.Testing`.
+typedef int MyInt
+```
+
+## Namespaces
+
+Language-specific overrides for the native module/package/namespace/etc abstraction, represented as a list of identifiers (names).
+
+```
+NamespaceDeclaration:
+    namespace Language Identifier{.Identifier};
+```
+
+All Thrift implementations **must** define a default mapping from package to 'namespace'. For example, the following mapping are used for officially-supported Thrift languages:
+
+- cpp2: `{reverse(domain)[1:]}.{path}`
+- python: `{reverse(domain)[1:]}.{path[:-2] if path[-1] == filename else path}`
+- hack: `{path}`
+- java: `{reverse(domain)}.{path}`
+
+For example,
+
+```
+package "domain.com/path/to/file"
+```
+
+This package name implies the following namespaces:
+
+```
+namespace cpp2 domain.path.to.file
+namespace python domain.path.to
+namespace py3 domain.path.to
+namespace hack path.to.file
+namespace php path.to.file
+namespace java2 com.domain.path.to.file
+namespace java.swift com.domain.path.to.file
+```
+
+## Definitions
+
+[Definitions](../index.md) **may** have an unstructured annotation `thrift.uri` as an [Universal Name](#universal-names). It **must** be globally unique. If a [Universal Name](#universal-names) is not specified, one will be generated using a package `{package}/{identifier}`. For example,
 
 ```
 package "example.com/path/to/file"
@@ -46,53 +110,9 @@ This is equivalent to
 package "example.com/path/to/file"
 
 struct Foo {
-  1: i32 field (thrift.uri = "example.com/path/to/file/Foo/field");
+  1: i32 field;
 } (thrift.uri = "example.com/path/to/file/Foo")
 ```
-
-### Namespace
-
-A namespace is a set of identifiers (names) that are used to identify and refer to objects of various kinds.
-
-```
-NamespaceDeclaration:
-    namespace Language Identifier{.Identifier};
-```
-
-If there is no explicitly defined namespace for a given language, the following namespace will be implied for Thrift officially-supported languages.
-
-- C++: `{reverse(domain)[1:]}.{paths}`
-- py3: `{reverse(domain)[1:]}.{paths[:-2] if paths[-1] == filename else paths}`
-- hack: `{paths}`
-- java: `{reverse(domain)}.{paths}`
-
-For example,
-
-```
-package "domain.com/path/to/file"
-```
-
-This package name generates the following namespaces
-
-```
-namespace cpp2 domain.path.to.file
-namespace py3 domain.path.to
-namespace hack path.to.file
-namespace php path.to.file
-namespace java2 com.domain.path.to.file
-namespace java.swift com.domain.path.to.file
-```
-
-## Imports and Identifiers
-
-Thrift allows including other Thrift files to use any of its consts and types. These can be referenced from another file by prepending the filename to the struct or service name (i.e., `Filename.Identifier`). This means you cannot include multiple files with the same file name, only differing by path.
-
-```
-IncludeDeclaration:
-    include "{Pathname}/{Filename}.thrift"
-```
-
-* [Pathname](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_271) and [Filename](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_170) **must** be valid POSIX portable pathname and filename.
 
 ## Abstract Syntax Tree (AST)
 
