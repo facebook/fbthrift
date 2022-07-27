@@ -339,7 +339,9 @@ struct StructuredAnnotation {
 @StructuredAnnotation{
   first = {1.1: 2},
   second = 3,
-  third = ["a", "b"],
+  third = ["a", "Multi
+    'line'
+  "],
   recurse = StructuredAnnotation{third = ["3", "4"]},
 }
 @Messy

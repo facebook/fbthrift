@@ -237,7 +237,12 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(second.type, 3)
         self.assertEqual(second.as_int(), 3)
         self.assertEqual(third.as_list()[0].type, "a")
-        self.assertEqual(third.as_list()[1].type, "b")
+        self.assertEqual(
+            third.as_list()[1].type,
+            """Multi
+    'line'
+  """,
+        )
 
         recStruct = recurse.as_struct()
         third = recStruct.fields["third"]
