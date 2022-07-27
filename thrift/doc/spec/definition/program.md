@@ -6,18 +6,18 @@ state: draft
 
 ## Universal Names
 
-A Universal Name must be a valid [URI](https://tools.ietf.org/html/rfc3986) that meets the following criteria:
+A Universal Name **must** be a valid [URI](https://tools.ietf.org/html/rfc3986) that meets the following criteria:
 
-- Must not have a scheme; "fbthrift://" is implied.
+- **Must not** have a scheme; "fbthrift://" is implied.
 - Include a valid case-insensitive domain name as the 'authority'.
 - Are case sensitive
-- Must have 2 or more path segments
-  - One segment must include the package name
-  - One segment must include the type
-- Must not have a query or a fragment.
-- Must be in the canonical form:
-  - Domain name labels must be lowercase ASCII letters, numbers, -, or _.
-  - Path segments must be ASCII letters, numbers, -, or _.
+- **Must** have 2 or more path segments
+  - One segment **must** include the package name
+  - One segment **must** include the type
+- **Must not** have a query or a fragment.
+- **Must** be in the canonical form:
+  - Domain name labels **must** be lowercase ASCII letters, numbers, -, or _.
+  - Path segments **must** be ASCII letters, numbers, -, or _.
 
 ## Packages
 
@@ -30,7 +30,7 @@ PackageDeclaration:
 
 ## Universal Name for [definitions](../index.md)
 
-[Definitions](../index.md) may have an unstructured annotation `thrift.uri` as an Universal Name. It must be globally unique. If a Universal Name is not specified, one will be generated using a package `{package}/{identifier}`. For example,
+[Definitions](../index.md) **may** have an unstructured annotation `thrift.uri` as an Universal Name. It **must** be globally unique. If a Universal Name is not specified, one will be generated using a package `{package}/{identifier}`. For example,
 
 ```
 package "example.com/path/to/file"
@@ -92,7 +92,7 @@ IncludeDeclaration:
     include "{Pathname}/{Filename}.thrift"
 ```
 
-* [Pathname](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_271) and [Filename](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_170) must be valid POSIX portable pathname and filename.
+* [Pathname](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_271) and [Filename](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_170) **must** be valid POSIX portable pathname and filename.
 
 ## Abstract Syntax Tree (AST)
 
