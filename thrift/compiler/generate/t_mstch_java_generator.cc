@@ -166,8 +166,11 @@ class t_mstch_java_generator : public t_mstch_generator {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
     }
-    auto package_dir = boost::filesystem::path{
+    auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
+    auto package_dir = has_option("separate_data_type_from_services")
+        ? "services" / raw_package_dir
+        : raw_package_dir;
 
     for (const T* item : items) {
       auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
@@ -192,8 +195,11 @@ class t_mstch_java_generator : public t_mstch_generator {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
     }
-    auto package_dir = boost::filesystem::path{
+    auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
+    auto package_dir = has_option("separate_data_type_from_services")
+        ? "data-type" / raw_package_dir
+        : raw_package_dir;
 
     std::string package_name = get_namespace_or_default(*program_);
 
@@ -230,8 +236,13 @@ class t_mstch_java_generator : public t_mstch_generator {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
     }
-    auto package_dir = boost::filesystem::path{
+
+    auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
+
+    auto package_dir = has_option("separate_data_type_from_services")
+        ? "services" / raw_package_dir
+        : raw_package_dir;
 
     // Iterate through services
     for (const T* service : services) {
