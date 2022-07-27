@@ -376,8 +376,12 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto name = program->name();
     const auto& prog = cached_program(program);
 
-    auto package_dir = boost::filesystem::path{
+    auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
+    auto package_dir = has_option("separate_data_type_from_services")
+        ? "data-type" / raw_package_dir
+        : raw_package_dir;
+
     auto constant_file_name = get_constants_class_name(*program) + ".java";
     render_to_file(prog, "Constants", package_dir / constant_file_name);
   }
@@ -386,7 +390,12 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
     auto placeholder_file_name = ".generated_" + program->name();
-    write_output(package_dir / placeholder_file_name, "");
+    if (has_option("separate_data_type_from_services")) {
+      write_output("data-type" / package_dir / placeholder_file_name, "");
+      write_output("services" / package_dir / placeholder_file_name, "");
+    } else {
+      write_output(package_dir / placeholder_file_name, "");
+    }
   }
 
   void generate_type_list(const t_program* program) {
@@ -394,8 +403,11 @@ class t_mstch_java_generator : public t_mstch_generator {
       return;
     }
 
-    auto package_dir = boost::filesystem::path{
+    auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
+    auto package_dir = has_option("separate_data_type_from_services")
+        ? "data-type" / raw_package_dir
+        : raw_package_dir;
 
     type_list_hash = toHex(hash(str_type_list));
 

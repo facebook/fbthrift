@@ -18,6 +18,8 @@ package "test.dev/fixtures/basic"
 
 namespace java.swift test.fixtures.basic
 
+const i64 kConstantValue = 0xBEEF;
+
 enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
