@@ -15,7 +15,7 @@ Shorthand names used for specific groups of types:
 Category | Types
 ---|---
 [*integer*](#primitive-types) | `bool`, `byte`, `i16`, `i32`, `i64`, `enum`
-[*floating poin*t*](#primitive-types) | `double`, `float`
+[*floating point*](#primitive-types) | `double`, `float`
 [*number*](#primitive-types) | *integer*, *floating point*
 [*primitive*](#primitive-types) | *number*, `string`, `binary`
 [`struct`](#structured-types) | any `struct` type
