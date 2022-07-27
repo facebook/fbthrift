@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ target_link_libraries(
 add_library(
   concurrency
 
+  concurrency/InitThreadFactory.cpp
   concurrency/PosixThreadFactory.cpp
   concurrency/ThreadManager.cpp
   concurrency/TimerManager.cpp

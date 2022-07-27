@@ -282,6 +282,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::array<std::shared_ptr<folly::Executor>, concurrency::N_PRIORITIES>
       threadManagerExecutors_;
 
+  // Thread factory hooks if required. threadInitializer_ will be called when
+  // the thread is started before it starts handling requests and
+  // threadFinalizer_ will be called before the thread exits.
+  std::function<void()> threadInitializer_;
+  std::function<void()> threadFinalizer_;
+
   //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools
   //! are enabled).
   ResourcePoolSet resourcePoolSet_;
@@ -472,6 +478,16 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setThreadManagerExecutor(folly::Executor::KeepAlive<> ka) {
     auto executor = std::make_shared<folly::VirtualExecutor>(std::move(ka));
     threadManagerExecutors_.fill(executor);
+  }
+
+  void setThreadFactoryInit(
+      std::function<void()>&& threadInitializer,
+      std::function<void()>&& threadFinalizer = {}) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    CHECK(!threadManager_);
+    threadInitializer_ = std::move(threadInitializer);
+    threadFinalizer_ = std::move(threadFinalizer);
   }
 
   /**

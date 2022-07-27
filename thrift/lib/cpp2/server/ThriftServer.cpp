@@ -29,6 +29,7 @@
 #include <folly/ScopeGuard.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
+#include <folly/executors/thread_factory/InitThreadFactory.h>
 #include <folly/executors/thread_factory/NamedThreadFactory.h>
 #include <folly/executors/thread_factory/PriorityThreadFactory.h>
 #include <folly/experimental/coro/BlockingWait.h>
@@ -37,6 +38,7 @@
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
 #include <folly/system/Pid.h>
+#include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -650,7 +652,18 @@ void ThriftServer::setupThreadManager() {
         threadManager->enableCodel(getEnableCodel());
         // If a thread factory has been specified, use it.
         if (threadFactory_) {
-          threadManager->threadFactory(threadFactory_);
+          if (threadInitializer_ || threadFinalizer_) {
+            // Wrap the thread factory if initializer/finalizer are specified.
+            auto initFactory = std::make_shared<concurrency::InitThreadFactory>(
+                threadFactory_,
+                std::move(threadInitializer_),
+                std::move(threadFinalizer_));
+            threadManager->threadFactory(initFactory);
+          } else {
+            threadManager->threadFactory(threadFactory_);
+          }
+        } else if (threadInitializer_ || threadFinalizer_) {
+          LOG(FATAL) << "setThreadInit not supported without setThreadFactory";
         }
         auto poolThreadName = getCPUWorkerThreadName();
         if (!poolThreadName.empty()) {
@@ -924,8 +937,16 @@ void ThriftServer::ensureResourcePools() {
     for (auto const& pool : pools) {
       std::string name =
           fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
-      auto factory = std::make_shared<folly::PriorityThreadFactory>(
-          std::make_shared<folly::NamedThreadFactory>(name), pool.nicePriority);
+      std::shared_ptr<folly::ThreadFactory> factory =
+          std::make_shared<folly::PriorityThreadFactory>(
+              std::make_shared<folly::NamedThreadFactory>(name),
+              pool.nicePriority);
+      if (threadInitializer_ || threadFinalizer_) {
+        factory = std::make_shared<folly::InitThreadFactory>(
+            std::move(factory),
+            std::move(threadInitializer_),
+            std::move(threadFinalizer_));
+      }
       auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
           pool.numThreads, std::move(factory));
       apache::thrift::RoundRobinRequestPile::Options options;
