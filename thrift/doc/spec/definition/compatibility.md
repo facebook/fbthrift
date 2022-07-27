@@ -51,5 +51,5 @@ The following changes to a service are supported.
 |---    |---    |
 |Add a method    |Unimplemented error from old servers    |
 |Remove a method    |Unimplemented error from new servers    |
-|Change arguments    |See 'Structs'    |
+|Change arguments    |See ['Structs'](https://github.com/facebook/fbthrift/blob/main/thrift/doc/spec/definition/compatibility.md#structs)    |
 
