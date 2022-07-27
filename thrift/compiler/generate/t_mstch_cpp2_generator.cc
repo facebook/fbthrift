@@ -1691,6 +1691,8 @@ class mstch_cpp2_const : public mstch_const {
         {
             {"constant:enum_value", &mstch_cpp2_const::enum_value},
             {"constant:cpp_name", &mstch_cpp2_const::cpp_name},
+            {"constant:cpp_adapter", &mstch_cpp2_const::cpp_adapter},
+            {"constant:cpp_type", &mstch_cpp2_const::cpp_type},
         });
   }
   mstch::node enum_value() {
@@ -1706,6 +1708,20 @@ class mstch_cpp2_const : public mstch_const {
     return mstch::node();
   }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
+  mstch::node cpp_adapter() {
+    if (!cnst_) {
+      return false;
+    }
+    if (const std::string* adapter =
+            resolver.find_structured_adapter_annotation(*cnst_)) {
+      return *adapter;
+    }
+    return {};
+  }
+  mstch::node cpp_type() { return resolver.get_native_type(*cnst_); }
+
+  // TODO(ytj): use the type_resolver in cpp2_generator_context
+  gen::cpp::type_resolver resolver;
 };
 
 class mstch_cpp2_program : public mstch_program {

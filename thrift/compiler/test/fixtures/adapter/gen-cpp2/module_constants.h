@@ -14,24 +14,9 @@ namespace facebook { namespace thrift { namespace test {
 
 struct module_constants {
 
-  static constexpr ::std::int32_t const var1_ = static_cast<::std::int32_t>(10);
-
-  static constexpr ::std::int32_t var1() {
-    return var1_;
-  }
-
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
-  static constexpr char const * const var2_ = "20";
-
-  static constexpr char const * var2() {
-    return var2_;
-  }
-
-  static ::facebook::thrift::test::MyStruct const& var3();
-
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::int32_t>& var1();
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& var2();
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& var3();
 };
 
 }}} // facebook::thrift::test

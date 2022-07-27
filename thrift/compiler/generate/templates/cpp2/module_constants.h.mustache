@@ -27,6 +27,7 @@
 struct <%program:name%>_constants {
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
+<%^constant:cpp_adapter%>
   <%^type:resolves_to_container_or_struct?%>
     <%#type:string?%>
   // consider using folly::StringPiece instead of std::string whenever possible
@@ -61,6 +62,10 @@ struct <%program:name%>_constants {
   static <%type:cpp_type%> const& <%constant:name%>();
 
   <%/type:resolves_to_container_or_struct?%>
+<%/constant:cpp_adapter%>
+<%#constant:cpp_adapter%>
+  const static <%constant:cpp_type%>& <%constant:name%>();
+<%/constant:cpp_adapter%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 };
 

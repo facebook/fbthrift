@@ -60,6 +60,26 @@ const std::string& type_resolver::get_native_type(
   return get_native_type(type);
 }
 
+const std::string& type_resolver::get_native_type(const t_const& cnst) {
+  const t_type& type = *cnst.type();
+
+  if (auto* annotation = cnst.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Adapter")) {
+    if (auto* adaptedType =
+            annotation->get_value_from_structured_annotation_or_null(
+                "adaptedType")) {
+      return adaptedType->get_string();
+    }
+    return detail::get_or_gen(const_cache_, &cnst, [&]() {
+      const auto& adapter =
+          annotation->get_value_from_structured_annotation("name").get_string();
+      return gen_adapted_type(&adapter, gen_type(type));
+    });
+  }
+
+  return get_native_type(type);
+}
+
 const std::string& type_resolver::get_underlying_type_name(
     const t_typedef& node) {
   // When `t_placeholder_typedef` is used, `t_type_ref::deref` will

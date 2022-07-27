@@ -12,13 +12,19 @@
 
 namespace facebook { namespace thrift { namespace test {
 
-constexpr ::std::int32_t const module_constants::var1_;
-
-constexpr char const * const module_constants::var2_;
-
-::facebook::thrift::test::MyStruct const& module_constants::var3() {
-  static folly::Indestructible<::facebook::thrift::test::MyStruct> const instance(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(30))));
+const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::int32_t>& module_constants::var1() {
+  static const folly::Indestructible<::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::int32_t>> instance(
+      MyVarAdapter::fromThrift(::std::int32_t(10)));
   return *instance;
 }
-
+const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& module_constants::var2() {
+  static const folly::Indestructible<::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>> instance(
+      MyVarAdapter::fromThrift(::std::string(apache::thrift::StringTraits<std::string>::fromStringLiteral("20"))));
+  return *instance;
+}
+const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& module_constants::var3() {
+  static const folly::Indestructible<::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>> instance(
+      MyVarAdapter::fromThrift(::facebook::thrift::test::MyStruct(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(30))))));
+  return *instance;
+}
 }}} // facebook::thrift::test

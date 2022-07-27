@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/test/gen-cpp2/adapter_clients.h>
+#include <thrift/test/gen-cpp2/adapter_constants.h>
 #include <thrift/test/gen-cpp2/adapter_handlers.h>
 #include <thrift/test/gen-cpp2/adapter_terse_types.h>
 #include <thrift/test/gen-cpp2/adapter_types.h>
@@ -807,6 +808,15 @@ TEST(AdaptTest, NumAdapterConversions) {
   EXPECT_EQ((CountingAdapter<false, int>::count), 1);
   EXPECT_EQ((CountingAdapter<true, int>::count), 1);
   EXPECT_EQ((CountingAdapter<false, std::string>::count), 2);
+}
+
+static_assert(
+    std::is_same_v<
+        folly::remove_cvref_t<decltype(basic::adapter_constants::timeout())>,
+        VariableWrapper<std::int32_t>>);
+
+TEST(VariableAdapterTest, Integer) {
+  EXPECT_EQ(basic::adapter_constants::timeout().value, 42);
 }
 
 } // namespace apache::thrift::test

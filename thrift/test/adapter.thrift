@@ -17,6 +17,7 @@
 namespace cpp2 apache.thrift.test.basic
 
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 cpp_include "thrift/lib/cpp2/Adapt.h"
 
@@ -209,3 +210,7 @@ struct CountingStruct {
 service AdapterService {
   CountingStruct count();
 }
+
+@cpp.Adapter{name = "::apache::thrift::test::VariableAdapter"}
+@thrift.Experimental
+const i32 timeout = 42;

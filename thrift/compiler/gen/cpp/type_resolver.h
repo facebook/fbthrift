@@ -57,6 +57,8 @@ class type_resolver {
   const std::string& get_native_type(
       const t_field& field, const t_structured& parent);
 
+  const std::string& get_native_type(const t_const& cnst);
+
   const std::string& get_underlying_type_name(const t_type& node) {
     if (is_directly_adapted(node)) {
       return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
@@ -198,6 +200,7 @@ class type_resolver {
 
   namespace_resolver namespaces_;
   std::unordered_map<const t_type*, std::string> type_cache_;
+  std::unordered_map<const t_const*, std::string> const_cache_;
   std::unordered_map<const t_field*, std::string> field_type_cache_;
   std::unordered_map<const t_type*, std::string> standard_type_cache_;
   std::unordered_map<const t_type*, std::string> underlying_type_cache_;

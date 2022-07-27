@@ -31,6 +31,7 @@
 
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
+<%^constant:cpp_adapter%>
   <%^type:resolves_to_container_or_struct?%>
     <%#type:string?%>
 constexpr char const * const <%program:name%>_constants::<%constant:name%>_;
@@ -50,6 +51,14 @@ constexpr <%type:cpp_type%> const <%program:name%>_constants::<%constant:name%>_
 
     <%/value:enable_referencing%>
   <%/type:resolves_to_container_or_struct?%>
+<%/constant:cpp_adapter%>
+<%#constant:cpp_adapter%>
+const <%constant:cpp_type%>& <%program:name%>_constants::<%constant:name%>() {
+  static const folly::Indestructible<<%constant:cpp_type%>> instance(
+      <%constant:cpp_adapter%>::fromThrift(<%type:cpp_type%>(<% > common/iterate_const_values%>)));
+  return *instance;
+}
+<%/constant:cpp_adapter%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 <% > common/namespace_cpp2_end%>
 <%/program:constants?%>

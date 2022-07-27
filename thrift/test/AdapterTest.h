@@ -261,4 +261,16 @@ struct CountingAdapter {
   }
 };
 
+template <typename T>
+struct VariableWrapper {
+  T value;
+};
+
+struct VariableAdapter {
+  template <typename T>
+  static VariableWrapper<T> fromThrift(T value) {
+    return {value};
+  }
+};
+
 } // namespace apache::thrift::test
