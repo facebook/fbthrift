@@ -245,6 +245,8 @@ class mstch_python_const_value : public mstch_const_value {
         this,
         {
             {"value:py3_string_value", &mstch_python_const_value::string_value},
+            {"value:py3_enum_value_name",
+             &mstch_python_const_value::py3_enum_value_name},
             {"value:py3_string?", &mstch_python_const_value::is_string},
             {"value:py3_binary?", &mstch_python_const_value::is_binary},
             {"value:const_enum_type",
@@ -295,6 +297,13 @@ class mstch_python_const_value : public mstch_const_value {
       return ttype->get_true_type()->is_floating_point();
     }
     return false;
+  }
+
+  mstch::node py3_enum_value_name() {
+    if (const_value_->is_enum() && const_value_->get_enum_value() != nullptr) {
+      return py3::get_py3_name(*const_value_->get_enum_value());
+    }
+    return mstch_const_value::enum_value_name();
   }
 
   mstch::node string_value() {
