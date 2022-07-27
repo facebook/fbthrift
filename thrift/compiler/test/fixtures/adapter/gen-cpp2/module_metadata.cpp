@@ -111,6 +111,7 @@ StructMetadata<::facebook::thrift::test::detail::DirectlyAdapted>::gen(ThriftMet
     module_DirectlyAdapted.fields()->push_back(std::move(field));
   }
   module_DirectlyAdapted.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter)")}}).cv_struct_ref());
+  module_DirectlyAdapted.structured_annotations()->push_back(*cvStruct("python.Adapter", {{"name", cvString(R"(my.module.Adapter)")}, {"typeHint", cvString(R"(my.another.module.AdaptedType)")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&

@@ -23,21 +23,39 @@ namespace py.asyncio facebook_thrift_asyncio.annotation.python
 namespace go thrift.annotation.python
 namespace py thrift.annotation.python
 
-// An annotation that applies a Python adapter to typedef or fields. For example:
+// An annotation that applies a Python adapter to typedef or field, or directly on struct.
+//
+//
+// Example 1:
 //
 //   @python.Adapter{name = "my.module.DatetimeAdapter", typeHint = "datetime.datetime"}
 //   typedef i64 Datetime
 //
 // Here the type 'Datetime' has the Python adapter `DatetimeAdapter`.
 //
+//
+// Example 2:
+//
 //   struct User {
 //     @python.Adapter{name = "my.module.DatetimeAdapter", typeHint = "datetime.datetime"}
 //     1: i64 created_at;
 //   }
-//
 // Here the field `created_at` has the Python adapter `DatetimeAdapter`.
+//
+//
+// Example 3:
+//
+//
+//   @python.Adapter{name = "my.module.AnotherAdapter", typeHint = "my.module.AdaptedFoo"}
+//   struct Foo {
+//     1: string bar;
+//   }
+//
+// Here the struct `Foo` has the Python adapter `AnotherAdapter`.
+//
 @scope.Field
 @scope.Typedef
+@scope.Structured
 struct Adapter {
   // Fully qualified name of a Python adapter class that's subclass of
   // thrift/lib/python/adapters/base.py

@@ -1970,6 +1970,12 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 "name" => "my::Adapter",
               )
             ),
+            '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.module.Adapter",
+                "typeHint" => "my.another.module.AdaptedType",
+              )
+            ),
           ],
         ),
       ],
@@ -2164,6 +2170,12 @@ class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
             "name" => "my::Adapter",
+          )
+        ),
+        '\thrift\annotation\python\Adapter' => \thrift\annotation\python\Adapter::fromShape(
+          shape(
+            "name" => "my.module.Adapter",
+            "typeHint" => "my.another.module.AdaptedType",
           )
         ),
       ],

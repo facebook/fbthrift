@@ -127,6 +127,10 @@ struct Bar {
 }
 
 @cpp.Adapter{name = "my::Adapter"}
+@python.Adapter{
+  name = "my.module.Adapter",
+  typeHint = "my.another.module.AdaptedType",
+}
 struct DirectlyAdapted {
   1: i32 field;
 }
