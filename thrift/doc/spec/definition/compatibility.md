@@ -2,9 +2,9 @@
 
 This spec discusses the semantics when the readers and writers interpret data using different schema. This is a common occurrence when upgrading a Thrift schema in a non-atomic fashion or reading previously stored serialized Thrift values. For example, when rolling out new clients/servers in a multi-machine environment or reading serialized values from disk or a database.
 
-## Structs
+## [Data](data.md)
 
-The following outlines the compatibility for changes to structured types:
+The following outlines the compatibility for changes to data:
 
 |Change    |Wire compatible    |Code compatible    |Notes    |
 |---    |---    |---    |---    |
@@ -43,13 +43,13 @@ The following outlines the compatibility for changes to structured types:
 |Singular to container    |no    |no    |    |
 |Container to singular    |no    |no    |    |
 
-## Services
+## [Interfaces](interface.md)
 
-The following changes to a service are supported.
+The following changes to interfaces are supported.
 
 |Change    |Notes    |
 |---    |---    |
 |Add a method    |Unimplemented error from old servers    |
 |Remove a method    |Unimplemented error from new servers    |
-|Change arguments    |See ['Structs'](https://github.com/facebook/fbthrift/blob/main/thrift/doc/spec/definition/compatibility.md#structs)    |
+|Change arguments    |See ['Data'](https://github.com/facebook/fbthrift/blob/main/thrift/doc/spec/definition/compatibility.md#data)    |
 
