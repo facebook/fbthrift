@@ -1,3 +1,7 @@
+---
+state: draft
+---
+
 # Values
 
 How Thrift values are declared, evaluated, validated, and manipulated.
