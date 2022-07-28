@@ -23,6 +23,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a string value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comparable<StringPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("StringPatch");
@@ -31,9 +34,23 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)9);
   private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)10);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public String assign;
+  /**
+   * Clear a given string.
+   */
   public boolean clear;
+  /**
+   * Append to a given value.
+   */
   public String append;
+  /**
+   * Prepend to a given value.
+   */
   public String prepend;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
@@ -160,10 +177,20 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     return new StringPatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public String getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public StringPatch setAssign(String assign) {
     this.assign = assign;
     return this;
@@ -184,10 +211,16 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     }
   }
 
+  /**
+   * Clear a given string.
+   */
   public boolean isClear() {
     return this.clear;
   }
 
+  /**
+   * Clear a given string.
+   */
   public StringPatch setClear(boolean clear) {
     this.clear = clear;
     setClearIsSet(true);
@@ -207,10 +240,16 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
   }
 
+  /**
+   * Append to a given value.
+   */
   public String getAppend() {
     return this.append;
   }
 
+  /**
+   * Append to a given value.
+   */
   public StringPatch setAppend(String append) {
     this.append = append;
     return this;
@@ -231,10 +270,16 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     }
   }
 
+  /**
+   * Prepend to a given value.
+   */
   public String getPrepend() {
     return this.prepend;
   }
 
+  /**
+   * Prepend to a given value.
+   */
   public StringPatch setPrepend(String prepend) {
     this.prepend = prepend;
     return this;

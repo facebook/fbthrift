@@ -9,19 +9,61 @@
 namespace thrift\op;
 
 /**
+ * The meaning of the patch op field ids, in all properly formulated patch
+ * definitions.
+ * 
+ * Patch field ids are interpreted at runtime, as a dynamic patch protocol,
+ * without any additional schema derived from IDL patch definitions.
+ * 
  * Original thrift enum:-
  * PatchOp
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/PatchOp'))>>
 enum PatchOp: int {
+  /**
+   * Set the value. Supersedes all other ops.
+   */
   Assign = 1;
+  /**
+   * Set to the intrinsic default (which might be 'unset').
+   */
   Clear = 2;
+  /**
+   * Apply a structured patch.
+   */
   Patch = 3;
+  /**
+   * Set to the given default, if not already of the same type.
+   */
   Ensure = 4;
+  /**
+   * Apply a structured patch, after other ops.
+   */
   PatchAfter = 6;
+  /**
+   * Remove if present.
+   * 
+   * A key/value-based remove for set/list, 'saturating subtract' for
+   * numeric/'counting' types, and 'remove by key' for maps.
+   */
   Remove = 7;
+  /**
+   * Add if not present.
+   * 
+   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
+   * types, and non-overwriting 'insert' for maps.
+   */
   Add = 8;
+  /**
+   * Add even if present.
+   * 
+   * Identical to 'add' for set, 'append' for list, overwriting
+   * 'update or insert' for maps, 'invert' for boolean.
+   */
   Put = 9;
+  /**
+   * Add to the beginning of a list, string, or binary value.
+   */
   Prepend = 10;
   Unspecified = 0;
 }
@@ -62,6 +104,9 @@ class PatchOp_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
 }
 
 /**
+ * An annotation that indicates a patch representation
+ * should be generated for the associated definition.
+ *
  * Original thrift struct:-
  * GeneratePatch
  */
@@ -232,6 +277,8 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
 }
 
 /**
+ * A patch for a boolean value.
+ *
  * Original thrift struct:-
  * BoolPatch
  */
@@ -266,11 +313,17 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 8755251121021042450;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: bool assign
    */
   public ?bool $assign;
   /**
+   * If the bool value should be inverted.
+   * 
    * Original thrift field:-
    * 9: bool invert
    */
@@ -385,6 +438,8 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for an 8-bit integer value.
+ *
  * Original thrift struct:-
  * BytePatch
  */
@@ -419,11 +474,17 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 2211838474069143581;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: byte assign
    */
   public ?int $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: byte add
    */
@@ -548,6 +609,8 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a 16-bit integer value.
+ *
  * Original thrift struct:-
  * I16Patch
  */
@@ -582,11 +645,17 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 5266422431097931584;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: i16 assign
    */
   public ?int $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: i16 add
    */
@@ -711,6 +780,8 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a 32-bit integer value.
+ *
  * Original thrift struct:-
  * I32Patch
  */
@@ -745,11 +816,17 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 3653733632732906564;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: i32 assign
    */
   public ?int $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: i32 add
    */
@@ -874,6 +951,8 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a 64-bit integer value.
+ *
  * Original thrift struct:-
  * I64Patch
  */
@@ -908,11 +987,17 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 6370961107317493914;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: i64 assign
    */
   public ?int $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: i64 add
    */
@@ -1027,6 +1112,8 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a 32-bit floating point value.
+ *
  * Original thrift struct:-
  * FloatPatch
  */
@@ -1061,11 +1148,17 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 2446293251068622176;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: float assign
    */
   public ?float $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: float add
    */
@@ -1180,6 +1273,8 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for an 64-bit floating point value.
+ *
  * Original thrift struct:-
  * DoublePatch
  */
@@ -1214,11 +1309,17 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 5398809695762940407;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: double assign
    */
   public ?float $assign;
   /**
+   * Add to a given value.
+   * 
    * Original thrift field:-
    * 8: double add
    */
@@ -1333,6 +1434,8 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a string value.
+ *
  * Original thrift struct:-
  * StringPatch
  */
@@ -1381,21 +1484,31 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 1321079092065590228;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: string assign
    */
   public ?string $assign;
   /**
+   * Clear a given string.
+   * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
+   * Append to a given value.
+   * 
    * Original thrift field:-
    * 9: string append
    */
   public string $append;
   /**
+   * Prepend to a given value.
+   * 
    * Original thrift field:-
    * 10: string prepend
    */
@@ -1546,6 +1659,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 }
 
 /**
+ * A patch for a binary value.
+ *
  * Original thrift struct:-
  * BinaryPatch
  */
@@ -1573,6 +1688,10 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   );
   const int STRUCTURAL_ID = 6677740157096629654;
   /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   * 
    * Original thrift field:-
    * 1: binary assign
    */

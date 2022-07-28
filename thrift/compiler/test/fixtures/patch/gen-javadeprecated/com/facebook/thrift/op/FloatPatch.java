@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a 32-bit floating point value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class FloatPatch implements TBase, java.io.Serializable, Cloneable, Comparable<FloatPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("FloatPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.FLOAT, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.FLOAT, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public float assign;
+  /**
+   * Add to a given value.
+   */
   public float add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -125,10 +136,20 @@ public class FloatPatch implements TBase, java.io.Serializable, Cloneable, Compa
     return new FloatPatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public float getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public FloatPatch setAssign(float assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class FloatPatch implements TBase, java.io.Serializable, Cloneable, Compa
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * Add to a given value.
+   */
   public float getAdd() {
     return this.add;
   }
 
+  /**
+   * Add to a given value.
+   */
   public FloatPatch setAdd(float add) {
     this.add = add;
     setAddIsSet(true);

@@ -21,13 +21,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a 64-bit integer value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class I64Patch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("I64Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.I64, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.I64, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public final Long assign;
+  /**
+   * Add to a given value.
+   */
   public final Long add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -59,6 +70,11 @@ public class I64Patch implements TBase, java.io.Serializable, Cloneable {
     return new I64Patch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public Long getAssign() {
     return this.assign;
   }
@@ -68,6 +84,9 @@ public class I64Patch implements TBase, java.io.Serializable, Cloneable {
     return this.assign != null;
   }
 
+  /**
+   * Add to a given value.
+   */
   public Long getAdd() {
     return this.add;
   }

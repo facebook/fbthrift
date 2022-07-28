@@ -39,6 +39,13 @@ UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 __all__ = ['UTF8STRINGS', 'PatchOp', 'GeneratePatch', 'GenerateOptionalPatch', 'BoolPatch', 'BytePatch', 'I16Patch', 'I32Patch', 'I64Patch', 'FloatPatch', 'DoublePatch', 'StringPatch', 'BinaryPatch', 'OptionalBoolPatch', 'OptionalBytePatch', 'OptionalI16Patch', 'OptionalI32Patch', 'OptionalI64Patch', 'OptionalFloatPatch', 'OptionalDoublePatch', 'OptionalStringPatch', 'OptionalBinaryPatch']
 
 class PatchOp:
+  """
+  The meaning of the patch op field ids, in all properly formulated patch
+  definitions.
+  
+  Patch field ids are interpreted at runtime, as a dynamic patch protocol,
+  without any additional schema derived from IDL patch definitions.
+  """
   Assign = 1
   Clear = 2
   Patch = 3
@@ -77,6 +84,10 @@ class PatchOp:
   }
 
 class GeneratePatch:
+  """
+  An annotation that indicates a patch representation
+  should be generated for the associated definition.
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
@@ -250,9 +261,13 @@ class GenerateOptionalPatch:
 
 class BoolPatch:
   """
+  A patch for a boolean value.
+  
   Attributes:
-   - assign
-   - invert
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - invert: If the bool value should be inverted.
   """
 
   thrift_spec = None
@@ -374,9 +389,13 @@ class BoolPatch:
 
 class BytePatch:
   """
+  A patch for an 8-bit integer value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -502,9 +521,13 @@ class BytePatch:
 
 class I16Patch:
   """
+  A patch for a 16-bit integer value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -630,9 +653,13 @@ class I16Patch:
 
 class I32Patch:
   """
+  A patch for a 32-bit integer value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -758,9 +785,13 @@ class I32Patch:
 
 class I64Patch:
   """
+  A patch for a 64-bit integer value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -882,9 +913,13 @@ class I64Patch:
 
 class FloatPatch:
   """
+  A patch for a 32-bit floating point value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -1006,9 +1041,13 @@ class FloatPatch:
 
 class DoublePatch:
   """
+  A patch for an 64-bit floating point value.
+  
   Attributes:
-   - assign
-   - add
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - add: Add to a given value.
   """
 
   thrift_spec = None
@@ -1130,11 +1169,15 @@ class DoublePatch:
 
 class StringPatch:
   """
+  A patch for a string value.
+  
   Attributes:
-   - assign
-   - clear
-   - append
-   - prepend
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
+   - clear: Clear a given string.
+   - append: Append to a given value.
+   - prepend: Prepend to a given value.
   """
 
   thrift_spec = None
@@ -1288,8 +1331,12 @@ class StringPatch:
 
 class BinaryPatch:
   """
+  A patch for a binary value.
+  
   Attributes:
-   - assign
+   - assign: Assign to a given value.
+  
+  If set, all other patch operations are ignored.
   """
 
   thrift_spec = None

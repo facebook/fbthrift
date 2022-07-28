@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for an 64-bit floating point value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class DoublePatch implements TBase, java.io.Serializable, Cloneable, Comparable<DoublePatch> {
   private static final TStruct STRUCT_DESC = new TStruct("DoublePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.DOUBLE, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.DOUBLE, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public double assign;
+  /**
+   * Add to a given value.
+   */
   public double add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -125,10 +136,20 @@ public class DoublePatch implements TBase, java.io.Serializable, Cloneable, Comp
     return new DoublePatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public double getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public DoublePatch setAssign(double assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class DoublePatch implements TBase, java.io.Serializable, Cloneable, Comp
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * Add to a given value.
+   */
   public double getAdd() {
     return this.add;
   }
 
+  /**
+   * Add to a given value.
+   */
   public DoublePatch setAdd(double add) {
     this.add = add;
     setAddIsSet(true);

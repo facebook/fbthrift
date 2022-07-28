@@ -13,14 +13,50 @@ import java.util.HashMap;
 
 @SuppressWarnings({ "unused" })
 public enum PatchOp implements com.facebook.thrift.TEnum {
+  /**
+   * Set the value. Supersedes all other ops.
+   */
   Assign(1),
+  /**
+   * Set to the intrinsic default (which might be 'unset').
+   */
   Clear(2),
+  /**
+   * Apply a structured patch.
+   */
   Patch(3),
+  /**
+   * Set to the given default, if not already of the same type.
+   */
   Ensure(4),
+  /**
+   * Apply a structured patch, after other ops.
+   */
   PatchAfter(6),
+  /**
+   * Remove if present.
+   * 
+   * A key/value-based remove for set/list, 'saturating subtract' for
+   * numeric/'counting' types, and 'remove by key' for maps.
+   */
   Remove(7),
+  /**
+   * Add if not present.
+   * 
+   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
+   * types, and non-overwriting 'insert' for maps.
+   */
   Add(8),
+  /**
+   * Add even if present.
+   * 
+   * Identical to 'add' for set, 'append' for list, overwriting
+   * 'update or insert' for maps, 'invert' for boolean.
+   */
   Put(9),
+  /**
+   * Add to the beginning of a list, string, or binary value.
+   */
   Prepend(10),
   Unspecified(0);
 

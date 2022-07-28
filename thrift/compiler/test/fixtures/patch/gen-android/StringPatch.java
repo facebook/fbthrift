@@ -21,6 +21,9 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a string value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class StringPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("StringPatch");
@@ -29,9 +32,23 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)9);
   private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)10);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public final String assign;
+  /**
+   * Clear a given string.
+   */
   public final Boolean clear;
+  /**
+   * Append to a given value.
+   */
   public final String append;
+  /**
+   * Prepend to a given value.
+   */
   public final String prepend;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
@@ -79,6 +96,11 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
     return new StringPatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public String getAssign() {
     return this.assign;
   }
@@ -88,6 +110,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
     return this.assign != null;
   }
 
+  /**
+   * Clear a given string.
+   */
   public Boolean isClear() {
     return this.clear;
   }
@@ -97,6 +122,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
     return this.clear != null;
   }
 
+  /**
+   * Append to a given value.
+   */
   public String getAppend() {
     return this.append;
   }
@@ -106,6 +134,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
     return this.append != null;
   }
 
+  /**
+   * Prepend to a given value.
+   */
   public String getPrepend() {
     return this.prepend;
   }

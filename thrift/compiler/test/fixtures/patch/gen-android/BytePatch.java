@@ -21,13 +21,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for an 8-bit integer value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class BytePatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("BytePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.BYTE, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.BYTE, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public final Byte assign;
+  /**
+   * Add to a given value.
+   */
   public final Byte add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -59,6 +70,11 @@ public class BytePatch implements TBase, java.io.Serializable, Cloneable {
     return new BytePatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public Byte getAssign() {
     return this.assign;
   }
@@ -68,6 +84,9 @@ public class BytePatch implements TBase, java.io.Serializable, Cloneable {
     return this.assign != null;
   }
 
+  /**
+   * Add to a given value.
+   */
   public Byte getAdd() {
     return this.add;
   }

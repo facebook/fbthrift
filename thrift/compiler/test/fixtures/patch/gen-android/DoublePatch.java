@@ -21,13 +21,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for an 64-bit floating point value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class DoublePatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("DoublePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.DOUBLE, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.DOUBLE, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public final Double assign;
+  /**
+   * Add to a given value.
+   */
   public final Double add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -59,6 +70,11 @@ public class DoublePatch implements TBase, java.io.Serializable, Cloneable {
     return new DoublePatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public Double getAssign() {
     return this.assign;
   }
@@ -68,6 +84,9 @@ public class DoublePatch implements TBase, java.io.Serializable, Cloneable {
     return this.assign != null;
   }
 
+  /**
+   * Add to a given value.
+   */
   public Double getAdd() {
     return this.add;
   }

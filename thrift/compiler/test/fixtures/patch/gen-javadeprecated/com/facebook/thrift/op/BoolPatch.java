@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a boolean value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class BoolPatch implements TBase, java.io.Serializable, Cloneable, Comparable<BoolPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("BoolPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.BOOL, (short)1);
   private static final TField INVERT_FIELD_DESC = new TField("invert", TType.BOOL, (short)9);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public boolean assign;
+  /**
+   * If the bool value should be inverted.
+   */
   public boolean invert;
   public static final int ASSIGN = 1;
   public static final int INVERT = 9;
@@ -125,10 +136,20 @@ public class BoolPatch implements TBase, java.io.Serializable, Cloneable, Compar
     return new BoolPatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public boolean isAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public BoolPatch setAssign(boolean assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class BoolPatch implements TBase, java.io.Serializable, Cloneable, Compar
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * If the bool value should be inverted.
+   */
   public boolean isInvert() {
     return this.invert;
   }
 
+  /**
+   * If the bool value should be inverted.
+   */
   public BoolPatch setInvert(boolean invert) {
     this.invert = invert;
     setInvertIsSet(true);

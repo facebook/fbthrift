@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a 64-bit integer value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class I64Patch implements TBase, java.io.Serializable, Cloneable, Comparable<I64Patch> {
   private static final TStruct STRUCT_DESC = new TStruct("I64Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.I64, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.I64, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public long assign;
+  /**
+   * Add to a given value.
+   */
   public long add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -125,10 +136,20 @@ public class I64Patch implements TBase, java.io.Serializable, Cloneable, Compara
     return new I64Patch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public long getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public I64Patch setAssign(long assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class I64Patch implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * Add to a given value.
+   */
   public long getAdd() {
     return this.add;
   }
 
+  /**
+   * Add to a given value.
+   */
   public I64Patch setAdd(long add) {
     this.add = add;
     setAddIsSet(true);

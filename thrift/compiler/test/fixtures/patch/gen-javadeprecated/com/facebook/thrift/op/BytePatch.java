@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for an 8-bit integer value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class BytePatch implements TBase, java.io.Serializable, Cloneable, Comparable<BytePatch> {
   private static final TStruct STRUCT_DESC = new TStruct("BytePatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.BYTE, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.BYTE, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public byte assign;
+  /**
+   * Add to a given value.
+   */
   public byte add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -125,10 +136,20 @@ public class BytePatch implements TBase, java.io.Serializable, Cloneable, Compar
     return new BytePatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public byte getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public BytePatch setAssign(byte assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class BytePatch implements TBase, java.io.Serializable, Cloneable, Compar
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * Add to a given value.
+   */
   public byte getAdd() {
     return this.add;
   }
 
+  /**
+   * Add to a given value.
+   */
   public BytePatch setAdd(byte add) {
     this.add = add;
     setAddIsSet(true);

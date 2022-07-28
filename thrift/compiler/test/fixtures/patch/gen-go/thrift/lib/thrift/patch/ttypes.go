@@ -28,6 +28,11 @@ var _ = scope1.GoUnusedProtection__
 var _ = cpp2.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
+//The meaning of the patch op field ids, in all properly formulated patch
+//definitions.
+//
+//Patch field ids are interpreted at runtime, as a dynamic patch protocol,
+//without any additional schema derived from IDL patch definitions.
 type PatchOp int64
 const (
   PatchOp_Assign PatchOp = 1
@@ -110,6 +115,8 @@ func PatchOpFromString(s string) (PatchOp, error) {
 
 func PatchOpPtr(v PatchOp) *PatchOp { return &v }
 
+// An annotation that indicates a patch representation
+// should be generated for the associated definition.
 type GeneratePatch struct {
 }
 
@@ -240,9 +247,13 @@ func (p *GenerateOptionalPatch) String() string {
   return fmt.Sprintf("GenerateOptionalPatch({})")
 }
 
+// A patch for a boolean value.
+// 
 // Attributes:
-//  - Assign
-//  - Invert
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Invert: If the bool value should be inverted.
 type BoolPatch struct {
   Assign *bool `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 8
@@ -408,9 +419,13 @@ func (p *BoolPatch) String() string {
   return fmt.Sprintf("BoolPatch({Assign:%s Invert:%s})", assignVal, invertVal)
 }
 
+// A patch for an 8-bit integer value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type BytePatch struct {
   Assign *int8 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -578,9 +593,13 @@ func (p *BytePatch) String() string {
   return fmt.Sprintf("BytePatch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for a 16-bit integer value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type I16Patch struct {
   Assign *int16 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -746,9 +765,13 @@ func (p *I16Patch) String() string {
   return fmt.Sprintf("I16Patch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for a 32-bit integer value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type I32Patch struct {
   Assign *int32 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -914,9 +937,13 @@ func (p *I32Patch) String() string {
   return fmt.Sprintf("I32Patch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for a 64-bit integer value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type I64Patch struct {
   Assign *int64 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -1082,9 +1109,13 @@ func (p *I64Patch) String() string {
   return fmt.Sprintf("I64Patch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for a 32-bit floating point value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type FloatPatch struct {
   Assign *float32 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -1250,9 +1281,13 @@ func (p *FloatPatch) String() string {
   return fmt.Sprintf("FloatPatch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for an 64-bit floating point value.
+// 
 // Attributes:
-//  - Assign
-//  - Add
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Add: Add to a given value.
 type DoublePatch struct {
   Assign *float64 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   // unused fields # 2 to 7
@@ -1418,11 +1453,15 @@ func (p *DoublePatch) String() string {
   return fmt.Sprintf("DoublePatch({Assign:%s Add:%s})", assignVal, addVal)
 }
 
+// A patch for a string value.
+// 
 // Attributes:
-//  - Assign
-//  - Clear
-//  - Append
-//  - Prepend
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
+//  - Clear: Clear a given string.
+//  - Append: Append to a given value.
+//  - Prepend: Prepend to a given value.
 type StringPatch struct {
   Assign *string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -1670,8 +1709,12 @@ func (p *StringPatch) String() string {
   return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Append:%s Prepend:%s})", assignVal, clearVal, appendVal, prependVal)
 }
 
+// A patch for a binary value.
+// 
 // Attributes:
-//  - Assign
+//  - Assign: Assign to a given value.
+// 
+// If set, all other patch operations are ignored.
 type BinaryPatch struct {
   Assign []byte `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
 }

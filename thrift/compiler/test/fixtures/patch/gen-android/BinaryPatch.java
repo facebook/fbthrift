@@ -21,11 +21,19 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a binary value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class BinaryPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("BinaryPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRING, (short)1);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public final byte[] assign;
   public static final int ASSIGN = 1;
 
@@ -49,6 +57,11 @@ public class BinaryPatch implements TBase, java.io.Serializable, Cloneable {
     return new BinaryPatch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public byte[] getAssign() {
     return this.assign;
   }

@@ -20,8 +20,7 @@ include "thrift/annotation/cpp.thrift"
 
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
-// TODO(afuller): Re-enable when supported by hs2
-// @thrift.v1alpha
+@thrift.v1alpha
 package "facebook.com/thrift/op"
 
 namespace cpp2 apache.thrift.op
@@ -33,8 +32,10 @@ namespace py.asyncio apache_thrift_asyncio.patch
 namespace go thrift.lib.thrift.patch
 namespace py thrift.lib.thrift.patch
 
-// An annotation that indicates a patch representation
-// should be generated for the associated definition.
+/**
+ * An annotation that indicates a patch representation
+ * should be generated for the associated definition.
+ */
 @scope.Program
 @scope.Structured
 struct GeneratePatch {}
@@ -42,7 +43,7 @@ struct GeneratePatch {}
 @scope.Struct
 struct GenerateOptionalPatch {}
 
-// A patch for a boolean value.
+/** A patch for a boolean value. */
 @cpp.Adapter{
   underlyingName = "BoolPatchStruct",
   extraNamespace = "",
@@ -50,16 +51,18 @@ struct GenerateOptionalPatch {}
 }
 @GenerateOptionalPatch
 struct BoolPatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional bool assign;
 
-  // If the bool value should be inverted.
+  /** If the bool value should be inverted. */
   9: bool invert;
 }
 
-// A patch for an 8-bit integer value.
+/** A patch for an 8-bit integer value. */
 @cpp.Adapter{
   underlyingName = "BytePatchStruct",
   extraNamespace = "",
@@ -67,16 +70,18 @@ struct BoolPatch {
 }
 @GenerateOptionalPatch
 struct BytePatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional byte assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: byte add;
 }
 
-// A patch for a 16-bit integer value.
+/** A patch for a 16-bit integer value. */
 @cpp.Adapter{
   underlyingName = "I16PatchStruct",
   extraNamespace = "",
@@ -84,16 +89,18 @@ struct BytePatch {
 }
 @GenerateOptionalPatch
 struct I16Patch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional i16 assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: i16 add;
 }
 
-// A patch for a 32-bit integer value.
+/** A patch for a 32-bit integer value. */
 @cpp.Adapter{
   underlyingName = "I32PatchStruct",
   extraNamespace = "",
@@ -101,16 +108,18 @@ struct I16Patch {
 }
 @GenerateOptionalPatch
 struct I32Patch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional i32 assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: i32 add;
 }
 
-// A patch for a 64-bit integer value.
+/** A patch for a 64-bit integer value. */
 @cpp.Adapter{
   underlyingName = "I64PatchStruct",
   extraNamespace = "",
@@ -118,16 +127,18 @@ struct I32Patch {
 }
 @GenerateOptionalPatch
 struct I64Patch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional i64 assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: i64 add;
 }
 
-// A patch for a 32-bit floating point value.
+/** A patch for a 32-bit floating point value. */
 @cpp.Adapter{
   underlyingName = "FloatPatchStruct",
   extraNamespace = "",
@@ -135,16 +146,18 @@ struct I64Patch {
 }
 @GenerateOptionalPatch
 struct FloatPatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional float assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: float add;
 }
 
-// A patch for an 64-bit floating point value.
+/** A patch for an 64-bit floating point value. */
 @cpp.Adapter{
   underlyingName = "DoublePatchStruct",
   extraNamespace = "",
@@ -152,16 +165,18 @@ struct FloatPatch {
 }
 @GenerateOptionalPatch
 struct DoublePatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional double assign;
 
-  // Add to a given value.
+  /** Add to a given value. */
   8: double add;
 }
 
-// A patch for a string value.
+/** A patch for a string value. */
 @cpp.Adapter{
   underlyingName = "StringPatchStruct",
   extraNamespace = "",
@@ -169,22 +184,24 @@ struct DoublePatch {
 }
 @GenerateOptionalPatch
 struct StringPatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional string assign;
 
-  // Clear a given string.
+  /** Clear a given string. */
   2: bool clear;
 
-  // Append to a given value.
+  /** Append to a given value. */
   9: string append;
 
-  // Prepend to a given value.
+  /** Prepend to a given value. */
   10: string prepend;
 }
 
-// A patch for a binary value.
+/** A patch for a binary value. */
 @GenerateOptionalPatch
 @cpp.Adapter{
   underlyingName = "BinaryPatchStruct",
@@ -192,55 +209,65 @@ struct StringPatch {
   name = "::apache::thrift::op::detail::AssignPatchAdapter",
 }
 struct BinaryPatch {
-  // Assign to a given value.
-  //
-  // If set, all other patch operations are ignored.
+  /**
+   * Assign to a given value.
+   *
+   * If set, all other patch operations are ignored.
+   */
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
 }
 
-// The meaning of the patch op field ids, in all properly formulated patch
-// definitions.
-//
-// Patch field ids are interpreted at runtime, as a dynamic patch protocol,
-// without any additional schema derived from IDL patch definitions.
+/**
+ * The meaning of the patch op field ids, in all properly formulated patch
+ * definitions.
+ *
+ * Patch field ids are interpreted at runtime, as a dynamic patch protocol,
+ * without any additional schema derived from IDL patch definitions.
+ */
 @thrift.GenDefaultEnumValue
 enum PatchOp {
-  // Set the value. Supersedes all other ops.
+  /** Set the value. Supersedes all other ops. */
   Assign = 1,
 
-  // Set to the intrinsic default (which might be 'unset').
+  /** Set to the intrinsic default (which might be 'unset'). */
   Clear = 2,
 
-  // Apply a structured patch.
+  /** Apply a structured patch. */
   Patch = 3,
 
-  // Set to the given default, if not already of the same type.
+  /** Set to the given default, if not already of the same type. */
   Ensure = 4,
 
   // TODO(afuller): Add a variant of ensure, which only ensures if 'unset'.
   // EnsureIfUnset = 5,
 
-  // Apply a structured patch, after other ops.
+  /** Apply a structured patch, after other ops. */
   PatchAfter = 6,
 
-  // Remove if present.
-  //
-  // A key/value-based remove for set/list, 'saturating subtract' for
-  // numeric/'counting' types, and 'remove by key' for maps.
+  /**
+   * Remove if present.
+   *
+   * A key/value-based remove for set/list, 'saturating subtract' for
+   * numeric/'counting' types, and 'remove by key' for maps.
+   */
   Remove = 7,
 
-  // Add if not present.
-  //
-  // A key/value-based add for set/list, 'saturating add' for numeric/'counting'
-  // types, and non-overwriting 'insert' for maps.
-  Add = 8, // Add, if not present, or + .
+  /**
+   * Add if not present.
+   *
+   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
+   * types, and non-overwriting 'insert' for maps.
+   */
+  Add = 8,
 
-  // Add even if present.
-  //
-  // Identical to 'add' for set, 'append' for list, overwriting
-  // 'update or insert' for maps, 'invert' for boolean.
+  /**
+   * Add even if present.
+   *
+   * Identical to 'add' for set, 'append' for list, overwriting
+   * 'update or insert' for maps, 'invert' for boolean.
+   */
   Put = 9,
 
-  // Add to the beginning of a list, string, or binary value.
+  /** Add to the beginning of a list, string, or binary value. */
   Prepend = 10,
 }

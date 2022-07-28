@@ -23,6 +23,10 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * An annotation that indicates a patch representation
+ * should be generated for the associated definition.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class GeneratePatch implements TBase, java.io.Serializable, Cloneable, Comparable<GeneratePatch> {
   private static final TStruct STRUCT_DESC = new TStruct("GeneratePatch");

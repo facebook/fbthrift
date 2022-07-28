@@ -23,13 +23,24 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * A patch for a 32-bit integer value.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class I32Patch implements TBase, java.io.Serializable, Cloneable, Comparable<I32Patch> {
   private static final TStruct STRUCT_DESC = new TStruct("I32Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.I32, (short)1);
   private static final TField ADD_FIELD_DESC = new TField("add", TType.I32, (short)8);
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public int assign;
+  /**
+   * Add to a given value.
+   */
   public int add;
   public static final int ASSIGN = 1;
   public static final int ADD = 8;
@@ -125,10 +136,20 @@ public class I32Patch implements TBase, java.io.Serializable, Cloneable, Compara
     return new I32Patch(this);
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public int getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assign to a given value.
+   * 
+   * If set, all other patch operations are ignored.
+   */
   public I32Patch setAssign(int assign) {
     this.assign = assign;
     setAssignIsSet(true);
@@ -148,10 +169,16 @@ public class I32Patch implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__ASSIGN_ISSET_ID, __value);
   }
 
+  /**
+   * Add to a given value.
+   */
   public int getAdd() {
     return this.add;
   }
 
+  /**
+   * Add to a given value.
+   */
   public I32Patch setAdd(int add) {
     this.add = add;
     setAddIsSet(true);
