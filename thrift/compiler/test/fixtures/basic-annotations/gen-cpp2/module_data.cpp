@@ -52,7 +52,7 @@ const std::array<int16_t, 0> TStructDataStorage<::cpp2::detail::YourException>::
 const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::detail::YourException>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_names = {{
+const std::array<folly::StringPiece, 10> TStructDataStorage<::cpp2::detail::YourStruct>::fields_names = {{
   "major",
   "package",
   "annotation_with_quote",
@@ -62,8 +62,9 @@ const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::detail::YourS
   "my_enum",
   "cpp_type_annotation",
   "my_union",
+  "my_id",
 }};
-const std::array<int16_t, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_ids = {{
+const std::array<int16_t, 10> TStructDataStorage<::cpp2::detail::YourStruct>::fields_ids = {{
   2,
   1,
   3,
@@ -73,8 +74,9 @@ const std::array<int16_t, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fie
   7,
   8,
   9,
+  10,
 }};
-const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::detail::YourStruct>::fields_types = {{
+const std::array<protocol::TType, 10> TStructDataStorage<::cpp2::detail::YourStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRING,
@@ -84,6 +86,7 @@ const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::detail::YourStru
   TType::T_I32,
   TType::T_LIST,
   TType::T_STRUCT,
+  TType::T_I16,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::SecretStruct>::fields_names = {{

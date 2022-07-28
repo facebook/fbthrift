@@ -11,6 +11,7 @@ import (
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	scope0 "thrift/annotation/scope"
+	thrift1 "thrift/annotation/thrift"
 
 )
 
@@ -22,6 +23,7 @@ var _ = bytes.Equal
 var _ = context.Background
 
 var _ = scope0.GoUnusedProtection__
+var _ = thrift1.GoUnusedProtection__
 
 func init() {
 }

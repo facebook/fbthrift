@@ -1021,3 +1021,103 @@ class ScopedEnumAsUnionType implements \IThriftSyncStruct, \IThriftShapishSyncSt
 
 }
 
+/**
+ * Indicates a typedef should be 'strong', and require an explicit cast to
+ * the underlying type.
+ * 
+ * Currently only works for integer typedefs, for example:
+ * 
+ *     @cpp.StrongType
+ *     typedef i32 MyId;
+ * 
+ * Will cause an enum class to be used instead of a typedef in the genearte code, for example:
+ * 
+ *     enum class MyId : ::std::int32_t {};
+ * 
+ *
+ * Original thrift struct:-
+ * StrongType
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/StrongType'))>>
+class StrongType implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+    ...
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'StrongType';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "cpp.StrongType",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Typedef' => \thrift\annotation\Typedef::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+

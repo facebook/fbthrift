@@ -14,21 +14,21 @@
         "constants" : {
           "Unique" : {
             "name" : "Unique",
-            "lineno" : 27,
+            "lineno" : 28,
             "value" : 0
           },
           "Shared" : {
             "name" : "Shared",
-            "lineno" : 28,
+            "lineno" : 29,
             "value" : 1
           },
           "SharedMutable" : {
             "name" : "SharedMutable",
-            "lineno" : 29,
+            "lineno" : 30,
             "value" : 2
           }
         },
-        "lineno" : 26
+        "lineno" : 27
       }
       },
   "structs" :
@@ -39,7 +39,7 @@
           "type" : {
             "name" : "type",
             "key" : 1,
-            "lineno" : 34,
+            "lineno" : 35,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -49,7 +49,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 33
+        "lineno" : 34
       },
       "Lazy" : {
         "name" : "Lazy",
@@ -58,20 +58,20 @@
             "name" : "ref",
             "default_value" : 0,
             "key" : 1,
-            "lineno" : 40,
+            "lineno" : 41,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 38
+        "lineno" : 39
       },
       "DisableLazyChecksum" : {
         "name" : "DisableLazyChecksum",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 44
+        "lineno" : 45
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -81,7 +81,7 @@
             "name" : "name",
             "docstring" : "The name of a C++ adapter type used to convert between Thrift and native\nC++ representation.\n\nThe adapter can be either a Type or Field adapter, providing either of the following APIs:\n\n    struct ThriftTypeAdapter {\n      static AdaptedType fromThrift(ThriftType thrift);\n      static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);\n    };\n\n    struct ThriftFieldAdapter {\n      // Context is an instantiation of apache::thrift::FieldContext\n      template <class Context>\n      static void construct(AdaptedType& field, Context ctx);\n\n      template <class Context>\n      static AdaptedType fromThriftField(ThriftType value, Context ctx);\n\n      template <class Context>\n      static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);\n    };\n",
             "key" : 1,
-            "lineno" : 91,
+            "lineno" : 92,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -89,7 +89,7 @@
             "name" : "adaptedType",
             "docstring" : "It is sometimes necessary to specify AdaptedType here (in case the codegen would\nhave a circular depdenceny, which will cause the C++ build to fail).\n",
             "key" : 2,
-            "lineno" : 97,
+            "lineno" : 98,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -97,7 +97,7 @@
             "name" : "underlyingName",
             "docstring" : "When applied directly to a type (as opposed to on a typedef) the IDL name of the\ntype will refer to the adapted type in C++ and the underlying thrift struct will be\ngenerated in a nested namespace and/or with a different name. By default the struct\nwill be generated in a nested 'detail' namespace with the same name,\nbut both of these can be changed by setting these fields.\nEmpty string disables the nested namespace and uses the IDL name for the struct.\n",
             "key" : 3,
-            "lineno" : 107,
+            "lineno" : 108,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -105,7 +105,7 @@
             "name" : "extraNamespace",
             "default_value" : "detail",
             "key" : 4,
-            "lineno" : 108,
+            "lineno" : 109,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -113,14 +113,14 @@
             "name" : "moveOnly",
             "docstring" : "Must set to true when adapted type is not copyable.\n",
             "key" : 5,
-            "lineno" : 111,
+            "lineno" : 112,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 67
+        "lineno" : 68
       },
       "PackIsset" : {
         "name" : "PackIsset",
@@ -129,32 +129,39 @@
             "name" : "atomic",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 116,
+            "lineno" : 117,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 115
+        "lineno" : 116
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 120
+        "lineno" : 121
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 123
+        "lineno" : 124
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 126
+        "lineno" : 127
+      },
+      "StrongType" : {
+        "name" : "StrongType",
+        "docstring" : "Indicates a typedef should be 'strong', and require an explicit cast to\nthe underlying type.\n\nCurrently only works for integer typedefs, for example:\n\n    @cpp.StrongType\n    typedef i32 MyId;\n\nWill cause an enum class to be used instead of a typedef in the genearte code, for example:\n\n    enum class MyId : ::std::int32_t {};\n\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 145
       }
       },
   "source_path" : "thrift/annotation/cpp",

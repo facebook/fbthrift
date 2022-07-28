@@ -19,7 +19,7 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.cpp.ttypes
 
 
-from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyUnion, MyException, MyStruct, SecretStruct
+from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyUnion, MyException, MyStruct, SecretStruct, MyId
 
 myStruct = MyStruct(**{
   "major" : 42,

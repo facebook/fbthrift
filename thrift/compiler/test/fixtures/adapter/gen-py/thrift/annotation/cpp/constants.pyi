@@ -7,5 +7,6 @@
 import typing as __T
 
 import thrift.annotation.scope.ttypes
+import thrift.annotation.thrift.ttypes
 from thrift.annotation.cpp.ttypes import *
 

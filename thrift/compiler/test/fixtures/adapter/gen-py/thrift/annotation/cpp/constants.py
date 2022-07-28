@@ -17,7 +17,8 @@ if sys.version_info[0] >= 3:
   long = int
 
 import thrift.annotation.scope.ttypes
+import thrift.annotation.thrift.ttypes
 
 
-from .ttypes import UTF8STRINGS, RefType, Ref, Lazy, DisableLazyChecksum, Adapter, PackIsset, MinimizePadding, TriviallyRelocatable, ScopedEnumAsUnionType
+from .ttypes import UTF8STRINGS, RefType, Ref, Lazy, DisableLazyChecksum, Adapter, PackIsset, MinimizePadding, TriviallyRelocatable, ScopedEnumAsUnionType, StrongType
 

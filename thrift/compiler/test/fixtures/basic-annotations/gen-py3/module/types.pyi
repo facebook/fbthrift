@@ -110,3 +110,4 @@ class std_deque_std_string__List__string(_typing.Sequence[str], _typing.Hashable
 
 
 myStruct: MyStruct = ...
+MyId = int

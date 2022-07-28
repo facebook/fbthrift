@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/scope.thrift"
+include "thrift/annotation/thrift.thrift"
 
 package "facebook.com/thrift/annotation/cpp"
 
@@ -124,3 +125,21 @@ struct TriviallyRelocatable {}
 
 @scope.Union
 struct ScopedEnumAsUnionType {}
+
+/**
+ * Indicates a typedef should be 'strong', and require an explicit cast to
+ * the underlying type.
+ *
+ * Currently only works for integer typedefs, for example:
+ *
+ *     @cpp.StrongType
+ *     typedef i32 MyId;
+ *
+ * Will cause an enum class to be used instead of a typedef in the genearte code, for example:
+ *
+ *     enum class MyId : ::std::int32_t {};
+ *
+ */
+@thrift.Experimental // TODO(afuller): Implement
+@scope.Typedef
+struct StrongType {}

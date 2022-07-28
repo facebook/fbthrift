@@ -11,6 +11,7 @@ import (
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	scope0 "thrift/annotation/scope"
+	thrift1 "thrift/annotation/thrift"
 
 )
 
@@ -22,6 +23,7 @@ var _ = bytes.Equal
 var _ = context.Background
 
 var _ = scope0.GoUnusedProtection__
+var _ = thrift1.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 type RefType int64
@@ -988,5 +990,82 @@ func (p *ScopedEnumAsUnionType) String() string {
   }
 
   return fmt.Sprintf("ScopedEnumAsUnionType({})")
+}
+
+// Indicates a typedef should be 'strong', and require an explicit cast to
+// the underlying type.
+// 
+// Currently only works for integer typedefs, for example:
+// 
+//     @cpp.StrongType
+//     typedef i32 MyId;
+// 
+// Will cause an enum class to be used instead of a typedef in the genearte code, for example:
+// 
+//     enum class MyId : ::std::int32_t {};
+// 
+type StrongType struct {
+}
+
+func NewStrongType() *StrongType {
+  return &StrongType{}
+}
+
+type StrongTypeBuilder struct {
+  obj *StrongType
+}
+
+func NewStrongTypeBuilder() *StrongTypeBuilder{
+  return &StrongTypeBuilder{
+    obj: NewStrongType(),
+  }
+}
+
+func (p StrongTypeBuilder) Emit() *StrongType{
+  return &StrongType{
+  }
+}
+
+func (p *StrongType) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *StrongType) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("StrongType"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *StrongType) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("StrongType({})")
 }
 

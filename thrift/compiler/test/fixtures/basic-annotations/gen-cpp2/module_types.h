@@ -25,6 +25,7 @@ struct empty_annotations;
 struct my_enum;
 struct cpp_type_annotation;
 struct my_union;
+struct my_id;
 struct id;
 struct password;
 } // namespace tag
@@ -68,6 +69,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(cpp_type_annotation);
 #ifndef APACHE_THRIFT_ACCESSOR_my_union
 #define APACHE_THRIFT_ACCESSOR_my_union
 APACHE_THRIFT_DEFINE_ACCESSOR(my_union);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_my_id
+#define APACHE_THRIFT_ACCESSOR_my_id
+APACHE_THRIFT_DEFINE_ACCESSOR(my_id);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_id
 #define APACHE_THRIFT_ACCESSOR_id
@@ -167,6 +172,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
+typedef ::std::int16_t MyId;
 
 class MyStructNestedAnnotation final  {
  private:
@@ -515,7 +521,7 @@ class YourStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
-  static constexpr std::size_t __fbthrift_field_size_v = 9;
+  static constexpr std::size_t __fbthrift_field_size_v = 10;
 
   template<class T>
   using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -528,7 +534,8 @@ class YourStruct final  {
                                                    ::apache::thrift::field_id<6>,
                                                    ::apache::thrift::field_id<7>,
                                                    ::apache::thrift::field_id<8>,
-                                                   ::apache::thrift::field_id<9>>;
+                                                   ::apache::thrift::field_id<9>,
+                                                   ::apache::thrift::field_id<10>>;
 
   template<class T>
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -541,7 +548,8 @@ class YourStruct final  {
                                                          ::apache::thrift::type::string_t,
                                                          ::apache::thrift::type::enum_t<::cpp2::YourEnum>,
                                                          ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>,
-                                                         ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>>;
+                                                         ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>,
+                                                         ::apache::thrift::type::i16_t>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -554,7 +562,8 @@ class YourStruct final  {
                                                       ::apache::thrift::tag::empty_annotations,
                                                       ::apache::thrift::tag::my_enum,
                                                       ::apache::thrift::tag::cpp_type_annotation,
-                                                      ::apache::thrift::tag::my_union>;
+                                                      ::apache::thrift::tag::my_union,
+                                                      ::apache::thrift::tag::my_id>;
 
   struct __fbthrift_ordinal_impl {
 #if defined(_MSC_VER) || defined(__clang__)
@@ -577,6 +586,8 @@ class YourStruct final  {
     template<> static constexpr int value<::apache::thrift::tag::cpp_type_annotation> = 8;
     template<> static constexpr int value<::apache::thrift::field_id<9>> = 9;
     template<> static constexpr int value<::apache::thrift::tag::my_union> = 9;
+    template<> static constexpr int value<::apache::thrift::field_id<10>> = 10;
+    template<> static constexpr int value<::apache::thrift::tag::my_id> = 10;
 #else
     template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 1; }
@@ -597,6 +608,8 @@ class YourStruct final  {
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::cpp_type_annotation>) { return 8; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<9>>) { return 9; }
     static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::my_union>) { return 9; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<10>>) { return 10; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::my_id>) { return 10; }
     template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
 #endif
   };
@@ -612,6 +625,7 @@ class YourStruct final  {
     template<class T> struct Impl<::apache::thrift::type::enum_t<::cpp2::YourEnum>, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
     template<class T> struct Impl<::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>, T, std::enable_if_t<sizeof(T) != -8>> { static constexpr int value = 8; };
     template<class T> struct Impl<::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
+    template<class T> struct Impl<::apache::thrift::type::i16_t, T, std::enable_if_t<sizeof(T) != -10>> { static constexpr int value = 10; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -645,7 +659,7 @@ class YourStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::YourEnum my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::cpp2::YourUnion my_union__arg);
+  YourStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::YourEnum my_enum__arg, std::deque<std::string> cpp_type_annotation__arg, ::cpp2::YourUnion my_union__arg, ::cpp2::MyId my_id__arg);
 
   YourStruct(YourStruct&&) noexcept;
   YourStruct(const YourStruct& src);
@@ -675,7 +689,9 @@ class YourStruct final  {
  private:
   ::cpp2::YourUnion __fbthrift_field_my_union;
  private:
-  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::cpp2::MyId __fbthrift_field_my_id;
+ private:
+  apache::thrift::detail::isset_bitset<10, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1042,6 +1058,46 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
 
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_id_ref() const& {
+    return {this->__fbthrift_field_my_id, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_id_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_my_id), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> my_id_ref() & {
+    return {this->__fbthrift_field_my_id, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_id_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_my_id), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_id() const& {
+    return {this->__fbthrift_field_my_id, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_id() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_my_id), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> my_id() & {
+    return {this->__fbthrift_field_my_id, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyId>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_id() && {
+    return {static_cast<T&&>(this->__fbthrift_field_my_id), __isset.at(9), __isset.bit(9)};
+  }
+
   ::std::int64_t get_majorVer() const {
     return __fbthrift_field_majorVer;
   }
@@ -1144,6 +1200,16 @@ class YourStruct final  {
   std::deque<std::string>& set_cpp_type_annotation(T_YourStruct_cpp_type_annotation_struct_setter&& cpp_type_annotation_) {
     cpp_type_annotation_ref() = std::forward<T_YourStruct_cpp_type_annotation_struct_setter>(cpp_type_annotation_);
     return __fbthrift_field_cpp_type_annotation;
+  }
+
+  ::cpp2::MyId get_my_id() const {
+    return __fbthrift_field_my_id;
+  }
+
+  [[deprecated("Use `FOO.my_id_ref() = BAR;` instead of `FOO.set_my_id(BAR);`")]]
+  ::cpp2::MyId& set_my_id(::cpp2::MyId my_id_) {
+    my_id_ref() = my_id_;
+    return __fbthrift_field_my_id;
   }
 
   template <class Protocol_>

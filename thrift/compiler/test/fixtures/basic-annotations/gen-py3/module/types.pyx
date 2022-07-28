@@ -421,3 +421,4 @@ cdef class std_deque_std_string__List__string(thrift.py3.types.List):
 Sequence.register(std_deque_std_string__List__string)
 
 myStruct = MyStruct._fbthrift_create(constant_shared_ptr(cmyStruct()))
+MyId = int
