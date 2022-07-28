@@ -81,12 +81,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t myIntField__arg, ::std::string myStringField__arg) :
-    __fbthrift_field_myIntField(std::move(myIntField__arg)),
-    __fbthrift_field_myStringField(std::move(myStringField__arg)) {
-  __isset.set(folly::index_constant<0>(), true);
-  __isset.set(folly::index_constant<1>(), true);
-}
 
 
 void MyStruct::__fbthrift_clear() {

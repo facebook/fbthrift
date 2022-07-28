@@ -16,7 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 
-@thrift.NoLegacyAPIs
+@thrift.NoLegacy
 package "test.dev/fixtures/no-legacy-apis"
 
 namespace cpp2 test.fixtures.basic

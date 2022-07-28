@@ -448,24 +448,6 @@
           "column" : 17
         }
       }
-    },
-    "NoLegacyAPIs" : {
-      "lineno" : 276,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 270,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 276,
-          "column" : 23
-        }
-      }
     }
   }
 }

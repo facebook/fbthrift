@@ -94,12 +94,6 @@ template <> struct TEnumTraits<::test::fixtures::basic::MyEnum> {
 namespace test { namespace fixtures { namespace basic {
 
 using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum>;
-#ifndef ANDROID
-[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
-extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
-[[deprecated("use apache::thrift::TEnumTraits")]]
-extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
-#endif
 }}} // test::fixtures::basic
 
 // END declare_enums
@@ -193,9 +187,6 @@ class MyStruct final  {
   MyStruct() :
       __fbthrift_field_myIntField() {
   }
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t myIntField__arg, ::std::string myStringField__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -216,6 +207,7 @@ class MyStruct final  {
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
 
+ private:
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myIntField_ref() const& {
     return {this->__fbthrift_field_myIntField, __isset.at(0), __isset.bit(0)};
@@ -235,6 +227,7 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myIntField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_myIntField), __isset.at(0), __isset.bit(0)};
   }
+ public:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myIntField() const& {
@@ -256,6 +249,7 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_myIntField), __isset.at(0), __isset.bit(0)};
   }
 
+ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField_ref() const& {
     return {this->__fbthrift_field_myStringField, __isset.at(1), __isset.bit(1)};
@@ -275,6 +269,7 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_myStringField), __isset.at(1), __isset.bit(1)};
   }
+ public:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField() const& {
@@ -294,31 +289,6 @@ class MyStruct final  {
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField() && {
     return {static_cast<T&&>(this->__fbthrift_field_myStringField), __isset.at(1), __isset.bit(1)};
-  }
-
-  ::std::int64_t get_myIntField() const {
-    return __fbthrift_field_myIntField;
-  }
-
-  [[deprecated("Use `FOO.myIntField_ref() = BAR;` instead of `FOO.set_myIntField(BAR);`")]]
-  ::std::int64_t& set_myIntField(::std::int64_t myIntField_) {
-    myIntField_ref() = myIntField_;
-    return __fbthrift_field_myIntField;
-  }
-
-  const ::std::string& get_myStringField() const& {
-    return __fbthrift_field_myStringField;
-  }
-
-  ::std::string get_myStringField() && {
-    return std::move(__fbthrift_field_myStringField);
-  }
-
-  template <typename T_MyStruct_myStringField_struct_setter = ::std::string>
-  [[deprecated("Use `FOO.myStringField_ref() = BAR;` instead of `FOO.set_myStringField(BAR);`")]]
-  ::std::string& set_myStringField(T_MyStruct_myStringField_struct_setter&& myStringField_) {
-    myStringField_ref() = std::forward<T_MyStruct_myStringField_struct_setter>(myStringField_);
-    return __fbthrift_field_myStringField;
   }
 
   template <class Protocol_>
@@ -536,6 +506,7 @@ class MyUnion final  {
 
   bool operator==(const MyUnion&) const;
   bool operator<(const MyUnion&) const;
+ private:
 
   ::test::fixtures::basic::MyEnum& set_myEnum(::test::fixtures::basic::MyEnum t = ::test::fixtures::basic::MyEnum()) {
     __fbthrift_clear();
@@ -543,6 +514,8 @@ class MyUnion final  {
     ::new (std::addressof(value_.myEnum)) ::test::fixtures::basic::MyEnum(t);
     return value_.myEnum;
   }
+ public:
+ private:
 
   ::test::fixtures::basic::MyStruct& set_myDataItem(::test::fixtures::basic::MyStruct const &t) {
     __fbthrift_clear();
@@ -564,40 +537,25 @@ class MyUnion final  {
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyStruct(std::forward<T>(t)...);
     return value_.myDataItem;
   }
+ public:
 
+ private:
   ::test::fixtures::basic::MyEnum const& get_myEnum() const {
     if (getType() != Type::myEnum) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myEnum;
   }
+ public:
 
+ private:
   ::test::fixtures::basic::MyStruct const& get_myDataItem() const {
     if (getType() != Type::myDataItem) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myDataItem;
   }
-
-  ::test::fixtures::basic::MyEnum& mutable_myEnum() {
-    assert(getType() == Type::myEnum);
-    return value_.myEnum;
-  }
-
-  ::test::fixtures::basic::MyStruct& mutable_myDataItem() {
-    assert(getType() == Type::myDataItem);
-    return value_.myDataItem;
-  }
-
-  ::test::fixtures::basic::MyEnum move_myEnum() {
-    assert(getType() == Type::myEnum);
-    return std::move(value_.myEnum);
-  }
-
-  ::test::fixtures::basic::MyStruct move_myDataItem() {
-    assert(getType() == Type::myDataItem);
-    return std::move(value_.myDataItem);
-  }
+ public:
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {

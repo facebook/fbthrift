@@ -265,12 +265,3 @@ struct v1alpha {}
 @Testing // Should only be used in tests.
 @scope.Transitive
 struct v1test {}
-
-// TODO(afuller): Remove.
-@Legacy
-@scope.Program
-@scope.Struct
-@scope.Union
-@scope.Exception
-@scope.Service
-struct NoLegacyAPIs {}

@@ -45,10 +45,10 @@ void reset_field<::test::fixtures::basic::MyStruct>(
     ::test::fixtures::basic::MyStruct& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.myIntField_ref().copy_from(default_inst<::test::fixtures::basic::MyStruct>().myIntField_ref());
+      obj.myIntField().copy_from(default_inst<::test::fixtures::basic::MyStruct>().myIntField());
       return;
     case 1:
-      obj.myStringField_ref().copy_from(default_inst<::test::fixtures::basic::MyStruct>().myStringField_ref());
+      obj.myStringField().copy_from(default_inst<::test::fixtures::basic::MyStruct>().myStringField());
       return;
   }
 }

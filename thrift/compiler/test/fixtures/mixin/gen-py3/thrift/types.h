@@ -178,13 +178,6 @@ void reset_field<::facebook::thrift::annotation::v1test>(
 }
 
 template<>
-void reset_field<::facebook::thrift::annotation::NoLegacyAPIs>(
-    ::facebook::thrift::annotation::NoLegacyAPIs& obj, uint16_t index) {
-  switch (index) {
-  }
-}
-
-template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::Beta>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -377,16 +370,6 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::v1test>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
-}
-
-template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::facebook::thrift::annotation::NoLegacyAPIs>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

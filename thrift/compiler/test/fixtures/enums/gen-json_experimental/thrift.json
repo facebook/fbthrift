@@ -206,12 +206,6 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 267
-      },
-      "NoLegacyAPIs" : {
-        "name" : "NoLegacyAPIs",
-        "is_exception" : false,
-        "is_union" : false,
-        "lineno" : 276
       }
       },
   "source_path" : "thrift/annotation/thrift",
