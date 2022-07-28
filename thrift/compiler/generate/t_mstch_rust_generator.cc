@@ -1886,7 +1886,7 @@ class annotation_validator : public validator {
 
 bool annotation_validator::visit(t_struct* s) {
   if (!validate_rust_serde(*s)) {
-    add_error(s->lineno(), "`rust.serde` must be `true` or `false`");
+    report_error(*s, "`rust.serde` must be `true` or `false`");
   }
 
   for (auto& field : s->fields()) {
@@ -1894,9 +1894,8 @@ bool annotation_validator::visit(t_struct* s) {
     bool box = node_is_boxed(field) || kind == FieldKind::Box;
     bool arc = node_is_arced(field) || kind == FieldKind::Arc;
     if (box && arc) {
-      add_error(
-          field.lineno(),
-          "Field `" + field.name() + "` cannot be both Box'ed and Arc'ed");
+      report_error(
+          field, "Field `{}` cannot be both Box'ed and Arc'ed", field.name());
     }
   }
   return true;
@@ -1904,7 +1903,7 @@ bool annotation_validator::visit(t_struct* s) {
 
 bool annotation_validator::visit(t_enum* e) {
   if (!validate_rust_serde(*e)) {
-    add_error(e->lineno(), "`rust.serde` must be `true` or `false`");
+    report_error(*e, "`rust.serde` must be `true` or `false`");
   }
 
   return true;

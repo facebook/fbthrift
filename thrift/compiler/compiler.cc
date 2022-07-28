@@ -344,18 +344,19 @@ bool generate(
         continue;
       }
 
-      validator::diagnostics_t diagnostics;
-      validator_list validators(diagnostics);
+      auto validator_diags = diagnostics_engine(
+          diags.source_mgr(),
+          [&](diagnostic d) {
+            if (d.level() == diagnostic_level::error) {
+              success = false;
+            }
+            diags.report(std::move(d));
+          },
+          diags.params());
+      validator_list validators(validator_diags);
       generator->fill_validator_list(validators);
       validators.traverse(&program);
-
-      bool has_error = false;
-      for (const auto& d : diagnostics) {
-        has_error = has_error || d.level() == diagnostic_level::error;
-        std::cerr << d << std::endl;
-      }
-      if (has_error) {
-        success = false;
+      if (!success) {
         continue;
       }
 
@@ -517,9 +518,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
       get_include_path(gparams.targets, input_filename));
 
   // Validate it!
-  for (auto&& diag : validator::validate(program->root_program())) {
-    ctx.report(std::forward<decltype(diag)>(diag));
-  }
+  validator::validate(program->root_program(), ctx);
   standard_validator()(ctx, *program->root_program());
   if (result.detail.has_error()) {
     return result;

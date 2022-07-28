@@ -995,9 +995,9 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [ERROR:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
                 [WARNING:foo.thrift:3] `cpp.ref` field `a` must be optional if it is recursive.
                 [WARNING:foo.thrift:3] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `a`.
+                [ERROR:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
                 """
             ),
         )
@@ -1022,7 +1022,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [ERROR:foo.thrift:4] Tablebased serialization is incompatible with isset bitpacking for struct `D`
+                [ERROR:foo.thrift:3] Tablebased serialization is incompatible with isset bitpacking for struct `D`
                 """
             ),
         )
@@ -1200,8 +1200,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift] `types_cpp_splits=5` is misconfigured: "
-            "it can not be greater than number of object, which is 4.\n",
+            "[ERROR:foo.thrift:1] `types_cpp_splits=5` is misconfigured: "
+            "it can not be greater than the number of objects, which is 4.\n",
         )
 
         ret, out, err = self.run_thrift(
@@ -1211,7 +1211,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift] Invalid types_cpp_splits value: `3a`\n",
+            "[ERROR:foo.thrift:1] Invalid types_cpp_splits value: `3a`\n",
         )
 
     def test_invalid_splits(self):
@@ -1231,7 +1231,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift] Invalid types_cpp_splits value: `1a`\n",
+            "[ERROR:foo.thrift:1] Invalid types_cpp_splits value: `1a`\n",
         )
 
     def test_too_many_client_splits(self):
@@ -1263,7 +1263,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift:6] `client_cpp_splits=3` (For service MyService2) is misconfigured: it can not be greater than number of functions, which is 2.\n",
+            "[ERROR:foo.thrift:6] `client_cpp_splits=3` (For service MyService2) is misconfigured: it can not be greater than the number of functions, which is 2.\n",
         )
 
     def test_invalid_client_splits(self):

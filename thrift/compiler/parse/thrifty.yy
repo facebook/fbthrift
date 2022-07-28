@@ -845,6 +845,7 @@ Function:
       driver.set_fields($$->params(), std::move(*own($5)));
       $$->set_exceptions(own($7));
       $$->set_lineno(driver.get_lineno(@3.end));
+      $$->set_src_range(@$);
       // TODO(afuller): Leave the param list unnamed.
       $$->params().set_name($$->name() + "_args");
     }
@@ -868,6 +869,7 @@ Performs:
           : "<interaction placeholder>";
       $$ = new t_function(driver.program, std::move(ret), std::move(name));
       $$->set_lineno(driver.get_lineno());
+      $$->set_src_range({@1.begin, @2.end});
       $$->set_is_interaction_constructor();
     }
 

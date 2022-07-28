@@ -16,14 +16,19 @@
 
 #include <thrift/compiler/validator/validator.h>
 
-#include <unordered_map>
 #include <unordered_set>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-static void fill_validators(validator_list& vs);
+// fill_validators - the validator registry
+//
+// This is where all concrete validator types must be registered.
+static void fill_validators(validator_list& vs) {
+  vs.add<struct_names_uniqueness_validator>();
+  vs.add<interactions_validator>();
+}
 
 void validator_list::traverse(t_program* const program) {
   auto pointers = std::vector<visitor*>{};
@@ -33,75 +38,35 @@ void validator_list::traverse(t_program* const program) {
   interleaved_visitor(pointers).traverse(program);
 }
 
-validator::diagnostics_t validator::validate(t_program* const program) {
-  auto diagnostics = validator::diagnostics_t{};
-
-  auto validators = validator_list(diagnostics);
+void validator::validate(t_program* program, diagnostics_engine& diags) {
+  auto validators = validator_list(diags);
   fill_validators(validators);
-
   validators.traverse(program);
-
-  return diagnostics;
-}
-
-void validator::add_error(
-    boost::optional<int> const lineno, std::string const& message) {
-  diagnostics_->emplace_back(
-      diagnostic_level::error, message, program_->path(), lineno.value_or(0));
-}
-
-void validator::set_program(t_program* const program) {
-  program_ = program;
-}
-
-bool validator::visit(t_program* const program) {
-  program_ = program;
-  return true;
-}
-
-void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
-  diagnostics_ = &diagnostics;
-}
-
-/**
- * fill_validators - the validator registry
- *
- * This is where all concrete validator types must be registered.
- */
-
-static void fill_validators(validator_list& vs) {
-  vs.add<struct_names_uniqueness_validator>();
-  vs.add<interactions_validator>();
 }
 
 bool struct_names_uniqueness_validator::visit(t_program* p) {
-  set_program(p);
   std::unordered_set<std::string> seen;
   for (auto* object : p->objects()) {
     if (!seen.emplace(object->name()).second) {
-      add_error(
-          object->get_lineno(),
-          "Redefinition of type `" + object->name() + "`.");
+      report_error(*object, "Redefinition of type `{}`.", object->name());
     }
   }
   for (auto* interaction : p->interactions()) {
     if (!seen.emplace(interaction->name()).second) {
-      add_error(
-          interaction->get_lineno(),
-          "Redefinition of type `" + interaction->name() + "`.");
+      report_error(
+          *interaction, "Redefinition of type `{}`.", interaction->name());
     }
   }
   return true;
 }
 
 bool interactions_validator::visit(t_program* p) {
-  set_program(p);
   for (auto* interaction : p->interactions()) {
     for (auto* func : interaction->get_functions()) {
       auto ret = func->get_returntype();
       if (ret->is_service() &&
           static_cast<const t_service*>(ret)->is_interaction()) {
-        add_error(func->get_lineno(), "Nested interactions are forbidden.");
+        report_error(*func, "Nested interactions are forbidden.");
       }
     }
   }
@@ -115,7 +80,7 @@ bool interactions_validator::visit(t_service* s) {
     if (func->is_interaction_constructor()) {
       if (!ret->is_service() ||
           !static_cast<const t_service*>(ret)->is_interaction()) {
-        add_error(func->get_lineno(), "Only interactions can be performed.");
+        report_error(*func, "Only interactions can be performed.");
         continue;
       }
     }
@@ -125,11 +90,11 @@ bool interactions_validator::visit(t_service* s) {
     }
 
     if (!seen.emplace(ret->name()).second) {
-      add_error(
-          func->get_lineno(),
-          "Service `" + s->name() +
-              "` has multiple methods for creating interaction `" +
-              ret->name() + "`.");
+      report_error(
+          *func,
+          "Service `{}` has multiple methods for creating interaction `{}`.",
+          s->name(),
+          ret->name());
     }
   }
   return true;

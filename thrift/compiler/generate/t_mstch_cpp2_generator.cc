@@ -2713,10 +2713,11 @@ class annotation_validator : public validator {
 bool annotation_validator::visit(t_struct* s) {
   if (cpp2::packed_isset(*s)) {
     if (options_.count("tablebased") != 0) {
-      add_error(
-          s->lineno(),
-          "Tablebased serialization is incompatible with isset bitpacking for struct `" +
-              s->get_name() + "`");
+      report_error(
+          *s,
+          "Tablebased serialization is incompatible with isset bitpacking for "
+          "struct `{}`",
+          s->get_name());
     }
   }
 
@@ -2724,9 +2725,8 @@ bool annotation_validator::visit(t_struct* s) {
     if (cpp2::is_mixin(field)) {
       // Mixins cannot be refs
       if (cpp2::is_explicit_ref(&field)) {
-        add_error(
-            field.lineno(),
-            "Mixin field `" + field.name() + "` can not be a ref in cpp.");
+        report_error(
+            field, "Mixin field `{}` can not be a ref in cpp.", field.name());
       }
     }
   }
@@ -2766,11 +2766,12 @@ bool service_method_validator::visit(t_service* service) {
           });
 
       if (!ok) {
-        add_error(
-            func.lineno(),
-            "`" + service->name() + "." + func.name() +
-                "` use of cpp.coroutine and stack_arguments together is "
-                "disallowed.");
+        report_error(
+            func,
+            "`{}.{}` use of cpp.coroutine and stack_arguments together is "
+            "disallowed.",
+            service->name(),
+            func.name());
       }
     }
   }
@@ -2785,7 +2786,7 @@ class splits_validator : public validator {
   using validator::visit;
 
   bool visit(t_program* program) override {
-    set_program(program);
+    program_ = program;
     validate_type_cpp_splits(
         program->objects().size() + program->enums().size());
     validate_client_cpp_splits(program->services());
@@ -2793,42 +2794,50 @@ class splits_validator : public validator {
   }
 
  private:
-  void validate_type_cpp_splits(const int32_t object_count) try {
-    auto split_count = cpp2::get_split_count(options_);
-    if (split_count > object_count) {
-      add_error(
-          boost::none,
-          "`types_cpp_splits=" + std::to_string(split_count) +
-              "` is misconfigured: it can not be greater than number of object, which is " +
-              std::to_string(object_count) + ".");
+  const t_program* program_ = nullptr;
+
+  void validate_type_cpp_splits(const int32_t object_count) {
+    try {
+      auto split_count = cpp2::get_split_count(options_);
+      if (split_count > object_count) {
+        report_error(
+            *program_,
+            "`types_cpp_splits={}` is misconfigured: it can not be greater "
+            "than the number of objects, which is {}.",
+            split_count,
+            object_count);
+      }
+    } catch (std::runtime_error& e) {
+      report_error(*program_, "{}", e.what());
     }
-  } catch (std::runtime_error& e) {
-    add_error(boost::none, e.what());
   }
 
-  void validate_client_cpp_splits(const std::vector<t_service*>& services) try {
-    auto client_name_to_split_count =
-        cpp2::get_client_name_to_split_count(options_);
+  void validate_client_cpp_splits(const std::vector<t_service*>& services) {
+    try {
+      auto client_name_to_split_count =
+          cpp2::get_client_name_to_split_count(options_);
 
-    if (client_name_to_split_count.empty()) {
-      // fast path
-      return;
-    }
-
-    for (auto* s : services) {
-      auto iter = client_name_to_split_count.find(s->get_name());
-      if (iter != client_name_to_split_count.end() &&
-          iter->second > static_cast<int32_t>(s->get_functions().size())) {
-        add_error(
-            s->get_lineno(),
-            "`client_cpp_splits=" + std::to_string(iter->second) +
-                "` (For service " + s->get_name() +
-                ") is misconfigured: it can not be greater than number of functions, which is " +
-                std::to_string(s->get_functions().size()) + ".");
+      if (client_name_to_split_count.empty()) {
+        // fast path
+        return;
       }
+
+      for (const t_service* s : services) {
+        auto iter = client_name_to_split_count.find(s->get_name());
+        if (iter != client_name_to_split_count.end() &&
+            iter->second > static_cast<int32_t>(s->get_functions().size())) {
+          report_error(
+              *s,
+              "`client_cpp_splits={}` (For service {}) is misconfigured: it "
+              "can not be greater than the number of functions, which is {}.",
+              iter->second,
+              s->get_name(),
+              s->get_functions().size());
+        }
+      }
+    } catch (std::runtime_error& e) {
+      report_error(*program_, "{}", e.what());
     }
-  } catch (std::runtime_error& e) {
-    add_error(boost::none, e.what());
   }
 
   const std::map<std::string, std::string>& options_;
@@ -2840,7 +2849,7 @@ class lazy_field_validator : public validator {
   bool visit(t_field* field) override {
     if (cpp2::is_lazy(field)) {
       auto t = field->get_type()->get_true_type();
-      boost::optional<std::string> field_type;
+      const char* field_type = nullptr;
       if (t->is_any_int() || t->is_bool() || t->is_byte()) {
         field_type = "Integral field";
       }
@@ -2848,11 +2857,12 @@ class lazy_field_validator : public validator {
         field_type = "Floating point field";
       }
       if (field_type) {
-        add_error(
-            field->get_lineno(),
-            *field_type + " `" + field->get_name() +
-                "` can not be marked as lazy, "
-                "since doing so won't bring any benefit.");
+        report_error(
+            *field,
+            "{} `{}` can not be marked as lazy, since doing so won't bring "
+            "any benefit.",
+            field_type,
+            field->get_name());
       }
     }
     return true;

@@ -29,6 +29,7 @@
 
 #include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/lib/cpp2/util.h>
 
 namespace apache {
 namespace thrift {

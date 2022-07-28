@@ -16,77 +16,67 @@
 
 #pragma once
 
-#include <string>
+#include <memory>
+#include <utility>
 #include <vector>
 
 #include <thrift/compiler/ast/visitor.h>
 #include <thrift/compiler/diagnostic.h>
-#include <thrift/compiler/lib/cpp2/util.h>
-
-#include <boost/optional.hpp>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
+class t_program;
+
 // NOTE: Use thrift/compiler/sema/ast_validator.h instead.
 class validator : virtual public visitor {
  public:
-  using diagnostics_t = std::vector<diagnostic>;
-  static diagnostics_t validate(t_program* program);
+  static void validate(t_program* program, diagnostics_engine& diags);
 
   using visitor::visit;
 
-  // must call set_program if overriding this overload
-  bool visit(t_program* program) override;
-
-  void set_program(t_program* const program);
-
  protected:
-  void add_error(boost::optional<int> const lineno, std::string const& message);
+  template <typename... T>
+  void report_error(
+      diagnostic_location loc, fmt::format_string<T...> msg, T&&... args) {
+    diags_->error(loc, msg, std::forward<T>(args)...);
+  }
 
  private:
   template <typename T, typename... Args>
-  friend std::unique_ptr<T> make_validator(diagnostics_t&, Args&&...);
+  friend std::unique_ptr<T> make_validator(diagnostics_engine&, Args&&...);
 
-  void set_ref_diagnostics(diagnostics_t& diagnostics);
-
-  diagnostics_t* diagnostics_{};
-  t_program const* program_{};
+  diagnostics_engine* diags_ = nullptr;
 };
 
 template <typename T, typename... Args>
-std::unique_ptr<T> make_validator(
-    validator::diagnostics_t& diagnostics, Args&&... args) {
+std::unique_ptr<T> make_validator(diagnostics_engine& diags, Args&&... args) {
   auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-  ptr->set_ref_diagnostics(diagnostics);
+  ptr->diags_ = &diags;
   return ptr;
 }
 
 template <typename T, typename... Args>
-validator::diagnostics_t run_validator(
-    t_program* const program, Args&&... args) {
-  validator::diagnostics_t diagnostics;
-  make_validator<T>(diagnostics, std::forward<Args>(args)...)
-      ->traverse(program);
-  return diagnostics;
+void run_validator(
+    diagnostics_engine& diags, t_program* program, Args&&... args) {
+  make_validator<T>(diags, std::forward<Args>(args)...)->traverse(program);
 }
 
 class validator_list {
  public:
-  explicit validator_list(validator::diagnostics_t& diagnostics)
-      : diagnostics_(diagnostics) {}
+  explicit validator_list(diagnostics_engine& diags) : diags_(diags) {}
 
   template <typename T, typename... Args>
   void add(Args&&... args) {
-    auto ptr = make_validator<T>(diagnostics_, std::forward<Args>(args)...);
+    auto ptr = make_validator<T>(diags_, std::forward<Args>(args)...);
     validators_.push_back(std::move(ptr));
   }
 
-  void traverse(t_program* const program);
+  void traverse(t_program* program);
 
  private:
-  validator::diagnostics_t& diagnostics_;
+  diagnostics_engine& diags_;
   std::vector<std::unique_ptr<validator>> validators_;
 };
 
@@ -109,6 +99,7 @@ class interactions_validator : virtual public validator {
    * Enforces that interactions are not nested
    */
   bool visit(t_program* s) override;
+
   /**
    * Enforces that services have at most one method for starting each
    * interaction

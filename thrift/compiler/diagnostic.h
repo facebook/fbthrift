@@ -107,9 +107,6 @@ class diagnostic_results {
 
   void add(diagnostic diag);
 
-  template <typename C>
-  void add_all(C&& diags);
-
   bool has_error() const { return count(diagnostic_level::error) != 0; }
   std::size_t count(diagnostic_level level) const {
     return counts_.at(static_cast<size_t>(level));
@@ -123,13 +120,6 @@ class diagnostic_results {
     ++counts_.at(static_cast<size_t>(level));
   }
 };
-
-template <typename C>
-void diagnostic_results::add_all(C&& diags) {
-  for (auto&& diag : std::forward<C>(diags)) {
-    add(std::forward<decltype(diag)>(diag));
-  }
-}
 
 struct diagnostic_params {
   bool debug = false;

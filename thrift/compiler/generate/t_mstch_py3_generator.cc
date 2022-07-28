@@ -18,6 +18,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
+#include <fmt/format.h>
 
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
@@ -1264,55 +1265,49 @@ class annotation_py3_generator : public annotation_generator {
   }
 };
 
-/**
- * Generator-specific validator that enforces that reserved key is
- * not used as namespace field name.
- *
- */
-class no_reserved_key_in_namespace_validator : virtual public validator {
+// Generator-specific validator that enforces that a reserved key is not used as
+// a namespace component.
+class no_reserved_key_in_namespace_validator : public validator {
  public:
   using validator::visit;
 
-  bool visit(t_program* const prog) override {
-    set_program(prog);
+  bool visit(t_program* prog) override {
     validate(prog);
     return true;
   }
 
  private:
-  void validate(t_program* const prog) {
+  void validate(t_program* prog) {
     auto namespace_tokens = get_py3_namespace(prog);
     if (namespace_tokens.empty()) {
       return;
     }
-    for (const auto& field_name : namespace_tokens) {
-      if (get_python_reserved_names().find(field_name) !=
+    for (const auto& component : namespace_tokens) {
+      if (get_python_reserved_names().find(component) !=
           get_python_reserved_names().end()) {
-        std::ostringstream ss;
-        ss << "Namespace '" << boost::algorithm::join(namespace_tokens, ".")
-           << "' contains reserved keyword '" << field_name << "'";
-        add_error(boost::none, ss.str());
+        report_error(
+            *prog,
+            "Namespace '{}' contains reserved keyword '{}'",
+            fmt::join(namespace_tokens, "."),
+            component);
       }
     }
 
-    std::string filepath_delimiters("\\/.");
-    std::vector<std::string> fields;
-    boost::split(fields, prog->path(), boost::is_any_of(filepath_delimiters));
-    for (const auto& field : fields) {
-      if (field == "include") {
-        std::ostringstream ss;
-        ss << "Path '" << prog->path()
-           << "' contains reserved keyword 'include'";
-        add_error(boost::none, ss.str());
+    std::vector<std::string> components;
+    boost::split(components, prog->path(), boost::is_any_of("\\/."));
+    for (const auto& component : components) {
+      if (component == "include") {
+        report_error(
+            *prog,
+            "Path '{}' contains reserved keyword 'include'",
+            prog->path());
       }
     }
   }
 };
 
-/**
- * Generator-specific validator that enforces "name" and "value" is not used as
- * enum member or union field names (thrift-py3)
- */
+// Generator-specific validator that enforces "name" and "value" are not used as
+// enum member or union field names (thrift-py3).
 class enum_member_union_field_names_validator : virtual public validator {
  public:
   using validator::visit;
@@ -1338,11 +1333,12 @@ class enum_member_union_field_names_validator : virtual public validator {
   void validate(const t_named* node, const std::string& name) {
     const auto& pyname = node->get_annotation("py3.name", &name);
     if (pyname == "name" || pyname == "value") {
-      std::ostringstream ss;
-      ss << "'" << pyname
-         << "' should not be used as an enum/union field name in thrift-py3. "
-         << "Use a different name or annotate the field with `(py3.name=\"<new_py_name>\")`";
-      add_error(node->get_lineno(), ss.str());
+      report_error(
+          *node,
+          "'{}' should not be used as an enum/union field name in thrift-py3. "
+          "Use a different name or annotate the field with "
+          "`(py3.name=\"<new_py_name>\")`",
+          pyname);
     }
   }
 };
