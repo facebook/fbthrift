@@ -18,10 +18,9 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/conformance/if/any.thrift"
 include "thrift/annotation/java.thrift"
 
-// @lint-ignore-every THRIFTFORMAT
 package "test.dev/thrift/lib/java/test/terse"
 
-namespace java2 com.facebook.thrift.test.terse
+namespace java.swift com.facebook.thrift.test.terse
 
 enum MyEnum {
   ME0 = 0,
@@ -35,8 +34,7 @@ struct MyStruct {
   4: SingleFieldStruct struct_field;
 }
 
-struct EmptyStruct {
-}
+struct EmptyStruct {}
 
 @thrift.TerseWrite
 struct SingleFieldStruct {
@@ -67,7 +65,6 @@ struct Structv3 {
   1: string string_field;
   2: NestedStruct nested_field;
 }
-
 
 exception MyException {
   1: string msg;

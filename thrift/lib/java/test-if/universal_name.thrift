@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-// @lint-ignore-every THRIFTFORMAT
 package "test.dev/thrift/lib/java/test/universalname"
 
-namespace java2 com.facebook.thrift.test.universalname
+namespace java.swift com.facebook.thrift.test.universalname
 
 struct TestRequest {
   1: bool aBool;

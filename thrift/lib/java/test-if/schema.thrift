@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace java2 com.facebook.thrift.test
+namespace java.swift com.facebook.thrift.test
 
 struct EveryLayout {
   1: bool aBool;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace java2 com.facebook.thrift.test.adapter
+namespace java.swift com.facebook.thrift.test.adapter
 
 include "thrift/annotation/java.thrift"
 

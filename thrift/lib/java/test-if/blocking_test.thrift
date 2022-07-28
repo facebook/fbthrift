@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace java2 com.facebook.thrift.example.blocking
+namespace java.swift com.facebook.thrift.example.blocking
 
 struct PingRequest {
   1: string request;

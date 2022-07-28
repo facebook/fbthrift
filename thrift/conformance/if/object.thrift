@@ -23,7 +23,6 @@ namespace py thrift.conformance.object
 namespace py.asyncio thrift_asyncio.conformance.object
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
-namespace java2 org.apache.thrift.conformance
 namespace go thrift.conformance.object
 
 typedef protocol.Object Object

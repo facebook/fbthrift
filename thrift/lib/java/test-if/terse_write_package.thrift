@@ -18,10 +18,9 @@ include "thrift/annotation/thrift.thrift"
 
 @thrift.TerseWrite
 
-// @lint-ignore-every THRIFTFORMAT
 package "test.dev/thrift/lib/java/test/terse"
 
-namespace java2 com.facebook.thrift.test.terse
+namespace java.swift com.facebook.thrift.test.terse
 
 enum PackageLevelEnum {
   ME0 = 0,

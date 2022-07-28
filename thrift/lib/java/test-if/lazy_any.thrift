@@ -16,14 +16,13 @@
 
 include "thrift/conformance/if/any.thrift"
 
-// @lint-ignore-every THRIFTFORMAT
 package "test.dev/thrift/lib/java/test/any"
 
-namespace java2 com.facebook.thrift.test.any
+namespace java.swift com.facebook.thrift.test.any
 
 struct Drawing {
   1: string name;
-  2: list<any.LazyAny> shapes;  // Circle or Rectangle
+  2: list<any.LazyAny> shapes; // Circle or Rectangle
 }
 
 struct Position {
@@ -42,7 +41,7 @@ struct Rectangle {
   2: i32 len;
   3: i32 width;
   4: Position position;
-  5: any.LazyAny canvas;        // can be Image or SolidColor
+  5: any.LazyAny canvas; // can be Image or SolidColor
 } (thrift.uri = "test.dev/thrift/lib/java/test/any/Rec")
 
 struct Image {
