@@ -23,6 +23,23 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
+/**
+ * An annotation that applies a C++ adapter to typedef, field, or struct.
+ * 
+ * For example:
+ * 
+ *   @cpp.Adapter{name = "IdAdapter"}
+ *   typedef i64 MyI64;
+ * 
+ * Here the type `MyI64` has the C++ adapter `IdAdapter`.
+ * 
+ *   struct User {
+ *     @cpp.Adapter{name = "IdAdapter"}
+ *     1: i64 id;
+ *   }
+ * 
+ * Here the field `id` has the C++ adapter `IdAdapter`.
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparable<Adapter> {
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
@@ -32,10 +49,48 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   private static final TField EXTRA_NAMESPACE_FIELD_DESC = new TField("extraNamespace", TType.STRING, (short)4);
   private static final TField MOVE_ONLY_FIELD_DESC = new TField("moveOnly", TType.BOOL, (short)5);
 
+  /**
+   * The name of a C++ adapter type used to convert between Thrift and native
+   * C++ representation.
+   * 
+   * The adapter can be either a Type or Field adapter, providing either of the following APIs:
+   * 
+   *     struct ThriftTypeAdapter {
+   *       static AdaptedType fromThrift(ThriftType thrift);
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+   *     };
+   * 
+   *     struct ThriftFieldAdapter {
+   *       // Context is an instantiation of apache::thrift::FieldContext
+   *       template <class Context>
+   *       static void construct(AdaptedType& field, Context ctx);
+   * 
+   *       template <class Context>
+   *       static AdaptedType fromThriftField(ThriftType value, Context ctx);
+   * 
+   *       template <class Context>
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+   *     };
+   */
   public String name;
+  /**
+   * It is sometimes necessary to specify AdaptedType here (in case the codegen would
+   * have a circular depdenceny, which will cause the C++ build to fail).
+   */
   public String adaptedType;
+  /**
+   * When applied directly to a type (as opposed to on a typedef) the IDL name of the
+   * type will refer to the adapted type in C++ and the underlying thrift struct will be
+   * generated in a nested namespace and/or with a different name. By default the struct
+   * will be generated in a nested 'detail' namespace with the same name,
+   * but both of these can be changed by setting these fields.
+   * Empty string disables the nested namespace and uses the IDL name for the struct.
+   */
   public String underlyingName;
   public String extraNamespace;
+  /**
+   * Must set to true when adapted type is not copyable.
+   */
   public boolean moveOnly;
   public static final int NAME = 1;
   public static final int ADAPTEDTYPE = 2;
@@ -168,10 +223,56 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     return new Adapter(this);
   }
 
+  /**
+   * The name of a C++ adapter type used to convert between Thrift and native
+   * C++ representation.
+   * 
+   * The adapter can be either a Type or Field adapter, providing either of the following APIs:
+   * 
+   *     struct ThriftTypeAdapter {
+   *       static AdaptedType fromThrift(ThriftType thrift);
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+   *     };
+   * 
+   *     struct ThriftFieldAdapter {
+   *       // Context is an instantiation of apache::thrift::FieldContext
+   *       template <class Context>
+   *       static void construct(AdaptedType& field, Context ctx);
+   * 
+   *       template <class Context>
+   *       static AdaptedType fromThriftField(ThriftType value, Context ctx);
+   * 
+   *       template <class Context>
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+   *     };
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * The name of a C++ adapter type used to convert between Thrift and native
+   * C++ representation.
+   * 
+   * The adapter can be either a Type or Field adapter, providing either of the following APIs:
+   * 
+   *     struct ThriftTypeAdapter {
+   *       static AdaptedType fromThrift(ThriftType thrift);
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+   *     };
+   * 
+   *     struct ThriftFieldAdapter {
+   *       // Context is an instantiation of apache::thrift::FieldContext
+   *       template <class Context>
+   *       static void construct(AdaptedType& field, Context ctx);
+   * 
+   *       template <class Context>
+   *       static AdaptedType fromThriftField(ThriftType value, Context ctx);
+   * 
+   *       template <class Context>
+   *       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+   *     };
+   */
   public Adapter setName(String name) {
     this.name = name;
     return this;
@@ -192,10 +293,18 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  /**
+   * It is sometimes necessary to specify AdaptedType here (in case the codegen would
+   * have a circular depdenceny, which will cause the C++ build to fail).
+   */
   public String getAdaptedType() {
     return this.adaptedType;
   }
 
+  /**
+   * It is sometimes necessary to specify AdaptedType here (in case the codegen would
+   * have a circular depdenceny, which will cause the C++ build to fail).
+   */
   public Adapter setAdaptedType(String adaptedType) {
     this.adaptedType = adaptedType;
     return this;
@@ -216,10 +325,26 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  /**
+   * When applied directly to a type (as opposed to on a typedef) the IDL name of the
+   * type will refer to the adapted type in C++ and the underlying thrift struct will be
+   * generated in a nested namespace and/or with a different name. By default the struct
+   * will be generated in a nested 'detail' namespace with the same name,
+   * but both of these can be changed by setting these fields.
+   * Empty string disables the nested namespace and uses the IDL name for the struct.
+   */
   public String getUnderlyingName() {
     return this.underlyingName;
   }
 
+  /**
+   * When applied directly to a type (as opposed to on a typedef) the IDL name of the
+   * type will refer to the adapted type in C++ and the underlying thrift struct will be
+   * generated in a nested namespace and/or with a different name. By default the struct
+   * will be generated in a nested 'detail' namespace with the same name,
+   * but both of these can be changed by setting these fields.
+   * Empty string disables the nested namespace and uses the IDL name for the struct.
+   */
   public Adapter setUnderlyingName(String underlyingName) {
     this.underlyingName = underlyingName;
     return this;
@@ -264,10 +389,16 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  /**
+   * Must set to true when adapted type is not copyable.
+   */
   public boolean isMoveOnly() {
     return this.moveOnly;
   }
 
+  /**
+   * Must set to true when adapted type is not copyable.
+   */
   public Adapter setMoveOnly(boolean moveOnly) {
     this.moveOnly = moveOnly;
     setMoveOnlyIsSet(true);

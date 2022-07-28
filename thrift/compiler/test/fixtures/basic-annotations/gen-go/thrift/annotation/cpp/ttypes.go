@@ -359,12 +359,54 @@ func (p *DisableLazyChecksum) String() string {
   return fmt.Sprintf("DisableLazyChecksum({})")
 }
 
+// An annotation that applies a C++ adapter to typedef, field, or struct.
+// 
+// For example:
+// 
+//   @cpp.Adapter{name = "IdAdapter"}
+//   typedef i64 MyI64;
+// 
+// Here the type `MyI64` has the C++ adapter `IdAdapter`.
+// 
+//   struct User {
+//     @cpp.Adapter{name = "IdAdapter"}
+//     1: i64 id;
+//   }
+// 
+// Here the field `id` has the C++ adapter `IdAdapter`.
+// 
 // Attributes:
-//  - Name
-//  - AdaptedType
-//  - UnderlyingName
+//  - Name: The name of a C++ adapter type used to convert between Thrift and native
+// C++ representation.
+// 
+// The adapter can be either a Type or Field adapter, providing either of the following APIs:
+// 
+//     struct ThriftTypeAdapter {
+//       static AdaptedType fromThrift(ThriftType thrift);
+//       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+//     };
+// 
+//     struct ThriftFieldAdapter {
+//       // Context is an instantiation of apache::thrift::FieldContext
+//       template <class Context>
+//       static void construct(AdaptedType& field, Context ctx);
+// 
+//       template <class Context>
+//       static AdaptedType fromThriftField(ThriftType value, Context ctx);
+// 
+//       template <class Context>
+//       static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+//     };
+//  - AdaptedType: It is sometimes necessary to specify AdaptedType here (in case the codegen would
+// have a circular depdenceny, which will cause the C++ build to fail).
+//  - UnderlyingName: When applied directly to a type (as opposed to on a typedef) the IDL name of the
+// type will refer to the adapted type in C++ and the underlying thrift struct will be
+// generated in a nested namespace and/or with a different name. By default the struct
+// will be generated in a nested 'detail' namespace with the same name,
+// but both of these can be changed by setting these fields.
+// Empty string disables the nested namespace and uses the IDL name for the struct.
 //  - ExtraNamespace
-//  - MoveOnly
+//  - MoveOnly: Must set to true when adapted type is not copyable.
 type Adapter struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
   AdaptedType string `thrift:"adaptedType,2" db:"adaptedType" json:"adaptedType"`

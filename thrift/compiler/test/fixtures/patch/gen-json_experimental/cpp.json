@@ -75,25 +75,29 @@
       },
       "Adapter" : {
         "name" : "Adapter",
+        "docstring" : "An annotation that applies a C++ adapter to typedef, field, or struct.\n\nFor example:\n\n  @cpp.Adapter{name = \"IdAdapter\"}\n  typedef i64 MyI64;\n\nHere the type `MyI64` has the C++ adapter `IdAdapter`.\n\n  struct User {\n    @cpp.Adapter{name = \"IdAdapter\"}\n    1: i64 id;\n  }\n\nHere the field `id` has the C++ adapter `IdAdapter`.\n",
         "fields" : {
           "name" : {
             "name" : "name",
+            "docstring" : "The name of a C++ adapter type used to convert between Thrift and native\nC++ representation.\n\nThe adapter can be either a Type or Field adapter, providing either of the following APIs:\n\n    struct ThriftTypeAdapter {\n      static AdaptedType fromThrift(ThriftType thrift);\n      static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);\n    };\n\n    struct ThriftFieldAdapter {\n      // Context is an instantiation of apache::thrift::FieldContext\n      template <class Context>\n      static void construct(AdaptedType& field, Context ctx);\n\n      template <class Context>\n      static AdaptedType fromThriftField(ThriftType value, Context ctx);\n\n      template <class Context>\n      static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);\n    };\n",
             "key" : 1,
-            "lineno" : 87,
+            "lineno" : 91,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "adaptedType" : {
             "name" : "adaptedType",
+            "docstring" : "It is sometimes necessary to specify AdaptedType here (in case the codegen would\nhave a circular depdenceny, which will cause the C++ build to fail).\n",
             "key" : 2,
-            "lineno" : 90,
+            "lineno" : 97,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "underlyingName" : {
             "name" : "underlyingName",
+            "docstring" : "When applied directly to a type (as opposed to on a typedef) the IDL name of the\ntype will refer to the adapted type in C++ and the underlying thrift struct will be\ngenerated in a nested namespace and/or with a different name. By default the struct\nwill be generated in a nested 'detail' namespace with the same name,\nbut both of these can be changed by setting these fields.\nEmpty string disables the nested namespace and uses the IDL name for the struct.\n",
             "key" : 3,
-            "lineno" : 97,
+            "lineno" : 107,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
@@ -101,21 +105,22 @@
             "name" : "extraNamespace",
             "default_value" : "detail",
             "key" : 4,
-            "lineno" : 98,
+            "lineno" : 108,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "moveOnly" : {
             "name" : "moveOnly",
+            "docstring" : "Must set to true when adapted type is not copyable.\n",
             "key" : 5,
-            "lineno" : 100,
+            "lineno" : 111,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 66
+        "lineno" : 67
       },
       "PackIsset" : {
         "name" : "PackIsset",
@@ -124,32 +129,32 @@
             "name" : "atomic",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 105,
+            "lineno" : 116,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 104
+        "lineno" : 115
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 109
+        "lineno" : 120
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 114
+        "lineno" : 123
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 119
+        "lineno" : 126
       }
       },
   "source_path" : "thrift/annotation/cpp",

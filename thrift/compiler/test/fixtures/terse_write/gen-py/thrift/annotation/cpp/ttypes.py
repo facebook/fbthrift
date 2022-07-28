@@ -361,12 +361,54 @@ class DisableLazyChecksum:
 
 class Adapter:
   """
+  An annotation that applies a C++ adapter to typedef, field, or struct.
+  
+  For example:
+  
+    @cpp.Adapter{name = "IdAdapter"}
+    typedef i64 MyI64;
+  
+  Here the type `MyI64` has the C++ adapter `IdAdapter`.
+  
+    struct User {
+      @cpp.Adapter{name = "IdAdapter"}
+      1: i64 id;
+    }
+  
+  Here the field `id` has the C++ adapter `IdAdapter`.
+  
   Attributes:
-   - name
-   - adaptedType
-   - underlyingName
+   - name: The name of a C++ adapter type used to convert between Thrift and native
+  C++ representation.
+  
+  The adapter can be either a Type or Field adapter, providing either of the following APIs:
+  
+      struct ThriftTypeAdapter {
+        static AdaptedType fromThrift(ThriftType thrift);
+        static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+      };
+  
+      struct ThriftFieldAdapter {
+        // Context is an instantiation of apache::thrift::FieldContext
+        template <class Context>
+        static void construct(AdaptedType& field, Context ctx);
+  
+        template <class Context>
+        static AdaptedType fromThriftField(ThriftType value, Context ctx);
+  
+        template <class Context>
+        static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+      };
+   - adaptedType: It is sometimes necessary to specify AdaptedType here (in case the codegen would
+  have a circular depdenceny, which will cause the C++ build to fail).
+   - underlyingName: When applied directly to a type (as opposed to on a typedef) the IDL name of the
+  type will refer to the adapted type in C++ and the underlying thrift struct will be
+  generated in a nested namespace and/or with a different name. By default the struct
+  will be generated in a nested 'detail' namespace with the same name,
+  but both of these can be changed by setting these fields.
+  Empty string disables the nested namespace and uses the IDL name for the struct.
    - extraNamespace
-   - moveOnly
+   - moveOnly: Must set to true when adapted type is not copyable.
   """
 
   thrift_spec = None
@@ -906,7 +948,6 @@ Ref.thrift_spec = (
 )
 
 Ref.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/Ref",
 }
 Ref.thrift_field_annotations = {
 }
@@ -930,7 +971,6 @@ Lazy.thrift_spec = (
 )
 
 Lazy.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/Lazy",
 }
 Lazy.thrift_field_annotations = {
 }
@@ -952,7 +992,6 @@ DisableLazyChecksum.thrift_spec = (
 )
 
 DisableLazyChecksum.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/DisableLazyChecksum",
 }
 DisableLazyChecksum.thrift_field_annotations = {
 }
@@ -968,7 +1007,6 @@ Adapter.thrift_spec = (
 )
 
 Adapter.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/Adapter",
 }
 Adapter.thrift_field_annotations = {
 }
@@ -1000,7 +1038,6 @@ PackIsset.thrift_spec = (
 )
 
 PackIsset.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/PackIsset",
 }
 PackIsset.thrift_field_annotations = {
 }
@@ -1022,7 +1059,6 @@ MinimizePadding.thrift_spec = (
 )
 
 MinimizePadding.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/MinimizePadding",
 }
 MinimizePadding.thrift_field_annotations = {
 }
@@ -1032,7 +1068,6 @@ TriviallyRelocatable.thrift_spec = (
 )
 
 TriviallyRelocatable.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
 }
 TriviallyRelocatable.thrift_field_annotations = {
 }
@@ -1042,7 +1077,6 @@ ScopedEnumAsUnionType.thrift_spec = (
 )
 
 ScopedEnumAsUnionType.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType",
 }
 ScopedEnumAsUnionType.thrift_field_annotations = {
 }
