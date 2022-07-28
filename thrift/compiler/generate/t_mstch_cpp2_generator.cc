@@ -1676,7 +1676,8 @@ class mstch_cpp2_const : public mstch_const {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      t_field const* field)
+      t_field const* field,
+      std::shared_ptr<cpp2_generator_context> context)
       : mstch_const(
             cnst,
             current_const,
@@ -1685,7 +1686,8 @@ class mstch_cpp2_const : public mstch_const {
             std::move(cache),
             pos,
             index,
-            field) {
+            field),
+        context_(std::move(context)) {
     register_methods(
         this,
         {
@@ -1713,15 +1715,17 @@ class mstch_cpp2_const : public mstch_const {
       return false;
     }
     if (const std::string* adapter =
-            resolver.find_structured_adapter_annotation(*cnst_)) {
+            context_->resolver().find_structured_adapter_annotation(*cnst_)) {
       return *adapter;
     }
     return {};
   }
-  mstch::node cpp_type() { return resolver.get_native_type(*cnst_); }
+  mstch::node cpp_type() {
+    return context_->resolver().get_native_type(*cnst_);
+  }
 
-  // TODO(ytj): use the type_resolver in cpp2_generator_context
-  gen::cpp::type_resolver resolver;
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class mstch_cpp2_program : public mstch_program {
@@ -2288,8 +2292,10 @@ class annotation_cpp2_generator : public annotation_generator {
 
 class const_cpp2_generator : public const_generator {
  public:
-  const_cpp2_generator() = default;
-  ~const_cpp2_generator() override = default;
+  explicit const_cpp2_generator(
+      std::shared_ptr<cpp2_generator_context> context) noexcept
+      : context_(std::move(context)) {}
+
   std::shared_ptr<mstch_base> generate(
       t_const const* cnst,
       std::shared_ptr<mstch_generators const> generators,
@@ -2307,8 +2313,12 @@ class const_cpp2_generator : public const_generator {
         std::move(cache),
         pos,
         index,
-        field);
+        field,
+        context_);
   }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class const_value_cpp2_generator : public const_value_generator {
@@ -2416,7 +2426,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
       std::make_unique<service_cpp2_generator>());
   generators_->set_interaction_generator(
       std::make_unique<interaction_cpp2_generator>());
-  generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
+  generators_->set_const_generator(
+      std::make_unique<const_cpp2_generator>(context_));
   generators_->set_const_value_generator(
       std::make_unique<const_value_cpp2_generator>());
   generators_->set_annotation_generator(
