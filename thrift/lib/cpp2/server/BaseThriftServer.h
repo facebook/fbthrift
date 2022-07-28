@@ -274,9 +274,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The type of thread manager to create.
   ThreadManagerType threadManagerType_{ThreadManagerType::PRIORITY};
 
-  //! The thread pool sizes for priority thread manager.
-  std::array<size_t, concurrency::N_PRIORITIES> threadManagerPoolSizes_{
-      {0, 0, 0, 0, 0}};
+  //! The thread pool sizes and priorities for priority thread manager.
+  //! If any of the pool sizes are set to non-zero then we will use this.
+  std::array<
+      std::pair<
+          apache::thrift::concurrency::PosixThreadFactory::THREAD_PRIORITY,
+          size_t>,
+      concurrency::N_PRIORITIES>
+      threadManagerPrioritiesAndPoolSizes_{
+          {{concurrency::PosixThreadFactory::HIGHER_PRI, 0},
+           {concurrency::PosixThreadFactory::HIGH_PRI, 0},
+           {concurrency::PosixThreadFactory::HIGH_PRI, 0},
+           {concurrency::PosixThreadFactory::NORMAL_PRI, 0},
+           {concurrency::PosixThreadFactory::LOWER_PRI, 0}}};
 
   //! Executors to use for ThreadManagerExecutorAdapter.
   std::array<std::shared_ptr<folly::Executor>, concurrency::N_PRIORITIES>
@@ -459,7 +469,25 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     CHECK(!threadManager_);
-    threadManagerPoolSizes_ = poolSizes;
+    for (std::size_t i = 0; i < concurrency::N_PRIORITIES; ++i) {
+      threadManagerPrioritiesAndPoolSizes_[i].second = poolSizes[i];
+    }
+  }
+
+  /**
+   * Set the priority and size of thread pools when using
+   * ThreadManagerType::PRIORITY.
+   */
+  void setThreadManagerPrioritiesAndPoolSizes(
+      const std::array<
+          std::pair<
+              apache::thrift::concurrency::PosixThreadFactory::THREAD_PRIORITY,
+              size_t>,
+          concurrency::N_PRIORITIES>& poolPrioritiesAndSizes) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    CHECK(!threadManager_);
+    threadManagerPrioritiesAndPoolSizes_ = poolPrioritiesAndSizes;
   }
 
   /**

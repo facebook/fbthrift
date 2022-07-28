@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,6 +195,7 @@ class PosixThreadFactory : public ThreadFactory {
      */
     static int toPthreadPolicy(POLICY policy);
 
+   public:
     /**
      * Converts relative thread priorities to absolute value based on posix
      * thread scheduler policy
@@ -205,7 +206,6 @@ class PosixThreadFactory : public ThreadFactory {
      */
     static int toPthreadPriority(POLICY policy, THREAD_PRIORITY priority);
 
-   public:
     Impl(
         POLICY policy,
         THREAD_PRIORITY priority,

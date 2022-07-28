@@ -624,12 +624,26 @@ void ThriftServer::setupThreadManager() {
         switch (threadManagerType_) {
           case ThreadManagerType::PRIORITY:
             if (std::any_of(
-                    std::begin(threadManagerPoolSizes_),
-                    std::end(threadManagerPoolSizes_),
-                    [](std::size_t c) { return c != 0; })) {
+                    std::begin(threadManagerPrioritiesAndPoolSizes_),
+                    std::end(threadManagerPrioritiesAndPoolSizes_),
+                    [](auto prioritySize) {
+                      return prioritySize.second != 0;
+                    })) {
               // The priorities were specified using setThreadManagerPoolSizes
-              threadManager = PriorityThreadManager::newPriorityThreadManager(
-                  threadManagerPoolSizes_);
+              std::array<
+                  std::
+                      pair<std::shared_ptr<concurrency::ThreadFactory>, size_t>,
+                  concurrency::N_PRIORITIES>
+                  args;
+              for (int i = 0; i < concurrency::N_PRIORITIES; ++i) {
+                args[i].first =
+                    std::make_shared<concurrency::PosixThreadFactory>(
+                        concurrency::PosixThreadFactory::OTHER,
+                        threadManagerPrioritiesAndPoolSizes_[i].first);
+                args[i].second = threadManagerPrioritiesAndPoolSizes_[i].second;
+              }
+              threadManager =
+                  PriorityThreadManager::newPriorityThreadManager(args);
             } else {
               threadManager = PriorityThreadManager::newPriorityThreadManager(
                   getNumCPUWorkerThreads());
@@ -860,48 +874,59 @@ void ThriftServer::ensureResourcePools() {
     struct Pool {
       std::string_view name;
       std::string_view suffix;
-      int nicePriority;
+      concurrency::PosixThreadFactory::THREAD_PRIORITY threadPriority;
       size_t numThreads;
       std::optional<ResourcePoolHandle> handle;
-      concurrency::PRIORITY priority;
+      concurrency::PRIORITY thriftPriority;
     };
 
     std::vector<Pool> pools;
 
     switch (threadManagerType_) {
       case ThreadManagerType::PRIORITY: {
-        // TODO: T111371879 [thrift][resourcepools] Figure out priorities
-        // for default setup in ensureResourcePool including non-linux
-        // These priority numbers are what thrift currently derives for a
-        // nice range of 19 to -20.
         Pool priorityPools[] = {
             {"HIGH_IMPORTANT",
              "HI",
-             -13,
+             concurrency::PosixThreadFactory::HIGHER_PRI,
              2,
              std::nullopt,
              concurrency::HIGH_IMPORTANT},
-            {"HIGH", "H", -7, 2, std::nullopt, concurrency::HIGH},
-            {"IMPORTANT", "I", -7, 2, std::nullopt, concurrency::IMPORTANT},
+            {"HIGH",
+             "H",
+             concurrency::PosixThreadFactory::HIGH_PRI,
+             2,
+             std::nullopt,
+             concurrency::HIGH},
+            {"IMPORTANT",
+             "I",
+             concurrency::PosixThreadFactory::HIGH_PRI,
+             2,
+             std::nullopt,
+             concurrency::IMPORTANT},
             {"NORMAL",
              "N",
-             0,
+             concurrency::PosixThreadFactory::NORMAL_PRI,
              getNumCPUWorkerThreads(),
              ResourcePoolHandle::defaultAsync(),
              concurrency::NORMAL},
             {"BEST_EFFORT",
              "BE",
-             6,
+             concurrency::PosixThreadFactory::LOWER_PRI,
              2,
              std::nullopt,
              concurrency::BEST_EFFORT}};
         if (std::any_of(
-                std::begin(threadManagerPoolSizes_),
-                std::end(threadManagerPoolSizes_),
-                [](std::size_t c) { return c != 0; })) {
+                std::begin(threadManagerPrioritiesAndPoolSizes_),
+                std::end(threadManagerPrioritiesAndPoolSizes_),
+                [](auto const& prioritySize) {
+                  return prioritySize.second != 0;
+                })) {
           // The priorities were specified using setThreadManagerPoolSizes
           for (std::size_t i = 0; i < std::size(priorityPools); ++i) {
-            priorityPools[i].numThreads = threadManagerPoolSizes_.at(i);
+            priorityPools[i].numThreads =
+                threadManagerPrioritiesAndPoolSizes_.at(i).second;
+            priorityPools[i].threadPriority =
+                threadManagerPrioritiesAndPoolSizes_.at(i).first;
           }
         }
         std::copy(
@@ -914,7 +939,7 @@ void ThriftServer::ensureResourcePools() {
         pools.push_back(Pool{
             "NORMAL",
             "N",
-            0,
+            concurrency::PosixThreadFactory::NORMAL_PRI,
             getNumCPUWorkerThreads(),
             ResourcePoolHandle::defaultAsync(),
             concurrency::NORMAL});
@@ -924,7 +949,7 @@ void ThriftServer::ensureResourcePools() {
         pools.push_back(Pool{
             "NORMAL",
             "N",
-            0,
+            concurrency::PosixThreadFactory::NORMAL_PRI,
             getNumCPUWorkerThreads(),
             ResourcePoolHandle::defaultAsync(),
             concurrency::NORMAL});
@@ -940,7 +965,9 @@ void ThriftServer::ensureResourcePools() {
       std::shared_ptr<folly::ThreadFactory> factory =
           std::make_shared<folly::PriorityThreadFactory>(
               std::make_shared<folly::NamedThreadFactory>(name),
-              pool.nicePriority);
+              concurrency::PosixThreadFactory::Impl::toPthreadPriority(
+                  concurrency::PosixThreadFactory::kDefaultPolicy,
+                  pool.threadPriority));
       if (threadInitializer_ || threadFinalizer_) {
         factory = std::make_shared<folly::InitThreadFactory>(
             std::move(factory),
@@ -966,14 +993,14 @@ void ThriftServer::ensureResourcePools() {
             std::move(requestPile),
             executor,
             std::move(concurrencyController),
-            pool.priority);
+            pool.thriftPriority);
       } else {
         resourcePoolSet().addResourcePool(
             pool.name,
             std::move(requestPile),
             executor,
             std::move(concurrencyController),
-            pool.priority);
+            pool.thriftPriority);
       }
     }
   }
