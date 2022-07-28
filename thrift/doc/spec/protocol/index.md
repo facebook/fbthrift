@@ -7,7 +7,5 @@ state: draft
 How thrift implementations communicate.
 
 - [Data Protocols](data.md)
-- [Interface Protocol](interface.md)
-- [Rocket Protocol](rocket.md)
-- [Header Protocol](header.md)
+- [Interface Protocols](interface/index.md)
 - [Channels](channel.md)

@@ -4,7 +4,7 @@ state: draft
 
 # Rocket Protocol
 
-This document describes the Rocket transport protocol and how it is used by Thrift to achieve the [Interface Types](../definition/interface.md).
+This document describes the Rocket transport protocol and how it is used by Thrift to achieve the [Interface Types](../../definition/index.md).
 
 ## Request-Response
 
@@ -18,7 +18,7 @@ Frame type | 6 bits <br/> Must be REQUEST_RESPONSE (0x04)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). This includes information such as: <br/> - Method name <br/> - Thrift serialization protocol <br/> - RPC kind (SINGLE_REQUEST_SINGLE_RESPONSE)
-Data | Thrift serialized arguments from [Interface Protocol](interface.md)
+Data | Thrift serialized arguments from [Interface Protocol](index.md)
 
 The Thrift server should then perform the method specified in the RequestRpcMetadata method name field. Once the result is ready, the server should send a [PAYLOAD](https://rsocket.io/about/protocol/#payload-frame-0x0a) frame containing the result in the following format:
 
@@ -30,7 +30,7 @@ Frame type | 6 bits <br/> Must be PAYLOAD (0x0A)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly) <br/> Complete flag must be set <br/> Next flag must be set
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [ResponseRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
-Data | Thrift serialized result from [Interface Protocol](interface.md)
+Data | Thrift serialized result from [Interface Protocol](index.md)
 
 ## Oneway Request (request no response)
 
@@ -44,7 +44,7 @@ Frame type | 6 bits <br/> Must be REQUEST_FNF (0x05)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). This includes information such as: <br/> - Method name <br/> - Thrift serialization protocol <br/> - RPC kind (SINGLE_REQUEST_NO_RESPONSE)
-Data | Thrift serialized arguments from [Interface Protocol](interface.md)
+Data | Thrift serialized arguments from [Interface Protocol](index.md)
 
 ## Stream
 
@@ -59,7 +59,7 @@ Flags | 10 bits <br/> Metadata flag must be set <br/> Follows flag must be set i
 Initial request N | 32 bits <br/> Unsigned integer representing the initial number of stream payloads to request. Value MUST be > 0. Max value is 2^31 - 1.
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). This includes information such as: <br/> - Method name <br/> - Thrift serialization protocol <br/> - RPC kind (SINGLE_REQUEST_STREAMING_RESPONSE)
-Data | Thrift serialized arguments from [Interface Protocol](interface.md)
+Data | Thrift serialized arguments from [Interface Protocol](index.md)
 
 ### Stream Initial Response
 
@@ -77,7 +77,7 @@ Frame type | 6 bits <br/> Must be PAYLOAD (0x0A)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Next flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
-Data | Thrift serialized result from [Interface Protocol](interface.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+Data | Thrift serialized result from [Interface Protocol](index.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 
 ### Stream Completion
 
@@ -134,7 +134,7 @@ Flags | 10 bits <br/> Metadata flag must be set <br/> Follows flag must be set i
 Initial request N | 32 bits <br/> Unsigned integer representing the number of payloads the server can send to the client. Must be at least 2 (1 initial response, 1 final response). Max value is 2^31 - 1.
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). This includes information such as: <br/> - Method name <br/> - Thrift serialization protocol <br/> - RPC kind (SINK)
-Data | Thrift serialized arguments from [Interface Protocol](interface.md)
+Data | Thrift serialized arguments from [Interface Protocol](index.md)
 
 ### Sink Initial Response
 
@@ -152,7 +152,7 @@ Frame type | 6 bits <br/> Must be PAYLOAD (0x0A)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Next flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
-Data | Thrift serialized result from [Interface Protocol](interface.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+Data | Thrift serialized result from [Interface Protocol](index.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 
 ### Sink Exception
 
@@ -170,7 +170,7 @@ Frame type | 6 bits <br/> Must be PAYLOAD (0x0A)
 Flags | 10 bits <br/> Metadata flag must be set <br/> Next flag must be set <br/> Complete flag must be set <br/> Follows flag must be set if the frame requires [fragmentation](https://rsocket.io/about/protocol/#fragmentation-and-reassembly)
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
-Data | Thrift serialized result from [Interface Protocol](interface.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+Data | Thrift serialized result from [Interface Protocol](index.md#stream-responses) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 
 ### Sink Credit Mechanism
 
