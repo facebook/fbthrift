@@ -144,7 +144,7 @@ bool isComma(const char& c) {
 
 // Returns the input file name if successful, otherwise returns an empty
 // string.
-std::string parseArgs(
+std::string parse_args(
     const std::vector<std::string>& arguments,
     parsing_params& pparams,
     gen_params& gparams,
@@ -303,6 +303,30 @@ std::string parseArgs(
   return arguments[arg_i];
 }
 
+enum class parse_control : bool { stop, more };
+
+// `callback(key, value)` will be called for each key=value generator's option.
+// If there is no value, `value` will be empty string.
+void parse_generator_options(
+    const std::string& option_string,
+    std::function<parse_control(std::string, std::string)> callback) {
+  std::vector<std::string> parts;
+  bool inside_braces = false;
+  boost::algorithm::split(parts, option_string, [&inside_braces](char c) {
+    if (c == '{' || c == '}') {
+      inside_braces = (c == '{');
+    }
+    return c == ',' && !inside_braces;
+  });
+  for (const auto& part : parts) {
+    auto key = part.substr(0, part.find('='));
+    auto value = part.substr(std::min(key.size() + 1, part.size()));
+    if (callback(std::move(key), std::move(value)) == parse_control::stop) {
+      break;
+    }
+  }
+}
+
 // Generate code.
 bool generate(
     const gen_params& params,
@@ -335,11 +359,17 @@ bool generate(
       genfile.open(params.genfile);
     }
     for (auto target : params.targets) {
-      auto pos = target.find(':');
-      std::string lang = target.substr(0, pos);
+      auto colon_pos = target.find(':');
+      auto language = target.substr(0, colon_pos);
+      auto options = std::map<std::string, std::string>();
+      parse_generator_options(
+          target.substr(colon_pos + 1), [&](std::string k, std::string v) {
+            options[std::move(k)] = std::move(v);
+            return parse_control::more;
+          });
       auto generator =
           std::unique_ptr<t_generator>{t_generator_registry::get_generator(
-              &program, params.context, target)};
+              language, &program, params.context, options)};
       if (generator == nullptr) {
         continue;
       }
@@ -407,9 +437,9 @@ std::string get_include_path(
     parse_generator_options(lang_args, [&](std::string k, std::string v) {
       if (k.find("include_prefix") != std::string::npos) {
         include_prefix = std::move(v);
-        return CallbackLoopControl::Break;
+        return parse_control::stop;
       }
-      return CallbackLoopControl::Continue;
+      return parse_control::more;
     });
   }
 
@@ -475,7 +505,7 @@ std::unique_ptr<t_program_bundle> parse_and_get_program(
   parsing_params pparams;
   gen_params gparams;
   diagnostic_params dparams;
-  std::string filename = parseArgs(arguments, pparams, gparams, dparams);
+  std::string filename = parse_args(arguments, pparams, gparams, dparams);
 
   if (filename.empty()) {
     return {};
@@ -491,7 +521,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   parsing_params pparams;
   gen_params gparams;
   diagnostic_params dparams;
-  std::string input_filename = parseArgs(arguments, pparams, gparams, dparams);
+  std::string input_filename = parse_args(arguments, pparams, gparams, dparams);
   if (input_filename.empty()) {
     return result;
   }

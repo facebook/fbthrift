@@ -130,8 +130,7 @@ class t_generator_factory {
   virtual ~t_generator_factory() = default;
 
   virtual t_generator* get_generator(
-      // The program to generate.
-      t_program* program,
+      t_program* program, // The program to generate.
       t_generation_context context,
       const std::map<std::string, std::string>& options) = 0;
 
@@ -169,9 +168,10 @@ class t_generator_registry {
   static void register_generator(t_generator_factory* factory);
 
   static t_generator* get_generator(
+      const std::string& language,
       t_program* program,
       t_generation_context context,
-      const std::string& option_string);
+      const std::map<std::string, std::string>& options);
 
   using gen_map_t = std::map<std::string, t_generator_factory*>;
   static gen_map_t& get_generator_map();
@@ -180,14 +180,6 @@ class t_generator_registry {
 #define THRIFT_REGISTER_GENERATOR(language, long_name, doc)             \
   static t_generator_factory_impl<t_##language##_generator> registerer( \
       #language, long_name, doc)
-
-enum class CallbackLoopControl : bool { Break, Continue };
-
-// `callback(key, value)` will be called for each key=value generator's option.
-// If there is no value, `value` will be empty string.
-void parse_generator_options(
-    const std::string& option_string,
-    std::function<CallbackLoopControl(std::string, std::string)> callback);
 
 } // namespace compiler
 } // namespace thrift
