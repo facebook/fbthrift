@@ -14,40 +14,60 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/t_android_generator.h>
+#include <thrift/compiler/generate/t_java_deprecated_generator.h>
 
-#include <cctype>
-#include <fstream>
-#include <sstream>
+#include <map>
 #include <string>
 #include <vector>
 
-#include <stdexcept>
-
 #include <boost/filesystem.hpp>
-
-using namespace std;
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace {
+
+/**
+ * Java code generator for Android.
+ */
+class t_android_generator : public t_java_deprecated_generator {
+ public:
+  t_android_generator(
+      t_program* program,
+      t_generation_context context,
+      const std::map<std::string, std::string>& options)
+      : t_java_deprecated_generator(program, std::move(context), options) {
+    generate_field_metadata_ = false;
+    generate_immutable_structs_ = true;
+    generate_boxed_primitive = true;
+    generate_builder = false;
+
+    out_dir_base_ = "gen-android";
+  }
+
+  void init_generator() override;
+
+  bool has_bit_vector(const t_struct*) override { return false; }
+
+  bool is_comparable(const t_type*, std::vector<const t_type*>*) override {
+    return false;
+  }
+};
 
 /**
  * Prepares for file generation by opening up the necessary file output
  * streams.
- *
- * @param tprogram The program to generate
  */
 void t_android_generator::init_generator() {
-  // Make output directory
+  // Make output directory.
   boost::filesystem::create_directory(get_out_dir());
   namespace_key_ = "android";
   package_name_ = program_->get_namespace(namespace_key_);
 
-  string dir = package_name_;
-  string subdir = get_out_dir();
-  string::size_type loc;
-  while ((loc = dir.find('.')) != string::npos) {
+  std::string dir = package_name_;
+  std::string subdir = get_out_dir();
+  std::string::size_type loc;
+  while ((loc = dir.find('.')) != std::string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
     boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);
@@ -62,6 +82,7 @@ void t_android_generator::init_generator() {
 
 THRIFT_REGISTER_GENERATOR(android, "Android Java", "");
 
+} // namespace
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
