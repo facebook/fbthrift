@@ -20,7 +20,6 @@ namespace py thrift.conformance.test_suite
 namespace py.asyncio thrift_asyncio.conformance.test_suite
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
-namespace java2 org.apache.thrift.conformance
 
 include "thrift/conformance/if/serialization.thrift"
 include "thrift/conformance/if/rpc.thrift"

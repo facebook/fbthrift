@@ -20,7 +20,6 @@ namespace py thrift.conformance.rpc
 namespace py.asyncio thrift_asyncio.conformance.rpc
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
-namespace java2 org.apache.thrift.conformance
 
 struct RequestResponseTestDescription {
   1: optional Request request; // optional so we can also test no argument RPCs

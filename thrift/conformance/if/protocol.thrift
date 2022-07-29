@@ -20,7 +20,6 @@ namespace py thrift.conformance.protocol
 namespace py.asyncio thrift_asyncio.conformance.protocol
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
-namespace java2 org.apache.thrift.conformance
 namespace java org.apache.thrift.conformance
 namespace go thrift.conformance.protocol
 

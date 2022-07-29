@@ -88,7 +88,6 @@ namespace python domain.path.to
 namespace py3 domain.path.to
 namespace hack path.to.file
 namespace php path.to.file
-namespace java2 com.domain.path.to.file
 namespace java.swift com.domain.path.to.file
 ```
 

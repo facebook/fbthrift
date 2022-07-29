@@ -19,7 +19,6 @@ namespace php thrift
 namespace py apache.thrift.dynamic
 namespace py.asyncio apache.asyncio.thrift.dynamic
 namespace py3 apache.thrift
-namespace java2 org.apache.thrift.dynamic
 namespace java.swift org.apache.thrift.dynamic
 namespace js thrift
 

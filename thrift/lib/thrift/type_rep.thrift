@@ -36,7 +36,6 @@ namespace py3 apache.thrift.type
 namespace php apache_thrift_type_rep
 namespace java com.facebook.thrift.type
 namespace java.swift com.facebook.thrift.type_swift
-namespace java2 com.facebook.thrift.type
 namespace py.asyncio apache_thrift_asyncio.type_rep
 namespace go thrift.lib.thrift.type_rep
 namespace py thrift.lib.thrift.type_rep
