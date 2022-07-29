@@ -59,7 +59,7 @@ class AnyRegistry:
         for alg, hash_to_type in self._alg_to_hash_to_type.items():
             hash = get_universal_hash(alg, uri)
             hash_to_type[hash] = cls
-        return False
+        return True
 
     def register_module(self, module: types.ModuleType) -> None:
         for cls in module._fbthrift_all_structs:

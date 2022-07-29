@@ -25,6 +25,11 @@ from thrift.test.testset import thrift_types
 
 
 class AnyRegistryTest(unittest.TestCase):
+    def test_register_type(self) -> None:
+        registry = AnyRegistry()
+        self.assertTrue(registry.register_type(thrift_types.struct_empty))
+        self.assertFalse(registry.register_type(thrift_types.struct_empty))
+
     def test_round_trip(self) -> None:
         def _test_for_protocol(protocol: StandardProtocol) -> None:
             registry = AnyRegistry()
