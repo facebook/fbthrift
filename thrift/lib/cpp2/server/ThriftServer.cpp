@@ -276,7 +276,7 @@ void ThriftServer::initializeDefaults() {
       methodsBypassMaxRequestsLimit.insert(method);
     }
   }
-  setInternalMethods(std::unordered_set(
+  setInternalMethods(std::unordered_set<std::string>(
       methodsBypassMaxRequestsLimit.begin(),
       methodsBypassMaxRequestsLimit.end()));
   thriftConfig_.methodsBypassMaxRequestsLimit_.setDefault(
