@@ -586,6 +586,7 @@ class ThriftServerConfig {
       AttributeSource source = AttributeSource::OVERRIDE);
 
  private:
+  friend class ThriftServer;
   template <typename T>
   void setStaticAttribute(
       ServerAttributeStatic<T>& staticAttribute,

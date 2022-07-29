@@ -22,6 +22,7 @@
 #include <iostream>
 #include <random>
 #include <utility>
+#include <variant>
 
 #include <glog/logging.h>
 #include <folly/Conv.h>
@@ -220,22 +221,7 @@ ThriftServer::ThriftServer()
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  if (FLAGS_thrift_ssl_policy == "required") {
-    sslPolicy_ = SSLPolicy::REQUIRED;
-  } else if (FLAGS_thrift_ssl_policy == "permitted") {
-    sslPolicy_ = SSLPolicy::PERMITTED;
-  }
-  metadata().wrapper = "ThriftServer-cpp";
-  auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
-  setMonitoringInterface(std::move(extraInterfaces.monitoring));
-  setStatusInterface(std::move(extraInterfaces.status));
-  setControlInterface(std::move(extraInterfaces.control));
-  getAdaptiveConcurrencyController().setConfigUpdateCallback(
-      [this](auto snapshot) {
-        if (snapshot->isEnabled()) {
-          THRIFT_SERVER_EVENT(ACC_enabled).log(*this);
-        }
-      });
+  initializeDefaults();
 }
 
 ThriftServer::ThriftServer(const ThriftServerInitialConfig& initialConfig)
@@ -243,22 +229,7 @@ ThriftServer::ThriftServer(const ThriftServerInitialConfig& initialConfig)
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  if (FLAGS_thrift_ssl_policy == "required") {
-    sslPolicy_ = SSLPolicy::REQUIRED;
-  } else if (FLAGS_thrift_ssl_policy == "permitted") {
-    sslPolicy_ = SSLPolicy::PERMITTED;
-  }
-  metadata().wrapper = "ThriftServer-cpp";
-  auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
-  setMonitoringInterface(std::move(extraInterfaces.monitoring));
-  setStatusInterface(std::move(extraInterfaces.status));
-  setControlInterface(std::move(extraInterfaces.control));
-  getAdaptiveConcurrencyController().setConfigUpdateCallback(
-      [this](auto snapshot) {
-        if (snapshot->isEnabled()) {
-          THRIFT_SERVER_EVENT(ACC_enabled).log(*this);
-        }
-      });
+  initializeDefaults();
 }
 
 ThriftServer::ThriftServer(
@@ -267,6 +238,59 @@ ThriftServer::ThriftServer(
   serverChannel_ = serverChannel;
   setNumIOWorkerThreads(1);
   setIdleTimeout(std::chrono::milliseconds(0));
+}
+
+void ThriftServer::initializeDefaults() {
+  if (FLAGS_thrift_ssl_policy == "required") {
+    sslPolicy_ = SSLPolicy::REQUIRED;
+  } else if (FLAGS_thrift_ssl_policy == "permitted") {
+    sslPolicy_ = SSLPolicy::PERMITTED;
+  }
+  metadata().wrapper = "ThriftServer-cpp";
+  auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
+
+  // status and monitoring methods should bypass request limit by default
+
+  folly::sorted_vector_set<std::string> methodsBypassMaxRequestsLimit;
+  if (extraInterfaces.monitoring) {
+    auto monitoringInterfaceMethods =
+        extraInterfaces.monitoring->createMethodMetadata();
+    auto monitoringMethodsMetadataMap =
+        std::get_if<AsyncProcessorFactory::MethodMetadataMap>(
+            &monitoringInterfaceMethods);
+    CHECK(monitoringMethodsMetadataMap != nullptr)
+        << "WildcardMethodMetadataMap is not allowed for the monitoring interface";
+    for (const auto& [method, _] : *monitoringMethodsMetadataMap) {
+      methodsBypassMaxRequestsLimit.insert(method);
+    }
+  }
+  if (extraInterfaces.status) {
+    auto statusInterfaceMethods =
+        extraInterfaces.status->createMethodMetadata();
+    auto statusMethodsMetadataMethods =
+        std::get_if<AsyncProcessorFactory::MethodMetadataMap>(
+            &statusInterfaceMethods);
+    CHECK(statusMethodsMetadataMethods != nullptr)
+        << "WildcardMethodMetadataMap is not allowed for the status interface";
+    for (const auto& [method, _] : *statusMethodsMetadataMethods) {
+      methodsBypassMaxRequestsLimit.insert(method);
+    }
+  }
+  setInternalMethods(std::unordered_set(
+      methodsBypassMaxRequestsLimit.begin(),
+      methodsBypassMaxRequestsLimit.end()));
+  thriftConfig_.methodsBypassMaxRequestsLimit_.setDefault(
+      std::move(methodsBypassMaxRequestsLimit));
+
+  setMonitoringInterface(std::move(extraInterfaces.monitoring));
+  setStatusInterface(std::move(extraInterfaces.status));
+  setControlInterface(std::move(extraInterfaces.control));
+  getAdaptiveConcurrencyController().setConfigUpdateCallback(
+      [this](auto snapshot) {
+        if (snapshot->isEnabled()) {
+          THRIFT_SERVER_EVENT(ACC_enabled).log(*this);
+        }
+      });
 }
 
 ThriftServer::~ThriftServer() {

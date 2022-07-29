@@ -220,6 +220,7 @@ struct ServerAttributeStatic {
     updateMergedValue();
   }
 
+  void setDefault(T value) { default_ = value; }
   const T& get() const { return merged_.get(); }
 
  protected:
