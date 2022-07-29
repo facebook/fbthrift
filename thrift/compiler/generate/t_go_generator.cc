@@ -61,38 +61,30 @@ class t_go_generator : public t_concat_generator {
   t_go_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
-    (void)option_string;
-    std::map<std::string, std::string>::const_iterator iter;
     out_dir_base_ = "gen-go";
     gen_thrift_import_ = default_thrift_import;
 
-    iter = parsed_options.find("package_prefix");
-
-    if (iter != parsed_options.end()) {
-      gen_package_prefix_ = (iter->second);
+    auto iter = options.find("package_prefix");
+    if (iter != options.end()) {
+      gen_package_prefix_ = iter->second;
     }
 
-    iter = parsed_options.find("thrift_import");
-
-    if (iter != parsed_options.end()) {
-      gen_thrift_import_ = (iter->second);
+    iter = options.find("thrift_import");
+    if (iter != options.end()) {
+      gen_thrift_import_ = iter->second;
     }
 
-    iter = parsed_options.find("package");
-
-    if (iter != parsed_options.end()) {
-      package_flag = (iter->second);
+    iter = options.find("package");
+    if (iter != options.end()) {
+      package_flag = iter->second;
     }
 
-    iter = parsed_options.find("use_context");
-    if (iter != parsed_options.end()) {
+    iter = options.find("use_context");
+    if (iter != options.end()) {
       gen_use_context_ = true;
       gen_processor_func_ = "thrift.ProcessorFunctionContext";
-    } else {
-      gen_use_context_ = false;
     }
   }
 
@@ -340,7 +332,7 @@ class t_go_generator : public t_concat_generator {
   std::string gen_package_prefix_;
   std::string gen_thrift_import_;
   std::string gen_processor_func_ = "thrift.ProcessorFunction";
-  bool gen_use_context_;
+  bool gen_use_context_ = false;
 
   /**
    * File streams

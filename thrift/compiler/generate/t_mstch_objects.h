@@ -46,7 +46,7 @@ enum ELEMENT_POSITION {
 };
 
 struct mstch_cache {
-  std::map<std::string, std::string> parsed_options_;
+  std::map<std::string, std::string> options_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> services_;
@@ -1304,9 +1304,7 @@ class mstch_service : public mstch_base {
   mstch::node annotations() { return mstch_base::annotations(service_); }
   mstch::node thrift_uri() { return service_->uri(); }
 
-  mstch::node parent() {
-    return cache_->parsed_options_.at("parent_service_name");
-  }
+  mstch::node parent() { return cache_->options_.at("parent_service_name"); }
 
   mstch::node has_streams() {
     auto& funcs = get_functions();
@@ -1326,9 +1324,8 @@ class mstch_service : public mstch_base {
   mstch::node interactions() {
     if (!service_->is_interaction()) {
       // for Python interactions
-      cache_->parsed_options_["parent_service_name"] = service_->get_name();
-      cache_->parsed_options_["parent_service_cpp_name"] =
-          cpp2::get_name(service_);
+      cache_->options_["parent_service_name"] = service_->get_name();
+      cache_->options_["parent_service_cpp_name"] = cpp2::get_name(service_);
     }
     return generate_interactions(interactions_, service_);
   }

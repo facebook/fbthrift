@@ -310,29 +310,27 @@ class t_mstch_rust_generator : public t_mstch_generator {
   t_mstch_rust_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /* option_string */)
-      : t_mstch_generator(program, std::move(context), "rust", parsed_options) {
-    auto cratemap_flag = parsed_options.find("cratemap");
-    if (cratemap_flag != parsed_options.end()) {
+      const std::map<std::string, std::string>& options)
+      : t_mstch_generator(program, std::move(context), "rust", options) {
+    auto cratemap_flag = options.find("cratemap");
+    if (cratemap_flag != options.end()) {
       load_crate_map(cratemap_flag->second);
     }
 
-    options_.serde = parsed_options.count("serde");
-    options_.noserver = parsed_options.count("noserver");
-    options_.skip_none_serialization =
-        parsed_options.count("skip_none_serialization");
+    options_.serde = options.count("serde");
+    options_.noserver = options.count("noserver");
+    options_.skip_none_serialization = options.count("skip_none_serialization");
     if (options_.skip_none_serialization) {
       assert(options_.serde);
     }
 
-    auto include_prefix_flag = parsed_options.find("include_prefix");
-    if (include_prefix_flag != parsed_options.end()) {
+    auto include_prefix_flag = options.find("include_prefix");
+    if (include_prefix_flag != options.end()) {
       program->set_include_prefix(include_prefix_flag->second);
     }
 
-    auto include_srcs = parsed_options.find("include_srcs");
-    if (include_srcs != parsed_options.end()) {
+    auto include_srcs = options.find("include_srcs");
+    if (include_srcs != options.end()) {
       auto paths = include_srcs->second;
 
       string::size_type pos = 0;

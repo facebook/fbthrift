@@ -16,10 +16,7 @@
 
 #pragma once
 
-#include <cctype>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -30,19 +27,15 @@ namespace thrift {
 namespace compiler {
 
 /**
- * Java code generator.
- *
+ * Java code generator for Android.
  */
-
 class t_android_generator : public t_java_deprecated_generator {
  public:
   t_android_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
-      : t_java_deprecated_generator(
-            program, std::move(context), parsed_options, option_string) {
+      const std::map<std::string, std::string>& options)
+      : t_java_deprecated_generator(program, std::move(context), options) {
     generate_field_metadata_ = false;
     generate_immutable_structs_ = true;
     generate_boxed_primitive = true;
@@ -51,16 +44,11 @@ class t_android_generator : public t_java_deprecated_generator {
     out_dir_base_ = "gen-android";
   }
 
-  /**
-   * Init and close methods
-   */
   void init_generator() override;
 
-  bool has_bit_vector(const t_struct* /*tstruct*/) override { return false; }
+  bool has_bit_vector(const t_struct*) override { return false; }
 
-  bool is_comparable(
-      const t_type* /*type*/,
-      std::vector<const t_type*>* /*enclosing*/ = nullptr) override {
+  bool is_comparable(const t_type*, std::vector<const t_type*>*) override {
     return false;
   }
 };

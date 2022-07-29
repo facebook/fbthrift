@@ -40,24 +40,11 @@ class t_js_generator : public t_concat_generator {
   t_js_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
-    (void)option_string;
-
-    std::map<std::string, std::string>::const_iterator iter;
-
-    iter = parsed_options.find("node");
-    gen_node_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("jquery");
-    gen_jquery_ = (iter != parsed_options.end());
-
-    if (gen_node_) {
-      out_dir_base_ = "gen-nodejs";
-    } else {
-      out_dir_base_ = "gen-js";
-    }
+    gen_node_ = options.find("node") != options.end();
+    gen_jquery_ = options.find("jquery") != options.end();
+    out_dir_base_ = gen_node_ ? "gen-nodejs" : "gen-js";
   }
 
   /**

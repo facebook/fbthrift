@@ -57,14 +57,14 @@ void t_generator_registry::register_generator(t_generator_factory* factory) {
 t_generator* t_generator_registry::get_generator(
     t_program* program,
     t_generation_context context,
-    const std::string& options) {
-  std::string::size_type colon = options.find(':');
-  std::string language = options.substr(0, colon);
+    const std::string& option_string) {
+  std::string::size_type colon = option_string.find(':');
+  std::string language = option_string.substr(0, colon);
 
-  std::map<std::string, std::string> parsed_options;
+  std::map<std::string, std::string> options;
   parse_generator_options(
-      options.substr(colon + 1), [&](std::string k, std::string v) {
-        parsed_options[std::move(k)] = std::move(v);
+      option_string.substr(colon + 1), [&](std::string k, std::string v) {
+        options[std::move(k)] = std::move(v);
         return CallbackLoopControl::Continue;
       });
 
@@ -75,7 +75,7 @@ t_generator* t_generator_registry::get_generator(
     return nullptr;
   }
 
-  return iter->second->get_generator(program, context, parsed_options, options);
+  return iter->second->get_generator(program, context, options);
 }
 
 t_generator_registry::gen_map_t& t_generator_registry::get_generator_map() {
@@ -93,11 +93,11 @@ t_generator_factory::t_generator_factory(
 }
 
 void parse_generator_options(
-    const std::string& options,
+    const std::string& option_string,
     std::function<CallbackLoopControl(std::string, std::string)> callback) {
   std::vector<std::string> parts;
   bool inside_braces = false;
-  boost::algorithm::split(parts, options, [&inside_braces](char c) {
+  boost::algorithm::split(parts, option_string, [&inside_braces](char c) {
     if (c == '{' || c == '}') {
       inside_braces = (c == '{');
     }

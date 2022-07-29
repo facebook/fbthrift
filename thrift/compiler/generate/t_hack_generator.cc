@@ -65,43 +65,38 @@ class t_name_generator {
 
 /**
  * Hack code generator.
- *
  */
 class t_hack_generator : public t_concat_generator {
  public:
   t_hack_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /*option_string*/)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
-    json_ = option_is_specified(parsed_options, "json");
-    phps_ = option_is_specified(parsed_options, "server");
-    strict_types_ = option_is_specified(parsed_options, "stricttypes");
-    arraysets_ = option_is_specified(parsed_options, "arraysets");
-    no_nullables_ = option_is_specified(parsed_options, "nonullables");
-    from_map_construct_ =
-        option_is_specified(parsed_options, "frommap_construct");
-    struct_trait_ = option_is_specified(parsed_options, "structtrait");
-    shapes_ = option_is_specified(parsed_options, "shapes");
-    shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
+    json_ = option_is_specified(options, "json");
+    phps_ = option_is_specified(options, "server");
+    strict_types_ = option_is_specified(options, "stricttypes");
+    arraysets_ = option_is_specified(options, "arraysets");
+    no_nullables_ = option_is_specified(options, "nonullables");
+    from_map_construct_ = option_is_specified(options, "frommap_construct");
+    struct_trait_ = option_is_specified(options, "structtrait");
+    shapes_ = option_is_specified(options, "shapes");
+    shape_arraykeys_ = option_is_specified(options, "shape_arraykeys");
     shapes_allow_unknown_fields_ =
-        option_is_specified(parsed_options, "shapes_allow_unknown_fields");
-    array_migration_ = option_is_specified(parsed_options, "array_migration");
-    arrays_ = option_is_specified(parsed_options, "arrays");
+        option_is_specified(options, "shapes_allow_unknown_fields");
+    array_migration_ = option_is_specified(options, "array_migration");
+    arrays_ = option_is_specified(options, "arrays");
     no_use_hack_collections_ =
-        option_is_specified(parsed_options, "no_use_hack_collections");
-    nullable_everything_ =
-        option_is_specified(parsed_options, "nullable_everything");
-    const_collections_ =
-        option_is_specified(parsed_options, "const_collections");
-    enum_extratype_ = option_is_specified(parsed_options, "enum_extratype");
+        option_is_specified(options, "no_use_hack_collections");
+    nullable_everything_ = option_is_specified(options, "nullable_everything");
+    const_collections_ = option_is_specified(options, "const_collections");
+    enum_extratype_ = option_is_specified(options, "enum_extratype");
     enum_transparenttype_ =
-        option_is_specified(parsed_options, "enum_transparenttype");
-    soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
-    protected_unions_ = option_is_specified(parsed_options, "protected_unions");
-    mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
-    typedef_ = option_is_specified(parsed_options, "typedef");
+        option_is_specified(options, "enum_transparenttype");
+    soft_attribute_ = option_is_specified(options, "soft_attribute");
+    protected_unions_ = option_is_specified(options, "protected_unions");
+    mangled_services_ = option_is_set(options, "mangledsvcs", false);
+    typedef_ = option_is_specified(options, "typedef");
 
     auto [_, ns_type_] = get_namespace(program);
     has_hack_namespace = ns_type_ == HackThriftNamespaceType::HACK ||

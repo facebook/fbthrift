@@ -64,55 +64,37 @@ void mark_file_executable(const boost::filesystem::path& path) {
 
 /**
  * Python code generator.
- *
  */
 class t_py_generator : public t_concat_generator {
  public:
   t_py_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /*option_string*/)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
-    std::map<std::string, std::string>::const_iterator iter;
-
-    iter = parsed_options.find("json");
-    gen_json_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("new_style");
-    gen_newstyle_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("slots");
-    gen_slots_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("asyncio");
-    gen_asyncio_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("future");
-    gen_future_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("utf8strings");
-    gen_utf8strings_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("cpp_transport");
-    gen_cpp_transport_ = (iter != parsed_options.end());
+    gen_json_ = options.find("json") != options.end();
+    gen_newstyle_ = options.find("new_style") != options.end();
+    gen_slots_ = options.find("slots") != options.end();
+    gen_asyncio_ = options.find("asyncio") != options.end();
+    gen_future_ = options.find("future") != options.end();
+    gen_utf8strings_ = options.find("utf8strings") != options.end();
+    gen_cpp_transport_ = options.find("cpp_transport") != options.end();
     if (gen_cpp_transport_ && gen_asyncio_) {
       throw std::runtime_error(
           "compiler error: can't use cpp transport together with asyncio yet");
     }
 
-    iter = parsed_options.find("sort_keys");
-    sort_keys_ = (iter != parsed_options.end());
+    sort_keys_ = options.find("sort_keys") != options.end();
 
-    iter = parsed_options.find("thrift_port");
-    if (iter != parsed_options.end()) {
+    auto iter = options.find("thrift_port");
+    if (iter != options.end()) {
       default_port_ = iter->second;
     } else {
       default_port_ = "9090";
     }
 
-    iter = parsed_options.find("compare_t_fields_only");
-    compare_t_fields_only_ = (iter != parsed_options.end());
+    compare_t_fields_only_ =
+        options.find("compare_t_fields_only") != options.end();
 
     out_dir_base_ = "gen-py";
   }

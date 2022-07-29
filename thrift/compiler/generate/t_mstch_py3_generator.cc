@@ -542,7 +542,7 @@ class mstch_py3_program : public mstch_program {
 
   void addFunctionByUniqueReturnType(const t_function* function) {
     const t_type* return_type = function->get_returntype();
-    auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
+    auto sa = cpp2::is_stack_arguments(cache_->options_, *function);
     uniqueFunctionsByReturnType_.insert(
         {{visit_type(return_type), sa}, function});
   }
@@ -722,7 +722,7 @@ class mstch_py3_function : public mstch_function {
   }
 
   mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
+    return cpp2::is_stack_arguments(cache_->options_, *function_);
   }
 
  protected:
@@ -784,11 +784,11 @@ class mstch_py3_service : public mstch_service {
   }
 
   mstch::node parent_service_name() {
-    return cache_->parsed_options_.at("parent_service_name");
+    return cache_->options_.at("parent_service_name");
   }
 
   mstch::node parent_service_cpp_name() {
-    return cache_->parsed_options_.at("parent_service_cpp_name");
+    return cache_->options_.at("parent_service_cpp_name");
   }
 
   std::vector<t_function*> supportedFunctions() {
@@ -1348,10 +1348,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
   t_mstch_py3_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /* option_string unused */)
-      : t_mstch_generator(program, std::move(context), "py3", parsed_options),
-        generateRootPath_{package_to_path()} {
+      const std::map<std::string, std::string>& options)
+      : t_mstch_generator(program, std::move(context), "py3", options),
+        generateRootPath_(package_to_path()) {
     out_dir_base_ = "gen-py3";
     auto include_prefix = get_option("include_prefix");
     if (!include_prefix.empty()) {
@@ -1459,9 +1458,9 @@ void t_mstch_py3_generator::generate_file(
   auto program = get_program();
   const auto& name = program->name();
   if (is_types_file == IsTypesFile) {
-    cache_->parsed_options_["is_types_file"] = "";
+    cache_->options_["is_types_file"] = "";
   } else {
-    cache_->parsed_options_.erase("is_types_file");
+    cache_->options_.erase("is_types_file");
   }
   auto nodePtr =
       generators_->program_generator_->generate(program, generators_, cache_);

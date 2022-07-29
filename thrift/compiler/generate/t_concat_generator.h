@@ -26,22 +26,14 @@ namespace thrift {
 namespace compiler {
 
 /**
- * String concatenation based generators.
+ * String concatenation based generator.
  * This is the older way of generating code, new generators should use
- * a template based approach. See t_mstch_generator.h
+ * a template-based approach. See t_mstch_generator.h.
  */
 class t_concat_generator : public t_generator {
  public:
-  explicit t_concat_generator(t_program* program, t_generation_context context)
-      : t_generator(program, std::move(context)) {
-    tmp_ = 0;
-    indent_ = 0;
-    escape_['\n'] = "\\n";
-    escape_['\r'] = "\\r";
-    escape_['\t'] = "\\t";
-    escape_['"'] = "\\\"";
-    escape_['\\'] = "\\\\";
-  }
+  t_concat_generator(t_program* program, t_generation_context context)
+      : t_generator(program, std::move(context)) {}
 
   /**
    * Framework generator method that iterates over all the parts of a program
@@ -306,18 +298,17 @@ class t_concat_generator : public t_generator {
   }
 
   bool option_is_specified(
-      const std::map<std::string, std::string>& parsed_options,
+      const std::map<std::string, std::string>& options,
       const std::string& name) {
-    return parsed_options.find(name) != parsed_options.end();
+    return options.find(name) != options.end();
   }
 
   bool get_option_value(
-      const std::map<std::string, std::string>& parsed_options,
+      const std::map<std::string, std::string>& options,
       const std::string& name,
       std::string& value) {
-    std::map<std::string, std::string>::const_iterator it =
-        parsed_options.find(name);
-    if (it == parsed_options.end()) {
+    std::map<std::string, std::string>::const_iterator it = options.find(name);
+    if (it == options.end()) {
       return false;
     }
     value = it->second;
@@ -325,11 +316,11 @@ class t_concat_generator : public t_generator {
   }
 
   bool option_is_set(
-      const std::map<std::string, std::string>& parsed_options,
+      const std::map<std::string, std::string>& options,
       const std::string& name,
       bool default_value) {
     std::string value;
-    if (get_option_value(parsed_options, name, value)) {
+    if (get_option_value(options, name, value)) {
       return value == "1" || value == "true";
     }
     return default_value;
@@ -362,18 +353,23 @@ class t_concat_generator : public t_generator {
   /**
    * Map of characters to escape in string literals.
    */
-  std::map<char, std::string> escape_;
+  std::map<char, std::string> escape_ = {
+      {'\n', "\\n"},
+      {'\r', "\\r"},
+      {'\t', "\\t"},
+      {'"', "\\\""},
+      {'\\', "\\\\"}};
 
  private:
   /**
    * Current code indentation level
    */
-  int indent_;
+  int indent_ = 0;
 
   /**
    * Temporary variable counter, for making unique variable names
    */
-  int tmp_;
+  int tmp_ = 0;
 };
 
 } // namespace compiler

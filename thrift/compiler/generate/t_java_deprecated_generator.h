@@ -47,10 +47,8 @@ class t_java_deprecated_generator : public t_concat_generator {
   t_java_deprecated_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& /*parsed_options*/,
-      const std::string& /*option_string*/)
+      const std::map<std::string, std::string>& /*options*/)
       : t_concat_generator(program, std::move(context)) {
-    std::map<std::string, std::string>::const_iterator iter;
     out_dir_base_ = "gen-javadeprecated";
   }
 

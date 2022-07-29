@@ -34,24 +34,16 @@ class t_json_experimental_generator : public t_mstch_generator {
   t_json_experimental_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /*option_string*/);
+      const std::map<std::string, std::string>& options)
+      : t_mstch_generator(program, std::move(context), "json", options, true) {
+    out_dir_base_ = "gen-json_experimental";
+  }
 
   void generate_program() override;
 
  private:
   void set_mstch_generators();
 };
-
-t_json_experimental_generator::t_json_experimental_generator(
-    t_program* program,
-    t_generation_context context,
-    const std::map<std::string, std::string>& parsed_options,
-    const std::string& /*option_string*/)
-    : t_mstch_generator(
-          program, std::move(context), "json", parsed_options, true) {
-  out_dir_base_ = "gen-json_experimental";
-}
 
 class json_experimental_program : public mstch_program {
  public:
@@ -92,7 +84,7 @@ class json_experimental_program : public mstch_program {
     auto prefix = program_->include_prefix();
     if (!prefix.empty()) {
       if (boost::filesystem::path(prefix).has_root_directory()) {
-        return cache_->parsed_options_["include_prefix"];
+        return cache_->options_["include_prefix"];
       }
       return prefix;
     }

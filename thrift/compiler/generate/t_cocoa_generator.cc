@@ -42,36 +42,22 @@ static const std::string kFromStringPostfix = "FromString";
 
 /**
  * Objective-C code generator.
- *
- * mostly copy/pasting/tweaking from mcslee's work.
  */
 class t_cocoa_generator : public t_concat_generator {
  public:
   t_cocoa_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
-    (void)option_string;
-    std::map<std::string, std::string>::const_iterator iter;
+    log_unexpected_ = options.find("log_unexpected") != options.end();
+    validate_required_ = options.find("validate_required") != options.end();
+    nullability_ = options.find("nullability") != options.end();
+    simple_value_equality_ =
+        options.find("simple_value_equality") != options.end();
 
-    iter = parsed_options.find("log_unexpected");
-    log_unexpected_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("validate_required");
-    validate_required_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("nullability");
-    nullability_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("simple_value_equality");
-    simple_value_equality_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("import_path");
-    if (iter == parsed_options.end()) {
-      import_path_ = "";
-    } else {
+    auto iter = options.find("import_path");
+    if (iter != options.end()) {
       import_path_ = iter->second;
       if (import_path_.at(import_path_.length() - 1) != '/') {
         import_path_ += '/';

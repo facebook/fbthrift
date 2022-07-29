@@ -208,8 +208,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   t_mstch_cpp2_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /*option_string*/);
+      const std::map<std::string, std::string>& options);
 
   void generate_program() override;
   void fill_validator_list(validator_list&) const override;
@@ -1501,7 +1500,7 @@ class mstch_cpp2_function : public mstch_function {
   }
   mstch::node cpp_name() { return cpp2::get_name(function_); }
   mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
+    return cpp2::is_stack_arguments(cache_->options_, *function_);
   }
   mstch::node created_interaction() {
     return cpp2::get_name(function_->returned_interaction().get_type());
@@ -1561,7 +1560,7 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
-        service_->program(), cache_->parsed_options_);
+        service_->program(), cache_->options_);
   }
   mstch::node thrift_includes() {
     mstch::array a;
@@ -1858,8 +1857,8 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node cpp_includes() {
     mstch::array includes = t_mstch_cpp2_generator::cpp_includes(program_);
-    auto it = cache_->parsed_options_.find("includes");
-    if (it != cache_->parsed_options_.end()) {
+    auto it = cache_->options_.find("includes");
+    if (it != cache_->options_.end()) {
       std::vector<std::string> extra_includes;
       boost::split(extra_includes, it->second, [](char c) { return c == ':'; });
       for (auto& include : extra_includes) {
@@ -1869,8 +1868,7 @@ class mstch_cpp2_program : public mstch_program {
     return includes;
   }
   mstch::node include_prefix() {
-    return t_mstch_cpp2_generator::include_prefix(
-        program_, cache_->parsed_options_);
+    return t_mstch_cpp2_generator::include_prefix(program_, cache_->options_);
   }
   mstch::node cpp_declare_hash() {
     bool cpp_declare_in_structs = std::any_of(
@@ -2082,8 +2080,7 @@ class mstch_cpp2_program : public mstch_program {
       return;
     }
 
-    int32_t split_count =
-        std::max(cpp2::get_split_count(cache_->parsed_options_), 1);
+    int32_t split_count = std::max(cpp2::get_split_count(cache_->options_), 1);
 
     objects_ = *split_structs_;
 
@@ -2376,15 +2373,13 @@ class program_cpp2_generator : public program_generator {
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     t_program* program,
     t_generation_context context,
-    const std::map<std::string, std::string>& parsed_options,
-    const std::string& /*option_string*/)
-    : t_mstch_generator(
-          program, std::move(context), "cpp2", parsed_options, true),
+    const std::map<std::string, std::string>& options)
+    : t_mstch_generator(program, std::move(context), "cpp2", options, true),
       context_(std::make_shared<cpp2_generator_context>(
           cpp2_generator_context::create())),
       client_name_to_split_count_(
-          cpp2::get_client_name_to_split_count(parsed_options)) {
-  out_dir_base_ = get_out_dir_base(parsed_options);
+          cpp2::get_client_name_to_split_count(options)) {
+  out_dir_base_ = get_out_dir_base(options);
 }
 
 void t_mstch_cpp2_generator::generate_program() {
@@ -2501,7 +2496,7 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
   render_to_file(prog, "module_types.h", name + "_types.h");
   render_to_file(prog, "module_types.tcc", name + "_types.tcc");
 
-  if (auto split_count = cpp2::get_split_count(parsed_options_)) {
+  if (auto split_count = cpp2::get_split_count(options_)) {
     auto digit = std::to_string(split_count - 1).size();
     auto shards = cpp2::lpt_split(program->objects(), split_count, [](auto t) {
       return t->fields().size();
@@ -2871,9 +2866,9 @@ class lazy_field_validator : public validator {
 } // namespace
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
-  l.add<annotation_validator>(this->parsed_options_);
-  l.add<service_method_validator>(this->parsed_options_);
-  l.add<splits_validator>(this->parsed_options_);
+  l.add<annotation_validator>(this->options_);
+  l.add<service_method_validator>(this->options_);
+  l.add<splits_validator>(this->options_);
   l.add<lazy_field_validator>();
 }
 

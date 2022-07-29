@@ -99,7 +99,7 @@ class t_generator {
   t_generation_context context_;
 
   /**
-   * Output type-specifc directory name ("gen-*")
+   * Output type-specifc directory name ("gen-*").
    */
   std::string out_dir_base_;
 
@@ -133,10 +133,7 @@ class t_generator_factory {
       // The program to generate.
       t_program* program,
       t_generation_context context,
-      // Note: parsed_options will not exist beyond the call to get_generator.
-      const std::map<std::string, std::string>& parsed_options,
-      // Note: option_string might not exist beyond the call to get_generator.
-      const std::string& option_string) = 0;
+      const std::map<std::string, std::string>& options) = 0;
 
   std::string get_short_name() const { return short_name_; }
   std::string get_long_name() { return long_name_; }
@@ -160,9 +157,8 @@ class t_generator_factory_impl : public t_generator_factory {
   t_generator* get_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string) override {
-    return new generator(program, context, parsed_options, option_string);
+      const std::map<std::string, std::string>& options) override {
+    return new generator(program, context, options);
   }
 };
 
@@ -175,7 +171,7 @@ class t_generator_registry {
   static t_generator* get_generator(
       t_program* program,
       t_generation_context context,
-      const std::string& options);
+      const std::string& option_string);
 
   using gen_map_t = std::map<std::string, t_generator_factory*>;
   static gen_map_t& get_generator_map();
@@ -190,7 +186,7 @@ enum class CallbackLoopControl : bool { Break, Continue };
 // `callback(key, value)` will be called for each key=value generator's option.
 // If there is no value, `value` will be empty string.
 void parse_generator_options(
-    const std::string& options,
+    const std::string& option_string,
     std::function<CallbackLoopControl(std::string, std::string)> callback);
 
 } // namespace compiler

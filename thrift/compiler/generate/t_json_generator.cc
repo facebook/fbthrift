@@ -34,20 +34,17 @@ namespace thrift {
 namespace compiler {
 
 /**
- * JSON code generator
+ * JSON code generator.
  */
 class t_json_generator : public t_concat_generator {
  public:
   t_json_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /*option_string*/)
+      const std::map<std::string, std::string>& options)
       : t_concat_generator(program, std::move(context)) {
     out_dir_base_ = "gen-json";
-
-    auto it = parsed_options.find("annotate");
-    annotate_ = (it != parsed_options.end());
+    annotate_ = options.find("annotate") != options.end();
   }
 
   void generate_program() override;
@@ -801,6 +798,7 @@ THRIFT_REGISTER_GENERATOR(
     json,
     "JSON",
     "    annotate:        Generate annotations in json representation\n");
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

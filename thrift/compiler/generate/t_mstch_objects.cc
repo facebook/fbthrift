@@ -21,12 +21,12 @@ namespace thrift {
 namespace compiler {
 
 bool mstch_base::has_option(const std::string& option) const {
-  return cache_->parsed_options_.find(option) != cache_->parsed_options_.end();
+  return cache_->options_.find(option) != cache_->options_.end();
 }
 
 std::string mstch_base::get_option(const std::string& option) const {
-  auto itr = cache_->parsed_options_.find(option);
-  if (itr != cache_->parsed_options_.end()) {
+  auto itr = cache_->options_.find(option);
+  if (itr != cache_->options_.end()) {
     return itr->second;
   }
   return {};

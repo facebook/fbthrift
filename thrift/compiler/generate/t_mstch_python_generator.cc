@@ -964,7 +964,7 @@ class mstch_python_service : public mstch_service {
   mstch::node program_name() { return service_->program()->name(); }
 
   mstch::node parent_service_name() {
-    return cache_->parsed_options_.at("parent_service_name");
+    return cache_->options_.at("parent_service_name");
   }
 
   std::vector<t_function*> get_supported_functions(
@@ -1161,10 +1161,8 @@ class t_mstch_python_generator : public t_mstch_generator {
   t_mstch_python_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& /* option_string unused */)
-      : t_mstch_generator(
-            program, std::move(context), "python", parsed_options),
+      const std::map<std::string, std::string>& options)
+      : t_mstch_generator(program, std::move(context), "python", options),
         generate_root_path_{package_to_path()} {
     out_dir_base_ = "gen-python";
     auto include_prefix = get_option("include_prefix");
@@ -1240,9 +1238,9 @@ void t_mstch_python_generator::generate_file(
   auto program = get_program();
   const auto& name = program->name();
   if (is_types_file == IsTypesFile) {
-    cache_->parsed_options_["is_types_file"] = "";
+    cache_->options_["is_types_file"] = "";
   } else {
-    cache_->parsed_options_.erase("is_types_file");
+    cache_->options_.erase("is_types_file");
   }
   auto node_ptr =
       generators_->program_generator_->generate(program, generators_, cache_);

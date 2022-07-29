@@ -64,14 +64,14 @@ t_mstch_generator::t_mstch_generator(
     t_program* program,
     t_generation_context context,
     boost::filesystem::path template_prefix,
-    std::map<std::string, std::string> parsed_options,
+    std::map<std::string, std::string> options,
     bool convert_delimiter)
     : t_generator(program, std::move(context)),
-      parsed_options_(std::move(parsed_options)),
+      options_(std::move(options)),
       convert_delimiter_(convert_delimiter),
       generators_(std::make_shared<mstch_generators>()),
       cache_(std::make_shared<mstch_cache>()) {
-  cache_->parsed_options_ = parsed_options_;
+  cache_->options_ = options_;
   gen_template_map(template_prefix);
 }
 
@@ -376,7 +376,7 @@ mstch::map t_mstch_generator::dump(const string& value) {
 
 mstch::map t_mstch_generator::dump_options() {
   mstch::map result;
-  for (auto& elem : parsed_options_) {
+  for (auto& elem : options_) {
     result.emplace(elem.first, elem.second);
   }
   return prepend_prefix("option", std::move(result));
@@ -493,12 +493,12 @@ void t_mstch_generator::write_output(
 }
 
 bool t_mstch_generator::has_option(const std::string& option) const {
-  return parsed_options_.find(option) != parsed_options_.end();
+  return options_.find(option) != options_.end();
 }
 
 std::string t_mstch_generator::get_option(const std::string& option) {
-  auto itr = parsed_options_.find(option);
-  if (itr != parsed_options_.end()) {
+  auto itr = options_.find(option);
+  if (itr != options_.end()) {
     return itr->second;
   }
   return {};

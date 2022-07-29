@@ -37,7 +37,7 @@ class t_mstch_generator : public t_generator {
       t_program* program,
       t_generation_context context,
       boost::filesystem::path template_prefix,
-      std::map<std::string, std::string> parsed_options,
+      std::map<std::string, std::string> options,
       bool convert_delimiter = false);
 
   virtual ~t_mstch_generator() override;
@@ -46,7 +46,7 @@ class t_mstch_generator : public t_generator {
   /**
    * Option pairs specified on command line for influencing generation behavior
    */
-  const std::map<std::string, std::string> parsed_options_;
+  const std::map<std::string, std::string> options_;
 
   /**
    * If true, typedefs will be automatically resolved to their underlying
