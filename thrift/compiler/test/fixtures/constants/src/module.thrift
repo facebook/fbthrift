@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.constants
 namespace java.swift test.fixtures.constants
-namespace java2.constants test.fixtures.constants.ModuleConstants
 namespace java.swift.constants test.fixtures.constants.ModuleConstants
 
 const i32 myInt = 1337;

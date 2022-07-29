@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.annotation
 namespace java.swift test.fixtures.annotation
 
 typedef map<i32, i64> (java.swift.type = "com.foo.FastIntLongMap") FMap

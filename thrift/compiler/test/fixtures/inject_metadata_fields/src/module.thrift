@@ -17,7 +17,6 @@
 include "thrift/annotation/internal.thrift"
 include "foo.thrift"
 
-namespace java2 test.fixtures.injectMetadataFields
 namespace java.swift test.fixtures.injectMetadataFields
 
 struct Fields {

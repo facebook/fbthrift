@@ -18,7 +18,6 @@ namespace cpp MODULE1
 namespace cpp2 module1
 namespace java module1
 namespace py module1
-namespace java2 test.fixtures.module1
 namespace java.swift test.fixtures.module1
 
 struct Struct {

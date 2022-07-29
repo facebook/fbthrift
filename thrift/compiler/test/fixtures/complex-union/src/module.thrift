@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.complex_union
 namespace java.swift test.fixtures.complex_union
 
 typedef map<i16, string> containerTypedef

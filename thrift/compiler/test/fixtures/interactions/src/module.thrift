@@ -15,7 +15,6 @@
  */
 
 namespace java test.fixtures.interactions
-namespace java2 test.fixtures.interactions
 namespace java.swift test.fixtures.interactions
 namespace py test.fixtures.interactions
 namespace py3 test.fixtures.interactions

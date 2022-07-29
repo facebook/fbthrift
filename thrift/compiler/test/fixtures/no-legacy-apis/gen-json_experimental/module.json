@@ -6,7 +6,6 @@
     "cpp2": "test.fixtures.basic",
     "java": "test.fixtures.basic",
     "java.swift": "test.fixtures.basic",
-    "java2": "test.fixtures.basic",
     "py3": "test.fixtures.basic"
   },
   "enumerations" :
@@ -16,16 +15,16 @@
         "constants" : {
           "MyValue1" : {
             "name" : "MyValue1",
-            "lineno" : 30,
+            "lineno" : 29,
             "value" : 0
           },
           "MyValue2" : {
             "name" : "MyValue2",
-            "lineno" : 31,
+            "lineno" : 30,
             "value" : 1
           }
         },
-        "lineno" : 29
+        "lineno" : 28
       }
       },
   "structs" :
@@ -36,21 +35,21 @@
           "myIntField" : {
             "name" : "myIntField",
             "key" : 1,
-            "lineno" : 35,
+            "lineno" : 34,
             "required" : "opt-in-req-out",
             "type" : "i64"
           },
           "myStringField" : {
             "name" : "myStringField",
             "key" : 2,
-            "lineno" : 36,
+            "lineno" : 35,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 33
       },
       "MyUnion" : {
         "name" : "MyUnion",
@@ -58,7 +57,7 @@
           "myEnum" : {
             "name" : "myEnum",
             "key" : 1,
-            "lineno" : 40,
+            "lineno" : 39,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -68,7 +67,7 @@
           "myDataItem" : {
             "name" : "myDataItem",
             "key" : 2,
-            "lineno" : 41,
+            "lineno" : 40,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
@@ -78,14 +77,14 @@
         },
         "is_exception" : false,
         "is_union" : true,
-        "lineno" : 39
+        "lineno" : 38
       }
       },
   "services" :
   {
       "MyService" : {
         "name" : "MyService",
-        "lineno" : 44,
+        "lineno" : 43,
         "functions" : {
           "query" : {
             "name" : "query",
@@ -97,7 +96,7 @@
   "name" : "MyUnion"
 },
                 "key" : 1,
-                "lineno" : 45,
+                "lineno" : 44,
                 "required" : "opt-in-req-out"
               }
             },
@@ -105,7 +104,7 @@
   "type" : "struct",
   "name" : "MyStruct"
 },
-            "lineno" : 45
+            "lineno" : 44
           }
         }
       }

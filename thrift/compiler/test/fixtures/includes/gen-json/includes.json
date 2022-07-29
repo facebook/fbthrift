@@ -3,33 +3,33 @@
   "thrift_module" : "includes",
   "constants" : {
     "ExampleIncluded" : {
-      "lineno" : 28,
+      "lineno" : 27,
       "value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } },
       "type_enum" : "STRUCT",
       "spec_args" : "Included",
       "source_range" : {
         "begin" : {
-          "line" : 28,
+          "line" : 27,
           "column" : 1
         },
         "end" : {
-          "line" : 31,
+          "line" : 30,
           "column" : 2
         }
       }
     },
     "IncludedConstant" : {
-      "lineno" : 35,
+      "lineno" : 34,
       "value" : 42,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 35,
+          "line" : 34,
           "column" : 1
         },
         "end" : {
-          "line" : 35,
+          "line" : 34,
           "column" : 32
         }
       }
@@ -37,31 +37,31 @@
   },
   "typedefs" : {
     "IncludedInt64" : {
-      "lineno" : 33,
+      "lineno" : 32,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 33,
+          "line" : 32,
           "column" : 1
         },
         "end" : {
-          "line" : 33,
+          "line" : 32,
           "column" : 26
         }
       }
     },
     "TransitiveFoo" : {
-      "lineno" : 38,
+      "lineno" : 37,
       "type_enum" : "STRUCT",
       "spec_args" : "transitive.Foo",
       "source_range" : {
         "begin" : {
-          "line" : 38,
+          "line" : 37,
           "column" : 1
         },
         "end" : {
-          "line" : 38,
+          "line" : 37,
           "column" : 37
         }
       }
@@ -69,7 +69,7 @@
   },
   "structs" : {
     "Included" : {
-      "lineno" : 23,
+      "lineno" : 22,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -80,11 +80,11 @@
           "default_value" : 0,
           "source_range" : {
             "begin" : {
-              "line" : 24,
+              "line" : 23,
               "column" : 3
             },
             "end" : {
-              "line" : 24,
+              "line" : 23,
               "column" : 24
             }
           }
@@ -96,11 +96,11 @@
           "default_value" : { "a" : 2 },
           "source_range" : {
             "begin" : {
-              "line" : 25,
+              "line" : 24,
               "column" : 3
             },
             "end" : {
-              "line" : 25,
+              "line" : 24,
               "column" : 62
             }
           }
@@ -108,11 +108,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 23,
+          "line" : 22,
           "column" : 1
         },
         "end" : {
-          "line" : 26,
+          "line" : 25,
           "column" : 2
         }
       }

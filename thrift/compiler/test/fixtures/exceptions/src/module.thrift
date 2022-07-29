@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.exceptions
 namespace java.swift test.fixtures.exceptions
 
 transient server exception Fiery {

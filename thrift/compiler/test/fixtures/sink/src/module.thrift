@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.sink
 namespace java.swift test.fixtures.sink
 
 struct InitialResponse {

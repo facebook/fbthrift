@@ -15,7 +15,6 @@
  */
 
 namespace android test.fixtures.adapter
-namespace java2 test.fixtures.adapter
 namespace java.swift test.fixtures.adapter
 
 include "thrift/annotation/thrift.thrift"

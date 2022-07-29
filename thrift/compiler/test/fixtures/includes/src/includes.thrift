@@ -17,7 +17,6 @@
 include "transitive.thrift"
 
 namespace android one.two.three
-namespace java2 test.fixtures.includes.includes
 namespace java.swift test.fixtures.includes.includes
 
 struct Included {

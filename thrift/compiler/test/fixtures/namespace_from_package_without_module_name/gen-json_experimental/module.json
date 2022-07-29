@@ -16,21 +16,21 @@
           "MyInt" : {
             "name" : "MyInt",
             "key" : 1,
-            "lineno" : 33,
+            "lineno" : 32,
             "required" : "opt-in-req-out",
             "type" : "i64"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 32
+        "lineno" : 31
       }
       },
   "services" :
   {
       "TestService" : {
         "name" : "TestService",
-        "lineno" : 36,
+        "lineno" : 35,
         "functions" : {
           "init" : {
             "name" : "init",
@@ -39,12 +39,12 @@
                 "name" : "int1",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 37,
+                "lineno" : 36,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "i64",
-            "lineno" : 37
+            "lineno" : 36
           }
         }
       }

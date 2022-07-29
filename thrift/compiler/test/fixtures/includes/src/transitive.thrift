@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.includes.transitive
 namespace java.swift test.fixtures.includes.transitive
 
 struct Foo {

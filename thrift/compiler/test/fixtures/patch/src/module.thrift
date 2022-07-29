@@ -23,7 +23,6 @@ package "test.dev/fixtures/patch"
 
 namespace android test.fixtures.patch
 namespace java test.fixtures.patch
-namespace java2 test.fixtures.patch
 namespace java.swift test.fixtures.patch
 
 struct MyData {

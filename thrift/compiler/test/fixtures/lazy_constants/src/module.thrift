@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.lazy_constants
 namespace java.swift test.fixtures.lazy_constants
 namespace hack test.fixtures.lazy_constants
 

@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "enumerations" : {
     "Metasyntactic" : {
-      "lineno" : 27,
+      "lineno" : 26,
       "constants" : {
         "FOO" : 1,
         "BAR" : 2,
@@ -13,11 +13,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 26,
+          "line" : 25,
           "column" : 1
         },
         "end" : {
-          "line" : 32,
+          "line" : 31,
           "column" : 2
         }
       }
@@ -25,7 +25,7 @@
   },
   "structs" : {
     "SomeStruct" : {
-      "lineno" : 34,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -36,11 +36,11 @@
           "default_value" : 1,
           "source_range" : {
             "begin" : {
-              "line" : 35,
+              "line" : 34,
               "column" : 3
             },
             "end" : {
-              "line" : 35,
+              "line" : 34,
               "column" : 36
             }
           }
@@ -52,11 +52,11 @@
           "default_value" : 2,
           "source_range" : {
             "begin" : {
-              "line" : 36,
+              "line" : 35,
               "column" : 3
             },
             "end" : {
-              "line" : 36,
+              "line" : 35,
               "column" : 28
             }
           }
@@ -68,11 +68,11 @@
           "default_value" : -1,
           "source_range" : {
             "begin" : {
-              "line" : 37,
+              "line" : 36,
               "column" : 3
             },
             "end" : {
-              "line" : 37,
+              "line" : 36,
               "column" : 37
             }
           }
@@ -84,11 +84,11 @@
           "default_value" : [  ],
           "source_range" : {
             "begin" : {
-              "line" : 38,
+              "line" : 37,
               "column" : 3
             },
             "end" : {
-              "line" : 38,
+              "line" : 37,
               "column" : 24
             }
           }
@@ -96,11 +96,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 34,
+          "line" : 33,
           "column" : 1
         },
         "end" : {
-          "line" : 39,
+          "line" : 38,
           "column" : 2
         }
       }

@@ -3,17 +3,17 @@
   "thrift_module" : "transitive",
   "constants" : {
     "ExampleFoo" : {
-      "lineno" : 24,
+      "lineno" : 23,
       "value" : { "a" : 2 },
       "type_enum" : "STRUCT",
       "spec_args" : "Foo",
       "source_range" : {
         "begin" : {
-          "line" : 24,
+          "line" : 23,
           "column" : 1
         },
         "end" : {
-          "line" : 24,
+          "line" : 23,
           "column" : 30
         }
       }
@@ -21,7 +21,7 @@
   },
   "structs" : {
     "Foo" : {
-      "lineno" : 20,
+      "lineno" : 19,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -32,11 +32,11 @@
           "default_value" : 2,
           "source_range" : {
             "begin" : {
-              "line" : 21,
+              "line" : 20,
               "column" : 3
             },
             "end" : {
-              "line" : 21,
+              "line" : 20,
               "column" : 15
             }
           }
@@ -44,11 +44,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 20,
+          "line" : 19,
           "column" : 1
         },
         "end" : {
-          "line" : 22,
+          "line" : 21,
           "column" : 2
         }
       }

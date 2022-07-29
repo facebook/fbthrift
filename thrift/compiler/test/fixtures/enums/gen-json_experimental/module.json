@@ -4,8 +4,7 @@
   "namespaces": {
     "android": "test.fixtures.enums",
     "java": "test.fixtures.enums",
-    "java.swift": "test.fixtures.enums",
-    "java2": "test.fixtures.enums"
+    "java.swift": "test.fixtures.enums"
   },
   "enumerations" :
   {
@@ -14,22 +13,22 @@
         "constants" : {
           "FOO" : {
             "name" : "FOO",
-            "lineno" : 28,
+            "lineno" : 27,
             "value" : 1
           },
           "BAR" : {
             "name" : "BAR",
-            "lineno" : 29,
+            "lineno" : 28,
             "value" : 2
           },
           "BAZ" : {
             "name" : "BAZ",
-            "lineno" : 30,
+            "lineno" : 29,
             "value" : 3
           },
           "BAX" : {
             "name" : "BAX",
-            "lineno" : 31,
+            "lineno" : 30,
             "value" : 4
           },
           "Unspecified" : {
@@ -38,7 +37,7 @@
             "value" : 0
           }
         },
-        "lineno" : 27
+        "lineno" : 26
       }
       },
   "structs" :
@@ -50,7 +49,7 @@
             "name" : "reasonable",
             "default_value" : 1,
             "key" : 1,
-            "lineno" : 35,
+            "lineno" : 34,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -61,7 +60,7 @@
             "name" : "fine",
             "default_value" : 2,
             "key" : 2,
-            "lineno" : 36,
+            "lineno" : 35,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -72,7 +71,7 @@
             "name" : "questionable",
             "default_value" : -1,
             "key" : 3,
-            "lineno" : 37,
+            "lineno" : 36,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -83,7 +82,7 @@
             "name" : "tags",
             "default_value" : [],
             "key" : 4,
-            "lineno" : 38,
+            "lineno" : 37,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "set",
@@ -93,7 +92,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 33
       }
       },
   "source_path" : "src/module",

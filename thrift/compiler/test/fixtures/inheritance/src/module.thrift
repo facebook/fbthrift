@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.inheritance
 namespace java.swift test.fixtures.inheritance
 
 service MyRoot {

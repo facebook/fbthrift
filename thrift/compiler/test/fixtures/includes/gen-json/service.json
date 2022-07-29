@@ -3,31 +3,31 @@
   "thrift_module" : "service",
   "typedefs" : {
     "IncludesIncluded" : {
-      "lineno" : 33,
+      "lineno" : 32,
       "type_enum" : "STRUCT",
       "spec_args" : "includes.Included",
       "source_range" : {
         "begin" : {
-          "line" : 33,
+          "line" : 32,
           "column" : 1
         },
         "end" : {
-          "line" : 33,
+          "line" : 32,
           "column" : 43
         }
       }
     },
     "IncludesTransitiveFoo" : {
-      "lineno" : 35,
+      "lineno" : 34,
       "type_enum" : "TYPEDEF",
       "spec_args" : "includes.TransitiveFoo",
       "source_range" : {
         "begin" : {
-          "line" : 35,
+          "line" : 34,
           "column" : 1
         },
         "end" : {
-          "line" : 35,
+          "line" : 34,
           "column" : 53
         }
       }
@@ -35,7 +35,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 23,
+      "lineno" : 22,
       "functions" : {
         "MyService.query" : {
           "return_type" : {
@@ -55,11 +55,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 25,
+              "line" : 24,
               "column" : 3
             },
             "end" : {
-              "line" : 25,
+              "line" : 24,
               "column" : 59
             }
           }
@@ -82,11 +82,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 26,
+              "line" : 25,
               "column" : 3
             },
             "end" : {
-              "line" : 29,
+              "line" : 28,
               "column" : 4
             }
           }
@@ -94,11 +94,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 23,
+          "line" : 22,
           "column" : 1
         },
         "end" : {
-          "line" : 30,
+          "line" : 29,
           "column" : 2
         }
       }

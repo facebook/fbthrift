@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.stream
 namespace java.swift test.fixtures.stream
 
 exception FooStreamEx {}

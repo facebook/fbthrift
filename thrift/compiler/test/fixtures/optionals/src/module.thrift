@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.optionals
 namespace java.swift test.fixtures.optionals
 
 struct Color {

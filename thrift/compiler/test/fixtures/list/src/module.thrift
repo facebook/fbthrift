@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.list
 namespace java.swift test.fixtures.list
 
 const map<i64, list<string>> TEST_MAP = {0: ["foo", "bar"], 1: ["baz"]};

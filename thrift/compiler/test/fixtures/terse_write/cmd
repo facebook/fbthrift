@@ -9,7 +9,6 @@ mstch_cpp2 src/terse_write.thrift
 mstch_py3 src/terse_write.thrift
 mstch_rust src/terse_write.thrift
 mstch_java src/terse_write.thrift
-mstch_java2 src/terse_write.thrift
 py:json src/terse_write.thrift
 mstch_python src/terse_write.thrift
 mstch_cpp2:deprecated_tag_incompatible src/deprecated_tag_incompatible_terse_write.thrift

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-namespace java2 test.fixtures.empty_struct
 namespace java.swift test.fixtures.empty_struct
 
 struct Empty {}

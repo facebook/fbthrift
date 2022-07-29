@@ -1,2 +1,1 @@
 mstch_java src/module.thrift
-mstch_java2 src/module.thrift

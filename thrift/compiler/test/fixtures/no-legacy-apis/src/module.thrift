@@ -23,7 +23,6 @@ namespace cpp2 test.fixtures.basic
 namespace py3 test.fixtures.basic
 namespace android test.fixtures.basic
 namespace java test.fixtures.basic
-namespace java2 test.fixtures.basic
 namespace java.swift test.fixtures.basic
 
 enum MyEnum {

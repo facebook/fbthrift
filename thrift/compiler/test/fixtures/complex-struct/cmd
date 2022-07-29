@@ -1,5 +1,4 @@
 mstch_java src/module.thrift
-mstch_java2 src/module.thrift
 java_deprecated src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_python src/module.thrift

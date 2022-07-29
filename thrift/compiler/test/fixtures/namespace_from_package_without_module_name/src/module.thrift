@@ -20,7 +20,6 @@ package "test.dev/namespace_from_package_without_module_name"
 // namespace py3 test.namespace_from_package_without_module_name
 // namespace hack namespace_from_package_without_module_name
 // namespace php namespace_from_package_without_module_name
-// namespace java2 dev.test.namespace_from_package_without_module_name
 // namespace java.swift dev.test.namespace_from_package_without_module_name
 namespace java dev.test.namespace_from_package_without_module_name_deprecated
 namespace py.asyncio test.namespace_from_package_without_module_name.module
