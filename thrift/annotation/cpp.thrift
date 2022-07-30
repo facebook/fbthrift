@@ -143,3 +143,37 @@ struct ScopedEnumAsUnionType {}
 @thrift.Experimental // TODO(afuller): Implement
 @scope.Typedef
 struct StrongType {}
+
+/**
+ * An annotation that intercepts field access with C++ field interceptor.
+ * Use with *caution* since this may introduce substantial performance overhead on each field access.
+ *
+ * For example:
+ *
+ *     struct Foo {
+ *       @cpp.FieldInterceptor{name = "MyFieldInterceptor"}
+ *       1: i64 id;
+ *     }
+ *
+ * The field interceptor `MyFieldInterceptor` will intercept with `interceptThriftFieldAccess`
+ * when the field `id` is accessed.
+ */
+@scope.Field
+@thrift.Experimental
+struct FieldInterceptor {
+  /**
+   * The name of a field interceptor.
+   *
+   * The field interceptor provides the following API:
+   *
+   *     struct ThriftFieldInterceptor {
+   *       template <typename T, typename Struct, int16_t FieldId>
+   *       static void interceptThriftFieldAccess(T&& field,
+   *                                              apache::thrift::FieldContext<Struct, FieldId>&& ctx);
+   *     };
+   *
+   * The field interceptor intercepts with the field value and the field context.
+   * It enforces an easily searchable function name `interceptThriftFieldAccess`.
+   */
+  1: string name;
+}

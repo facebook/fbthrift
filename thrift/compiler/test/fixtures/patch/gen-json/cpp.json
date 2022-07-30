@@ -302,6 +302,38 @@
           "column" : 21
         }
       }
+    },
+    "FieldInterceptor" : {
+      "lineno" : 163,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 178,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 178,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 161,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 179,
+          "column" : 2
+        }
+      }
     }
   }
 }

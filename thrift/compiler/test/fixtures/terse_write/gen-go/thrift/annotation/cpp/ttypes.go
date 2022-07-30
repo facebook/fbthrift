@@ -1069,3 +1069,138 @@ func (p *StrongType) String() string {
   return fmt.Sprintf("StrongType({})")
 }
 
+// An annotation that intercepts field access with C++ field interceptor.
+// Use with *caution* since this may introduce substantial performance overhead on each field access.
+// 
+// For example:
+// 
+//     struct Foo {
+//       @cpp.FieldInterceptor{name = "MyFieldInterceptor"}
+//       1: i64 id;
+//     }
+// 
+// The field interceptor `MyFieldInterceptor` will intercept with `interceptThriftFieldAccess`
+// when the field `id` is accessed.
+// 
+// Attributes:
+//  - Name: The name of a field interceptor.
+// 
+// The field interceptor provides the following API:
+// 
+//     struct ThriftFieldInterceptor {
+//       template <typename T, typename Struct, int16_t FieldId>
+//       static void interceptThriftFieldAccess(T&& field,
+//                                              apache::thrift::FieldContext<Struct, FieldId>&& ctx);
+//     };
+// 
+// The field interceptor intercepts with the field value and the field context.
+// It enforces an easily searchable function name `interceptThriftFieldAccess`.
+type FieldInterceptor struct {
+  Name string `thrift:"name,1" db:"name" json:"name"`
+}
+
+func NewFieldInterceptor() *FieldInterceptor {
+  return &FieldInterceptor{}
+}
+
+
+func (p *FieldInterceptor) GetName() string {
+  return p.Name
+}
+type FieldInterceptorBuilder struct {
+  obj *FieldInterceptor
+}
+
+func NewFieldInterceptorBuilder() *FieldInterceptorBuilder{
+  return &FieldInterceptorBuilder{
+    obj: NewFieldInterceptor(),
+  }
+}
+
+func (p FieldInterceptorBuilder) Emit() *FieldInterceptor{
+  return &FieldInterceptor{
+    Name: p.obj.Name,
+  }
+}
+
+func (f *FieldInterceptorBuilder) Name(name string) *FieldInterceptorBuilder {
+  f.obj.Name = name
+  return f
+}
+
+func (f *FieldInterceptor) SetName(name string) *FieldInterceptor {
+  f.Name = name
+  return f
+}
+
+func (p *FieldInterceptor) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *FieldInterceptor)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
+  return nil
+}
+
+func (p *FieldInterceptor) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("FieldInterceptor"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *FieldInterceptor) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:name: ", p), err) }
+  if err := oprot.WriteString(string(p.Name)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:name: ", p), err) }
+  return err
+}
+
+func (p *FieldInterceptor) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  nameVal := fmt.Sprintf("%v", p.Name)
+  return fmt.Sprintf("FieldInterceptor({Name:%s})", nameVal)
+}
+

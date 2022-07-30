@@ -1112,3 +1112,147 @@ class StrongType implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+/**
+ * An annotation that intercepts field access with C++ field interceptor.
+ * Use with *caution* since this may introduce substantial performance overhead on each field access.
+ * 
+ * For example:
+ * 
+ *     struct Foo {
+ *       @cpp.FieldInterceptor{name = "MyFieldInterceptor"}
+ *       1: i64 id;
+ *     }
+ * 
+ * The field interceptor `MyFieldInterceptor` will intercept with `interceptThriftFieldAccess`
+ * when the field `id` is accessed.
+ *
+ * Original thrift struct:-
+ * FieldInterceptor
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/FieldInterceptor'))>>
+class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+  );
+
+  const type TShape = shape(
+    'name' => string,
+  );
+  const int STRUCTURAL_ID = 2593878277785201336;
+  /**
+   * The name of a field interceptor.
+   * 
+   * The field interceptor provides the following API:
+   * 
+   *     struct ThriftFieldInterceptor {
+   *       template <typename T, typename Struct, int16_t FieldId>
+   *       static void interceptThriftFieldAccess(T&& field,
+   *                                              apache::thrift::FieldContext<Struct, FieldId>&& ctx);
+   *     };
+   * 
+   * The field interceptor intercepts with the field value and the field context.
+   * It enforces an easily searchable function name `interceptThriftFieldAccess`.
+   * 
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+
+  public function __construct(?string $name = null)[] {
+    $this->name = $name ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'FieldInterceptor';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "cpp.FieldInterceptor",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['name'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'name' => $this->name,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'name') !== null) {
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
+    }
+  }
+
+}
+

@@ -162,6 +162,23 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 145
+      },
+      "FieldInterceptor" : {
+        "name" : "FieldInterceptor",
+        "docstring" : "An annotation that intercepts field access with C++ field interceptor.\nUse with *caution* since this may introduce substantial performance overhead on each field access.\n\nFor example:\n\n    struct Foo {\n      @cpp.FieldInterceptor{name = \"MyFieldInterceptor\"}\n      1: i64 id;\n    }\n\nThe field interceptor `MyFieldInterceptor` will intercept with `interceptThriftFieldAccess`\nwhen the field `id` is accessed.\n",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "docstring" : "The name of a field interceptor.\n\nThe field interceptor provides the following API:\n\n    struct ThriftFieldInterceptor {\n      template <typename T, typename Struct, int16_t FieldId>\n      static void interceptThriftFieldAccess(T&& field,\n                                             apache::thrift::FieldContext<Struct, FieldId>&& ctx);\n    };\n\nThe field interceptor intercepts with the field value and the field context.\nIt enforces an easily searchable function name `interceptThriftFieldAccess`.\n",
+            "key" : 1,
+            "lineno" : 178,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 163
       }
       },
   "source_path" : "thrift/annotation/cpp",
