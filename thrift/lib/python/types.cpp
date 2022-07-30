@@ -287,11 +287,9 @@ void setString(void* object, const std::string& value) {
 detail::OptionalThriftValue getIOBuf(const void* object) {
   FOLLY_MAYBE_UNUSED static bool done = (do_import(), false);
   PyObject* pyObj = *toPyObjectPtr(object);
-  folly::IOBuf* buf = get_cIOBuf(pyObj);
-  if (!buf) {
-    return folly::Optional<detail::ThriftValue>();
-  }
-  return folly::make_optional<detail::ThriftValue>(static_cast<void*>(buf));
+  folly::IOBuf* buf = pyObj != nullptr ? get_cIOBuf(pyObj) : nullptr;
+  return buf ? folly::make_optional<detail::ThriftValue>(buf)
+             : detail::OptionalThriftValue{};
 }
 
 void setIOBuf(void* object, const std::unique_ptr<folly::IOBuf> value) {

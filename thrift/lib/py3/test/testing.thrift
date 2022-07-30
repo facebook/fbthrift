@@ -378,3 +378,7 @@ struct ListNode {
   @cpp.Ref{type = cpp.RefType.Unique}
   2: optional ListNode next;
 }
+
+struct IOBufListStruct {
+  1: list<binary (py3.iobuf)> iobufs;
+}

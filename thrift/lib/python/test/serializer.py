@@ -37,6 +37,7 @@ from testing.thrift_types import (
     easy,
     hard,
     Integers,
+    IOBufListStruct,
     StringBucket,
 )
 from thrift.python.exceptions import Error
@@ -134,6 +135,10 @@ class SerializerTests(unittest.TestCase):
                 color_map={Color.blue: Color.green},
             ),
         )
+        self.thrift_serialization_round_trip(control)
+
+    def test_serialize_iobuf_list_struct(self) -> None:
+        control = IOBufListStruct(iobufs=[IOBuf(b"foo"), IOBuf(b"bar")])
         self.thrift_serialization_round_trip(control)
 
     def test_deserialize_with_length(self) -> None:
