@@ -1346,49 +1346,81 @@ class LazyCppRef final  {
   bool operator==(const LazyCppRef&) const;
   bool operator<(const LazyCppRef&) const;
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T& field1_ref() & { return __fbthrift_read_field_field1(); }
+  FOLLY_ERASE T& field1_ref() & {
+    return __fbthrift_read_field_field1();
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T& field1_ref() const& { return __fbthrift_read_field_field1(); }
+  FOLLY_ERASE const T& field1_ref() const& {
+    return __fbthrift_read_field_field1();
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T&& field1_ref() && { return static_cast<T&&>(__fbthrift_read_field_field1()); }
+  FOLLY_ERASE T&& field1_ref() && {
+    return static_cast<T&&>(__fbthrift_read_field_field1());
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T&& field1_ref() const&& { return static_cast<const T&&>(__fbthrift_read_field_field1()); }
+  FOLLY_ERASE const T&& field1_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_read_field_field1());
+  }
   template <typename ..., typename T = ::std::shared_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T& field2_ref() & { return __fbthrift_read_field_field2(); }
+  FOLLY_ERASE T& field2_ref() & {
+    return __fbthrift_read_field_field2();
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T& field2_ref() const& { return __fbthrift_read_field_field2(); }
+  FOLLY_ERASE const T& field2_ref() const& {
+    return __fbthrift_read_field_field2();
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T&& field2_ref() && { return static_cast<T&&>(__fbthrift_read_field_field2()); }
+  FOLLY_ERASE T&& field2_ref() && {
+    return static_cast<T&&>(__fbthrift_read_field_field2());
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T&& field2_ref() const&& { return static_cast<const T&&>(__fbthrift_read_field_field2()); }
+  FOLLY_ERASE const T&& field2_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_read_field_field2());
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T& field3_ref() & { return __fbthrift_read_field_field3(); }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T& field3_ref() const& { return __fbthrift_read_field_field3(); }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T&& field3_ref() && { return static_cast<T&&>(__fbthrift_read_field_field3()); }
+  FOLLY_ERASE T& field3_ref() & {
+    return __fbthrift_read_field_field3();
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T&& field3_ref() const&& { return static_cast<const T&&>(__fbthrift_read_field_field3()); }
+  FOLLY_ERASE const T& field3_ref() const& {
+    return __fbthrift_read_field_field3();
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
+  FOLLY_ERASE T&& field3_ref() && {
+    return static_cast<T&&>(__fbthrift_read_field_field3());
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
+  FOLLY_ERASE const T&& field3_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_read_field_field3());
+  }
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T& field4_ref() & { return __fbthrift_read_field_field4(); }
+  FOLLY_ERASE T& field4_ref() & {
+    return __fbthrift_read_field_field4();
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T& field4_ref() const& { return __fbthrift_read_field_field4(); }
+  FOLLY_ERASE const T& field4_ref() const& {
+    return __fbthrift_read_field_field4();
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE T&& field4_ref() && { return static_cast<T&&>(__fbthrift_read_field_field4()); }
+  FOLLY_ERASE T&& field4_ref() && {
+    return static_cast<T&&>(__fbthrift_read_field_field4());
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
-  FOLLY_ERASE const T&& field4_ref() const&& { return static_cast<const T&&>(__fbthrift_read_field_field4()); }
+  FOLLY_ERASE const T&& field4_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_read_field_field4());
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);

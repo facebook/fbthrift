@@ -2357,27 +2357,43 @@ class StructWithFieldAdapter final  {
     return {static_cast<T&&>(this->__fbthrift_field_field), __isset.at(0), __isset.bit(0)};
   }
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE T& shared_field_ref() & { return shared_field; }
+  FOLLY_ERASE T& shared_field_ref() & {
+    return shared_field;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE const T& shared_field_ref() const& { return shared_field; }
+  FOLLY_ERASE const T& shared_field_ref() const& {
+    return shared_field;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE T&& shared_field_ref() && { return static_cast<T&&>(shared_field); }
+  FOLLY_ERASE T&& shared_field_ref() && {
+    return static_cast<T&&>(shared_field);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE const T&& shared_field_ref() const&& { return static_cast<const T&&>(shared_field); }
+  FOLLY_ERASE const T&& shared_field_ref() const&& {
+    return static_cast<const T&&>(shared_field);
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE T& opt_shared_field_ref() & { return opt_shared_field; }
+  FOLLY_ERASE T& opt_shared_field_ref() & {
+    return opt_shared_field;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE const T& opt_shared_field_ref() const& { return opt_shared_field; }
+  FOLLY_ERASE const T& opt_shared_field_ref() const& {
+    return opt_shared_field;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE T&& opt_shared_field_ref() && { return static_cast<T&&>(opt_shared_field); }
+  FOLLY_ERASE T&& opt_shared_field_ref() && {
+    return static_cast<T&&>(opt_shared_field);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>>>
-  FOLLY_ERASE const T&& opt_shared_field_ref() const&& { return static_cast<const T&&>(opt_shared_field); }
+  FOLLY_ERASE const T&& opt_shared_field_ref() const&& {
+    return static_cast<const T&&>(opt_shared_field);
+  }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, StructWithFieldAdapter>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> opt_boxed_field_ref() const& {

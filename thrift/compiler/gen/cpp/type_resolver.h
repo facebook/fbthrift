@@ -159,6 +159,14 @@ class type_resolver {
   const std::string& get_storage_type(
       const t_field& field, const t_structured& parent);
 
+  static const std::string* find_field_interceptor(const t_field& node) {
+    if (const t_const* annotation = node.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/FieldInterceptor")) {
+      return &annotation->get_value_from_structured_annotation("name")
+                  .get_string();
+    }
+    return nullptr;
+  }
   static const std::string* find_structured_adapter_annotation(
       const t_named& node) {
     if (const t_const* annotation = node.find_structured_annotation_or_null(

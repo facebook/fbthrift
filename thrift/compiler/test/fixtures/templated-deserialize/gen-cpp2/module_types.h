@@ -1161,60 +1161,100 @@ class containerStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_fieldQ), __isset.at(16), __isset.bit(16)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
-  FOLLY_ERASE T& fieldR_ref() & { return fieldR; }
+  FOLLY_ERASE T& fieldR_ref() & {
+    return fieldR;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
-  FOLLY_ERASE const T& fieldR_ref() const& { return fieldR; }
+  FOLLY_ERASE const T& fieldR_ref() const& {
+    return fieldR;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
-  FOLLY_ERASE T&& fieldR_ref() && { return static_cast<T&&>(fieldR); }
+  FOLLY_ERASE T&& fieldR_ref() && {
+    return static_cast<T&&>(fieldR);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
-  FOLLY_ERASE const T&& fieldR_ref() const&& { return static_cast<const T&&>(fieldR); }
+  FOLLY_ERASE const T&& fieldR_ref() const&& {
+    return static_cast<const T&&>(fieldR);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T& fieldS_ref() & { return fieldS; }
+  FOLLY_ERASE T& fieldS_ref() & {
+    return fieldS;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T& fieldS_ref() const& { return fieldS; }
+  FOLLY_ERASE const T& fieldS_ref() const& {
+    return fieldS;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T&& fieldS_ref() && { return static_cast<T&&>(fieldS); }
+  FOLLY_ERASE T&& fieldS_ref() && {
+    return static_cast<T&&>(fieldS);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T&& fieldS_ref() const&& { return static_cast<const T&&>(fieldS); }
+  FOLLY_ERASE const T&& fieldS_ref() const&& {
+    return static_cast<const T&&>(fieldS);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T& fieldT_ref() & { return fieldT; }
+  FOLLY_ERASE T& fieldT_ref() & {
+    return fieldT;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T& fieldT_ref() const& { return fieldT; }
+  FOLLY_ERASE const T& fieldT_ref() const& {
+    return fieldT;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T&& fieldT_ref() && { return static_cast<T&&>(fieldT); }
+  FOLLY_ERASE T&& fieldT_ref() && {
+    return static_cast<T&&>(fieldT);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T&& fieldT_ref() const&& { return static_cast<const T&&>(fieldT); }
+  FOLLY_ERASE const T&& fieldT_ref() const&& {
+    return static_cast<const T&&>(fieldT);
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
-  FOLLY_ERASE T& fieldU_ref() & { return fieldU; }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
-  FOLLY_ERASE const T& fieldU_ref() const& { return fieldU; }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
-  FOLLY_ERASE T&& fieldU_ref() && { return static_cast<T&&>(fieldU); }
+  FOLLY_ERASE T& fieldU_ref() & {
+    return fieldU;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
-  FOLLY_ERASE const T&& fieldU_ref() const&& { return static_cast<const T&&>(fieldU); }
+  FOLLY_ERASE const T& fieldU_ref() const& {
+    return fieldU;
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
+  FOLLY_ERASE T&& fieldU_ref() && {
+    return static_cast<T&&>(fieldU);
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T&& fieldU_ref() const&& {
+    return static_cast<const T&&>(fieldU);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T& fieldX_ref() & { return fieldX; }
+  FOLLY_ERASE T& fieldX_ref() & {
+    return fieldX;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T& fieldX_ref() const& { return fieldX; }
+  FOLLY_ERASE const T& fieldX_ref() const& {
+    return fieldX;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE T&& fieldX_ref() && { return static_cast<T&&>(fieldX); }
+  FOLLY_ERASE T&& fieldX_ref() && {
+    return static_cast<T&&>(fieldX);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
-  FOLLY_ERASE const T&& fieldX_ref() const&& { return static_cast<const T&&>(fieldX); }
+  FOLLY_ERASE const T&& fieldX_ref() const&& {
+    return static_cast<const T&&>(fieldX);
+  }
 
   bool get_fieldA() const {
     return __fbthrift_field_fieldA;

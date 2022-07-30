@@ -6724,16 +6724,24 @@ class struct4 final  {
     return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
-  FOLLY_ERASE T& field3_ref() & { return field3; }
+  FOLLY_ERASE T& field3_ref() & {
+    return field3;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
-  FOLLY_ERASE const T& field3_ref() const& { return field3; }
+  FOLLY_ERASE const T& field3_ref() const& {
+    return field3;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
-  FOLLY_ERASE T&& field3_ref() && { return static_cast<T&&>(field3); }
+  FOLLY_ERASE T&& field3_ref() && {
+    return static_cast<T&&>(field3);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
-  FOLLY_ERASE const T&& field3_ref() const&& { return static_cast<const T&&>(field3); }
+  FOLLY_ERASE const T&& field3_ref() const&& {
+    return static_cast<const T&&>(field3);
+  }
 
   ::std::int32_t get_field0() const {
     return __fbthrift_field_field0;

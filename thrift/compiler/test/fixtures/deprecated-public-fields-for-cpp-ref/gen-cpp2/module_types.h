@@ -89,27 +89,43 @@ class Foo final  {
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T& foo_ref() & { return __fbthrift_field_foo; }
+  FOLLY_ERASE T& foo_ref() & {
+    return __fbthrift_field_foo;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T& foo_ref() const& { return __fbthrift_field_foo; }
+  FOLLY_ERASE const T& foo_ref() const& {
+    return __fbthrift_field_foo;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T&& foo_ref() && { return static_cast<T&&>(__fbthrift_field_foo); }
+  FOLLY_ERASE T&& foo_ref() && {
+    return static_cast<T&&>(__fbthrift_field_foo);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T&& foo_ref() const&& { return static_cast<const T&&>(__fbthrift_field_foo); }
+  FOLLY_ERASE const T&& foo_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_field_foo);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T& bar_ref() & { return __fbthrift_field_bar; }
+  FOLLY_ERASE T& bar_ref() & {
+    return __fbthrift_field_bar;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T& bar_ref() const& { return __fbthrift_field_bar; }
+  FOLLY_ERASE const T& bar_ref() const& {
+    return __fbthrift_field_bar;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T&& bar_ref() && { return static_cast<T&&>(__fbthrift_field_bar); }
+  FOLLY_ERASE T&& bar_ref() && {
+    return static_cast<T&&>(__fbthrift_field_bar);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T&& bar_ref() const&& { return static_cast<const T&&>(__fbthrift_field_bar); }
+  FOLLY_ERASE const T&& bar_ref() const&& {
+    return static_cast<const T&&>(__fbthrift_field_bar);
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);

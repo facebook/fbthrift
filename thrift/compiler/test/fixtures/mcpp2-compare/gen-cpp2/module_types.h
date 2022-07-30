@@ -7461,16 +7461,24 @@ class MyIncludedStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE T& ARefField_ref() & { return ARefField; }
+  FOLLY_ERASE T& ARefField_ref() & {
+    return ARefField;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE const T& ARefField_ref() const& { return ARefField; }
+  FOLLY_ERASE const T& ARefField_ref() const& {
+    return ARefField;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE T&& ARefField_ref() && { return static_cast<T&&>(ARefField); }
+  FOLLY_ERASE T&& ARefField_ref() && {
+    return static_cast<T&&>(ARefField);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE const T&& ARefField_ref() const&& { return static_cast<const T&&>(ARefField); }
+  FOLLY_ERASE const T&& ARefField_ref() const&& {
+    return static_cast<const T&&>(ARefField);
+  }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField_ref() const& {
@@ -7706,203 +7714,347 @@ class AnnotatedStruct  {
     return {static_cast<T&&>(this->no_annotation), __isset.at(0), __isset.bit(0)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& cpp_unique_ref_ref() & { return cpp_unique_ref; }
+  FOLLY_ERASE T& cpp_unique_ref_ref() & {
+    return cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& cpp_unique_ref_ref() const& { return cpp_unique_ref; }
+  FOLLY_ERASE const T& cpp_unique_ref_ref() const& {
+    return cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& cpp_unique_ref_ref() && { return static_cast<T&&>(cpp_unique_ref); }
+  FOLLY_ERASE T&& cpp_unique_ref_ref() && {
+    return static_cast<T&&>(cpp_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& { return static_cast<const T&&>(cpp_unique_ref); }
+  FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& {
+    return static_cast<const T&&>(cpp_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& cpp2_unique_ref_ref() & { return cpp2_unique_ref; }
+  FOLLY_ERASE T& cpp2_unique_ref_ref() & {
+    return cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& cpp2_unique_ref_ref() const& { return cpp2_unique_ref; }
+  FOLLY_ERASE const T& cpp2_unique_ref_ref() const& {
+    return cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& cpp2_unique_ref_ref() && { return static_cast<T&&>(cpp2_unique_ref); }
+  FOLLY_ERASE T&& cpp2_unique_ref_ref() && {
+    return static_cast<T&&>(cpp2_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(cpp2_unique_ref); }
+  FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& {
+    return static_cast<const T&&>(cpp2_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T& container_with_ref_ref() & { return container_with_ref; }
+  FOLLY_ERASE T& container_with_ref_ref() & {
+    return container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T& container_with_ref_ref() const& { return container_with_ref; }
+  FOLLY_ERASE const T& container_with_ref_ref() const& {
+    return container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T&& container_with_ref_ref() && { return static_cast<T&&>(container_with_ref); }
+  FOLLY_ERASE T&& container_with_ref_ref() && {
+    return static_cast<T&&>(container_with_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T&& container_with_ref_ref() const&& { return static_cast<const T&&>(container_with_ref); }
+  FOLLY_ERASE const T&& container_with_ref_ref() const&& {
+    return static_cast<const T&&>(container_with_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& req_cpp_unique_ref_ref() & { return req_cpp_unique_ref; }
+  FOLLY_ERASE T& req_cpp_unique_ref_ref() & {
+    return req_cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& req_cpp_unique_ref_ref() const& { return req_cpp_unique_ref; }
+  FOLLY_ERASE const T& req_cpp_unique_ref_ref() const& {
+    return req_cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_cpp_unique_ref_ref() && { return static_cast<T&&>(req_cpp_unique_ref); }
+  FOLLY_ERASE T&& req_cpp_unique_ref_ref() && {
+    return static_cast<T&&>(req_cpp_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& { return static_cast<const T&&>(req_cpp_unique_ref); }
+  FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& {
+    return static_cast<const T&&>(req_cpp_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& req_cpp2_unique_ref_ref() & { return req_cpp2_unique_ref; }
+  FOLLY_ERASE T& req_cpp2_unique_ref_ref() & {
+    return req_cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& req_cpp2_unique_ref_ref() const& { return req_cpp2_unique_ref; }
+  FOLLY_ERASE const T& req_cpp2_unique_ref_ref() const& {
+    return req_cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && { return static_cast<T&&>(req_cpp2_unique_ref); }
+  FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && {
+    return static_cast<T&&>(req_cpp2_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(req_cpp2_unique_ref); }
+  FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& {
+    return static_cast<const T&&>(req_cpp2_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T& req_container_with_ref_ref() & { return req_container_with_ref; }
+  FOLLY_ERASE T& req_container_with_ref_ref() & {
+    return req_container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T& req_container_with_ref_ref() const& { return req_container_with_ref; }
+  FOLLY_ERASE const T& req_container_with_ref_ref() const& {
+    return req_container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T&& req_container_with_ref_ref() && { return static_cast<T&&>(req_container_with_ref); }
+  FOLLY_ERASE T&& req_container_with_ref_ref() && {
+    return static_cast<T&&>(req_container_with_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T&& req_container_with_ref_ref() const&& { return static_cast<const T&&>(req_container_with_ref); }
+  FOLLY_ERASE const T&& req_container_with_ref_ref() const&& {
+    return static_cast<const T&&>(req_container_with_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& opt_cpp_unique_ref_ref() & { return opt_cpp_unique_ref; }
+  FOLLY_ERASE T& opt_cpp_unique_ref_ref() & {
+    return opt_cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& opt_cpp_unique_ref_ref() const& { return opt_cpp_unique_ref; }
+  FOLLY_ERASE const T& opt_cpp_unique_ref_ref() const& {
+    return opt_cpp_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && { return static_cast<T&&>(opt_cpp_unique_ref); }
+  FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && {
+    return static_cast<T&&>(opt_cpp_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& { return static_cast<const T&&>(opt_cpp_unique_ref); }
+  FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& {
+    return static_cast<const T&&>(opt_cpp_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& opt_cpp2_unique_ref_ref() & { return opt_cpp2_unique_ref; }
+  FOLLY_ERASE T& opt_cpp2_unique_ref_ref() & {
+    return opt_cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& opt_cpp2_unique_ref_ref() const& { return opt_cpp2_unique_ref; }
+  FOLLY_ERASE const T& opt_cpp2_unique_ref_ref() const& {
+    return opt_cpp2_unique_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && { return static_cast<T&&>(opt_cpp2_unique_ref); }
+  FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && {
+    return static_cast<T&&>(opt_cpp2_unique_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(opt_cpp2_unique_ref); }
+  FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& {
+    return static_cast<const T&&>(opt_cpp2_unique_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T& opt_container_with_ref_ref() & { return opt_container_with_ref; }
+  FOLLY_ERASE T& opt_container_with_ref_ref() & {
+    return opt_container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T& opt_container_with_ref_ref() const& { return opt_container_with_ref; }
+  FOLLY_ERASE const T& opt_container_with_ref_ref() const& {
+    return opt_container_with_ref;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T&& opt_container_with_ref_ref() && { return static_cast<T&&>(opt_container_with_ref); }
+  FOLLY_ERASE T&& opt_container_with_ref_ref() && {
+    return static_cast<T&&>(opt_container_with_ref);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& { return static_cast<const T&&>(opt_container_with_ref); }
+  FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& {
+    return static_cast<const T&&>(opt_container_with_ref);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& ref_type_unique_ref() & { return ref_type_unique; }
-
-  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& ref_type_unique_ref() const& { return ref_type_unique; }
-
-  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& ref_type_unique_ref() && { return static_cast<T&&>(ref_type_unique); }
+  FOLLY_ERASE T& ref_type_unique_ref() & {
+    return ref_type_unique;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& ref_type_unique_ref() const&& { return static_cast<const T&&>(ref_type_unique); }
+  FOLLY_ERASE const T& ref_type_unique_ref() const& {
+    return ref_type_unique;
+  }
+
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
+  FOLLY_ERASE T&& ref_type_unique_ref() && {
+    return static_cast<T&&>(ref_type_unique);
+  }
+
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
+  FOLLY_ERASE const T&& ref_type_unique_ref() const&& {
+    return static_cast<const T&&>(ref_type_unique);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& ref_type_shared_ref() & { return ref_type_shared; }
+  FOLLY_ERASE T& ref_type_shared_ref() & {
+    return ref_type_shared;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& ref_type_shared_ref() const& { return ref_type_shared; }
+  FOLLY_ERASE const T& ref_type_shared_ref() const& {
+    return ref_type_shared;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& ref_type_shared_ref() && { return static_cast<T&&>(ref_type_shared); }
+  FOLLY_ERASE T&& ref_type_shared_ref() && {
+    return static_cast<T&&>(ref_type_shared);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& ref_type_shared_ref() const&& { return static_cast<const T&&>(ref_type_shared); }
+  FOLLY_ERASE const T&& ref_type_shared_ref() const&& {
+    return static_cast<const T&&>(ref_type_shared);
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T& ref_type_const_ref() & { return ref_type_const; }
+  FOLLY_ERASE T& ref_type_const_ref() & {
+    return ref_type_const;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T& ref_type_const_ref() const& { return ref_type_const; }
+  FOLLY_ERASE const T& ref_type_const_ref() const& {
+    return ref_type_const;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T&& ref_type_const_ref() && { return static_cast<T&&>(ref_type_const); }
+  FOLLY_ERASE T&& ref_type_const_ref() && {
+    return static_cast<T&&>(ref_type_const);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T&& ref_type_const_ref() const&& { return static_cast<const T&&>(ref_type_const); }
+  FOLLY_ERASE const T&& ref_type_const_ref() const&& {
+    return static_cast<const T&&>(ref_type_const);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& req_ref_type_shared_ref() & { return req_ref_type_shared; }
-
-  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& req_ref_type_shared_ref() const& { return req_ref_type_shared; }
-
-  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_ref_type_shared_ref() && { return static_cast<T&&>(req_ref_type_shared); }
+  FOLLY_ERASE T& req_ref_type_shared_ref() & {
+    return req_ref_type_shared;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& { return static_cast<const T&&>(req_ref_type_shared); }
+  FOLLY_ERASE const T& req_ref_type_shared_ref() const& {
+    return req_ref_type_shared;
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
+  FOLLY_ERASE T&& req_ref_type_shared_ref() && {
+    return static_cast<T&&>(req_ref_type_shared);
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
+  FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& {
+    return static_cast<const T&&>(req_ref_type_shared);
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& req_ref_type_const_ref() & { return req_ref_type_const; }
+  FOLLY_ERASE T& req_ref_type_const_ref() & {
+    return req_ref_type_const;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& req_ref_type_const_ref() const& { return req_ref_type_const; }
+  FOLLY_ERASE const T& req_ref_type_const_ref() const& {
+    return req_ref_type_const;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_ref_type_const_ref() && { return static_cast<T&&>(req_ref_type_const); }
+  FOLLY_ERASE T&& req_ref_type_const_ref() && {
+    return static_cast<T&&>(req_ref_type_const);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_ref_type_const_ref() const&& { return static_cast<const T&&>(req_ref_type_const); }
+  FOLLY_ERASE const T&& req_ref_type_const_ref() const&& {
+    return static_cast<const T&&>(req_ref_type_const);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T& req_ref_type_unique_ref() & { return req_ref_type_unique; }
+  FOLLY_ERASE T& req_ref_type_unique_ref() & {
+    return req_ref_type_unique;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T& req_ref_type_unique_ref() const& { return req_ref_type_unique; }
+  FOLLY_ERASE const T& req_ref_type_unique_ref() const& {
+    return req_ref_type_unique;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T&& req_ref_type_unique_ref() && { return static_cast<T&&>(req_ref_type_unique); }
+  FOLLY_ERASE T&& req_ref_type_unique_ref() && {
+    return static_cast<T&&>(req_ref_type_unique);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& { return static_cast<const T&&>(req_ref_type_unique); }
+  FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& {
+    return static_cast<const T&&>(req_ref_type_unique);
+  }
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& opt_ref_type_const_ref() & { return opt_ref_type_const; }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& opt_ref_type_const_ref() const& { return opt_ref_type_const; }
-
-  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_ref_type_const_ref() && { return static_cast<T&&>(opt_ref_type_const); }
+  FOLLY_ERASE T& opt_ref_type_const_ref() & {
+    return opt_ref_type_const;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& { return static_cast<const T&&>(opt_ref_type_const); }
+  FOLLY_ERASE const T& opt_ref_type_const_ref() const& {
+    return opt_ref_type_const;
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  FOLLY_ERASE T&& opt_ref_type_const_ref() && {
+    return static_cast<T&&>(opt_ref_type_const);
+  }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& {
+    return static_cast<const T&&>(opt_ref_type_const);
+  }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T& opt_ref_type_unique_ref() & { return opt_ref_type_unique; }
+  FOLLY_ERASE T& opt_ref_type_unique_ref() & {
+    return opt_ref_type_unique;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T& opt_ref_type_unique_ref() const& { return opt_ref_type_unique; }
+  FOLLY_ERASE const T& opt_ref_type_unique_ref() const& {
+    return opt_ref_type_unique;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_ref_type_unique_ref() && { return static_cast<T&&>(opt_ref_type_unique); }
+  FOLLY_ERASE T&& opt_ref_type_unique_ref() && {
+    return static_cast<T&&>(opt_ref_type_unique);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& { return static_cast<const T&&>(opt_ref_type_unique); }
+  FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& {
+    return static_cast<const T&&>(opt_ref_type_unique);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T& opt_ref_type_shared_ref() & { return opt_ref_type_shared; }
+  FOLLY_ERASE T& opt_ref_type_shared_ref() & {
+    return opt_ref_type_shared;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T& opt_ref_type_shared_ref() const& { return opt_ref_type_shared; }
+  FOLLY_ERASE const T& opt_ref_type_shared_ref() const& {
+    return opt_ref_type_shared;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T&& opt_ref_type_shared_ref() && { return static_cast<T&&>(opt_ref_type_shared); }
+  FOLLY_ERASE T&& opt_ref_type_shared_ref() && {
+    return static_cast<T&&>(opt_ref_type_shared);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& { return static_cast<const T&&>(opt_ref_type_shared); }
+  FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& {
+    return static_cast<const T&&>(opt_ref_type_shared);
+  }
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> base_type_ref() const& {

@@ -645,6 +645,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_first_adapter", &mstch_cpp2_field::cpp_first_adapter},
             {"field:cpp_exactly_one_adapter?",
              &mstch_cpp2_field::cpp_exactly_one_adapter},
+            {"field:cpp_field_interceptor",
+             &mstch_cpp2_field::cpp_field_interceptor},
             {"field:zero_copy_arg", &mstch_cpp2_field::zero_copy_arg},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
@@ -787,7 +789,6 @@ class mstch_cpp2_field : public mstch_field {
         gen::cpp::reference_type::shared_const;
   }
   mstch::node cpp_first_adapter() {
-    // Recursively find the first adapter in field or type.
     if (const std::string* adapter =
             gen::cpp::type_resolver::find_first_adapter(*field_)) {
       return *adapter;
@@ -800,6 +801,13 @@ class mstch_cpp2_field : public mstch_field {
     bool hasTypeAdapter =
         gen::cpp::type_resolver::find_first_adapter(*field_->type());
     return hasFieldAdapter != hasTypeAdapter;
+  }
+  mstch::node cpp_field_interceptor() {
+    if (const std::string* interceptor =
+            gen::cpp::type_resolver::find_field_interceptor(*field_)) {
+      return *interceptor;
+    }
+    return {};
   }
   mstch::node cpp_adapter() {
     // Only find a structured adapter on the field.

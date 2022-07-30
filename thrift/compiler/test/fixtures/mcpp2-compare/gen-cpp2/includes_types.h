@@ -271,16 +271,24 @@ class AStructB final  {
   bool operator==(const AStructB&) const;
   bool operator<(const AStructB&) const;
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
+  FOLLY_ERASE T& FieldA_ref() & {
+    return FieldA;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
+  FOLLY_ERASE const T& FieldA_ref() const& {
+    return FieldA;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE T&& FieldA_ref() && { return static_cast<T&&>(FieldA); }
+  FOLLY_ERASE T&& FieldA_ref() && {
+    return static_cast<T&&>(FieldA);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE const T&& FieldA_ref() const&& { return static_cast<const T&&>(FieldA); }
+  FOLLY_ERASE const T&& FieldA_ref() const&& {
+    return static_cast<const T&&>(FieldA);
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
