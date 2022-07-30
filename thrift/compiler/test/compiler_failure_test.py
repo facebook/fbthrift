@@ -2198,3 +2198,26 @@ class CompilerFailureTest(unittest.TestCase):
             "[ERROR:foo.thrift:27] Fields in ExceptionWithBadId cannot use reserved ids: 3\n"
             "[ERROR:foo.thrift:15] Enum values in EnumWithBadId cannot use reserved ids: 3\n",
         )
+
+    def test_cpp_field_interceptor(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/cpp.thrift"
+
+                struct Foo {
+                    @cpp.FieldInterceptor{name = "MyFieldInterceptor"}
+                    1: i32 field1;
+                    @cpp.FieldInterceptor
+                    2: i32 field2;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[ERROR:foo.thrift:6] `@cpp.FieldInterceptor` cannot be used without `name` specified in `field2`.\n",
+        )

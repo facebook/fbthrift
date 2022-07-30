@@ -51,6 +51,8 @@ namespace {
 
 constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
+constexpr auto kCppFieldInterceptorUri =
+    "facebook.com/thrift/annotation/cpp/FieldInterceptor";
 constexpr auto kHackAdapterUri = "facebook.com/thrift/annotation/hack/Adapter";
 constexpr auto kReserveIdsUri = "facebook.com/thrift/annotation/ReserveIds";
 constexpr auto kCppUnstructuredAdapter = "cpp.adapter";
@@ -716,6 +718,21 @@ void validate_interaction_factories(
   }
 }
 
+void validate_cpp_field_interceptor_annotation(
+    diagnostic_context& ctx, const t_field& field) {
+  if (const t_const* annot =
+          field.find_structured_annotation_or_null(kCppFieldInterceptorUri)) {
+    try {
+      annot->get_value_from_structured_annotation("name");
+    } catch (const std::exception&) {
+      ctx.error(
+          "`@cpp.FieldInterceptor` cannot be used without `name` specified in `{}`.",
+          field.name());
+      return;
+    }
+  }
+}
+
 void validate_cpp_field_adapter_annotation(
     diagnostic_context& ctx, const t_field& field) {
   adapter_checker(ctx).check(
@@ -884,6 +901,7 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_ref_unique_and_box_annotation);
   validator.add_field_visitor(&validate_cpp_field_adapter_annotation);
   validator.add_field_visitor(&validate_hack_field_adapter_annotation);
+  validator.add_field_visitor(&validate_cpp_field_interceptor_annotation);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
