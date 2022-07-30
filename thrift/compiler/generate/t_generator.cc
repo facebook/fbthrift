@@ -19,7 +19,6 @@
 #include <stdexcept>
 #include <utility>
 
-#include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 #include <fmt/core.h>
 
@@ -46,38 +45,37 @@ t_generator::t_generator(t_program* program, t_generation_context context)
   program_name_ = get_program_name(program_);
 }
 
-void t_generator_registry::register_generator(t_generator_factory* factory) {
-  std::string name = factory->get_short_name();
-  if (!get_generator_map().insert(std::make_pair(name, factory)).second) {
-    throw std::logic_error(
-        fmt::format("duplicate generator for language \"{}\"", name));
+generator_factory::generator_factory(
+    std::string name, std::string long_name, std::string documentation)
+    : name_(std::move(name)),
+      long_name_(std::move(long_name)),
+      documentation_(std::move(documentation)) {
+  generator_registry::register_generator(name_, this);
+}
+
+void generator_registry::register_generator(
+    const std::string& name, generator_factory* factory) {
+  if (!get_generators().insert({name, factory}).second) {
+    throw std::logic_error(fmt::format("duplicate generator \"{}\"", name));
   }
 }
 
-t_generator* t_generator_registry::get_generator(
-    const std::string& language,
-    t_program* program,
+std::unique_ptr<t_generator> generator_registry::make_generator(
+    const std::string& name,
+    t_program& program,
     t_generation_context context,
     const std::map<std::string, std::string>& options) {
-  gen_map_t& map = get_generator_map();
-  auto iter = map.find(language);
+  generator_map& map = get_generators();
+  auto iter = map.find(name);
   return iter != map.end()
-      ? iter->second->get_generator(program, std::move(context), options)
+      ? iter->second->make_generator(program, std::move(context), options)
       : nullptr;
 }
 
-t_generator_registry::gen_map_t& t_generator_registry::get_generator_map() {
+generator_registry::generator_map& generator_registry::get_generators() {
   // http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.12
-  static gen_map_t* the_map = new gen_map_t();
-  return *the_map;
-}
-
-t_generator_factory::t_generator_factory(
-    std::string short_name, std::string long_name, std::string documentation)
-    : short_name_(std::move(short_name)),
-      long_name_(std::move(long_name)),
-      documentation_(std::move(documentation)) {
-  t_generator_registry::register_generator(this);
+  static generator_map* map = new generator_map();
+  return *map;
 }
 
 } // namespace compiler

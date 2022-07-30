@@ -117,16 +117,13 @@ void usage() {
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
-  t_generator_registry::gen_map_t gen_map =
-      t_generator_registry::get_generator_map();
-  t_generator_registry::gen_map_t::iterator iter;
-  for (iter = gen_map.begin(); iter != gen_map.end(); ++iter) {
-    fprintf(
+  for (const auto& gen : generator_registry::get_generators()) {
+    fmt::print(
         stderr,
-        "  %s (%s):\n",
-        iter->second->get_short_name().c_str(),
-        iter->second->get_long_name().c_str());
-    fprintf(stderr, "%s", iter->second->get_documentation().c_str());
+        "  {} ({}):\n{}",
+        gen.second->name(),
+        gen.second->long_name(),
+        gen.second->documentation());
   }
 }
 
@@ -347,12 +344,6 @@ bool generate(
 
   // Generate code!
   try {
-    diags.report(
-        source_location(),
-        diagnostic_level::info,
-        "program: {}",
-        program.path());
-
     bool success = true;
     std::ofstream genfile;
     if (!params.genfile.empty()) {
@@ -360,17 +351,16 @@ bool generate(
     }
     for (auto target : params.targets) {
       auto colon_pos = target.find(':');
-      auto language = target.substr(0, colon_pos);
+      auto generator_name = target.substr(0, colon_pos);
       auto options = std::map<std::string, std::string>();
       parse_generator_options(
           target.substr(colon_pos + 1), [&](std::string k, std::string v) {
             options[std::move(k)] = std::move(v);
             return parse_control::more;
           });
-      auto generator =
-          std::unique_ptr<t_generator>{t_generator_registry::get_generator(
-              language, &program, params.context, options)};
-      if (generator == nullptr) {
+      auto generator = generator_registry::make_generator(
+          generator_name, program, params.context, options);
+      if (!generator) {
         continue;
       }
 

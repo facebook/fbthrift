@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <functional>
 #include <map>
+#include <memory>
 #include <string>
 #include <unordered_set>
 
@@ -122,64 +122,63 @@ class t_generator {
  *  - Registering itself with the generator registry.
  *  - Providing documentation for the generators it produces.
  */
-class t_generator_factory {
+class generator_factory {
  public:
-  t_generator_factory(
-      std::string short_name, std::string long_name, std::string documentation);
+  generator_factory(
+      std::string name, std::string long_name, std::string documentation);
 
-  virtual ~t_generator_factory() = default;
+  virtual ~generator_factory() = default;
 
-  virtual t_generator* get_generator(
-      t_program* program, // The program to generate.
+  virtual std::unique_ptr<t_generator> make_generator(
+      t_program& program, // The program to generate.
       t_generation_context context,
       const std::map<std::string, std::string>& options) = 0;
 
-  std::string get_short_name() const { return short_name_; }
-  std::string get_long_name() { return long_name_; }
-  std::string get_documentation() { return documentation_; }
+  const std::string& name() const { return name_; }
+  const std::string& long_name() const { return long_name_; }
+  const std::string& documentation() const { return documentation_; }
 
  private:
-  std::string short_name_;
+  std::string name_;
   std::string long_name_;
   std::string documentation_;
 };
 
-template <typename generator>
-class t_generator_factory_impl : public t_generator_factory {
+namespace detail {
+template <typename Generator>
+class generator_factory_impl : public generator_factory {
  public:
-  t_generator_factory_impl(
-      const std::string& short_name,
-      const std::string& long_name,
-      const std::string& documentation)
-      : t_generator_factory(short_name, long_name, documentation) {}
+  using generator_factory::generator_factory;
 
-  t_generator* get_generator(
-      t_program* program,
+  std::unique_ptr<t_generator> make_generator(
+      t_program& program,
       t_generation_context context,
       const std::map<std::string, std::string>& options) override {
-    return new generator(program, context, options);
+    return std::unique_ptr<t_generator>(
+        new Generator(&program, context, options));
   }
 };
+} // namespace detail
 
-class t_generator_registry {
- public:
-  t_generator_registry() = delete;
+namespace generator_registry {
 
-  static void register_generator(t_generator_factory* factory);
+void register_generator(const std::string& name, generator_factory* factory);
 
-  static t_generator* get_generator(
-      const std::string& language,
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options);
+std::unique_ptr<t_generator> make_generator(
+    const std::string& name,
+    t_program& program,
+    t_generation_context context,
+    const std::map<std::string, std::string>& options);
 
-  using gen_map_t = std::map<std::string, t_generator_factory*>;
-  static gen_map_t& get_generator_map();
-};
+// A map from generator names to factories.
+using generator_map = std::map<std::string, generator_factory*>;
+generator_map& get_generators();
 
-#define THRIFT_REGISTER_GENERATOR(language, long_name, doc)             \
-  static t_generator_factory_impl<t_##language##_generator> registerer( \
-      #language, long_name, doc)
+} // namespace generator_registry
+
+#define THRIFT_REGISTER_GENERATOR(name, long_name, doc)                   \
+  static detail::generator_factory_impl<t_##name##_generator> registerer( \
+      #name, long_name, doc)
 
 } // namespace compiler
 } // namespace thrift
