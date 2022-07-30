@@ -15,5 +15,7 @@ javafoundations/scripts/create-idea-project \
 //thrift/lib/java/example/ping:ping-lib \
 //thrift/lib/java/example/ping:ping-server \
 //thrift/lib/java/example/ping:ping-client \
+//thrift/lib/java/facebook/service-framework:service-framework \
+//thrift/lib/java/facebook/service-framework:service-framework-test \
 --verbose \
 --non-interactive
