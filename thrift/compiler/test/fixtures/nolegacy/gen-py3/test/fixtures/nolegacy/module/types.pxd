@@ -110,7 +110,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __optional_field_ref[string] baropt_ref "baropt" ()
         __field_ref[cTestError] test_error_ref "test_error" ()
         __field_ref[cTestMixin] test_mixin_ref "test_mixin" ()
-        __field_ref[string] field1_ref "field1_ref" ()
+        __field_ref[string] field1_ref "field1" ()
 
     cdef enum cTestUnion__type "::test::fixtures::nolegacy::TestUnion::Type":
         cTestUnion__type___EMPTY__ "::test::fixtures::nolegacy::TestUnion::Type::__EMPTY__",

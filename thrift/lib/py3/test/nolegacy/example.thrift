@@ -67,6 +67,16 @@ struct TestStructWithRefAnnotations {
 struct TestNestedStruct {
   1: TestStructWithList nested;
 }
+
+struct TestStructSimple {
+  1: string field1;
+  2: i32 field2;
+}
+
+struct TestStructWithMixin {
+  1: string field3;
+  2: TestStructSimple field4 (cpp.mixin);
+}
 /* ---
 Fails to compile (not yet supported):
 
@@ -75,16 +85,7 @@ struct TestStructWithPtr {
   1: optional list<i32> data (cpp2.ref = "true");
 }
 
-2) Mixin
-struct Mixin1 {
-  1: string field3;
-}
-struct Foo {
-  1: string field4;
-  2: Mixin1 m1 (cpp.mixin);
-}
-
-3) Union
+2) Union
 union TestUnion {
   1: byte tiny;
   2: i16 small;

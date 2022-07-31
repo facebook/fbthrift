@@ -21,7 +21,9 @@ from testing.example.types import (
     SimpleError,
     TestNestedStruct,
     TestStruct,
+    TestStructSimple,
     TestStructWithList,
+    TestStructWithMixin,
     TestStructWithRefAnnotations,
     TestStructWithSet,
 )
@@ -112,3 +114,11 @@ class NoLegacyTest(unittest.TestCase):
     def test_nested_struct(self) -> None:
         testStruct = TestNestedStruct(nested=TestStructWithList(numbers=[1, 2, 3]))
         self.assertEqual(testStruct.nested.numbers, [1, 2, 3])
+
+    def test_mixin_struct(self) -> None:
+        testStruct = TestStructWithMixin(
+            field3="field3", field4=TestStructSimple(field1="field1", field2=5)
+        )
+        self.assertEqual(testStruct.field3, "field3")
+        self.assertEqual(testStruct.field1, "field1")
+        self.assertEqual(testStruct.field2, 5)

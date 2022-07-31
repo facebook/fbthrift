@@ -16,8 +16,8 @@
 
 }}{{!
 
-  if @thrift.NoLegacy annotation is defined then field() getter is used
-  otherwise field_ref() is used.
+  fields accessors have different names depending on the
+  @thrift.NoLegacy annotation
 
 }}{{#field:has_ref_api?}}{{field:cppName}}_ref{{/field:has_ref_api?}}{{!
 }}{{^field:has_ref_api?}}{{field:cppName}}{{/field:has_ref_api?}}

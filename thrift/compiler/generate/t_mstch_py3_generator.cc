@@ -903,15 +903,16 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node hasRefApi() {
-    const t_struct* parentStruct = mstch_field::field_context_->strct;
-
-    // Known bug (T126232678) mixin fields do not contain
+    // Mixin is a special case (T126232678) because it does not contain
     // a valid pointer to the top level struct
-    if (parentStruct == nullptr) {
-      // Mixin fields do not support NoLegacy annotation
-      return true;
+    bool isMixin =
+        ((mstch_field::field_context_ == nullptr) ||
+         (mstch_field::field_context_->strct == nullptr));
+    if (isMixin) {
+      return false;
     }
 
+    const t_struct* parentStruct = mstch_field::field_context_->strct;
     return (parentStruct->is_union() || generate_legacy_api(*parentStruct));
   }
 
