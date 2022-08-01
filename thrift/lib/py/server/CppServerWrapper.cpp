@@ -251,142 +251,19 @@ class PythonAsyncProcessor : public AsyncProcessor {
       req->sendReply(ResponsePayload{});
     }
 
-    apache::thrift::LegacyRequestExpiryGuard rh{std::move(req), eb};
     auto task = [=,
-                 buf = apache::thrift::LegacySerializedRequest(
-                           protType,
-                           context->getProtoSeqId(),
-                           context->getMethodName(),
-                           std::move(serializedRequest))
-                           .buffer,
-                 rh = std::move(rh)]() mutable {
-      auto req_up = std::move(rh.req);
-      SCOPE_EXIT {
-        rh.eb->runInEventBaseThread(
-            [req_up = std::move(req_up)]() mutable { req_up = {}; });
-      };
-
-      if (!oneway && !req_up->getShouldStartProcessing()) {
-        return;
-      }
-
-      folly::ByteRange input_range = buf->coalesce();
-      auto input_data = const_cast<unsigned char*>(input_range.data());
-      auto clientType = context->getHeader()->getClientType();
-
-      {
-        PyGILState_STATE state = PyGILState_Ensure();
-        SCOPE_EXIT { PyGILState_Release(state); };
-
-#if PY_MAJOR_VERSION == 2
-        auto input =
-            handle<>(PyBuffer_FromMemory(input_data, input_range.size()));
-#else
-        auto input = handle<>(PyMemoryView_FromMemory(
-            reinterpret_cast<char*>(input_data),
-            input_range.size(),
-            PyBUF_READ));
-#endif
-
-        auto cd_ctor = adapter_->attr("CONTEXT_DATA");
-        object contextData = cd_ctor();
-        extract<CppContextData&>(contextData)().copyContextContents(context);
-
-        auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
-        object callbackWrapper = cb_ctor();
-        extract<CallbackWrapper&>(callbackWrapper)().setCallback(
-            [oneway,
-             req_up = std::move(req_up),
-             context,
-             eb = rh.eb,
-             contextData,
-             protType](object output) mutable {
-              // Make sure the request is deleted in evb.
-              SCOPE_EXIT {
-                eb->runInEventBaseThread(
-                    [req_up = std::move(req_up)]() mutable { req_up = {}; });
-              };
-
-              // Always called from python so no need to grab GIL.
-              try {
-                std::unique_ptr<folly::IOBuf> outbuf;
-                if (output.is_none()) {
-                  throw std::runtime_error(
-                      "Unexpected error in processor method");
-                }
-                PyObject* output_ptr = output.ptr();
-#if PY_MAJOR_VERSION == 2
-                if (PyString_Check(output_ptr)) {
-                  int len = extract<int>(output.attr("__len__")());
-                  if (len == 0) {
-                    return;
-                  }
-                  outbuf = folly::IOBuf::copyBuffer(
-                      extract<const char*>(output), len);
-                } else
-#endif
-                    if (PyBytes_Check(output_ptr)) {
-                  int len = PyBytes_Size(output_ptr);
-                  if (len == 0) {
-                    return;
-                  }
-                  outbuf = folly::IOBuf::copyBuffer(
-                      PyBytes_AsString(output_ptr), len);
-                } else {
-                  throw std::runtime_error(
-                      "Return from processor "
-                      "method is not string or bytes");
-                }
-
-                if (!req_up->isActive()) {
-                  return;
-                }
-                CppContextData& cppContextData =
-                    extract<CppContextData&>(contextData);
-                if (!cppContextData.getHeaderEx().empty()) {
-                  context->getHeader()->setHeader(
-                      kHeaderEx, cppContextData.getHeaderEx());
-                }
-                if (!cppContextData.getHeaderExWhat().empty()) {
-                  context->getHeader()->setHeader(
-                      kHeaderExWhat, cppContextData.getHeaderExWhat());
-                }
-                auto response = LegacySerializedResponse{std::move(outbuf)};
-                auto [mtype, payload] = std::move(response).extractPayload(
-                    req_up->includeEnvelope(), protType);
-                payload.transform(context->getHeader()->getWriteTransforms());
-                eb->runInEventBaseThread(
-                    [mtype = mtype,
-                     req_up = std::move(req_up),
-                     payload = std::move(payload)]() mutable {
-                      if (mtype == MessageType::T_REPLY) {
-                        req_up->sendReply(std::move(payload));
-                      } else if (mtype == MessageType::T_EXCEPTION) {
-                        req_up->sendException(std::move(payload));
-                      } else {
-                        LOG(ERROR) << "Invalid type. type=" << uint16_t(mtype);
-                      }
-                    });
-              } catch (const std::exception& e) {
-                if (!oneway) {
-                  req_up->sendErrorWrapped(
-                      folly::make_exception_wrapper<TApplicationException>(
-                          folly::to<std::string>(
-                              "Failed to read response from Python:",
-                              e.what())),
-                      "python");
-                }
-              }
-            });
-
-        adapter_->attr("call_processor")(
-            input,
-            makePythonHeaders(context->getHeader()->getHeaders(), context),
-            int(clientType),
-            int(protType),
-            contextData,
-            callbackWrapper);
-      }
+                 reqCaptured = std::move(req),
+                 serializedCompressedRequestCaptured =
+                     std::move(serializedCompressedRequest),
+                 protTypeCaptured = protType,
+                 contextCaptured = context,
+                 ebCaptured = eb]() mutable {
+      runTask(
+          std::move(reqCaptured),
+          std::move(serializedCompressedRequestCaptured),
+          protTypeCaptured,
+          contextCaptured,
+          ebCaptured);
     };
 
     using PriorityThreadManager =
@@ -394,12 +271,31 @@ class PythonAsyncProcessor : public AsyncProcessor {
     auto ptm = dynamic_cast<PriorityThreadManager*>(tm);
     if (ptm != nullptr) {
       ptm->add(
-          getMethodPriority(fname, context),
+          getMethodPriority(context),
           std::make_shared<apache::thrift::concurrency::FunctionRunner>(
               std::move(task)));
       return;
     }
     tm->add(std::move(task));
+  }
+
+  void executeRequest(
+      apache::thrift::ServerRequest&& request,
+      const apache::thrift::AsyncProcessorFactory::MethodMetadata&) override {
+    using ServerRequestHelper = apache::thrift::detail::ServerRequestHelper;
+    auto req = ServerRequestHelper::request(std::move(request));
+    auto serializedCompressedRequest =
+        ServerRequestHelper::compressedRequest(std::move(request));
+    auto protType = ServerRequestHelper::protocol(request);
+    auto context = request.requestContext();
+    auto eb = ServerRequestHelper::eventBase(request);
+
+    runTask(
+        std::move(req),
+        std::move(serializedCompressedRequest),
+        protType,
+        context,
+        eb);
   }
 
   // Create a task and add it to thread manager's queue. Essentially the same
@@ -427,8 +323,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
    * Check the headers directly in C++ since noone seems to override that logic
    * Ask python if no priority headers were supplied with the request
    */
-  concurrency::PRIORITY getMethodPriority(
-      std::string const& fname, Cpp2RequestContext* ctx = nullptr) {
+  concurrency::PRIORITY getMethodPriority(Cpp2RequestContext* ctx) {
     if (ctx) {
       auto requestPriority = ctx->getCallPriority();
       if (requestPriority != concurrency::PRIORITY::N_PRIORITIES) {
@@ -441,6 +336,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
     SCOPE_EXIT { PyGILState_Release(state); };
 
     try {
+      auto fname = ctx->getMethodName();
       return static_cast<concurrency::PRIORITY>(
           extract<int>(adapter_->attr("get_priority")(fname))());
     } catch (error_already_set&) {
@@ -453,6 +349,146 @@ class PythonAsyncProcessor : public AsyncProcessor {
   }
 
  private:
+  void runTask(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedCompressedRequest&& serializedCompressedRequest,
+      apache::thrift::protocol::PROTOCOL_TYPES protType,
+      apache::thrift::Cpp2RequestContext* context,
+      folly::EventBase* eb) {
+    auto fname = context->getMethodName();
+    bool oneway = isOnewayMethod(fname);
+
+    auto buf = apache::thrift::LegacySerializedRequest(
+                   protType,
+                   context->getProtoSeqId(),
+                   context->getMethodName(),
+                   std::move(serializedCompressedRequest).uncompress())
+                   .buffer;
+
+    SCOPE_EXIT {
+      eb->runInEventBaseThread([req = std::move(req)]() mutable { req = {}; });
+    };
+
+    if (!oneway && !req->getShouldStartProcessing()) {
+      return;
+    }
+
+    folly::ByteRange input_range = buf->coalesce();
+    auto input_data = const_cast<unsigned char*>(input_range.data());
+    auto clientType = context->getHeader()->getClientType();
+
+    {
+      PyGILState_STATE state = PyGILState_Ensure();
+      SCOPE_EXIT { PyGILState_Release(state); };
+
+#if PY_MAJOR_VERSION == 2
+      auto input =
+          handle<>(PyBuffer_FromMemory(input_data, input_range.size()));
+#else
+      auto input = handle<>(PyMemoryView_FromMemory(
+          reinterpret_cast<char*>(input_data), input_range.size(), PyBUF_READ));
+#endif
+
+      auto cd_ctor = adapter_->attr("CONTEXT_DATA");
+      object contextData = cd_ctor();
+      extract<CppContextData&>(contextData)().copyContextContents(context);
+
+      auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
+      object callbackWrapper = cb_ctor();
+      extract<CallbackWrapper&>(callbackWrapper)().setCallback(
+          [oneway,
+           req = std::move(req),
+           context,
+           eb = eb,
+           contextData,
+           protType](object output) mutable {
+            // Make sure the request is deleted in evb.
+            SCOPE_EXIT {
+              eb->runInEventBaseThread(
+                  [req = std::move(req)]() mutable { req = {}; });
+            };
+
+            // Always called from python so no need to grab GIL.
+            try {
+              std::unique_ptr<folly::IOBuf> outbuf;
+              if (output.is_none()) {
+                throw std::runtime_error(
+                    "Unexpected error in processor method");
+              }
+              PyObject* output_ptr = output.ptr();
+#if PY_MAJOR_VERSION == 2
+              if (PyString_Check(output_ptr)) {
+                int len = extract<int>(output.attr("__len__")());
+                if (len == 0) {
+                  return;
+                }
+                outbuf =
+                    folly::IOBuf::copyBuffer(extract<const char*>(output), len);
+              } else
+#endif
+                  if (PyBytes_Check(output_ptr)) {
+                int len = PyBytes_Size(output_ptr);
+                if (len == 0) {
+                  return;
+                }
+                outbuf =
+                    folly::IOBuf::copyBuffer(PyBytes_AsString(output_ptr), len);
+              } else {
+                throw std::runtime_error(
+                    "Return from processor "
+                    "method is not string or bytes");
+              }
+
+              if (!req->isActive()) {
+                return;
+              }
+              CppContextData& cppContextData =
+                  extract<CppContextData&>(contextData);
+              if (!cppContextData.getHeaderEx().empty()) {
+                context->getHeader()->setHeader(
+                    kHeaderEx, cppContextData.getHeaderEx());
+              }
+              if (!cppContextData.getHeaderExWhat().empty()) {
+                context->getHeader()->setHeader(
+                    kHeaderExWhat, cppContextData.getHeaderExWhat());
+              }
+              auto response = LegacySerializedResponse{std::move(outbuf)};
+              auto [mtype, payload] = std::move(response).extractPayload(
+                  req->includeEnvelope(), protType);
+              payload.transform(context->getHeader()->getWriteTransforms());
+              eb->runInEventBaseThread(
+                  [mtype = mtype,
+                   req = std::move(req),
+                   payload = std::move(payload)]() mutable {
+                    if (mtype == MessageType::T_REPLY) {
+                      req->sendReply(std::move(payload));
+                    } else if (mtype == MessageType::T_EXCEPTION) {
+                      req->sendException(std::move(payload));
+                    } else {
+                      LOG(ERROR) << "Invalid type. type=" << uint16_t(mtype);
+                    }
+                  });
+            } catch (const std::exception& e) {
+              if (!oneway) {
+                req->sendErrorWrapped(
+                    folly::make_exception_wrapper<TApplicationException>(
+                        folly::to<std::string>(
+                            "Failed to read response from Python:", e.what())),
+                    "python");
+              }
+            }
+          });
+
+      adapter_->attr("call_processor")(
+          input,
+          makePythonHeaders(context->getHeader()->getHeaders(), context),
+          int(clientType),
+          int(protType),
+          contextData,
+          callbackWrapper);
+    }
+  }
+
   bool isOnewayMethod(std::string const& fname) {
     return onewayMethods_.find(fname) != onewayMethods_.end();
   }
@@ -489,6 +525,17 @@ class PythonAsyncProcessorFactory : public AsyncProcessorFactory {
   std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
       override {
     return {};
+  }
+
+  CreateMethodMetadataResult createMethodMetadata() override {
+    WildcardMethodMetadataMap wildcardMap;
+    // python tasks will be run on executor
+    wildcardMap.wildcardMetadata = std::make_shared<WildcardMethodMetadata>(
+        MethodMetadata::ExecutorType::ANY);
+
+    wildcardMap.knownMethods = {};
+
+    return wildcardMap;
   }
 
  private:
