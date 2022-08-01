@@ -122,7 +122,12 @@ class ClientBufferedStream {
   }
 
 #if FOLLY_HAS_COROUTINES
-  folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
+  FOLLY_PUSH_WARNING
+  FOLLY_GCC_DISABLE_WARNING("-Wattributes")
+  FOLLY_MSVC_DISABLE_WARNING(5030)
+  [[clang::annotate("not_coroutine")]] folly::coro::AsyncGenerator<T&&>
+  toAsyncGenerator() && {
+    FOLLY_POP_WARNING
     return bufferOptions_.memSize
         ? toAsyncGeneratorWithSizeTarget(
               std::move(streamBridge_),
