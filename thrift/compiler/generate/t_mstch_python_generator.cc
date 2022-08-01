@@ -1030,31 +1030,6 @@ class field_python_generator : public field_generator {
   }
 };
 
-class enum_python_generator : public enum_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_enum* enm,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_python_enum>(enm, generators, cache, pos);
-  }
-};
-
-class enum_value_python_generator : public enum_value_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_python_enum_value>(
-        enm_value, generators, cache, pos);
-  }
-};
-
 class const_value_python_generator : public const_value_generator {
  public:
   const_value_python_generator() = default;
@@ -1215,9 +1190,8 @@ void t_mstch_python_generator::set_mstch_generators() {
   generators_->set_service_generator(
       std::make_unique<service_python_generator>(get_program()));
   generators_->set_field_generator(std::make_unique<field_python_generator>());
-  generators_->set_enum_generator(std::make_unique<enum_python_generator>());
-  generators_->set_enum_value_generator(
-      std::make_unique<enum_value_python_generator>());
+  generators_->set_enum_factory<mstch_python_enum>();
+  generators_->set_enum_value_factory<mstch_python_enum_value>();
   generators_->set_const_value_generator(
       std::make_unique<const_value_python_generator>());
   generators_->set_type_generator(

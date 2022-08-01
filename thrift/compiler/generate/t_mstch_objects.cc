@@ -43,24 +43,6 @@ mstch::node mstch_base::is_struct() {
   return dynamic_cast<mstch_struct*>(this) != nullptr;
 }
 
-std::shared_ptr<mstch_base> enum_value_generator::generate(
-    t_enum_value const* enum_value,
-    std::shared_ptr<mstch_generators const> generators,
-    std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_enum_value>(enum_value, generators, cache, pos);
-}
-
-std::shared_ptr<mstch_base> enum_generator::generate(
-    t_enum const* enm,
-    std::shared_ptr<mstch_generators const> generators,
-    std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_enum>(enm, generators, cache, pos);
-}
-
 std::shared_ptr<mstch_base> const_value_generator::generate(
     t_const_value const* const_value,
     std::shared_ptr<mstch_generators const> generators,
@@ -183,6 +165,11 @@ std::shared_ptr<mstch_base> program_generator::generate(
   return std::make_shared<mstch_program>(program, generators, cache, pos);
 }
 
+mstch_generators::mstch_generators() {
+  set_enum_factory<mstch_enum>();
+  set_enum_value_factory<mstch_enum_value>();
+}
+
 mstch::node mstch_enum::values() {
   return generate_enum_values(enm_->get_enum_values());
 }
@@ -206,7 +193,7 @@ mstch::node mstch_type::get_enum() {
         type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
         std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
-        generators_->enum_generator_.get(),
+        generators_->enum_factory.get(),
         cache_->enums_,
         id);
   }
@@ -711,10 +698,7 @@ mstch::node mstch_program::structs() {
 mstch::node mstch_program::enums() {
   std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
-      get_program_enums(),
-      generators_->enum_generator_.get(),
-      cache_->enums_,
-      id);
+      get_program_enums(), generators_->enum_factory.get(), cache_->enums_, id);
 }
 
 mstch::node mstch_program::services() {

@@ -36,7 +36,7 @@ namespace thrift {
 namespace compiler {
 
 class mstch_base;
-class mstch_generators;
+struct mstch_generators;
 
 enum ELEMENT_POSITION {
   NONE = 0,
@@ -60,27 +60,55 @@ struct mstch_cache {
   }
 };
 
-class enum_value_generator {
+class enum_factory {
  public:
-  virtual ~enum_value_generator() = default;
+  virtual ~enum_factory() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      t_enum_value const* enum_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum* e,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
+      int32_t index = 0) const = 0;
 };
 
-class enum_generator {
+class enum_value_factory {
  public:
-  virtual ~enum_generator() = default;
+  virtual ~enum_value_factory() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum_value* ev,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
+      int32_t index = 0) const = 0;
 };
+
+namespace detail {
+template <typename T>
+class enum_factory_impl : public enum_factory {
+ public:
+  std::shared_ptr<mstch_base> generate(
+      const t_enum* e,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<T>(e, generators, cache, pos);
+  }
+};
+
+template <typename T>
+class enum_value_factory_impl : public enum_value_factory {
+ public:
+  std::shared_ptr<mstch_base> generate(
+      const t_enum_value* ev,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<T>(ev, generators, cache, pos);
+  }
+};
+} // namespace detail
 
 class const_value_generator {
  public:
@@ -280,31 +308,17 @@ class program_generator {
   }
 };
 
-class mstch_generators {
- public:
-  mstch_generators()
-      : enum_value_generator_(std::make_unique<enum_value_generator>()),
-        enum_generator_(std::make_unique<enum_generator>()),
-        const_value_generator_(std::make_unique<const_value_generator>()),
-        type_generator_(std::make_unique<type_generator>()),
-        field_generator_(std::make_unique<field_generator>()),
-        annotation_generator_(std::make_unique<annotation_generator>()),
-        structured_annotation_generator_(
-            std::make_unique<structured_annotation_generator>()),
-        struct_generator_(std::make_unique<struct_generator>()),
-        function_generator_(std::make_unique<function_generator>()),
-        service_generator_(std::make_unique<service_generator>()),
-        typedef_generator_(std::make_unique<typedef_generator>()),
-        const_generator_(std::make_unique<const_generator>()),
-        program_generator_(std::make_unique<program_generator>()) {}
-  ~mstch_generators() = default;
+struct mstch_generators {
+  mstch_generators();
 
-  void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
-    enum_value_generator_ = std::move(g);
+  template <typename T>
+  void set_enum_factory() {
+    enum_factory = std::make_unique<detail::enum_factory_impl<T>>();
   }
 
-  void set_enum_generator(std::unique_ptr<enum_generator> g) {
-    enum_generator_ = std::move(g);
+  template <typename T>
+  void set_enum_value_factory() {
+    enum_value_factory = std::make_unique<detail::enum_value_factory_impl<T>>();
   }
 
   void set_const_value_generator(std::unique_ptr<const_value_generator> g) {
@@ -351,21 +365,32 @@ class mstch_generators {
     program_generator_ = std::move(g);
   }
 
-  std::unique_ptr<enum_value_generator> enum_value_generator_;
-  std::unique_ptr<enum_generator> enum_generator_;
-  std::unique_ptr<const_value_generator> const_value_generator_;
-  std::unique_ptr<type_generator> type_generator_;
-  std::unique_ptr<field_generator> field_generator_;
-  std::unique_ptr<annotation_generator> annotation_generator_;
+  std::unique_ptr<compiler::enum_factory> enum_factory;
+  std::unique_ptr<compiler::enum_value_factory> enum_value_factory;
+  std::unique_ptr<const_value_generator> const_value_generator_ =
+      std::make_unique<const_value_generator>();
+  std::unique_ptr<type_generator> type_generator_ =
+      std::make_unique<type_generator>();
+  std::unique_ptr<field_generator> field_generator_ =
+      std::make_unique<field_generator>();
+  std::unique_ptr<annotation_generator> annotation_generator_ =
+      std::make_unique<annotation_generator>();
   std::unique_ptr<structured_annotation_generator>
-      structured_annotation_generator_;
-  std::unique_ptr<struct_generator> struct_generator_;
-  std::unique_ptr<function_generator> function_generator_;
-  std::unique_ptr<service_generator> service_generator_;
+      structured_annotation_generator_ =
+          std::make_unique<structured_annotation_generator>();
+  std::unique_ptr<struct_generator> struct_generator_ =
+      std::make_unique<struct_generator>();
+  std::unique_ptr<function_generator> function_generator_ =
+      std::make_unique<function_generator>();
+  std::unique_ptr<service_generator> service_generator_ =
+      std::make_unique<service_generator>();
   std::unique_ptr<interaction_generator> interaction_generator_;
-  std::unique_ptr<typedef_generator> typedef_generator_;
-  std::unique_ptr<const_generator> const_generator_;
-  std::unique_ptr<program_generator> program_generator_;
+  std::unique_ptr<typedef_generator> typedef_generator_ =
+      std::make_unique<typedef_generator>();
+  std::unique_ptr<const_generator> const_generator_ =
+      std::make_unique<const_generator>();
+  std::unique_ptr<program_generator> program_generator_ =
+      std::make_unique<program_generator>();
 };
 
 class mstch_base : public mstch::object {
@@ -487,7 +512,7 @@ class mstch_base : public mstch::object {
   template <typename C, typename... Args>
   mstch::array generate_enum_values(C const& container, Args const&... args) {
     return generate_elements(
-        container, generators_->enum_value_generator_.get(), args...);
+        container, generators_->enum_value_factory.get(), args...);
   }
 
   template <typename C, typename... Args>

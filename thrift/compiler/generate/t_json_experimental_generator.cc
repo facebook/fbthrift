@@ -130,21 +130,6 @@ class json_experimental_enum : public mstch_enum {
   mstch::node get_docstring() { return json_quote_ascii(enm_->get_doc()); }
 };
 
-class enum_json_experimental_generator : public enum_generator {
- public:
-  enum_json_experimental_generator() = default;
-  ~enum_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_enum>(
-        enm, generators, cache, pos);
-  }
-};
-
 class json_experimental_enum_value : public mstch_enum_value {
  public:
   json_experimental_enum_value(
@@ -167,21 +152,6 @@ class json_experimental_enum_value : public mstch_enum_value {
   mstch::node has_docstring() { return enm_value_->has_doc(); }
   mstch::node get_docstring() {
     return json_quote_ascii(enm_value_->get_doc());
-  }
-};
-
-class enum_value_json_experimental_generator : public enum_value_generator {
- public:
-  enum_value_json_experimental_generator() = default;
-  ~enum_value_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_enum_value>(
-        enm_value, generators, cache, pos);
   }
 };
 
@@ -466,10 +436,8 @@ void t_json_experimental_generator::generate_program() {
 void t_json_experimental_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_json_experimental_generator>());
-  generators_->set_enum_generator(
-      std::make_unique<enum_json_experimental_generator>());
-  generators_->set_enum_value_generator(
-      std::make_unique<enum_value_json_experimental_generator>());
+  generators_->set_enum_factory<json_experimental_enum>();
+  generators_->set_enum_value_factory<json_experimental_enum_value>();
   generators_->set_const_value_generator(
       std::make_unique<const_value_json_experimental_generator>());
   generators_->set_struct_generator(

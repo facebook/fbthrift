@@ -308,7 +308,7 @@ class mstch_cpp2_enum : public mstch_enum {
   mstch::node has_zero() {
     auto* enm_value = enm_->find_value(0);
     if (enm_value != nullptr) {
-      return generators_->enum_value_generator_->generate(
+      return generators_->enum_value_factory->generate(
           enm_value, generators_, cache_, pos_);
     }
     return mstch::node();
@@ -829,7 +829,7 @@ class mstch_cpp2_field : public mstch_field {
       if (const_value->get_type() == cv::CV_INTEGER) {
         auto* enm_value = enm->find_value(const_value->get_integer());
         if (enm_value != nullptr) {
-          return generators_->enum_value_generator_->generate(
+          return generators_->enum_value_factory->generate(
               enm_value, generators_, cache_, pos_);
         }
       }
@@ -2099,34 +2099,6 @@ class mstch_cpp2_program : public mstch_program {
   }
 };
 
-class enum_cpp2_generator : public enum_generator {
- public:
-  enum_cpp2_generator() = default;
-  ~enum_cpp2_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_enum>(
-        enm, std::move(generators), std::move(cache), pos);
-  }
-};
-
-class enum_value_cpp2_generator : public enum_value_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_enum_value>(
-        enm_value, std::move(generators), std::move(cache), pos);
-  }
-};
-
 class typedef_cpp2_generator : public typedef_generator {
  public:
   explicit typedef_cpp2_generator(
@@ -2412,9 +2384,8 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
-  generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
-  generators_->set_enum_value_generator(
-      std::make_unique<enum_value_cpp2_generator>());
+  generators_->set_enum_factory<mstch_cpp2_enum>();
+  generators_->set_enum_value_factory<mstch_cpp2_enum_value>();
   generators_->set_type_generator(
       std::make_unique<type_cpp2_generator>(context_));
   generators_->set_typedef_generator(

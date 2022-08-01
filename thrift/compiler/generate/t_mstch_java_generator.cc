@@ -1209,35 +1209,6 @@ class field_java_generator : public field_generator {
   }
 };
 
-class enum_java_generator : public enum_generator {
- public:
-  explicit enum_java_generator() = default;
-  ~enum_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_enum>(enm, generators, cache, pos);
-  }
-};
-
-class enum_value_java_generator : public enum_value_generator {
- public:
-  enum_value_java_generator() = default;
-  ~enum_value_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_enum_value>(
-        enm_value, generators, cache, pos);
-  }
-};
-
 class type_java_generator : public type_generator {
  public:
   type_java_generator() = default;
@@ -1329,7 +1300,7 @@ void t_mstch_java_generator::generate_program() {
       get_program(),
       get_program()->services());
   generate_items(
-      generators_->enum_generator_.get(),
+      generators_->enum_factory.get(),
       cache_->enums_,
       get_program(),
       get_program()->enums(),
@@ -1348,9 +1319,8 @@ void t_mstch_java_generator::set_mstch_generators() {
   generators_->set_function_generator(
       std::make_unique<function_java_generator>());
   generators_->set_field_generator(std::make_unique<field_java_generator>());
-  generators_->set_enum_generator(std::make_unique<enum_java_generator>());
-  generators_->set_enum_value_generator(
-      std::make_unique<enum_value_java_generator>());
+  generators_->set_enum_factory<mstch_java_enum>();
+  generators_->set_enum_value_factory<mstch_java_enum_value>();
   generators_->set_type_generator(std::make_unique<type_java_generator>());
   generators_->set_const_generator(std::make_unique<const_java_generator>());
   generators_->set_const_value_generator(

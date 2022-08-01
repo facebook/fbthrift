@@ -1633,26 +1633,11 @@ class field_rust_generator : public field_generator {
   const rust_codegen_options& options_;
 };
 
-class enum_value_rust_generator : public enum_value_generator {
+class rust_enum_factory : public enum_factory {
  public:
-  enum_value_rust_generator() = default;
-  ~enum_value_rust_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_enum_value* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_enum_value>(
-        enm_value, generators, cache, pos);
-  }
-};
-
-class enum_rust_generator : public enum_generator {
- public:
-  explicit enum_rust_generator(const rust_codegen_options& options)
+  explicit rust_enum_factory(const rust_codegen_options& options)
       : options_(options) {}
-  ~enum_rust_generator() override = default;
+  ~rust_enum_factory() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_enum* enm,
       std::shared_ptr<mstch_generators const> generators,
@@ -1812,10 +1797,8 @@ void t_mstch_rust_generator::set_mstch_generators() {
       std::make_unique<service_rust_generator>(options_));
   generators_->set_field_generator(
       std::make_unique<field_rust_generator>(options_));
-  generators_->set_enum_value_generator(
-      std::make_unique<enum_value_rust_generator>());
-  generators_->set_enum_generator(
-      std::make_unique<enum_rust_generator>(options_));
+  generators_->enum_factory = std::make_unique<rust_enum_factory>(options_);
+  generators_->set_enum_value_factory<mstch_rust_enum_value>();
   generators_->set_type_generator(
       std::make_unique<type_rust_generator>(options_));
   generators_->set_const_generator(
