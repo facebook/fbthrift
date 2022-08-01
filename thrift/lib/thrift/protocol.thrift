@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-// TODO(ytj): merge this file into thrift/lib/thrift/type.thrift
-
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
-include "thrift/lib/thrift/protocol_detail.thrift"
 include "thrift/lib/thrift/id.thrift"
+include "thrift/lib/thrift/protocol_detail.thrift"
 
 @thrift.v1alpha
 package "facebook.com/thrift/protocol"
@@ -35,7 +34,8 @@ namespace py thrift.lib.thrift.protocol
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
 
-typedef id.ExternId PathSegmentId // TODO(ytj): add adapter
+@cpp.StrongType
+typedef id.ExternId PathSegmentId
 
 struct Path {
   1: list<PathSegmentId> path;
