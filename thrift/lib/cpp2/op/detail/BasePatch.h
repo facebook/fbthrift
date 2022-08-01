@@ -66,6 +66,7 @@ template <typename T>
 bool hasValue(terse_field_ref<T> val) {
   return !thrift::empty(*val);
 }
+// TODO: use op::clear and op::ensure to avoid duplication
 template <typename T>
 if_opt_type<T> clearValue(T& opt) {
   opt.reset();
@@ -73,6 +74,20 @@ if_opt_type<T> clearValue(T& opt) {
 template <typename T>
 if_not_opt_type<T> clearValue(T& unn) {
   thrift::clear(unn);
+}
+template <typename T>
+if_opt_type<T> ensureValue(T& opt) {
+  if (!opt.has_value()) {
+    opt.emplace();
+  }
+}
+template <typename T>
+void ensureValue(field_ref<T> val) {
+  val.ensure();
+}
+template <typename T>
+void ensureValue(terse_field_ref<T>) {
+  // A terse field doesn't have a set or unset state, so ensure is a noop.
 }
 template <typename T, typename U>
 if_opt_type<T, bool> sameType(const T& opt1, const U& opt2) {
