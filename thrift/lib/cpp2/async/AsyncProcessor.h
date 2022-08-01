@@ -483,8 +483,7 @@ class ServerRequest {
     return sr.asyncProcessor_;
   }
 
-  static const SerializedCompressedRequest& compressedRequest(
-      ServerRequest& sr) {
+  static SerializedCompressedRequest& compressedRequest(ServerRequest& sr) {
     return sr.serializedRequest_;
   }
 
