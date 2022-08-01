@@ -962,10 +962,12 @@ inline void processViaExecuteRequest(
       AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN);
   DCHECK(
       untypedMethodMetadata.interactionType ==
-      AsyncProcessor::MethodMetadata::InteractionType::NONE);
-  DCHECK(untypedMethodMetadata.rpcKind);
+          AsyncProcessor::MethodMetadata::InteractionType::NONE ||
+      untypedMethodMetadata.isWildcard());
+  DCHECK(untypedMethodMetadata.rpcKind || untypedMethodMetadata.isWildcard());
 
-  if (!apache::thrift::GeneratedAsyncProcessor::validateRpcKind(
+  if (!untypedMethodMetadata.isWildcard() &&
+      !apache::thrift::GeneratedAsyncProcessor::validateRpcKind(
           req, *untypedMethodMetadata.rpcKind)) {
     return;
   }
@@ -988,9 +990,11 @@ inline void processViaExecuteRequest(
                        {},
                        {},
                        {}},
-               oneway =
-                   (*untypedMethodMetadata.rpcKind ==
-                    RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+               // This false is just a dummy value
+               oneway = !untypedMethodMetadata.isWildcard()
+                   ? (*untypedMethodMetadata.rpcKind ==
+                      RpcKind::SINGLE_REQUEST_NO_RESPONSE)
+                   : false,
                processor = processor,
                executor = std::move(executor),
                &untypedMethodMetadata](bool runInline) mutable {
@@ -1005,7 +1009,8 @@ inline void processViaExecuteRequest(
             std::chrono::steady_clock::now();
       }
     }
-    if (!oneway && !serverRequest.request()->getShouldStartProcessing()) {
+    if (!untypedMethodMetadata.isWildcard() && !oneway &&
+        !serverRequest.request()->getShouldStartProcessing()) {
       HandlerCallbackBase::releaseRequest(
           detail::ServerRequestHelper::request(std::move(serverRequest)),
           detail::ServerRequestHelper::eventBase(serverRequest));
@@ -1029,7 +1034,6 @@ inline void processViaExecuteRequest(
     task(true);
   }
 }
-
 
 // The below function overloads are for wildcard metadata only
 // These are to make sure when executeRequest is called with a

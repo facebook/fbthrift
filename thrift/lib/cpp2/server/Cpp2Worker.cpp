@@ -514,11 +514,16 @@ void Cpp2Worker::dispatchRequest(
           return;
         }
       } else if (
-          found->metadata.rpcKind &&
+          // wildcard metadata do not specify rpcKind
+          (found->metadata.rpcKind || found->metadata.isWildcard()) &&
+          // executorType is defaulted to UNKNOWN for wildcard metadata
+          // so only processors that implement createMethodMetadata can
+          // pass this test
           found->metadata.executorType !=
               AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN &&
-          found->metadata.interactionType ==
-              AsyncProcessor::MethodMetadata::InteractionType::NONE &&
+          (found->metadata.interactionType ==
+               AsyncProcessor::MethodMetadata::InteractionType::NONE ||
+           found->metadata.isWildcard()) &&
           !cpp2ReqCtx->getInteractionId()) {
         if (found->metadata.executorType ==
                 AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
