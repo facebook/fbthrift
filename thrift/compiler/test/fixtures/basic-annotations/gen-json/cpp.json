@@ -23,7 +23,7 @@
   },
   "structs" : {
     "Ref" : {
-      "lineno" : 34,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -58,7 +58,7 @@
       }
     },
     "Lazy" : {
-      "lineno" : 39,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -94,7 +94,7 @@
       }
     },
     "DisableLazyChecksum" : {
-      "lineno" : 45,
+      "lineno" : 44,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -115,7 +115,7 @@
       }
     },
     "Adapter" : {
-      "lineno" : 68,
+      "lineno" : 64,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -214,7 +214,7 @@
       }
     },
     "PackIsset" : {
-      "lineno" : 116,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -250,7 +250,7 @@
       }
     },
     "MinimizePadding" : {
-      "lineno" : 121,
+      "lineno" : 120,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -271,7 +271,7 @@
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 124,
+      "lineno" : 123,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -292,7 +292,7 @@
       }
     },
     "ScopedEnumAsUnionType" : {
-      "lineno" : 127,
+      "lineno" : 126,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -313,7 +313,7 @@
       }
     },
     "StrongType" : {
-      "lineno" : 145,
+      "lineno" : 143,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -335,7 +335,7 @@
       }
     },
     "FieldInterceptor" : {
-      "lineno" : 163,
+      "lineno" : 161,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {

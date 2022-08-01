@@ -272,7 +272,7 @@
       }
     },
     "Structured" : {
-      "lineno" : 100,
+      "lineno" : 96,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -290,7 +290,7 @@
       }
     },
     "Interface" : {
-      "lineno" : 105,
+      "lineno" : 102,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -308,7 +308,7 @@
       }
     },
     "RootDefinition" : {
-      "lineno" : 113,
+      "lineno" : 107,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -326,7 +326,7 @@
       }
     },
     "Definition" : {
-      "lineno" : 120,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

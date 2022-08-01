@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "enumerations" : {
     "Metasyntactic" : {
-      "lineno" : 26,
+      "lineno" : 25,
       "constants" : {
         "FOO" : 1,
         "BAR" : 2,

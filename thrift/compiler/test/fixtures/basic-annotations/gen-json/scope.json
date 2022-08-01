@@ -525,7 +525,7 @@
       }
     },
     "Structured" : {
-      "lineno" : 100,
+      "lineno" : 96,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -549,7 +549,7 @@
       }
     },
     "Interface" : {
-      "lineno" : 105,
+      "lineno" : 102,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
@@ -587,7 +587,7 @@
       }
     },
     "RootDefinition" : {
-      "lineno" : 113,
+      "lineno" : 107,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -613,7 +613,7 @@
       }
     },
     "Definition" : {
-      "lineno" : 120,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {

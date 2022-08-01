@@ -22,7 +22,7 @@
   },
   "typedefs" : {
     "MyInteger" : {
-      "lineno" : 118,
+      "lineno" : 117,
       "type_enum" : "I32",
       "spec_args" : null,
       "source_range" : {
@@ -90,7 +90,7 @@
       }
     },
     "StructLevelTerseStruct" : {
-      "lineno" : 34,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -754,7 +754,7 @@
       }
     },
     "TerseStructWithCustomDefault" : {
-      "lineno" : 100,
+      "lineno" : 99,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -994,7 +994,7 @@
       }
     },
     "AdaptedFields" : {
-      "lineno" : 121,
+      "lineno" : 120,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1056,7 +1056,7 @@
       }
     },
     "TerseException" : {
-      "lineno" : 130,
+      "lineno" : 129,
       "is_exception" : true,
       "is_union" : false,
       "fields" : {

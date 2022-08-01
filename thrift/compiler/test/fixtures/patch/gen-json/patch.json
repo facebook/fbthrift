@@ -3,7 +3,7 @@
   "thrift_module" : "patch",
   "enumerations" : {
     "PatchOp" : {
-      "lineno" : 227,
+      "lineno" : 226,
       "constants" : {
         "Assign" : 1,
         "Clear" : 2,
@@ -30,7 +30,7 @@
   },
   "structs" : {
     "GeneratePatch" : {
-      "lineno" : 40,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -48,7 +48,7 @@
       }
     },
     "GenerateOptionalPatch" : {
-      "lineno" : 43,
+      "lineno" : 42,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -66,7 +66,7 @@
       }
     },
     "BoolPatch" : {
-      "lineno" : 52,
+      "lineno" : 46,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -113,7 +113,7 @@
       }
     },
     "BytePatch" : {
-      "lineno" : 71,
+      "lineno" : 65,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -160,7 +160,7 @@
       }
     },
     "I16Patch" : {
-      "lineno" : 90,
+      "lineno" : 84,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -207,7 +207,7 @@
       }
     },
     "I32Patch" : {
-      "lineno" : 109,
+      "lineno" : 103,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -254,7 +254,7 @@
       }
     },
     "I64Patch" : {
-      "lineno" : 128,
+      "lineno" : 122,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -301,7 +301,7 @@
       }
     },
     "FloatPatch" : {
-      "lineno" : 147,
+      "lineno" : 141,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -348,7 +348,7 @@
       }
     },
     "DoublePatch" : {
-      "lineno" : 166,
+      "lineno" : 160,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -395,7 +395,7 @@
       }
     },
     "StringPatch" : {
-      "lineno" : 185,
+      "lineno" : 179,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -472,7 +472,7 @@
       }
     },
     "BinaryPatch" : {
-      "lineno" : 210,
+      "lineno" : 204,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -504,7 +504,7 @@
       }
     },
     "OptionalBoolPatch" : {
-      "lineno" : 52,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -581,7 +581,7 @@
       }
     },
     "OptionalBytePatch" : {
-      "lineno" : 71,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -658,7 +658,7 @@
       }
     },
     "OptionalI16Patch" : {
-      "lineno" : 90,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -735,7 +735,7 @@
       }
     },
     "OptionalI32Patch" : {
-      "lineno" : 109,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -812,7 +812,7 @@
       }
     },
     "OptionalI64Patch" : {
-      "lineno" : 128,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -889,7 +889,7 @@
       }
     },
     "OptionalFloatPatch" : {
-      "lineno" : 147,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -966,7 +966,7 @@
       }
     },
     "OptionalDoublePatch" : {
-      "lineno" : 166,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1043,7 +1043,7 @@
       }
     },
     "OptionalStringPatch" : {
-      "lineno" : 185,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1120,7 +1120,7 @@
       }
     },
     "OptionalBinaryPatch" : {
-      "lineno" : 205,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

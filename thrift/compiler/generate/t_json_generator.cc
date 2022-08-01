@@ -17,15 +17,14 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include <boost/filesystem.hpp>
 
-#include <sstream>
 #include <thrift/compiler/generate/json.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
-#include <thrift/compiler/generate/t_generator.h>
 
 using namespace std;
 
@@ -64,7 +63,7 @@ class t_json_generator : public t_concat_generator {
   void print_type(const t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
   void print_const_key(t_const_value* tvalue);
-  void print_lineno(int lineno);
+  void print_lineno(const t_node& node);
   string type_to_string(const t_type* type);
   string type_to_spec_args(const t_type* ttype);
   string type_name(const t_type* ttype);
@@ -411,8 +410,12 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
   }
 }
 
-void t_json_generator::print_lineno(int lineno) {
-  indent(f_out_) << "\"lineno\" : " << lineno << "," << endl;
+void t_json_generator::print_lineno(const t_node& node) {
+  auto loc = node.src_range().begin;
+  unsigned line = loc != source_location()
+      ? resolved_location(loc, *context_.get_source_manager()).line()
+      : 0;
+  indent(f_out_) << "\"lineno\" : " << line << ",\n";
 }
 
 void t_json_generator::print_annotations(
@@ -495,7 +498,7 @@ void t_json_generator::print_node_annotations(
 void t_json_generator::generate_typedef(const t_typedef* ttypedef) {
   indent(f_out_) << "\"" << ttypedef->get_name() << "\" : {" << endl;
   indent_up();
-  print_lineno(ttypedef->get_lineno());
+  print_lineno(*ttypedef);
   print_type(ttypedef->get_type());
   print_node_annotations(
       *ttypedef, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
@@ -513,7 +516,7 @@ void t_json_generator::generate_typedef(const t_typedef* ttypedef) {
 void t_json_generator::generate_enum(const t_enum* tenum) {
   indent(f_out_) << "\"" << tenum->get_name() << "\" : {" << endl;
   indent_up();
-  print_lineno(tenum->get_lineno());
+  print_lineno(*tenum);
   print_node_annotations(
       *tenum, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
   indent(f_out_) << "\"constants\" : {" << endl;
@@ -559,7 +562,7 @@ void t_json_generator::generate_const(const t_const* tconst) {
   string name = tconst->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
-  print_lineno(tconst->get_lineno());
+  print_lineno(*tconst);
   indent(f_out_) << "\"value\" : ";
   print_const_value(tconst->get_value());
   f_out_ << "," << endl;
@@ -581,7 +584,7 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
   const string& name = tstruct->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
-  print_lineno(tstruct->get_lineno());
+  print_lineno(*tstruct);
   indent(f_out_) << "\"is_exception\" : "
                  << (tstruct->is_xception() ? "true" : "false") << "," << endl;
   indent(f_out_) << "\"is_union\" : "
@@ -626,10 +629,10 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
 /**
  * Exceptions are special structs
  *
- * @param tstruct The struct definition
+ * @param exception The struct definition
  */
-void t_json_generator::generate_xception(const t_struct* txception) {
-  generate_struct(txception);
+void t_json_generator::generate_xception(const t_struct* exception) {
+  generate_struct(exception);
 }
 
 /**
@@ -655,7 +658,7 @@ void t_json_generator::generate_service(const t_service* tservice) {
   if (!first) {
     f_out_ << "," << endl;
   }
-  print_lineno(tservice->get_lineno());
+  print_lineno(*tservice);
   print_node_annotations(
       *tservice, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
   vector<t_function*> functions = tservice->get_functions();
@@ -749,10 +752,9 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
 }
 
 /**
- * Prints source range information
- * of a given source_range class.
+ * Prints source range information of a given source_range class.
  *
- * @param range The source range
+ * @param range The source range.
  */
 void t_json_generator::print_source_range(const source_range& range) {
   auto source_mgr = context_.get_source_manager();

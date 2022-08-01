@@ -3,7 +3,7 @@
   "thrift_module" : "hack",
   "structs" : {
     "FieldWrapper" : {
-      "lineno" : 36,
+      "lineno" : 35,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -35,7 +35,7 @@
       }
     },
     "Adapter" : {
-      "lineno" : 52,
+      "lineno" : 50,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -67,7 +67,7 @@
       }
     },
     "SkipCodegen" : {
-      "lineno" : 59,
+      "lineno" : 57,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

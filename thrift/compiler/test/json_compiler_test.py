@@ -456,7 +456,7 @@ class JsonCompilerTest(unittest.TestCase):
                         },
                         "is_exception": False,
                         "is_union": False,
-                        "lineno": 6,
+                        "lineno": 5,
                         "annotations": {
                             "my_annotation_key": {
                                 "value": "my_annotation_value",

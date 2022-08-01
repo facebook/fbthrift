@@ -3,7 +3,7 @@
   "thrift_module" : "thrift",
   "structs" : {
     "Beta" : {
-      "lineno" : 33,
+      "lineno" : 31,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -21,7 +21,7 @@
       }
     },
     "Experimental" : {
-      "lineno" : 41,
+      "lineno" : 39,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -39,7 +39,7 @@
       }
     },
     "Testing" : {
-      "lineno" : 53,
+      "lineno" : 51,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -57,7 +57,7 @@
       }
     },
     "Deprecated" : {
-      "lineno" : 61,
+      "lineno" : 58,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -89,7 +89,7 @@
       }
     },
     "ReserveIds" : {
-      "lineno" : 80,
+      "lineno" : 78,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -136,7 +136,7 @@
       }
     },
     "Legacy" : {
-      "lineno" : 99,
+      "lineno" : 97,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -168,7 +168,7 @@
       }
     },
     "RequiresBackwardCompatibility" : {
-      "lineno" : 110,
+      "lineno" : 108,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -201,7 +201,7 @@
       }
     },
     "NoExperimental" : {
-      "lineno" : 117,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -219,7 +219,7 @@
       }
     },
     "NoBeta" : {
-      "lineno" : 122,
+      "lineno" : 120,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -237,7 +237,7 @@
       }
     },
     "NoLegacy" : {
-      "lineno" : 132,
+      "lineno" : 129,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -255,7 +255,7 @@
       }
     },
     "NoDeprecated" : {
-      "lineno" : 144,
+      "lineno" : 141,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -273,7 +273,7 @@
       }
     },
     "TerseWrite" : {
-      "lineno" : 169,
+      "lineno" : 164,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -291,7 +291,7 @@
       }
     },
     "Box" : {
-      "lineno" : 174,
+      "lineno" : 172,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -309,7 +309,7 @@
       }
     },
     "Mixin" : {
-      "lineno" : 179,
+      "lineno" : 177,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -327,7 +327,7 @@
       }
     },
     "SerializeInFieldIdOrder" : {
-      "lineno" : 189,
+      "lineno" : 187,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -345,7 +345,7 @@
       }
     },
     "GenDefaultEnumValue" : {
-      "lineno" : 205,
+      "lineno" : 202,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -378,7 +378,7 @@
       }
     },
     "v1" : {
-      "lineno" : 229,
+      "lineno" : 228,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -396,7 +396,7 @@
       }
     },
     "v1beta" : {
-      "lineno" : 242,
+      "lineno" : 238,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -414,7 +414,7 @@
       }
     },
     "v1alpha" : {
-      "lineno" : 256,
+      "lineno" : 251,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -432,7 +432,7 @@
       }
     },
     "v1test" : {
-      "lineno" : 267,
+      "lineno" : 262,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

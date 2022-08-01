@@ -521,7 +521,7 @@
       }
     },
     "MyDataPatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -568,7 +568,7 @@
       }
     },
     "MyDataValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -630,7 +630,7 @@
       }
     },
     "OptionalMyDataValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -707,7 +707,7 @@
       }
     },
     "InnerUnionPatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -739,7 +739,7 @@
       }
     },
     "InnerUnionValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -816,7 +816,7 @@
       }
     },
     "OptionalInnerUnionValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -893,7 +893,7 @@
       }
     },
     "MyUnionPatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -955,7 +955,7 @@
       }
     },
     "MyUnionValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1032,7 +1032,7 @@
       }
     },
     "OptionalMyUnionValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1109,7 +1109,7 @@
       }
     },
     "MyStructPatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1486,7 +1486,7 @@
       }
     },
     "MyStructField21Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1563,7 +1563,7 @@
       }
     },
     "OptionalMyStructField21Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1640,7 +1640,7 @@
       }
     },
     "MyStructField22Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1717,7 +1717,7 @@
       }
     },
     "OptionalMyStructField22Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1794,7 +1794,7 @@
       }
     },
     "MyStructField23Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1856,7 +1856,7 @@
       }
     },
     "OptionalMyStructField23Patch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1933,7 +1933,7 @@
       }
     },
     "MyStructValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -1995,7 +1995,7 @@
       }
     },
     "OptionalMyStructValuePatch" : {
-      "lineno" : 22,
+      "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

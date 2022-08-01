@@ -23,7 +23,7 @@
   },
   "structs" : {
     "Ref" : {
-      "lineno" : 34,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -55,7 +55,7 @@
       }
     },
     "Lazy" : {
-      "lineno" : 39,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -88,7 +88,7 @@
       }
     },
     "DisableLazyChecksum" : {
-      "lineno" : 45,
+      "lineno" : 44,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -106,7 +106,7 @@
       }
     },
     "Adapter" : {
-      "lineno" : 68,
+      "lineno" : 64,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -199,7 +199,7 @@
       }
     },
     "PackIsset" : {
-      "lineno" : 116,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -232,7 +232,7 @@
       }
     },
     "MinimizePadding" : {
-      "lineno" : 121,
+      "lineno" : 120,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -250,7 +250,7 @@
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 124,
+      "lineno" : 123,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -268,7 +268,7 @@
       }
     },
     "ScopedEnumAsUnionType" : {
-      "lineno" : 127,
+      "lineno" : 126,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -286,7 +286,7 @@
       }
     },
     "StrongType" : {
-      "lineno" : 145,
+      "lineno" : 143,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -304,7 +304,7 @@
       }
     },
     "FieldInterceptor" : {
-      "lineno" : 163,
+      "lineno" : 161,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

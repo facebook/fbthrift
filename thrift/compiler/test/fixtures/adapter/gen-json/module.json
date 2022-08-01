@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "constants" : {
     "var1" : {
-      "lineno" : 189,
+      "lineno" : 188,
       "value" : 10,
       "type_enum" : "I32",
       "spec_args" : null,
@@ -19,7 +19,7 @@
       }
     },
     "var2" : {
-      "lineno" : 192,
+      "lineno" : 191,
       "value" : "20",
       "type_enum" : "STRING",
       "spec_args" : null,
@@ -35,7 +35,7 @@
       }
     },
     "var3" : {
-      "lineno" : 199,
+      "lineno" : 198,
       "value" : { "field" : 30 },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
@@ -53,7 +53,7 @@
   },
   "typedefs" : {
     "SetWithAdapter" : {
-      "lineno" : 31,
+      "lineno" : 29,
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
       "source_range" : {
@@ -68,7 +68,7 @@
       }
     },
     "StringWithAdapter" : {
-      "lineno" : 34,
+      "lineno" : 32,
       "type_enum" : "STRING",
       "spec_args" : null,
       "source_range" : {
@@ -98,7 +98,7 @@
       }
     },
     "ListWithElemAdapter_withAdapter" : {
-      "lineno" : 38,
+      "lineno" : 36,
       "type_enum" : "TYPEDEF",
       "spec_args" : "ListWithElemAdapter",
       "source_range" : {
@@ -113,7 +113,7 @@
       }
     },
     "MyI64" : {
-      "lineno" : 45,
+      "lineno" : 40,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
@@ -143,7 +143,7 @@
       }
     },
     "MyI32" : {
-      "lineno" : 51,
+      "lineno" : 49,
       "type_enum" : "I32",
       "spec_args" : null,
       "source_range" : {
@@ -158,7 +158,7 @@
       }
     },
     "FooWithAdapter" : {
-      "lineno" : 106,
+      "lineno" : 104,
       "type_enum" : "STRUCT",
       "spec_args" : "Foo",
       "source_range" : {
@@ -173,7 +173,7 @@
       }
     },
     "StructWithAdapter" : {
-      "lineno" : 166,
+      "lineno" : 164,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Bar",
       "source_range" : {
@@ -188,7 +188,7 @@
       }
     },
     "UnionWithAdapter" : {
-      "lineno" : 170,
+      "lineno" : 168,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Baz",
       "source_range" : {
@@ -203,7 +203,7 @@
       }
     },
     "AdaptedA" : {
-      "lineno" : 176,
+      "lineno" : 175,
       "type_enum" : "STRUCT",
       "spec_args" : "A",
       "source_range" : {
@@ -617,7 +617,7 @@
       }
     },
     "DirectlyAdapted" : {
-      "lineno" : 133,
+      "lineno" : 128,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

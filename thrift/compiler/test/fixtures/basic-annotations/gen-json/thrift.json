@@ -3,7 +3,7 @@
   "thrift_module" : "thrift",
   "structs" : {
     "Beta" : {
-      "lineno" : 33,
+      "lineno" : 31,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -25,7 +25,7 @@
       }
     },
     "Experimental" : {
-      "lineno" : 41,
+      "lineno" : 39,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -47,7 +47,7 @@
       }
     },
     "Testing" : {
-      "lineno" : 53,
+      "lineno" : 51,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -69,7 +69,7 @@
       }
     },
     "Deprecated" : {
-      "lineno" : 61,
+      "lineno" : 58,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -106,7 +106,7 @@
       }
     },
     "ReserveIds" : {
-      "lineno" : 80,
+      "lineno" : 78,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -157,7 +157,7 @@
       }
     },
     "Legacy" : {
-      "lineno" : 99,
+      "lineno" : 97,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -193,7 +193,7 @@
       }
     },
     "RequiresBackwardCompatibility" : {
-      "lineno" : 110,
+      "lineno" : 108,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -230,7 +230,7 @@
       }
     },
     "NoExperimental" : {
-      "lineno" : 117,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -252,7 +252,7 @@
       }
     },
     "NoBeta" : {
-      "lineno" : 122,
+      "lineno" : 120,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -274,7 +274,7 @@
       }
     },
     "NoLegacy" : {
-      "lineno" : 132,
+      "lineno" : 129,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -297,7 +297,7 @@
       }
     },
     "NoDeprecated" : {
-      "lineno" : 144,
+      "lineno" : 141,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -320,7 +320,7 @@
       }
     },
     "TerseWrite" : {
-      "lineno" : 169,
+      "lineno" : 164,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -345,7 +345,7 @@
       }
     },
     "Box" : {
-      "lineno" : 174,
+      "lineno" : 172,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -367,7 +367,7 @@
       }
     },
     "Mixin" : {
-      "lineno" : 179,
+      "lineno" : 177,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -389,7 +389,7 @@
       }
     },
     "SerializeInFieldIdOrder" : {
-      "lineno" : 189,
+      "lineno" : 187,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -411,7 +411,7 @@
       }
     },
     "GenDefaultEnumValue" : {
-      "lineno" : 205,
+      "lineno" : 202,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -449,7 +449,7 @@
       }
     },
     "v1" : {
-      "lineno" : 229,
+      "lineno" : 228,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -470,7 +470,7 @@
       }
     },
     "v1beta" : {
-      "lineno" : 242,
+      "lineno" : 238,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -494,7 +494,7 @@
       }
     },
     "v1alpha" : {
-      "lineno" : 256,
+      "lineno" : 251,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -519,7 +519,7 @@
       }
     },
     "v1test" : {
-      "lineno" : 267,
+      "lineno" : 262,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {

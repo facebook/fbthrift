@@ -20,7 +20,7 @@
       }
     },
     "HackEnum" : {
-      "lineno" : 62,
+      "lineno" : 61,
       "constants" : {
         "Value1" : 0,
         "Value2" : 1
@@ -286,7 +286,7 @@
       }
     },
     "ReservedKeyword" : {
-      "lineno" : 56,
+      "lineno" : 55,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -318,7 +318,7 @@
       }
     },
     "UnionToBeRenamed" : {
-      "lineno" : 69,
+      "lineno" : 68,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -352,7 +352,7 @@
   },
   "services" : {
     "FooService" : {
-      "lineno" : 75,
+      "lineno" : 74,
       "functions" : {
         "FooService.simple_rpc" : {
           "return_type" : {

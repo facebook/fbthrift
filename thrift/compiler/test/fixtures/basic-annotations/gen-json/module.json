@@ -56,7 +56,7 @@
   },
   "typedefs" : {
     "MyId" : {
-      "lineno" : 29,
+      "lineno" : 28,
       "type_enum" : "I16",
       "spec_args" : null,
       "structured_annotations" : {
@@ -108,7 +108,7 @@
       }
     },
     "MyUnion" : {
-      "lineno" : 36,
+      "lineno" : 35,
       "is_exception" : false,
       "is_union" : true,
       "annotations" : {
@@ -144,7 +144,7 @@
       }
     },
     "MyException" : {
-      "lineno" : 38,
+      "lineno" : 37,
       "is_exception" : true,
       "is_union" : false,
       "annotations" : {
@@ -180,7 +180,7 @@
       }
     },
     "MyStruct" : {
-      "lineno" : 42,
+      "lineno" : 41,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
