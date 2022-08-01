@@ -189,8 +189,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::string explain() const;
   };
 
-  // used to disable resource pool at run time
-  // should only be used by thrift team
+  // Used to disable resource pool at run time. This
+  // should only be used by thrift team.
   void runtimeDisableResourcePoolsDeprecated() {
     if (runtimeServerActions_.resourcePoolRuntimeDisabled) {
       return;
@@ -202,7 +202,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     runtimeServerActions_.resourcePoolRuntimeDisabled = true;
   }
 
-  // used to enable resource pool at run time
+  // Used to enable resource pool at run time. If resource
+  // pools cannot be enabled (due to run-time conditions) the
+  // process will be aborted during server startup.
   void requireResourcePools() {
     if (runtimeServerActions_.resourcePoolRuntimeRequested) {
       return;
@@ -230,6 +232,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       bool runtimeDisabled = runtimeServerActions_.resourcePoolRuntimeDisabled;
       runtimeServerActions_.resourcePoolEnabled =
           (flagSet || runtimeRequested) && !runtimeDisabled;
+
+      // Enforce requireResourcePools.
+      if (runtimeServerActions_.resourcePoolRuntimeRequested &&
+          !runtimeServerActions_.resourcePoolEnabled) {
+        LOG(FATAL) << "requireResourcePools() failed "
+                   << runtimeServerActions_.explain();
+      }
     }
 
     return runtimeServerActions_.resourcePoolEnabled;
