@@ -847,7 +847,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node serialization_next_field_type() {
     assert(field_context_ && field_context_->serialization_next);
     return field_context_->serialization_next
-        ? generators_->type_generator_->generate(
+        ? generators_->type_factory->generate(
               field_context_->serialization_next->get_type(),
               generators_,
               cache_,
@@ -2049,12 +2049,12 @@ class mstch_cpp2_program : public mstch_program {
         std::back_inserter(ret),
         [&](const t_type* node) -> mstch::node {
           if (auto typedf = dynamic_cast<t_typedef const*>(node)) {
-            return generators_->typedef_generator_->generate(
+            return generators_->typedef_factory->generate(
                 typedf, generators_, cache_);
           } else {
             return generate_element_cached(
                 static_cast<t_struct const*>(node),
-                generators_->struct_generator_.get(),
+                generators_->struct_factory.get(),
                 cache_->structs_,
                 id,
                 0,
@@ -2099,9 +2099,9 @@ class mstch_cpp2_program : public mstch_program {
   }
 };
 
-class typedef_cpp2_generator : public typedef_generator {
+class cpp2_typedef_factory : public mstch_typedef_factory {
  public:
-  explicit typedef_cpp2_generator(
+  explicit cpp2_typedef_factory(
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
@@ -2119,9 +2119,9 @@ class typedef_cpp2_generator : public typedef_generator {
   std::shared_ptr<cpp2_generator_context> context_;
 };
 
-class type_cpp2_generator : public type_generator {
+class cpp2_type_factory : public mstch_type_factory {
  public:
-  explicit type_cpp2_generator(
+  explicit cpp2_type_factory(
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
@@ -2139,9 +2139,28 @@ class type_cpp2_generator : public type_generator {
   std::shared_ptr<cpp2_generator_context> context_;
 };
 
-class field_cpp2_generator : public field_generator {
+class cpp2_struct_factory : public mstch_struct_factory {
  public:
-  explicit field_cpp2_generator(
+  explicit cpp2_struct_factory(std::shared_ptr<cpp2_generator_context> context)
+      : context_(std::move(context)) {}
+
+  std::shared_ptr<mstch_base> generate(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_cpp2_struct>(
+        strct, std::move(generators), std::move(cache), pos, context_);
+  }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
+};
+
+class cpp2_field_factory : public mstch_field_factory {
+ public:
+  explicit cpp2_field_factory(
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
@@ -2179,26 +2198,6 @@ class function_cpp2_generator : public function_generator {
     return std::make_shared<mstch_cpp2_function>(
         function, std::move(generators), std::move(cache), pos);
   }
-};
-
-class struct_cpp2_generator : public struct_generator {
- public:
-  explicit struct_cpp2_generator(
-      std::shared_ptr<cpp2_generator_context> context)
-      : context_(std::move(context)) {}
-  ~struct_cpp2_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_struct>(
-        strct, std::move(generators), std::move(cache), pos, context_);
-  }
-
- private:
-  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class service_cpp2_generator : public service_generator {
@@ -2384,18 +2383,15 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
+  generators_->typedef_factory =
+      std::make_unique<cpp2_typedef_factory>(context_);
+  generators_->type_factory = std::make_unique<cpp2_type_factory>(context_);
+  generators_->struct_factory = std::make_unique<cpp2_struct_factory>(context_);
+  generators_->field_factory = std::make_unique<cpp2_field_factory>(context_);
   generators_->set_enum_factory<mstch_cpp2_enum>();
   generators_->set_enum_value_factory<mstch_cpp2_enum_value>();
-  generators_->set_type_generator(
-      std::make_unique<type_cpp2_generator>(context_));
-  generators_->set_typedef_generator(
-      std::make_unique<typedef_cpp2_generator>(context_));
-  generators_->set_field_generator(
-      std::make_unique<field_cpp2_generator>(context_));
   generators_->set_function_generator(
       std::make_unique<function_cpp2_generator>());
-  generators_->set_struct_generator(
-      std::make_unique<struct_cpp2_generator>(context_));
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());
   generators_->set_interaction_generator(

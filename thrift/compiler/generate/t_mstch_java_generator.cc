@@ -1149,20 +1149,6 @@ class program_java_generator : public program_generator {
   }
 };
 
-class struct_java_generator : public struct_generator {
- public:
-  explicit struct_java_generator() = default;
-  ~struct_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_struct>(strct, generators, cache, pos);
-  }
-};
-
 class service_java_generator : public service_generator {
  public:
   explicit service_java_generator() = default;
@@ -1190,36 +1176,6 @@ class function_java_generator : public function_generator {
       int32_t /*index*/) const override {
     return std::make_shared<mstch_java_function>(
         function, generators, cache, pos);
-  }
-};
-
-class field_java_generator : public field_generator {
- public:
-  field_java_generator() = default;
-  ~field_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      field_generator_context const* field_context) const override {
-    return std::make_shared<mstch_java_field>(
-        field, generators, cache, pos, index, field_context);
-  }
-};
-
-class type_java_generator : public type_generator {
- public:
-  type_java_generator() = default;
-  ~type_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_type>(type, generators, cache, pos);
   }
 };
 
@@ -1284,7 +1240,7 @@ void t_mstch_java_generator::generate_program() {
   str_type_list = "";
   type_list_hash = "";
   generate_items(
-      generators_->struct_generator_.get(),
+      generators_->struct_factory.get(),
       cache_->structs_,
       get_program(),
       get_program()->objects(),
@@ -1313,15 +1269,15 @@ void t_mstch_java_generator::generate_program() {
 void t_mstch_java_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_java_generator>());
-  generators_->set_struct_generator(std::make_unique<struct_java_generator>());
+  generators_->set_type_factory<mstch_java_type>();
+  generators_->set_struct_factory<mstch_java_struct>();
+  generators_->set_field_factory<mstch_java_field>();
+  generators_->set_enum_factory<mstch_java_enum>();
+  generators_->set_enum_value_factory<mstch_java_enum_value>();
   generators_->set_service_generator(
       std::make_unique<service_java_generator>());
   generators_->set_function_generator(
       std::make_unique<function_java_generator>());
-  generators_->set_field_generator(std::make_unique<field_java_generator>());
-  generators_->set_enum_factory<mstch_java_enum>();
-  generators_->set_enum_value_factory<mstch_java_enum_value>();
-  generators_->set_type_generator(std::make_unique<type_java_generator>());
   generators_->set_const_generator(std::make_unique<const_java_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_java_generator>());

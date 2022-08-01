@@ -293,21 +293,6 @@ class json_experimental_struct : public mstch_struct {
   mstch::node get_docstring() { return json_quote_ascii(strct_->get_doc()); }
 };
 
-class struct_json_experimental_generator : public struct_generator {
- public:
-  struct_json_experimental_generator() = default;
-  ~struct_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_struct>(
-        strct, generators, cache, pos);
-  }
-};
-
 class json_experimental_service : public mstch_service {
  public:
   json_experimental_service(
@@ -407,22 +392,6 @@ class json_experimental_field : public mstch_field {
   mstch::node get_docstring() { return json_quote_ascii(field_->get_doc()); }
 };
 
-class field_json_experimental_generator : public field_generator {
- public:
-  field_json_experimental_generator() = default;
-  ~field_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      field_generator_context const* field_context) const override {
-    return std::make_shared<json_experimental_field>(
-        field, generators, cache, pos, index, field_context);
-  }
-};
-
 void t_json_experimental_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
@@ -436,14 +405,12 @@ void t_json_experimental_generator::generate_program() {
 void t_json_experimental_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_json_experimental_generator>());
+  generators_->set_struct_factory<json_experimental_struct>();
+  generators_->set_field_factory<json_experimental_field>();
   generators_->set_enum_factory<json_experimental_enum>();
   generators_->set_enum_value_factory<json_experimental_enum_value>();
   generators_->set_const_value_generator(
       std::make_unique<const_value_json_experimental_generator>());
-  generators_->set_struct_generator(
-      std::make_unique<struct_json_experimental_generator>());
-  generators_->set_field_generator(
-      std::make_unique<field_json_experimental_generator>());
   generators_->set_service_generator(
       std::make_unique<service_json_experimental_generator>());
   generators_->set_function_generator(

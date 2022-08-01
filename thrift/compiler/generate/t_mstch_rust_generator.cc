@@ -303,7 +303,6 @@ FieldKind field_kind(const t_named& node) {
 bool has_nonstandard_type_annotation(const t_type* type) {
   return type->get_annotation("rust.type").find("::") != string::npos;
 }
-} // namespace
 
 class t_mstch_rust_generator : public t_mstch_generator {
  public:
@@ -1554,19 +1553,96 @@ class program_rust_generator : public program_generator {
   const rust_codegen_options& options_;
 };
 
-class struct_rust_generator : public struct_generator {
+class rust_type_factory : public mstch_type_factory {
  public:
-  explicit struct_rust_generator(const rust_codegen_options& options)
+  explicit rust_type_factory(const rust_codegen_options& options)
       : options_(options) {}
-  ~struct_rust_generator() override = default;
+
   std::shared_ptr<mstch_base> generate(
-      const t_struct* strct,
+      const t_type* type,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_rust_type>(
+        type, generators, cache, pos, options_);
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class rust_typedef_factory : public mstch_typedef_factory {
+ public:
+  explicit rust_typedef_factory(const rust_codegen_options& options)
+      : options_(options) {}
+
+  std::shared_ptr<mstch_base> generate(
+      const t_typedef* typedf,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
+    return std::make_shared<mstch_rust_typedef>(
+        typedf, generators, cache, pos, options_);
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class rust_struct_factory : public mstch_struct_factory {
+ public:
+  explicit rust_struct_factory(const rust_codegen_options& options)
+      : options_(options) {}
+
+  std::shared_ptr<mstch_base> generate(
+      const t_struct* s,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_struct>(
-        strct, generators, cache, pos, options_);
+        s, generators, cache, pos, options_);
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class rust_field_factory : public mstch_field_factory {
+ public:
+  explicit rust_field_factory(const rust_codegen_options& options)
+      : options_(options) {}
+
+  std::shared_ptr<mstch_base> generate(
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index,
+      field_generator_context const* context = nullptr) const override {
+    return std::make_shared<mstch_rust_field>(
+        field, generators, cache, pos, index, context, options_);
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class rust_enum_factory : public mstch_enum_factory {
+ public:
+  explicit rust_enum_factory(const rust_codegen_options& options)
+      : options_(options) {}
+
+  std::shared_ptr<mstch_base> generate(
+      const t_enum* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_rust_enum>(
+        enm, generators, cache, pos, options_);
   }
 
  private:
@@ -1613,64 +1689,6 @@ mstch::node mstch_rust_service::rust_functions() {
       service_->get_functions(), &function_generator, function_upcamel_names_);
 }
 
-class field_rust_generator : public field_generator {
- public:
-  explicit field_rust_generator(const rust_codegen_options& options)
-      : options_(options) {}
-
-  std::shared_ptr<mstch_base> generate(
-      const t_field* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      field_generator_context const* field_context = nullptr) const override {
-    return std::make_shared<mstch_rust_field>(
-        field, generators, cache, pos, index, field_context, options_);
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
-class rust_enum_factory : public enum_factory {
- public:
-  explicit rust_enum_factory(const rust_codegen_options& options)
-      : options_(options) {}
-  ~rust_enum_factory() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_enum* enm,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_enum>(
-        enm, generators, cache, pos, options_);
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
-class type_rust_generator : public type_generator {
- public:
-  explicit type_rust_generator(const rust_codegen_options& options)
-      : options_(options) {}
-  ~type_rust_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_type* type,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_type>(
-        type, generators, cache, pos, options_);
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
 struct name_less {
   bool operator()(const t_type* lhs, const t_type* rhs) const {
     return lhs->get_scoped_name() < rhs->get_scoped_name();
@@ -1691,8 +1709,8 @@ mstch::node mstch_rust_service::rust_all_exceptions() {
   mstch::array output;
   for (const auto& funcs : function_map) {
     mstch::map data;
-    type_rust_generator gen(options_);
-    data["rust_exception:type"] = gen.generate(
+    rust_type_factory factory(options_);
+    data["rust_exception:type"] = factory.generate(
         funcs.first, generators_, cache_, ELEMENT_POSITION::NONE, 0);
 
     function_rust_generator function_generator;
@@ -1746,25 +1764,6 @@ class const_rust_generator : public const_generator {
   const rust_codegen_options& options_;
 };
 
-class typedef_rust_generator : public typedef_generator {
- public:
-  explicit typedef_rust_generator(const rust_codegen_options& options)
-      : options_(options) {}
-  ~typedef_rust_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_typedef* typedf,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_typedef>(
-        typedf, generators, cache, pos, options_);
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
 class annotation_rust_generator : public annotation_generator {
  public:
   std::shared_ptr<mstch_base> generate(
@@ -1791,20 +1790,17 @@ void t_mstch_rust_generator::generate_program() {
 void t_mstch_rust_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_rust_generator>(options_));
-  generators_->set_struct_generator(
-      std::make_unique<struct_rust_generator>(options_));
-  generators_->set_service_generator(
-      std::make_unique<service_rust_generator>(options_));
-  generators_->set_field_generator(
-      std::make_unique<field_rust_generator>(options_));
+  generators_->type_factory = std::make_unique<rust_type_factory>(options_);
+  generators_->typedef_factory =
+      std::make_unique<rust_typedef_factory>(options_);
+  generators_->struct_factory = std::make_unique<rust_struct_factory>(options_);
+  generators_->field_factory = std::make_unique<rust_field_factory>(options_);
   generators_->enum_factory = std::make_unique<rust_enum_factory>(options_);
   generators_->set_enum_value_factory<mstch_rust_enum_value>();
-  generators_->set_type_generator(
-      std::make_unique<type_rust_generator>(options_));
+  generators_->set_service_generator(
+      std::make_unique<service_rust_generator>(options_));
   generators_->set_const_generator(
       std::make_unique<const_rust_generator>(options_));
-  generators_->set_typedef_generator(
-      std::make_unique<typedef_rust_generator>(options_));
   generators_->set_annotation_generator(
       std::make_unique<annotation_rust_generator>());
 }
@@ -1904,6 +1900,8 @@ THRIFT_REGISTER_GENERATOR(
     "    include_prefix=: Set program:include_prefix.\n"
     "    include_srcs=:   Additional Rust source file to include in output, `:` separated\n"
     "    cratemap=map:    Mapping file from services to crate names\n");
+
+} // namespace
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

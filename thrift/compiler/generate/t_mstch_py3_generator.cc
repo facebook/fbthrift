@@ -344,9 +344,9 @@ class mstch_py3_type : public mstch_type {
 };
 
 template <bool ForContainers = false>
-class type_py3_generator : public type_generator {
+class py3_type_factory : public mstch_type_factory {
  public:
-  explicit type_py3_generator(const t_program* prog) : prog_{prog} {}
+  explicit py3_type_factory(const t_program* prog) : prog_{prog} {}
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
       std::shared_ptr<const mstch_generators> generators,
@@ -408,8 +408,8 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node getContainerTypes() {
-    type_py3_generator<true> generator{program_};
-    return generate_elements(containers_, &generator);
+    py3_type_factory<true> factory(program_);
+    return generate_elements(containers_, &factory);
   }
 
   mstch::node getCppIncludes() {
@@ -610,7 +610,7 @@ class mstch_py3_program : public mstch_program {
       const t_type* orig_type, TypeDef isTypedef) {
     auto trueType = orig_type->get_true_type();
     auto baseType =
-        generators_->type_generator_->generate(trueType, generators_, cache_);
+        generators_->type_factory->generate(trueType, generators_, cache_);
     mstch_py3_type* type = dynamic_cast<mstch_py3_type*>(baseType.get());
     const std::string& flatName = type->get_flat_name();
     // Import all types either beneath a typedef, even if the current type is
@@ -1170,18 +1170,6 @@ class program_py3_generator : public program_generator {
       typePropsCache;
 };
 
-class struct_py3_generator : public struct_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_py3_struct>(strct, generators, cache, pos);
-  }
-};
-
 class function_py3_generator : public function_generator {
  public:
   function_py3_generator() = default;
@@ -1212,20 +1200,6 @@ class service_py3_generator : public service_generator {
 
  protected:
   const t_program* prog_;
-};
-
-class field_py3_generator : public field_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      field_generator_context const* field_context) const override {
-    return std::make_shared<mstch_py3_field>(
-        field, generators, cache, pos, index, field_context);
-  }
 };
 
 class annotation_py3_generator : public annotation_generator {
@@ -1366,7 +1340,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 } // namespace
 
 template <bool ForContainers>
-std::shared_ptr<mstch_base> type_py3_generator<ForContainers>::generate(
+std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
     const t_type* type,
     std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
@@ -1393,16 +1367,16 @@ std::shared_ptr<mstch_base> type_py3_generator<ForContainers>::generate(
 
 void t_mstch_py3_generator::set_mstch_generators() {
   generators_->set_program_generator(std::make_unique<program_py3_generator>());
-  generators_->set_struct_generator(std::make_unique<struct_py3_generator>());
+  generators_->type_factory =
+      std::make_unique<py3_type_factory<false>>(program_);
+  generators_->set_struct_factory<mstch_py3_struct>();
+  generators_->set_field_factory<mstch_py3_field>();
+  generators_->set_enum_factory<mstch_py3_enum>();
+  generators_->set_enum_value_factory<mstch_py3_enum_value>();
   generators_->set_function_generator(
       std::make_unique<function_py3_generator>());
   generators_->set_service_generator(
       std::make_unique<service_py3_generator>(get_program()));
-  generators_->set_field_generator(std::make_unique<field_py3_generator>());
-  generators_->set_enum_factory<mstch_py3_enum>();
-  generators_->set_enum_value_factory<mstch_py3_enum_value>();
-  generators_->set_type_generator(
-      std::make_unique<type_py3_generator<false>>(get_program()));
   generators_->set_annotation_generator(
       std::make_unique<annotation_py3_generator>());
 }

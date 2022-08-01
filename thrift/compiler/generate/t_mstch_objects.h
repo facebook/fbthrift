@@ -60,54 +60,68 @@ struct mstch_cache {
   }
 };
 
-class enum_factory {
- public:
-  virtual ~enum_factory() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      const t_enum* e,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const = 0;
+struct field_generator_context {
+  const t_struct* strct = nullptr;
+  const t_field* serialization_prev = nullptr;
+  const t_field* serialization_next = nullptr;
+  int isset_index = -1;
 };
 
-class enum_value_factory {
+// A factory that creates an mstch node for an AST node of type Node.
+template <typename Node, typename... Args>
+class mstch_factory {
  public:
-  virtual ~enum_value_factory() = default;
+  using node_type = Node;
+
+  virtual ~mstch_factory() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      const t_enum_value* ev,
+      const Node* node,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const = 0;
+      int32_t index = 0,
+      Args...) const = 0;
 };
+
+using mstch_type_factory = mstch_factory<t_type>;
+using mstch_typedef_factory = mstch_factory<t_typedef>;
+using mstch_struct_factory = mstch_factory<t_struct>;
+using mstch_field_factory =
+    mstch_factory<t_field, const field_generator_context*>;
+using mstch_enum_factory = mstch_factory<t_enum>;
+using mstch_enum_value_factory = mstch_factory<t_enum_value>;
 
 namespace detail {
-template <typename T>
-class enum_factory_impl : public enum_factory {
+
+// A factory implementation without an index or extra arguments.
+template <typename MstchNode, typename Base>
+class basic_factory_impl : public Base {
  public:
   std::shared_ptr<mstch_base> generate(
-      const t_enum* e,
+      const typename Base::node_type* node,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<T>(e, generators, cache, pos);
+      int32_t) const override {
+    return std::make_shared<MstchNode>(node, generators, cache, pos);
   }
 };
 
-template <typename T>
-class enum_value_factory_impl : public enum_value_factory {
+template <typename MstchNode, typename Base, typename... Args>
+class factory_impl : public Base {
  public:
   std::shared_ptr<mstch_base> generate(
-      const t_enum_value* ev,
+      const typename Base::node_type* node,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<T>(ev, generators, cache, pos);
+      int32_t index,
+      Args... args) const override {
+    return std::make_shared<MstchNode>(
+        node, generators, cache, pos, index, args...);
   }
 };
+
 } // namespace detail
 
 class const_value_generator {
@@ -133,38 +147,6 @@ class const_value_generator {
           nullptr, nullptr}) const;
 };
 
-class type_generator {
- public:
-  type_generator() = default;
-  virtual ~type_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-};
-
-struct field_generator_context {
-  const t_struct* strct = nullptr;
-  const t_field* serialization_prev = nullptr;
-  const t_field* serialization_next = nullptr;
-  int isset_index = -1;
-};
-
-class field_generator {
- public:
-  field_generator() = default;
-  virtual ~field_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0,
-      field_generator_context const* field_context = nullptr) const;
-};
-
 class annotation_generator {
  public:
   annotation_generator() = default;
@@ -183,18 +165,6 @@ class structured_annotation_generator {
   virtual ~structured_annotation_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
       const t_const* annotValue,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-};
-
-class struct_generator {
- public:
-  struct_generator() = default;
-  virtual ~struct_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
@@ -254,18 +224,6 @@ class interaction_generator {
       t_service const* containing_service) const = 0;
 };
 
-class typedef_generator {
- public:
-  typedef_generator() = default;
-  virtual ~typedef_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-};
-
 class const_generator {
  public:
   const_generator() = default;
@@ -309,36 +267,76 @@ class program_generator {
 };
 
 struct mstch_generators {
+  std::unique_ptr<mstch_type_factory> type_factory;
+  std::unique_ptr<mstch_typedef_factory> typedef_factory;
+  std::unique_ptr<mstch_struct_factory> struct_factory;
+  std::unique_ptr<mstch_field_factory> field_factory;
+  std::unique_ptr<mstch_enum_factory> enum_factory;
+  std::unique_ptr<mstch_enum_value_factory> enum_value_factory;
+
+  std::unique_ptr<const_value_generator> const_value_generator_ =
+      std::make_unique<const_value_generator>();
+  std::unique_ptr<annotation_generator> annotation_generator_ =
+      std::make_unique<annotation_generator>();
+  std::unique_ptr<structured_annotation_generator>
+      structured_annotation_generator_ =
+          std::make_unique<structured_annotation_generator>();
+  std::unique_ptr<function_generator> function_generator_ =
+      std::make_unique<function_generator>();
+  std::unique_ptr<service_generator> service_generator_ =
+      std::make_unique<service_generator>();
+  std::unique_ptr<interaction_generator> interaction_generator_;
+  std::unique_ptr<const_generator> const_generator_ =
+      std::make_unique<const_generator>();
+  std::unique_ptr<program_generator> program_generator_ =
+      std::make_unique<program_generator>();
+
   mstch_generators();
 
-  template <typename T>
-  void set_enum_factory() {
-    enum_factory = std::make_unique<detail::enum_factory_impl<T>>();
+  template <typename MstchNode>
+  void set_type_factory() {
+    type_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_type_factory>>();
   }
 
-  template <typename T>
+  template <typename MstchNode>
+  void set_typedef_factory() {
+    typedef_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_typedef_factory>>();
+  }
+
+  template <typename MstchNode>
+  void set_struct_factory() {
+    struct_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_struct_factory>>();
+  }
+
+  template <typename MstchNode>
+  void set_field_factory() {
+    field_factory = std::make_unique<detail::factory_impl<
+        MstchNode,
+        mstch_field_factory,
+        const field_generator_context*>>();
+  }
+
+  template <typename MstchNode>
+  void set_enum_factory() {
+    enum_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_enum_factory>>();
+  }
+
+  template <typename MstchNode>
   void set_enum_value_factory() {
-    enum_value_factory = std::make_unique<detail::enum_value_factory_impl<T>>();
+    enum_value_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_enum_value_factory>>();
   }
 
   void set_const_value_generator(std::unique_ptr<const_value_generator> g) {
     const_value_generator_ = std::move(g);
   }
 
-  void set_type_generator(std::unique_ptr<type_generator> g) {
-    type_generator_ = std::move(g);
-  }
-
-  void set_field_generator(std::unique_ptr<field_generator> g) {
-    field_generator_ = std::move(g);
-  }
-
   void set_annotation_generator(std::unique_ptr<annotation_generator> g) {
     annotation_generator_ = std::move(g);
-  }
-
-  void set_struct_generator(std::unique_ptr<struct_generator> g) {
-    struct_generator_ = std::move(g);
   }
 
   void set_function_generator(std::unique_ptr<function_generator> g) {
@@ -353,10 +351,6 @@ struct mstch_generators {
     interaction_generator_ = std::move(g);
   }
 
-  void set_typedef_generator(std::unique_ptr<typedef_generator> g) {
-    typedef_generator_ = std::move(g);
-  }
-
   void set_const_generator(std::unique_ptr<const_generator> g) {
     const_generator_ = std::move(g);
   }
@@ -364,33 +358,6 @@ struct mstch_generators {
   void set_program_generator(std::unique_ptr<program_generator> g) {
     program_generator_ = std::move(g);
   }
-
-  std::unique_ptr<compiler::enum_factory> enum_factory;
-  std::unique_ptr<compiler::enum_value_factory> enum_value_factory;
-  std::unique_ptr<const_value_generator> const_value_generator_ =
-      std::make_unique<const_value_generator>();
-  std::unique_ptr<type_generator> type_generator_ =
-      std::make_unique<type_generator>();
-  std::unique_ptr<field_generator> field_generator_ =
-      std::make_unique<field_generator>();
-  std::unique_ptr<annotation_generator> annotation_generator_ =
-      std::make_unique<annotation_generator>();
-  std::unique_ptr<structured_annotation_generator>
-      structured_annotation_generator_ =
-          std::make_unique<structured_annotation_generator>();
-  std::unique_ptr<struct_generator> struct_generator_ =
-      std::make_unique<struct_generator>();
-  std::unique_ptr<function_generator> function_generator_ =
-      std::make_unique<function_generator>();
-  std::unique_ptr<service_generator> service_generator_ =
-      std::make_unique<service_generator>();
-  std::unique_ptr<interaction_generator> interaction_generator_;
-  std::unique_ptr<typedef_generator> typedef_generator_ =
-      std::make_unique<typedef_generator>();
-  std::unique_ptr<const_generator> const_generator_ =
-      std::make_unique<const_generator>();
-  std::unique_ptr<program_generator> program_generator_ =
-      std::make_unique<program_generator>();
 };
 
 class mstch_base : public mstch::object {
@@ -522,7 +489,7 @@ class mstch_base : public mstch::object {
   }
 
   virtual mstch::array generate_fields(const field_range& fields) {
-    return generate_elements(fields, generators_->field_generator_.get());
+    return generate_elements(fields, generators_->field_factory.get(), nullptr);
   }
 
   template <typename C, typename... Args>
@@ -534,13 +501,13 @@ class mstch_base : public mstch::object {
   template <typename C, typename... Args>
   mstch::array generate_typedefs(C const& container, Args const&... args) {
     return generate_elements(
-        container, generators_->typedef_generator_.get(), args...);
+        container, generators_->typedef_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
   mstch::array generate_types(C const& container, Args const&... args) {
     return generate_elements(
-        container, generators_->type_generator_.get(), args...);
+        container, generators_->type_factory.get(), args...);
   }
 
   template <typename Item, typename Generator, typename Cache>
@@ -1114,7 +1081,7 @@ class mstch_struct : public mstch_base {
     size_t i = 0;
     for (const auto* field : fields) {
       auto pos = element_position(i, fields.size());
-      a.push_back(generators_->field_generator_.get()->generate(
+      a.push_back(generators_->field_factory.get()->generate(
           field, generators_, cache_, pos, i, &context_map[field]));
       ++i;
     }

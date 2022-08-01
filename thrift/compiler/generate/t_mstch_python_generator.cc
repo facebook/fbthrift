@@ -98,19 +98,6 @@ class mstch_python_typedef : public mstch_typedef {
   const t_const* adapter_annotation_;
 };
 
-class typedef_python_generator : public typedef_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_python_typedef>(
-        typedf, std::move(generators), std::move(cache), pos);
-  }
-};
-
 class mstch_python_type : public mstch_type {
  public:
   mstch_python_type(
@@ -280,7 +267,7 @@ class mstch_python_const_value : public mstch_const_value {
     }
     const auto* type = const_value_->ttype()->get_true_type();
     if (type->is_enum()) {
-      return generators_->type_generator_->generate(type, generators_, cache_);
+      return generators_->type_factory->generate(type, generators_, cache_);
     }
     return {};
   }
@@ -348,7 +335,7 @@ class mstch_python_const_value : public mstch_const_value {
       } else {
         return {};
       }
-      return generators_->type_generator_->generate(
+      return generators_->type_factory->generate(
           elem_type, generators_, cache_, pos_);
     }
     return {};
@@ -365,7 +352,7 @@ class mstch_python_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return generators_->type_generator_->generate(
+        return generators_->type_factory->generate(
             dynamic_cast<const t_map*>(type)->get_key_type(),
             generators_,
             cache_,
@@ -379,7 +366,7 @@ class mstch_python_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return generators_->type_generator_->generate(
+        return generators_->type_factory->generate(
             dynamic_cast<const t_map*>(type)->get_val_type(),
             generators_,
             cache_,
@@ -390,9 +377,9 @@ class mstch_python_const_value : public mstch_const_value {
   }
 };
 
-class type_python_generator : public type_generator {
+class python_type_factory : public mstch_type_factory {
  public:
-  explicit type_python_generator(const t_program* prog) : prog_{prog} {}
+  explicit python_type_factory(const t_program* prog) : prog_{prog} {}
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
       std::shared_ptr<const mstch_generators> generators,
@@ -843,18 +830,6 @@ class program_python_generator : public program_generator {
   }
 };
 
-class struct_python_generator : public struct_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_python_struct>(strct, generators, cache, pos);
-  }
-};
-
 class mstch_python_function : public mstch_function {
  public:
   mstch_python_function(
@@ -889,7 +864,7 @@ class mstch_python_function : public mstch_function {
       rettype = stream->has_first_response() ? stream->get_first_response_type()
                                              : &t_base_type::t_void();
     }
-    return generators_->type_generator_->generate(
+    return generators_->type_factory->generate(
         rettype, generators_, cache_, pos_);
   }
 
@@ -901,7 +876,7 @@ class mstch_python_function : public mstch_function {
     if (!rettype->is_streamresponse()) {
       return {};
     }
-    return generators_->type_generator_->generate(
+    return generators_->type_factory->generate(
         dynamic_cast<const t_stream_response*>(rettype)->get_elem_type(),
         generators_,
         cache_,
@@ -1014,20 +989,6 @@ class service_python_generator : public service_generator {
 
  protected:
   const t_program* prog_;
-};
-
-class field_python_generator : public field_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      field_generator_context const* field_context) const override {
-    return std::make_shared<mstch_python_field>(
-        field, generators, cache, pos, index, field_context);
-  }
 };
 
 class const_value_python_generator : public const_value_generator {
@@ -1183,21 +1144,18 @@ class t_mstch_python_generator : public t_mstch_generator {
 void t_mstch_python_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_python_generator>());
-  generators_->set_struct_generator(
-      std::make_unique<struct_python_generator>());
+  generators_->type_factory = std::make_unique<python_type_factory>(program_);
+  generators_->set_typedef_factory<mstch_python_typedef>();
+  generators_->set_struct_factory<mstch_python_struct>();
+  generators_->set_field_factory<mstch_python_field>();
+  generators_->set_enum_factory<mstch_python_enum>();
+  generators_->set_enum_value_factory<mstch_python_enum_value>();
   generators_->set_function_generator(
       std::make_unique<function_python_generator>());
   generators_->set_service_generator(
       std::make_unique<service_python_generator>(get_program()));
-  generators_->set_field_generator(std::make_unique<field_python_generator>());
-  generators_->set_enum_factory<mstch_python_enum>();
-  generators_->set_enum_value_factory<mstch_python_enum_value>();
   generators_->set_const_value_generator(
       std::make_unique<const_value_python_generator>());
-  generators_->set_type_generator(
-      std::make_unique<type_python_generator>(get_program()));
-  generators_->set_typedef_generator(
-      std::make_unique<typedef_python_generator>());
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {
