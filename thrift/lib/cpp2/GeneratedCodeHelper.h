@@ -1030,6 +1030,75 @@ inline void processViaExecuteRequest(
   }
 }
 
+
+// The below function overloads are for wildcard metadata only
+// These are to make sure when executeRequest is called with a
+// wildcard metadata, they will be routed to old logic
+template <class ProtocolReader, class Processor>
+void recursiveProcessMissing(
+    Processor* processor, const std::string& fname, ServerRequest&& request);
+
+template <class ProtocolReader, class Processor>
+void recursiveProcessPmap(
+    Processor* proc,
+    const typename Processor::ProcessMap& pmap,
+    ServerRequest&& request) {
+  auto ctx = request.requestContext();
+
+  const auto& fname = ctx->getMethodName();
+  auto processFuncs = pmap.find(fname);
+  if (processFuncs == pmap.end()) {
+    recursiveProcessMissing<ProtocolReader>(proc, fname, std::move(request));
+    return;
+  }
+
+  auto pfn = getExecuteFuncFromProtocol(
+      folly::tag<ProtocolReader>, processFuncs->second);
+  (proc->*pfn)(std::move(request));
+}
+
+template <class ProtocolReader, class Processor>
+void recursiveProcessMissing(
+    Processor* processor, const std::string& fname, ServerRequest&& request) {
+  if constexpr (is_root_async_processor<Processor>) {
+    using ServerRequestHelper = detail::ServerRequestHelper;
+    auto req = ServerRequestHelper::request(std::move(request));
+    auto eb = ServerRequestHelper::eventBase(request);
+
+    nonRecursiveProcessMissing(fname, std::move(req), eb);
+  } else {
+    using BaseAsyncProcessor = typename Processor::BaseAsyncProcessor;
+    recursiveProcessPmap<ProtocolReader, BaseAsyncProcessor>(
+        processor, BaseAsyncProcessor::getOwnProcessMap(), std::move(request));
+  }
+}
+
+template <class ProtocolReader, class Processor>
+void recursiveProcess(Processor* processor, ServerRequest&& request) {
+  return recursiveProcessPmap<ProtocolReader>(
+      processor, Processor::getOwnProcessMap(), std::move(request));
+}
+
+template <class Processor>
+void execute(
+    Processor* processor,
+    ServerRequest&& request,
+    protocol::PROTOCOL_TYPES protType) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      return recursiveProcess<BinaryProtocolReader>(
+          processor, std::move(request));
+    }
+    case protocol::T_COMPACT_PROTOCOL: {
+      return recursiveProcess<CompactProtocolReader>(
+          processor, std::move(request));
+    }
+    default:
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+      return;
+  }
+}
+
 // Generated AsyncProcessor::processSerializedCompressedRequest just calls
 // this
 template <class Processor>
@@ -1141,8 +1210,12 @@ void execute(
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
 
-  DCHECK(!metadata.isWildcard())
-      << "Generated processor must not have wildcard method metadata";
+  // when generated execute accepts a wildcard metadata
+  // it should use the old logic for function routing
+  if (metadata.isWildcard()) {
+    execute(processor, std::move(request), protType);
+    return;
+  }
 
   const auto& methodMetadata =
       AsyncProcessorHelper::expectMetadataOfType<Metadata>(metadata);
