@@ -59,11 +59,6 @@ struct TestStructWithSet {
   1: SetI32 numbers;
 }
 
-struct TestStructWithRefAnnotations {
-  @thrift.Box
-  1: optional list<i32> data1;
-}
-
 struct TestNestedStruct {
   1: TestStructWithList nested;
 }
@@ -77,15 +72,18 @@ struct TestStructWithMixin {
   1: string field3;
   2: TestStructSimple field4 (cpp.mixin);
 }
-/* ---
-Fails to compile (not yet supported):
 
-1) Ref with unstructrured ref annotation
-struct TestStructWithPtr {
-  1: optional list<i32> data (cpp2.ref = "true");
+struct TestStructWithBoxAnnotation {
+  @thrift.Box
+  1: optional list<i32> data;
 }
 
-2) Union
+struct TestStructWithRefAnnotation {
+  1: optional list<i32> data (cpp2.ref = "true");
+}
+/* ---
+Fails to compile (not yet supported):
+1) Union
 union TestUnion {
   1: byte tiny;
   2: i16 small;

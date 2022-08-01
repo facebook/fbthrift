@@ -22,9 +22,10 @@ from testing.example.types import (
     TestNestedStruct,
     TestStruct,
     TestStructSimple,
+    TestStructWithBoxAnnotation,
     TestStructWithList,
     TestStructWithMixin,
-    TestStructWithRefAnnotations,
+    TestStructWithRefAnnotation,
     TestStructWithSet,
 )
 
@@ -103,14 +104,6 @@ class NoLegacyTest(unittest.TestCase):
         for i in [1, 2, 3]:
             self.assertTrue(i in testStruct.numbers)
 
-    def test_struct_with_box_annotation(self) -> None:
-        testStruct = TestStructWithRefAnnotations()
-        self.assertIsNone(testStruct.data1)
-
-    def test_struct_with_valid_ptr(self) -> None:
-        testStruct = TestStructWithRefAnnotations(data1=[1, 2, 3])
-        self.assertEqual(testStruct.data1, [1, 2, 3])
-
     def test_nested_struct(self) -> None:
         testStruct = TestNestedStruct(nested=TestStructWithList(numbers=[1, 2, 3]))
         self.assertEqual(testStruct.nested.numbers, [1, 2, 3])
@@ -122,3 +115,19 @@ class NoLegacyTest(unittest.TestCase):
         self.assertEqual(testStruct.field3, "field3")
         self.assertEqual(testStruct.field1, "field1")
         self.assertEqual(testStruct.field2, 5)
+
+    def test_struct_with_empty_box_data(self) -> None:
+        testStruct = TestStructWithBoxAnnotation()
+        self.assertIsNone(testStruct.data)
+
+    def test_struct_with_valid_box_data(self) -> None:
+        testStruct = TestStructWithBoxAnnotation(data=[1, 2, 3])
+        self.assertEqual(testStruct.data, [1, 2, 3])
+
+    def test_struct_with_empty_ref_data(self) -> None:
+        testStruct = TestStructWithRefAnnotation()
+        self.assertIsNone(testStruct.data)
+
+    def test_struct_with_valid_ref_data(self) -> None:
+        testStruct = TestStructWithRefAnnotation(data=[1, 2, 3])
+        self.assertEqual(testStruct.data, [1, 2, 3])
