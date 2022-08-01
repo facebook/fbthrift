@@ -22,6 +22,7 @@ import shutil
 import subprocess
 import sys
 
+import pkg_resources
 
 """
 * Invoke from the `/fbsource/fbcode/` directory using `buck run`:
@@ -47,8 +48,6 @@ to the current working directory) and $FIXTURENAMES is a list of
 fixture names to build specifically (default is to build all fixtures).
 """
 FIXTURE_ROOT = "."
-THRIFT_REL = "thrift/compiler/thrift"  # Default dir for buck1
-THRIFT_REL2 = "thrift/compiler/__thrift__/thrift"  # Default dir for buck2
 
 
 def parsed_args():
@@ -61,7 +60,7 @@ def parsed_args():
             "For relative path, we will search script's path and all parents"
         ),
         type=str,
-        default=THRIFT_REL,
+        default=None,
     )
     parser.add_argument(
         "--fixture-root",
@@ -105,13 +104,14 @@ def read_lines(path):
 args = parsed_args()
 fixture_root = args.fixture_root
 exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift = ascend_find_exe(exe, args.thrift_bin)
-if thrift is None:
-    thrift = ascend_find_exe(exe, THRIFT_REL2)
+thrift = args.thrift_bin
+if args.thrift_bin is None:
+    thrift = pkg_resources.resource_filename(__name__, "thrift")
+else:
+    thrift = ascend_find_exe(exe, args.thrift_bin)
 if thrift is None:
     tb = args.thrift_bin
     sys.stderr.write("error: cannot find the Thrift compiler ({})\n".format(tb))
-    sys.stderr.write("error: compiler not found in ({})\n".format(THRIFT_REL2))
     sys.exit(1)
 
 fixture_dir = os.path.join(fixture_root, "thrift/compiler/test/fixtures")

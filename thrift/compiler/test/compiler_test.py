@@ -24,9 +24,9 @@ import tempfile
 import traceback
 import unittest
 
+import pkg_resources
+
 FIXTURE_ROOT = "."
-THRIFT_REL = "thrift/compiler/thrift"
-THRIFT_REL2 = "thrift/compiler/__thrift__/thrift"
 
 
 def ascend_find_exe(path, target):
@@ -43,7 +43,7 @@ def ascend_find_exe(path, target):
 
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift = ascend_find_exe(exe, THRIFT_REL) or ascend_find_exe(exe, THRIFT_REL2)
+thrift = pkg_resources.resource_filename(__name__, "thrift")
 assert thrift
 fixtures_root_dir = os.path.join(FIXTURE_ROOT, "thrift/compiler/test/fixtures")
 
