@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ use bufsize::SizeCounter;
 use bytes::Bytes;
 use bytes::BytesMut;
 use ghost::phantom;
+use std::io::Cursor;
 
 pub const BINARY_VERSION_MASK: u32 = 0xffff_0000;
 pub const BINARY_VERSION_1: u32 = 0x8001_0000;
@@ -475,6 +476,23 @@ where
     buf
 }
 
+pub trait SerializeRef:
+    Serialize<BinaryProtocolSerializer<SizeCounter>> + Serialize<BinaryProtocolSerializer<BytesMut>>
+where
+    for<'a> &'a Self: Serialize<BinaryProtocolSerializer<SizeCounter>>,
+    for<'a> &'a Self: Serialize<BinaryProtocolSerializer<BytesMut>>,
+{
+}
+
+impl<T> SerializeRef for T
+where
+    T: Serialize<BinaryProtocolSerializer<BytesMut>>,
+    T: Serialize<BinaryProtocolSerializer<SizeCounter>>,
+    for<'a> &'a T: Serialize<BinaryProtocolSerializer<BytesMut>>,
+    for<'a> &'a T: Serialize<BinaryProtocolSerializer<SizeCounter>>,
+{
+}
+
 /// Serialize a Thrift value using the binary protocol.
 pub fn serialize<T>(v: T) -> Bytes
 where
@@ -485,6 +503,16 @@ where
     let buf = serialize_to_buffer(v, BytesMut::with_capacity(sz));
     // Done
     buf.finish()
+}
+
+pub trait DeserializeSlice:
+    for<'a> Deserialize<BinaryProtocolDeserializer<Cursor<&'a [u8]>>>
+{
+}
+
+impl<T> DeserializeSlice for T where
+    T: for<'a> Deserialize<BinaryProtocolDeserializer<Cursor<&'a [u8]>>>
+{
 }
 
 /// Deserialize a Thrift blob using the binary protocol.
