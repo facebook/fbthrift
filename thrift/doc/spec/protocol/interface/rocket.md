@@ -32,6 +32,33 @@ Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [ResponseRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 Data | Thrift serialized result from [Interface Protocol](index.md#response)
 
+### Declared Exception
+
+If the response is a [declared exception](../../definition/exception.md#exceptions), the [`PayloadMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadMetadata) in the [`ResponseRpcMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#ResponseRpcMetadata) struct **must** contain a [`PayloadExceptionMetadataBase`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadExceptionMetadataBase) which contains a [`PayloadDeclaredExceptionMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadDeclaredExceptionMetadata) struct.
+
+### Undeclared Exception
+
+If the response is an [undeclared exception](../../definition/exception.md#exceptions), the [`PayloadMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadMetadata) in the [`ResponseRpcMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#ResponseRpcMetadata) struct **must** contain a [`PayloadExceptionMetadataBase`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadExceptionMetadataBase) which contains a [`PayloadAppUnknownExceptionMetdata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadAppUnknownExceptionMetdata) struct.
+
+### Any Exception
+
+If the response is an Any exception, the [`PayloadMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadMetadata) in the [`ResponseRpcMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#ResponseRpcMetadata) struct **must** contain a [`PayloadExceptionMetadataBase`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadExceptionMetadataBase) which contains a [`PayloadAnyExceptionMetadata`](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#PayloadAnyExceptionMetadata) struct.
+
+### Internal Server Error
+
+Internal server errors **must** be sent as an [ERROR](https://rsocket.io/about/protocol/#error-frame-0x0b) frame using the following format:
+
+Field | Notes
+:---: | :---:
+Frame size | 24 bit unsigned integer indicating the length of the *entire* frame
+Stream ID | 32 bits <br/> This Stream ID should be the same value as the request Stream ID
+Frame type | 6 bits <br/> Must be ERROR (0x0B)
+Flags | 10 bits <br/> No flags should be set
+Error code | Should be one of [REJECTED](https://rsocket.io/about/protocol/#error-codes), [CANCELED](https://rsocket.io/about/protocol/#error-codes), or [INVALID](https://rsocket.io/about/protocol/#error-codes)
+Error data | Compact Protocol serialized [ResponseRpcError struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift#ResponseRpcError)
+
+The `ResponseErrorCode` in the `ResponseRpcError` struct is a mapping from the error code in the [Interface protocol](index.md#internal-server-error).
+
 ## Oneway Request (request no response)
 
 With an already established connection, the client must send a [REQUEST_FNF](https://rsocket.io/about/protocol/#request_fnf-fire-n-forget-frame-0x05) frame of the following format:
@@ -79,6 +106,10 @@ Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 Data | Thrift serialized result from [Interface Protocol](index.md#response) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 
+### Stream Exception
+
+Once a stream has been established, the server **may** terminate the stream by sending an exception to the client. The server **must not** send any more payloads to the client after it sends an exception. Stream exceptions **must** be sent using the format specified in [Request-Response](#request-response) with the distinction that the Metadata **must** contain a Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) instead of a [ResponseRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). Additionally, if the exception is an internal server error, [StreamRpcError struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) **must** be used instead of [ResponseRpcError struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift).
+
 ### Stream Completion
 
 The server must complete a stream once it is done sending all stream payloads. Completing a stream does not require credits on the server. To send a stream completion to the client, the server must send a [PAYLOAD](https://rsocket.io/about/protocol/#payload-frame-0x0a) frame of the following format:
@@ -116,11 +147,6 @@ Stream ID | 32 bits <br/> The stream ID of the existing stream that you would li
 Frame type | 6 bits <br/> Must be CANCEL (0x09)
 Flags | 10 bits <br/> No flags should be set
 
-TODO:
-
-- Initial exception
-- Stream exception
-
 ## Sink
 
 With an already established connection, the client must send a [REQUEST_CHANNEL](https://rsocket.io/about/protocol/#request_channel-frame-0x07) frame of the following format:
@@ -156,7 +182,7 @@ Data | Thrift serialized result from [Interface Protocol](index.md#response) usi
 
 ### Sink Exception
 
-A client can terminate the sink early by sending an exception to the server.
+A client can terminate the sink early by sending an exception to the server. The client **must not** send any more payloads to the server after it sends an exception. The exception **must** be sent using the format specified in [Request-Response](#request-response) with the distinction that the Metadata **must** contain a Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) instead of a [ResponseRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift).
 
 ### Final Response
 
@@ -171,6 +197,8 @@ Flags | 10 bits <br/> Metadata flag must be set <br/> Next flag must be set <br/
 Metadata size | 24 bit unsigned integer indicating the length of metadata
 Metadata | Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 Data | Thrift serialized result from [Interface Protocol](index.md#response) using the serialization protocol specified in [RequestRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
+
+The final response may be an exception in which case, it **must** be sent using the format specified in [Request-Response](#request-response) with the distinction that the Metadata **must** contain a Compact Protocol serialized [StreamPayloadMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) instead of a [ResponseRpcMetadata struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift). Additionally, if the exception is an internal server error, [StreamRpcError struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) **must** be used instead of [ResponseRpcError struct](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift).
 
 ### Sink Credit Mechanism
 
