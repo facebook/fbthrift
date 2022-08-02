@@ -291,6 +291,12 @@ impl ::fbthrift::GetTType for self::MyStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStruct {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/MyStruct"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -350,6 +356,12 @@ unsafe impl ::std::marker::Sync for self::MyStructWithCustomDefault {}
 
 impl ::fbthrift::GetTType for self::MyStructWithCustomDefault {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyStructWithCustomDefault {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/MyStructWithCustomDefault"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyStructWithCustomDefault
@@ -444,6 +456,12 @@ unsafe impl ::std::marker::Sync for self::StructLevelTerseStruct {}
 
 impl ::fbthrift::GetTType for self::StructLevelTerseStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::StructLevelTerseStruct {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/StructLevelTerseStruct"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::StructLevelTerseStruct
@@ -657,6 +675,12 @@ unsafe impl ::std::marker::Sync for self::FieldLevelTerseStruct {}
 
 impl ::fbthrift::GetTType for self::FieldLevelTerseStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::FieldLevelTerseStruct {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/FieldLevelTerseStruct"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::FieldLevelTerseStruct
@@ -952,6 +976,12 @@ impl ::fbthrift::GetTType for self::TerseStructWithCustomDefault {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::TerseStructWithCustomDefault {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/TerseStructWithCustomDefault"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::TerseStructWithCustomDefault
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1125,6 +1155,12 @@ impl ::fbthrift::GetTType for self::AdaptedFields {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::AdaptedFields {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/AdaptedFields"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::AdaptedFields
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1205,6 +1241,12 @@ unsafe impl ::std::marker::Sync for self::TerseException {}
 
 impl ::fbthrift::GetTType for self::TerseException {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::TerseException {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/terse_write/TerseException"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::TerseException

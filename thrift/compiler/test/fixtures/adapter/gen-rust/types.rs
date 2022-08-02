@@ -203,6 +203,12 @@ impl ::fbthrift::GetTType for self::Foo {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::Foo {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::Foo
 where
     P: ::fbthrift::ProtocolWriter,
@@ -330,6 +336,12 @@ impl ::std::default::Default for Baz {
 
 impl ::fbthrift::GetTType for Baz {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::Baz {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/Baz"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for Baz
@@ -466,6 +478,12 @@ impl ::fbthrift::GetTType for self::Bar {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::Bar {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/Bar"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::Bar
 where
     P: ::fbthrift::ProtocolWriter,
@@ -582,6 +600,12 @@ impl ::fbthrift::GetTType for self::DirectlyAdapted {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::DirectlyAdapted {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/DirectlyAdapted"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::DirectlyAdapted
 where
     P: ::fbthrift::ProtocolWriter,
@@ -654,6 +678,12 @@ unsafe impl ::std::marker::Sync for self::StructWithFieldAdapter {}
 
 impl ::fbthrift::GetTType for self::StructWithFieldAdapter {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::StructWithFieldAdapter {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/StructWithFieldAdapter"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::StructWithFieldAdapter
@@ -753,6 +783,12 @@ impl ::fbthrift::GetTType for self::TerseAdaptedFields {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::TerseAdaptedFields {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/TerseAdaptedFields"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::TerseAdaptedFields
 where
     P: ::fbthrift::ProtocolWriter,
@@ -835,6 +871,12 @@ impl ::fbthrift::GetTType for self::B {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::B {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/B"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::B
 where
     P: ::fbthrift::ProtocolWriter,
@@ -901,6 +943,12 @@ impl ::fbthrift::GetTType for self::A {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::A {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/A"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::A
 where
     P: ::fbthrift::ProtocolWriter,
@@ -960,6 +1008,12 @@ unsafe impl ::std::marker::Sync for self::MyStruct {}
 
 impl ::fbthrift::GetTType for self::MyStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyStruct {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/MyStruct"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct

@@ -64,6 +64,15 @@ unsafe impl ::std::marker::Sync for self::{{struct:rust_name}} {}
 impl ::fbthrift::GetTType for self::{{struct:rust_name}} {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
+{{!newline}}
+{{#struct:thrift_uri}}
+
+impl ::fbthrift::GetUri for self::{{struct:rust_name}} {
+    fn uri() -> &'static str {
+        "{{struct:thrift_uri}}"
+    }
+}
+{{/struct:thrift_uri}}
 
 impl<P> ::fbthrift::Serialize<P> for self::{{struct:rust_name}}
 where

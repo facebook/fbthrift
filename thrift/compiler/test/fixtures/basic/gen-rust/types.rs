@@ -323,6 +323,12 @@ impl ::fbthrift::GetTType for self::MyStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStruct {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/basic/MyStruct"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -445,6 +451,12 @@ impl ::fbthrift::GetTType for self::MyDataItem {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyDataItem {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/basic/MyDataItem"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyDataItem
 where
     P: ::fbthrift::ProtocolWriter,
@@ -489,6 +501,12 @@ impl ::std::default::Default for MyUnion {
 
 impl ::fbthrift::GetTType for MyUnion {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyUnion {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/basic/MyUnion"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for MyUnion
@@ -603,6 +621,12 @@ impl ::fbthrift::GetTType for self::ReservedKeyword {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::ReservedKeyword {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/basic/ReservedKeyword"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::ReservedKeyword
 where
     P: ::fbthrift::ProtocolWriter,
@@ -654,6 +678,12 @@ impl ::std::default::Default for UnionToBeRenamed {
 
 impl ::fbthrift::GetTType for UnionToBeRenamed {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::UnionToBeRenamed {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/basic/UnionToBeRenamed"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for UnionToBeRenamed

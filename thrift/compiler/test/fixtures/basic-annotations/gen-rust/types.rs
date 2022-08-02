@@ -428,6 +428,12 @@ impl ::fbthrift::GetTType for self::MyStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStruct {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct
 where
     P: ::fbthrift::ProtocolWriter,

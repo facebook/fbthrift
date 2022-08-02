@@ -120,6 +120,15 @@ impl ::std::str::FromStr for {{enum:rust_name}} {
 impl ::fbthrift::GetTType for {{enum:rust_name}} {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
 }
+{{!newline}}
+{{#enum:thrift_uri}}
+
+impl ::fbthrift::GetUri for self::{{enum:rust_name}} {
+    fn uri() -> &'static str {
+        "{{enum:thrift_uri}}"
+    }
+}
+{{/enum:thrift_uri}}
 
 impl<P> ::fbthrift::Serialize<P> for {{enum:rust_name}}
 where

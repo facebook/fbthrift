@@ -180,6 +180,12 @@ impl ::fbthrift::GetTType for self::SomeStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::SomeStruct {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/enums/SomeStruct"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::SomeStruct
 where
     P: ::fbthrift::ProtocolWriter,

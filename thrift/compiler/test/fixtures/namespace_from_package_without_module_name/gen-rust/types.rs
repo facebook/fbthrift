@@ -43,6 +43,12 @@ impl ::fbthrift::GetTType for self::Foo {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::Foo {
+    fn uri() -> &'static str {
+        "test.dev/namespace_from_package_without_module_name/Foo"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::Foo
 where
     P: ::fbthrift::ProtocolWriter,

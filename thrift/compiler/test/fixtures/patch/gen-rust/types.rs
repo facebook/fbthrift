@@ -410,6 +410,12 @@ impl ::fbthrift::GetTType for self::MyData {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyData {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyData"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyData
 where
     P: ::fbthrift::ProtocolWriter,
@@ -468,6 +474,12 @@ impl ::std::default::Default for InnerUnion {
 
 impl ::fbthrift::GetTType for InnerUnion {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::InnerUnion {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/InnerUnion"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for InnerUnion
@@ -535,6 +547,12 @@ impl ::std::default::Default for MyUnion {
 
 impl ::fbthrift::GetTType for MyUnion {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyUnion {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyUnion"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for MyUnion
@@ -683,6 +701,12 @@ unsafe impl ::std::marker::Sync for self::MyStruct {}
 
 impl ::fbthrift::GetTType for self::MyStruct {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyStruct {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStruct"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct
@@ -942,6 +966,12 @@ impl ::fbthrift::GetTType for self::MyDataPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyDataPatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyDataPatch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyDataPatch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1019,6 +1049,12 @@ unsafe impl ::std::marker::Sync for self::MyDataValuePatch {}
 
 impl ::fbthrift::GetTType for self::MyDataValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyDataValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyDataValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyDataValuePatch
@@ -1109,6 +1145,12 @@ unsafe impl ::std::marker::Sync for self::OptionalMyDataValuePatch {}
 
 impl ::fbthrift::GetTType for self::OptionalMyDataValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::OptionalMyDataValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyDataValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyDataValuePatch
@@ -1202,6 +1244,12 @@ impl ::fbthrift::GetTType for self::InnerUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::InnerUnionPatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/InnerUnionPatch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::InnerUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1274,6 +1322,12 @@ unsafe impl ::std::marker::Sync for self::InnerUnionValuePatch {}
 
 impl ::fbthrift::GetTType for self::InnerUnionValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::InnerUnionValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/InnerUnionValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::InnerUnionValuePatch
@@ -1371,6 +1425,12 @@ impl ::fbthrift::GetTType for self::OptionalInnerUnionValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::OptionalInnerUnionValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalInnerUnionValuePatch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::OptionalInnerUnionValuePatch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1466,6 +1526,12 @@ impl ::fbthrift::GetTType for self::MyUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyUnionPatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyUnionPatch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -1552,6 +1618,12 @@ unsafe impl ::std::marker::Sync for self::MyUnionValuePatch {}
 
 impl ::fbthrift::GetTType for self::MyUnionValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyUnionValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyUnionValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyUnionValuePatch
@@ -1647,6 +1719,12 @@ unsafe impl ::std::marker::Sync for self::OptionalMyUnionValuePatch {}
 
 impl ::fbthrift::GetTType for self::OptionalMyUnionValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::OptionalMyUnionValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyUnionValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyUnionValuePatch
@@ -1784,6 +1862,12 @@ unsafe impl ::std::marker::Sync for self::MyStructPatch {}
 
 impl ::fbthrift::GetTType for self::MyStructPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::MyStructPatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStructPatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::MyStructPatch
@@ -2021,6 +2105,12 @@ impl ::fbthrift::GetTType for self::MyStructField21Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStructField21Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStructField21Patch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStructField21Patch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2116,6 +2206,12 @@ unsafe impl ::std::marker::Sync for self::OptionalMyStructField21Patch {}
 
 impl ::fbthrift::GetTType for self::OptionalMyStructField21Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::OptionalMyStructField21Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyStructField21Patch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructField21Patch
@@ -2215,6 +2311,12 @@ impl ::fbthrift::GetTType for self::MyStructField22Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStructField22Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStructField22Patch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStructField22Patch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2312,6 +2414,12 @@ impl ::fbthrift::GetTType for self::OptionalMyStructField22Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::OptionalMyStructField22Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyStructField22Patch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructField22Patch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2407,6 +2515,12 @@ impl ::fbthrift::GetTType for self::MyStructField23Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStructField23Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStructField23Patch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStructField23Patch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2495,6 +2609,12 @@ unsafe impl ::std::marker::Sync for self::OptionalMyStructField23Patch {}
 
 impl ::fbthrift::GetTType for self::OptionalMyStructField23Patch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::OptionalMyStructField23Patch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyStructField23Patch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructField23Patch
@@ -2592,6 +2712,12 @@ impl ::fbthrift::GetTType for self::MyStructValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
+impl ::fbthrift::GetUri for self::MyStructValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/MyStructValuePatch"
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStructValuePatch
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2680,6 +2806,12 @@ unsafe impl ::std::marker::Sync for self::OptionalMyStructValuePatch {}
 
 impl ::fbthrift::GetTType for self::OptionalMyStructValuePatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::OptionalMyStructValuePatch {
+    fn uri() -> &'static str {
+        "test.dev/fixtures/patch/OptionalMyStructValuePatch"
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructValuePatch
