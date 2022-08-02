@@ -140,7 +140,7 @@ struct ScopedEnumAsUnionType {}
  *     enum class MyId : ::std::int32_t {};
  *
  */
-@thrift.Experimental // TODO(afuller): Implement
+@thrift.Experimental
 @scope.Typedef
 struct StrongType {}
 

@@ -436,10 +436,10 @@ struct protocol_methods<type_class::binary, Type> {
 /*
  * Enum Specialization
  */
-template <typename Type>
-struct protocol_methods<type_class::enumeration, Type> {
-  // Thrift enums are always read as int32_t
-  using int_type = std::int32_t;
+
+template <typename Type, typename int_type = std::underlying_type_t<Type>>
+struct enum_protocol_methods {
+  static_assert(std::is_enum<Type>::value, "must be enum");
   using int_methods = protocol_methods<type_class::integral, int_type>;
 
   template <typename Protocol>
@@ -467,6 +467,19 @@ struct protocol_methods<type_class::enumeration, Type> {
     int_type tmp = static_cast<int_type>(in);
     return int_methods::template serializedSize<ZeroCopy>(protocol, tmp);
   }
+};
+
+// Thrift enums are always read as int32_t
+template <typename Type>
+struct protocol_methods<type_class::enumeration, Type>
+    : enum_protocol_methods<Type, std::int32_t> {};
+
+// Strong integral types keep their precision.
+template <typename Type>
+struct protocol_methods<
+    type_class::integral,
+    Type,
+    std::enable_if_t<std::is_enum<Type>::value>> : enum_protocol_methods<Type> {
 };
 
 /*

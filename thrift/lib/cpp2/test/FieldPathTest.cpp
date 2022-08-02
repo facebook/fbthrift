@@ -25,9 +25,11 @@
 namespace apache::thrift::protocol {
 namespace {
 
-Path makePath(std::vector<std::int64_t> path) {
+Path makePath(const std::vector<std::int64_t>& path) {
   Path ret;
-  ret.path() = std::move(path);
+  for (auto segId : path) {
+    ret.path()->push_back(static_cast<PathSegmentId>(segId));
+  }
   return ret;
 }
 

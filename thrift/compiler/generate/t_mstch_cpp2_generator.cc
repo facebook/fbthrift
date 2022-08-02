@@ -400,10 +400,15 @@ class mstch_cpp2_typedef : public mstch_typedef {
         this,
         {
             {"typedef:cpp_type", &mstch_cpp2_typedef::cpp_type},
+            {"typedef:cpp_strong_type?", &mstch_cpp2_typedef::cpp_strong_type},
         });
   }
   mstch::node cpp_type() {
     return context_->resolver().get_underlying_type_name(*typedf_);
+  }
+  mstch::node cpp_strong_type() {
+    return typedf_->find_structured_annotation_or_null(
+               "facebook.com/thrift/annotation/cpp/StrongType") != nullptr;
   }
 
  private:

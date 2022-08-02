@@ -172,7 +172,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-typedef ::std::int16_t MyId;
+enum class MyId : ::std::int16_t {};
 
 class MyStructNestedAnnotation final  {
  private:

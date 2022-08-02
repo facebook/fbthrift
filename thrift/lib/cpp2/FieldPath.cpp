@@ -15,14 +15,16 @@
  */
 
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/FieldPath.h>
 
 namespace apache::thrift::protocol {
 namespace {
+
 template <class T>
 folly::like_t<T, Value>* FOLLY_NULLABLE get_impl(T* obj, const Path& path) {
   for (auto iter = path.path()->begin(); iter != path.path()->end(); ++iter) {
-    auto next = obj->members()->find(*iter);
+    auto next = obj->members()->find(folly::to_underlying(*iter));
     if (next == obj->members()->end()) {
       return nullptr;
     }
