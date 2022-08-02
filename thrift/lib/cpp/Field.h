@@ -21,9 +21,13 @@
 
 namespace apache {
 namespace thrift {
+namespace type {
+// Forward declare to avoid circular dep with thrift/lib/thrift/id.thrift.
+enum class FieldId : ::std::int16_t;
+} // namespace type
 
 // Runtime and compile time representations for a field id.
-enum class FieldId : int16_t {};
+using FieldId = type::FieldId;
 template <FieldId id>
 using field_id_tag = std::integral_constant<FieldId, id>;
 template <std::underlying_type_t<FieldId> id>

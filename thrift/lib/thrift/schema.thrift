@@ -22,8 +22,6 @@ include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/standard.thrift"
 include "thrift/lib/thrift/type.thrift"
 
-cpp_include "<thrift/lib/cpp/Field.h>"
-
 /**
  * The canonical representations for a Thrift schema.
  *
@@ -141,9 +139,7 @@ struct Enum {
 }
 
 /** A field id is a signed 16-bit integer. */
-@cpp.Adapter{
-  name = "::apache::thrift::StaticCastAdapter<::apache::thrift::FieldId, int16_t>",
-}
+@cpp.StrongType
 typedef i16 FieldId
 
 /** The field qualifier. */
