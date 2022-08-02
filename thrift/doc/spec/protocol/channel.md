@@ -16,6 +16,8 @@ Users of a thrift service typically interact with a “generated client”, whic
 
 ## Interface
 
+### Typed channel
+
 The typed channel is responsible for the core abstraction of RPC, namely that the client is calling a regular method in its native language. It should be a native class/object with one or more methods corresponding to each method in the service.
 Each method may have multiple overloads for supporting the optional RpcOptions argument and different asynchrony models (including blocking if desired). The target language’s idiomatic awaitable type should be used in at least one of the options, when applicable.
 The methods should have an argument list that corresponds to that of the method in the IDL, accepting native and generated types.
@@ -40,13 +42,44 @@ Any of these method kinds except oneway / request-no-response can also create [I
 
 The typed channel’s methods should arguments corresponding to those declared in the IDL, as well as an optional first argument of type [RpcOptions](#rpcoptions) which the typed channel copies and sets the interaction id on if applicable and passes through to the untyped channel.
 
-The following information is part of the untyped client channel interface:
+### Untyped channel
 
-### RpcOptions
+The untyped channel has a structure corresponding to this schema:
+```
+service UntypedChannel {
+  binary sendRequestResponse(
+    1: RpcOptions options,
+    2: RequestRpcMetadata metadata,
+    3: binary serializedRequest
+  )
+  oneway void sendRequestNoResponse(
+    1: RpcOptions options,
+    2: RequestRpcMetadata metadata,
+    3: binary serializedRequest
+  )
+  binary, stream<binary> sendRequestStream(
+    1: RpcOptions options,
+    2: RequestRpcMetadata metadata,
+    3: binary serializedRequest
+  )
+  binary, sink<binary, binary> sendRequestSink(
+    1: RpcOptions options,
+    2: RequestRpcMetadata metadata,
+    3: binary serializedRequest
+  )
+
+  InteractionId createInteraction(1: string name)
+  void terminateInteraction(1: InteractionId id)
+}
+```
+
+Implementations have freedom with bridging to their language's async primitives. For example, all methods in C++ return void and take a callback parameter that receives the return type.
+
+#### RpcOptions
 
 Existing implementations use this to set some per-request options like timeouts and stream buffer size. Unless using [Interactions](#interactions), all fields are optional. Potentially relevant fields are documented [inline](https://github.com/facebook/fbthrift/blob/main/thrift/lib/cpp2/async/RpcOptions.h)
 
-### Metadata
+#### Metadata
 
 Documented [inline](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift)
 Note the first few fields are mandatory:
@@ -61,7 +94,7 @@ Common other fields:
 - unstructured headers (string to string map)
 - checksum
 
-### SerializedRequest
+#### SerializedRequest
 
 Method arguments wrapped in an anonymous struct and serialized using the protocol specified in the metadata. May also be compressed using the algorithm specified in the metadata.
 For example, this method:
@@ -91,7 +124,7 @@ struct ‹Anonymous› {
 
 and calling CompactSerializer::serialize on the ‹Anonymous›.
 
-### Response
+#### Response
 
 A serialized response is received for all methods except oneway (including void-returning methods) that may contain a serialized representation of the declared response type, one of the exceptions declared in the `throws` list of the method, or a `TApplicationException` for undeclared exceptions. In case of exception, the following information will be placed in the unstructured response headers:
 
