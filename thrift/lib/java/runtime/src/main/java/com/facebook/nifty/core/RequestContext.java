@@ -18,14 +18,9 @@ package com.facebook.nifty.core;
 
 import java.util.Iterator;
 import java.util.Map;
-import org.apache.thrift.protocol.TProtocol;
 
 @Deprecated
 public interface RequestContext {
-  TProtocol getOutputProtocol();
-
-  TProtocol getInputProtocol();
-
   ConnectionContext getConnectionContext();
 
   void setContextData(String key, Object val);

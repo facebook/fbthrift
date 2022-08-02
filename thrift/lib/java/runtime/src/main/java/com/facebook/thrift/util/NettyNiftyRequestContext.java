@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import org.apache.thrift.protocol.TProtocol;
 
 @Deprecated
 public class NettyNiftyRequestContext implements RequestContext {
@@ -38,16 +37,6 @@ public class NettyNiftyRequestContext implements RequestContext {
     this.requestHeaders = requestHeaders;
     this.responseHeaders = PlatformDependent.newConcurrentHashMap();
     this.connectionContext = connectionContext;
-  }
-
-  @Override
-  public TProtocol getOutputProtocol() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public TProtocol getInputProtocol() {
-    throw new UnsupportedOperationException();
   }
 
   @Override
