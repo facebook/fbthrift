@@ -16,6 +16,7 @@
 
 #include <folly/synchronization/CallOnce.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp2/server/ResourcePool.h>
 
 namespace apache::thrift {
 
@@ -30,7 +31,13 @@ class ThriftServer;
 // This should not be used for any custom purpose
 class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
  public:
-  explicit ExecutorToThreadManagerAdaptor(folly::Executor& ex) : ex_(ex) {}
+  explicit ExecutorToThreadManagerAdaptor(ResourcePoolSet& resourcePoolSet)
+      : resourcePoolSet_(resourcePoolSet),
+        defaultAsyncExecutor_(
+            resourcePoolSet.resourcePool(ResourcePoolHandle::defaultAsync())
+                .executor()
+                .value()
+                .get()) {}
 
   // These are the only two interfaces that are implemented
   void add(
@@ -38,10 +45,10 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
       [[maybe_unused]] int64_t timeout = 0,
       [[maybe_unused]] int64_t expiration = 0,
       [[maybe_unused]] Source source = Source::UPSTREAM) noexcept override {
-    ex_.add([task = std::move(task)]() { task->run(); });
+    defaultAsyncExecutor_.add([task = std::move(task)]() { task->run(); });
   }
 
-  void add(folly::Func f) override { ex_.add(std::move(f)); }
+  void add(folly::Func f) override { defaultAsyncExecutor_.add(std::move(f)); }
 
   void start() override {}
 
@@ -108,11 +115,12 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
   [[nodiscard]] KeepAlive<> getKeepAlive(
       ExecutionScope, Source) const override {
-    return folly::getKeepAliveToken(ex_);
+    return folly::getKeepAliveToken(defaultAsyncExecutor_);
   }
 
  private:
-  folly::Executor& ex_;
+  ResourcePoolSet& resourcePoolSet_;
+  folly::Executor& defaultAsyncExecutor_;
 };
 
 } // namespace apache::thrift

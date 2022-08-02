@@ -747,12 +747,8 @@ void ThriftServer::setupThreadManager() {
     // when we are using resource pools
     if (!threadManager_ &&
         resourcePoolSet().hasResourcePool(ResourcePoolHandle::defaultAsync())) {
-      auto& executor = resourcePoolSet()
-                           .resourcePool(ResourcePoolHandle::defaultAsync())
-                           .executor()
-                           .value()
-                           .get();
-      auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(executor);
+      auto extm =
+          std::make_shared<ExecutorToThreadManagerAdaptor>(resourcePoolSet());
       setThreadManagerInternal(extm);
     }
   } else {
