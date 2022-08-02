@@ -19,16 +19,17 @@
 namespace apache::thrift::conformance::data {
 
 namespace {
-Test createRequestResponseTest() {
+Test createRequestResponseBasicTest() {
   Test ret;
-  ret.name() = "RequestResponseTest";
+  ret.name() = "RequestResponseBasicTest";
 
   auto& testCase = ret.testCases()->emplace_back();
   testCase.name() = "RequestResponse/Success";
 
-  auto& testDesc = testCase.test()->requestResponse_ref().emplace();
-  testDesc.request().emplace().data() = "hello";
-  testDesc.response().emplace().data() = "world";
+  auto& requestResponseBasicTestCase =
+      testCase.test()->requestResponse_ref().emplace().basic_ref().emplace();
+  requestResponseBasicTestCase.request().emplace().data() = "hello";
+  requestResponseBasicTestCase.response().emplace().data() = "world";
 
   return ret;
 }
@@ -37,7 +38,7 @@ Test createRequestResponseTest() {
 TestSuite createRPCTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCTest";
-  suite.tests()->push_back(createRequestResponseTest());
+  suite.tests()->push_back(createRequestResponseBasicTest());
   return suite;
 }
 

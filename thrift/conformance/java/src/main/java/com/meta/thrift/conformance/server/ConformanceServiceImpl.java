@@ -88,7 +88,7 @@ public class ConformanceServiceImpl implements ConformanceService {
   public void sendTestResult(ClientTestResult result) throws TException {}
 
   @Override
-  public Response requestResponse(Request request) throws TException {
+  public Response requestResponseBasic(Request request) throws TException {
     throw new TException("unimplemented");
   }
 

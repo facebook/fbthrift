@@ -25,7 +25,7 @@ TEST(TestGeneratorTest, RoundTripSuite) {
   EXPECT_EQ(suite.name(), "ThriftRPCTest");
   EXPECT_EQ(suite.tests()->size(), 1);
   const auto& test = suite.tests()->at(0);
-  EXPECT_EQ(test.name(), "RequestResponseTest");
+  EXPECT_EQ(test.name(), "RequestResponseBasicTest");
   const auto& testCase = test.testCases()->at(0);
   EXPECT_EQ(testCase.name(), "RequestResponse/Success");
   EXPECT_TRUE(testCase.test()->requestResponse_ref());

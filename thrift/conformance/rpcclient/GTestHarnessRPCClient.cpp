@@ -43,8 +43,8 @@ class ConformanceVerificationServer
     clientResultPromise_.setValue(*result);
   }
 
-  void requestResponse(Response& res, std::unique_ptr<Request>) override {
-    res = *can_throw(testCase_.requestResponse_ref()->response());
+  void requestResponseBasic(Response& res, std::unique_ptr<Request>) override {
+    res = *testCase_.requestResponse_ref()->basic_ref()->response();
   }
 
   folly::SemiFuture<folly::Unit> getTestReceived() {
@@ -61,20 +61,35 @@ class ConformanceVerificationServer
   folly::Promise<ClientTestResult> clientResultPromise_;
 };
 
-testing::AssertionResult performRequestResponseAssertions(
-    const TestCase& testCase, ClientTestResult result) {
-  if (testCase.requestResponse_ref()->response() !=
-      result.requestResponse_ref()->response()) {
+testing::AssertionResult performRequestResponseBasicAssertions(
+    const RequestResponseBasicTestCase& testCase,
+    const ClientTestResult& result) {
+  if (result.requestResponse_ref()->response() != *testCase.response()) {
     return testing::AssertionFailure();
   }
   return testing::AssertionSuccess();
 }
 
+testing::AssertionResult performRequestResponseAssertions(
+    const RequestResponseTestCase& requestResponse,
+    const ClientTestResult& result) {
+  switch (requestResponse.getType()) {
+    case RequestResponseTestCase::Type::basic:
+      return performRequestResponseBasicAssertions(
+          *requestResponse.basic_ref(), result);
+    default:
+      return testing::AssertionFailure()
+          << "Unsupported request response test case type: "
+          << requestResponse.getType();
+  }
+}
+
 testing::AssertionResult performAssertions(
-    const TestCase& testCase, ClientTestResult result) {
+    const TestCase& testCase, const ClientTestResult& result) {
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::requestResponse:
-      return performRequestResponseAssertions(testCase, result);
+      return performRequestResponseAssertions(
+          *testCase.test()->requestResponse_ref(), result);
       break;
     default:
       return testing::AssertionFailure()

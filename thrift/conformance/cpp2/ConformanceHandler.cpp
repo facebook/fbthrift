@@ -35,10 +35,10 @@ void ConformanceHandler::roundTrip(
   res.value() = AnyRegistry::generated().store(std::move(val), protocol);
 }
 
-void ConformanceHandler::requestResponse(
+void ConformanceHandler::requestResponseBasic(
     Response& res, std::unique_ptr<Request> req) {
   result_.requestResponse_ref().emplace().request() = *req;
-  res = *can_throw(testCase_->requestResponse_ref()->response());
+  res = *testCase_->requestResponse_ref()->basic_ref()->response();
 }
 
 } // namespace apache::thrift::conformance

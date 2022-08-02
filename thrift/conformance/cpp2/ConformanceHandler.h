@@ -26,7 +26,8 @@ class ConformanceHandler
   void roundTrip(
       RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
 
-  void requestResponse(Response& res, std::unique_ptr<Request> req) override;
+  void requestResponseBasic(
+      Response& res, std::unique_ptr<Request> req) override;
 
   void sendTestCase(std::unique_ptr<TestCase> req) override {
     testCase_ = std::move(req);

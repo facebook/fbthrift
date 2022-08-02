@@ -65,18 +65,13 @@ testing::AssertionResult RunRoundTripTest(
   return testing::AssertionSuccess();
 }
 
-testing::AssertionResult RunRequestResponseTest(
+testing::AssertionResult RunRequestResponseBasicTest(
     ConformanceServiceAsyncClient& client,
-    const RequestResponseTestCase& requestResponse) {
-  if (!requestResponse.request() || !requestResponse.response()) {
-    throw std::invalid_argument("Unimplemented");
-  }
-
-  // Test request-response
+    const RequestResponseBasicTestCase& testCase) {
   try {
     Response res;
-    client.sync_requestResponse(res, *requestResponse.request());
-    if (res != requestResponse.response()) {
+    client.sync_requestResponseBasic(res, *testCase.request());
+    if (res != testCase.response()) {
       return testing::AssertionFailure();
     }
   } catch (const apache::thrift::TApplicationException&) {
@@ -87,11 +82,22 @@ testing::AssertionResult RunRequestResponseTest(
   ServerTestResult result;
   client.sync_getTestResult(result);
 
-  if (result.requestResponse_ref()->request() != requestResponse.request()) {
+  if (result.requestResponse_ref()->request() != *testCase.request()) {
     return testing::AssertionFailure();
   }
 
   return testing::AssertionSuccess();
+}
+
+testing::AssertionResult RunRequestResponseTest(
+    ConformanceServiceAsyncClient& client,
+    const RequestResponseTestCase& requestResponse) {
+  switch (requestResponse.getType()) {
+    case RequestResponseTestCase::Type::basic:
+      return RunRequestResponseBasicTest(client, *requestResponse.basic_ref());
+    default:
+      return testing::AssertionFailure();
+  }
 }
 
 } // namespace

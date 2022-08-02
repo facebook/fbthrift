@@ -38,12 +38,18 @@ std::unique_ptr<Client<ConformanceService>> createClient() {
 }
 
 RequestResponseClientTestResult runRequestResponseTest(
-    const RequestResponseTestCase& test) {
+    const RequestResponseTestCase& requestResponse) {
   RequestResponseClientTestResult result;
-  auto client = createClient();
-  client->sync_requestResponse(
-      result.response().emplace(), *can_throw(test.request()));
-  return result;
+  switch (requestResponse.getType()) {
+    case RequestResponseTestCase::Type::basic: {
+      auto client = createClient();
+      client->sync_requestResponseBasic(
+          result.response().emplace(), *requestResponse.basic_ref()->request());
+      return result;
+    }
+    default:
+      return result;
+  }
 }
 
 int main(int argc, char** argv) {

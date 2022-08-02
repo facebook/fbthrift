@@ -41,5 +41,5 @@ service ConformanceService {
   void sendTestResult(1: rpc.ClientTestResult result);
 
   // =================== Request-Response ===================
-  rpc.Response requestResponse(1: rpc.Request req);
+  rpc.Response requestResponseBasic(1: rpc.Request req);
 }

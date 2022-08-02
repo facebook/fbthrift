@@ -21,9 +21,13 @@ namespace py.asyncio thrift_asyncio.conformance.rpc
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 
-struct RequestResponseTestCase {
-  1: optional Request request; // optional so we can also test no argument RPCs
-  2: optional Response response; // optional so we can also test void return type RPCs
+union RequestResponseTestCase {
+  1: RequestResponseBasicTestCase basic;
+}
+
+struct RequestResponseBasicTestCase {
+  1: Request request;
+  2: Response response;
 }
 
 struct Request {
