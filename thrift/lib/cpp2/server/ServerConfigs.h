@@ -216,9 +216,7 @@ class ServerConfigs {
       shared_ptr<folly::Executor>
       getHandlerExecutor_deprecated() const = 0;
 
-  virtual folly::Executor::KeepAlive<> getHandlerExecutorKeepAlive() const {
-    return getHandlerExecutor_deprecated().get();
-  }
+  virtual folly::Executor::KeepAlive<> getHandlerExecutorKeepAlive() const = 0;
 
   virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
       Cpp2RequestContext*, concurrency::PRIORITY defaultPriority) {

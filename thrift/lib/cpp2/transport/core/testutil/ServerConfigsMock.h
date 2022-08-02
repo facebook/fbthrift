@@ -121,6 +121,10 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
+  folly::Executor::KeepAlive<> getHandlerExecutorKeepAlive() const {
+    return {};
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};
