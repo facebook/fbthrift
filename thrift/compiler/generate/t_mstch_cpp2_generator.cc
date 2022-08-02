@@ -220,7 +220,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
       t_program const* program, std::map<std::string, std::string>& options);
 
  private:
-  void set_mstch_generators();
+  void set_mstch_factories();
   void generate_sinit(t_program const* program);
   void generate_reflection(t_program const* program);
   void generate_visitation(t_program const* program);
@@ -1578,8 +1578,8 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node thrift_includes() {
     mstch::array a;
     for (auto const* program : service_->program()->get_included_programs()) {
-      a.push_back(generators_->program_generator_->generate_cached(
-          program, generators_, cache_));
+      a.push_back(generate_cached(
+          *generators_->program_factory, program, generators_, cache_));
     }
     return a;
   }
@@ -1634,10 +1634,11 @@ class mstch_cpp2_interaction : public mstch_cpp2_service {
  public:
   mstch_cpp2_interaction(
       t_interaction const* interaction,
-      t_service const* containing_service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      ELEMENT_POSITION const pos,
+      int32_t,
+      t_service const* containing_service)
       : mstch_cpp2_service(
             interaction, std::move(generators), std::move(cache), pos),
         containing_service_(containing_service) {}
@@ -1903,8 +1904,8 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a;
     for (auto const* program : program_->get_included_programs()) {
-      a.push_back(generators_->program_generator_->generate_cached(
-          program, generators_, cache_));
+      a.push_back(generate_cached(
+          *generators_->program_factory, program, generators_, cache_));
     }
     return a;
   }
@@ -2190,67 +2191,6 @@ class cpp2_field_factory : public mstch_field_factory {
   std::shared_ptr<cpp2_generator_context> context_;
 };
 
-class function_cpp2_generator : public function_generator {
- public:
-  function_cpp2_generator() = default;
-  ~function_cpp2_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_function>(
-        function, std::move(generators), std::move(cache), pos);
-  }
-};
-
-class service_cpp2_generator : public service_generator {
- public:
-  service_cpp2_generator() = default;
-  ~service_cpp2_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_service>(
-        service, std::move(generators), std::move(cache), pos);
-  }
-  std::shared_ptr<mstch_base> generate_with_split_id(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      int32_t split_id,
-      int32_t split_count) const {
-    return std::make_shared<mstch_cpp2_service>(
-        service,
-        generators,
-        cache,
-        ELEMENT_POSITION::NONE,
-        split_id,
-        split_count);
-  }
-};
-
-class interaction_cpp2_generator : public interaction_generator {
-  std::shared_ptr<mstch_base> generate(
-      t_interaction const* interaction,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/,
-      t_service const* containing_service) const override {
-    return std::make_shared<mstch_cpp2_interaction>(
-        interaction,
-        containing_service,
-        std::move(generators),
-        std::move(cache),
-        pos);
-  }
-};
-
 class annotation_cpp2_generator : public annotation_generator {
  public:
   annotation_cpp2_generator() = default;
@@ -2325,35 +2265,6 @@ class const_value_cpp2_generator : public const_value_generator {
   }
 };
 
-class program_cpp2_generator : public program_generator {
- public:
-  program_cpp2_generator() = default;
-  ~program_cpp2_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_cpp2_program>(
-        program, std::move(generators), std::move(cache), pos);
-  }
-  std::shared_ptr<mstch_base> generate_with_split_id(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      int32_t split_id,
-      std::vector<t_struct*> structs) const {
-    return std::make_shared<mstch_cpp2_program>(
-        program,
-        std::move(generators),
-        std::move(cache),
-        ELEMENT_POSITION::NONE,
-        split_id,
-        structs);
-  }
-};
-
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     t_program* program,
     t_generation_context context,
@@ -2368,7 +2279,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
 
 void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
-  set_mstch_generators();
+  set_mstch_factories();
 
   if (has_option("any")) {
     generate_sinit(program);
@@ -2387,7 +2298,11 @@ void t_mstch_cpp2_generator::generate_program() {
   generate_visitation(program);
 }
 
-void t_mstch_cpp2_generator::set_mstch_generators() {
+void t_mstch_cpp2_generator::set_mstch_factories() {
+  generators_->set_program_factory<mstch_cpp2_program>();
+  generators_->set_service_factory<mstch_cpp2_service>();
+  generators_->set_interaction_factory<mstch_cpp2_interaction>();
+  generators_->set_function_factory<mstch_cpp2_function>();
   generators_->typedef_factory =
       std::make_unique<cpp2_typedef_factory>(context_);
   generators_->type_factory = std::make_unique<cpp2_type_factory>(context_);
@@ -2395,20 +2310,12 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->field_factory = std::make_unique<cpp2_field_factory>(context_);
   generators_->set_enum_factory<mstch_cpp2_enum>();
   generators_->set_enum_value_factory<mstch_cpp2_enum_value>();
-  generators_->set_function_generator(
-      std::make_unique<function_cpp2_generator>());
-  generators_->set_service_generator(
-      std::make_unique<service_cpp2_generator>());
-  generators_->set_interaction_generator(
-      std::make_unique<interaction_cpp2_generator>());
   generators_->set_const_generator(
       std::make_unique<const_cpp2_generator>(context_));
   generators_->set_const_value_generator(
       std::make_unique<const_value_cpp2_generator>());
   generators_->set_annotation_generator(
       std::make_unique<annotation_cpp2_generator>());
-  generators_->set_program_generator(
-      std::make_unique<program_cpp2_generator>());
 }
 
 void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
@@ -2484,9 +2391,15 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
     for (int split_id = 0; split_id < split_count; ++split_id) {
       auto s = std::to_string(split_id);
       s = std::string(digit - s.size(), '0') + s;
+      auto split_program = std::make_shared<mstch_cpp2_program>(
+          program,
+          generators_,
+          cache_,
+          ELEMENT_POSITION::NONE,
+          split_id,
+          shards.at(split_id));
       render_to_file(
-          program_cpp2_generator{}.generate_with_split_id(
-              program, generators_, cache_, split_id, shards.at(split_id)),
+          std::shared_ptr<mstch_base>(split_program),
           "module_types.cpp",
           name + "_types." + s + ".split.cpp");
     }
@@ -2508,8 +2421,12 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
     t_service const* service) {
   const auto& name = service->get_name();
 
-  auto serv = generators_->service_generator_->generate_cached(
-      get_program(), service, generators_, cache_);
+  auto serv = generate_cached(
+      *generators_->service_factory,
+      get_program(),
+      service,
+      generators_,
+      cache_);
 
   render_to_file(serv, "ServiceAsyncClient.h", name + "AsyncClient.h");
   render_to_file(serv, "service.cpp", name + ".cpp");
@@ -2524,10 +2441,15 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
     for (int split_id = 0; split_id < split_count; ++split_id) {
       auto s = std::to_string(split_id);
       s = std::string(digit - s.size(), '0') + s;
-      auto split_service = service_cpp2_generator{}.generate_with_split_id(
-          service, generators_, cache_, split_id, split_count);
+      auto split_service = std::make_shared<mstch_cpp2_service>(
+          service,
+          generators_,
+          cache_,
+          ELEMENT_POSITION::NONE,
+          split_id,
+          split_count);
       render_to_file(
-          split_service,
+          std::shared_ptr<mstch_base>(split_service),
           "ServiceAsyncClient.cpp",
           name + "." + s + ".async_client_split.cpp");
     }
@@ -2556,8 +2478,12 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
   mstch::array service_contexts;
   service_contexts.reserve(services.size());
   for (t_service const* service : services) {
-    auto service_context = generators_->service_generator_->generate_cached(
-        get_program(), service, generators_, cache_);
+    auto service_context = generate_cached(
+        *generators_->service_factory,
+        get_program(),
+        service,
+        generators_,
+        cache_);
     service_contexts.push_back(std::move(service_context));
   }
   mstch::map context{
@@ -2575,8 +2501,12 @@ void t_mstch_cpp2_generator::generate_inline_services(
   mstch::array service_contexts;
   service_contexts.reserve(services.size());
   for (t_service const* service : services) {
-    auto service_context = generators_->service_generator_->generate_cached(
-        get_program(), service, generators_, cache_);
+    auto service_context = generate_cached(
+        *generators_->service_factory,
+        get_program(),
+        service,
+        generators_,
+        cache_);
     service_contexts.push_back(std::move(service_context));
   }
   auto any_service_has_any_function = [&](auto&& predicate) -> bool {

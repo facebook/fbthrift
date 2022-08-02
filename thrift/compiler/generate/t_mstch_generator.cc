@@ -534,7 +534,7 @@ const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
     itr = cache_->programs_
               .emplace(
                   id,
-                  generators_->program_generator_->generate(
+                  generators_->program_factory->generate(
                       program, generators_, cache_))
               .first;
   }

@@ -355,7 +355,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
   void fill_validator_list(validator_list&) const override;
 
  private:
-  void set_mstch_generators();
+  void set_mstch_factories();
   void load_crate_map(const std::string& path);
   rust_codegen_options options_;
 };
@@ -434,7 +434,7 @@ class mstch_rust_program : public mstch_program {
   mstch::node rust_includes() {
     mstch::array includes;
     for (auto* program : program_->get_included_programs()) {
-      includes.push_back(generators_->program_generator_->generate(
+      includes.push_back(generators_->program_factory->generate(
           program, generators_, cache_, pos_));
     }
     return includes;
@@ -1534,11 +1534,11 @@ class mstch_rust_annotation : public mstch_annotation {
   mstch::node rust_value() { return quote(val_.value); }
 };
 
-class program_rust_generator : public program_generator {
+class rust_program_factory : public mstch_program_factory {
  public:
-  explicit program_rust_generator(const rust_codegen_options& options)
+  explicit rust_program_factory(const rust_codegen_options& options)
       : options_(options) {}
-  ~program_rust_generator() override = default;
+
   std::shared_ptr<mstch_base> generate(
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
@@ -1649,11 +1649,11 @@ class rust_enum_factory : public mstch_enum_factory {
   const rust_codegen_options& options_;
 };
 
-class service_rust_generator : public service_generator {
+class rust_service_factory : public mstch_service_factory {
  public:
-  explicit service_rust_generator(const rust_codegen_options& options)
+  explicit rust_service_factory(const rust_codegen_options& options)
       : options_(options) {}
-  ~service_rust_generator() override = default;
+
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
       std::shared_ptr<mstch_generators const> generators,
@@ -1668,11 +1668,11 @@ class service_rust_generator : public service_generator {
   const rust_codegen_options& options_;
 };
 
-class function_rust_generator {
+class rust_function_factory {
  public:
   std::shared_ptr<mstch_base> generate(
       const t_function* function,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -1684,9 +1684,9 @@ class function_rust_generator {
 };
 
 mstch::node mstch_rust_service::rust_functions() {
-  function_rust_generator function_generator;
+  rust_function_factory function_factory;
   return generate_elements(
-      service_->get_functions(), &function_generator, function_upcamel_names_);
+      service_->get_functions(), &function_factory, function_upcamel_names_);
 }
 
 struct name_less {
@@ -1713,10 +1713,10 @@ mstch::node mstch_rust_service::rust_all_exceptions() {
     data["rust_exception:type"] = factory.generate(
         funcs.first, generators_, cache_, ELEMENT_POSITION::NONE, 0);
 
-    function_rust_generator function_generator;
+    rust_function_factory function_factory;
 
     auto functions = generate_elements(
-        funcs.second, &function_generator, function_upcamel_names_);
+        funcs.second, &function_factory, function_upcamel_names_);
     auto fields = generate_fields(field_map[funcs.first]);
 
     mstch::array function_data;
@@ -1778,7 +1778,7 @@ class annotation_rust_generator : public annotation_generator {
 };
 
 void t_mstch_rust_generator::generate_program() {
-  set_mstch_generators();
+  set_mstch_factories();
 
   const auto* program = get_program();
   const auto& prog = cached_program(program);
@@ -1787,9 +1787,11 @@ void t_mstch_rust_generator::generate_program() {
   render_to_file(prog, "types.rs", "types.rs");
 }
 
-void t_mstch_rust_generator::set_mstch_generators() {
-  generators_->set_program_generator(
-      std::make_unique<program_rust_generator>(options_));
+void t_mstch_rust_generator::set_mstch_factories() {
+  generators_->program_factory =
+      std::make_unique<rust_program_factory>(options_);
+  generators_->service_factory =
+      std::make_unique<rust_service_factory>(options_);
   generators_->type_factory = std::make_unique<rust_type_factory>(options_);
   generators_->typedef_factory =
       std::make_unique<rust_typedef_factory>(options_);
@@ -1797,8 +1799,6 @@ void t_mstch_rust_generator::set_mstch_generators() {
   generators_->field_factory = std::make_unique<rust_field_factory>(options_);
   generators_->enum_factory = std::make_unique<rust_enum_factory>(options_);
   generators_->set_enum_value_factory<mstch_rust_enum_value>();
-  generators_->set_service_generator(
-      std::make_unique<service_rust_generator>(options_));
   generators_->set_const_generator(
       std::make_unique<const_rust_generator>(options_));
   generators_->set_annotation_generator(

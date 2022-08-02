@@ -148,7 +148,7 @@ class t_mstch_java_generator : public t_mstch_generator {
   void generate_program() override;
 
  private:
-  void set_mstch_generators();
+  void set_mstch_factories();
 
   /*
    * Generate multiple Java items according to the given template. Writes
@@ -162,8 +162,8 @@ class t_mstch_java_generator : public t_mstch_generator {
       const std::vector<T*>& items) {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] = generators_->program_generator_->generate(
-          program, generators_, cache_);
+      cache_->programs_[id] =
+          generators_->program_factory->generate(program, generators_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -191,8 +191,8 @@ class t_mstch_java_generator : public t_mstch_generator {
       const std::string& tpl_path) {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] = generators_->program_generator_->generate(
-          program, generators_, cache_);
+      cache_->programs_[id] =
+          generators_->program_factory->generate(program, generators_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -232,8 +232,8 @@ class t_mstch_java_generator : public t_mstch_generator {
       const std::vector<T*>& services) {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] = generators_->program_generator_->generate(
-          program, generators_, cache_);
+      cache_->programs_[id] =
+          generators_->program_factory->generate(program, generators_, cache_);
     }
 
     auto raw_package_dir = boost::filesystem::path{
@@ -1134,51 +1134,6 @@ class mstch_java_type : public mstch_type {
   }
 };
 
-class program_java_generator : public program_generator {
- public:
-  program_java_generator() = default;
-  ~program_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_program>(
-        program, generators, cache, pos);
-  }
-};
-
-class service_java_generator : public service_generator {
- public:
-  explicit service_java_generator() = default;
-  ~service_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_service>(
-        service, generators, cache, pos);
-  }
-};
-
-class function_java_generator : public function_generator {
- public:
-  function_java_generator() = default;
-  ~function_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_java_function>(
-        function, generators, cache, pos);
-  }
-};
-
 class const_java_generator : public const_generator {
  public:
   const_java_generator() = default;
@@ -1228,12 +1183,12 @@ class const_value_java_generator : public const_value_generator {
 };
 
 void t_mstch_java_generator::generate_program() {
-  set_mstch_generators();
+  set_mstch_factories();
 
   auto name = get_program()->name();
   const auto& id = get_program()->path();
   if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] = generators_->program_generator_->generate(
+    cache_->programs_[id] = generators_->program_factory->generate(
         get_program(), generators_, cache_);
   }
 
@@ -1246,12 +1201,12 @@ void t_mstch_java_generator::generate_program() {
       get_program()->objects(),
       "Object");
   generate_rpc_interfaces(
-      generators_->service_generator_.get(),
+      generators_->service_factory.get(),
       cache_->services_,
       get_program(),
       get_program()->services());
   generate_services(
-      generators_->service_generator_.get(),
+      generators_->service_factory.get(),
       cache_->services_,
       get_program(),
       get_program()->services());
@@ -1266,18 +1221,15 @@ void t_mstch_java_generator::generate_program() {
   generate_type_list(get_program());
 }
 
-void t_mstch_java_generator::set_mstch_generators() {
-  generators_->set_program_generator(
-      std::make_unique<program_java_generator>());
+void t_mstch_java_generator::set_mstch_factories() {
+  generators_->set_program_factory<mstch_java_program>();
+  generators_->set_service_factory<mstch_java_service>();
+  generators_->set_function_factory<mstch_java_function>();
   generators_->set_type_factory<mstch_java_type>();
   generators_->set_struct_factory<mstch_java_struct>();
   generators_->set_field_factory<mstch_java_field>();
   generators_->set_enum_factory<mstch_java_enum>();
   generators_->set_enum_value_factory<mstch_java_enum_value>();
-  generators_->set_service_generator(
-      std::make_unique<service_java_generator>());
-  generators_->set_function_generator(
-      std::make_unique<function_java_generator>());
   generators_->set_const_generator(std::make_unique<const_java_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_java_generator>());

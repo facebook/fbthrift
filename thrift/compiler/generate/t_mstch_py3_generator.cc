@@ -1148,7 +1148,7 @@ class mstch_py3_annotation : public mstch_annotation {
   }
 };
 
-class program_py3_generator : public program_generator {
+class py3_program_factory : public mstch_program_factory {
  public:
   std::shared_ptr<mstch_base> generate(
       const t_program* program,
@@ -1170,24 +1170,10 @@ class program_py3_generator : public program_generator {
       typePropsCache;
 };
 
-class function_py3_generator : public function_generator {
+class py3_service_factory : public mstch_service_factory {
  public:
-  function_py3_generator() = default;
-  ~function_py3_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_py3_function>(
-        function, generators, cache, pos);
-  }
-};
+  explicit py3_service_factory(const t_program* prog) : prog_{prog} {}
 
-class service_py3_generator : public service_generator {
- public:
-  explicit service_py3_generator(const t_program* prog) : prog_{prog} {}
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
       std::shared_ptr<const mstch_generators> generators,
@@ -1309,7 +1295,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   }
 
   void generate_program() override {
-    set_mstch_generators();
+    set_mstch_factories();
     generate_init_files();
     generate_types();
     generate_services();
@@ -1324,7 +1310,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
  protected:
   bool should_resolve_typedefs() const override { return true; }
-  void set_mstch_generators();
+  void set_mstch_factories();
   void generate_init_files();
   void generate_file(
       const std::string& file,
@@ -1350,8 +1336,8 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
       conditional_t<ForContainers, mstch_py3_container_type, mstch_py3_type>;
   auto trueType = type->get_true_type();
   auto& propsCache =
-      dynamic_cast<program_py3_generator*>(generators->program_generator_.get())
-          ->typePropsCache;
+      dynamic_cast<py3_program_factory&>(*generators->program_factory)
+          .typePropsCache;
   auto it = propsCache.find(trueType);
   if (it == propsCache.end()) {
     propsCache.emplace(
@@ -1365,25 +1351,24 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
       trueType, generators, cache, pos, prog_, propsCache.at(trueType));
 }
 
-void t_mstch_py3_generator::set_mstch_generators() {
-  generators_->set_program_generator(std::make_unique<program_py3_generator>());
+void t_mstch_py3_generator::set_mstch_factories() {
+  generators_->program_factory = std::make_unique<py3_program_factory>();
+  generators_->service_factory =
+      std::make_unique<py3_service_factory>(program_);
+  generators_->set_function_factory<mstch_py3_function>();
   generators_->type_factory =
       std::make_unique<py3_type_factory<false>>(program_);
   generators_->set_struct_factory<mstch_py3_struct>();
   generators_->set_field_factory<mstch_py3_field>();
   generators_->set_enum_factory<mstch_py3_enum>();
   generators_->set_enum_value_factory<mstch_py3_enum_value>();
-  generators_->set_function_generator(
-      std::make_unique<function_py3_generator>());
-  generators_->set_service_generator(
-      std::make_unique<service_py3_generator>(get_program()));
   generators_->set_annotation_generator(
       std::make_unique<annotation_py3_generator>());
 }
 
 void t_mstch_py3_generator::generate_init_files() {
   boost::filesystem::path p = generateRootPath_;
-  auto nodePtr = generators_->program_generator_->generate(
+  auto nodePtr = generators_->program_factory->generate(
       get_program(), generators_, cache_);
   while (!p.empty()) {
     render_to_file(nodePtr, "common/auto_generated_py", p / "__init__.py");
@@ -1412,7 +1397,7 @@ void t_mstch_py3_generator::generate_file(
     cache_->options_.erase("is_types_file");
   }
   auto nodePtr =
-      generators_->program_generator_->generate(program, generators_, cache_);
+      generators_->program_factory->generate(program, generators_, cache_);
   render_to_file(nodePtr, file, base / name / file);
 }
 

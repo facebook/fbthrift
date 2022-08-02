@@ -74,6 +74,7 @@ class mstch_factory {
   using node_type = Node;
 
   virtual ~mstch_factory() = default;
+
   virtual std::shared_ptr<mstch_base> generate(
       const Node* node,
       std::shared_ptr<const mstch_generators> generators,
@@ -83,6 +84,11 @@ class mstch_factory {
       Args...) const = 0;
 };
 
+using mstch_program_factory = mstch_factory<t_program>;
+using mstch_service_factory = mstch_factory<t_service>;
+using mstch_interaction_factory =
+    mstch_factory<t_interaction, const t_service*>;
+using mstch_function_factory = mstch_factory<t_function>;
 using mstch_type_factory = mstch_factory<t_type>;
 using mstch_typedef_factory = mstch_factory<t_typedef>;
 using mstch_struct_factory = mstch_factory<t_struct>;
@@ -90,6 +96,21 @@ using mstch_field_factory =
     mstch_factory<t_field, const field_generator_context*>;
 using mstch_enum_factory = mstch_factory<t_enum>;
 using mstch_enum_value_factory = mstch_factory<t_enum_value>;
+
+std::shared_ptr<mstch_base> generate_cached(
+    const mstch_program_factory& factory,
+    const t_program* program,
+    std::shared_ptr<const mstch_generators> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos = ELEMENT_POSITION::NONE);
+
+std::shared_ptr<mstch_base> generate_cached(
+    const mstch_service_factory& factory,
+    const t_program* program,
+    const t_service* service,
+    std::shared_ptr<const mstch_generators> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos = ELEMENT_POSITION::NONE);
 
 namespace detail {
 
@@ -171,59 +192,6 @@ class structured_annotation_generator {
       int32_t index = 0) const;
 };
 
-class function_generator {
- public:
-  function_generator() = default;
-  virtual ~function_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-};
-
-class service_generator {
- public:
-  service_generator() = default;
-  virtual ~service_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-
-  std::shared_ptr<mstch_base> generate_cached(
-      t_program const* program,
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const {
-    std::string service_id = program->path() + service->get_name();
-    auto itr = cache->services_.find(service_id);
-    if (itr == cache->services_.end()) {
-      itr = cache->services_.emplace_hint(
-          itr, service_id, generate(service, generators, cache, pos, index));
-    }
-    return itr->second;
-  }
-};
-
-class interaction_generator {
- public:
-  interaction_generator() = default;
-  virtual ~interaction_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_interaction const* interaction,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      t_service const* containing_service) const = 0;
-};
-
 class const_generator {
  public:
   const_generator() = default;
@@ -239,34 +207,11 @@ class const_generator {
       t_field const* field = nullptr) const;
 };
 
-class program_generator {
- public:
-  program_generator() = default;
-  virtual ~program_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
-
-  std::shared_ptr<mstch_base> generate_cached(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) {
-    const auto& id = program->path();
-    auto itr = cache->programs_.find(id);
-    if (itr == cache->programs_.end()) {
-      itr = cache->programs_.emplace_hint(
-          itr, id, generate(program, generators, cache, pos, index));
-    }
-    return itr->second;
-  }
-};
-
 struct mstch_generators {
+  std::unique_ptr<mstch_program_factory> program_factory;
+  std::unique_ptr<mstch_service_factory> service_factory;
+  std::unique_ptr<mstch_interaction_factory> interaction_factory;
+  std::unique_ptr<mstch_function_factory> function_factory;
   std::unique_ptr<mstch_type_factory> type_factory;
   std::unique_ptr<mstch_typedef_factory> typedef_factory;
   std::unique_ptr<mstch_struct_factory> struct_factory;
@@ -281,17 +226,36 @@ struct mstch_generators {
   std::unique_ptr<structured_annotation_generator>
       structured_annotation_generator_ =
           std::make_unique<structured_annotation_generator>();
-  std::unique_ptr<function_generator> function_generator_ =
-      std::make_unique<function_generator>();
-  std::unique_ptr<service_generator> service_generator_ =
-      std::make_unique<service_generator>();
-  std::unique_ptr<interaction_generator> interaction_generator_;
   std::unique_ptr<const_generator> const_generator_ =
       std::make_unique<const_generator>();
-  std::unique_ptr<program_generator> program_generator_ =
-      std::make_unique<program_generator>();
 
   mstch_generators();
+
+  template <typename MstchNode>
+  void set_program_factory() {
+    program_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_program_factory>>();
+  }
+
+  template <typename MstchNode>
+  void set_service_factory() {
+    service_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_service_factory>>();
+  }
+
+  template <typename MstchNode>
+  void set_interaction_factory() {
+    interaction_factory = std::make_unique<detail::factory_impl<
+        MstchNode,
+        mstch_interaction_factory,
+        const t_service*>>();
+  }
+
+  template <typename MstchNode>
+  void set_function_factory() {
+    function_factory = std::make_unique<
+        detail::basic_factory_impl<MstchNode, mstch_function_factory>>();
+  }
 
   template <typename MstchNode>
   void set_type_factory() {
@@ -339,24 +303,8 @@ struct mstch_generators {
     annotation_generator_ = std::move(g);
   }
 
-  void set_function_generator(std::unique_ptr<function_generator> g) {
-    function_generator_ = std::move(g);
-  }
-
-  void set_service_generator(std::unique_ptr<service_generator> g) {
-    service_generator_ = std::move(g);
-  }
-
-  void set_interaction_generator(std::unique_ptr<interaction_generator> g) {
-    interaction_generator_ = std::move(g);
-  }
-
   void set_const_generator(std::unique_ptr<const_generator> g) {
     const_generator_ = std::move(g);
-  }
-
-  void set_program_generator(std::unique_ptr<program_generator> g) {
-    program_generator_ = std::move(g);
   }
 };
 
@@ -451,7 +399,7 @@ class mstch_base : public mstch::object {
   template <typename C, typename... Args>
   mstch::array generate_services(C const& container, Args const&... args) {
     return generate_elements(
-        container, generators_->service_generator_.get(), args...);
+        container, generators_->service_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
@@ -459,15 +407,15 @@ class mstch_base : public mstch::object {
       C const& container,
       t_service const* containing_service,
       Args const&... args) {
-    if (generators_->interaction_generator_) {
+    if (generators_->interaction_factory) {
       return generate_elements(
           container,
-          generators_->interaction_generator_.get(),
+          generators_->interaction_factory.get(),
           containing_service,
           args...);
     }
     return generate_elements(
-        container, generators_->service_generator_.get(), args...);
+        container, generators_->service_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
@@ -495,7 +443,7 @@ class mstch_base : public mstch::object {
   template <typename C, typename... Args>
   mstch::array generate_functions(C const& container, Args const&... args) {
     return generate_elements(
-        container, generators_->function_generator_.get(), args...);
+        container, generators_->function_factory.get(), args...);
   }
 
   template <typename C, typename... Args>

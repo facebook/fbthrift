@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-#include <array>
 #include <memory>
 #include <vector>
-
-#include <boost/algorithm/string.hpp>
 
 #include <thrift/compiler/generate/json.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -42,7 +39,7 @@ class t_json_experimental_generator : public t_mstch_generator {
   void generate_program() override;
 
  private:
-  void set_mstch_generators();
+  void set_mstch_factories();
 };
 
 class json_experimental_program : public mstch_program {
@@ -92,19 +89,94 @@ class json_experimental_program : public mstch_program {
   }
 };
 
-class program_json_experimental_generator : public program_generator {
+class json_experimental_service : public mstch_service {
  public:
-  program_json_experimental_generator() = default;
-  ~program_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_program const* program,
+  json_experimental_service(
+      t_service const* srvc,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_program>(
-        program, generators, cache, pos);
+      ELEMENT_POSITION const pos)
+      : mstch_service(srvc, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"service:lineno", &json_experimental_service::get_lineno},
+            {"service:docstring?", &json_experimental_service::has_docstring},
+            {"service:docstring", &json_experimental_service::get_docstring},
+        });
   }
+  mstch::node get_lineno() { return service_->get_lineno(); }
+  mstch::node has_docstring() { return service_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(service_->get_doc()); }
+};
+
+class json_experimental_function : public mstch_function {
+ public:
+  json_experimental_function(
+      t_function const* func,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_function(func, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"function:lineno", &json_experimental_function::get_lineno},
+            {"function:docstring?", &json_experimental_function::has_docstring},
+            {"function:docstring", &json_experimental_function::get_docstring},
+            {"function:args?", &json_experimental_function::has_args},
+        });
+  }
+  mstch::node get_lineno() { return function_->get_lineno(); }
+  mstch::node has_docstring() { return function_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(function_->get_doc()); }
+  mstch::node has_args() {
+    return !function_->get_paramlist()->get_members().empty();
+  }
+};
+
+class json_experimental_struct : public mstch_struct {
+ public:
+  json_experimental_struct(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_struct(strct, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"struct:lineno", &json_experimental_struct::get_lineno},
+            {"struct:docstring?", &json_experimental_struct::has_docstring},
+            {"struct:docstring", &json_experimental_struct::get_docstring},
+        });
+  }
+  mstch::node get_lineno() { return strct_->get_lineno(); }
+  mstch::node has_docstring() { return strct_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(strct_->get_doc()); }
+};
+
+class json_experimental_field : public mstch_field {
+ public:
+  json_experimental_field(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      int32_t index,
+      field_generator_context const* field_context)
+      : mstch_field(field, generators, cache, pos, index, field_context) {
+    register_methods(
+        this,
+        {
+            {"field:lineno", &json_experimental_field::get_lineno},
+            {"field:docstring?", &json_experimental_field::has_docstring},
+            {"field:docstring", &json_experimental_field::get_docstring},
+        });
+  }
+  mstch::node get_lineno() { return field_->get_lineno(); }
+  mstch::node has_docstring() { return field_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(field_->get_doc()); }
 };
 
 class json_experimental_enum : public mstch_enum {
@@ -272,149 +344,24 @@ class const_value_json_experimental_generator : public const_value_generator {
   }
 };
 
-class json_experimental_struct : public mstch_struct {
- public:
-  json_experimental_struct(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
-    register_methods(
-        this,
-        {
-            {"struct:lineno", &json_experimental_struct::get_lineno},
-            {"struct:docstring?", &json_experimental_struct::has_docstring},
-            {"struct:docstring", &json_experimental_struct::get_docstring},
-        });
-  }
-  mstch::node get_lineno() { return strct_->get_lineno(); }
-  mstch::node has_docstring() { return strct_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(strct_->get_doc()); }
-};
-
-class json_experimental_service : public mstch_service {
- public:
-  json_experimental_service(
-      t_service const* srvc,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_service(srvc, generators, cache, pos) {
-    register_methods(
-        this,
-        {
-            {"service:lineno", &json_experimental_service::get_lineno},
-            {"service:docstring?", &json_experimental_service::has_docstring},
-            {"service:docstring", &json_experimental_service::get_docstring},
-        });
-  }
-  mstch::node get_lineno() { return service_->get_lineno(); }
-  mstch::node has_docstring() { return service_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(service_->get_doc()); }
-};
-
-class service_json_experimental_generator : public service_generator {
- public:
-  service_json_experimental_generator() = default;
-  ~service_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_service const* srvc,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_service>(
-        srvc, generators, cache, pos);
-  }
-};
-
-class json_experimental_function : public mstch_function {
- public:
-  json_experimental_function(
-      t_function const* func,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_function(func, generators, cache, pos) {
-    register_methods(
-        this,
-        {
-            {"function:lineno", &json_experimental_function::get_lineno},
-            {"function:docstring?", &json_experimental_function::has_docstring},
-            {"function:docstring", &json_experimental_function::get_docstring},
-            {"function:args?", &json_experimental_function::has_args},
-        });
-  }
-  mstch::node get_lineno() { return function_->get_lineno(); }
-  mstch::node has_docstring() { return function_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(function_->get_doc()); }
-  mstch::node has_args() {
-    return !function_->get_paramlist()->get_members().empty();
-  }
-};
-
-class function_json_experimental_generator : public function_generator {
- public:
-  function_json_experimental_generator() = default;
-  ~function_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_function const* func,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<json_experimental_function>(
-        func, generators, cache, pos);
-  }
-};
-
-class json_experimental_field : public mstch_field {
- public:
-  json_experimental_field(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
-      field_generator_context const* field_context)
-      : mstch_field(field, generators, cache, pos, index, field_context) {
-    register_methods(
-        this,
-        {
-            {"field:lineno", &json_experimental_field::get_lineno},
-            {"field:docstring?", &json_experimental_field::has_docstring},
-            {"field:docstring", &json_experimental_field::get_docstring},
-        });
-  }
-  mstch::node get_lineno() { return field_->get_lineno(); }
-  mstch::node has_docstring() { return field_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(field_->get_doc()); }
-};
-
 void t_json_experimental_generator::generate_program() {
   auto const* program = get_program();
-  set_mstch_generators();
-  std::string fname = program->name();
-  fname += ".json";
+  set_mstch_factories();
   auto output =
-      generators_->program_generator_->generate(program, generators_, cache_);
-  render_to_file(output, "thrift_ast", fname);
+      generators_->program_factory->generate(program, generators_, cache_);
+  render_to_file(output, "thrift_ast", program->name() + ".json");
 }
 
-void t_json_experimental_generator::set_mstch_generators() {
-  generators_->set_program_generator(
-      std::make_unique<program_json_experimental_generator>());
+void t_json_experimental_generator::set_mstch_factories() {
+  generators_->set_program_factory<json_experimental_program>();
+  generators_->set_service_factory<json_experimental_service>();
+  generators_->set_function_factory<json_experimental_function>();
   generators_->set_struct_factory<json_experimental_struct>();
   generators_->set_field_factory<json_experimental_field>();
   generators_->set_enum_factory<json_experimental_enum>();
   generators_->set_enum_value_factory<json_experimental_enum_value>();
   generators_->set_const_value_generator(
       std::make_unique<const_value_json_experimental_generator>());
-  generators_->set_service_generator(
-      std::make_unique<service_json_experimental_generator>());
-  generators_->set_function_generator(
-      std::make_unique<function_json_experimental_generator>());
 }
 
 } // namespace

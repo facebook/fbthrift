@@ -809,7 +809,7 @@ class mstch_python_enum_value : public mstch_enum_value {
   mstch::node py_name() { return py3::get_py3_name(*enm_value_); }
 };
 
-class program_python_generator : public program_generator {
+class python_program_factory : public mstch_program_factory {
  public:
   std::shared_ptr<mstch_base> generate(
       const t_program* program,
@@ -891,21 +891,6 @@ class mstch_python_function : public mstch_function {
   const std::string cppName_;
 };
 
-class function_python_generator : public function_generator {
- public:
-  function_python_generator() = default;
-  ~function_python_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
-    return std::make_shared<mstch_python_function>(
-        function, generators, cache, pos);
-  }
-};
-
 class mstch_python_service : public mstch_service {
  public:
   mstch_python_service(
@@ -974,9 +959,10 @@ class mstch_python_service : public mstch_service {
   const t_program* prog_;
 };
 
-class service_python_generator : public service_generator {
+class python_service_factory : public mstch_service_factory {
  public:
-  explicit service_python_generator(const t_program* prog) : prog_{prog} {}
+  explicit python_service_factory(const t_program* prog) : prog_{prog} {}
+
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
       std::shared_ptr<const mstch_generators> generators,
@@ -1108,7 +1094,7 @@ class t_mstch_python_generator : public t_mstch_generator {
   }
 
   void generate_program() override {
-    set_mstch_generators();
+    set_mstch_factories();
     generate_types();
     generate_metadata();
     generate_clients();
@@ -1124,7 +1110,7 @@ class t_mstch_python_generator : public t_mstch_generator {
 
  protected:
   bool should_resolve_typedefs() const override { return true; }
-  void set_mstch_generators();
+  void set_mstch_factories();
   void generate_file(
       const std::string& file,
       TypesFile is_types_file,
@@ -1141,19 +1127,17 @@ class t_mstch_python_generator : public t_mstch_generator {
 
 } // namespace
 
-void t_mstch_python_generator::set_mstch_generators() {
-  generators_->set_program_generator(
-      std::make_unique<program_python_generator>());
+void t_mstch_python_generator::set_mstch_factories() {
+  generators_->program_factory = std::make_unique<python_program_factory>();
+  generators_->service_factory =
+      std::make_unique<python_service_factory>(program_);
+  generators_->set_function_factory<mstch_python_function>();
   generators_->type_factory = std::make_unique<python_type_factory>(program_);
   generators_->set_typedef_factory<mstch_python_typedef>();
   generators_->set_struct_factory<mstch_python_struct>();
   generators_->set_field_factory<mstch_python_field>();
   generators_->set_enum_factory<mstch_python_enum>();
   generators_->set_enum_value_factory<mstch_python_enum_value>();
-  generators_->set_function_generator(
-      std::make_unique<function_python_generator>());
-  generators_->set_service_generator(
-      std::make_unique<service_python_generator>(get_program()));
   generators_->set_const_value_generator(
       std::make_unique<const_value_python_generator>());
 }
@@ -1175,7 +1159,7 @@ void t_mstch_python_generator::generate_file(
     cache_->options_.erase("is_types_file");
   }
   auto node_ptr =
-      generators_->program_generator_->generate(program, generators_, cache_);
+      generators_->program_factory->generate(program, generators_, cache_);
   render_to_file(node_ptr, file, base / name / file);
 }
 

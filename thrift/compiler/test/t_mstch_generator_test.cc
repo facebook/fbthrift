@@ -25,7 +25,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-TEST(t_mstch_generator_test, cacheLeaks) {
+TEST(t_mstch_generator_test, cache_leaks) {
   class leaky_program : public mstch_program {
    public:
     leaky_program(
@@ -44,9 +44,9 @@ TEST(t_mstch_generator_test, cacheLeaks) {
     int* object_count_;
   };
 
-  class leaky_program_generator : public program_generator {
+  class leaky_program_factory : public mstch_program_factory {
    public:
-    explicit leaky_program_generator(int* object_count_)
+    explicit leaky_program_factory(int* object_count_)
         : object_count_(object_count_) {}
 
     virtual std::shared_ptr<mstch_base> generate(
@@ -70,8 +70,8 @@ TEST(t_mstch_generator_test, cacheLeaks) {
           object_count_(object_count) {}
 
     void generate_program() override {
-      generators_->program_generator_ =
-          std::make_unique<leaky_program_generator>(object_count_);
+      generators_->program_factory =
+          std::make_unique<leaky_program_factory>(object_count_);
       std::shared_ptr<mstch_base> prog = cached_program(get_program());
     }
 

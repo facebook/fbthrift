@@ -20,6 +20,37 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+std::shared_ptr<mstch_base> generate_cached(
+    const mstch_program_factory& factory,
+    const t_program* program,
+    std::shared_ptr<const mstch_generators> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos) {
+  const auto& id = program->path();
+  auto itr = cache->programs_.find(id);
+  if (itr == cache->programs_.end()) {
+    itr = cache->programs_.emplace_hint(
+        itr, id, factory.generate(program, generators, cache, pos));
+  }
+  return itr->second;
+}
+
+std::shared_ptr<mstch_base> generate_cached(
+    const mstch_service_factory& factory,
+    const t_program* program,
+    const t_service* service,
+    std::shared_ptr<const mstch_generators> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos) {
+  std::string service_id = program->path() + service->get_name();
+  auto itr = cache->services_.find(service_id);
+  if (itr == cache->services_.end()) {
+    itr = cache->services_.emplace_hint(
+        itr, service_id, factory.generate(service, generators, cache, pos));
+  }
+  return itr->second;
+}
+
 bool mstch_base::has_option(const std::string& option) const {
   return cache_->options_.find(option) != cache_->options_.end();
 }
@@ -87,24 +118,6 @@ std::shared_ptr<mstch_base> structured_annotation_generator::generate(
       *annotValue, generators, cache, pos, index);
 }
 
-std::shared_ptr<mstch_base> function_generator::generate(
-    t_function const* function,
-    std::shared_ptr<mstch_generators const> generators,
-    std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_function>(function, generators, cache, pos);
-}
-
-std::shared_ptr<mstch_base> service_generator::generate(
-    t_service const* service,
-    std::shared_ptr<mstch_generators const> generators,
-    std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_service>(service, generators, cache, pos);
-}
-
 std::shared_ptr<mstch_base> const_generator::generate(
     t_const const* cnst,
     std::shared_ptr<mstch_generators const> generators,
@@ -118,16 +131,8 @@ std::shared_ptr<mstch_base> const_generator::generate(
       cnst, current_const, expected_type, generators, cache, pos, index, field);
 }
 
-std::shared_ptr<mstch_base> program_generator::generate(
-    t_program const* program,
-    std::shared_ptr<mstch_generators const> generators,
-    std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_program>(program, generators, cache, pos);
-}
-
 mstch_generators::mstch_generators() {
+  set_program_factory<mstch_program>();
   set_type_factory<mstch_type>();
   set_typedef_factory<mstch_typedef>();
   set_struct_factory<mstch_struct>();
@@ -616,7 +621,7 @@ mstch::node mstch_service::generate_cached_extended_service(
   size_t element_count = 1;
   return generate_element_cached(
       service,
-      generators_->service_generator_.get(),
+      generators_->service_factory.get(),
       cache_->services_,
       id,
       element_index,
@@ -639,7 +644,7 @@ mstch::node mstch_const::value() {
 }
 
 mstch::node mstch_const::program() {
-  return generators_->program_generator_->generate(
+  return generators_->program_factory->generate(
       cnst_->get_program(), generators_, cache_, pos_);
 }
 
@@ -671,7 +676,7 @@ mstch::node mstch_program::services() {
   std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
       program_->services(),
-      generators_->service_generator_.get(),
+      generators_->service_factory.get(),
       cache_->services_,
       id);
 }
