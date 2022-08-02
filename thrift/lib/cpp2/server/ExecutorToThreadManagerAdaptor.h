@@ -75,15 +75,21 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
   void removeWorker(size_t) override {}
 
-  size_t idleWorkerCount() const override { return 0; }
+  size_t idleWorkerCount() const override {
+    return resourcePoolSet_.idleWorkerCount();
+  }
 
-  size_t workerCount() const override { return 0; }
+  size_t workerCount() const override { return resourcePoolSet_.workerCount(); }
 
-  size_t pendingTaskCount() const override { return 0; }
+  size_t pendingTaskCount() const override {
+    return resourcePoolSet_.numQueued();
+  }
 
   size_t pendingUpstreamTaskCount() const override { return 0; }
 
-  size_t totalTaskCount() const override { return 0; }
+  size_t totalTaskCount() const override {
+    return resourcePoolSet_.numQueued() + resourcePoolSet_.numInExecution();
+  }
 
   size_t expiredTaskCount() override { return 0; }
 
