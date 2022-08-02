@@ -24,6 +24,7 @@ DEFINE_bool(
     false,
     "Use experimental resource pools");
 THRIFT_FLAG_DEFINE_bool(allow_resource_pools_for_wildcards, false);
+THRIFT_FLAG_DEFINE_bool(allow_wildcard_process_via_execute_request, true);
 
 namespace apache::thrift {
 

@@ -515,7 +515,9 @@ void Cpp2Worker::dispatchRequest(
         }
       } else if (
           // wildcard metadata do not specify rpcKind
-          (found->metadata.rpcKind || found->metadata.isWildcard()) &&
+          (found->metadata.rpcKind ||
+           (found->metadata.isWildcard() &&
+            THRIFT_FLAG(allow_wildcard_process_via_execute_request))) &&
           // executorType is defaulted to UNKNOWN for wildcard metadata
           // so only processors that implement createMethodMetadata can
           // pass this test
