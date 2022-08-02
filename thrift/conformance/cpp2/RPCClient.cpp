@@ -38,7 +38,7 @@ std::unique_ptr<Client<ConformanceService>> createClient() {
 }
 
 RequestResponseClientTestResult runRequestResponseTest(
-    const RequestResponseTestDescription& test) {
+    const RequestResponseTestCase& test) {
   RequestResponseClientTestResult result;
   auto client = createClient();
   client->sync_requestResponse(

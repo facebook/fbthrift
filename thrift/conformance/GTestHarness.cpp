@@ -67,7 +67,7 @@ testing::AssertionResult RunRoundTripTest(
 
 testing::AssertionResult RunRequestResponseTest(
     ConformanceServiceAsyncClient& client,
-    const RequestResponseTestDescription& requestResponse) {
+    const RequestResponseTestCase& requestResponse) {
   if (!requestResponse.request() || !requestResponse.response()) {
     throw std::invalid_argument("Unimplemented");
   }
