@@ -50,5 +50,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "@braintree/sanitize-url": "^6.0.0",
+    "got": "^11.8.5",
+    "mermaid": "^9.1.2",
+    "trim": "^0.0.3"
   }
 }
