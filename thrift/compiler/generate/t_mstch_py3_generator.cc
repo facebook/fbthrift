@@ -942,11 +942,6 @@ class mstch_py3_field : public mstch_field {
         }
         return ref_type_ = RefType::NotRef;
       }
-      case gen::cpp::reference_type::unrecognized: {
-        // It is legal to get here but hopefully nobody will in practice, since
-        // we're not set up to handle other kinds of refs:
-        throw std::runtime_error{"Unrecognized ref_type"};
-      }
     }
     // Suppress "control reaches end of non-void function" warning
     throw std::logic_error{"Unhandled ref_type"};

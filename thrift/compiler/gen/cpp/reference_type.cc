@@ -60,7 +60,7 @@ reference_type find_ref_type(const t_field& node) {
     } else if (*ref_type == "shared_mutable") {
       return reference_type::shared_mutable;
     } else {
-      return reference_type::unrecognized;
+      throw std::runtime_error("Unrecognized ref type: " + *ref_type);
     }
   }
 
@@ -85,7 +85,9 @@ reference_type find_ref_type(const t_field& node) {
           case RefType::SharedMutable:
             return reference_type::shared_mutable;
           default:
-            return reference_type::unrecognized;
+            throw std::runtime_error(
+                "Unrecognized ref type: " +
+                std::to_string(kv.second->get_integer()));
         }
       }
     }

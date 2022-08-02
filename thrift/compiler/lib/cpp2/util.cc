@@ -301,9 +301,7 @@ bool is_implicit_ref(const t_type* type) {
 bool field_transitively_refers_to_unique(const t_field* field) {
   switch (gen::cpp::find_ref_type(*field)) {
     case gen::cpp::reference_type::none:
-    case gen::cpp::reference_type::unrecognized: {
       break;
-    }
     case gen::cpp::reference_type::unique: {
       return true;
     }
@@ -463,7 +461,6 @@ bool has_ref_annotation(const t_field& field) {
     case gen::cpp::reference_type::unique:
     case gen::cpp::reference_type::shared_const:
     case gen::cpp::reference_type::shared_mutable:
-    case gen::cpp::reference_type::unrecognized:
       return true;
     case gen::cpp::reference_type::none:
     case gen::cpp::reference_type::boxed:

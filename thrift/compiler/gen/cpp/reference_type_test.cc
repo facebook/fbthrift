@@ -70,7 +70,7 @@ TEST_F(ReferenceTypeTest, CppRefType_SharedConst) {
 TEST_F(ReferenceTypeTest, CppRefType_Unknown) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "blah");
-  EXPECT_EQ(find_ref_type(tfield), reference_type::unrecognized);
+  EXPECT_THROW(find_ref_type(tfield), std::runtime_error);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_box) {

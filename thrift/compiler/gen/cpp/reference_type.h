@@ -33,9 +33,6 @@ enum class reference_type {
   shared_const,
   shared_mutable,
   boxed,
-
-  // TODO(afuller): Remove this and always throw an exception instead.
-  unrecognized, // Got some unrecognized string value.
 };
 
 reference_type find_ref_type(const t_field& node);

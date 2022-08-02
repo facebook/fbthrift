@@ -1152,9 +1152,7 @@ class mstch_cpp2_struct : public mstch_struct {
         case gen::cpp::reference_type::boxed:
         case gen::cpp::reference_type::none:
         case gen::cpp::reference_type::unique:
-        case gen::cpp::reference_type::unrecognized: {
           break;
-        }
       }
       result = true;
       return false;
