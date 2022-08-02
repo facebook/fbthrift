@@ -26,8 +26,9 @@ struct TestServerFactory {
   virtual std::shared_ptr<apache::thrift::BaseThriftServer> create() = 0;
 
   virtual TestServerFactory& useSimpleThreadManager(bool use) = 0;
-  virtual TestServerFactory& useThreadManager(
-      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe) = 0;
+
+  virtual TestServerFactory& setServerSetupFunction(
+      std::function<void(apache::thrift::BaseThriftServer&)> setupFunction) = 0;
 
   TestServerFactory& setServerEventHandler(
       std::shared_ptr<apache::thrift::server::TServerEventHandler>

@@ -349,11 +349,11 @@ class FiberExecutor : public folly::Executor {
 } // namespace
 
 TEST_P(SharedServerTests, FiberExecutorTest) {
-  auto exe = std::make_shared<
-      apache::thrift::concurrency::ThreadManagerExecutorAdapter>(
-      std::make_shared<FiberExecutor>());
-  serverFactory->useSimpleThreadManager(false);
-  serverFactory->useThreadManager(exe);
+  serverFactory->setServerSetupFunction([](BaseThriftServer& server) {
+    server.setThreadManagerType(
+        apache::thrift::BaseThriftServer::ThreadManagerType::EXECUTOR_ADAPTER);
+    server.setThreadManagerExecutor(std::make_shared<FiberExecutor>());
+  });
 
   init();
 

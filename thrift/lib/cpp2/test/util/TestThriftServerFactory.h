@@ -38,8 +38,8 @@ struct TestThriftServerFactory : public TestServerFactory {
           apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
       server->setNumCPUWorkerThreads(1);
       server->setThreadFactory(threadFactory);
-    } else if (exe_) {
-      server->setThreadManager(exe_);
+    } else if (setupFunction_) {
+      setupFunction_(*server);
     }
 
     server->setPort(0);
@@ -65,10 +65,9 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  TestThriftServerFactory& useThreadManager(
-      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe)
-      override {
-    exe_ = exe;
+  TestThriftServerFactory& setServerSetupFunction(
+      std::function<void(BaseThriftServer&)> setupFunction) override {
+    setupFunction_ = setupFunction;
     return *this;
   }
 
@@ -84,7 +83,7 @@ struct TestThriftServerFactory : public TestServerFactory {
 
  private:
   bool useSimpleThreadManager_{true};
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
+  std::function<void(BaseThriftServer&)> setupFunction_;
   uint32_t idleTimeoutMs_{0};
   bool duplex_{false};
 };
