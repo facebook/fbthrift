@@ -4,7 +4,37 @@ state: draft
 
 # Rocket Protocol
 
-This document describes the Rocket transport protocol and how it is used by Thrift to achieve the [Interface Types](../../definition/index.md).
+This document describes the Rocket transport protocol and how it is used by Thrift to achieve the [Interface Types](../../definition/index.md) by using [RSocket](https://rsocket.io/about/protocol).
+
+## Thrift Protocol Negotiation
+
+### Rocket/RSocket over TLS
+If ALPN is supported by both client and server - "rs" MUST be used as a RSocket protocol identifier.
+
+### Other transport (e.g. THeader) to Rocket/RSocket upgrade
+Once a non-Rocket Thrift connection is established - an upgrade to Rocket/RSocket SHOULD be attempted by the client.
+
+To perform an upgrade a client MUST use the [RocketUpgrade](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RocketUpgrade.thrift) interface immediately after opening the connection.
+
+If the upgrade was successful - both server and client MUST treat the connection as a newly established RSocket connection.
+
+## Versioning
+
+Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 8 through 10.
+
+## Connection setup
+
+### Rocket protocol version 9+
+RSocket setup frame MUST use application/x-rocket-metadata+compact as Metadata Encoding MIME Type and application/x-rocket-payload as Data Encoding MIME Type.
+
+RSocket setup payload MUST consist of a compact-serialized RequestSetupMetadata struct. Such compact-serialized RequestSetupMetadata MAY be prefixed by a 32-bit kRocketProtocolKey if Rocket client wants to remain compatible with Rocket server using Rocket protocol version 6-8.
+
+If connection establishment was successful, the server MUST respond with a SetupResponse control message.
+
+### Rocket protocol version 8
+RSocket setup payload MUST consist of a 32-bit kRocketProtocolKey followed by a compact-serialized RequestSetupMetadata struct.
+
+If connection establishment was successful, the server MUST respond with a SetupResponse control message.
 
 ## Request-Response
 
@@ -242,3 +272,13 @@ Stream ID | 32 bits <br/> Must be 0
 Frame type | 6 bits <br/> Must be METADATA_PUSH (0x0C)
 Flags | 10 bits <br/> Metadata flag must be set
 Metadata | Compact Protocol serialized [ClientPushMetadata](https://github.com/facebook/fbthrift/blob/main/thrift/lib/thrift/RpcMetadata.thrift) union. This includes information such as: <br/> - `interactionTerminate` field must be set <br/> - The `InteractionTerminate` struct must contain the interaction ID of the interaction being terminated
+
+## Control messages
+
+All Control messages are sent via METADATA_PUSH RSocket frame.
+
+### Control messages from the server
+METADATA_PUSH frame sent by the server MUST contain a compact-serialized ServerPushMetadata struct.
+
+### Control messages from the client
+METADATA_PUSH frame sent by the client MUST contain a compact-serialized ClientPushMetadata struct.
