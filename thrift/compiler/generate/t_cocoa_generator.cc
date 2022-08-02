@@ -1090,9 +1090,9 @@ void t_cocoa_generator::generate_cocoa_struct_reader(
   scope_up(out);
 
   // Read beginning field marker
-  indent(out)
-      << "[inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];"
-      << std::endl;
+  indent(out) << "[inProtocol readFieldBeginReturningName: &fieldName type: "
+                 "&fieldType fieldID: &fieldID];"
+              << std::endl;
 
   // Check for field STOP marker and break
   indent(out) << "if (fieldType == TType_STOP) { " << std::endl;
@@ -1129,7 +1129,8 @@ void t_cocoa_generator::generate_cocoa_struct_reader(
     out << indent() << "} else {" << std::endl;
     if (log_unexpected_) {
       out << indent()
-          << "  NSLog(@\"%s: field ID %i has unexpected type %i.  Skipping.\", __PRETTY_FUNCTION__, fieldID, fieldType);"
+          << "  NSLog(@\"%s: field ID %i has unexpected type %i.  Skipping.\", "
+             "__PRETTY_FUNCTION__, fieldID, fieldType);"
           << std::endl;
     }
     out << indent()
@@ -1144,7 +1145,8 @@ void t_cocoa_generator::generate_cocoa_struct_reader(
   out << indent() << "default:" << std::endl;
   if (log_unexpected_) {
     out << indent()
-        << "  NSLog(@\"%s: unexpected field ID %i with type %i.  Skipping.\", __PRETTY_FUNCTION__, fieldID, fieldType);"
+        << "  NSLog(@\"%s: unexpected field ID %i with type %i.  Skipping.\", "
+           "__PRETTY_FUNCTION__, fieldID, fieldType);"
         << std::endl;
   }
   out << indent()
@@ -1301,7 +1303,8 @@ void t_cocoa_generator::generate_cocoa_struct_validator(
       out << indent() << "if (!" << kFieldPrefix << field.name() << kSetPostfix
           << ") {" << std::endl
           << indent()
-          << "  @throw [TProtocolException exceptionWithName: @\"TProtocolException\""
+          << "  @throw [TProtocolException exceptionWithName: "
+             "@\"TProtocolException\""
           << std::endl
           << indent()
           << "                             reason: @\"Required field '"
@@ -1740,7 +1743,8 @@ void t_cocoa_generator::generate_cocoa_service_client_interface(
   scope_down(out);
 
   out << "- (id) initWithProtocol: (id <TProtocol>) protocol;" << std::endl;
-  out << "- (id) initWithInProtocol: (id <TProtocol>) inProtocol outProtocol: (id <TProtocol>) outProtocol;"
+  out << "- (id) initWithInProtocol: (id <TProtocol>) inProtocol outProtocol: "
+         "(id <TProtocol>) outProtocol;"
       << std::endl;
   out << "@end" << std::endl << std::endl;
 }
@@ -1789,7 +1793,8 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
   scope_down(out);
   out << std::endl;
 
-  out << "- (id) initWithInProtocol: (id <TProtocol>) anInProtocol outProtocol: (id <TProtocol>) anOutProtocol"
+  out << "- (id) initWithInProtocol: (id <TProtocol>) anInProtocol "
+         "outProtocol: (id <TProtocol>) anOutProtocol"
       << std::endl;
   scope_up(out);
   out << indent() << "self = [super init];" << std::endl;
@@ -1879,11 +1884,13 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
       // check for an exception
       out << indent() << "int msgType = 0;" << std::endl
           << indent()
-          << "[inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];"
+          << "[inProtocol readMessageBeginReturningName: nil type: &msgType "
+             "sequenceID: NULL];"
           << std::endl
           << indent() << "if (msgType == TMessageType_EXCEPTION) {" << std::endl
           << indent()
-          << "  TApplicationException * x = [TApplicationException read: inProtocol];"
+          << "  TApplicationException * x = [TApplicationException read: "
+             "inProtocol];"
           << std::endl
           << indent() << "  [inProtocol readMessageEnd];" << std::endl
           << indent() << "  @throw x;" << std::endl
@@ -1919,7 +1926,8 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
         indent(out) << "return;" << std::endl;
       } else {
         out << indent()
-            << "@throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT"
+            << "@throw [TApplicationException exceptionWithType: "
+               "TApplicationException_MISSING_RESULT"
             << std::endl
             << indent()
             << "                                         reason: @\""
@@ -2001,7 +2009,8 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
         << "NSMethodSignature * sig = [self methodSignatureForSelector: s];"
         << std::endl;
     out << indent()
-        << "NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];"
+        << "NSInvocation * invocation = [NSInvocation "
+           "invocationWithMethodSignature: sig];"
         << std::endl;
     out << indent() << "[invocation setSelector: s];" << std::endl;
     out << indent() << "[invocation retainArguments];" << std::endl;
@@ -2050,7 +2059,10 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
       << std::endl;
   out << indent() << "    [inProtocol readMessageEnd];" << std::endl;
   out << indent()
-      << "    TApplicationException * x = [TApplicationException exceptionWithType: TApplicationException_UNKNOWN_METHOD reason: [NSString stringWithFormat: @\"Invalid method name: '%@'\", messageName]];"
+      << "    TApplicationException * x = [TApplicationException "
+         "exceptionWithType: TApplicationException_UNKNOWN_METHOD reason: "
+         "[NSString stringWithFormat: @\"Invalid method name: '%@'\", "
+         "messageName]];"
       << std::endl;
   out << indent() << "    [outProtocol writeMessageBeginWithName: messageName"
       << std::endl;
@@ -2067,7 +2079,8 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
   out << indent() << "  // NSInvocation does not conform to NSCopying protocol"
       << std::endl;
   out << indent()
-      << "  NSInvocation * i = [NSInvocation invocationWithMethodSignature: [invocation methodSignature]];"
+      << "  NSInvocation * i = [NSInvocation invocationWithMethodSignature: "
+         "[invocation methodSignature]];"
       << std::endl;
   out << indent() << "  [i setSelector: [invocation selector]];" << std::endl;
   out << indent() << "  [i setArgument: &seqID atIndex: 2];" << std::endl;
@@ -2084,7 +2097,8 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
     out << std::endl;
     const std::string& funname = function->name();
     out << indent() << "- (void) process_" << funname
-        << "_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol"
+        << "_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) "
+           "inProtocol outProtocol: (id<TProtocol>) outProtocol"
         << std::endl;
     scope_up(out);
     std::string argstype =
@@ -2249,9 +2263,9 @@ void t_cocoa_generator::generate_deserialize_container(
 
   // Declare variables, read header
   if (ttype->is_map()) {
-    indent(out)
-        << "[inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &"
-        << size << "];" << std::endl;
+    indent(out) << "[inProtocol readMapBeginReturningKeyType: NULL valueType: "
+                   "NULL size: &"
+                << size << "];" << std::endl;
     indent(out) << "NSMutableDictionary * " << fieldName
                 << " = [[NSMutableDictionary alloc] initWithCapacity: " << size
                 << "];" << std::endl;
@@ -3204,10 +3218,13 @@ THRIFT_REGISTER_GENERATOR(
     cocoa,
     "Cocoa",
     "    import_path=XYZ: Override thrift package import path\n"
-    "    log_unexpected:  Log every time an unexpected field ID or type is encountered.\n"
-    "    nullability:     Use annotations to ensure required fields are present.\n"
+    "    log_unexpected:  Log every time an unexpected field ID or type is "
+    "encountered.\n"
+    "    nullability:     Use annotations to ensure required fields are "
+    "present.\n"
     "    validate_required:\n"
-    "                     Throws exception if any required field is not set.\n");
+    "                     Throws exception if any required field is not "
+    "set.\n");
 
 } // namespace compiler
 } // namespace thrift

@@ -501,7 +501,9 @@ void t_json_generator::generate_typedef(const t_typedef* ttypedef) {
   print_lineno(*ttypedef);
   print_type(ttypedef->get_type());
   print_node_annotations(
-      *ttypedef, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
+      *ttypedef,
+      /*add_heading_comma=*/true,
+      /*add_trailing_comma=*/false);
   f_out_ << "," << endl;
   print_source_range(ttypedef->src_range());
   indent_down();
@@ -518,7 +520,9 @@ void t_json_generator::generate_enum(const t_enum* tenum) {
   indent_up();
   print_lineno(*tenum);
   print_node_annotations(
-      *tenum, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
+      *tenum,
+      /*add_heading_comma=*/false,
+      /*add_trailing_comma=*/true);
   indent(f_out_) << "\"constants\" : {" << endl;
   indent_up();
   vector<t_enum_value*> values = tenum->get_enum_values();
@@ -568,7 +572,9 @@ void t_json_generator::generate_const(const t_const* tconst) {
   f_out_ << "," << endl;
   print_type(tconst->get_type());
   print_node_annotations(
-      *tconst, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
+      *tconst,
+      /*add_heading_comma=*/true,
+      /*add_trailing_comma=*/false);
   f_out_ << "," << endl;
   print_source_range(tconst->src_range());
   indent_down();
@@ -590,7 +596,9 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
   indent(f_out_) << "\"is_union\" : "
                  << (tstruct->is_union() ? "true" : "false") << "," << endl;
   print_node_annotations(
-      *tstruct, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
+      *tstruct,
+      /*add_heading_comma=*/false,
+      /*add_trailing_comma=*/true);
   vector<t_field*> members = tstruct->get_members();
   vector<t_field*>::iterator mem_iter = members.begin();
   indent(f_out_) << "\"fields\" : {" << endl;
@@ -612,7 +620,9 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
       print_const_value(default_val);
     }
     print_node_annotations(
-        **mem_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
+        **mem_iter,
+        /*add_heading_comma=*/true,
+        /*add_trailing_comma=*/false);
     f_out_ << "," << endl;
     print_source_range((*mem_iter)->src_range());
     indent_down();
@@ -660,7 +670,9 @@ void t_json_generator::generate_service(const t_service* tservice) {
   }
   print_lineno(*tservice);
   print_node_annotations(
-      *tservice, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
+      *tservice,
+      /*add_heading_comma=*/false,
+      /*add_trailing_comma=*/true);
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator fn_iter = functions.begin();
   f_out_ << indent() << "\"functions\" : {" << endl;
@@ -729,7 +741,9 @@ void t_json_generator::generate_service(const t_service* tservice) {
     }
     f_out_ << "]";
     print_node_annotations(
-        **fn_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
+        **fn_iter,
+        /*add_heading_comma=*/true,
+        /*add_trailing_comma=*/false);
     f_out_ << "," << endl;
     print_source_range((*fn_iter)->src_range());
     indent_down();

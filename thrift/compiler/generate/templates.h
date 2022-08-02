@@ -22,11 +22,11 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-extern std::size_t const templates_size;
-extern std::size_t const templates_name_sizes[];
-extern char const* const templates_name_datas[];
-extern std::size_t const templates_content_sizes[];
-extern char const* const templates_content_datas[];
+extern const std::size_t templates_size;
+extern const std::size_t templates_name_sizes[];
+extern const char* const templates_name_datas[];
+extern const std::size_t templates_content_sizes[];
+extern const char* const templates_content_datas[];
 
 } // namespace compiler
 } // namespace thrift

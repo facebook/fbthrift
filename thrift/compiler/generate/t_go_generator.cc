@@ -371,7 +371,7 @@ class t_go_generator : public t_concat_generator {
 std::vector<const t_function*> t_go_generator::get_supported_functions(
     const t_service* tservice) {
   std::vector<const t_function*> funcs;
-  for (auto const* func : tservice->get_functions()) {
+  for (const auto* func : tservice->get_functions()) {
     if (!func->returns_stream() && !func->returns_sink() &&
         !func->get_returntype()->is_service()) {
       funcs.push_back(func);
@@ -846,7 +846,7 @@ string t_go_generator::render_includes() {
       auto value = tmp(go_module.substr(found));
       it = package_identifiers.emplace(go_module, std::move(value)).first;
     }
-    auto const& package_identifier = it->second;
+    const auto& package_identifier = it->second;
 
     result += "\t" + package_identifier + " \"" + gen_package_prefix_ +
         go_path + "\"\n";
@@ -913,7 +913,8 @@ string t_go_generator::go_imports_begin() {
 string t_go_generator::go_imports_end() {
   return string(
       ")\n\n"
-      "// (needed to ensure safety because of naive import list construction.)\n"
+      "// (needed to ensure safety because of naive import list "
+      "construction.)\n"
       "var _ = thrift.ZERO\n"
       "var _ = fmt.Printf\n"
       "var _ = sync.Mutex{}\n"
@@ -1843,7 +1844,8 @@ void t_go_generator::generate_go_struct_reader(
   out << indent() << "if _, err := iprot.ReadStructBegin(); err != nil {"
       << endl;
   out << indent()
-      << "  return thrift.PrependError(fmt.Sprintf(\"%T read error: \", p), err)"
+      << "  return thrift.PrependError(fmt.Sprintf(\"%T read error: \", p), "
+         "err)"
       << endl;
   out << indent() << "}" << endl << endl;
 
@@ -1956,7 +1958,8 @@ void t_go_generator::generate_go_struct_reader(
       const string field_name(publicize(escape_string((*f_iter)->get_name())));
       out << indent() << "if !isset" << field_name << "{" << endl;
       out << indent()
-          << "  return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, "
+          << "  return "
+             "thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, "
              "fmt.Errorf(\"Required field "
           << field_name << " is not set\"));" << endl;
       out << indent() << "}" << endl;
@@ -2004,7 +2007,8 @@ void t_go_generator::generate_go_struct_writer(
     out << indent() << "if c := p.CountSetFields" << pub_tstruct_name
         << "(); c > 1 {" << endl
         << indent()
-        << "  return fmt.Errorf(\"%T write union: no more than one field must be set (%d set).\", p, c)"
+        << "  return fmt.Errorf(\"%T write union: no more than one field must "
+           "be set (%d set).\", p, c)"
         << endl
         << indent() << "}" << endl;
   }
@@ -2065,7 +2069,8 @@ void t_go_generator::generate_go_struct_writer(
         << "\", " << type_to_enum((*f_iter)->get_type()) << ", " << field_id
         << "); err != nil {" << endl;
     out << indent()
-        << "  return thrift.PrependError(fmt.Sprintf(\"%T write field begin error "
+        << "  return thrift.PrependError(fmt.Sprintf(\"%T write field begin "
+           "error "
         << field_id << ":" << escape_field_name << ": \", p), err) }" << endl;
 
     // Write field contents
@@ -2074,7 +2079,8 @@ void t_go_generator::generate_go_struct_writer(
     // Write field closer
     out << indent() << "if err := oprot.WriteFieldEnd(); err != nil {" << endl;
     out << indent()
-        << "  return thrift.PrependError(fmt.Sprintf(\"%T write field end error "
+        << "  return thrift.PrependError(fmt.Sprintf(\"%T write field end "
+           "error "
         << field_id << ":" << escape_field_name << ": \", p), err) }" << endl;
 
     if (field_required == t_field::e_req::optional) {
@@ -2201,7 +2207,7 @@ void t_go_generator::generate_service_interface(const t_service* tservice) {
   if (!functions.empty()) {
     f_service_ << endl;
 
-    for (auto const* func : functions) {
+    for (const auto* func : functions) {
       generate_go_docstring(f_service_, func);
 
       f_service_ << indent()
@@ -2890,11 +2896,11 @@ void t_go_generator::generate_write_function(
       publicize(tfunction->get_name());
   string argsname = publicize(tfunction->get_name() + "_args", true);
   string resultname = publicize(tfunction->get_name() + "_result", true);
-  f_service_
-      << indent() << "func (p *" << processorName
-      << ") Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err "
-         "thrift.Exception) {"
-      << endl;
+  f_service_ << indent() << "func (p *" << processorName
+             << ") Write(seqId int32, result thrift.WritableStruct, oprot "
+                "thrift.Protocol) (err "
+                "thrift.Exception) {"
+             << endl;
   indent_up();
 
   f_service_ << indent() << "var err2 error" << endl;
@@ -3216,7 +3222,8 @@ void t_go_generator::generate_deserialize_struct(
   out << indent() << "if err := " << prefix << ".Read(iprot); err != nil {"
       << endl;
   out << indent()
-      << "  return thrift.PrependError(fmt.Sprintf(\"%T error reading struct: \", "
+      << "  return thrift.PrependError(fmt.Sprintf(\"%T error reading struct: "
+         "\", "
       << prefix << "), err)" << endl;
   out << indent() << "}" << endl;
 }
@@ -3474,7 +3481,8 @@ void t_go_generator::generate_serialize_struct(
   out << indent() << "if err := " << prefix << ".Write(oprot); err != nil {"
       << endl;
   out << indent()
-      << "  return thrift.PrependError(fmt.Sprintf(\"%T error writing struct: \", "
+      << "  return thrift.PrependError(fmt.Sprintf(\"%T error writing struct: "
+         "\", "
       << prefix << "), err)" << endl;
   out << indent() << "}" << endl;
 }
@@ -3530,7 +3538,8 @@ void t_go_generator::generate_serialize_container(
     out << indent() << "for _, v := range " << prefix << " {" << endl;
     out << indent() << "  if ok := set[v]; ok {" << endl;
     out << indent()
-        << "    return thrift.PrependError(\"\", fmt.Errorf(\"%T error writing set field: slice is not unique\", v))"
+        << "    return thrift.PrependError(\"\", fmt.Errorf(\"%T error writing "
+           "set field: slice is not unique\", v))"
         << endl;
     out << indent() << "  }" << endl;
     out << indent() << "  set[v] = true" << endl;
@@ -3995,8 +4004,10 @@ THRIFT_REGISTER_GENERATOR(
     "    thrift_import=   Override thrift package import path (default:" +
         default_thrift_import +
         ")\n"
-        "    package=         Package name (default: inferred from thrift file name)\n"
-        "    use_context      Generate code with context on all thrift server handlers\n");
+        "    package=         Package name (default: inferred from thrift file "
+        "name)\n"
+        "    use_context      Generate code with context on all thrift server "
+        "handlers\n");
 
 } // namespace compiler
 } // namespace thrift

@@ -33,7 +33,7 @@ std::ostream& json_quote_ascii(std::ostream& o, const std::string& s) {
   o << "\"";
   for (char c : s) {
     switch (c) {
-      // clang-format off
+        // clang-format off
       case '"':  o << "\\\""; break;
       case '\\': o << "\\\\"; break;
       case '\b': o << "\\b";  break;

@@ -691,7 +691,7 @@ class mstch_py3_program : public mstch_program {
   std::vector<const t_type*> customTypes_;
   std::unordered_set<std::string> seenTypeNames_;
   std::map<std::string, Namespace> includeNamespaces_;
-  std::map<std::tuple<std::string, bool>, t_function const*>
+  std::map<std::tuple<std::string, bool>, const t_function*>
       uniqueFunctionsByReturnType_;
   std::vector<const t_type*> responseAndStreamTypes_;
   std::map<std::string, const t_type*> streamTypes_;
@@ -702,8 +702,8 @@ class mstch_py3_program : public mstch_program {
 class mstch_py3_function : public mstch_function {
  public:
   mstch_py3_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* function,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos),
@@ -837,7 +837,7 @@ class mstch_py3_field : public mstch_field {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      field_generator_context const* field_context)
+      const field_generator_context* field_context)
       : mstch_field(field, generators, cache, pos, index, field_context),
         pyName_{py3::get_py3_name(*field)},
         cppName_{cpp2::get_name(field)} {
@@ -988,7 +988,7 @@ class mstch_py3_struct : public mstch_struct {
         std::remove_if(
             py3_fields_.begin(),
             py3_fields_.end(),
-            [](t_field const* field) {
+            [](const t_field* field) {
               return field->has_annotation("py3.hidden");
             }),
         py3_fields_.end());
@@ -1020,7 +1020,7 @@ class mstch_py3_struct : public mstch_struct {
   mstch::node has_py3_fields() { return !py3_fields_.empty(); }
 
   mstch::node fields_and_mixin_fields() {
-    std::vector<t_field const*> fields = py3_fields_;
+    std::vector<const t_field*> fields = py3_fields_;
     for (const auto& m : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(m.member);
     }
@@ -1029,7 +1029,7 @@ class mstch_py3_struct : public mstch_struct {
   }
 
  private:
-  std::vector<t_field const*> py3_fields_;
+  std::vector<const t_field*> py3_fields_;
 };
 
 class mstch_py3_enum : public mstch_enum {

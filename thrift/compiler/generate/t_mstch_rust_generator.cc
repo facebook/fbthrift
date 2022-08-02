@@ -363,8 +363,8 @@ class t_mstch_rust_generator : public t_mstch_generator {
 class mstch_rust_program : public mstch_program {
  public:
   mstch_rust_program(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -517,7 +517,7 @@ class mstch_rust_struct : public mstch_struct {
  public:
   mstch_rust_struct(
       const t_struct* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -602,7 +602,7 @@ class mstch_rust_service : public mstch_service {
  public:
   mstch_rust_service(
       const t_service* service,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -675,7 +675,7 @@ class mstch_rust_function : public mstch_function {
  public:
   mstch_rust_function(
       const t_function* function,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -781,7 +781,7 @@ class mstch_rust_enum_value : public mstch_enum_value {
  public:
   mstch_rust_enum_value(
       const t_enum_value* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum_value(enm_value, generators, cache, pos) {
@@ -807,7 +807,7 @@ class mstch_rust_enum : public mstch_enum {
  public:
   mstch_rust_enum(
       const t_enum* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -859,7 +859,7 @@ class mstch_rust_type : public mstch_type {
  public:
   mstch_rust_type(
       const t_type* type,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -909,7 +909,7 @@ class mstch_rust_value : public mstch_base {
       const t_const_value* const_value,
       const t_type* type,
       unsigned depth,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1172,7 +1172,7 @@ class mstch_rust_map_entry : public mstch_base {
       const t_const_value* value,
       const t_type* value_type,
       unsigned depth,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1214,7 +1214,7 @@ class mstch_rust_struct_field : public mstch_base {
       const t_field* field,
       const t_const_value* value,
       unsigned depth,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1331,11 +1331,11 @@ class mstch_rust_const : public mstch_const {
       const t_const* cnst,
       const t_const* current_const,
       const t_type* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      t_field const* field,
+      const t_field* field,
       const rust_codegen_options& options)
       : mstch_const(
             cnst,
@@ -1387,11 +1387,11 @@ class mstch_rust_field : public mstch_field {
  public:
   mstch_rust_field(
       const t_field* field,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      field_generator_context const* field_context,
+      const field_generator_context* field_context,
       const rust_codegen_options& options)
       : mstch_field(field, generators, cache, pos, index, field_context),
         options_(options) {
@@ -1444,7 +1444,7 @@ class mstch_rust_typedef : public mstch_typedef {
  public:
   mstch_rust_typedef(
       const t_typedef* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1540,8 +1540,8 @@ class rust_program_factory : public mstch_program_factory {
       : options_(options) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1579,7 +1579,7 @@ class rust_typedef_factory : public mstch_typedef_factory {
 
   std::shared_ptr<mstch_base> generate(
       const t_typedef* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1621,7 +1621,7 @@ class rust_field_factory : public mstch_field_factory {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      field_generator_context const* context = nullptr) const override {
+      const field_generator_context* context = nullptr) const override {
     return std::make_shared<mstch_rust_field>(
         field, generators, cache, pos, index, context, options_);
   }
@@ -1637,7 +1637,7 @@ class rust_enum_factory : public mstch_enum_factory {
 
   std::shared_ptr<mstch_base> generate(
       const t_enum* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1656,7 +1656,7 @@ class rust_service_factory : public mstch_service_factory {
 
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1741,13 +1741,13 @@ class const_rust_generator : public const_generator {
   ~const_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_const* cnst,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
       const t_const* current_const,
       const t_type* expected_type,
-      t_field const* field) const override {
+      const t_field* field) const override {
     return std::make_shared<mstch_rust_const>(
         cnst,
         current_const,
@@ -1898,7 +1898,8 @@ THRIFT_REGISTER_GENERATOR(
     "    serde:           Derive serde Serialize/Deserialize traits for types\n"
     "    noserver:        Don't emit server code\n"
     "    include_prefix=: Set program:include_prefix.\n"
-    "    include_srcs=:   Additional Rust source file to include in output, `:` separated\n"
+    "    include_srcs=:   Additional Rust source file to include in output, "
+    "`:` separated\n"
     "    cratemap=map:    Mapping file from services to crate names\n");
 
 } // namespace

@@ -39,7 +39,7 @@ namespace compiler {
 
 namespace {
 
-std::string const& get_cpp_template(const t_type* type) {
+const std::string& get_cpp_template(const t_type* type) {
   return type->get_annotation({"cpp.template", "cpp2.template"});
 }
 
@@ -188,8 +188,8 @@ class cpp2_generator_context {
   cpp2_generator_context(cpp2_generator_context&&) = default;
   cpp2_generator_context& operator=(cpp2_generator_context&&) = default;
 
-  bool is_orderable(t_type const& type) {
-    std::unordered_set<t_type const*> seen;
+  bool is_orderable(const t_type& type) {
+    std::unordered_set<const t_type*> seen;
     auto& memo = is_orderable_memo_;
     return cpp2::is_orderable(seen, memo, type);
   }
@@ -199,7 +199,7 @@ class cpp2_generator_context {
  private:
   cpp2_generator_context() = default;
 
-  std::unordered_map<t_type const*, bool> is_orderable_memo_;
+  std::unordered_map<const t_type*, bool> is_orderable_memo_;
   gen::cpp::type_resolver resolver_;
 };
 
@@ -212,22 +212,22 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
   void generate_program() override;
   void fill_validator_list(validator_list&) const override;
-  static std::string get_cpp2_namespace(t_program const* program);
-  static std::string get_cpp2_unprefixed_namespace(t_program const* program);
-  static mstch::array get_namespace_array(t_program const* program);
-  static mstch::array cpp_includes(t_program const* program);
+  static std::string get_cpp2_namespace(const t_program* program);
+  static std::string get_cpp2_unprefixed_namespace(const t_program* program);
+  static mstch::array get_namespace_array(const t_program* program);
+  static mstch::array cpp_includes(const t_program* program);
   static mstch::node include_prefix(
-      t_program const* program, std::map<std::string, std::string>& options);
+      const t_program* program, std::map<std::string, std::string>& options);
 
  private:
   void set_mstch_factories();
-  void generate_sinit(t_program const* program);
-  void generate_reflection(t_program const* program);
-  void generate_visitation(t_program const* program);
-  void generate_constants(t_program const* program);
-  void generate_metadata(t_program const* program);
-  void generate_structs(t_program const* program);
-  void generate_out_of_line_service(t_service const* service);
+  void generate_sinit(const t_program* program);
+  void generate_reflection(const t_program* program);
+  void generate_visitation(const t_program* program);
+  void generate_constants(const t_program* program);
+  void generate_metadata(const t_program* program);
+  void generate_structs(const t_program* program);
+  void generate_out_of_line_service(const t_service* service);
   void generate_out_of_line_services(const std::vector<t_service*>& services);
   void generate_inline_services(const std::vector<t_service*>& services);
 
@@ -238,8 +238,8 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 class mstch_cpp2_enum : public mstch_enum {
  public:
   mstch_cpp2_enum(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum* enm,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, std::move(generators), std::move(cache), pos) {
@@ -289,7 +289,7 @@ class mstch_cpp2_enum : public mstch_enum {
     }
     return mstch::node();
   }
-  std::string const& cpp_is_unscoped_() {
+  const std::string& cpp_is_unscoped_() {
     return enm_->get_annotation(
         {"cpp2.deprecated_enum_unscoped", "cpp.deprecated_enum_unscoped"});
   }
@@ -330,8 +330,8 @@ class mstch_cpp2_enum : public mstch_enum {
 class mstch_cpp2_enum_value : public mstch_enum_value {
  public:
   mstch_cpp2_enum_value(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum_value* enm_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum_value(
@@ -363,10 +363,10 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
 class mstch_cpp2_const_value : public mstch_const_value {
  public:
   mstch_cpp2_const_value(
-      t_const_value const* const_value,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -389,8 +389,8 @@ class mstch_cpp2_const_value : public mstch_const_value {
 class mstch_cpp2_typedef : public mstch_typedef {
  public:
   mstch_cpp2_typedef(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_typedef* typedf,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -418,8 +418,8 @@ class mstch_cpp2_typedef : public mstch_typedef {
 class mstch_cpp2_type : public mstch_type {
  public:
   mstch_cpp2_type(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_type* type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -470,7 +470,7 @@ class mstch_cpp2_type : public mstch_type {
     register_has_option(
         "type:sync_methods_return_try?", "sync_methods_return_try");
   }
-  std::string get_type_namespace(t_program const* program) override {
+  std::string get_type_namespace(const t_program* program) override {
     return cpp2::get_gen_namespace(*program);
   }
   mstch::node resolves_to_base() { return resolved_type_->is_base_type(); }
@@ -510,7 +510,7 @@ class mstch_cpp2_type : public mstch_type {
       return false;
     }
     // type is a container: traverse (breadthwise, but could be depthwise)
-    std::queue<t_type const*> queue;
+    std::queue<const t_type*> queue;
     queue.push(resolved_type_);
     while (!queue.empty()) {
       auto next = queue.front();
@@ -523,12 +523,12 @@ class mstch_cpp2_type : public mstch_type {
       }
       if (false) {
       } else if (next->is_list()) {
-        queue.push(static_cast<t_list const*>(next)->get_elem_type());
+        queue.push(static_cast<const t_list*>(next)->get_elem_type());
       } else if (next->is_set()) {
-        queue.push(static_cast<t_set const*>(next)->get_elem_type());
+        queue.push(static_cast<const t_set*>(next)->get_elem_type());
       } else if (next->is_map()) {
-        queue.push(static_cast<t_map const*>(next)->get_key_type());
-        queue.push(static_cast<t_map const*>(next)->get_val_type());
+        queue.push(static_cast<const t_map*>(next)->get_key_type());
+        queue.push(static_cast<const t_map*>(next)->get_val_type());
       } else {
         assert(false);
       }
@@ -576,7 +576,7 @@ class mstch_cpp2_type : public mstch_type {
         type_->has_annotation("cpp.use_allocator");
   }
   mstch::node is_non_empty_struct() {
-    auto as_struct = dynamic_cast<t_struct const*>(resolved_type_);
+    auto as_struct = dynamic_cast<const t_struct*>(resolved_type_);
     return as_struct && as_struct->has_fields();
   }
   mstch::node namespace_cpp2() {
@@ -602,12 +602,12 @@ class mstch_cpp2_type : public mstch_type {
 class mstch_cpp2_field : public mstch_field {
  public:
   mstch_cpp2_field(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      field_generator_context const* field_context,
+      const field_generator_context* field_context,
       std::shared_ptr<cpp2_generator_context> context)
       : mstch_field(
             field,
@@ -828,8 +828,8 @@ class mstch_cpp2_field : public mstch_field {
         {"cpp.noncopyable", "cpp2.noncopyable"});
   }
   mstch::node enum_has_value() {
-    if (auto enm = dynamic_cast<t_enum const*>(field_->get_type())) {
-      auto const* const_value = field_->get_value();
+    if (auto enm = dynamic_cast<const t_enum*>(field_->get_type())) {
+      const auto* const_value = field_->get_value();
       using cv = t_const_value::t_const_value_type;
       if (const_value->get_type() == cv::CV_INTEGER) {
         auto* enm_value = enm->find_value(const_value->get_integer());
@@ -950,8 +950,8 @@ class mstch_cpp2_field : public mstch_field {
 class mstch_cpp2_struct : public mstch_struct {
  public:
   mstch_cpp2_struct(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_struct* strct,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -1036,8 +1036,8 @@ class mstch_cpp2_struct : public mstch_struct {
     // Get all non-empty structs and containers
     // Get all non-optional references with basetypes, enums,
     // non-empty structs, and containers
-    std::vector<t_field const*> filtered_fields;
-    for (auto const* field : get_members_in_layout_order()) {
+    std::vector<const t_field*> filtered_fields;
+    for (const auto* field : get_members_in_layout_order()) {
       const t_type* type = field->get_type()->get_true_type();
       // Filter out all optional references.
       if (cpp2::is_explicit_ref(field) &&
@@ -1050,7 +1050,7 @@ class mstch_cpp2_struct : public mstch_struct {
           (type->is_container() && field->get_value() != nullptr &&
            !field->get_value()->is_empty()) ||
           (type->is_struct() &&
-           (strct_ != dynamic_cast<t_struct const*>(type)) &&
+           (strct_ != dynamic_cast<const t_struct*>(type)) &&
            ((field->get_value() && !field->get_value()->is_empty()) ||
             (cpp2::is_explicit_ref(field) &&
              field->get_req() != t_field::e_req::optional))) ||
@@ -1088,7 +1088,7 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->has_annotation("cpp.allocator")) {
       return true;
     }
-    for (auto const& f : strct_->fields()) {
+    for (const auto& f : strct_->fields()) {
       if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f) ||
           gen::cpp::type_resolver::find_first_adapter(f)) {
         return true;
@@ -1240,7 +1240,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node isset_fields() {
-    std::vector<t_field const*> fields;
+    std::vector<const t_field*> fields;
     for (const auto& field : strct_->fields()) {
       if (cpp2::field_has_isset(&field)) {
         fields.push_back(&field);
@@ -1288,8 +1288,8 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->fields().size() <= kLargeStructThreshold) {
       return false;
     }
-    for (auto const& field : strct_->fields()) {
-      auto const* resolved_typedef = field.type()->get_true_type();
+    for (const auto& field : strct_->fields()) {
+      const auto* resolved_typedef = field.type()->get_true_type();
       if (cpp2::is_ref(&field) || resolved_typedef->is_string_or_binary() ||
           resolved_typedef->is_container()) {
         return true;
@@ -1352,7 +1352,7 @@ class mstch_cpp2_struct : public mstch_struct {
   // Computes the alignment of field on the target platform.
   // Returns 0 if cannot compute the alignment.
   static size_t compute_alignment(
-      t_field const* field, std::unordered_map<t_field const*, size_t>& memo) {
+      const t_field* field, std::unordered_map<const t_field*, size_t>& memo) {
     auto find = memo.emplace(field, 0);
     auto& ret = find.first->second;
     if (!find.second) {
@@ -1361,7 +1361,7 @@ class mstch_cpp2_struct : public mstch_struct {
     if (cpp2::is_ref(field)) {
       return ret = 8;
     }
-    t_type const* type = field->get_type();
+    const t_type* type = field->get_type();
     if (cpp2::is_custom_type(*type)) {
       return ret = 0;
     }
@@ -1387,10 +1387,10 @@ class mstch_cpp2_struct : public mstch_struct {
       case t_type::type::t_struct: {
         size_t align = 1;
         const size_t kMaxAlign = 8;
-        t_struct const* strct =
-            dynamic_cast<t_struct const*>(type->get_true_type());
+        const t_struct* strct =
+            dynamic_cast<const t_struct*>(type->get_true_type());
         assert(strct);
-        for (auto const& field : strct->fields()) {
+        for (const auto& field : strct->fields()) {
           size_t field_align = compute_alignment(&field, memo);
           if (field_align == 0) {
             // Unknown alignment, bail out.
@@ -1434,7 +1434,7 @@ class mstch_cpp2_struct : public mstch_struct {
     };
     std::vector<FieldAlign> field_alignments;
     field_alignments.reserve(strct_->fields().size());
-    std::unordered_map<t_field const*, size_t> memo;
+    std::unordered_map<const t_field*, size_t> memo;
     for (const auto& field : strct_->fields()) {
       auto align = compute_alignment(&field, memo);
       if (align == 0) {
@@ -1449,7 +1449,7 @@ class mstch_cpp2_struct : public mstch_struct {
     std::stable_sort(
         field_alignments.begin(),
         field_alignments.end(),
-        [](auto const& lhs, auto const& rhs) { return lhs.align > rhs.align; });
+        [](const auto& lhs, const auto& rhs) { return lhs.align > rhs.align; });
 
     // Construct the reordered field vector.
     fields_in_layout_order_.reserve(strct_->fields().size());
@@ -1457,7 +1457,7 @@ class mstch_cpp2_struct : public mstch_struct {
         field_alignments.begin(),
         field_alignments.end(),
         std::back_inserter(fields_in_layout_order_),
-        [](FieldAlign const& fa) { return fa.field; });
+        [](const FieldAlign& fa) { return fa.field; });
     return fields_in_layout_order_;
   }
 
@@ -1482,8 +1482,8 @@ class mstch_cpp2_struct : public mstch_struct {
 class mstch_cpp2_function : public mstch_function {
  public:
   mstch_cpp2_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* function,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, std::move(generators), std::move(cache), pos) {
@@ -1526,8 +1526,8 @@ class mstch_cpp2_function : public mstch_function {
 class mstch_cpp2_service : public mstch_service {
  public:
   mstch_cpp2_service(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_service* service,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t split_id = 0,
@@ -1561,7 +1561,7 @@ class mstch_cpp2_service : public mstch_service {
       functions_.push_back(all_functions[id]);
     }
   }
-  std::string get_service_namespace(t_program const* program) override {
+  std::string get_service_namespace(const t_program* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
   mstch::node program_name() { return service_->program()->name(); }
@@ -1575,7 +1575,7 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node thrift_includes() {
     mstch::array a;
-    for (auto const* program : service_->program()->get_included_programs()) {
+    for (const auto* program : service_->program()->get_included_programs()) {
       a.push_back(generate_cached(
           *generators_->program_factory, program, generators_, cache_));
     }
@@ -1585,8 +1585,8 @@ class mstch_cpp2_service : public mstch_service {
     return t_mstch_cpp2_generator::get_namespace_array(service_->program());
   }
   mstch::node oneway_functions() {
-    std::vector<t_function const*> oneway_functions;
-    for (auto const* function : get_functions()) {
+    std::vector<const t_function*> oneway_functions;
+    for (const auto* function : get_functions()) {
       if (function->qualifier() == t_function_qualifier::one_way) {
         oneway_functions.push_back(function);
       }
@@ -1594,7 +1594,7 @@ class mstch_cpp2_service : public mstch_service {
     return generate_functions(oneway_functions);
   }
   mstch::node has_oneway() {
-    for (auto const* function : get_functions()) {
+    for (const auto* function : get_functions()) {
       if (function->qualifier() == t_function_qualifier::one_way) {
         return true;
       }
@@ -1631,12 +1631,12 @@ class mstch_cpp2_service : public mstch_service {
 class mstch_cpp2_interaction : public mstch_cpp2_service {
  public:
   mstch_cpp2_interaction(
-      t_interaction const* interaction,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_interaction* interaction,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t,
-      t_service const* containing_service)
+      const t_service* containing_service)
       : mstch_cpp2_service(
             interaction, std::move(generators), std::move(cache), pos),
         containing_service_(containing_service) {}
@@ -1652,7 +1652,7 @@ class mstch_cpp2_interaction : public mstch_cpp2_service {
   }
 
  private:
-  t_service const* containing_service_{nullptr};
+  const t_service* containing_service_{nullptr};
 };
 
 class mstch_cpp2_annotation : public mstch_annotation {
@@ -1660,7 +1660,7 @@ class mstch_cpp2_annotation : public mstch_annotation {
   mstch_cpp2_annotation(
       const std::string& key,
       annotation_value val,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -1680,14 +1680,14 @@ class mstch_cpp2_annotation : public mstch_annotation {
 class mstch_cpp2_const : public mstch_const {
  public:
   mstch_cpp2_const(
-      t_const const* cnst,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      t_field const* field,
+      const t_field* field,
       std::shared_ptr<cpp2_generator_context> context)
       : mstch_const(
             cnst,
@@ -1710,8 +1710,8 @@ class mstch_cpp2_const : public mstch_const {
   }
   mstch::node enum_value() {
     if (cnst_->get_type()->is_enum()) {
-      auto const* enm = static_cast<t_enum const*>(cnst_->get_type());
-      auto const* enm_val = enm->find_value(cnst_->get_value()->get_integer());
+      const auto* enm = static_cast<const t_enum*>(cnst_->get_type());
+      const auto* enm_val = enm->find_value(cnst_->get_value()->get_integer());
       if (enm_val) {
         return enm_val->get_name();
       } else {
@@ -1742,8 +1742,8 @@ class mstch_cpp2_const : public mstch_const {
 class mstch_cpp2_program : public mstch_program {
  public:
   mstch_cpp2_program(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       boost::optional<int32_t> split_id = boost::none,
@@ -1779,7 +1779,7 @@ class mstch_cpp2_program : public mstch_program {
 
     init_objects_and_enums();
   }
-  std::string get_program_namespace(t_program const* program) override {
+  std::string get_program_namespace(const t_program* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
 
@@ -1901,7 +1901,7 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node thrift_includes() {
     mstch::array a;
-    for (auto const* program : program_->get_included_programs()) {
+    for (const auto* program : program_->get_included_programs()) {
       a.push_back(generate_cached(
           *generators_->program_factory, program, generators_, cache_));
     }
@@ -2110,8 +2110,8 @@ class cpp2_typedef_factory : public mstch_typedef_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_typedef* typedf,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2130,8 +2130,8 @@ class cpp2_type_factory : public mstch_type_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_type* type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2149,8 +2149,8 @@ class cpp2_struct_factory : public mstch_struct_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_struct* strct,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2169,12 +2169,12 @@ class cpp2_field_factory : public mstch_field_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      field_generator_context const* field_context) const override {
+      const field_generator_context* field_context) const override {
     return std::make_shared<mstch_cpp2_field>(
         field,
         std::move(generators),
@@ -2194,8 +2194,8 @@ class annotation_cpp2_generator : public annotation_generator {
   annotation_cpp2_generator() = default;
   ~annotation_cpp2_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_annotation const& keyval,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_annotation& keyval,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index) const override {
@@ -2216,14 +2216,14 @@ class const_cpp2_generator : public const_generator {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
-      t_const const* cnst,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type,
-      t_field const* field) const override {
+      const t_const* current_const,
+      const t_type* expected_type,
+      const t_field* field) const override {
     return std::make_shared<mstch_cpp2_const>(
         cnst,
         current_const,
@@ -2245,13 +2245,13 @@ class const_value_cpp2_generator : public const_value_generator {
   const_value_cpp2_generator() = default;
   ~const_value_cpp2_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_const_value const* const_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type) const override {
+      const t_const* current_const,
+      const t_type* expected_type) const override {
     return std::make_shared<mstch_cpp2_const_value>(
         const_value,
         current_const,
@@ -2276,7 +2276,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
 }
 
 void t_mstch_cpp2_generator::generate_program() {
-  auto const* program = get_program();
+  const auto* program = get_program();
   set_mstch_factories();
 
   if (has_option("any")) {
@@ -2316,7 +2316,7 @@ void t_mstch_cpp2_generator::set_mstch_factories() {
       std::make_unique<annotation_cpp2_generator>());
 }
 
-void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
+void t_mstch_cpp2_generator::generate_constants(const t_program* program) {
   const auto& name = program->name();
   const auto& prog = cached_program(program);
 
@@ -2334,14 +2334,14 @@ void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
   }
 }
 
-void t_mstch_cpp2_generator::generate_sinit(t_program const* program) {
+void t_mstch_cpp2_generator::generate_sinit(const t_program* program) {
   const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_sinit.cpp", name + "_sinit.cpp");
 }
 
-void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
+void t_mstch_cpp2_generator::generate_reflection(const t_program* program) {
   const auto& name = program->name();
   const auto& prog = cached_program(program);
 
@@ -2372,7 +2372,7 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
       name + "_visit_by_thrift_field_metadata.h");
 }
 
-void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
+void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   const auto& name = program->name();
   const auto& prog = cached_program(program);
 
@@ -2416,7 +2416,7 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_out_of_line_service(
-    t_service const* service) {
+    const t_service* service) {
   const auto& name = service->get_name();
 
   auto serv = generate_cached(
@@ -2475,7 +2475,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
 
   mstch::array service_contexts;
   service_contexts.reserve(services.size());
-  for (t_service const* service : services) {
+  for (const t_service* service : services) {
     auto service_context = generate_cached(
         *generators_->service_factory,
         get_program(),
@@ -2498,7 +2498,7 @@ void t_mstch_cpp2_generator::generate_inline_services(
     const std::vector<t_service*>& services) {
   mstch::array service_contexts;
   service_contexts.reserve(services.size());
-  for (t_service const* service : services) {
+  for (const t_service* service : services) {
     auto service_context = generate_cached(
         *generators_->service_factory,
         get_program(),
@@ -2540,18 +2540,18 @@ void t_mstch_cpp2_generator::generate_inline_services(
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
-    t_program const* program) {
+    const t_program* program) {
   return cpp2::get_gen_namespace(*program);
 }
 
 /* static */ std::string t_mstch_cpp2_generator::get_cpp2_unprefixed_namespace(
-    t_program const* program) {
+    const t_program* program) {
   return cpp2::get_gen_unprefixed_namespace(*program);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(
-    t_program const* program) {
-  auto const v = cpp2::get_gen_namespace_components(*program);
+    const t_program* program) {
+  const auto v = cpp2::get_gen_namespace_components(*program);
   mstch::array a;
   for (auto it = v.begin(); it != v.end(); ++it) {
     mstch::map m;
@@ -2565,7 +2565,7 @@ mstch::array t_mstch_cpp2_generator::get_namespace_array(
   return a;
 }
 
-mstch::array t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
+mstch::array t_mstch_cpp2_generator::cpp_includes(const t_program* program) {
   mstch::array a;
   for (auto include : program->cpp_includes()) {
     mstch::map cpp_include;
@@ -2579,7 +2579,7 @@ mstch::array t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
 }
 
 mstch::node t_mstch_cpp2_generator::include_prefix(
-    t_program const* program, std::map<std::string, std::string>& options) {
+    const t_program* program, std::map<std::string, std::string>& options) {
   auto prefix = program->include_prefix();
   auto include_prefix = options["include_prefix"];
   auto out_dir_base = get_out_dir_base(options);
@@ -2600,7 +2600,7 @@ namespace {
 class annotation_validator : public validator {
  public:
   explicit annotation_validator(
-      std::map<std::string, std::string> const& options)
+      const std::map<std::string, std::string>& options)
       : options_(options) {}
   using validator::visit;
 
@@ -2639,7 +2639,7 @@ bool annotation_validator::visit(t_struct* s) {
 class service_method_validator : public validator {
  public:
   explicit service_method_validator(
-      std::map<std::string, std::string> const& options)
+      const std::map<std::string, std::string>& options)
       : options_(options) {}
 
   using validator::visit;
@@ -2683,7 +2683,7 @@ bool service_method_validator::visit(t_service* service) {
 
 class splits_validator : public validator {
  public:
-  explicit splits_validator(std::map<std::string, std::string> const& options)
+  explicit splits_validator(const std::map<std::string, std::string>& options)
       : options_(options) {}
 
   using validator::visit;

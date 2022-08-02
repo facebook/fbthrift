@@ -150,21 +150,21 @@ class const_value_generator {
   const_value_generator() = default;
   virtual ~const_value_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      t_const_value const* const_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0,
-      t_const const* current_const = nullptr,
-      t_type const* expected_type = nullptr) const;
+      const t_const* current_const = nullptr,
+      const t_type* expected_type = nullptr) const;
   virtual std::shared_ptr<mstch_base> generate(
-      std::pair<t_const_value*, t_const_value*> const& value_pair,
-      std::shared_ptr<mstch_generators const> generators,
+      const std::pair<t_const_value*, t_const_value*>& value_pair,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0,
-      t_const const* current_const = nullptr,
-      std::pair<const t_type*, const t_type*> const& expected_types = {
+      const t_const* current_const = nullptr,
+      const std::pair<const t_type*, const t_type*>& expected_types = {
           nullptr, nullptr}) const;
 };
 
@@ -174,7 +174,7 @@ class annotation_generator {
   virtual ~annotation_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
       const t_annotation& annotation,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const;
@@ -186,7 +186,7 @@ class structured_annotation_generator {
   virtual ~structured_annotation_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
       const t_const* annotValue,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const;
@@ -197,14 +197,14 @@ class const_generator {
   const_generator() = default;
   virtual ~const_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      t_const const* cnst,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0,
-      t_const const* current_const = nullptr,
-      t_type const* expected_type = nullptr,
-      t_field const* field = nullptr) const;
+      const t_const* current_const = nullptr,
+      const t_type* expected_type = nullptr,
+      const t_field* field = nullptr) const;
 };
 
 struct mstch_generators {
@@ -319,7 +319,7 @@ class mstch_base : public mstch::object {
           end_(const_cast<const t_field* const*>(
               fields.data() + fields.size())) {}
     /* implicit */ field_range(
-        const std::vector<t_field const*>& fields) noexcept
+        const std::vector<const t_field*>& fields) noexcept
         : begin_(fields.data()), end_(fields.data() + fields.size()) {}
     constexpr size_t size() const noexcept { return end_ - begin_; }
     constexpr const t_field* const* begin() const noexcept { return begin_; }
@@ -332,7 +332,7 @@ class mstch_base : public mstch::object {
 
  public:
   mstch_base(
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : generators_(generators), cache_(cache), pos_(pos) {
@@ -356,11 +356,11 @@ class mstch_base : public mstch::object {
   }
   mstch::node is_struct();
 
-  mstch::node annotations(t_named const* annotated) {
+  mstch::node annotations(const t_named* annotated) {
     return generate_annotations(annotated->annotations());
   }
 
-  mstch::node structured_annotations(t_named const* annotated) {
+  mstch::node structured_annotations(const t_named* annotated) {
     return generate_elements(
         annotated->structured_annotations(),
         generators_->structured_annotation_generator_.get());
@@ -382,9 +382,9 @@ class mstch_base : public mstch::object {
 
   template <typename Container, typename Generator, typename... Args>
   mstch::array generate_elements(
-      Container const& container,
-      Generator const* generator,
-      Args const&... args) {
+      const Container& container,
+      const Generator* generator,
+      const Args&... args) {
     mstch::array a;
     size_t i = 0;
     for (auto&& element : container) {
@@ -397,7 +397,7 @@ class mstch_base : public mstch::object {
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_services(C const& container, Args const&... args) {
+  mstch::array generate_services(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->service_factory.get(), args...);
   }
@@ -405,8 +405,8 @@ class mstch_base : public mstch::object {
   template <typename C, typename... Args>
   mstch::array generate_interactions(
       C const& container,
-      t_service const* containing_service,
-      Args const&... args) {
+      const t_service* containing_service,
+      const Args&... args) {
     if (generators_->interaction_factory) {
       return generate_elements(
           container,
@@ -419,19 +419,19 @@ class mstch_base : public mstch::object {
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_annotations(C const& container, Args const&... args) {
+  mstch::array generate_annotations(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->annotation_generator_.get(), args...);
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_enum_values(C const& container, Args const&... args) {
+  mstch::array generate_enum_values(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->enum_value_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_consts(C const& container, Args const&... args) {
+  mstch::array generate_consts(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->const_value_generator_.get(), args...);
   }
@@ -441,29 +441,29 @@ class mstch_base : public mstch::object {
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_functions(C const& container, Args const&... args) {
+  mstch::array generate_functions(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->function_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_typedefs(C const& container, Args const&... args) {
+  mstch::array generate_typedefs(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->typedef_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
-  mstch::array generate_types(C const& container, Args const&... args) {
+  mstch::array generate_types(C const& container, const Args&... args) {
     return generate_elements(
         container, generators_->type_factory.get(), args...);
   }
 
   template <typename Item, typename Generator, typename Cache>
   mstch::node generate_element_cached(
-      Item const& item,
-      Generator const* generator,
+      const Item& item,
+      const Generator* generator,
       Cache& c,
-      std::string const& id,
+      const std::string& id,
       size_t element_index,
       size_t element_count) {
     std::string elem_id = id + item->get_name();
@@ -480,10 +480,10 @@ class mstch_base : public mstch::object {
 
   template <typename Container, typename Generator, typename Cache>
   mstch::array generate_elements_cached(
-      Container const& container,
-      Generator const* generator,
+      const Container& container,
+      const Generator* generator,
       Cache& c,
-      std::string const& id) {
+      const std::string& id) {
     mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       a.push_back(generate_element_cached(
@@ -499,7 +499,7 @@ class mstch_base : public mstch::object {
   void register_has_option(std::string key, std::string option);
 
  protected:
-  std::shared_ptr<mstch_generators const> generators_;
+  std::shared_ptr<const mstch_generators> generators_;
   std::shared_ptr<mstch_cache> cache_;
   ELEMENT_POSITION const pos_;
 };
@@ -508,8 +508,8 @@ class mstch_enum_value : public mstch_base {
  public:
   using node_type = t_enum_value;
   mstch_enum_value(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum_value* enm_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), enm_value_(enm_value) {
@@ -524,15 +524,15 @@ class mstch_enum_value : public mstch_base {
   mstch::node value() { return std::to_string(enm_value_->get_value()); }
 
  protected:
-  t_enum_value const* enm_value_;
+  const t_enum_value* enm_value_;
 };
 
 class mstch_enum : public mstch_base {
  public:
   using node_type = t_enum;
   mstch_enum(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum* enm,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), enm_(enm) {
@@ -553,17 +553,17 @@ class mstch_enum : public mstch_base {
   }
 
  protected:
-  t_enum const* enm_;
+  const t_enum* enm_;
 };
 
 class mstch_const_value : public mstch_base {
  public:
   using cv = t_const_value::t_const_value_type;
   mstch_const_value(
-      t_const_value const* const_value,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -666,10 +666,10 @@ class mstch_const_value : public mstch_base {
   mstch::node const_struct_type();
 
  protected:
-  t_const_value const* const_value_;
-  t_const const* current_const_;
-  t_type const* expected_type_;
-  cv const type_;
+  const t_const_value* const_value_;
+  const t_const* current_const_;
+  const t_type* expected_type_;
+  const cv type_;
   int32_t index_;
 
   virtual bool same_type_as_expected() const { return false; }
@@ -678,10 +678,10 @@ class mstch_const_value : public mstch_base {
 class mstch_const_value_key_mapped_pair : public mstch_base {
  public:
   mstch_const_value_key_mapped_pair(
-      std::pair<t_const_value*, t_const_value*> const& pair_values,
-      t_const const* current_const,
-      std::pair<const t_type*, const t_type*> const& expected_types,
-      std::shared_ptr<mstch_generators const> generators,
+      const std::pair<t_const_value*, t_const_value*>& pair_values,
+      const t_const* current_const,
+      const std::pair<const t_type*, const t_type*>& expected_types,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -702,17 +702,17 @@ class mstch_const_value_key_mapped_pair : public mstch_base {
   mstch::node element_value();
 
  protected:
-  std::pair<t_const_value*, t_const_value*> const pair_;
-  t_const const* current_const_;
-  std::pair<const t_type*, const t_type*> const expected_types_;
+  const std::pair<t_const_value*, t_const_value*> pair_;
+  const t_const* current_const_;
+  const std::pair<const t_type*, const t_type*> expected_types_;
   int32_t index_;
 };
 
 class mstch_type : public mstch_base {
  public:
   mstch_type(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_type* type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos),
@@ -813,7 +813,7 @@ class mstch_type : public mstch_base {
   mstch::node is_set() { return resolved_type_->is_set(); }
   mstch::node is_map() { return resolved_type_->is_map(); }
   mstch::node is_typedef() { return type_->is_typedef(); }
-  virtual std::string get_type_namespace(t_program const*) { return ""; }
+  virtual std::string get_type_namespace(const t_program*) { return ""; }
   mstch::node get_struct();
   mstch::node get_enum();
   mstch::node get_list_type();
@@ -830,19 +830,19 @@ class mstch_type : public mstch_base {
   mstch::node is_interaction() { return type_->is_service(); }
 
  protected:
-  t_type const* type_;
-  t_type const* resolved_type_;
+  const t_type* type_;
+  const t_type* resolved_type_;
 };
 
 class mstch_field : public mstch_base {
  public:
   mstch_field(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      field_generator_context const* field_context)
+      const field_generator_context* field_context)
       : mstch_base(generators, cache, pos),
         field_(field),
         index_(index),
@@ -887,9 +887,9 @@ class mstch_field : public mstch_base {
   }
 
  protected:
-  t_field const* field_;
+  const t_field* field_;
   int32_t index_;
-  field_generator_context const* field_context_;
+  const field_generator_context* field_context_;
 };
 
 class mstch_annotation : public mstch_base {
@@ -897,7 +897,7 @@ class mstch_annotation : public mstch_base {
   mstch_annotation(
       const std::string& key,
       const annotation_value& val,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -925,7 +925,7 @@ class mstch_structured_annotation : public mstch_base {
  public:
   mstch_structured_annotation(
       const t_const& cnst,
-      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -960,8 +960,8 @@ class mstch_structured_annotation : public mstch_base {
 class mstch_struct : public mstch_base {
  public:
   mstch_struct(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_struct* strct,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), strct_(strct) {
@@ -1053,7 +1053,7 @@ class mstch_struct : public mstch_base {
   }
 
  protected:
-  t_struct const* strct_;
+  const t_struct* strct_;
   // Although mstch_fields can be generated from different orders than the IDL
   // order, field_generator_context should be always computed in the IDL order,
   // as the context does not change by reordering. Without the map, each
@@ -1061,7 +1061,7 @@ class mstch_struct : public mstch_base {
   // field takes O(N) to loop through node_list_view<t_field> or
   // std::vector<t_field*> to find the exact t_field to compute
   // field_generator_context.
-  std::unordered_map<t_field const*, field_generator_context> context_map;
+  std::unordered_map<const t_field*, field_generator_context> context_map;
 
   std::vector<const t_field*> fields_in_key_order_;
 };
@@ -1069,8 +1069,8 @@ class mstch_struct : public mstch_base {
 class mstch_function : public mstch_base {
  public:
   mstch_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* function,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), function_(function) {
@@ -1188,14 +1188,14 @@ class mstch_function : public mstch_base {
   }
 
  protected:
-  t_function const* function_;
+  const t_function* function_;
 };
 
 class mstch_service : public mstch_base {
  public:
   mstch_service(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_service* service,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), service_(service) {
@@ -1222,19 +1222,19 @@ class mstch_service : public mstch_base {
         });
 
     // Collect performed interactions and cache them
-    for (auto const* function : get_functions()) {
+    for (const auto* function : get_functions()) {
       if (function->get_returntype()->is_service()) {
         interactions_.insert(
-            dynamic_cast<t_interaction const*>(function->get_returntype()));
+            dynamic_cast<const t_interaction*>(function->get_returntype()));
       } else if (auto interaction = function->returned_interaction()) {
         interactions_.insert(
-            dynamic_cast<t_interaction const*>(interaction->get_true_type()));
+            dynamic_cast<const t_interaction*>(interaction->get_true_type()));
       }
     }
     assert(interactions_.count(nullptr) == 0);
   }
 
-  virtual std::string get_service_namespace(t_program const*) { return {}; }
+  virtual std::string get_service_namespace(const t_program*) { return {}; }
 
   mstch::node name() { return service_->get_name(); }
   mstch::node has_functions() { return !get_functions().empty(); }
@@ -1248,14 +1248,14 @@ class mstch_service : public mstch_base {
 
   mstch::node has_streams() {
     auto& funcs = get_functions();
-    return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
       return func->returns_stream();
     });
   }
 
   mstch::node has_sinks() {
     auto& funcs = get_functions();
-    return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
       return func->returns_sink();
     });
   }
@@ -1283,8 +1283,8 @@ class mstch_service : public mstch_base {
   virtual ~mstch_service() = default;
 
  protected:
-  t_service const* service_;
-  std::set<t_interaction const*> interactions_;
+  const t_service* service_;
+  std::set<const t_interaction*> interactions_;
 
   mstch::node generate_cached_extended_service(const t_service* service);
   virtual const std::vector<t_function*>& get_functions() const {
@@ -1295,8 +1295,8 @@ class mstch_service : public mstch_base {
 class mstch_typedef : public mstch_base {
  public:
   mstch_typedef(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_typedef* typedf,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), typedf_(typedf) {
@@ -1320,20 +1320,20 @@ class mstch_typedef : public mstch_base {
   }
 
  protected:
-  t_typedef const* typedf_;
+  const t_typedef* typedf_;
 };
 
 class mstch_const : public mstch_base {
  public:
   mstch_const(
-      t_const const* cnst,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_field const* field)
+      const t_field* field)
       : mstch_base(generators, cache, pos),
         cnst_(cnst),
         current_const_(current_const),
@@ -1357,18 +1357,18 @@ class mstch_const : public mstch_base {
   mstch::node program();
 
  protected:
-  t_const const* cnst_;
-  t_const const* current_const_;
-  t_type const* expected_type_;
+  const t_const* cnst_;
+  const t_const* current_const_;
+  const t_type* expected_type_;
   int32_t index_;
-  t_field const* field_;
+  const t_field* field_;
 };
 
 class mstch_program : public mstch_base {
  public:
   mstch_program(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos), program_(program) {
@@ -1399,7 +1399,7 @@ class mstch_program : public mstch_base {
         "deprecated_unstructured_annotations_in_metadata");
   }
 
-  virtual std::string get_program_namespace(t_program const*) { return {}; }
+  virtual std::string get_program_namespace(const t_program*) { return {}; }
 
   mstch::node name() { return program_->name(); }
   mstch::node path() { return program_->path(); }
@@ -1425,7 +1425,7 @@ class mstch_program : public mstch_base {
   mstch::node constants();
 
  protected:
-  t_program const* program_;
+  const t_program* program_;
 
   virtual const std::vector<t_struct*>& get_program_objects();
   virtual const std::vector<t_enum*>& get_program_enums();

@@ -75,32 +75,32 @@ mstch::node mstch_base::is_struct() {
 }
 
 std::shared_ptr<mstch_base> const_value_generator::generate(
-    t_const_value const* const_value,
-    std::shared_ptr<mstch_generators const> generators,
+    const t_const_value* const_value,
+    std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index,
-    t_const const* current_const,
-    t_type const* expected_type) const {
+    const t_const* current_const,
+    const t_type* expected_type) const {
   return std::make_shared<mstch_const_value>(
       const_value, current_const, expected_type, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> const_value_generator::generate(
-    std::pair<t_const_value*, t_const_value*> const& value_pair,
-    std::shared_ptr<mstch_generators const> generators,
+    const std::pair<t_const_value*, t_const_value*>& value_pair,
+    std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index,
-    t_const const* current_const,
-    std::pair<const t_type*, const t_type*> const& expected_types) const {
+    const t_const* current_const,
+    const std::pair<const t_type*, const t_type*>& expected_types) const {
   return std::make_shared<mstch_const_value_key_mapped_pair>(
       value_pair, current_const, expected_types, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> annotation_generator::generate(
     const t_annotation& annotation,
-    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index) const {
@@ -110,7 +110,7 @@ std::shared_ptr<mstch_base> annotation_generator::generate(
 
 std::shared_ptr<mstch_base> structured_annotation_generator::generate(
     const t_const* annotValue,
-    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index) const {
@@ -119,14 +119,14 @@ std::shared_ptr<mstch_base> structured_annotation_generator::generate(
 }
 
 std::shared_ptr<mstch_base> const_generator::generate(
-    t_const const* cnst,
-    std::shared_ptr<mstch_generators const> generators,
+    const t_const* cnst,
+    std::shared_ptr<const mstch_generators> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index,
-    t_const const* current_const,
-    t_type const* expected_type,
-    t_field const* field) const {
+    const t_const* current_const,
+    const t_type* expected_type,
+    const t_field* field) const {
   return std::make_shared<mstch_const>(
       cnst, current_const, expected_type, generators, cache, pos, index, field);
 }
@@ -150,7 +150,7 @@ mstch::node mstch_type::get_struct() {
     std::string id =
         type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
-        std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
+        std::vector<const t_struct*>{dynamic_cast<const t_struct*>(type_)},
         generators_->struct_factory.get(),
         cache_->structs_,
         id);
@@ -163,7 +163,7 @@ mstch::node mstch_type::get_enum() {
     std::string id =
         type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
-        std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
+        std::vector<const t_enum*>{dynamic_cast<const t_enum*>(resolved_type_)},
         generators_->enum_factory.get(),
         cache_->enums_,
         id);
@@ -457,9 +457,9 @@ mstch::node mstch_const_value::const_struct() {
 
   const auto* type = const_value_->ttype()->get_true_type();
   if (type->is_struct() || type->is_xception()) {
-    auto const* strct = dynamic_cast<t_struct const*>(type);
+    const auto* strct = dynamic_cast<const t_struct*>(type);
     for (auto member : const_value_->get_map()) {
-      auto const* field = strct->get_field_by_name(member.first->get_string());
+      const auto* field = strct->get_field_by_name(member.first->get_string());
       assert(field != nullptr);
       constants.push_back(new t_const(
           nullptr,
@@ -606,7 +606,7 @@ mstch::node mstch_service::functions() {
 }
 
 mstch::node mstch_service::extends() {
-  auto const* extends = service_->get_extends();
+  const auto* extends = service_->get_extends();
   if (extends) {
     return generate_cached_extended_service(extends);
   }

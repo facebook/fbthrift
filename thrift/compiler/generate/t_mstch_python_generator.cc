@@ -73,8 +73,8 @@ const std::string extract_module_path(const std::string& fully_qualified_name) {
 class mstch_python_typedef : public mstch_typedef {
  public:
   mstch_python_typedef(
-      t_typedef const* typedf,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_typedef* typedf,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_typedef(typedf, std::move(generators), std::move(cache), pos),
@@ -213,10 +213,10 @@ class mstch_python_type : public mstch_type {
 class mstch_python_const_value : public mstch_const_value {
  public:
   mstch_python_const_value(
-      t_const_value const* const_value,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -665,7 +665,7 @@ class mstch_python_field : public mstch_field {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      field_generator_context const* field_context)
+      const field_generator_context* field_context)
       : mstch_field(
             field,
             std::move(generators),
@@ -756,7 +756,7 @@ class mstch_python_struct : public mstch_struct {
   }
 
   mstch::node fields_and_mixin_fields() {
-    std::vector<t_field const*> fields = strct_->fields().copy();
+    std::vector<const t_field*> fields = strct_->fields().copy();
     for (auto m : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(m.member);
     }
@@ -833,8 +833,8 @@ class python_program_factory : public mstch_program_factory {
 class mstch_python_function : public mstch_function {
  public:
   mstch_python_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* function,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos) {
@@ -982,13 +982,13 @@ class const_value_python_generator : public const_value_generator {
   const_value_python_generator() = default;
   ~const_value_python_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_const_value const* const_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type) const override {
+      const t_const* current_const,
+      const t_type* expected_type) const override {
     return std::make_shared<mstch_python_const_value>(
         const_value,
         current_const,

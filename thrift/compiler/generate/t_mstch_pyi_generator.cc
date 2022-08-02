@@ -109,10 +109,10 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
     if (included_program->path() == program.path()) {
       continue;
     }
-    auto const hasStructs = included_program->objects().size() > 0;
-    auto const hasEnums = included_program->enums().size() > 0;
-    auto const hasTypedefs = included_program->typedefs().size() > 0;
-    auto const hasConsts = included_program->consts().size() > 0;
+    const auto hasStructs = included_program->objects().size() > 0;
+    const auto hasEnums = included_program->enums().size() > 0;
+    const auto hasTypedefs = included_program->typedefs().size() > 0;
+    const auto hasConsts = included_program->consts().size() > 0;
     if (hasStructs || hasEnums || hasTypedefs || hasConsts) {
       importModules.push_back(boost::algorithm::join(
           get_py_namespace_raw(*included_program, "ttypes"), "."));
@@ -392,7 +392,7 @@ std::string t_mstch_pyi_generator::flatten_type_name(const t_type& type) const {
 
 vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
     const t_program& program, const string& tail) {
-  auto const asyncio = has_option("asyncio");
+  const auto asyncio = has_option("asyncio");
   auto& py_namespace = program.get_namespace("py");
   auto& py_asyncio_namespace = program.get_namespace("py.asyncio");
   auto _namespace = asyncio && !py_asyncio_namespace.empty()

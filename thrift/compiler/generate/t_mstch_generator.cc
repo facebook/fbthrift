@@ -290,7 +290,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
       {"container?", type == cv::CV_MAP || type == cv::CV_LIST},
   };
 
-  auto const format_double_string = [](const double d) {
+  const auto format_double_string = [](const double d) {
     std::ostringstream oss;
     oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
     return oss.str();
@@ -527,7 +527,7 @@ void t_mstch_generator::render_to_file(
 }
 
 const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
-    t_program const* program) {
+    const t_program* program) {
   const auto& id = program->path();
   auto itr = cache_->programs_.find(id);
   if (itr == cache_->programs_.end()) {

@@ -156,7 +156,7 @@ class t_mstch_java_generator : public t_mstch_generator {
    */
   template <typename T, typename Generator, typename Cache>
   void generate_rpc_interfaces(
-      Generator const* generator,
+      const Generator* generator,
       Cache& c,
       const t_program* program,
       const std::vector<T*>& items) {
@@ -184,7 +184,7 @@ class t_mstch_java_generator : public t_mstch_generator {
 
   template <typename T, typename Generator, typename Cache>
   void generate_items(
-      Generator const* generator,
+      const Generator* generator,
       Cache& c,
       const t_program* program,
       const std::vector<T*>& items,
@@ -226,7 +226,7 @@ class t_mstch_java_generator : public t_mstch_generator {
    */
   template <typename T, typename Generator, typename Cache>
   void generate_services(
-      Generator const* generator,
+      const Generator* generator,
       Cache& c,
       const t_program* program,
       const std::vector<T*>& services) {
@@ -420,8 +420,8 @@ class t_mstch_java_generator : public t_mstch_generator {
 class mstch_java_program : public mstch_program {
  public:
   mstch_java_program(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_program(program, generators, cache, pos) {
@@ -461,8 +461,8 @@ class mstch_java_struct : public mstch_struct {
 
  public:
   mstch_java_struct(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_struct* strct,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_struct(strct, generators, cache, pos) {
@@ -559,8 +559,8 @@ class mstch_java_struct : public mstch_struct {
 class mstch_java_service : public mstch_service {
  public:
   mstch_java_service(
-      t_service const* service,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_service* service,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_service(service, generators, cache, pos) {
@@ -640,8 +640,8 @@ class mstch_java_service : public mstch_service {
 class mstch_java_function : public mstch_function {
  public:
   mstch_java_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* function,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos) {
@@ -701,12 +701,12 @@ class mstch_java_function : public mstch_function {
 class mstch_java_field : public mstch_field {
  public:
   mstch_java_field(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      field_generator_context const* field_context)
+      const field_generator_context* field_context)
       : mstch_field(field, generators, cache, pos, index, field_context) {
     register_methods(
         this,
@@ -926,8 +926,8 @@ class mstch_java_field : public mstch_field {
 class mstch_java_enum : public mstch_enum {
  public:
   mstch_java_enum(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum* enm,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, generators, cache, pos) {
@@ -954,8 +954,8 @@ class mstch_java_enum : public mstch_enum {
 class mstch_java_enum_value : public mstch_enum_value {
  public:
   mstch_java_enum_value(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum_value* enm_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum_value(enm_value, generators, cache, pos) {
@@ -974,14 +974,14 @@ class mstch_java_enum_value : public mstch_enum_value {
 class mstch_java_const : public mstch_const {
  public:
   mstch_java_const(
-      t_const const* cnst,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      t_field const* field)
+      const t_field* field)
       : mstch_const(
             cnst,
             current_const,
@@ -1037,10 +1037,10 @@ class mstch_java_const : public mstch_const {
 class mstch_java_const_value : public mstch_const_value {
  public:
   mstch_java_const_value(
-      t_const_value const* const_value,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -1079,8 +1079,8 @@ class mstch_java_const_value : public mstch_const_value {
 class mstch_java_type : public mstch_type {
  public:
   mstch_java_type(
-      t_type const* type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_type* type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_type(type, generators, cache, pos) {
@@ -1139,14 +1139,14 @@ class const_java_generator : public const_generator {
   const_java_generator() = default;
   ~const_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_const const* cnst,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const* cnst,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type,
-      t_field const* field) const override {
+      const t_const* current_const,
+      const t_type* expected_type,
+      const t_field* field) const override {
     return std::make_shared<mstch_java_const>(
         cnst,
         current_const,
@@ -1164,13 +1164,13 @@ class const_value_java_generator : public const_value_generator {
   const_value_java_generator() = default;
   ~const_value_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_const_value const* const_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type) const override {
+      const t_const* current_const,
+      const t_type* expected_type) const override {
     return std::make_shared<mstch_java_const_value>(
         const_value,
         current_const,

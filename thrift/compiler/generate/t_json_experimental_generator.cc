@@ -45,8 +45,8 @@ class t_json_experimental_generator : public t_mstch_generator {
 class json_experimental_program : public mstch_program {
  public:
   json_experimental_program(
-      t_program const* program,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_program* program,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_program(program, generators, cache, pos) {
@@ -92,8 +92,8 @@ class json_experimental_program : public mstch_program {
 class json_experimental_service : public mstch_service {
  public:
   json_experimental_service(
-      t_service const* srvc,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_service* srvc,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_service(srvc, generators, cache, pos) {
@@ -113,8 +113,8 @@ class json_experimental_service : public mstch_service {
 class json_experimental_function : public mstch_function {
  public:
   json_experimental_function(
-      t_function const* func,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_function* func,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(func, generators, cache, pos) {
@@ -138,8 +138,8 @@ class json_experimental_function : public mstch_function {
 class json_experimental_struct : public mstch_struct {
  public:
   json_experimental_struct(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_struct* strct,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_struct(strct, generators, cache, pos) {
@@ -159,12 +159,12 @@ class json_experimental_struct : public mstch_struct {
 class json_experimental_field : public mstch_field {
  public:
   json_experimental_field(
-      t_field const* field,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_field* field,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      field_generator_context const* field_context)
+      const field_generator_context* field_context)
       : mstch_field(field, generators, cache, pos, index, field_context) {
     register_methods(
         this,
@@ -182,8 +182,8 @@ class json_experimental_field : public mstch_field {
 class json_experimental_enum : public mstch_enum {
  public:
   json_experimental_enum(
-      t_enum const* enm,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum* enm,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, generators, cache, pos) {
@@ -205,8 +205,8 @@ class json_experimental_enum : public mstch_enum {
 class json_experimental_enum_value : public mstch_enum_value {
  public:
   json_experimental_enum_value(
-      t_enum_value const* enm_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_enum_value* enm_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum_value(enm_value, generators, cache, pos) {
@@ -238,7 +238,7 @@ static inline void rtrim(std::string& s) {
       s.end());
 }
 
-static inline std::string to_string(t_const_value const* value) {
+static inline std::string to_string(const t_const_value* value) {
   auto stringify_list = [](const auto& value) {
     std::string result;
     for (const auto& v : value) {
@@ -282,10 +282,10 @@ static inline std::string to_string(t_const_value const* value) {
 class json_experimental_const_value : public mstch_const_value {
  public:
   json_experimental_const_value(
-      t_const_value const* const_value,
-      t_const const* current_const,
-      t_type const* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      const t_const* current_const,
+      const t_type* expected_type,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -326,13 +326,13 @@ class const_value_json_experimental_generator : public const_value_generator {
   const_value_json_experimental_generator() = default;
   ~const_value_json_experimental_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      t_const_value const* const_value,
-      std::shared_ptr<mstch_generators const> generators,
+      const t_const_value* const_value,
+      std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      t_const const* current_const,
-      t_type const* expected_type) const override {
+      const t_const* current_const,
+      const t_type* expected_type) const override {
     return std::make_shared<json_experimental_const_value>(
         const_value,
         current_const,
@@ -345,7 +345,7 @@ class const_value_json_experimental_generator : public const_value_generator {
 };
 
 void t_json_experimental_generator::generate_program() {
-  auto const* program = get_program();
+  const auto* program = get_program();
   set_mstch_factories();
   auto output =
       generators_->program_factory->generate(program, generators_, cache_);

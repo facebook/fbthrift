@@ -2460,9 +2460,9 @@ bool t_hack_generator::skip_codegen(const t_function* tfunction) {
   const auto skip_codegen_function =
       tfunction->find_structured_annotation_or_null(
           "facebook.com/thrift/annotation/hack/SkipCodegen");
-  t_type const* invalid_type = nullptr;
+  const t_type* invalid_type = nullptr;
   std::string field_name;
-  t_type const* type = tfunction->get_return_type();
+  const t_type* type = tfunction->get_return_type();
   if (!is_valid_hack_type(type)) {
     invalid_type = type;
     field_name = "return type";
@@ -3711,7 +3711,8 @@ void t_hack_generator::generate_php_struct_fields(
     if (is_base_exception_field && field_wrapper) {
       throw std::runtime_error(
           tstruct->name() + "::" + field.name() +
-          " has a wrapped type. FieldWrapper annotation is not allowed for base exception properties.");
+          " has a wrapped type. FieldWrapper annotation "
+          "is not allowed for base exception properties.");
     }
 
     const t_type* t = field.get_type();
@@ -3760,7 +3761,7 @@ void t_hack_generator::generate_php_struct_fields(
       generate_php_docstring(out, &field);
     }
 
-    if (std::string const* field_attributes =
+    if (const std::string* field_attributes =
             field.find_annotation_or_null("hack.attributes")) {
       indent(out) << "<<" << *field_attributes << ">>\n";
     }
@@ -3895,7 +3896,8 @@ void t_hack_generator::generate_php_struct_methods(
       if (const auto field_wrapper = find_hack_wrapper(*message_field)) {
         throw std::runtime_error(
             tstruct->name() + "::" + value +
-            " has a wrapped type. FieldWrapper annotation is not allowed for base exception properties.");
+            " has a wrapped type. FieldWrapper annotation is not allowed for "
+            "base exception properties.");
       }
 
       out << indent() << "<<__Override>>\n"
@@ -4231,7 +4233,7 @@ void t_hack_generator::generate_php_union_enum(
   //   __EMPTY__ = 0;
   //   field1 = 1;
   // }
-  if (std::string const* union_enum_attributes =
+  if (const std::string* union_enum_attributes =
           tstruct->find_annotation_or_null("hack.union_enum_attributes")) {
     indent(out) << "<<" << *union_enum_attributes << ">>\n";
   }
@@ -4475,7 +4477,7 @@ void t_hack_generator::generate_hack_attributes(
   }
 
   if (include_user_defined) {
-    std::string const* user_attributes =
+    const std::string* user_attributes =
         type->find_annotation_or_null("hack.attributes");
     if (user_attributes) {
       attributes_parts.emplace_back(*user_attributes);
@@ -4957,14 +4959,14 @@ void t_hack_generator::generate_service_processor(
   // const type, then branch off at each service with the processor that does
   // define the const type.
 
-  f_service_
-      << indent() << "abstract class " << long_name << suffix
-      << "ProcessorBase extends " << extends_processor << " {\n"
-      << indent() << "  abstract const type TThriftIf as " << long_name
-      << (async ? "Async" : "") << "If;\n"
-      << indent()
-      << "  const classname<\\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = "
-      << long_name << "StaticMetadata::class;\n\n";
+  f_service_ << indent() << "abstract class " << long_name << suffix
+             << "ProcessorBase extends " << extends_processor << " {\n"
+             << indent() << "  abstract const type TThriftIf as " << long_name
+             << (async ? "Async" : "") << "If;\n"
+             << indent()
+             << "  const classname<\\IThriftServiceStaticMetadata> "
+                "SERVICE_METADATA_CLASS = "
+             << long_name << "StaticMetadata::class;\n\n";
 
   indent_up();
 
@@ -4998,10 +5000,10 @@ void t_hack_generator::generate_service_processor(
 void t_hack_generator::generate_process_metadata_function(
     const t_service* tservice, bool mangle, bool async) {
   // Open function
-  indent(f_service_)
-      << "protected" << (async ? " async" : "")
-      << " function process_getThriftServiceMetadata(int $seqid, \\TProtocol $input, \\TProtocol $output): "
-      << (async ? "Awaitable<void>" : "void") << " {\n";
+  indent(f_service_) << "protected" << (async ? " async" : "")
+                     << " function process_getThriftServiceMetadata(int "
+                        "$seqid, \\TProtocol $input, \\TProtocol $output): "
+                     << (async ? "Awaitable<void>" : "void") << " {\n";
   indent_up();
 
   std::string function_name = "getThriftServiceMetadata";
@@ -5031,16 +5033,17 @@ void t_hack_generator::generate_process_metadata_function(
              << indent() << "$result = " << resultname
              << "::withDefaultValues();\n";
 
-  f_service_
-      << indent() << "try {\n"
-      << indent()
-      << "  $result->success = " << php_servicename_mangle(mangle, tservice)
-      << "StaticMetadata::getServiceMetadataResponse();\n"
-      << indent() << "} catch (\\Exception $ex) {\n"
-      << indent() << "  $reply_type = \\TMessageType::EXCEPTION;\n"
-      << indent()
-      << "  $result = new \\TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());\n"
-      << indent() << "}\n";
+  f_service_ << indent() << "try {\n"
+             << indent() << "  $result->success = "
+             << php_servicename_mangle(mangle, tservice)
+             << "StaticMetadata::getServiceMetadataResponse();\n"
+             << indent() << "} catch (\\Exception $ex) {\n"
+             << indent() << "  $reply_type = \\TMessageType::EXCEPTION;\n"
+             << indent()
+             << "  $result = new "
+                "\\TApplicationException($ex->getMessage().\"\\n\".$ex->"
+                "getTraceAsString());\n"
+             << indent() << "}\n";
 
   f_service_ << indent() << "if ($output is \\TBinaryProtocolAccelerated)\n";
   scope_up(f_service_);
@@ -5172,14 +5175,16 @@ void t_hack_generator::generate_process_function(
     }
     ++exc_num;
   }
-  f_service_
-      << indent() << "} catch (\\Exception $ex) {\n"
-      << indent() << "  $reply_type = \\TMessageType::EXCEPTION;\n"
-      << indent() << "  $this->eventHandler_->handlerError($handler_ctx, '"
-      << fn_name << "', $ex);\n"
-      << indent()
-      << "  $result = new \\TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());\n"
-      << indent() << "}\n";
+  f_service_ << indent() << "} catch (\\Exception $ex) {\n"
+             << indent() << "  $reply_type = \\TMessageType::EXCEPTION;\n"
+             << indent()
+             << "  $this->eventHandler_->handlerError($handler_ctx, '"
+             << fn_name << "', $ex);\n"
+             << indent()
+             << "  $result = new "
+                "\\TApplicationException($ex->getMessage().\"\\n\".$ex->"
+                "getTraceAsString());\n"
+             << indent() << "}\n";
 
   // Shortcut out here for oneway functions
   if (tfunction->qualifier() == t_function_qualifier::one_way) {
@@ -6124,7 +6129,9 @@ void t_hack_generator::generate_service_interface(
   }
 
   generate_hack_attributes(
-      f_service_, tservice, /*include_user_defined*/ false);
+      f_service_,
+      tservice,
+      /*include_user_defined*/ false);
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();
@@ -6365,7 +6372,8 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "$this->input_->readMessageEnd();\n";
 
   out << indent()
-      << "if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {\n"
+      << "if ($expectedsequenceid !== null && ($rseqid !== "
+         "$expectedsequenceid)) {\n"
       << indent() << "  throw new \\TProtocolException(\""
       << find_hack_name(tfunction)
       << " failed: sequence id is out of order\");\n"
@@ -6606,7 +6614,9 @@ void t_hack_generator::_generate_sink_encode_sendImpl(
   out << indent() << "} else {\n";
   indent_up();
   out << indent()
-      << "$result = new \\TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());\n";
+      << "$result = new "
+         "\\TApplicationException($ex->getMessage().\"\\n\".$ex->"
+         "getTraceAsString());\n";
   indent_down();
   out << indent() << "}\n";
 
@@ -6958,7 +6968,10 @@ void t_hack_generator::_generate_service_client_children(
     _generate_service_client_child_fn(out, tservice, function);
     if (no_use_hack_collections_) {
       _generate_service_client_child_fn(
-          out, tservice, function, /*legacy_arrays*/ true);
+          out,
+          tservice,
+          function,
+          /*legacy_arrays*/ true);
     }
   }
 
@@ -7054,8 +7067,8 @@ void t_hack_generator::_generate_service_client_child_fn(
                       : "\\ThriftClientBase::defaultOptions()")
               << ";\n";
   if (tservice->is_interaction()) {
-    indent(out)
-        << "$rpc_options = $rpc_options->setInteractionId($this->interactionId);\n";
+    indent(out) << "$rpc_options = "
+                   "$rpc_options->setInteractionId($this->interactionId);\n";
   }
 
   _generate_args(out, tservice, tfunction);
@@ -7129,8 +7142,8 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
                       : "\\ThriftClientBase::defaultOptions()")
               << ";\n";
   if (tservice->is_interaction()) {
-    indent(out)
-        << "$rpc_options = $rpc_options->setInteractionId($this->interactionId);\n";
+    indent(out) << "$rpc_options = "
+                   "$rpc_options->setInteractionId($this->interactionId);\n";
   }
 
   indent(out) << "$channel = $this->channel_;\n";
@@ -7139,10 +7152,10 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
 
   indent(out) << "invariant(\n";
   indent_up();
-  indent(out)
-      << "$channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer,\n";
-  indent(out)
-      << "\"Stream methods require nonnull channel and TMemoryBuffer transport\"\n";
+  indent(out) << "$channel !== null && $out_transport is \\TMemoryBuffer && "
+                 "$in_transport is \\TMemoryBuffer,\n";
+  indent(out) << "\"Stream methods require nonnull channel and TMemoryBuffer "
+                 "transport\"\n";
   indent_down();
   indent(out) << ");\n\n";
 
@@ -7155,7 +7168,8 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
   out << indent() << "$msg = $out_transport->getBuffer();\n"
       << indent() << "$out_transport->resetBuffer();\n"
       << indent() << "list($result_msg, $_read_headers, $stream) = "
-      << "await $channel->genSendRequestStreamResponse($rpc_options, $msg);\n\n";
+      << "await $channel->genSendRequestStreamResponse($rpc_options, "
+         "$msg);\n\n";
 
   const auto* tstream =
       dynamic_cast<const t_stream_response*>(tfunction->get_returntype());
@@ -7239,10 +7253,10 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
 
   indent(out) << "invariant(\n";
   indent_up();
-  indent(out)
-      << "$channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer,\n";
-  indent(out)
-      << "\"Sink methods require nonnull channel and TMemoryBuffer transport\"\n";
+  indent(out) << "$channel !== null && $out_transport is \\TMemoryBuffer && "
+                 "$in_transport is \\TMemoryBuffer,\n";
+  indent(out) << "\"Sink methods require nonnull channel and TMemoryBuffer "
+                 "transport\"\n";
   indent_down();
   indent(out) << ");\n\n";
 
@@ -7557,22 +7571,30 @@ THRIFT_REGISTER_GENERATOR(
     "HACK",
     "    server:          Generate Hack server stubs.\n"
     "    rest:            Generate Hack REST processors.\n"
-    "    json:            Generate functions to parse JSON into thrift struct.\n"
+    "    json:            Generate functions to parse JSON into thrift "
+    "struct.\n"
     "    mangledsvcs      Generate services with namespace mangling.\n"
-    "    stricttypes      Use Collection classes everywhere rather than KeyedContainer.\n"
+    "    stricttypes      Use Collection classes everywhere rather than "
+    "KeyedContainer.\n"
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
-    "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
+    "    nonullables      Instantiate struct fields within structs, rather "
+    "than nullable\n"
     "    structtrait      Add 'use [StructName]Trait;' to generated classes\n"
     "    shapes           Generate Shape definitions for structs\n"
     "    protected_unions Generate protected members for thrift unions\n"
     "    shape_arraykeys  When generating Shape definition for structs:\n"
-    "                        replace array<string, TValue> with array<arraykey, TValue>\n"
-    "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
+    "                        replace array<string, TValue> with "
+    "array<arraykey, TValue>\n"
+    "    shapes_allow_unknown_fields Allow unknown fields and implicit "
+    "subtyping for shapes \n"
     "    frommap_construct Generate fromMap_DEPRECATED method.\n"
-    "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
-    "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
+    "    arrays           Use Hack arrays for maps/lists/sets instead of "
+    "objects.\n"
+    "    const_collections Use ConstCollection objects rather than their "
+    "mutable counterparts.\n"
     "    typedef          Generate type aliases for all the types defined\n"
-    "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
+    "    enum_transparenttype Use transparent typing for Hack enums: 'enum "
+    "FooBar: int as int'.\n");
 
 } // namespace compiler
 } // namespace thrift

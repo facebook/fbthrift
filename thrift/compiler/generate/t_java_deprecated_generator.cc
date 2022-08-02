@@ -221,18 +221,18 @@ void t_java_deprecated_generator::generate_enum(const t_enum* tenum) {
   indent(f_enum) << "}" << endl << endl;
 
   indent(f_enum) << "/**" << endl;
-  indent(f_enum)
-      << " * Get the integer value of this enum value, as defined in the Thrift IDL."
-      << endl;
+  indent(f_enum) << " * Get the integer value of this enum value, as defined "
+                    "in the Thrift IDL."
+                 << endl;
   indent(f_enum) << " */" << endl;
   indent(f_enum) << "public int getValue() {" << endl;
   indent(f_enum) << "  return value;" << endl;
   indent(f_enum) << "}" << endl << endl;
 
   indent(f_enum) << "/**" << endl;
-  indent(f_enum)
-      << " * Find a the enum type by its integer value, as defined in the Thrift IDL."
-      << endl;
+  indent(f_enum) << " * Find a the enum type by its integer value, as defined "
+                    "in the Thrift IDL."
+                 << endl;
   indent(f_enum) << " * @return null if the value is not found." << endl;
   indent(f_enum) << " */" << endl;
   indent(f_enum) << "public static " + tenum->get_name() +
@@ -624,10 +624,10 @@ void t_java_deprecated_generator::generate_java_union(const t_struct* tstruct) {
   if (generate_field_metadata_) {
     generate_java_meta_data_map(f_struct, tstruct);
   } else {
-    indent(f_struct)
-        << "public static final Map<Integer, FieldMetaData> metaDataMap = new HashMap<>();"
-        << endl
-        << endl;
+    indent(f_struct) << "public static final Map<Integer, FieldMetaData> "
+                        "metaDataMap = new HashMap<>();"
+                     << endl
+                     << endl;
   }
 
   generate_union_constructor(f_struct, tstruct);
@@ -700,10 +700,11 @@ void t_java_deprecated_generator::generate_union_getters_and_setters(
   indent(out) << "  if (getSetField() == expectedFieldId) {" << endl;
   indent(out) << "    return getFieldValue();" << endl;
   indent(out) << "  } else {" << endl;
-  indent(out)
-      << "    throw new RuntimeException(\"Cannot get field '\" + getFieldDesc(expectedFieldId).name + \""
-      << "' because union is currently set to \" + getFieldDesc(getSetField()).name);"
-      << endl;
+  indent(out) << "    throw new RuntimeException(\"Cannot get field '\" + "
+                 "getFieldDesc(expectedFieldId).name + \""
+              << "' because union is currently set to \" + "
+                 "getFieldDesc(getSetField()).name);"
+              << endl;
   indent(out) << "  }" << endl;
   indent(out) << "}" << endl << endl;
 
@@ -773,17 +774,17 @@ void t_java_deprecated_generator::generate_union_abstract_methods(
   out << endl;
 
   indent(out) << "@Override" << endl;
-  indent(out)
-      << "protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }"
-      << endl;
+  indent(out) << "protected Map<Integer, FieldMetaData> getMetaDataMap() { "
+                 "return metaDataMap; }"
+              << endl;
 }
 
 void t_java_deprecated_generator::generate_check_type(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
-  indent(out)
-      << "protected void checkType(short setField, Object __value) throws ClassCastException {"
-      << endl;
+  indent(out) << "protected void checkType(short setField, Object __value) "
+                 "throws ClassCastException {"
+              << endl;
   indent_up();
 
   indent(out) << "switch (setField) {" << endl;
@@ -810,9 +811,9 @@ void t_java_deprecated_generator::generate_check_type(
   }
 
   indent(out) << "default:" << endl;
-  indent(out)
-      << "  throw new IllegalArgumentException(\"Unknown field id \" + setField);"
-      << endl;
+  indent(out) << "  throw new IllegalArgumentException(\"Unknown field id \" + "
+                 "setField);"
+              << endl;
 
   indent_down();
   indent(out) << "}" << endl;
@@ -881,7 +882,8 @@ void t_java_deprecated_generator::generate_union_reader(
   indent(out) << "TField __stopField = iprot.readFieldBegin();" << endl;
   indent(out) << "if (__stopField.type != TType.STOP) {" << endl;
   indent(out)
-      << "  throw new TProtocolException(TProtocolException.INVALID_DATA, \"Union '" +
+      << "  throw new TProtocolException(TProtocolException.INVALID_DATA, "
+         "\"Union '" +
           tstruct->get_name() + "' is missing a STOP byte\");"
       << endl;
   indent(out) << "}" << endl;
@@ -897,9 +899,9 @@ void t_java_deprecated_generator::generate_union_reader(
 void t_java_deprecated_generator::generate_read_value(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
-  indent(out)
-      << "protected Object readValue(TProtocol iprot, TField __field) throws TException {"
-      << endl;
+  indent(out) << "protected Object readValue(TProtocol iprot, TField __field) "
+                 "throws TException {"
+              << endl;
 
   indent_up();
 
@@ -939,9 +941,9 @@ void t_java_deprecated_generator::generate_read_value(
 void t_java_deprecated_generator::generate_write_value(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
-  indent(out)
-      << "protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {"
-      << endl;
+  indent(out) << "protected void writeValue(TProtocol oprot, short setField, "
+                 "Object __value) throws TException {"
+              << endl;
 
   indent_up();
 
@@ -966,9 +968,9 @@ void t_java_deprecated_generator::generate_write_value(
   }
 
   indent(out) << "default:" << endl;
-  indent(out)
-      << "  throw new IllegalStateException(\"Cannot write union with unknown field \" + setField);"
-      << endl;
+  indent(out) << "  throw new IllegalStateException(\"Cannot write union with "
+                 "unknown field \" + setField);"
+              << endl;
 
   indent_down();
   indent(out) << "}" << endl;
@@ -998,9 +1000,9 @@ void t_java_deprecated_generator::generate_get_field_desc(
   }
 
   indent(out) << "default:" << endl;
-  indent(out)
-      << "  throw new IllegalArgumentException(\"Unknown field id \" + setField);"
-      << endl;
+  indent(out) << "  throw new IllegalArgumentException(\"Unknown field id \" + "
+                 "setField);"
+              << endl;
 
   indent_down();
   indent(out) << "}" << endl;
@@ -1586,12 +1588,14 @@ void t_java_deprecated_generator::generate_java_struct_reader(
     ofstream& out, const t_struct* tstruct) {
   if (generate_immutable_structs_) {
     out << indent()
-        << "// This is required to satisfy the TBase interface, but can't be implemented on immutable struture."
+        << "// This is required to satisfy the TBase interface, but can't be "
+           "implemented on immutable struture."
         << endl;
     out << indent() << "public void read(TProtocol iprot) throws TException {"
         << endl;
     out << indent()
-        << "  throw new TException(\"unimplemented in android immutable structure\");"
+        << "  throw new TException(\"unimplemented in android immutable "
+           "structure\");"
         << endl;
     out << indent() << "}" << endl << endl;
 
@@ -1707,7 +1711,8 @@ void t_java_deprecated_generator::generate_java_struct_reader(
     // (which can be checked here but not in the general validate method)
     out << endl
         << indent()
-        << "// check for required fields of primitive type, which can't be checked in the validate method"
+        << "// check for required fields of primitive type, which can't be "
+           "checked in the validate method"
         << endl;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       if ((*f_iter)->get_req() == t_field::e_req::required &&
@@ -1952,9 +1957,9 @@ void t_java_deprecated_generator::generate_generic_field_getters_setters(
     out << setter_stream.str();
 
     indent(out) << "default:" << endl;
-    indent(out)
-        << "  throw new IllegalArgumentException(\"Field \" + fieldID + \" doesn't exist!\");"
-        << endl;
+    indent(out) << "  throw new IllegalArgumentException(\"Field \" + fieldID "
+                   "+ \" doesn't exist!\");"
+                << endl;
 
     indent(out) << "}" << endl;
 
@@ -1970,9 +1975,9 @@ void t_java_deprecated_generator::generate_generic_field_getters_setters(
     out << getter_stream.str();
 
     indent(out) << "default:" << endl;
-    indent(out)
-        << "  throw new IllegalArgumentException(\"Field \" + fieldID + \" doesn't exist!\");"
-        << endl;
+    indent(out) << "  throw new IllegalArgumentException(\"Field \" + fieldID "
+                   "+ \" doesn't exist!\");"
+                << endl;
 
     indent(out) << "}" << endl;
 
@@ -2120,7 +2125,8 @@ void t_java_deprecated_generator::generate_java_struct_tostring(
         << endl;
   } else {
     out << indent()
-        << "String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) "
+        << "String indentStr = prettyPrint ? "
+           "TBaseHelper.getIndentedString(indent) "
         << ": \"\";" << endl;
     out << indent() << "String newLine = prettyPrint ? \"\\n\" : \"\";" << endl;
     out << indent() << "String space = prettyPrint ? \" \" : \"\";" << endl;
@@ -2179,12 +2185,13 @@ void t_java_deprecated_generator::generate_java_struct_tostring(
           indent(out) << "  for (int i = 0; i < __" << fname << "_size; i++) {"
                       << endl;
           indent(out) << "    if (i != 0) sb.append(\" \");" << endl;
-          indent(out)
-              << "    sb.append(Integer.toHexString(" << field_getter
-              << "[i]).length() > 1 ? Integer.toHexString(" << field_getter
-              << "[i]).substring(Integer.toHexString(" << field_getter
-              << "[i]).length() - 2).toUpperCase() : \"0\" + Integer.toHexString("
-              << field_getter << "[i]).toUpperCase());" << endl;
+          indent(out) << "    sb.append(Integer.toHexString(" << field_getter
+                      << "[i]).length() > 1 ? Integer.toHexString("
+                      << field_getter << "[i]).substring(Integer.toHexString("
+                      << field_getter
+                      << "[i]).length() - 2).toUpperCase() : \"0\" + "
+                         "Integer.toHexString("
+                      << field_getter << "[i]).toUpperCase());" << endl;
           indent(out) << "  }" << endl;
           indent(out) << "  if (" << field_getter
                       << ".length > 128) sb.append(\" ...\");" << endl;
@@ -2707,7 +2714,8 @@ void t_java_deprecated_generator::generate_service_client(
       } else {
         f_service_
             << indent()
-            << "throw new TApplicationException(TApplicationException.MISSING_RESULT, \""
+            << "throw new "
+               "TApplicationException(TApplicationException.MISSING_RESULT, \""
             << (*f_iter)->get_name() << " failed: unknown result\");" << endl;
       }
 
@@ -2734,28 +2742,29 @@ void t_java_deprecated_generator::generate_service_async_client(
   indent_up();
 
   // Factory method
-  indent(f_service_)
-      << "public static class Factory implements TAsyncClientFactory<AsyncClient> {"
-      << endl;
+  indent(f_service_) << "public static class Factory implements "
+                        "TAsyncClientFactory<AsyncClient> {"
+                     << endl;
   indent(f_service_) << "  private TAsyncClientManager clientManager;" << endl;
   indent(f_service_) << "  private TProtocolFactory protocolFactory;" << endl;
-  indent(f_service_)
-      << "  public Factory(TAsyncClientManager clientManager, TProtocolFactory protocolFactory) {"
-      << endl;
+  indent(f_service_) << "  public Factory(TAsyncClientManager clientManager, "
+                        "TProtocolFactory protocolFactory) {"
+                     << endl;
   indent(f_service_) << "    this.clientManager = clientManager;" << endl;
   indent(f_service_) << "    this.protocolFactory = protocolFactory;" << endl;
   indent(f_service_) << "  }" << endl;
-  indent(f_service_)
-      << "  public AsyncClient getAsyncClient(TNonblockingTransport transport) {"
-      << endl;
-  indent(f_service_)
-      << "    return new AsyncClient(protocolFactory, clientManager, transport);"
-      << endl;
+  indent(f_service_) << "  public AsyncClient "
+                        "getAsyncClient(TNonblockingTransport transport) {"
+                     << endl;
+  indent(f_service_) << "    return new AsyncClient(protocolFactory, "
+                        "clientManager, transport);"
+                     << endl;
   indent(f_service_) << "  }" << endl;
   indent(f_service_) << "}" << endl << endl;
 
   indent(f_service_)
-      << "public AsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager clientManager, TNonblockingTransport transport) {"
+      << "public AsyncClient(TProtocolFactory protocolFactory, "
+         "TAsyncClientManager clientManager, TNonblockingTransport transport) {"
       << endl;
   indent(f_service_) << "  super(protocolFactory, clientManager, transport);"
                      << endl;
@@ -2885,10 +2894,12 @@ void t_java_deprecated_generator::generate_service_async_client(
         << endl
         << indent() << "}" << endl
         << indent()
-        << "TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());"
+        << "TMemoryInputTransport memoryTransport = new "
+           "TMemoryInputTransport(getFrameBuffer().array());"
         << endl
         << indent()
-        << "TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);"
+        << "TProtocol prot = "
+           "super.client.getProtocolFactory().getProtocol(memoryTransport);"
         << endl;
     if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       indent(f_service_);
@@ -2936,9 +2947,9 @@ void t_java_deprecated_generator::generate_service_server(
                      << " implements TProcessor {" << endl;
   indent_up();
 
-  indent(f_service_)
-      << "private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class.getName());"
-      << endl;
+  indent(f_service_) << "private static final Logger LOGGER = "
+                        "LoggerFactory.getLogger(Processor.class.getName());"
+                     << endl;
 
   indent(f_service_) << "public Processor(Iface iface)" << endl;
   scope_up(f_service_);
@@ -2966,13 +2977,14 @@ void t_java_deprecated_generator::generate_service_server(
   f_service_ << endl;
 
   if (extends.empty()) {
-    f_service_
-        << indent() << "protected static interface ProcessFunction {" << endl
-        << indent()
-        << "  public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException;"
-        << endl
-        << indent() << "}" << endl
-        << endl;
+    f_service_ << indent() << "protected static interface ProcessFunction {"
+               << endl
+               << indent()
+               << "  public void process(int seqid, TProtocol iprot, TProtocol "
+                  "oprot, TConnectionContext server_ctx) throws TException;"
+               << endl
+               << indent() << "}" << endl
+               << endl;
 
     f_service_
         << indent()
@@ -2991,17 +3003,18 @@ void t_java_deprecated_generator::generate_service_server(
   }
 
   if (extends.empty()) {
-    f_service_
-        << indent()
-        << "protected final HashMap<String,ProcessFunction> processMap_ = new HashMap<String,ProcessFunction>();"
-        << endl;
+    f_service_ << indent()
+               << "protected final HashMap<String,ProcessFunction> processMap_ "
+                  "= new HashMap<String,ProcessFunction>();"
+               << endl;
   }
 
   f_service_ << endl;
 
   // Generate the server implementation
   indent(f_service_)
-      << "public boolean process(TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException"
+      << "public boolean process(TProtocol iprot, TProtocol oprot, "
+         "TConnectionContext server_ctx) throws TException"
       << endl;
   scope_up(f_service_);
 
@@ -3009,23 +3022,27 @@ void t_java_deprecated_generator::generate_service_server(
 
   // TODO(mcslee): validate message, was the seqid etc. legit?
 
-  f_service_
-      << indent() << "ProcessFunction fn = processMap_.get(msg.name);" << endl
-      << indent() << "if (fn == null) {" << endl
-      << indent() << "  TProtocolUtil.skip(iprot, TType.STRUCT);" << endl
-      << indent() << "  iprot.readMessageEnd();" << endl
-      << indent()
-      << "  TApplicationException x = new TApplicationException(TApplicationException.UNKNOWN_METHOD, \"Invalid method name: '\"+msg.name+\"'\");"
-      << endl
-      << indent()
-      << "  oprot.writeMessageBegin(new TMessage(msg.name, TMessageType.EXCEPTION, msg.seqid));"
-      << endl
-      << indent() << "  x.write(oprot);" << endl
-      << indent() << "  oprot.writeMessageEnd();" << endl
-      << indent() << "  oprot.getTransport().flush();" << endl
-      << indent() << "  return true;" << endl
-      << indent() << "}" << endl
-      << indent() << "fn.process(msg.seqid, iprot, oprot, server_ctx);" << endl;
+  f_service_ << indent() << "ProcessFunction fn = processMap_.get(msg.name);"
+             << endl
+             << indent() << "if (fn == null) {" << endl
+             << indent() << "  TProtocolUtil.skip(iprot, TType.STRUCT);" << endl
+             << indent() << "  iprot.readMessageEnd();" << endl
+             << indent()
+             << "  TApplicationException x = new "
+                "TApplicationException(TApplicationException.UNKNOWN_METHOD, "
+                "\"Invalid method name: '\"+msg.name+\"'\");"
+             << endl
+             << indent()
+             << "  oprot.writeMessageBegin(new TMessage(msg.name, "
+                "TMessageType.EXCEPTION, msg.seqid));"
+             << endl
+             << indent() << "  x.write(oprot);" << endl
+             << indent() << "  oprot.writeMessageEnd();" << endl
+             << indent() << "  oprot.getTransport().flush();" << endl
+             << indent() << "  return true;" << endl
+             << indent() << "}" << endl
+             << indent() << "fn.process(msg.seqid, iprot, oprot, server_ctx);"
+             << endl;
 
   f_service_ << indent() << "return true;" << endl;
 
@@ -3089,7 +3106,8 @@ void t_java_deprecated_generator::generate_process_function(
 
   // Open function
   indent(f_service_)
-      << "public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException"
+      << "public void process(int seqid, TProtocol iprot, TProtocol oprot, "
+         "TConnectionContext server_ctx) throws TException"
       << endl;
   scope_up(f_service_);
 
@@ -3181,24 +3199,26 @@ void t_java_deprecated_generator::generate_process_function(
     }
     f_service_ << " catch (Throwable th) {" << endl;
     indent_up();
-    f_service_
-        << indent() << "LOGGER.error(\"Internal error processing "
-        << pservice_func_name_error << "\", th);" << endl
-        << indent() << "event_handler_.handlerError(handler_ctx, "
-        << pservice_func_name << ", th);" << endl
-        << indent()
-        << "TApplicationException x = new TApplicationException(TApplicationException.INTERNAL_ERROR, \"Internal error processing "
-        << pservice_func_name_error << "\");" << endl
-        << indent() << "event_handler_.preWrite(handler_ctx, \""
-        << pservice_func_name_error << "\", null);" << endl
-        << indent() << "oprot.writeMessageBegin(new TMessage("
-        << pservice_func_name << ", TMessageType.EXCEPTION, seqid));" << endl
-        << indent() << "x.write(oprot);" << endl
-        << indent() << "oprot.writeMessageEnd();" << endl
-        << indent() << "oprot.getTransport().flush();" << endl
-        << indent() << "event_handler_.postWrite(handler_ctx, "
-        << pservice_func_name << ", null);" << endl
-        << indent() << "return;" << endl;
+    f_service_ << indent() << "LOGGER.error(\"Internal error processing "
+               << pservice_func_name_error << "\", th);" << endl
+               << indent() << "event_handler_.handlerError(handler_ctx, "
+               << pservice_func_name << ", th);" << endl
+               << indent()
+               << "TApplicationException x = new "
+                  "TApplicationException(TApplicationException.INTERNAL_ERROR, "
+                  "\"Internal error processing "
+               << pservice_func_name_error << "\");" << endl
+               << indent() << "event_handler_.preWrite(handler_ctx, \""
+               << pservice_func_name_error << "\", null);" << endl
+               << indent() << "oprot.writeMessageBegin(new TMessage("
+               << pservice_func_name << ", TMessageType.EXCEPTION, seqid));"
+               << endl
+               << indent() << "x.write(oprot);" << endl
+               << indent() << "oprot.writeMessageEnd();" << endl
+               << indent() << "oprot.getTransport().flush();" << endl
+               << indent() << "event_handler_.postWrite(handler_ctx, "
+               << pservice_func_name << ", null);" << endl
+               << indent() << "return;" << endl;
     indent_down();
     f_service_ << indent() << "}" << endl;
   }

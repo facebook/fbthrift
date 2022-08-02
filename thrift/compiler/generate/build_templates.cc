@@ -47,14 +47,14 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  auto const path = fs::path(argv[1]);
+  const auto path = fs::path(argv[1]);
 
   //  read the templates into memory
 
   //  using an ordered map to enable deterministic builds
   std::map<std::string, std::string> templates;
-  for (auto const& e : fs::recursive_directory_iterator(path)) {
-    auto const& p = e.path();
+  for (const auto& e : fs::recursive_directory_iterator(path)) {
+    const auto& p = e.path();
     if (p.extension() == ".mustache" && fs::is_regular_file(p)) {
       using buf_it = std::istreambuf_iterator<char>;
       auto mm = std::mismatch(p.begin(), p.end(), path.begin(), path.end());
@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
   std::cout << endl;
 
   std::cout << "std::size_t const templates_name_sizes[] = {" << endl;
-  for (auto const& kvp : templates) {
+  for (const auto& kvp : templates) {
     std::cout << "//  " << kvp.first << endl;
     std::cout << kvp.first.size() << "," << endl;
   }
@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
   std::cout << endl;
 
   std::cout << "char const* const templates_name_datas[] = {" << endl;
-  for (auto const& kvp : templates) {
+  for (const auto& kvp : templates) {
     std::cout << "//  " << kvp.first << endl;
     std::cout << "\"" << kvp.first << "\"," << endl;
   }
@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
   std::cout << endl;
 
   std::cout << "std::size_t const templates_content_sizes[] = {" << endl;
-  for (auto const& kvp : templates) {
+  for (const auto& kvp : templates) {
     std::cout << "//  " << kvp.first << endl;
     std::cout << kvp.second.size() << "," << endl;
   }
@@ -120,15 +120,15 @@ int main(int argc, char** argv) {
   std::cout << endl;
 
   std::cout << "char const* const templates_content_datas[] = {" << endl;
-  for (auto const& kvp : templates) {
+  for (const auto& kvp : templates) {
     std::cout << "//  " << kvp.first << endl;
-    auto const max_size = string_literal_max_size;
-    auto const num_pieces = (kvp.second.size() + max_size - 1u) / max_size;
+    const auto max_size = string_literal_max_size;
+    const auto num_pieces = (kvp.second.size() + max_size - 1u) / max_size;
     for (std::size_t i = 0; i < num_pieces; ++i) {
       if (i != 0) {
         std::cout << " /* stitch */ ";
       }
-      auto const piece = kvp.second.substr(i * max_size, max_size);
+      const auto piece = kvp.second.substr(i * max_size, max_size);
       std::cout << "R\"" << tag << "(" << piece << ")" << tag << "\"";
     }
     std::cout << "," << endl;
