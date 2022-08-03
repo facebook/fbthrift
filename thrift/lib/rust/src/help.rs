@@ -107,14 +107,14 @@ where
     Ok(envelope)
 }
 
-/// TODO: Currently does minimal encoding. Not sure if this'll work.
 pub fn serialize_stream_item<P, RES>(res: RES) -> anyhow::Result<ProtocolEncodedFinal<P>>
 where
     P: Protocol,
     RES: ResultInfo + Serialize<P::Sizer> + Serialize<P::Serializer>,
 {
     Ok(serialize!(P, |p| {
-        // TODO: We at least need to write `res_type.message_type()` here?
+        // TODO(T127840117): Handle exceptions
+        // Maybe, we need to write `res_type.message_type()` here?
         res.write(p);
     }))
 }
