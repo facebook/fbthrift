@@ -320,11 +320,10 @@
                             }
                         };
 
-                        {{!TODO: Does this work? This line also needs to handle stream exceptions.}}
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
 
                     })
-                    {{!TODO: should we instrument with tracing?}}
+                    {{!TODO(T125947234): should we instrument with tracing?}}
                     .boxed();
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
