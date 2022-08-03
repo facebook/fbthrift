@@ -16,8 +16,7 @@
 
 #pragma once
 
-#include <cstdint>
-#include <type_traits>
+#include <thrift/lib/cpp2/type/Id.h>
 
 namespace apache {
 namespace thrift {
@@ -26,19 +25,13 @@ namespace type {
 enum class FieldId : ::std::int16_t;
 } // namespace type
 
-// Runtime and compile time representations for a field id.
 using FieldId = type::FieldId;
-template <FieldId id>
-using field_id_tag = std::integral_constant<FieldId, id>;
 template <std::underlying_type_t<FieldId> id>
-using field_id = field_id_tag<FieldId(id)>;
+using field_id = type::field_id_tag<FieldId(id)>;
 
-// Runtime and compile time representations for a field ordinal.
-enum class FieldOrdinal : uint16_t {};
-template <FieldOrdinal ord>
-using field_ordinal_tag = std::integral_constant<FieldOrdinal, ord>;
+using FieldOrdinal = type::Ordinal;
 template <std::underlying_type_t<FieldOrdinal> ord>
-using field_ordinal = field_ordinal_tag<FieldOrdinal(ord)>;
+using field_ordinal = type::ordinal_tag<FieldOrdinal(ord)>;
 
 // TODO(dokwon): Change FieldContext to use strong FieldId type.
 template <typename Struct, int16_t FieldId>

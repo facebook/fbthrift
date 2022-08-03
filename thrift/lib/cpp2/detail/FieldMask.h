@@ -87,7 +87,7 @@ bool validate_fields(MaskRef ref) {
   // Get the field ids in the thrift struct type.
   std::unordered_set<FieldId> ids;
   ids.reserve(type::field_size_v<StructTag>);
-  type::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
     ids.insert(type::get_field_id<StructTag, decltype(fieldOrdinalTag)>());
   });
   const FieldIdToMask& map = ref.mask.includes_ref()
@@ -101,7 +101,7 @@ bool validate_fields(MaskRef ref) {
   }
   // Validates each field in the struct.
   bool isValid = true;
-  type::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
     if (!isValid) { // short circuit
       return;
     }
@@ -126,7 +126,7 @@ bool validate_fields(MaskRef ref) {
 // Ensures the masked fields in the given thrift struct.
 template <typename T>
 void ensure_fields(MaskRef ref, T& t) {
-  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
     using StructTag = type::struct_t<T>;
     using OrdinalTag = decltype(fieldOrdinalTag);
     MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
@@ -145,7 +145,7 @@ void ensure_fields(MaskRef ref, T& t) {
 // Clears the masked fields in the given thrift struct.
 template <typename T>
 void clear_fields(MaskRef ref, T& t) {
-  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
     using StructTag = type::struct_t<T>;
     using OrdinalTag = decltype(fieldOrdinalTag);
     MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
@@ -177,7 +177,7 @@ void clear_fields(MaskRef ref, T& t) {
 template <typename T>
 bool copy_fields(MaskRef ref, const T& src, T& dst) {
   bool copied = false;
-  type::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
     using StructTag = type::struct_t<T>;
     using OrdinalTag = decltype(fieldOrdinalTag);
     MaskRef next = ref.get(type::get_field_id<StructTag, OrdinalTag>());
@@ -241,18 +241,17 @@ Mask path(const Mask& other) {
   // This is the base case as there is no more ident.
   return other;
 }
+
 template <typename T, typename Ident, typename... Idents>
 Mask path(const Mask& other) {
   if constexpr (is_thrift_struct_v<T>) {
     Mask mask;
-    using field_id_tag = type::get_field_id<type::struct_t<T>, Ident>;
-    if constexpr (!std::is_void_v<field_id_tag>) {
-      FieldId fieldId = field_id_tag();
-      using FieldType = type::get_field_native_type<type::struct_t<T>, Ident>;
-      mask.includes_ref().emplace()[static_cast<int16_t>(fieldId)] =
-          path<FieldType, Idents...>(other);
-      return mask;
-    }
+    using fieldId = type::get_field_id<type::struct_t<T>, Ident>;
+    static_assert(fieldId::value != FieldId{});
+    using FieldType = type::get_field_native_type<type::struct_t<T>, Ident>;
+    mask.includes_ref().emplace()[static_cast<int16_t>(fieldId::value)] =
+        path<FieldType, Idents...>(other);
+    return mask;
   }
   throw std::runtime_error("field doesn't exist");
 }

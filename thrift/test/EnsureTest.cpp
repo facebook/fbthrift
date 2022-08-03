@@ -53,13 +53,13 @@ void testEnsurePtr(auto obj, auto ordinal) {
 
 TEST(EnsureTest, FieldRef) {
   FieldRefStruct obj;
-  type::for_each_ordinal<type::struct_t<FieldRefStruct>>(
+  op::for_each_ordinal<type::struct_t<FieldRefStruct>>(
       [&](auto fieldOrdinalTag) { testEnsure(obj, fieldOrdinalTag); });
 }
 
 TEST(EnsureTest, SmartPointer) {
   SmartPointerStruct obj;
-  type::for_each_ordinal<type::struct_t<SmartPointerStruct>>(
+  op::for_each_ordinal<type::struct_t<SmartPointerStruct>>(
       [&](auto fieldOrdinalTag) { testEnsurePtr(obj, fieldOrdinalTag); });
 }
 

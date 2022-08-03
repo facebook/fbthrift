@@ -65,7 +65,7 @@ const Value* findOp(const Object& patch, PatchOp op) {
 
 template <typename Tag>
 decltype(auto) argAs(const Value& value) {
-  using Id = field_id_tag<static_cast<FieldId>(type::base_type_v<Tag>)>;
+  using Id = type::field_id_tag<static_cast<FieldId>(type::base_type_v<Tag>)>;
   constexpr auto expected = static_cast<Value::Type>(Id::value);
   if (value.getType() != Value::Type(Id::value)) {
     folly::throw_exception<std::runtime_error>(fmt::format(

@@ -1148,10 +1148,6 @@ TEST(FieldMaskTest, MaskWrapperSimple) {
     EXPECT_EQ(wrapper.toThrift(), expected);
   }
   {
-    MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
-    EXPECT_THROW(wrapper.includes<tag::foo>(), std::runtime_error);
-  }
-  {
     MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
     wrapper.includes<tag::field1>();
     wrapper.includes<tag::field2>();
@@ -1176,10 +1172,6 @@ TEST(FieldMaskTest, MaskWrapperSimple) {
     Mask expected;
     expected.excludes_ref().emplace()[3] = allMask();
     EXPECT_EQ(wrapper.toThrift(), expected);
-  }
-  {
-    MaskWrapper<Foo> wrapper(MaskWrapperInit::all);
-    EXPECT_THROW(wrapper.excludes<tag::foos>(), std::runtime_error);
   }
   {
     MaskWrapper<Foo> wrapper(MaskWrapperInit::none);
@@ -1269,11 +1261,6 @@ TEST(FieldMaskTest, MaskWrapperNested) {
     expected.includes_ref().emplace()[1] = allMask();
     EXPECT_EQ(wrapper.toThrift(), expected);
   }
-  {
-    MaskWrapper<Bar2> wrapper(MaskWrapperInit::none);
-    EXPECT_THROW(
-        (wrapper.includes<tag::field_3, tag::field_4>()), std::runtime_error);
-  }
 
   // Test excludes
   {
@@ -1330,11 +1317,6 @@ TEST(FieldMaskTest, MaskWrapperNested) {
     Mask expected;
     expected.excludes_ref().emplace()[1] = allMask();
     EXPECT_EQ(wrapper.toThrift(), expected);
-  }
-  {
-    MaskWrapper<Bar2> wrapper(MaskWrapperInit::all);
-    EXPECT_THROW(
-        (wrapper.excludes<tag::field_3, tag::field_4>()), std::runtime_error);
   }
 
   // Test includes and excludes

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-#pragma once
-
-#include <thrift/lib/cpp/Field.h>
-
 // Type tags for describing the 'shape' of thrift types at compile-time.
 //
 // _t indicates a concrete type.
@@ -27,9 +23,15 @@
 // For example, `type::list_c` represents a list of any type,
 // `type::list<type::enum_c>` represents a list of any enum type, and
 // `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
+#pragma once
+
+#include <cstdint>
+
 namespace apache {
 namespace thrift {
 namespace type {
+
+enum class FieldId : ::std::int16_t;
 
 // Classes of types (_c suffix).
 struct all_c {}; // all thrift types

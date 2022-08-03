@@ -16,6 +16,7 @@
 
 #include <thrift/test/reflection/gen-cpp2/reflection_types.h>
 
+#include <type_traits>
 #include <typeindex>
 
 #include <folly/Utility.h>
@@ -84,7 +85,9 @@ template <
     class TypeTag,
     class FieldTag>
 void checkField() {
-  test::same_tag<Id, struct_private_access::field_id<Struct, Ordinal>>;
+  if constexpr (Ordinal::value != Ordinal{}) {
+    test::same_tag<Id, struct_private_access::field_id<Struct, Ordinal>>;
+  }
   test::same_tag<TypeTag, struct_private_access::type_tag<Struct, Ordinal>>;
   test::same_tag<Ident, struct_private_access::ident<Struct, Ordinal>>;
   test::same_tag<Ordinal, struct_private_access::ordinal<Struct, Id>>;
@@ -107,7 +110,7 @@ void checkField() {
   test::same_tag<type::get_field_ident<StructTag, Id>, Ident>;
   test::same_tag<type::get_field_tag<StructTag, Id>, FieldTag>;
 
-  if constexpr (is_type_tag_unique) {
+  if constexpr (is_type_tag_unique && !std::is_void_v<TypeTag>) {
     test::same_tag<type::get_field_ordinal<StructTag, TypeTag>, Ordinal>;
     test::same_tag<type::get_field_id<StructTag, TypeTag>, Id>;
     test::same_tag<type::get_field_type_tag<StructTag, TypeTag>, TypeTag>;
@@ -115,23 +118,26 @@ void checkField() {
     test::same_tag<type::get_field_tag<StructTag, TypeTag>, FieldTag>;
   }
 
-  test::same_tag<type::get_field_ordinal<StructTag, Ident>, Ordinal>;
-  test::same_tag<type::get_field_id<StructTag, Ident>, Id>;
-  test::same_tag<type::get_field_type_tag<StructTag, Ident>, TypeTag>;
-  test::same_tag<type::get_field_ident<StructTag, Ident>, Ident>;
-  test::same_tag<type::get_field_tag<StructTag, Ident>, FieldTag>;
+  if constexpr (!std::is_void_v<Ident>) {
+    test::same_tag<type::get_field_ordinal<StructTag, Ident>, Ordinal>;
+    test::same_tag<type::get_field_id<StructTag, Ident>, Id>;
+    test::same_tag<type::get_field_type_tag<StructTag, Ident>, TypeTag>;
+    test::same_tag<type::get_field_ident<StructTag, Ident>, Ident>;
+    test::same_tag<type::get_field_tag<StructTag, Ident>, FieldTag>;
+  }
 
-  test::same_tag<type::get_field_ordinal<StructTag, FieldTag>, Ordinal>;
-  test::same_tag<type::get_field_id<StructTag, FieldTag>, Id>;
-  test::same_tag<type::get_field_type_tag<StructTag, FieldTag>, TypeTag>;
-  test::same_tag<type::get_field_ident<StructTag, FieldTag>, Ident>;
-  test::same_tag<type::get_field_tag<StructTag, FieldTag>, FieldTag>;
+  if constexpr (!std::is_void_v<FieldTag>) {
+    test::same_tag<type::get_field_ordinal<StructTag, FieldTag>, Ordinal>;
+    test::same_tag<type::get_field_id<StructTag, FieldTag>, Id>;
+    test::same_tag<type::get_field_type_tag<StructTag, FieldTag>, TypeTag>;
+    test::same_tag<type::get_field_ident<StructTag, FieldTag>, Ident>;
+    test::same_tag<type::get_field_tag<StructTag, FieldTag>, FieldTag>;
+  }
 }
 
 TEST(FieldsTest, UnifiedAPIs) {
   using test_cpp2::cpp_reflection::struct3;
 
-  using TypeTag0 = void;
   using TypeTag1 = i32_t;
   using TypeTag2 = string_t;
   using TypeTag3 = enum_t<::test_cpp2::cpp_reflection::enum1>;
@@ -154,7 +160,6 @@ TEST(FieldsTest, UnifiedAPIs) {
       map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>;
   using TypeTag19 = map<binary_t, binary_t>;
 
-  using FieldTag0 = void;
   using FieldTag1 = type::field<TypeTag1, FieldContext<struct3, 2>>;
   using FieldTag2 = type::field<TypeTag2, FieldContext<struct3, 1>>;
   using FieldTag3 = type::field<TypeTag3, FieldContext<struct3, 3>>;
@@ -176,7 +181,7 @@ TEST(FieldsTest, UnifiedAPIs) {
   using FieldTag19 = type::field<TypeTag19, FieldContext<struct3, 20>>;
 
   // clang-format off
-  checkField<struct3, field_ordinal<0>,  void,         void,        true,  TypeTag0,  FieldTag0>();
+  checkField<struct3, field_ordinal<0>,  field_id<0>,  void,        true,  void,      void>();
   checkField<struct3, field_ordinal<1>,  field_id<2>,  tag::fieldA, true,  TypeTag1,  FieldTag1>();
   checkField<struct3, field_ordinal<2>,  field_id<1>,  tag::fieldB, true,  TypeTag2,  FieldTag2>();
   checkField<struct3, field_ordinal<3>,  field_id<3>,  tag::fieldC, true,  TypeTag3,  FieldTag3>();
@@ -218,32 +223,31 @@ TEST(FieldsTest, IsReflectionMetadata) {
   static_assert(!is_field_id_v<void>);
   static_assert(!is_field_id_v<IncompleteType>);
 
-  static_assert(is_field_ordinal_v<field_ordinal<0>>);
-  static_assert(is_field_ordinal_v<field_ordinal<1>>);
-  static_assert(!is_field_ordinal_v<field_id<1>>);
-  static_assert(!is_field_ordinal_v<void>);
-  static_assert(!is_field_ordinal_v<IncompleteType>);
+  static_assert(is_ordinal_v<field_ordinal<0>>);
+  static_assert(is_ordinal_v<field_ordinal<1>>);
+  static_assert(!is_ordinal_v<field_id<1>>);
+  static_assert(!is_ordinal_v<void>);
+  static_assert(!is_ordinal_v<IncompleteType>);
 
-  static_assert(is_field_ident_v<tag::fieldA>);
-  static_assert(!is_field_ident_v<IncompleteType>);
-  static_assert(!is_field_ident_v<int>);
-  static_assert(!is_field_ident_v<void>);
+  static_assert(is_ident_v<tag::fieldA>);
+  static_assert(!is_ident_v<IncompleteType>);
+  static_assert(!is_ident_v<int>);
+  static_assert(!is_ident_v<void>);
 
-  static_assert(is_reflection_metadata_v<bool_t>);
-  static_assert(is_reflection_metadata_v<list<i32_t>>);
-  static_assert(is_reflection_metadata_v<field<list<i32_t>, FieldContext<test_cpp2::cpp_reflection::struct3, 1>>>);
-  static_assert(is_reflection_metadata_v<field_id<0>>);
-  static_assert(is_reflection_metadata_v<field_id<1>>);
-  static_assert(is_reflection_metadata_v<field_ordinal<0>>);
-  static_assert(is_reflection_metadata_v<field_ordinal<1>>);
-  static_assert(is_reflection_metadata_v<tag::fieldA>);
-  static_assert(is_reflection_metadata_v<void>);
-  static_assert(!is_reflection_metadata_v<bool>);
-  static_assert(!is_reflection_metadata_v<std::int32_t>);
-  static_assert(!is_reflection_metadata_v<std::vector<int32_t>>);
-  static_assert(!is_reflection_metadata_v<IncompleteType>);
-  static_assert(!is_reflection_metadata_v<IncompleteType>);
-  static_assert(!is_reflection_metadata_v<int>);
+  static_assert(is_id_v<bool_t>);
+  static_assert(is_id_v<list<i32_t>>);
+  static_assert(is_id_v<field<list<i32_t>, FieldContext<test_cpp2::cpp_reflection::struct3, 1>>>);
+  static_assert(is_id_v<field_id<0>>);
+  static_assert(is_id_v<field_id<1>>);
+  static_assert(is_id_v<field_ordinal<0>>);
+  static_assert(is_id_v<field_ordinal<1>>);
+  static_assert(is_id_v<tag::fieldA>);
+  static_assert(!is_id_v<bool>);
+  static_assert(!is_id_v<std::int32_t>);
+  static_assert(!is_id_v<std::vector<int32_t>>);
+  static_assert(!is_id_v<IncompleteType>);
+  static_assert(!is_id_v<IncompleteType>);
+  static_assert(!is_id_v<int>);
 
   using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
   // TODO(ytj): We need to figure out a way to test compile error
@@ -258,28 +262,34 @@ TEST(FieldsTest, NotFoundFieldInfo) {
   using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
 
   test::same_tag<type::get_field_ordinal<Tag, field_ordinal<0>>, field_ordinal<0>>;
-  test::same_tag<type::get_field_id<Tag, field_ordinal<0>>, void>;
+  test::same_tag<type::get_field_id<Tag, field_ordinal<0>>, field_id<0>>;
   test::same_tag<type::get_field_type_tag<Tag, field_ordinal<0>>, void>;
   test::same_tag<type::get_field_ident<Tag, field_ordinal<0>>, void>;
   test::same_tag<type::get_field_tag<Tag, field_ordinal<0>>, void>;
 
   test::same_tag<type::get_field_ordinal<Tag, field_id<200>>, field_ordinal<0>>;
-  test::same_tag<type::get_field_id<Tag, field_id<200>>, void>;
+  test::same_tag<type::get_field_id<Tag, field_id<200>>, field_id<0>>;
   test::same_tag<type::get_field_type_tag<Tag, field_id<200>>, void>;
   test::same_tag<type::get_field_ident<Tag, field_id<200>>, void>;
   test::same_tag<type::get_field_tag<Tag, field_id<200>>, void>;
 
   test::same_tag<type::get_field_ordinal<Tag, binary_t>, field_ordinal<0>>;
-  test::same_tag<type::get_field_id<Tag, binary_t>, void>;
+  test::same_tag<type::get_field_id<Tag, binary_t>, field_id<0>>;
   test::same_tag<type::get_field_type_tag<Tag, binary_t>, void>;
   test::same_tag<type::get_field_ident<Tag, binary_t>, void>;
   test::same_tag<type::get_field_tag<Tag, binary_t>, void>;
 
   test::same_tag<type::get_field_ordinal<Tag, tag::a>, field_ordinal<0>>;
-  test::same_tag<type::get_field_id<Tag, tag::a>, void>;
+  test::same_tag<type::get_field_id<Tag, tag::a>, field_id<0>>;
   test::same_tag<type::get_field_type_tag<Tag, tag::a>, void>;
   test::same_tag<type::get_field_ident<Tag, tag::a>, void>;
   test::same_tag<type::get_field_tag<Tag, tag::a>, void>;
+}
+
+
+template <typename Ident>
+bool isIdentTag(folly::tag_t<Ident>) {
+  return is_ident_v<Ident>;
 }
 
 TEST(FieldsTest, HelperAPIs) {
@@ -288,7 +298,29 @@ TEST(FieldsTest, HelperAPIs) {
   test::same_tag<type::get_field_native_type<Tag, field_ordinal<1>>, std::int32_t>;
   test::same_tag<type::get_field_native_type<Tag, tag::fieldA>, std::int32_t>;
   test::same_tag<type::get_field_native_type<Tag, field_id<11>>, std::deque<std::string>>;
-  EXPECT_EQ((type::get_field_id_v<Tag, field_ordinal<1>>), FieldId{2});
-  EXPECT_EQ((type::get_field_ordinal_v<Tag, field_id<2>>), FieldOrdinal{1});
+  EXPECT_EQ((op::get_field_id_v<Tag, field_ordinal<1>>), FieldId{2});
+  EXPECT_EQ((op::get_ordinal_v<Tag, field_id<2>>), FieldOrdinal{1});
+
+  int count = 0;
+  op::for_each_field_id<Tag>([&](auto id) {
+    EXPECT_TRUE(is_field_id_v<decltype(id)>);
+    count++;
+  });
+  EXPECT_EQ(count, op::size_v<Tag>);
+
+  count = 0;
+  op::for_each_ident<Tag>([&](auto id) {
+    EXPECT_TRUE(isIdentTag(id));
+    count++;
+  });
+  EXPECT_EQ(count, op::size_v<Tag>);
+
+  count = 0;
+  op::for_each_ordinal<Tag>([&](auto id) {
+    EXPECT_TRUE(is_ordinal_v<decltype(id)>);
+    count++;
+  });
+
+  EXPECT_EQ(count, op::size_v<Tag>);
 }
 } // namespace apache::thrift::type
