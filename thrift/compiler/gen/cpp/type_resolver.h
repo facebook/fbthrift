@@ -16,8 +16,8 @@
 
 #pragma once
 
+#include <stdint.h>
 #include <initializer_list>
-#include <map>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -36,6 +36,23 @@
 #include <thrift/compiler/gen/cpp/detail/gen.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+
+template <>
+struct std::hash<std::pair<
+    const apache::thrift::compiler::t_field*,
+    apache::thrift::compiler::gen::cpp::reference_type>> {
+  std::size_t operator()(const std::pair<
+                         const apache::thrift::compiler::t_field*,
+                         apache::thrift::compiler::gen::cpp::reference_type>& p)
+      const noexcept {
+    uintptr_t val = reinterpret_cast<uintptr_t>(p.first);
+    uintptr_t ref = static_cast<uintptr_t>(p.second);
+    // Adjacent t_field are far enough apart that adding ref type won't
+    // introduce collisions.
+    assert(sizeof(apache::thrift::compiler::t_field) > ref);
+    return std::hash<uintptr_t>()(val + ref);
+  }
+};
 
 namespace apache {
 namespace thrift {
@@ -214,9 +231,7 @@ class type_resolver {
   std::unordered_map<const t_type*, std::string> underlying_type_cache_;
   std::unordered_map<const t_type*, std::string>
       underlying_namespaced_name_cache_;
-  // TODO(afuller): Use a custom key type with a std::unordered_map (std::tuple
-  // does not have an std::hash specialization).
-  std::map<std::tuple<const t_field*, reference_type>, std::string>
+  std::unordered_map<std::pair<const t_field*, reference_type>, std::string>
       storage_type_cache_;
   std::unordered_map<const t_type*, std::string> type_tag_cache_;
   std::unordered_map<const t_field*, std::string> field_type_tag_cache_;
