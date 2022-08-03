@@ -38,6 +38,7 @@ struct ApplyPatch {
   void operator()(const Object& patch, folly::IOBuf& value) const;
   void operator()(const Object& patch, std::vector<Value>& value) const;
   void operator()(const Object& patch, std::set<Value>& value) const;
+  void operator()(const Object& patch, std::map<Value, Value>& value) const;
 };
 
 } // namespace detail

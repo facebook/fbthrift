@@ -139,6 +139,8 @@ void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
       return operator()(patch, *value.listValue_ref());
     case Value::Type::setValue:
       return operator()(patch, *value.setValue_ref());
+    case Value::Type::mapValue:
+      return operator()(patch, *value.mapValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -294,6 +296,43 @@ void ApplyPatch::operator()(const Object& patch, std::set<Value>& value) const {
 
   if (auto* put = findOp(patch, PatchOp::Put)) {
     insert_set(*put->setValue_ref());
+  }
+}
+
+void ApplyPatch::operator()(
+    const Object& patch, std::map<Value, Value>& value) const {
+  checkOps(
+      patch,
+      Value::Type::mapValue,
+      {PatchOp::Assign,
+       PatchOp::Clear,
+       PatchOp::Add,
+       PatchOp::Put,
+       PatchOp::Remove});
+  if (applyAssign<type::map_c>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    if (argAs<type::bool_t>(*clear)) {
+      value.clear();
+    }
+  }
+
+  if (auto* remove = findOp(patch, PatchOp::Remove)) {
+    for (const auto& key : *remove->setValue_ref()) {
+      value.erase(key);
+    }
+  }
+
+  if (auto* add = findOp(patch, PatchOp::Add)) {
+    value.insert(add->mapValue_ref()->begin(), add->mapValue_ref()->end());
+  }
+
+  if (auto* add = findOp(patch, PatchOp::Put)) {
+    for (const auto& [key, val] : *add->mapValue_ref()) {
+      value.insert_or_assign(key, val);
+    }
   }
 }
 

@@ -73,6 +73,21 @@ class PatchTest : public testing::Test {
     // Wrong object to patch
     EXPECT_THROW(apply(PatchType{}, true), std::runtime_error);
   }
+
+  static Object patchAddOperation(Object&& patch, auto operation, auto value) {
+    auto opId = static_cast<int16_t>(operation);
+    patch.members().ensure()[opId] = value;
+    return std::move(patch);
+  }
+
+  static Object makePatch(auto operation, auto value) {
+    return patchAddOperation(Object{}, operation, value);
+  }
+
+  static Value applyContainerPatch(Object patch, Value value) {
+    applyPatch(patch, value);
+    return value;
+  }
 };
 
 TEST_F(PatchTest, Bool) {
@@ -218,39 +233,24 @@ TEST_F(PatchTest, List) {
   auto value = asValueStruct<type::list<type::string_t>>(data);
   auto patchValue = asValueStruct<type::list<type::string_t>>(patch);
 
-  auto patchAddOperation = [](auto&& patch, auto operation, auto value) {
-    auto opId = static_cast<int16_t>(operation);
-    patch.members().ensure()[opId] = value;
-    return std::move(patch);
-  };
-
-  auto makePatch = [&](auto operation, auto value) {
-    return patchAddOperation(Object{}, operation, value);
-  };
-
-  auto applyListPatch = [](auto patch, auto value) {
-    applyPatch(patch, value);
-    return value;
-  };
-
   // Noop
   {
     Object patchObj;
     EXPECT_EQ(
         *value.listValue_ref(),
-        *applyListPatch(patchObj, value).listValue_ref());
+        *applyContainerPatch(patchObj, value).listValue_ref());
   }
 
   // Assign
   EXPECT_EQ(
       *patchValue.listValue_ref(),
-      *applyListPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+      *applyContainerPatch(makePatch(op::PatchOp::Assign, patchValue), value)
            .listValue_ref());
 
   // Clear
   EXPECT_EQ(
       std::vector<Value>{},
-      *applyListPatch(
+      *applyContainerPatch(
            makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
            value)
            .listValue_ref());
@@ -264,7 +264,7 @@ TEST_F(PatchTest, List) {
         value.listValue_ref()->end());
     EXPECT_EQ(
         expected,
-        *applyListPatch(makePatch(op::PatchOp::Prepend, patchValue), value)
+        *applyContainerPatch(makePatch(op::PatchOp::Prepend, patchValue), value)
              .listValue_ref());
   }
 
@@ -277,7 +277,7 @@ TEST_F(PatchTest, List) {
         patchValue.listValue_ref()->end());
     EXPECT_EQ(
         expected,
-        *applyListPatch(makePatch(op::PatchOp::Put, patchValue), value)
+        *applyContainerPatch(makePatch(op::PatchOp::Put, patchValue), value)
              .listValue_ref());
   }
 
@@ -285,7 +285,7 @@ TEST_F(PatchTest, List) {
   {
     EXPECT_EQ(
         std::vector<Value>{},
-        *applyListPatch(
+        *applyContainerPatch(
              makePatch(
                  op::PatchOp::Remove,
                  asValueStruct<type::set<type::string_t>>(std::set{"test"})),
@@ -297,7 +297,7 @@ TEST_F(PatchTest, List) {
   {
     EXPECT_EQ(
         *value.listValue_ref(),
-        *applyListPatch(
+        *applyContainerPatch(
              makePatch(
                  op::PatchOp::Add,
                  asValueStruct<type::set<type::string_t>>(std::set{"test"})),
@@ -309,7 +309,7 @@ TEST_F(PatchTest, List) {
     expected.push_back(asValueStruct<type::string_t>("best"));
     EXPECT_EQ(
         expected,
-        *applyListPatch(
+        *applyContainerPatch(
              makePatch(
                  op::PatchOp::Add,
                  asValueStruct<type::set<type::string_t>>(std::set{"best"})),
@@ -336,7 +336,7 @@ TEST_F(PatchTest, List) {
         std::vector{"the", "best", "test"});
     EXPECT_EQ(
         *expected.listValue_ref(),
-        *applyListPatch(patchObj, value).listValue_ref());
+        *applyContainerPatch(patchObj, value).listValue_ref());
   }
 }
 
@@ -345,50 +345,36 @@ TEST_F(PatchTest, Set) {
   auto value = asValueStruct<type::set<type::string_t>>(data);
   auto patchValue = asValueStruct<type::set<type::string_t>>(patch);
 
-  auto patchAddOperation = [](auto&& patch, auto operation, auto value) {
-    auto opId = static_cast<int16_t>(operation);
-    patch.members().ensure()[opId] = value;
-    return std::move(patch);
-  };
-
-  auto makePatch = [&](auto operation, auto value) {
-    return patchAddOperation(Object{}, operation, value);
-  };
-
-  auto applySetPatch = [](auto patch, auto value) {
-    applyPatch(patch, value);
-    return value;
-  };
-
   // Noop
   {
     Object patchObj;
     EXPECT_EQ(
-        *value.setValue_ref(), *applySetPatch(patchObj, value).setValue_ref());
+        *value.setValue_ref(),
+        *applyContainerPatch(patchObj, value).setValue_ref());
   }
 
   // Assign
   EXPECT_EQ(
       *patchValue.setValue_ref(),
-      *applySetPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+      *applyContainerPatch(makePatch(op::PatchOp::Assign, patchValue), value)
            .setValue_ref());
 
   // Clear
   EXPECT_EQ(
       std::set<Value>{},
-      *applySetPatch(
+      *applyContainerPatch(
            makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
            value)
            .setValue_ref());
 
-  // Append
+  // Put
   {
     auto expected = *value.setValue_ref();
     expected.insert(
         patchValue.setValue_ref()->begin(), patchValue.setValue_ref()->end());
     EXPECT_EQ(
         expected,
-        *applySetPatch(makePatch(op::PatchOp::Put, patchValue), value)
+        *applyContainerPatch(makePatch(op::PatchOp::Put, patchValue), value)
              .setValue_ref());
   }
 
@@ -396,7 +382,7 @@ TEST_F(PatchTest, Set) {
   {
     EXPECT_EQ(
         std::set<Value>{},
-        *applySetPatch(
+        *applyContainerPatch(
              makePatch(
                  op::PatchOp::Remove,
                  asValueStruct<type::set<type::string_t>>(std::set{"test"})),
@@ -408,7 +394,7 @@ TEST_F(PatchTest, Set) {
   {
     EXPECT_EQ(
         *value.setValue_ref(),
-        *applySetPatch(
+        *applyContainerPatch(
              makePatch(
                  op::PatchOp::Add,
                  asValueStruct<type::set<type::string_t>>(std::set{"test"})),
@@ -418,7 +404,7 @@ TEST_F(PatchTest, Set) {
 
     auto expected = *value.setValue_ref();
     expected.insert(asValueStruct<type::string_t>(std::string{"best test"}));
-    auto patchResult = *applySetPatch(
+    auto patchResult = *applyContainerPatch(
                             makePatch(
                                 op::PatchOp::Add,
                                 asValueStruct<type::set<type::string_t>>(
@@ -444,7 +430,116 @@ TEST_F(PatchTest, Set) {
         asValueStruct<type::set<type::string_t>>(std::set{"best", "rest"});
     EXPECT_EQ(
         *expected.setValue_ref(),
-        *applySetPatch(patchObj, value).setValue_ref());
+        *applyContainerPatch(patchObj, value).setValue_ref());
+  }
+}
+
+TEST_F(PatchTest, Map) {
+  std::map<std::string, std::string> data = {{"key", "test"}},
+                                     patch = {{"new key", "new value"}};
+  auto value = asValueStruct<type::map<type::string_t, type::string_t>>(data);
+  auto patchValue =
+      asValueStruct<type::map<type::string_t, type::string_t>>(patch);
+
+  // Noop
+  {
+    Object patchObj;
+    EXPECT_EQ(
+        *value.mapValue_ref(),
+        *applyContainerPatch(patchObj, value).mapValue_ref());
+  }
+
+  // Assign
+  EXPECT_EQ(
+      *patchValue.mapValue_ref(),
+      *applyContainerPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+           .mapValue_ref());
+
+  // Clear
+  auto empty_map = std::map<Value, Value>{};
+  EXPECT_EQ(
+      empty_map,
+      *applyContainerPatch(
+           makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
+           value)
+           .mapValue_ref());
+
+  // Remove
+  EXPECT_EQ(
+      empty_map,
+      *applyContainerPatch(
+           makePatch(
+               op::PatchOp::Remove,
+               asValueStruct<type::set<type::string_t>>(std::set{"key"})),
+           value)
+           .mapValue_ref());
+
+  // Add
+  {
+    EXPECT_EQ(
+        *value.mapValue_ref(),
+        *applyContainerPatch(
+             makePatch(
+                 op::PatchOp::Add,
+                 asValueStruct<type::map<type::string_t, type::string_t>>(
+                     std::map<std::string, std::string>{{"key", "test 42"}})),
+             value)
+             .mapValue_ref())
+        << "Shuold insert nothing";
+
+    auto expected = *value.mapValue_ref();
+    expected.emplace(
+        asValueStruct<type::string_t>(std::string{"new key"}),
+        asValueStruct<type::string_t>(std::string{"new value"}));
+    auto patchResult =
+        *applyContainerPatch(
+             makePatch(
+                 op::PatchOp::Add,
+                 asValueStruct<type::map<type::string_t, type::string_t>>(
+                     std::map<std::string, std::string>{
+                         {"new key", "new value"}})),
+             value)
+             .mapValue_ref();
+    EXPECT_EQ(expected, patchResult);
+  }
+
+  // Put
+  {
+    auto expected = *value.mapValue_ref();
+    expected[asValueStruct<type::string_t>(std::string{"key"})] =
+        asValueStruct<type::string_t>(std::string{"key updated value"});
+    EXPECT_EQ(
+        expected,
+        *applyContainerPatch(
+             makePatch(
+                 op::PatchOp::Put,
+                 asValueStruct<type::map<type::string_t, type::string_t>>(
+                     std::map<std::string, std::string>{
+                         {"key", "key updated value"}})),
+             value)
+             .mapValue_ref());
+  }
+
+  // Combination
+  {
+    auto expected = asValueStruct<type::map<type::string_t, type::string_t>>(
+        std::map<std::string, std::string>{
+            {"new key", "new value"}, {"added key", "overridden value"}});
+    auto patchObj = patchAddOperation(
+        patchAddOperation(
+            makePatch(
+                op::PatchOp::Add,
+                asValueStruct<type::map<type::string_t, type::string_t>>(
+                    std::map<std::string, std::string>{
+                        {"added key", "added value"}})),
+            op::PatchOp::Remove,
+            asValueStruct<type::set<type::string_t>>(std::set{"key"})),
+        op::PatchOp::Put,
+        expected);
+
+    EXPECT_EQ(
+        *expected.mapValue_ref(),
+        *applyContainerPatch(patchObj, value).mapValue_ref());
   }
 }
 
