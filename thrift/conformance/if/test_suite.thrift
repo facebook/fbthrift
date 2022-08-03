@@ -34,6 +34,9 @@ struct TestSuite {
 
   // The test cases included in the suite.
   3: list<Test> tests;
+
+  // Tags for the whole suite.
+  4: set<string> tags;
 }
 
 // A collection of test cases.
@@ -46,6 +49,9 @@ struct Test {
 
   // The test cases included in the test.
   3: list<TestCase> testCases;
+
+  // Tags for all test cases in this test.
+  4: set<string> tags;
 }
 
 // A single test case.
@@ -58,6 +64,9 @@ struct TestCase {
 
   // The test case to run.
   3: TestCaseUnion test (cpp.mixin);
+
+  // Tags for this test case.
+  4: set<string> tags;
 }
 
 // A union of all supported test case types.
