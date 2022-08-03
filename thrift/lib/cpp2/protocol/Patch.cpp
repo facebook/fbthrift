@@ -137,6 +137,8 @@ void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
       return operator()(patch, *value.binaryValue_ref());
     case Value::Type::listValue:
       return operator()(patch, *value.listValue_ref());
+    case Value::Type::setValue:
+      return operator()(patch, *value.setValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -176,7 +178,7 @@ void ApplyPatch::operator()(const Object& patch, double& value) const {
 void ApplyPatch::operator()(const Object& patch, folly::IOBuf& value) const {
   checkOps(
       patch,
-      Value::Type::boolValue,
+      Value::Type::binaryValue,
       {PatchOp::Assign, PatchOp::Clear, PatchOp::Put, PatchOp::Prepend});
   if (applyAssign<type::cpp_type<folly::IOBuf, type::binary_t>>(patch, value)) {
     return; // Ignore all other ops.
@@ -208,7 +210,7 @@ void ApplyPatch::operator()(
     const Object& patch, std::vector<Value>& value) const {
   checkOps(
       patch,
-      Value::Type::boolValue,
+      Value::Type::listValue,
       {PatchOp::Assign,
        PatchOp::Clear,
        PatchOp::Add,
@@ -254,6 +256,44 @@ void ApplyPatch::operator()(
   if (auto* append = findOp(patch, PatchOp::Put)) {
     auto& appendVector = *append->listValue_ref();
     value.insert(value.end(), appendVector.begin(), appendVector.end());
+  }
+}
+
+void ApplyPatch::operator()(const Object& patch, std::set<Value>& value) const {
+  checkOps(
+      patch,
+      Value::Type::setValue,
+      {PatchOp::Assign,
+       PatchOp::Clear,
+       PatchOp::Add,
+       PatchOp::Put,
+       PatchOp::Remove});
+  if (applyAssign<type::set_c>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    if (argAs<type::bool_t>(*clear)) {
+      value.clear();
+    }
+  }
+
+  if (auto* remove = findOp(patch, PatchOp::Remove)) {
+    for (const auto& key : *remove->setValue_ref()) {
+      value.erase(key);
+    }
+  }
+
+  auto insert_set = [&](const auto& to_insert) {
+    value.insert(to_insert.begin(), to_insert.end());
+  };
+
+  if (auto* add = findOp(patch, PatchOp::Add)) {
+    insert_set(*add->setValue_ref());
+  }
+
+  if (auto* put = findOp(patch, PatchOp::Put)) {
+    insert_set(*put->setValue_ref());
   }
 }
 

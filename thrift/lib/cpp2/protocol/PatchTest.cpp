@@ -340,5 +340,113 @@ TEST_F(PatchTest, List) {
   }
 }
 
+TEST_F(PatchTest, Set) {
+  std::set<std::string> data = {"test"}, patch = {"new value"};
+  auto value = asValueStruct<type::set<type::string_t>>(data);
+  auto patchValue = asValueStruct<type::set<type::string_t>>(patch);
+
+  auto patchAddOperation = [](auto&& patch, auto operation, auto value) {
+    auto opId = static_cast<int16_t>(operation);
+    patch.members().ensure()[opId] = value;
+    return std::move(patch);
+  };
+
+  auto makePatch = [&](auto operation, auto value) {
+    return patchAddOperation(Object{}, operation, value);
+  };
+
+  auto applySetPatch = [](auto patch, auto value) {
+    applyPatch(patch, value);
+    return value;
+  };
+
+  // Noop
+  {
+    Object patchObj;
+    EXPECT_EQ(
+        *value.setValue_ref(), *applySetPatch(patchObj, value).setValue_ref());
+  }
+
+  // Assign
+  EXPECT_EQ(
+      *patchValue.setValue_ref(),
+      *applySetPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+           .setValue_ref());
+
+  // Clear
+  EXPECT_EQ(
+      std::set<Value>{},
+      *applySetPatch(
+           makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
+           value)
+           .setValue_ref());
+
+  // Append
+  {
+    auto expected = *value.setValue_ref();
+    expected.insert(
+        patchValue.setValue_ref()->begin(), patchValue.setValue_ref()->end());
+    EXPECT_EQ(
+        expected,
+        *applySetPatch(makePatch(op::PatchOp::Put, patchValue), value)
+             .setValue_ref());
+  }
+
+  // Remove
+  {
+    EXPECT_EQ(
+        std::set<Value>{},
+        *applySetPatch(
+             makePatch(
+                 op::PatchOp::Remove,
+                 asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+             value)
+             .setValue_ref());
+  }
+
+  // Add
+  {
+    EXPECT_EQ(
+        *value.setValue_ref(),
+        *applySetPatch(
+             makePatch(
+                 op::PatchOp::Add,
+                 asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+             value)
+             .setValue_ref())
+        << "Shuold insert nothing";
+
+    auto expected = *value.setValue_ref();
+    expected.insert(asValueStruct<type::string_t>(std::string{"best test"}));
+    auto patchResult = *applySetPatch(
+                            makePatch(
+                                op::PatchOp::Add,
+                                asValueStruct<type::set<type::string_t>>(
+                                    std::set{"best test"})),
+                            value)
+                            .setValue_ref();
+    EXPECT_EQ(expected, patchResult);
+  }
+
+  // Combination
+  {
+    auto patchObj = patchAddOperation(
+        patchAddOperation(
+            makePatch(
+                op::PatchOp::Add,
+                asValueStruct<type::set<type::string_t>>(std::set{"best"})),
+            op::PatchOp::Remove,
+            asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+        op::PatchOp::Put,
+        asValueStruct<type::set<type::string_t>>(std::set{"rest"}));
+
+    auto expected =
+        asValueStruct<type::set<type::string_t>>(std::set{"best", "rest"});
+    EXPECT_EQ(
+        *expected.setValue_ref(),
+        *applySetPatch(patchObj, value).setValue_ref());
+  }
+}
+
 } // namespace
 } // namespace apache::thrift::protocol
