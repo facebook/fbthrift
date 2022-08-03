@@ -208,7 +208,7 @@ pub mod services {
                     Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            ::fbthrift::TType::Stream,
+                            ::fbthrift::TType::I32,
                             0i16,
                         );
                         inner.write(p);

@@ -106,7 +106,7 @@
                     Self::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            {{#function:return_type}}{{>lib/ttype}}{{/function:return_type}},
+                            {{#function:return_type}}{{#type:stream_elem_type}}{{>lib/ttype}}{{/type:stream_elem_type}}{{/function:return_type}},
                             0i16,
                         );
                         inner.write(p);
