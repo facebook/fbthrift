@@ -27,7 +27,7 @@ namespace detail {
 
 struct ApplyPatch {
   // Applies 'patch' to 'value' in-place.
-  void operator()(const Object& patch, protocol::Value& value) const;
+  void operator()(const Object& patch, Value& value) const;
   void operator()(const Object& patch, bool& value) const;
   void operator()(const Object& patch, int8_t& value) const;
   void operator()(const Object& patch, int16_t& value) const;
@@ -36,6 +36,7 @@ struct ApplyPatch {
   void operator()(const Object& patch, float& value) const;
   void operator()(const Object& patch, double& value) const;
   void operator()(const Object& patch, folly::IOBuf& value) const;
+  void operator()(const Object& patch, std::vector<Value>& value) const;
 };
 
 } // namespace detail

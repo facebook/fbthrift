@@ -33,7 +33,17 @@ namespace thrift {
 namespace protocol {
 namespace detail {
 namespace {
+
 using op::PatchOp;
+
+template <typename Tag>
+using value_field_id =
+    type::field_id_tag<static_cast<FieldId>(type::base_type_v<Tag>)>;
+using ValueTag = type::union_t<Value>;
+
+template <typename Tag>
+using value_native_type =
+    type::native_type<type::get_field_tag<ValueTag, value_field_id<Tag>>>;
 
 PatchOp toOp(FieldId id) {
   auto op = static_cast<PatchOp>(id);
@@ -77,7 +87,7 @@ decltype(auto) argAs(const Value& value) {
 }
 
 template <typename Tag>
-bool applyAssign(const Object& patch, type::native_type<Tag>& value) {
+bool applyAssign(const Object& patch, value_native_type<Tag>& value) {
   if (const Value* arg = findOp(patch, PatchOp::Assign)) {
     value = argAs<Tag>(*arg);
     return true;
@@ -125,6 +135,8 @@ void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
     }
     case Value::Type::binaryValue:
       return operator()(patch, *value.binaryValue_ref());
+    case Value::Type::listValue:
+      return operator()(patch, *value.listValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -189,6 +201,59 @@ void ApplyPatch::operator()(const Object& patch, folly::IOBuf& value) const {
       queue.append(argAs<type::binary_t>(*append));
     }
     value = queue.moveAsValue();
+  }
+}
+
+void ApplyPatch::operator()(
+    const Object& patch, std::vector<Value>& value) const {
+  checkOps(
+      patch,
+      Value::Type::boolValue,
+      {PatchOp::Assign,
+       PatchOp::Clear,
+       PatchOp::Add,
+       PatchOp::Put,
+       PatchOp::Prepend,
+       PatchOp::Remove});
+  if (applyAssign<type::list_c>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    if (argAs<type::bool_t>(*clear)) {
+      value.clear();
+    }
+  }
+
+  if (auto* remove = findOp(patch, PatchOp::Remove)) {
+    auto& to_remove = *remove->setValue_ref();
+    value.erase(
+        std::remove_if(
+            value.begin(),
+            value.end(),
+            [&](const auto& element) {
+              return to_remove.find(element) != to_remove.end();
+            }),
+        value.end());
+  }
+
+  if (auto* add = findOp(patch, PatchOp::Add)) {
+    auto& to_add = *add->setValue_ref();
+    for (const auto& element : to_add) {
+      if (std::find(value.begin(), value.end(), element) == value.end()) {
+        value.push_back(element);
+      }
+    }
+  }
+
+  if (auto* prepend = findOp(patch, PatchOp::Prepend)) {
+    auto& prependVector = *prepend->listValue_ref();
+    value.insert(value.begin(), prependVector.begin(), prependVector.end());
+  }
+
+  if (auto* append = findOp(patch, PatchOp::Put)) {
+    auto& appendVector = *append->listValue_ref();
+    value.insert(value.end(), appendVector.begin(), appendVector.end());
   }
 }
 

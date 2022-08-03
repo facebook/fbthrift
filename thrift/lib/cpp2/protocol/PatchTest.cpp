@@ -213,5 +213,132 @@ TEST_F(PatchTest, String) {
       std::runtime_error);
 }
 
+TEST_F(PatchTest, List) {
+  std::vector<std::string> data = {"test"}, patch = {"new value"};
+  auto value = asValueStruct<type::list<type::string_t>>(data);
+  auto patchValue = asValueStruct<type::list<type::string_t>>(patch);
+
+  auto patchAddOperation = [](auto&& patch, auto operation, auto value) {
+    auto opId = static_cast<int16_t>(operation);
+    patch.members().ensure()[opId] = value;
+    return std::move(patch);
+  };
+
+  auto makePatch = [&](auto operation, auto value) {
+    return patchAddOperation(Object{}, operation, value);
+  };
+
+  auto applyListPatch = [](auto patch, auto value) {
+    applyPatch(patch, value);
+    return value;
+  };
+
+  // Noop
+  {
+    Object patchObj;
+    EXPECT_EQ(
+        *value.listValue_ref(),
+        *applyListPatch(patchObj, value).listValue_ref());
+  }
+
+  // Assign
+  EXPECT_EQ(
+      *patchValue.listValue_ref(),
+      *applyListPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+           .listValue_ref());
+
+  // Clear
+  EXPECT_EQ(
+      std::vector<Value>{},
+      *applyListPatch(
+           makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
+           value)
+           .listValue_ref());
+
+  // Prepent
+  {
+    auto expected = *patchValue.listValue_ref();
+    expected.insert(
+        expected.end(),
+        value.listValue_ref()->begin(),
+        value.listValue_ref()->end());
+    EXPECT_EQ(
+        expected,
+        *applyListPatch(makePatch(op::PatchOp::Prepend, patchValue), value)
+             .listValue_ref());
+  }
+
+  // Append
+  {
+    auto expected = *value.listValue_ref();
+    expected.insert(
+        expected.end(),
+        patchValue.listValue_ref()->begin(),
+        patchValue.listValue_ref()->end());
+    EXPECT_EQ(
+        expected,
+        *applyListPatch(makePatch(op::PatchOp::Put, patchValue), value)
+             .listValue_ref());
+  }
+
+  // Remove
+  {
+    EXPECT_EQ(
+        std::vector<Value>{},
+        *applyListPatch(
+             makePatch(
+                 op::PatchOp::Remove,
+                 asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+             value)
+             .listValue_ref());
+  }
+
+  // Add
+  {
+    EXPECT_EQ(
+        *value.listValue_ref(),
+        *applyListPatch(
+             makePatch(
+                 op::PatchOp::Add,
+                 asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+             value)
+             .listValue_ref())
+        << "Shuold insert nothing";
+
+    auto expected = *value.listValue_ref();
+    expected.push_back(asValueStruct<type::string_t>("best"));
+    EXPECT_EQ(
+        expected,
+        *applyListPatch(
+             makePatch(
+                 op::PatchOp::Add,
+                 asValueStruct<type::set<type::string_t>>(std::set{"best"})),
+             value)
+             .listValue_ref());
+  }
+
+  // Combination
+  {
+    auto patchObj = patchAddOperation(
+        patchAddOperation(
+            patchAddOperation(
+                makePatch(
+                    op::PatchOp::Add,
+                    asValueStruct<type::set<type::string_t>>(std::set{"best"})),
+                op::PatchOp::Remove,
+                asValueStruct<type::set<type::string_t>>(std::set{"test"})),
+            op::PatchOp::Put,
+            value),
+        op::PatchOp::Prepend,
+        asValueStruct<type::list<type::string_t>>(std::vector{"the"}));
+
+    auto expected = asValueStruct<type::list<type::string_t>>(
+        std::vector{"the", "best", "test"});
+    EXPECT_EQ(
+        *expected.listValue_ref(),
+        *applyListPatch(patchObj, value).listValue_ref());
+  }
+}
+
 } // namespace
 } // namespace apache::thrift::protocol
