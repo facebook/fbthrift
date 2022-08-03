@@ -516,7 +516,7 @@ string t_java_deprecated_generator::render_const_value(
     if (namespace_prefix.length() > 0) {
       namespace_prefix += ".";
     }
-    if (value->get_enum() == nullptr) {
+    if (value->get_enum_value() == nullptr) {
       render << namespace_prefix << type->get_name() << ".findByValue("
              << value->get_integer() << ")";
     } else {
