@@ -58,3 +58,17 @@ cdef class __SomeStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_2(self, _fbthrift_value) except *
     cdef void _set_field_3(self, _fbthrift_value) except *
 
+
+ctypedef void (*__MyStruct_FieldsSetterFunc)(__MyStruct_FieldsSetter, object) except *
+
+cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_enums_module_types.cMyStruct* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_test_fixtures_enums_module_types.cMyStruct* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+

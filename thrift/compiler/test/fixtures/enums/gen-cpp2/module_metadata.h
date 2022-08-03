@@ -24,7 +24,32 @@ class EnumMetadata<::test::fixtures::enums::Metasyntactic> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class EnumMetadata<::test::fixtures::enums::MyEnum1> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enums::MyEnum2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enums::MyEnum3> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enums::MyEnum4> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::test::fixtures::enums::SomeStruct> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::test::fixtures::enums::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

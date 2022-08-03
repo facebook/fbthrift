@@ -31,6 +31,25 @@ struct VisitByFieldId<::test::fixtures::enums::SomeStruct> {
     }
   }
 };
+
+template <>
+struct VisitByFieldId<::test::fixtures::enums::MyStruct> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).me2_3_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).me3_n3_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).me1_t1_ref());
+    case 6:
+      return f(3, static_cast<T&&>(t).me1_t2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::test::fixtures::enums::MyStruct");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

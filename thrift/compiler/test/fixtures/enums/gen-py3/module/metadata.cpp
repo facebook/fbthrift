@@ -14,7 +14,12 @@ namespace enums {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<Metasyntactic>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyEnum1>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyEnum2>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyEnum3>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyEnum4>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SomeStruct>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   return metadata;
 }
 } // namespace test

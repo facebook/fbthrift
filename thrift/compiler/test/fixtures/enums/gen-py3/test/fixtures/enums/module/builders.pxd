@@ -22,3 +22,10 @@ cdef class SomeStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public set tags
 
 
+cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
+    cdef public _test_fixtures_enums_module_types.MyEnum2 me2_3
+    cdef public _test_fixtures_enums_module_types.MyEnum3 me3_n3
+    cdef public _test_fixtures_enums_module_types.MyEnum1 me1_t1
+    cdef public _test_fixtures_enums_module_types.MyEnum1 me1_t2
+
+

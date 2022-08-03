@@ -19,6 +19,10 @@ struct reasonable;
 struct fine;
 struct questionable;
 struct tags;
+struct me2_3;
+struct me3_n3;
+struct me1_t1;
+struct me1_t2;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_reasonable
@@ -37,6 +41,22 @@ APACHE_THRIFT_DEFINE_ACCESSOR(questionable);
 #define APACHE_THRIFT_ACCESSOR_tags
 APACHE_THRIFT_DEFINE_ACCESSOR(tags);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_me2_3
+#define APACHE_THRIFT_ACCESSOR_me2_3
+APACHE_THRIFT_DEFINE_ACCESSOR(me2_3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_me3_n3
+#define APACHE_THRIFT_ACCESSOR_me3_n3
+APACHE_THRIFT_DEFINE_ACCESSOR(me3_n3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_me1_t1
+#define APACHE_THRIFT_ACCESSOR_me1_t1
+APACHE_THRIFT_DEFINE_ACCESSOR(me1_t1);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_me1_t2
+#define APACHE_THRIFT_ACCESSOR_me1_t2
+APACHE_THRIFT_DEFINE_ACCESSOR(me1_t2);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -54,11 +74,59 @@ enum class Metasyntactic {
 
 
 
+enum class MyEnum1 {
+  ME1_1 = 1,
+  ME1_2 = 2,
+  ME1_3 = 3,
+  ME1_5 = 5,
+  ME1_6 = 6,
+  ME1_0 = 0,
+};
+
+
+
+enum class MyEnum2 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+};
+
+
+
+enum class MyEnum3 {
+  ME3_0 = 0,
+  ME3_1 = 1,
+  ME3_N2 = -2,
+  ME3_N1 = -1,
+  ME3_9 = 9,
+  ME3_10 = 10,
+};
+
+
+
+enum class MyEnum4 {
+  ME4_A = 2147483645,
+  ME4_B = 2147483646,
+  ME4_C = 2147483647,
+  ME4_D = -2147483648,
+  Unspecified = 0,
+};
+
+
+
 }}} // test::fixtures::enums
 
 namespace std {
 template<> struct hash<::test::fixtures::enums::Metasyntactic> :
   ::apache::thrift::detail::enum_hash<::test::fixtures::enums::Metasyntactic> {};
+template<> struct hash<::test::fixtures::enums::MyEnum1> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum1> {};
+template<> struct hash<::test::fixtures::enums::MyEnum2> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum2> {};
+template<> struct hash<::test::fixtures::enums::MyEnum3> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum3> {};
+template<> struct hash<::test::fixtures::enums::MyEnum4> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum4> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -92,6 +160,118 @@ template <> struct TEnumTraits<::test::fixtures::enums::Metasyntactic> {
 };
 
 
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyEnum1>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyEnum1> {
+  using type = ::test::fixtures::enums::MyEnum1;
+
+  static constexpr std::size_t const size = 6;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::ME1_0; }
+  static constexpr type max() { return type::ME1_6; }
+};
+
+
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyEnum2>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyEnum2> {
+  using type = ::test::fixtures::enums::MyEnum2;
+
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::ME2_0; }
+  static constexpr type max() { return type::ME2_2; }
+};
+
+
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyEnum3>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyEnum3> {
+  using type = ::test::fixtures::enums::MyEnum3;
+
+  static constexpr std::size_t const size = 6;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::ME3_N2; }
+  static constexpr type max() { return type::ME3_10; }
+};
+
+
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyEnum4>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyEnum4> {
+  using type = ::test::fixtures::enums::MyEnum4;
+
+  static constexpr std::size_t const size = 5;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::ME4_D; }
+  static constexpr type max() { return type::ME4_C; }
+};
+
+
 }} // apache::thrift
 
 namespace test { namespace fixtures { namespace enums {
@@ -103,12 +283,41 @@ extern const _Metasyntactic_EnumMapFactory::ValuesToNamesMapType _Metasyntactic_
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_NAMES_TO_VALUES;
 #endif
+using _MyEnum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum1>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyEnum1_EnumMapFactory::ValuesToNamesMapType _MyEnum1_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyEnum1_EnumMapFactory::NamesToValuesMapType _MyEnum1_NAMES_TO_VALUES;
+#endif
+using _MyEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum2>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyEnum2_EnumMapFactory::ValuesToNamesMapType _MyEnum2_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyEnum2_EnumMapFactory::NamesToValuesMapType _MyEnum2_NAMES_TO_VALUES;
+#endif
+using _MyEnum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum3>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyEnum3_EnumMapFactory::ValuesToNamesMapType _MyEnum3_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyEnum3_EnumMapFactory::NamesToValuesMapType _MyEnum3_NAMES_TO_VALUES;
+#endif
+using _MyEnum4_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum4>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyEnum4_EnumMapFactory::ValuesToNamesMapType _MyEnum4_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyEnum4_EnumMapFactory::NamesToValuesMapType _MyEnum4_NAMES_TO_VALUES;
+#endif
 }}} // test::fixtures::enums
 
 // END declare_enums
 // BEGIN forward_declare
 namespace test { namespace fixtures { namespace enums {
 class SomeStruct;
+class MyStruct;
 }}} // test::fixtures::enums
 // END forward_declare
 // BEGIN hash_and_equal_to
@@ -458,6 +667,353 @@ class SomeStruct final  {
 
 template <class Protocol_>
 unsigned long SomeStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
+class MyStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const char* __fbthrift_thrift_uri();
+  static constexpr std::size_t __fbthrift_field_size_v = 4;
+
+  template<class T>
+  using __fbthrift_id = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                   void,
+                                                   ::apache::thrift::field_id<1>,
+                                                   ::apache::thrift::field_id<2>,
+                                                   ::apache::thrift::field_id<4>,
+                                                   ::apache::thrift::field_id<6>>;
+
+  template<class T>
+  using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                         void,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum2>,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum3>,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum1>,
+                                                         ::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum1>>;
+
+  template<class T>
+  using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
+                                                      void,
+                                                      ::apache::thrift::tag::me2_3,
+                                                      ::apache::thrift::tag::me3_n3,
+                                                      ::apache::thrift::tag::me1_t1,
+                                                      ::apache::thrift::tag::me1_t2>;
+
+  struct __fbthrift_ordinal_impl {
+#if defined(_MSC_VER) || defined(__clang__)
+    template<class> static constexpr int value = 0;
+    template<> static constexpr int value<::apache::thrift::field_id<1>> = 1;
+    template<> static constexpr int value<::apache::thrift::tag::me2_3> = 1;
+    template<> static constexpr int value<::apache::thrift::field_id<2>> = 2;
+    template<> static constexpr int value<::apache::thrift::tag::me3_n3> = 2;
+    template<> static constexpr int value<::apache::thrift::field_id<4>> = 3;
+    template<> static constexpr int value<::apache::thrift::tag::me1_t1> = 3;
+    template<> static constexpr int value<::apache::thrift::field_id<6>> = 4;
+    template<> static constexpr int value<::apache::thrift::tag::me1_t2> = 4;
+#else
+    template<class T> static constexpr int value_impl(folly::tag_t<T>) { return 0; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<1>>) { return 1; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::me2_3>) { return 1; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<2>>) { return 2; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::me3_n3>) { return 2; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<4>>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::me1_t1>) { return 3; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::field_id<6>>) { return 4; }
+    static constexpr int value_impl(folly::tag_t<::apache::thrift::tag::me1_t2>) { return 4; }
+    template<class T> static constexpr int value = value_impl(folly::tag_t<T>{});
+#endif
+  };
+
+  struct __fbthrift_ordinal_impl_for_non_unique_type {
+    template<class, class, class> struct Impl { static constexpr int value = 0; };
+    template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum2>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
+    template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum3>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum1>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
+    template<class T> struct Impl<::apache::thrift::type::enum_t<::test::fixtures::enums::MyEnum1>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+
+    template<class T> static constexpr int value = Impl<T, T, void>::value;
+  };
+
+  template<class T> using __fbthrift_ordinal = ::apache::thrift::field_ordinal<
+    std::conditional_t<
+        __fbthrift_ordinal_impl::value<T> != 0,
+        __fbthrift_ordinal_impl,
+        __fbthrift_ordinal_impl_for_non_unique_type>::template value<T>
+  >;
+
+  void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = MyStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  MyStruct() :
+      __fbthrift_field_me2_3(static_cast< ::test::fixtures::enums::MyEnum2>(3)),
+      __fbthrift_field_me3_n3(static_cast< ::test::fixtures::enums::MyEnum3>(-3)),
+      __fbthrift_field_me1_t1( ::test::fixtures::enums::MyEnum1::ME1_1),
+      __fbthrift_field_me1_t2( ::test::fixtures::enums::MyEnum1::ME1_1) {
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::MyEnum2 me2_3__arg, ::test::fixtures::enums::MyEnum3 me3_n3__arg, ::test::fixtures::enums::MyEnum1 me1_t1__arg, ::test::fixtures::enums::MyEnum1 me1_t2__arg);
+
+  MyStruct(MyStruct&&) = default;
+
+  MyStruct(const MyStruct&) = default;
+
+
+  MyStruct& operator=(MyStruct&&) = default;
+
+  MyStruct& operator=(const MyStruct&) = default;
+ private:
+  ::test::fixtures::enums::MyEnum2 __fbthrift_field_me2_3;
+ private:
+  ::test::fixtures::enums::MyEnum3 __fbthrift_field_me3_n3;
+ private:
+  ::test::fixtures::enums::MyEnum1 __fbthrift_field_me1_t1;
+ private:
+  ::test::fixtures::enums::MyEnum1 __fbthrift_field_me1_t2;
+ private:
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me2_3_ref() const& {
+    return {this->__fbthrift_field_me2_3, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me2_3_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me2_3), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me2_3_ref() & {
+    return {this->__fbthrift_field_me2_3, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me2_3_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me2_3), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me2_3() const& {
+    return {this->__fbthrift_field_me2_3, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me2_3() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me2_3), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me2_3() & {
+    return {this->__fbthrift_field_me2_3, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum2>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me2_3() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me2_3), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me3_n3_ref() const& {
+    return {this->__fbthrift_field_me3_n3, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me3_n3_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me3_n3), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me3_n3_ref() & {
+    return {this->__fbthrift_field_me3_n3, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me3_n3_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me3_n3), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me3_n3() const& {
+    return {this->__fbthrift_field_me3_n3, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me3_n3() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me3_n3), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me3_n3() & {
+    return {this->__fbthrift_field_me3_n3, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum3>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me3_n3() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me3_n3), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me1_t1_ref() const& {
+    return {this->__fbthrift_field_me1_t1, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me1_t1_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me1_t1), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me1_t1_ref() & {
+    return {this->__fbthrift_field_me1_t1, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me1_t1_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me1_t1), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me1_t1() const& {
+    return {this->__fbthrift_field_me1_t1, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me1_t1() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me1_t1), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me1_t1() & {
+    return {this->__fbthrift_field_me1_t1, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me1_t1() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me1_t1), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me1_t2_ref() const& {
+    return {this->__fbthrift_field_me1_t2, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me1_t2_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me1_t2), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me1_t2_ref() & {
+    return {this->__fbthrift_field_me1_t2, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me1_t2_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me1_t2), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> me1_t2() const& {
+    return {this->__fbthrift_field_me1_t2, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> me1_t2() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_me1_t2), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> me1_t2() & {
+    return {this->__fbthrift_field_me1_t2, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enums::MyEnum1>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> me1_t2() && {
+    return {static_cast<T&&>(this->__fbthrift_field_me1_t2), __isset.at(3), __isset.bit(3)};
+  }
+
+  ::test::fixtures::enums::MyEnum2 get_me2_3() const {
+    return __fbthrift_field_me2_3;
+  }
+
+  [[deprecated("Use `FOO.me2_3_ref() = BAR;` instead of `FOO.set_me2_3(BAR);`")]]
+  ::test::fixtures::enums::MyEnum2& set_me2_3(::test::fixtures::enums::MyEnum2 me2_3_) {
+    me2_3_ref() = me2_3_;
+    return __fbthrift_field_me2_3;
+  }
+
+  ::test::fixtures::enums::MyEnum3 get_me3_n3() const {
+    return __fbthrift_field_me3_n3;
+  }
+
+  [[deprecated("Use `FOO.me3_n3_ref() = BAR;` instead of `FOO.set_me3_n3(BAR);`")]]
+  ::test::fixtures::enums::MyEnum3& set_me3_n3(::test::fixtures::enums::MyEnum3 me3_n3_) {
+    me3_n3_ref() = me3_n3_;
+    return __fbthrift_field_me3_n3;
+  }
+
+  ::test::fixtures::enums::MyEnum1 get_me1_t1() const {
+    return __fbthrift_field_me1_t1;
+  }
+
+  [[deprecated("Use `FOO.me1_t1_ref() = BAR;` instead of `FOO.set_me1_t1(BAR);`")]]
+  ::test::fixtures::enums::MyEnum1& set_me1_t1(::test::fixtures::enums::MyEnum1 me1_t1_) {
+    me1_t1_ref() = me1_t1_;
+    return __fbthrift_field_me1_t1;
+  }
+
+  ::test::fixtures::enums::MyEnum1 get_me1_t2() const {
+    return __fbthrift_field_me1_t2;
+  }
+
+  [[deprecated("Use `FOO.me1_t2_ref() = BAR;` instead of `FOO.set_me1_t2(BAR);`")]]
+  ::test::fixtures::enums::MyEnum1& set_me1_t2(::test::fixtures::enums::MyEnum1 me1_t2_) {
+    me1_t2_ref() = me1_t2_;
+    return __fbthrift_field_me1_t2;
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
+  friend void swap(MyStruct& a, MyStruct& b);
+};
+
+template <class Protocol_>
+unsigned long MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

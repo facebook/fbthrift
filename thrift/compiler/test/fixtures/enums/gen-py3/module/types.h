@@ -29,6 +29,50 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
 }
 
 
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::test::fixtures::enums::MyEnum1>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::test::fixtures::enums::MyEnum2>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::test::fixtures::enums::MyEnum3>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::test::fixtures::enums::MyEnum4>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+
 
 template<>
 void reset_field<::test::fixtures::enums::SomeStruct>(
@@ -50,8 +94,37 @@ void reset_field<::test::fixtures::enums::SomeStruct>(
 }
 
 template<>
+void reset_field<::test::fixtures::enums::MyStruct>(
+    ::test::fixtures::enums::MyStruct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.me2_3_ref().copy_from(default_inst<::test::fixtures::enums::MyStruct>().me2_3_ref());
+      return;
+    case 1:
+      obj.me3_n3_ref().copy_from(default_inst<::test::fixtures::enums::MyStruct>().me3_n3_ref());
+      return;
+    case 2:
+      obj.me1_t1_ref().copy_from(default_inst<::test::fixtures::enums::MyStruct>().me1_t1_ref());
+      return;
+    case 3:
+      obj.me1_t2_ref().copy_from(default_inst<::test::fixtures::enums::MyStruct>().me1_t2_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::test::fixtures::enums::SomeStruct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::enums::MyStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

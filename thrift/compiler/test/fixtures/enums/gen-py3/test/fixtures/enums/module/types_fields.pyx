@@ -72,3 +72,60 @@ cdef class __SomeStruct_FieldsSetter(__StructFieldsSetter):
             return
         deref(self._struct_cpp_obj).tags_ref().assign(deref(_test_fixtures_enums_module_types.Set__i32(_fbthrift_value)._cpp_obj))
 
+
+@__cython.auto_pickle(False)
+cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_test_fixtures_enums_module_types.cMyStruct* struct_cpp_obj):
+        cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"me2_3")] = __MyStruct_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"me3_n3")] = __MyStruct_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"me1_t1")] = __MyStruct_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"me1_t2")] = __MyStruct_FieldsSetter._set_field_3
+        return __fbthrift_inst
+
+    cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field me2_3
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_enums_module_types.cMyStruct](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_enums_module_types.MyEnum2):
+            raise TypeError(f'field me2_3 value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enums_module_types.MyEnum2 }.')
+        deref(self._struct_cpp_obj).me2_3_ref().assign(<_test_fixtures_enums_module_types.cMyEnum2><int>_fbthrift_value)
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field me3_n3
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_enums_module_types.cMyStruct](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_enums_module_types.MyEnum3):
+            raise TypeError(f'field me3_n3 value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enums_module_types.MyEnum3 }.')
+        deref(self._struct_cpp_obj).me3_n3_ref().assign(<_test_fixtures_enums_module_types.cMyEnum3><int>_fbthrift_value)
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field me1_t1
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_enums_module_types.cMyStruct](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_enums_module_types.MyEnum1):
+            raise TypeError(f'field me1_t1 value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enums_module_types.MyEnum1 }.')
+        deref(self._struct_cpp_obj).me1_t1_ref().assign(<_test_fixtures_enums_module_types.cMyEnum1><int>_fbthrift_value)
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field me1_t2
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_enums_module_types.cMyStruct](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, _test_fixtures_enums_module_types.MyEnum1):
+            raise TypeError(f'field me1_t2 value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enums_module_types.MyEnum1 }.')
+        deref(self._struct_cpp_obj).me1_t2_ref().assign(<_test_fixtures_enums_module_types.cMyEnum1><int>_fbthrift_value)
+

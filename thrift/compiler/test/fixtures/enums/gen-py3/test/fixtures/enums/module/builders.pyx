@@ -13,3 +13,12 @@ cdef class SomeStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "questionable", self.questionable
         yield "tags", self.tags
 
+cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_enums_module_types.MyStruct
+
+    def __iter__(self):
+        yield "me2_3", self.me2_3
+        yield "me3_n3", self.me3_n3
+        yield "me1_t1", self.me1_t1
+        yield "me1_t2", self.me1_t2
+

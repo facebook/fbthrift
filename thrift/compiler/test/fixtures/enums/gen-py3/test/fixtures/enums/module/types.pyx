@@ -101,6 +101,174 @@ cdef class Metasyntactic(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> Metasyntactic, <PyTypeObject*> __MetasyntacticMeta)
 
 
+cdef __EnumData __MyEnum1_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum1](), MyEnum1)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnum1Meta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyEnum1_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyEnum1_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyEnum1_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum1_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class MyEnum1(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyEnum1_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum1].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum1"
+
+
+__SetMetaClass(<PyTypeObject*> MyEnum1, <PyTypeObject*> __MyEnum1Meta)
+
+
+cdef __EnumData __MyEnum2_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum2](), MyEnum2)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnum2Meta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyEnum2_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyEnum2_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyEnum2_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum2_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class MyEnum2(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyEnum2_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum2].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum2"
+
+
+__SetMetaClass(<PyTypeObject*> MyEnum2, <PyTypeObject*> __MyEnum2Meta)
+
+
+cdef __EnumData __MyEnum3_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum3](), MyEnum3)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnum3Meta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyEnum3_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyEnum3_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyEnum3_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum3_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class MyEnum3(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyEnum3_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum3].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum3"
+
+
+__SetMetaClass(<PyTypeObject*> MyEnum3, <PyTypeObject*> __MyEnum3Meta)
+
+
+cdef __EnumData __MyEnum4_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum4](), MyEnum4)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnum4Meta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyEnum4_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyEnum4_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyEnum4_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum4_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class MyEnum4(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyEnum4_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum4].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum4"
+
+
+__SetMetaClass(<PyTypeObject*> MyEnum4, <PyTypeObject*> __MyEnum4Meta)
+
+
 
 @__cython.auto_pickle(False)
 cdef class SomeStruct(thrift.py3.types.Struct):
@@ -252,6 +420,156 @@ cdef class SomeStruct(thrift.py3.types.Struct):
         import thrift.util.converter
         py_deprecated_types = importlib.import_module("module.ttypes")
         return thrift.util.converter.to_py_struct(py_deprecated_types.SomeStruct, self)
+@__cython.auto_pickle(False)
+cdef class MyStruct(thrift.py3.types.Struct):
+    def __init__(MyStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyStruct]()
+        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyStruct self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyStruct", {
+          "me2_3": deref(self._cpp_obj).me2_3_ref().has_value(),
+          "me3_n3": deref(self._cpp_obj).me3_n3_ref().has_value(),
+          "me1_t1": deref(self._cpp_obj).me1_t1_ref().has_value(),
+          "me1_t2": deref(self._cpp_obj).me1_t2_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyStruct] cpp_obj):
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline me2_3_impl(self):
+
+        if self.__fbthrift_cached_me2_3 is None:
+            self.__fbthrift_cached_me2_3 = translate_cpp_enum_to_python(MyEnum2, <int>(deref(self._cpp_obj).me2_3_ref().value()))
+        return self.__fbthrift_cached_me2_3
+
+    @property
+    def me2_3(self):
+        return self.me2_3_impl()
+
+    cdef inline me3_n3_impl(self):
+
+        if self.__fbthrift_cached_me3_n3 is None:
+            self.__fbthrift_cached_me3_n3 = translate_cpp_enum_to_python(MyEnum3, <int>(deref(self._cpp_obj).me3_n3_ref().value()))
+        return self.__fbthrift_cached_me3_n3
+
+    @property
+    def me3_n3(self):
+        return self.me3_n3_impl()
+
+    cdef inline me1_t1_impl(self):
+
+        if self.__fbthrift_cached_me1_t1 is None:
+            self.__fbthrift_cached_me1_t1 = translate_cpp_enum_to_python(MyEnum1, <int>(deref(self._cpp_obj).me1_t1_ref().value()))
+        return self.__fbthrift_cached_me1_t1
+
+    @property
+    def me1_t1(self):
+        return self.me1_t1_impl()
+
+    cdef inline me1_t2_impl(self):
+
+        if self.__fbthrift_cached_me1_t2 is None:
+            self.__fbthrift_cached_me1_t2 = translate_cpp_enum_to_python(MyEnum1, <int>(deref(self._cpp_obj).me1_t2_ref().value()))
+        return self.__fbthrift_cached_me1_t2
+
+    @property
+    def me1_t2(self):
+        return self.me1_t2_impl()
+
+
+    def __hash__(MyStruct self):
+        return super().__hash__()
+
+    def __repr__(MyStruct self):
+        return super().__repr__()
+
+    def __str__(MyStruct self):
+        return super().__str__()
+
+
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyStruct](
+            self._cpp_obj,
+            (<MyStruct>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyStruct()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyStruct"
+
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cMyStruct](idx))
+
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 4
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyStruct](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyStruct]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
+        return needed
+
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.MyStruct, self)
 @__cython.auto_pickle(False)
 cdef class Set__i32(thrift.py3.types.Set):
     def __init__(self, items=None):

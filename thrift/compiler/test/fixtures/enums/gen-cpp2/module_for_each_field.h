@@ -23,6 +23,17 @@ struct ForEachField<::test::fixtures::enums::SomeStruct> {
     f(3, static_cast<T&&>(t).tags_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::test::fixtures::enums::MyStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).me2_3_ref()...);
+    f(1, static_cast<T&&>(t).me3_n3_ref()...);
+    f(2, static_cast<T&&>(t).me1_t1_ref()...);
+    f(3, static_cast<T&&>(t).me1_t2_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

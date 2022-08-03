@@ -81,6 +81,234 @@ func MetasyntacticFromString(s string) (Metasyntactic, error) {
 
 func MetasyntacticPtr(v Metasyntactic) *Metasyntactic { return &v }
 
+type MyEnum1 int64
+const (
+  MyEnum1_ME1_1 MyEnum1 = 1
+  MyEnum1_ME1_2 MyEnum1 = 2
+  MyEnum1_ME1_3 MyEnum1 = 3
+  MyEnum1_ME1_5 MyEnum1 = 5
+  MyEnum1_ME1_6 MyEnum1 = 6
+  MyEnum1_ME1_0 MyEnum1 = 0
+)
+
+var MyEnum1ToName = map[MyEnum1]string {
+  MyEnum1_ME1_1: "ME1_1",
+  MyEnum1_ME1_2: "ME1_2",
+  MyEnum1_ME1_3: "ME1_3",
+  MyEnum1_ME1_5: "ME1_5",
+  MyEnum1_ME1_6: "ME1_6",
+  MyEnum1_ME1_0: "ME1_0",
+}
+
+var MyEnum1ToValue = map[string]MyEnum1 {
+  "ME1_1": MyEnum1_ME1_1,
+  "ME1_2": MyEnum1_ME1_2,
+  "ME1_3": MyEnum1_ME1_3,
+  "ME1_5": MyEnum1_ME1_5,
+  "ME1_6": MyEnum1_ME1_6,
+  "ME1_0": MyEnum1_ME1_0,
+}
+
+var MyEnum1Names = []string {
+  "ME1_1",
+  "ME1_2",
+  "ME1_3",
+  "ME1_5",
+  "ME1_6",
+  "ME1_0",
+}
+
+var MyEnum1Values = []MyEnum1 {
+  MyEnum1_ME1_1,
+  MyEnum1_ME1_2,
+  MyEnum1_ME1_3,
+  MyEnum1_ME1_5,
+  MyEnum1_ME1_6,
+  MyEnum1_ME1_0,
+}
+
+func (p MyEnum1) String() string {
+  if v, ok := MyEnum1ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyEnum1FromString(s string) (MyEnum1, error) {
+  if v, ok := MyEnum1ToValue[s]; ok {
+    return v, nil
+  }
+  return MyEnum1(0), fmt.Errorf("not a valid MyEnum1 string")
+}
+
+func MyEnum1Ptr(v MyEnum1) *MyEnum1 { return &v }
+
+type MyEnum2 int64
+const (
+  MyEnum2_ME2_0 MyEnum2 = 0
+  MyEnum2_ME2_1 MyEnum2 = 1
+  MyEnum2_ME2_2 MyEnum2 = 2
+)
+
+var MyEnum2ToName = map[MyEnum2]string {
+  MyEnum2_ME2_0: "ME2_0",
+  MyEnum2_ME2_1: "ME2_1",
+  MyEnum2_ME2_2: "ME2_2",
+}
+
+var MyEnum2ToValue = map[string]MyEnum2 {
+  "ME2_0": MyEnum2_ME2_0,
+  "ME2_1": MyEnum2_ME2_1,
+  "ME2_2": MyEnum2_ME2_2,
+}
+
+var MyEnum2Names = []string {
+  "ME2_0",
+  "ME2_1",
+  "ME2_2",
+}
+
+var MyEnum2Values = []MyEnum2 {
+  MyEnum2_ME2_0,
+  MyEnum2_ME2_1,
+  MyEnum2_ME2_2,
+}
+
+func (p MyEnum2) String() string {
+  if v, ok := MyEnum2ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyEnum2FromString(s string) (MyEnum2, error) {
+  if v, ok := MyEnum2ToValue[s]; ok {
+    return v, nil
+  }
+  return MyEnum2(0), fmt.Errorf("not a valid MyEnum2 string")
+}
+
+func MyEnum2Ptr(v MyEnum2) *MyEnum2 { return &v }
+
+type MyEnum3 int64
+const (
+  MyEnum3_ME3_0 MyEnum3 = 0
+  MyEnum3_ME3_1 MyEnum3 = 1
+  MyEnum3_ME3_N2 MyEnum3 = -2
+  MyEnum3_ME3_N1 MyEnum3 = -1
+  MyEnum3_ME3_9 MyEnum3 = 9
+  MyEnum3_ME3_10 MyEnum3 = 10
+)
+
+var MyEnum3ToName = map[MyEnum3]string {
+  MyEnum3_ME3_0: "ME3_0",
+  MyEnum3_ME3_1: "ME3_1",
+  MyEnum3_ME3_N2: "ME3_N2",
+  MyEnum3_ME3_N1: "ME3_N1",
+  MyEnum3_ME3_9: "ME3_9",
+  MyEnum3_ME3_10: "ME3_10",
+}
+
+var MyEnum3ToValue = map[string]MyEnum3 {
+  "ME3_0": MyEnum3_ME3_0,
+  "ME3_1": MyEnum3_ME3_1,
+  "ME3_N2": MyEnum3_ME3_N2,
+  "ME3_N1": MyEnum3_ME3_N1,
+  "ME3_9": MyEnum3_ME3_9,
+  "ME3_10": MyEnum3_ME3_10,
+}
+
+var MyEnum3Names = []string {
+  "ME3_0",
+  "ME3_1",
+  "ME3_N2",
+  "ME3_N1",
+  "ME3_9",
+  "ME3_10",
+}
+
+var MyEnum3Values = []MyEnum3 {
+  MyEnum3_ME3_0,
+  MyEnum3_ME3_1,
+  MyEnum3_ME3_N2,
+  MyEnum3_ME3_N1,
+  MyEnum3_ME3_9,
+  MyEnum3_ME3_10,
+}
+
+func (p MyEnum3) String() string {
+  if v, ok := MyEnum3ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyEnum3FromString(s string) (MyEnum3, error) {
+  if v, ok := MyEnum3ToValue[s]; ok {
+    return v, nil
+  }
+  return MyEnum3(0), fmt.Errorf("not a valid MyEnum3 string")
+}
+
+func MyEnum3Ptr(v MyEnum3) *MyEnum3 { return &v }
+
+type MyEnum4 int64
+const (
+  MyEnum4_ME4_A MyEnum4 = 2147483645
+  MyEnum4_ME4_B MyEnum4 = 2147483646
+  MyEnum4_ME4_C MyEnum4 = 2147483647
+  MyEnum4_ME4_D MyEnum4 = -2147483648
+  MyEnum4_Unspecified MyEnum4 = 0
+)
+
+var MyEnum4ToName = map[MyEnum4]string {
+  MyEnum4_ME4_A: "ME4_A",
+  MyEnum4_ME4_B: "ME4_B",
+  MyEnum4_ME4_C: "ME4_C",
+  MyEnum4_ME4_D: "ME4_D",
+  MyEnum4_Unspecified: "Unspecified",
+}
+
+var MyEnum4ToValue = map[string]MyEnum4 {
+  "ME4_A": MyEnum4_ME4_A,
+  "ME4_B": MyEnum4_ME4_B,
+  "ME4_C": MyEnum4_ME4_C,
+  "ME4_D": MyEnum4_ME4_D,
+  "Unspecified": MyEnum4_Unspecified,
+}
+
+var MyEnum4Names = []string {
+  "ME4_A",
+  "ME4_B",
+  "ME4_C",
+  "ME4_D",
+  "Unspecified",
+}
+
+var MyEnum4Values = []MyEnum4 {
+  MyEnum4_ME4_A,
+  MyEnum4_ME4_B,
+  MyEnum4_ME4_C,
+  MyEnum4_ME4_D,
+  MyEnum4_Unspecified,
+}
+
+func (p MyEnum4) String() string {
+  if v, ok := MyEnum4ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyEnum4FromString(s string) (MyEnum4, error) {
+  if v, ok := MyEnum4ToValue[s]; ok {
+    return v, nil
+  }
+  return MyEnum4(0), fmt.Errorf("not a valid MyEnum4 string")
+}
+
+func MyEnum4Ptr(v MyEnum4) *MyEnum4 { return &v }
+
 // Attributes:
 //  - Reasonable
 //  - Fine
@@ -353,5 +581,253 @@ func (p *SomeStruct) String() string {
   questionableVal := fmt.Sprintf("%v", p.Questionable)
   tagsVal := fmt.Sprintf("%v", p.Tags)
   return fmt.Sprintf("SomeStruct({Reasonable:%s Fine:%s Questionable:%s Tags:%s})", reasonableVal, fineVal, questionableVal, tagsVal)
+}
+
+// Attributes:
+//  - Me2_3
+//  - Me3N3
+//  - Me1T1
+//  - Me1T2
+type MyStruct struct {
+  Me2_3 MyEnum2 `thrift:"me2_3,1" db:"me2_3" json:"me2_3"`
+  Me3N3 MyEnum3 `thrift:"me3_n3,2" db:"me3_n3" json:"me3_n3"`
+  // unused field # 3
+  Me1T1 MyEnum1 `thrift:"me1_t1,4" db:"me1_t1" json:"me1_t1"`
+  // unused field # 5
+  Me1T2 MyEnum1 `thrift:"me1_t2,6" db:"me1_t2" json:"me1_t2"`
+}
+
+func NewMyStruct() *MyStruct {
+  return &MyStruct{
+    Me2_3: 3,
+    Me3N3: -3,
+    Me1T1: 1,
+    Me1T2: 1,
+  }
+}
+
+
+func (p *MyStruct) GetMe2_3() MyEnum2 {
+  return p.Me2_3
+}
+
+func (p *MyStruct) GetMe3N3() MyEnum3 {
+  return p.Me3N3
+}
+
+func (p *MyStruct) GetMe1T1() MyEnum1 {
+  return p.Me1T1
+}
+
+func (p *MyStruct) GetMe1T2() MyEnum1 {
+  return p.Me1T2
+}
+type MyStructBuilder struct {
+  obj *MyStruct
+}
+
+func NewMyStructBuilder() *MyStructBuilder{
+  return &MyStructBuilder{
+    obj: NewMyStruct(),
+  }
+}
+
+func (p MyStructBuilder) Emit() *MyStruct{
+  return &MyStruct{
+    Me2_3: p.obj.Me2_3,
+    Me3N3: p.obj.Me3N3,
+    Me1T1: p.obj.Me1T1,
+    Me1T2: p.obj.Me1T2,
+  }
+}
+
+func (m *MyStructBuilder) Me2_3(me2_3 MyEnum2) *MyStructBuilder {
+  m.obj.Me2_3 = me2_3
+  return m
+}
+
+func (m *MyStructBuilder) Me3N3(me3N3 MyEnum3) *MyStructBuilder {
+  m.obj.Me3N3 = me3N3
+  return m
+}
+
+func (m *MyStructBuilder) Me1T1(me1T1 MyEnum1) *MyStructBuilder {
+  m.obj.Me1T1 = me1T1
+  return m
+}
+
+func (m *MyStructBuilder) Me1T2(me1T2 MyEnum1) *MyStructBuilder {
+  m.obj.Me1T2 = me1T2
+  return m
+}
+
+func (m *MyStruct) SetMe2_3(me2_3 MyEnum2) *MyStruct {
+  m.Me2_3 = me2_3
+  return m
+}
+
+func (m *MyStruct) SetMe3N3(me3N3 MyEnum3) *MyStruct {
+  m.Me3N3 = me3N3
+  return m
+}
+
+func (m *MyStruct) SetMe1T1(me1T1 MyEnum1) *MyStruct {
+  m.Me1T1 = me1T1
+  return m
+}
+
+func (m *MyStruct) SetMe1T2(me1T2 MyEnum1) *MyStruct {
+  m.Me1T2 = me1T2
+  return m
+}
+
+func (p *MyStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := MyEnum2(v)
+    p.Me2_3 = temp
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    temp := MyEnum3(v)
+    p.Me3N3 = temp
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    temp := MyEnum1(v)
+    p.Me1T1 = temp
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    temp := MyEnum1(v)
+    p.Me1T2 = temp
+  }
+  return nil
+}
+
+func (p *MyStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MyStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("me2_3", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:me2_3: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Me2_3)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.me2_3 (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:me2_3: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("me3_n3", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:me3_n3: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Me3N3)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.me3_n3 (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:me3_n3: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("me1_t1", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:me1_t1: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Me1T1)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.me1_t1 (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:me1_t1: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("me1_t2", thrift.I32, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:me1_t2: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Me1T2)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.me1_t2 (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:me1_t2: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  me2_3Val := fmt.Sprintf("%v", p.Me2_3)
+  me3N3Val := fmt.Sprintf("%v", p.Me3N3)
+  me1T1Val := fmt.Sprintf("%v", p.Me1T1)
+  me1T2Val := fmt.Sprintf("%v", p.Me1T2)
+  return fmt.Sprintf("MyStruct({Me2_3:%s Me3N3:%s Me1T1:%s Me1T2:%s})", me2_3Val, me3N3Val, me1T1Val, me1T2Val)
 }
 

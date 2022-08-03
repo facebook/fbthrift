@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Metasyntactic', 'SomeStruct']
+__all__ = ['UTF8STRINGS', 'Metasyntactic', 'MyEnum1', 'MyEnum2', 'MyEnum3', 'MyEnum4', 'SomeStruct', 'MyStruct']
 
 class Metasyntactic:
   FOO = 1
@@ -56,6 +56,98 @@ class Metasyntactic:
     "BAR": 2,
     "BAZ": 3,
     "BAX": 4,
+    "Unspecified": 0,
+  }
+
+class MyEnum1:
+  ME1_1 = 1
+  ME1_2 = 2
+  ME1_3 = 3
+  ME1_5 = 5
+  ME1_6 = 6
+  ME1_0 = 0
+
+  _VALUES_TO_NAMES = {
+    1: "ME1_1",
+    2: "ME1_2",
+    3: "ME1_3",
+    5: "ME1_5",
+    6: "ME1_6",
+    0: "ME1_0",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ME1_1": 1,
+    "ME1_2": 2,
+    "ME1_3": 3,
+    "ME1_5": 5,
+    "ME1_6": 6,
+    "ME1_0": 0,
+  }
+
+class MyEnum2:
+  ME2_0 = 0
+  ME2_1 = 1
+  ME2_2 = 2
+
+  _VALUES_TO_NAMES = {
+    0: "ME2_0",
+    1: "ME2_1",
+    2: "ME2_2",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ME2_0": 0,
+    "ME2_1": 1,
+    "ME2_2": 2,
+  }
+
+class MyEnum3:
+  ME3_0 = 0
+  ME3_1 = 1
+  ME3_N2 = -2
+  ME3_N1 = -1
+  ME3_9 = 9
+  ME3_10 = 10
+
+  _VALUES_TO_NAMES = {
+    0: "ME3_0",
+    1: "ME3_1",
+    -2: "ME3_N2",
+    -1: "ME3_N1",
+    9: "ME3_9",
+    10: "ME3_10",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ME3_0": 0,
+    "ME3_1": 1,
+    "ME3_N2": -2,
+    "ME3_N1": -1,
+    "ME3_9": 9,
+    "ME3_10": 10,
+  }
+
+class MyEnum4:
+  ME4_A = 2147483645
+  ME4_B = 2147483646
+  ME4_C = 2147483647
+  ME4_D = -2147483648
+  Unspecified = 0
+
+  _VALUES_TO_NAMES = {
+    2147483645: "ME4_A",
+    2147483646: "ME4_B",
+    2147483647: "ME4_C",
+    -2147483648: "ME4_D",
+    0: "Unspecified",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ME4_A": 2147483645,
+    "ME4_B": 2147483646,
+    "ME4_C": 2147483647,
+    "ME4_D": -2147483648,
     "Unspecified": 0,
   }
 
@@ -252,6 +344,188 @@ class SomeStruct:
   def _to_py_deprecated(self):
     return self
 
+class MyStruct:
+  """
+  Attributes:
+   - me2_3
+   - me3_n3
+   - me1_t1
+   - me1_t2
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.me2_3 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.me3_n3 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.I32:
+          self.me1_t1 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.I32:
+          self.me1_t2 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyStruct')
+    if self.me2_3 != None:
+      oprot.writeFieldBegin('me2_3', TType.I32, 1)
+      oprot.writeI32(self.me2_3)
+      oprot.writeFieldEnd()
+    if self.me3_n3 != None:
+      oprot.writeFieldBegin('me3_n3', TType.I32, 2)
+      oprot.writeI32(self.me3_n3)
+      oprot.writeFieldEnd()
+    if self.me1_t1 != None:
+      oprot.writeFieldBegin('me1_t1', TType.I32, 4)
+      oprot.writeI32(self.me1_t1)
+      oprot.writeFieldEnd()
+    if self.me1_t2 != None:
+      oprot.writeFieldBegin('me1_t2', TType.I32, 6)
+      oprot.writeI32(self.me1_t2)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'me2_3' in json_obj and json_obj['me2_3'] is not None:
+      self.me2_3 = json_obj['me2_3']
+      if not self.me2_3 in MyEnum2._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum2' % self.me2_3
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'me3_n3' in json_obj and json_obj['me3_n3'] is not None:
+      self.me3_n3 = json_obj['me3_n3']
+      if not self.me3_n3 in MyEnum3._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum3' % self.me3_n3
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'me1_t1' in json_obj and json_obj['me1_t1'] is not None:
+      self.me1_t1 = json_obj['me1_t1']
+      if not self.me1_t1 in MyEnum1._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum1' % self.me1_t1
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'me1_t2' in json_obj and json_obj['me1_t2'] is not None:
+      self.me1_t2 = json_obj['me1_t2']
+      if not self.me1_t2 in MyEnum1._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum1' % self.me1_t2
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.me2_3 is not None:
+      value = pprint.pformat(self.me2_3, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    me2_3=%s' % (value))
+    if self.me3_n3 is not None:
+      value = pprint.pformat(self.me3_n3, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    me3_n3=%s' % (value))
+    if self.me1_t1 is not None:
+      value = pprint.pformat(self.me1_t1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    me1_t1=%s' % (value))
+    if self.me1_t2 is not None:
+      value = pprint.pformat(self.me1_t2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    me1_t2=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'me2_3',
+      'me3_n3',
+      'me1_t1',
+      'me1_t2',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("test.fixtures.enums.module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.MyStruct, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("test.fixtures.enums.module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.MyStruct, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 all_structs.append(SomeStruct)
 SomeStruct.thrift_spec = (
   None, # 0
@@ -288,6 +562,40 @@ def SomeStruct__setstate__(self, state):
 
 SomeStruct.__getstate__ = lambda self: self.__dict__.copy()
 SomeStruct.__setstate__ = SomeStruct__setstate__
+
+all_structs.append(MyStruct)
+MyStruct.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'me2_3', MyEnum2,   3, 2, ), # 1
+  (2, TType.I32, 'me3_n3', MyEnum3,   -3, 2, ), # 2
+  None, # 3
+  (4, TType.I32, 'me1_t1', MyEnum1,   1, 2, ), # 4
+  None, # 5
+  (6, TType.I32, 'me1_t2', MyEnum1,   1, 2, ), # 6
+)
+
+MyStruct.thrift_struct_annotations = {
+}
+MyStruct.thrift_field_annotations = {
+}
+
+def MyStruct__init__(self, me2_3=MyStruct.thrift_spec[1][4], me3_n3=MyStruct.thrift_spec[2][4], me1_t1=MyStruct.thrift_spec[4][4], me1_t2=MyStruct.thrift_spec[6][4],):
+  self.me2_3 = me2_3
+  self.me3_n3 = me3_n3
+  self.me1_t1 = me1_t1
+  self.me1_t2 = me1_t2
+
+MyStruct.__init__ = MyStruct__init__
+
+def MyStruct__setstate__(self, state):
+  state.setdefault('me2_3',   3)
+  state.setdefault('me3_n3',   -3)
+  state.setdefault('me1_t1',   1)
+  state.setdefault('me1_t2',   1)
+  self.__dict__ = state
+
+MyStruct.__getstate__ = lambda self: self.__dict__.copy()
+MyStruct.__setstate__ = MyStruct__setstate__
 
 fix_spec(all_structs)
 del all_structs

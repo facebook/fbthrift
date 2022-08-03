@@ -25,3 +25,12 @@ class SomeStruct_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class MyStruct_Builder(thrift.py3.builder.StructBuilder):
+    me2_3: _typing.Optional[_test_fixtures_enums_module_types.MyEnum2]
+    me3_n3: _typing.Optional[_test_fixtures_enums_module_types.MyEnum3]
+    me1_t1: _typing.Optional[_test_fixtures_enums_module_types.MyEnum1]
+    me1_t2: _typing.Optional[_test_fixtures_enums_module_types.MyEnum1]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

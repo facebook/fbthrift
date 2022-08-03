@@ -38,6 +38,110 @@ FOLLY_POP_WARNING
 #endif
 }}} // test::fixtures::enums
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyEnum1>::size;
+folly::Range<::test::fixtures::enums::MyEnum1 const*> const TEnumTraits<::test::fixtures::enums::MyEnum1>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum1>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyEnum1>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum1>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum1>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum1>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyEnum1_EnumMapFactory::ValuesToNamesMapType _MyEnum1_VALUES_TO_NAMES = _MyEnum1_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnum1_EnumMapFactory::NamesToValuesMapType _MyEnum1_NAMES_TO_VALUES = _MyEnum1_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyEnum2>::size;
+folly::Range<::test::fixtures::enums::MyEnum2 const*> const TEnumTraits<::test::fixtures::enums::MyEnum2>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum2>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyEnum2>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum2>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum2>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum2>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyEnum2_EnumMapFactory::ValuesToNamesMapType _MyEnum2_VALUES_TO_NAMES = _MyEnum2_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnum2_EnumMapFactory::NamesToValuesMapType _MyEnum2_NAMES_TO_VALUES = _MyEnum2_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyEnum3>::size;
+folly::Range<::test::fixtures::enums::MyEnum3 const*> const TEnumTraits<::test::fixtures::enums::MyEnum3>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum3>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyEnum3>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum3>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum3>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum3>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyEnum3_EnumMapFactory::ValuesToNamesMapType _MyEnum3_VALUES_TO_NAMES = _MyEnum3_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnum3_EnumMapFactory::NamesToValuesMapType _MyEnum3_NAMES_TO_VALUES = _MyEnum3_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyEnum4>::size;
+folly::Range<::test::fixtures::enums::MyEnum4 const*> const TEnumTraits<::test::fixtures::enums::MyEnum4>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum4>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyEnum4>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyEnum4>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum4>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyEnum4>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyEnum4_EnumMapFactory::ValuesToNamesMapType _MyEnum4_VALUES_TO_NAMES = _MyEnum4_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnum4_EnumMapFactory::NamesToValuesMapType _MyEnum4_NAMES_TO_VALUES = _MyEnum4_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -173,6 +277,118 @@ template void SomeStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t SomeStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}}} // test::fixtures::enums
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test::fixtures::enums::MyStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::enums::MyStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test { namespace fixtures { namespace enums {
+
+const char* MyStruct::__fbthrift_thrift_uri() {
+  return "test.dev/fixtures/enums/MyStruct";
+}
+
+
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::MyEnum2 me2_3__arg, ::test::fixtures::enums::MyEnum3 me3_n3__arg, ::test::fixtures::enums::MyEnum1 me1_t1__arg, ::test::fixtures::enums::MyEnum1 me1_t2__arg) :
+    __fbthrift_field_me2_3(std::move(me2_3__arg)),
+    __fbthrift_field_me3_n3(std::move(me3_n3__arg)),
+    __fbthrift_field_me1_t1(std::move(me1_t1__arg)),
+    __fbthrift_field_me1_t2(std::move(me1_t2__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+}
+
+
+void MyStruct::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_me2_3 = ::test::fixtures::enums::MyEnum2();
+  this->__fbthrift_field_me3_n3 = ::test::fixtures::enums::MyEnum3();
+  this->__fbthrift_field_me1_t1 = ::test::fixtures::enums::MyEnum1();
+  this->__fbthrift_field_me1_t2 = ::test::fixtures::enums::MyEnum1();
+  __isset = {};
+}
+
+void MyStruct::__fbthrift_clear_terse_fields() {
+}
+
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.me2_3_ref() == rhs.me2_3_ref())) {
+    return false;
+  }
+  if (!(lhs.me3_n3_ref() == rhs.me3_n3_ref())) {
+    return false;
+  }
+  if (!(lhs.me1_t1_ref() == rhs.me1_t1_ref())) {
+    return false;
+  }
+  if (!(lhs.me1_t2_ref() == rhs.me1_t2_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.me2_3_ref() == rhs.me2_3_ref())) {
+    return lhs.me2_3_ref() < rhs.me2_3_ref();
+  }
+  if (!(lhs.me3_n3_ref() == rhs.me3_n3_ref())) {
+    return lhs.me3_n3_ref() < rhs.me3_n3_ref();
+  }
+  if (!(lhs.me1_t1_ref() == rhs.me1_t1_ref())) {
+    return lhs.me1_t1_ref() < rhs.me1_t1_ref();
+  }
+  if (!(lhs.me1_t2_ref() == rhs.me1_t2_ref())) {
+    return lhs.me1_t2_ref() < rhs.me1_t2_ref();
+  }
+  return false;
+}
+
+
+void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
+  using ::std::swap;
+  swap(a.me2_3_ref().value(), b.me2_3_ref().value());
+  swap(a.me3_n3_ref().value(), b.me3_n3_ref().value());
+  swap(a.me1_t1_ref().value(), b.me1_t1_ref().value());
+  swap(a.me1_t2_ref().value(), b.me1_t2_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 }}} // test::fixtures::enums
