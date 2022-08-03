@@ -315,6 +315,7 @@
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
                             },
                             ::std::result::Result::Err(exn) => {
+                                {{!TODO(T127840117): Handle custom stream exceptions}}
                                 let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
                             }
