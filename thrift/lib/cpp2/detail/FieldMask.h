@@ -47,6 +47,12 @@ class MaskRef {
   // Returns whether the ref is logically exclusive in context.
   bool isExclusive() const;
 
+  // Returns true if the mask is a field mask.
+  bool isFieldMask() const;
+
+  // Returns true if the mask is a map mask.
+  bool isMapMask() const;
+
   // Removes masked fields in schemaless Thrift Object (Protocol Object).
   // Throws a runtime exception if the mask and object are incompatible.
   void clear(protocol::Object& t) const;

@@ -47,7 +47,17 @@ bool MaskRef::isNoneMask() const {
 
 bool MaskRef::isExclusive() const {
   return (mask.includes_ref() && is_exclusion) ||
-      (mask.excludes_ref() && !is_exclusion);
+      (mask.excludes_ref() && !is_exclusion) ||
+      (mask.includes_map_ref() && is_exclusion) ||
+      (mask.excludes_map_ref() && !is_exclusion);
+}
+
+bool MaskRef::isFieldMask() const {
+  return mask.includes_ref() || mask.excludes_ref();
+}
+
+bool MaskRef::isMapMask() const {
+  return mask.includes_map_ref() || mask.excludes_map_ref();
 }
 
 void MaskRef::clear(protocol::Object& obj) const {

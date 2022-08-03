@@ -32,8 +32,7 @@ bool literallyEqual(MaskRef actual, MaskRef expected) {
       actual.is_exclusion == expected.is_exclusion;
 }
 
-TEST(FieldMaskTest, Example) {
-  // example masks
+TEST(FieldMaskTest, ExampleFieldMask) {
   // includes{7: excludes{},
   //          9: includes{5: excludes{},
   //                      6: excludes{}}}
@@ -44,6 +43,14 @@ TEST(FieldMaskTest, Example) {
   nestedIncludes[5] = allMask();
   nestedIncludes[6] = allMask();
   includes[8] = noneMask(); // not required
+}
+TEST(FieldMaskTest, ExampleMapMask) {
+  // includes_map{7: excludes_map{},
+  //              3: excludes{}}
+  Mask m;
+  auto& includes_map = m.includes_map_ref().emplace();
+  includes_map[7].excludes_map_ref().emplace();
+  includes_map[3] = allMask();
 }
 
 TEST(FieldMaskTest, Constant) {
@@ -56,10 +63,18 @@ TEST(FieldMaskTest, IsAllMask) {
   EXPECT_TRUE((MaskRef{noneMask(), true}).isAllMask());
   EXPECT_FALSE((MaskRef{noneMask(), false}).isAllMask());
   EXPECT_FALSE((MaskRef{allMask(), true}).isAllMask());
-  Mask m;
-  m.excludes_ref().emplace()[5] = allMask();
-  EXPECT_FALSE((MaskRef{m, false}).isAllMask());
-  EXPECT_FALSE((MaskRef{m, true}).isAllMask());
+  {
+    Mask m;
+    m.excludes_ref().emplace()[5] = allMask();
+    EXPECT_FALSE((MaskRef{m, false}).isAllMask());
+    EXPECT_FALSE((MaskRef{m, true}).isAllMask());
+  }
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[3].includes_map_ref().emplace();
+    EXPECT_FALSE((MaskRef{m, false}).isAllMask());
+    EXPECT_FALSE((MaskRef{m, true}).isAllMask());
+  }
 }
 
 TEST(FieldMaskTest, IsNoneMask) {
@@ -67,10 +82,18 @@ TEST(FieldMaskTest, IsNoneMask) {
   EXPECT_TRUE((MaskRef{allMask(), true}).isNoneMask());
   EXPECT_FALSE((MaskRef{allMask(), false}).isNoneMask());
   EXPECT_FALSE((MaskRef{noneMask(), true}).isNoneMask());
-  Mask m;
-  m.excludes_ref().emplace()[5] = noneMask();
-  EXPECT_FALSE((MaskRef{m, false}).isNoneMask());
-  EXPECT_FALSE((MaskRef{m, true}).isNoneMask());
+  {
+    Mask m;
+    m.excludes_ref().emplace()[5] = noneMask();
+    EXPECT_FALSE((MaskRef{m, false}).isNoneMask());
+    EXPECT_FALSE((MaskRef{m, true}).isNoneMask());
+  }
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[3].includes_map_ref().emplace();
+    EXPECT_FALSE((MaskRef{m, false}).isNoneMask());
+    EXPECT_FALSE((MaskRef{m, true}).isNoneMask());
+  }
 }
 
 TEST(FieldMaskTest, IsExclusive) {
@@ -78,13 +101,61 @@ TEST(FieldMaskTest, IsExclusive) {
   EXPECT_FALSE((MaskRef{allMask(), true}).isExclusive());
   EXPECT_TRUE((MaskRef{allMask(), false}).isExclusive());
   EXPECT_TRUE((MaskRef{noneMask(), true}).isExclusive());
-  Mask m;
-  m.includes_ref().emplace()[5] = allMask();
-  EXPECT_FALSE((MaskRef{m, false}).isExclusive());
-  EXPECT_TRUE((MaskRef{m, true}).isExclusive());
-  m.excludes_ref().emplace()[5] = noneMask();
-  EXPECT_TRUE((MaskRef{m, false}).isExclusive());
-  EXPECT_FALSE((MaskRef{m, true}).isExclusive());
+  {
+    Mask m;
+    m.includes_ref().emplace()[5] = allMask();
+    EXPECT_FALSE((MaskRef{m, false}).isExclusive());
+    EXPECT_TRUE((MaskRef{m, true}).isExclusive());
+  }
+  {
+    Mask m;
+    m.excludes_ref().emplace()[5] = noneMask();
+    EXPECT_TRUE((MaskRef{m, false}).isExclusive());
+    EXPECT_FALSE((MaskRef{m, true}).isExclusive());
+  }
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[5] = allMask();
+    EXPECT_FALSE((MaskRef{m, false}).isExclusive());
+    EXPECT_TRUE((MaskRef{m, true}).isExclusive());
+  }
+  {
+    Mask m;
+    m.excludes_map_ref().emplace()[5] = noneMask();
+    EXPECT_TRUE((MaskRef{m, false}).isExclusive());
+    EXPECT_FALSE((MaskRef{m, true}).isExclusive());
+  }
+}
+
+TEST(FieldMaskTest, MaskRefIsMask) {
+  EXPECT_TRUE((MaskRef{allMask(), false}).isFieldMask());
+  EXPECT_FALSE((MaskRef{allMask(), false}).isMapMask());
+  EXPECT_TRUE((MaskRef{noneMask(), true}).isFieldMask());
+  EXPECT_FALSE((MaskRef{noneMask(), true}).isMapMask());
+  {
+    Mask m;
+    m.includes_ref().emplace()[5] = allMask();
+    EXPECT_TRUE((MaskRef{m, false}).isFieldMask());
+    EXPECT_FALSE((MaskRef{m, true}).isMapMask());
+  }
+  {
+    Mask m;
+    m.excludes_ref().emplace()[5] = noneMask();
+    EXPECT_TRUE((MaskRef{m, false}).isFieldMask());
+    EXPECT_FALSE((MaskRef{m, true}).isMapMask());
+  }
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[5] = allMask();
+    EXPECT_FALSE((MaskRef{m, false}).isFieldMask());
+    EXPECT_TRUE((MaskRef{m, true}).isMapMask());
+  }
+  {
+    Mask m;
+    m.excludes_map_ref().emplace()[5] = noneMask();
+    EXPECT_FALSE((MaskRef{m, false}).isFieldMask());
+    EXPECT_TRUE((MaskRef{m, true}).isMapMask());
+  }
 }
 
 TEST(FieldMaskTest, MaskRefGetIncludes) {
