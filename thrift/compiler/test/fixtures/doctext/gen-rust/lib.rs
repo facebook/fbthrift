@@ -1038,6 +1038,7 @@ pub mod server {
         }
         // T115701914: server-side streaming is currently a WIP. Do not use.
         #[doc(hidden)]
+        #[doc = "Streaming function"]
         async fn numbers(
             &self,
         ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::services::c::NumbersExn> {
