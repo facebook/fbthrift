@@ -281,7 +281,7 @@ void generate_struct_patch(
 
     // Add a 'structured patch' and 'struct value patch' using it.
     auto& struct_patch =
-        generator.add_structured_patch(*annot, node, "StructPatchAdapter");
+        generator.add_structured_patch(*annot, node, "FieldPatchAdapter");
     auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
 
     // Add an 'optional patch' based on the added patch type.
@@ -297,7 +297,7 @@ void generate_union_patch(
 
     // Add a 'structured patch' and 'union value patch' using it.
     auto& struct_patch =
-        generator.add_structured_patch(*annot, node, "UnionPatchAdapter");
+        generator.add_structured_patch(*annot, node, "FieldPatchAdapter");
     auto& patch = generator.add_union_value_patch(*annot, node, struct_patch);
 
     // Add an 'optional patch' based on the added patch type.
@@ -342,7 +342,7 @@ t_struct& patch_generator::add_union_value_patch(
   gen.ensure(value_type);
   // TODO(afuller): Add 'maybeEnsure'.
   gen.patchAfter(patch_type);
-  gen.set_adapter("UnionValuePatchAdapter", program_);
+  gen.set_adapter("UnionPatchAdapter", program_);
   return gen;
 }
 
@@ -366,7 +366,7 @@ t_struct& patch_generator::add_struct_value_patch(
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
-  gen.set_adapter("StructValuePatchAdapter", program_);
+  gen.set_adapter("StructPatchAdapter", program_);
   return gen;
 }
 

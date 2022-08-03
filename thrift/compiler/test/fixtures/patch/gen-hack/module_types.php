@@ -1657,7 +1657,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+            "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
             "underlyingName" => "MyDataPatchStruct",
             "extraNamespace" => "",
           )
@@ -1885,7 +1885,7 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
             "underlyingName" => "MyDataValuePatchStruct",
             "extraNamespace" => "",
           )
@@ -1897,7 +1897,7 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "MyDataPatchStruct",
                 "extraNamespace" => "",
               )
@@ -2142,7 +2142,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
                 "underlyingName" => "MyDataValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -2154,7 +2154,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
                 "underlyingName" => "MyDataValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -2301,7 +2301,7 @@ class InnerUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+            "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
             "underlyingName" => "InnerUnionPatchStruct",
             "extraNamespace" => "",
           )
@@ -2536,7 +2536,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
             "underlyingName" => "InnerUnionValuePatchStruct",
             "extraNamespace" => "",
           )
@@ -2548,7 +2548,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "InnerUnionPatchStruct",
                 "extraNamespace" => "",
               )
@@ -2560,7 +2560,7 @@ class InnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "InnerUnionPatchStruct",
                 "extraNamespace" => "",
               )
@@ -2813,7 +2813,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "InnerUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -2825,7 +2825,7 @@ class OptionalInnerUnionValuePatch implements \IThriftSyncStruct, \IThriftShapis
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "InnerUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -3032,7 +3032,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+            "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
             "underlyingName" => "MyUnionPatchStruct",
             "extraNamespace" => "",
           )
@@ -3076,7 +3076,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "InnerUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -3311,7 +3311,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+            "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
             "underlyingName" => "MyUnionValuePatchStruct",
             "extraNamespace" => "",
           )
@@ -3323,7 +3323,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "MyUnionPatchStruct",
                 "extraNamespace" => "",
               )
@@ -3335,7 +3335,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "MyUnionPatchStruct",
                 "extraNamespace" => "",
               )
@@ -3588,7 +3588,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "MyUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -3600,7 +3600,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "MyUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -4437,7 +4437,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+            "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
             "underlyingName" => "MyStructPatchStruct",
             "extraNamespace" => "",
           )
@@ -4593,7 +4593,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
                 "underlyingName" => "MyDataValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -4761,7 +4761,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::UnionValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::UnionPatchAdapter",
                 "underlyingName" => "MyUnionValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -6796,7 +6796,7 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
           shape(
-            "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+            "name" => "::apache::thrift::op::detail::StructPatchAdapter",
             "underlyingName" => "MyStructValuePatchStruct",
             "extraNamespace" => "",
           )
@@ -6808,7 +6808,7 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
+                "name" => "::apache::thrift::op::detail::FieldPatchAdapter",
                 "underlyingName" => "MyStructPatchStruct",
                 "extraNamespace" => "",
               )
@@ -7053,7 +7053,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
                 "underlyingName" => "MyStructValuePatchStruct",
                 "extraNamespace" => "",
               )
@@ -7065,7 +7065,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
               shape(
-                "name" => "::apache::thrift::op::detail::StructValuePatchAdapter",
+                "name" => "::apache::thrift::op::detail::StructPatchAdapter",
                 "underlyingName" => "MyStructValuePatchStruct",
                 "extraNamespace" => "",
               )
