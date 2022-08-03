@@ -39,7 +39,7 @@ file.
 }}{{#value:const_struct?}}{{!
     }}{{#value:const_struct_type}}{{!
     }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
-    }}{{#type:struct}}{{struct:name}}{{/type:struct}}{{!
+    }}{{#type:struct}}{{> structs/unadapted_name}}{{/type:struct}}{{!
     }}{{/value:const_struct_type}}{{!
     }}({{#value:const_struct}}{{!
         }}{{constant:name}}={{#constant:value}}{{ >types/constant_value }}{{/constant:value}}{{^last?}}, {{/last?}}{{!

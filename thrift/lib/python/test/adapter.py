@@ -20,8 +20,16 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from thrift.python.test.adapter.thrift_types import AdaptedInt, Bar, Datetime, Foo
+from thrift.python.test.adapter.thrift_types import (
+    _fbthrift_unadapted_Baz,
+    AdaptedInt,
+    Bar,
+    Baz,
+    Datetime,
+    Foo,
+)
 from thrift.python.test.adapters.datetime import DatetimeAdapter
+from thrift.python.test.adapters.noop import Wrapped
 
 
 class AdapterTest(unittest.TestCase):
@@ -94,3 +102,9 @@ class AdapterTest(unittest.TestCase):
         str_list = ["1", "1", "2", "3", "5", "8", "13"]
         foo = Foo(adapted_list=str_list)
         self.assertEqual(foo.adapted_list, str_list)
+
+    def test_directly_annotated(self) -> None:
+        foo = Foo()
+        self.assertEqual(Baz, Wrapped)
+        self.assertIsInstance(foo.baz, Wrapped)
+        self.assertIsInstance(foo.baz.obj, _fbthrift_unadapted_Baz)

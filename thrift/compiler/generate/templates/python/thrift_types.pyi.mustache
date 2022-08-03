@@ -56,7 +56,7 @@ class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
 {{#program:structs}}
 
 
-class {{struct:name}}({{!
+class {{> structs/unadapted_name}}({{!
         }}{{#struct:union?}}_fbthrift_python_types.Union{{/struct:union?}}{{!
         }}{{^struct:union?}}{{!
         }}{{#struct:exception?}}_fbthrift_python_exceptions.GeneratedError{{/struct:exception?}}{{!
@@ -77,18 +77,18 @@ class {{struct:name}}({{!
     def __call__(
         self,{{#struct:fields?}} *{{/struct:fields?}}{{#struct:fields_and_mixin_fields}},
         {{field:py_name}}: _typing.Optional[{{> fields/adapted_type}}]=...{{/struct:fields_and_mixin_fields}}
-    ) -> {{struct:name}}: ...
+    ) -> {{> structs/unadapted_name}}: ...
     {{/struct:plain?}}
     {{#struct:union?}}
 
     class Type(enum.Enum):
-        EMPTY: {{struct:name}}.Type = ...
+        EMPTY: {{> structs/unadapted_name}}.Type = ...
     {{#struct:fields_and_mixin_fields}}
-        {{field:py_name}}: {{struct:name}}.Type = ...
+        {{field:py_name}}: {{> structs/unadapted_name}}.Type = ...
     {{/struct:fields_and_mixin_fields}}
 
     @classmethod
-    def fromValue(cls, value: {{ > types/field_value_pep484_union_type}}) -> {{struct:name}}: ...
+    def fromValue(cls, value: {{ > types/field_value_pep484_union_type}}) -> {{> structs/unadapted_name}}: ...
     value: _typing.Final[{{ > types/field_value_pep484_union_type}}]
     type: Type
     def get_type(self) -> Type:...
@@ -98,10 +98,13 @@ class {{struct:name}}({{!
         }}{{#struct:fields_and_mixin_fields}}{{^first?}}, {{/first?}}{{> fields/adapted_type}}{{!
         }}{{/struct:fields_and_mixin_fields}}]]]: ...
     {{/struct:union?}}
-    def _to_python(self) -> {{struct:name}}: ...
-    def _to_py3(self) -> "{{program:module_path}}.types.{{struct:name}}": ...  # type: ignore
-    def _to_py_deprecated(self) -> "{{program:py_deprecated_module_path}}.ttypes.{{struct:name}}": ...  # type: ignore
-{{/program:structs}}
+    def _to_python(self) -> {{> structs/unadapted_name}}: ...
+    def _to_py3(self) -> "{{program:module_path}}.types.{{> structs/unadapted_name}}": ...  # type: ignore
+    def _to_py_deprecated(self) -> "{{program:py_deprecated_module_path}}.ttypes.{{> structs/unadapted_name}}": ...  # type: ignore
+{{#struct:has_adapter?}}
+{{struct:name}} = {{struct:adapter_type_hint}}
+{{/struct:has_adapter?}}{{!
+}}{{/program:structs}}
 {{#program:constants?}}
 
 {{#program:constants}}

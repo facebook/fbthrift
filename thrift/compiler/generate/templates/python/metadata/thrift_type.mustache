@@ -36,11 +36,11 @@ Used to turn a type into a thrift metadata ThriftType struct
     }}{{#type:struct}}{{!
         }}{{#struct:union?}}{{!
             }}_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType({{!
-            }}name="{{program:name}}.{{struct:name}}")){{!
+            }}name="{{program:name}}.{{> structs/unadapted_name}}")){{!
         }}{{/struct:union?}}{{!
         }}{{^struct:union?}}{{!
             }}_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType({{!
-            }}name="{{program:name}}.{{struct:name}}")){{!
+            }}name="{{program:name}}.{{> structs/unadapted_name}}")){{!
         }}{{/struct:union?}}{{!
     }}{{/type:struct}}{{!
     }}{{#type:list?}}{{!

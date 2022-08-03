@@ -30,9 +30,9 @@ import {{included_module_path}}.thrift_metadata
 {{#program:structs}}
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
-def _fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}({{!
+def _fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{> structs/unadapted_name}}({{!
 }}metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
-    qualified_name = "{{program:name}}.{{struct:name}}"
+    qualified_name = "{{program:name}}.{{> structs/unadapted_name}}"
 
     if qualified_name in metadata_struct.{{#struct:exception?}}exceptions{{/struct:exception?}}{{^struct:exception?}}structs{{/struct:exception?}}:
         return metadata_struct
@@ -67,8 +67,8 @@ def _fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}
     {{/struct:fields}}
 
     return new_struct
-def gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}() -> _fbthrift_metadata.ThriftMetadata:
-    return _fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}({{!
+def gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{> structs/unadapted_name}}() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{> structs/unadapted_name}}({{!
     }}_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
 {{/program:structs}}
@@ -175,10 +175,10 @@ def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     {{/program:enums}}
     {{#program:structs}}
     {{#struct:exception?}}
-    meta = _fbthrift_gen_metadata_exception_{{struct:name}}(meta)
+    meta = _fbthrift_gen_metadata_exception_{{> structs/unadapted_name}}(meta)
     {{/struct:exception?}}
     {{^struct:exception?}}
-    meta = _fbthrift_gen_metadata_struct_{{struct:name}}(meta)
+    meta = _fbthrift_gen_metadata_struct_{{> structs/unadapted_name}}(meta)
     {{/struct:exception?}}
     {{/program:structs}}
     {{#program:services}}

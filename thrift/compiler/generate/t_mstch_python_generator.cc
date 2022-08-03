@@ -570,6 +570,15 @@ class mstch_python_program : public mstch_program {
 
   void visit_types_for_adapters() {
     for (const auto& strct : program_->structs()) {
+      if (auto annotation = find_structured_adapter_annotation(*strct)) {
+        extract_module_and_insert_to(
+            get_annotation_property(annotation, "name"), adapter_modules_);
+        extract_module_and_insert_to(
+            get_annotation_property(annotation, "typeHint"), adapter_modules_);
+        extract_module_and_insert_to(
+            get_annotation_property(annotation, "typeHint"),
+            adapter_type_hint_modules_);
+      }
       for (const auto& field : strct->fields()) {
         if (auto annotation = find_structured_adapter_annotation(field)) {
           extract_module_and_insert_to(
@@ -742,7 +751,8 @@ class mstch_python_struct : public mstch_struct {
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_struct(strct, std::move(generators), std::move(cache), pos) {
+      : mstch_struct(strct, std::move(generators), std::move(cache), pos),
+        adapter_annotation_(find_structured_adapter_annotation(*strct)) {
     register_methods(
         this,
         {
@@ -752,6 +762,10 @@ class mstch_python_struct : public mstch_struct {
              &mstch_python_struct::has_exception_message},
             {"struct:exception_message",
              &mstch_python_struct::exception_message},
+            {"struct:has_adapter?", &mstch_python_struct::has_adapter},
+            {"struct:adapter_name", &mstch_python_struct::adapter_name},
+            {"struct:adapter_type_hint",
+             &mstch_python_struct::adapter_type_hint},
         });
   }
 
@@ -770,6 +784,19 @@ class mstch_python_struct : public mstch_struct {
     return strct_->has_annotation("message");
   }
   mstch::node exception_message() { return strct_->get_annotation("message"); }
+
+  mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
+
+  mstch::node adapter_name() {
+    return get_annotation_property(adapter_annotation_, "name");
+  }
+
+  mstch::node adapter_type_hint() {
+    return get_annotation_property(adapter_annotation_, "typeHint");
+  }
+
+ private:
+  const t_const* adapter_annotation_;
 };
 
 class mstch_python_enum : public mstch_enum {

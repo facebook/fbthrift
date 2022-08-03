@@ -95,10 +95,10 @@ class {{service:name}}Interface(
             }}{{#function:return_type}}{{^type:void?}}success=value{{/type:void?}}{{/function:return_type}})
             {{/function:oneway?}}
         {{#function:exceptions}}{{#field:type}}
-        except {{type:module_path}}.{{#type:struct}}{{struct:name}}{{/type:struct}} as e:
+        except {{type:module_path}}.{{#type:struct}}{{> structs/unadapted_name}}{{/type:struct}} as e:
             return_struct = {{> types/function_return_type}}({{field:py_name}}=e)
             buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('{{type:py3_namespace}}{{#type:struct}}{{struct:name}}{{/type:struct}}', str(e), buf)
+            exp = PythonUserException('{{type:py3_namespace}}{{#type:struct}}{{> structs/unadapted_name}}{{/type:struct}}', str(e), buf)
             raise exp
         {{/field:type}}
         {{/function:exceptions}}

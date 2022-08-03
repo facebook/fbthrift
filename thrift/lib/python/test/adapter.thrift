@@ -30,6 +30,14 @@ typedef i32 Datetime
 }
 typedef string AdaptedInt
 
+@python.Adapter{
+  name = "thrift.python.test.adapters.noop.Wrapper",
+  typeHint = "thrift.python.test.adapters.noop.Wrapped",
+}
+struct Baz {
+  1: string name;
+}
+
 struct Foo {
   @python.Adapter{
     name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
@@ -50,6 +58,7 @@ struct Foo {
     typeHint = "typing.Sequence[str]",
   }
   7: list<AdaptedInt> adapted_list;
+  8: Baz baz;
 }
 
 union Bar {
