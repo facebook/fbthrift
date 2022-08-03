@@ -24,7 +24,7 @@ using namespace static_reflection::demo;
 
 struct print_annotations {
   template <typename Annotation, std::size_t Index>
-  void operator()(fatal::indexed<Annotation, Index>, char const* prefix) const {
+  void operator()(fatal::indexed<Annotation, Index>, const char* prefix) const {
     std::cout << prefix << fatal::z_data<typename Annotation::key>() << ": '"
               << fatal::z_data<typename Annotation::value>() << '\n';
   }

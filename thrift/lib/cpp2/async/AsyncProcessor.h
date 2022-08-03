@@ -87,7 +87,7 @@ struct ServiceRequestInfo {
   // The qualified function name is currently an input to TProcessorEventHandler
   // callbacks. We will refactor TProcessorEventHandler to remove the
   // requirement to pass this as a single string. T112104402
-  char const* functionName_deprecated; // Qualified function name (includes
+  const char* functionName_deprecated; // Qualified function name (includes
                                        // service name)
   std::optional<std::string_view>
       interactionName; // Interaction name if part of an interaction
@@ -104,7 +104,7 @@ class ServiceInfoHolder {
   virtual ~ServiceInfoHolder() = default;
 
   // This function is generated from the thrift IDL.
-  virtual ServiceRequestInfoMap const& requestInfoMap() const = 0;
+  virtual const ServiceRequestInfoMap& requestInfoMap() const = 0;
 };
 
 /**
@@ -275,7 +275,7 @@ class ServerRequestRejection {
   ServerRequestRejection(TApplicationException&& exception)
       : impl_(std::move(exception)) {}
 
-  TApplicationException const& applicationException() const& { return impl_; }
+  const TApplicationException& applicationException() const& { return impl_; }
 
   TApplicationException applicationException() && { return std::move(impl_); }
 
@@ -420,7 +420,7 @@ class ServerRequest {
       protocol::PROTOCOL_TYPES protocol,
       std::shared_ptr<folly::RequestContext> follyRequestContext,
       AsyncProcessor* asyncProcessor,
-      AsyncProcessor::MethodMetadata const* methodMetadata)
+      const AsyncProcessor::MethodMetadata* methodMetadata)
       : request_(std::move(request)),
         serializedRequest_(std::move(serializedRequest)),
         ctx_(ctx),
@@ -432,7 +432,7 @@ class ServerRequest {
   // The public accessors are available to user code that receives the
   // ServerRequest through various customization points.
 
-  AsyncProcessor::MethodMetadata const* methodMetadata() const {
+  const AsyncProcessor::MethodMetadata* methodMetadata() const {
     return methodMetadata_;
   }
 
@@ -544,7 +544,7 @@ class ServerRequest {
   protocol::PROTOCOL_TYPES protocol_;
   std::shared_ptr<folly::RequestContext> follyRequestContext_;
   AsyncProcessor* asyncProcessor_;
-  AsyncProcessor::MethodMetadata const* methodMetadata_;
+  const AsyncProcessor::MethodMetadata* methodMetadata_;
   RequestPileInterface* notifyRequestPile_{nullptr};
   RequestPileInterface::UserData notifyRequestPileUserData_;
   ConcurrencyControllerInterface* notifyConcurrencyController_{nullptr};

@@ -67,8 +67,8 @@ class TransportRoutingHandler {
   virtual void handleConnection(
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransport::UniquePtr sock,
-      folly::SocketAddress const* peerAddress,
-      wangle::TransportInfo const& tinfo,
+      const folly::SocketAddress* peerAddress,
+      const wangle::TransportInfo& tinfo,
       std::shared_ptr<Cpp2Worker> cpp2Worker) = 0;
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -417,7 +417,7 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
 
   bool invokeReadDataAvailable(size_t len) noexcept;
   void processReadEOF() noexcept;
-  void invokeReadCallback(VoidCallback cb, char const* callbackName) noexcept;
+  void invokeReadCallback(VoidCallback cb, const char* callbackName) noexcept;
 
   void pushWriteRequest(WriteRequest_* req) {
     if (writeReqTail_ == nullptr) {
@@ -464,8 +464,8 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
 
  private:
   // Forbidden copy constructor and assignment opererator
-  TStreamAsyncChannel(TStreamAsyncChannel const&);
-  TStreamAsyncChannel& operator=(TStreamAsyncChannel const&);
+  TStreamAsyncChannel(const TStreamAsyncChannel&);
+  TStreamAsyncChannel& operator=(const TStreamAsyncChannel&);
 };
 
 class TStreamAsyncChannelFactory {

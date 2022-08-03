@@ -258,7 +258,7 @@ void read(
           iprot,
           readState,
       };
-      auto const keyReader = [](const void* context, void* key) {
+      const auto keyReader = [](const void* context, void* key) {
         const auto& typedContext = *static_cast<const Context*>(context);
         read(
             typedContext.iprot,
@@ -266,7 +266,7 @@ void read(
             typedContext.readState,
             key);
       };
-      auto const valueReader = [](const void* context, void* val) {
+      const auto valueReader = [](const void* context, void* val) {
         const auto& typedContext = *static_cast<const Context*>(context);
         read(
             typedContext.iprot,
@@ -314,7 +314,7 @@ void read(
           iprot,
           readState,
       };
-      auto const reader = [](const void* context, void* value) {
+      const auto reader = [](const void* context, void* value) {
         const auto& typedContext = *static_cast<const Context*>(context);
         read(
             typedContext.iprot,
@@ -360,7 +360,7 @@ void read(
           iprot,
           readState,
       };
-      auto const reader = [](const void* context, void* value) {
+      const auto reader = [](const void* context, void* value) {
         const auto& typedContext = *static_cast<const Context*>(context);
         read(
             typedContext.iprot,

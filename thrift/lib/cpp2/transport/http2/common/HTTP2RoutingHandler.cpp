@@ -62,7 +62,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
       folly::AsyncTransport::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       std::unique_ptr<proxygen::HTTP2Codec> h2codec,
-      wangle::TransportInfo const& tinfo) {
+      const wangle::TransportInfo& tinfo) {
     // Obtain the proper routing address
     folly::SocketAddress localAddress;
     try {
@@ -162,8 +162,8 @@ bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
 void HTTP2RoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransport::UniquePtr sock,
-    folly::SocketAddress const* peerAddress,
-    wangle::TransportInfo const& tinfo,
+    const folly::SocketAddress* peerAddress,
+    const wangle::TransportInfo& tinfo,
     std::shared_ptr<Cpp2Worker> worker) {
   {
     folly::once_flag logConnectionOnce;

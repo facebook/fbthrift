@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,7 +237,7 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
     // If the task map was empty, or if we have an expiration that is earlier
     // than any previously seen, kick the dispatcher so it can update its
     // timeout. Do this before inserting to limit comparisons to current tasks
-    auto const count = taskCount_.load(std::memory_order_relaxed);
+    const auto count = taskCount_.load(std::memory_order_relaxed);
     if (count == 0 || timeout < taskMap_.begin()->first) {
       cond_.notify_one();
     }

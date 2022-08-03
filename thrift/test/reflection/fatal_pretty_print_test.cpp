@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ std::string adjust(std::string input) {
   do {                                                           \
     std::ostringstream out;                                      \
     apache::thrift::pretty_print(out, __VA_ARGS__);              \
-    auto const actual = out.str();                               \
+    const auto actual = out.str();                               \
                                                                  \
     if (output_result::value) {                                  \
       std::cout << "actual output: " << actual << std::endl      \
@@ -613,8 +613,8 @@ struct SharedHelper {
 
 struct SharedConstHelper {
   template <typename T, typename... Args>
-  static std::shared_ptr<T const> build(Args&&... args) {
-    return std::make_shared<T const>(std::forward<Args>(args)...);
+  static std::shared_ptr<const T> build(Args&&... args) {
+    return std::make_shared<const T>(std::forward<Args>(args)...);
   }
 };
 } // namespace

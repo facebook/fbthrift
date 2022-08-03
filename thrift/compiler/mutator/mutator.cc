@@ -28,7 +28,7 @@ class mutator_list {
 
   std::vector<visitor*> get_pointers() const {
     auto pointers = std::vector<visitor*>{};
-    for (auto const& v : mutators_) {
+    for (const auto& v : mutators_) {
       pointers.push_back(v.get());
     }
     return pointers;
@@ -120,7 +120,7 @@ static void match_type_with_const_value(
   // Set constant value types as enums when they are declared with integers
   if (type->is_enum() && !value->is_enum()) {
     value->set_is_enum();
-    auto enm = dynamic_cast<t_enum const*>(type);
+    auto enm = dynamic_cast<const t_enum*>(type);
     value->set_enum(enm);
     if (value->get_type() == t_const_value::CV_STRING) {
       // The enum was defined after the struct field with that type was declared

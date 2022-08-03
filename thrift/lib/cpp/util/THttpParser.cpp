@@ -209,7 +209,7 @@ THttpParser::HttpParseResult THttpParser::parseStart() {
 THttpParser::HttpParseResult THttpParser::parseHeader() {
   // Loop until headers are finished
   while (true) {
-    auto const lineStr = readLine();
+    const auto lineStr = readLine();
 
     // No line is found, need wait for more data.
     if (lineStr == nullptr) {
@@ -313,12 +313,12 @@ THttpParser::HttpParseResult THttpParser::parseTrailing() {
 }
 
 void THttpClientParser::parseHeaderLine(folly::StringPiece header) {
-  auto const colonPos = header.find(':');
+  const auto colonPos = header.find(':');
   if (colonPos == std::string::npos) {
     return;
   }
 
-  auto const value = folly::ltrimWhitespace(header.subpiece(colonPos + 1));
+  const auto value = folly::ltrimWhitespace(header.subpiece(colonPos + 1));
 
   readHeaders_.emplace(header.subpiece(0, colonPos).str(), value.str());
 
@@ -339,27 +339,27 @@ void THttpClientParser::parseHeaderLine(folly::StringPiece header) {
 }
 
 bool THttpClientParser::parseStatusLine(folly::StringPiece status) {
-  auto const badStatus = [&] {
+  const auto badStatus = [&] {
     return TTransportException(fmt::format("Bad Status: {}", status));
   };
 
   // Skip over the "HTTP/<version>" string.
   // TODO: we should probably check that the version is 1.0 or 1.1
-  auto const spacePos = status.find(' ');
+  const auto spacePos = status.find(' ');
   if (spacePos == std::string::npos) {
     throw badStatus();
   }
 
   // RFC 2616 requires exactly 1 space between the HTTP version and the status
   // code.  Skip over it.
-  auto const codeStart = status.subpiece(spacePos + 1);
+  const auto codeStart = status.subpiece(spacePos + 1);
 
   // Find the status code.  It must be followed by a space.
-  auto const nextSpacePos = codeStart.find(' ');
+  const auto nextSpacePos = codeStart.find(' ');
   if (nextSpacePos == std::string::npos) {
     throw badStatus();
   }
-  auto const code = codeStart.subpiece(0, nextSpacePos);
+  const auto code = codeStart.subpiece(0, nextSpacePos);
 
   if (code == "200") {
     // HTTP 200 = OK, we got the response.

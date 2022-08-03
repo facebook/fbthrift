@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace perf {
 
 folly::AsyncSocket::UniquePtr getSocket(
     folly::EventBase* evb,
-    folly::SocketAddress const& addr,
+    const folly::SocketAddress& addr,
     bool encrypted,
     std::list<std::string> advertizedProtocols) {
   folly::AsyncSocket::UniquePtr sock(new folly::AsyncSocket(evb, addr));

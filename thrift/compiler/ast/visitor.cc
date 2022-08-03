@@ -157,7 +157,7 @@ void interleaved_visitor::visit_and_recurse_gen(Visitee* const visitee) {
   auto rec_mask = std::vector<bool>(visitors_.size());
   auto any = false;
   for (size_t i = 0; i < visitors_.size(); ++i) {
-    auto const rec = rec_mask_[i] && visitors_[i]->visit(visitee);
+    const auto rec = rec_mask_[i] && visitors_[i]->visit(visitee);
     rec_mask[i] = rec;
     any = any || rec;
   }

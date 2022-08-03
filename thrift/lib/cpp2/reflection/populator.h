@@ -65,7 +65,7 @@ bool get_bernoulli(Rng& rng, float p) {
 
 // generate a value of type Int within [range.min, range.max]
 template <typename Int, typename Rng>
-Int rand_in_range(Rng& rng, populator_opts::range<Int> const& range) {
+Int rand_in_range(Rng& rng, const populator_opts::range<Int>& range) {
   // uniform_int_distribution undefined for char,
   // use the next larger type if it's small
   using int_type = fatal::conditional<
@@ -107,12 +107,12 @@ struct populator_methods<type_class::integral, Int> {
   // Special overload to work with lists of booleans.
   template <typename Rng>
   static void populate(
-      Rng& rng, populator_opts const&, std::vector<bool>::reference out) {
+      Rng& rng, const populator_opts&, std::vector<bool>::reference out) {
     out = next_value(rng);
   }
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const&, Int& out) {
+  static void populate(Rng& rng, const populator_opts&, Int& out) {
     out = next_value(rng);
   }
 };
@@ -120,7 +120,7 @@ struct populator_methods<type_class::integral, Int> {
 template <typename Fp>
 struct populator_methods<type_class::floating_point, Fp> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const&, Fp& out) {
+  static void populate(Rng& rng, const populator_opts&, Fp& out) {
     std::uniform_real_distribution<Fp> gen;
     out = gen(rng);
     DVLOG(4) << "generated real: " << out;
@@ -130,7 +130,7 @@ struct populator_methods<type_class::floating_point, Fp> {
 template <>
 struct populator_methods<type_class::string, std::string> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, std::string& str) {
+  static void populate(Rng& rng, const populator_opts& opts, std::string& str) {
     using larger_char =
         fatal::conditional<std::numeric_limits<char>::is_signed, int, unsigned>;
 
@@ -150,7 +150,7 @@ struct populator_methods<type_class::string, std::string> {
 
 template <typename Rng, typename Binary, typename WriteFunc>
 void generate_bytes(
-    Rng& rng, Binary&, const std::size_t length, WriteFunc const& write_func) {
+    Rng& rng, Binary&, const std::size_t length, const WriteFunc& write_func) {
   std::uniform_int_distribution<unsigned> byte_gen(0, 0xFF);
   for (std::size_t i = 0; i < length; i++) {
     write_func(static_cast<uint8_t>(byte_gen(rng)));
@@ -161,8 +161,8 @@ void generate_bytes(
 template <>
 struct populator_methods<type_class::binary, std::string> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, std::string& bin) {
-    auto const length = detail::rand_in_range(rng, opts.bin_len);
+  static void populate(Rng& rng, const populator_opts& opts, std::string& bin) {
+    const auto length = detail::rand_in_range(rng, opts.bin_len);
     bin = std::string(length, 0);
     auto iter = bin.begin();
     generate_bytes(rng, bin, length, [&](uint8_t c) { *iter++ = c; });
@@ -173,8 +173,8 @@ template <>
 struct populator_methods<type_class::binary, folly::IOBuf> {
   template <typename Rng>
   static void populate(
-      Rng& rng, populator_opts const& opts, folly::IOBuf& bin) {
-    auto const length = detail::rand_in_range(rng, opts.bin_len);
+      Rng& rng, const populator_opts& opts, folly::IOBuf& bin) {
+    const auto length = detail::rand_in_range(rng, opts.bin_len);
     bin = folly::IOBuf(folly::IOBuf::CREATE, length);
     bin.append(length);
     folly::io::RWUnshareCursor range(&bin);
@@ -188,7 +188,7 @@ struct populator_methods<type_class::binary, std::unique_ptr<folly::IOBuf>> {
   template <typename Rng>
   static void populate(
       Rng& rng,
-      populator_opts const& opts,
+      const populator_opts& opts,
       std::unique_ptr<folly::IOBuf>& bin) {
     bin = std::make_unique<folly::IOBuf>();
     return populator_methods<type_class::binary, folly::IOBuf>::populate(
@@ -206,7 +206,7 @@ struct populator_methods<
   using type_methods = populator_methods<TypeClass, element_type>;
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, PtrType& out) {
+  static void populate(Rng& rng, const populator_opts& opts, PtrType& out) {
     return type_methods::populate(rng, opts, *out);
   }
 };
@@ -218,7 +218,7 @@ struct populator_methods<type_class::enumeration, Type> {
   using int_methods = populator_methods<type_class::integral, int_type>;
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Type& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Type& out) {
     int_type tmp;
     int_methods::populate(rng, opts, tmp);
     out = static_cast<Type>(tmp);
@@ -237,7 +237,7 @@ struct populator_methods<type_class::list<ElemClass>, Type> {
   using elem_methods = populator_methods<elem_tclass, elem_type>;
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Type& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Type& out) {
     std::uint32_t list_size = detail::rand_in_range(rng, opts.list_len);
     out = Type();
 
@@ -263,7 +263,7 @@ struct populator_methods<type_class::set<ElemClass>, Type> {
   using elem_methods = populator_methods<elem_tclass, elem_type>;
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Type& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Type& out) {
     std::uint32_t set_size = detail::rand_in_range(rng, opts.set_len);
 
     DVLOG(3) << "populating set size " << set_size;
@@ -297,7 +297,7 @@ struct populator_methods<type_class::map<KeyClass, MappedClass>, Type> {
   using mapped_methods = populator_methods<mapped_tclass, mapped_type>;
 
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Type& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Type& out) {
     std::uint32_t map_size = detail::rand_in_range(rng, opts.map_len);
 
     DVLOG(3) << "populating map size " << map_size;
@@ -322,7 +322,7 @@ struct populator_methods<type_class::variant, Union> {
     void operator()(
         fatal::indexed<Fid, Index>,
         Rng& rng,
-        populator_opts const& opts,
+        const populator_opts& opts,
         Union& obj) {
       using descriptor = fatal::get<
           typename traits::descriptors,
@@ -348,7 +348,7 @@ struct populator_methods<type_class::variant, Union> {
 
  public:
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Union& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Union& out) {
     DVLOG(3) << "begin writing union: "
              << fatal::z_data<typename traits::name>()
              << ", type: " << folly::to_underlying(out.getType());
@@ -362,9 +362,9 @@ struct populator_methods<type_class::variant, Union> {
         field_id_t>>;
 
     // std::array of field_id_t
-    auto const range = populator_opts::range<std::size_t>(
+    const auto range = populator_opts::range<std::size_t>(
         0, fatal::size<fids_seq>::value - !fatal::empty<fids_seq>::value);
-    auto const selected = detail::rand_in_range(rng, range);
+    const auto selected = detail::rand_in_range(rng, range);
 
     fatal::sorted_search<fids_seq>(
         fatal::as_array<fids_seq>::data[selected],
@@ -405,7 +405,7 @@ struct populator_methods<type_class::structure, Struct> {
       detail::disable_if_smart_pointer<MemberType>> {
     template <typename Rng>
     static void populate(
-        Rng& rng, populator_opts const& opts, MemberType& out) {
+        Rng& rng, const populator_opts& opts, MemberType& out) {
       Methods::populate(rng, opts, out);
     }
   };
@@ -420,7 +420,7 @@ struct populator_methods<type_class::structure, Struct> {
     using element_type = typename PtrType::element_type;
 
     template <typename Rng>
-    static void populate(Rng& rng, populator_opts const& opts, PtrType& out) {
+    static void populate(Rng& rng, const populator_opts& opts, PtrType& out) {
       field_populator<Member, element_type, Methods>::populate(
           rng, opts, detail::deref<PtrType>::clear_and_get(out));
     }
@@ -432,7 +432,7 @@ struct populator_methods<type_class::structure, Struct> {
     void operator()(
         fatal::indexed<Member, Index>,
         Rng& rng,
-        populator_opts const& opts,
+        const populator_opts& opts,
         Struct& out) {
       using methods =
           populator_methods<typename Member::type_class, typename Member::type>;
@@ -441,7 +441,7 @@ struct populator_methods<type_class::structure, Struct> {
       using member_type = folly::remove_cvref_t<decltype(*got)>;
 
       // Popualate optional fields with `optional_field_prob` probability.
-      auto const skip = //
+      const auto skip = //
           Member::optional::value == optionality::optional &&
           !detail::get_bernoulli(rng, opts.optional_field_prob);
       if (skip) {
@@ -473,7 +473,7 @@ struct populator_methods<type_class::structure, Struct> {
 
  public:
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
+  static void populate(Rng& rng, const populator_opts& opts, Struct& out) {
     fatal::foreach<typename traits::members>(
         member_populator(), rng, opts, out);
   }
@@ -493,7 +493,7 @@ struct populator_methods<type_class::structure, Struct> {
  */
 
 template <typename Type, typename Rng>
-void populate(Type& out, populator_opts const& opts, Rng& rng) {
+void populate(Type& out, const populator_opts& opts, Rng& rng) {
   using TypeClass = type_class_of_thrift_class_t<Type>;
   return populator_methods<TypeClass, Type>::populate(rng, opts, out);
 }

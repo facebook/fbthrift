@@ -156,12 +156,12 @@ inline uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
 }
 
 inline uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
-    std::unique_ptr<folly::IOBuf> const& v) const {
+    const std::unique_ptr<folly::IOBuf>& v) const {
   return (v ? serializedSizeBinary(*v) * 6 : 0) + 3;
 }
 
 inline uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
-    folly::IOBuf const& v) const {
+    const folly::IOBuf& v) const {
   size_t size = v.computeChainDataLength();
   uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
   if (size > limit) {
@@ -181,13 +181,13 @@ inline uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
 }
 
 inline uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
-    std::unique_ptr<folly::IOBuf> const&) const {
+    const std::unique_ptr<folly::IOBuf>&) const {
   // size only
   return serializedSizeI32();
 }
 
 inline uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
-    folly::IOBuf const&) const {
+    const folly::IOBuf&) const {
   // size only
   return serializedSizeI32();
 }

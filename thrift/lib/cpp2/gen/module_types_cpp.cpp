@@ -43,7 +43,7 @@ FOLLY_NOINLINE void translate_field_name(
     folly::StringPiece fname,
     int16_t& fid,
     protocol::TType& ftype,
-    translate_field_name_table const& table) noexcept {
+    const translate_field_name_table& table) noexcept {
   for (size_t i = 0; i < table.size; ++i) {
     if (fname == table.names[i]) {
       fid = table.ids[i];

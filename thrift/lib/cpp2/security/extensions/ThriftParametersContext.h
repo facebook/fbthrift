@@ -23,7 +23,7 @@ namespace thrift {
 
 class ThriftParametersContext {
  public:
-  folly::Range<CompressionAlgorithm const*> getSupportedCompressionAlgorithms()
+  folly::Range<const CompressionAlgorithm*> getSupportedCompressionAlgorithms()
       const {
     return supportedCompressionAlgos_;
   }

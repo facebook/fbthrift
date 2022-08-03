@@ -60,7 +60,7 @@ render_context::render_context(
 }
 
 const node& render_context::find_node(
-    const std::string& token, std::list<node const*> current_nodes) {
+    const std::string& token, std::list<const node*> current_nodes) {
   if (token != "." && token.find('.') != std::string::npos) {
     return find_node(
         token.substr(token.rfind('.') + 1),

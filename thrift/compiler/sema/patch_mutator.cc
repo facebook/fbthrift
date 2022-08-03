@@ -124,7 +124,7 @@ struct StructGen {
   operator t_type_ref() { return generated; }
 
   void set_adapter(std::string name, t_program& program) {
-    auto annotation = dynamic_cast<t_type const*>(program.scope()->find_def(
+    auto annotation = dynamic_cast<const t_type*>(program.scope()->find_def(
         "facebook.com/thrift/annotation/cpp/Adapter"));
     assert(annotation); // transitive include from patch.thrift
     auto value = std::make_unique<t_const_value>();

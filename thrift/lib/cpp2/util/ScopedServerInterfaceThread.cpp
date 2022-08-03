@@ -31,7 +31,7 @@ namespace thrift {
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
-    SocketAddress const& addr,
+    const SocketAddress& addr,
     ServerConfigCb configCb) {
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(addr);

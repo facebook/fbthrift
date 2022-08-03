@@ -73,7 +73,7 @@ namespace std {
 template <>
 struct hash<apache::thrift::test::FullType> {
   std::size_t operator()(
-      apache::thrift::test::FullType const& val) const noexcept {
+      const apache::thrift::test::FullType& val) const noexcept {
     val.tracker->hash(apache::thrift::test::OpType::Adapted);
     return val.value + 1;
   }

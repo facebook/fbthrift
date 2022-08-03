@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ namespace thrift {
 namespace perf {
 folly::AsyncSocket::UniquePtr getSocket(
     folly::EventBase* evb,
-    folly::SocketAddress const& addr,
+    const folly::SocketAddress& addr,
     bool encrypted,
     std::list<std::string> advertizedProtocols = {});
 
@@ -52,7 +52,7 @@ folly::AsyncSocket::UniquePtr getSocket(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
-    folly::EventBase* evb, folly::SocketAddress const& addr) {
+    folly::EventBase* evb, const folly::SocketAddress& addr) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, false);
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
   return std::make_unique<AsyncClient>(std::move(chan));
@@ -60,7 +60,7 @@ static std::unique_ptr<AsyncClient> newHeaderClient(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHTTP2Client(
-    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
+    folly::EventBase* evb, const folly::SocketAddress& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"h2"});
   std::shared_ptr<ClientConnectionIf> conn =
       H2ClientConnection::newHTTP2Connection(std::move(sock));
@@ -72,7 +72,7 @@ static std::unique_ptr<AsyncClient> newHTTP2Client(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newRocketClient(
-    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
+    folly::EventBase* evb, const folly::SocketAddress& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs2"});
   RocketClientChannel::Ptr channel =
       RocketClientChannel::newChannel(std::move(sock));
@@ -82,7 +82,7 @@ static std::unique_ptr<AsyncClient> newRocketClient(
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newClient(
     folly::EventBase* evb,
-    folly::SocketAddress const& addr,
+    const folly::SocketAddress& addr,
     folly::StringPiece transport,
     bool encrypted = false) {
   if (transport == "header") {
@@ -105,7 +105,7 @@ class ConnectionThread : public folly::ScopedEventBaseThread {
   }
 
   std::shared_ptr<AsyncClient> newSyncClient(
-      folly::SocketAddress const& addr,
+      const folly::SocketAddress& addr,
       folly::StringPiece transport,
       bool encrypted = false) {
     DCHECK(connection_ == nullptr);

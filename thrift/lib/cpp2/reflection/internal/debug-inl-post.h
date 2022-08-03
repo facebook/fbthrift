@@ -53,7 +53,7 @@ struct debug_equals_missing {
       std::vector<bool>::const_iterator iterLhs,
       folly::StringPiece path,
       folly::StringPiece message) {
-    bool const value = *iterLhs;
+    const bool value = *iterLhs;
     callback(tc, &value, static_cast<bool*>(nullptr), path, message);
   }
 };
@@ -77,8 +77,8 @@ struct debug_equals_extra {
       std::vector<bool>::const_iterator iterRhs,
       folly::StringPiece path,
       folly::StringPiece message) {
-    bool const value = *iterRhs;
-    callback(tc, static_cast<bool const*>(nullptr), &value, path, message);
+    const bool value = *iterRhs;
+    callback(tc, static_cast<const bool*>(nullptr), &value, path, message);
   }
 };
 
@@ -89,17 +89,17 @@ T const* debug_equals_get_pointer(T const& what) {
 
 template <typename T>
 T const* debug_equals_get_pointer(
-    optional_boxed_field_ref<boxed_value_ptr<T> const&> what) {
+    optional_boxed_field_ref<const boxed_value_ptr<T>&> what) {
   return what ? &*what : nullptr;
 }
 
 template <typename T>
-T const* debug_equals_get_pointer(std::shared_ptr<T> const& what) {
+T const* debug_equals_get_pointer(const std::shared_ptr<T>& what) {
   return what.get();
 }
 
 template <typename T>
-T const* debug_equals_get_pointer(std::unique_ptr<T> const& what) {
+T const* debug_equals_get_pointer(const std::unique_ptr<T>& what) {
   return what.get();
 }
 
@@ -128,7 +128,7 @@ struct scoped_path {
     return scoped_path(path, '[', index, ']');
   }
 
-  static scoped_path key(std::string& path, std::string const& key) {
+  static scoped_path key(std::string& path, const std::string& key) {
     return scoped_path(path, '[', key, ']');
   }
 
@@ -164,18 +164,18 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
   static bool equals(
       std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     using impl = debug_equals_impl<ValueTypeClass>;
-    auto const minSize = std::min(lhs.size(), rhs.size());
+    const auto minSize = std::min(lhs.size(), rhs.size());
     bool result = true;
 
     for (std::size_t index = 0; index < minSize; ++index) {
-      auto const l = lhs.begin() + index;
-      auto const r = rhs.begin() + index;
+      const auto l = lhs.begin() + index;
+      const auto r = rhs.begin() + index;
       auto guard = scoped_path::index(path, index);
       result = impl::equals(path, *l, *r, callback) && result;
     }
 
     for (std::size_t index = minSize; index < lhs.size(); ++index) {
-      auto const lIter = lhs.begin() + index;
+      const auto lIter = lhs.begin() + index;
       auto guard = scoped_path::index(path, index);
       debug_equals_missing()(
           ValueTypeClass{}, callback, lIter, path, "missing list entry");
@@ -183,7 +183,7 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
     }
 
     for (std::size_t index = minSize; index < rhs.size(); ++index) {
-      auto const rIter = rhs.begin() + index;
+      const auto rIter = rhs.begin() + index;
       auto guard = scoped_path::index(path, index);
       debug_equals_extra()(
           ValueTypeClass{}, callback, rIter, path, "extra list entry");
@@ -195,16 +195,16 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
 
 template <typename TypeClass, typename Type>
 struct debug_equals_impl_pretty {
-  static std::string go(Type const& v) { return pretty_string<TypeClass>(v); }
+  static std::string go(const Type& v) { return pretty_string<TypeClass>(v); }
 };
 
 template <typename Type>
 struct debug_equals_impl_pretty<type_class::binary, Type> {
-  static std::string go(Type const& v) {
+  static std::string go(const Type& v) {
     std::string out;
     out.reserve(4 + v.size() * 2);
 
-    auto const to_hex_digit = [](std::uint8_t const c) {
+    const auto to_hex_digit = [](std::uint8_t const c) {
       return "0123456789ABCDEF"[c & 0xf];
     };
 
@@ -230,8 +230,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 
     bool result = true;
 
-    for (auto const& l : lhs) {
-      auto const& key = l.first;
+    for (const auto& l : lhs) {
+      const auto& key = l.first;
       auto guard = scoped_path::key(path, pretty_key::go(key));
       if (rhs.find(key) == rhs.end()) {
         debug_equals_missing()(
@@ -240,8 +240,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
       }
     }
 
-    for (auto const& r : rhs) {
-      auto const& key = r.first;
+    for (const auto& r : rhs) {
+      const auto& key = r.first;
       auto guard = scoped_path::key(path, pretty_key::go(key));
       if (lhs.find(key) == lhs.end()) {
         debug_equals_extra()(
@@ -250,14 +250,14 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
       }
     }
 
-    for (auto const& l : lhs) {
-      auto const& key = l.first;
-      auto const ri = rhs.find(key);
+    for (const auto& l : lhs) {
+      const auto& key = l.first;
+      const auto ri = rhs.find(key);
       if (ri != rhs.end()) {
         auto guard = scoped_path::key(path, pretty_key::go(key));
-        auto const& r = *ri;
-        auto const& lv = l.second;
-        auto const& rv = r.second;
+        const auto& r = *ri;
+        const auto& lv = l.second;
+        const auto& rv = r.second;
         result = mapped_impl::equals(path, lv, rv, callback) && result;
       }
     }
@@ -275,7 +275,7 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
 
     bool result = true;
 
-    for (auto const& l : lhs) {
+    for (const auto& l : lhs) {
       auto guard = scoped_path::key(path, pretty_value::go(l));
       if (rhs.find(l) == rhs.end()) {
         debug_equals_missing()(
@@ -284,7 +284,7 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
       }
     }
 
-    for (auto const& r : rhs) {
+    for (const auto& r : rhs) {
       auto guard = scoped_path::key(path, pretty_value::go(r));
       if (lhs.find(r) == lhs.end()) {
         debug_equals_extra()(
@@ -351,8 +351,8 @@ struct debug_equals_with_pointers {
   template <typename TypeClass, typename Callback, typename U, typename T>
   static bool recurse_into(
       std::string& path,
-      optional_boxed_field_ref<boxed_value_ptr<T> const&> lMember,
-      optional_boxed_field_ref<boxed_value_ptr<T> const&> rMember,
+      optional_boxed_field_ref<const boxed_value_ptr<T>&> lMember,
+      optional_boxed_field_ref<const boxed_value_ptr<T>&> rMember,
       Callback&& callback,
       U const& lObject,
       U const& rObject) {
@@ -368,8 +368,8 @@ struct debug_equals_with_pointers {
   template <typename TypeClass, typename Callback, typename U, typename T>
   static bool recurse_into(
       std::string& path,
-      std::shared_ptr<T> const& lMember,
-      std::shared_ptr<T> const& rMember,
+      const std::shared_ptr<T>& lMember,
+      const std::shared_ptr<T>& rMember,
       Callback&& callback,
       U const& lObject,
       U const& rObject) {
@@ -385,8 +385,8 @@ struct debug_equals_with_pointers {
   template <typename TypeClass, typename Callback, typename U, typename T>
   static bool recurse_into(
       std::string& path,
-      std::unique_ptr<T> const& lMember,
-      std::unique_ptr<T> const& rMember,
+      const std::unique_ptr<T>& lMember,
+      const std::unique_ptr<T>& rMember,
       Callback&& callback,
       U const& lObject,
       U const& rObject) {
@@ -450,7 +450,7 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path,
-      optional_boxed_field_ref<boxed_value_ptr<T> const&> field,
+      optional_boxed_field_ref<const boxed_value_ptr<T>&> field,
       Callback&& callback) {
     Change()(
         TC{},
@@ -462,7 +462,7 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
 
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
-      std::string& path, std::unique_ptr<T> const& field, Callback&& callback) {
+      std::string& path, const std::unique_ptr<T>& field, Callback&& callback) {
     Change()(
         TC{},
         std::forward<Callback>(callback),
@@ -473,7 +473,7 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
 
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
-      std::string& path, std::shared_ptr<T> const& field, Callback&& callback) {
+      std::string& path, const std::shared_ptr<T>& field, Callback&& callback) {
     Change()(
         TC{},
         std::forward<Callback>(callback),

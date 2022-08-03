@@ -111,7 +111,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONIntInternal(int64_t num) {
   return appender.size();
 }
 
-static inline folly::StringPiece sp(char const& ch) {
+static inline folly::StringPiece sp(const char& ch) {
   return {&ch, 1};
 }
 
@@ -121,7 +121,7 @@ static inline folly::StringPiece sp(char const& ch) {
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsBoolean(
-    std::string const& s) {
+    const std::string& s) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA, s + " is not a valid bool");
 }
@@ -134,46 +134,46 @@ static inline folly::StringPiece sp(char const& ch) {
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsFloatingPoint(
-    std::string const& s) {
+    const std::string& s) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA, s + " is not a valid float/double");
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsString(
-    std::string const& s, std::exception const& e) {
+    const std::string& s, const std::exception& e) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       s + " is not a valid JSON string: " + e.what());
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsAny(
-    std::string const& s) {
+    const std::string& s) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA, s + " is not valid JSON");
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwInvalidFieldStart(
-    char const ch) {
+    const char ch) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       std::string(1, ch) + " is not a valid start to a JSON field");
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnexpectedChar(
-    char const ch, char const expected) {
-  auto const msg = fmt::format(
+    const char ch, const char expected) {
+  const auto msg = fmt::format(
       "expected '{0}' (hex {0:#02x}), read '{1}' (hex {1:#02x})", expected, ch);
   throw TProtocolException(TProtocolException::INVALID_DATA, msg);
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwInvalidEscapeChar(
-    char const ch) {
+    const char ch) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       folly::to<std::string>("Expected control char, got '", sp(ch), "'."));
 }
 
-[[noreturn]] void JSONProtocolReaderCommon::throwInvalidHexChar(char const ch) {
+[[noreturn]] void JSONProtocolReaderCommon::throwInvalidHexChar(const char ch) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       folly::to<std::string>(

@@ -417,7 +417,7 @@ bool hasEmptyContainer(const type::standard_type<Tag>& value) {
     }
   }
   if constexpr (type::is_a_v<Tag, type::map<type::all_c, type::container_c>>) {
-    for (auto const& [mapkey, mapval] : value) {
+    for (const auto& [mapkey, mapval] : value) {
       if (mapval.size() == 0) {
         return true;
       }

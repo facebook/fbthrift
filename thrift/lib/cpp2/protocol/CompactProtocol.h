@@ -162,12 +162,12 @@ class CompactProtocolWriter : public detail::ProtocolBase {
   uint32_t serializedSizeString(folly::StringPiece str) const;
   uint32_t serializedSizeBinary(folly::StringPiece str) const;
   uint32_t serializedSizeBinary(folly::ByteRange v) const;
-  uint32_t serializedSizeBinary(std::unique_ptr<IOBuf> const& v) const;
-  uint32_t serializedSizeBinary(IOBuf const& v) const;
+  uint32_t serializedSizeBinary(const std::unique_ptr<IOBuf>& v) const;
+  uint32_t serializedSizeBinary(const IOBuf& v) const;
   uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  uint32_t serializedSizeZCBinary(std::unique_ptr<IOBuf> const& /*v*/) const;
-  uint32_t serializedSizeZCBinary(IOBuf const& /*v*/) const;
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& /*v*/) const;
+  uint32_t serializedSizeZCBinary(const IOBuf& /*v*/) const;
 
   void rewriteDouble(double dub, int64_t offset);
 

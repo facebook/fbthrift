@@ -348,7 +348,7 @@ std::string_view get_field_name_by_index(size_t idx) {
   static const typename PyStructTraits<T>::NamesMap map =
       PyStructTraits<T>::namesmap();
   using storage = apache::thrift::TStructDataStorage<T>;
-  auto const name = std::string_view(storage::fields_names.at(idx));
+  const auto name = std::string_view(storage::fields_names.at(idx));
   auto found = map.find(name);
   return found == map.end() ? name : found->second;
 }

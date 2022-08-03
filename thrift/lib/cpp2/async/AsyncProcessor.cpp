@@ -66,7 +66,7 @@ void EventTask::setTile(TilePtr&& tile) {
   req_.requestContext()->setTile(std::move(tile));
 }
 
-char const* AsyncProcessor::getServiceName() {
+const char* AsyncProcessor::getServiceName() {
   return "NoServiceNameSet";
 }
 

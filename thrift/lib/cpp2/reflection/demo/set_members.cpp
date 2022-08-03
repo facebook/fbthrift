@@ -40,7 +40,7 @@ struct member_setter {
       auto& member = typename Member::getter{}(where);
       try {
         member = folly::to<typename Member::type>(value);
-      } catch (std::exception const&) {
+      } catch (const std::exception&) {
         std::cerr << "unable to convert '" << value << "'\n";
       }
     }

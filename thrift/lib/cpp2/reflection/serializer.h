@@ -93,7 +93,7 @@ struct deref<std::unique_ptr<folly::IOBuf>> {
 template <typename PtrType>
 struct deref<PtrType, enable_if_smart_pointer<PtrType>> {
   using T = typename std::remove_const<typename PtrType::element_type>::type;
-  static T& clear_and_get(std::shared_ptr<T const>& in) {
+  static T& clear_and_get(std::shared_ptr<const T>& in) {
     auto t = std::make_shared<T>();
     auto ret = t.get();
     in = std::move(t);
@@ -107,7 +107,7 @@ struct deref<PtrType, enable_if_smart_pointer<PtrType>> {
     in = std::make_unique<T>();
     return *in;
   }
-  static T const& get_const(PtrType const& in) { return *in; }
+  static T const& get_const(const PtrType& in) { return *in; }
 };
 
 } // namespace detail
@@ -137,21 +137,21 @@ std::size_t serializer_read(Type& out, Protocol& protocol) {
 }
 
 template <typename Type, typename Protocol>
-std::size_t serializer_write(Type const& in, Protocol& protocol) {
+std::size_t serializer_write(const Type& in, Protocol& protocol) {
   using TypeClass = type_class_of_thrift_class_t<Type>;
   return apache::thrift::detail::pm::protocol_methods<TypeClass, Type>::write(
       protocol, in);
 }
 
 template <typename Type, typename Protocol>
-std::size_t serializer_serialized_size(Type const& in, Protocol& protocol) {
+std::size_t serializer_serialized_size(const Type& in, Protocol& protocol) {
   using TypeClass = type_class_of_thrift_class_t<Type>;
   return apache::thrift::detail::pm::protocol_methods<TypeClass, Type>::
       template serializedSize<false>(protocol, in);
 }
 
 template <typename Type, typename Protocol>
-std::size_t serializer_serialized_size_zc(Type const& in, Protocol& protocol) {
+std::size_t serializer_serialized_size_zc(const Type& in, Protocol& protocol) {
   using TypeClass = type_class_of_thrift_class_t<Type>;
   return apache::thrift::detail::pm::protocol_methods<TypeClass, Type>::
       template serializedSize<true>(protocol, in);

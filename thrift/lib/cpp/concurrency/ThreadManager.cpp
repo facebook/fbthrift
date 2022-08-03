@@ -806,7 +806,7 @@ void ThreadManager::Impl::removeWorkerImpl(
     // Insert nullptr tasks onto the tasks queue to ask workers to exit
     // after all current tasks are completed
     for (size_t n = 0; n < value; ++n) {
-      auto const qpriority = tasks_.priorities() - 1;
+      const auto qpriority = tasks_.priorities() - 1;
       tasks_.at_priority(qpriority).enqueue(nullptr);
       ++totalTaskCount_;
     }
@@ -864,7 +864,7 @@ void ThreadManager::Impl::add(
   }
 
   priority = N_SOURCES * priority + static_cast<int>(source);
-  auto const qpriority = std::min(tasks_.priorities() - 1, priority);
+  const auto qpriority = std::min(tasks_.priorities() - 1, priority);
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration}, qpriority);
   if (queueObservers_) {
@@ -1665,8 +1665,8 @@ void ThreadManager::Impl::addTaskObserver(
 std::chrono::nanoseconds ThreadManager::Impl::getUsedCpuTime() const {
   std::unique_lock<std::mutex> l(mutex_);
   auto acc = deadWorkersCpuTime_;
-  for (auto const& workerBase : liveWorkers_) {
-    auto const& w = static_cast<const Worker&>(workerBase);
+  for (const auto& workerBase : liveWorkers_) {
+    const auto& w = static_cast<const Worker&>(workerBase);
     acc += w.thread()->usedCpuTime();
   }
   return acc;

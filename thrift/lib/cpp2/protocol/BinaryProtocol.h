@@ -141,12 +141,12 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
   uint32_t serializedSizeString(folly::StringPiece str) const;
   uint32_t serializedSizeBinary(folly::StringPiece str) const;
   uint32_t serializedSizeBinary(folly::ByteRange) const;
-  uint32_t serializedSizeBinary(std::unique_ptr<folly::IOBuf> const& v) const;
-  uint32_t serializedSizeBinary(folly::IOBuf const& v) const;
+  uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v) const;
+  uint32_t serializedSizeBinary(const folly::IOBuf& v) const;
   uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  uint32_t serializedSizeZCBinary(std::unique_ptr<folly::IOBuf> const&) const;
-  uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>&) const;
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
 
   void rewriteDouble(double dub, int64_t offset);
 

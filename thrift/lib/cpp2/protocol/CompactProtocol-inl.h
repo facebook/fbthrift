@@ -481,12 +481,12 @@ inline uint32_t CompactProtocolWriter::serializedSizeBinary(
 }
 
 inline uint32_t CompactProtocolWriter::serializedSizeBinary(
-    std::unique_ptr<folly::IOBuf> const& v) const {
+    const std::unique_ptr<folly::IOBuf>& v) const {
   return v ? serializedSizeBinary(*v) : 0;
 }
 
 inline uint32_t CompactProtocolWriter::serializedSizeBinary(
-    folly::IOBuf const& v) const {
+    const folly::IOBuf& v) const {
   size_t size = v.computeChainDataLength();
   uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
   if (size > limit) {
@@ -506,12 +506,12 @@ inline uint32_t CompactProtocolWriter::serializedSizeZCBinary(
 }
 
 inline uint32_t CompactProtocolWriter::serializedSizeZCBinary(
-    std::unique_ptr<IOBuf> const& v) const {
+    const std::unique_ptr<IOBuf>& v) const {
   return v ? serializedSizeZCBinary(*v) : 0;
 }
 
 inline uint32_t CompactProtocolWriter::serializedSizeZCBinary(
-    IOBuf const& v) const {
+    const IOBuf& v) const {
   size_t size = v.computeChainDataLength();
   return (size > folly::IOBufQueue::kMaxPackCopy)
       ? serializedSizeI32() // too big to pack: size only

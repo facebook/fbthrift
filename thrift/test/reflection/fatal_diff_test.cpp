@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ static struct3 test_data() {
 #define TEST_IMPL(LHS, RHS, EXPECTED)                                \
   do {                                                               \
     using namespace apache::thrift;                                  \
-    auto const& expected = folly::stripLeftMargin(EXPECTED);         \
+    const auto& expected = folly::stripLeftMargin(EXPECTED);         \
     std::ostringstream actualStream;                                 \
     debug_equals(LHS, RHS, make_diff_output_callback(actualStream)); \
     EXPECT_EQ(expected, actualStream.str());                         \
@@ -459,8 +459,8 @@ struct SharedHelper {
 
 struct SharedConstHelper {
   template <typename T, typename... Args>
-  static std::shared_ptr<T const> build(Args&&... args) {
-    return std::make_shared<T const>(std::forward<Args>(args)...);
+  static std::shared_ptr<const T> build(Args&&... args) {
+    return std::make_shared<const T>(std::forward<Args>(args)...);
   }
 };
 } // namespace

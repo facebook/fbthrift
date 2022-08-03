@@ -489,7 +489,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
     }
   }
 
-  bool isOnewayMethod(std::string const& fname) {
+  bool isOnewayMethod(const std::string& fname) {
     return onewayMethods_.find(fname) != onewayMethods_.end();
   }
 
@@ -809,7 +809,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("setAdapter", &CppServerWrapper::setAdapter)
       .def(
           "setAddress",
-          static_cast<void (CppServerWrapper::*)(std::string const&, uint16_t)>(
+          static_cast<void (CppServerWrapper::*)(const std::string&, uint16_t)>(
               &CppServerWrapper::setAddress))
       .def("setUnixSocketPath", &CppServerWrapper::setUnixSocketPath)
       .def("setObserver", &CppServerWrapper::setObserverFromPython)

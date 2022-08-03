@@ -69,7 +69,7 @@ auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T>>) {
 }
 
 template <typename..., class T>
-auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T const>>) {
+auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const T>>) {
   return std::make_shared<T>();
 }
 
@@ -81,7 +81,7 @@ auto make_mutable_smart_ptr(
 
 template <typename..., class T, class Alloc>
 auto make_mutable_smart_ptr(
-    folly::tag_t<std::shared_ptr<T const>>, const Alloc& alloc) {
+    folly::tag_t<std::shared_ptr<const T>>, const Alloc& alloc) {
   return std::allocate_shared<T>(alloc);
 }
 

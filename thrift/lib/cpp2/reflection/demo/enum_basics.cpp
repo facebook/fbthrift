@@ -40,7 +40,7 @@ void print_enum_info(Enum e) {
 
   std::cout << '\n';
 
-  auto const name = fatal::enum_to_string(e, nullptr);
+  const auto name = fatal::enum_to_string(e, nullptr);
   std::cout << "field name: " << name << '\n';
   std::cout << "represented as a " << folly::demangle(typeid(name)) << '\n';
 
@@ -82,7 +82,7 @@ void string_to_enum(folly::StringPiece name) {
     auto value = traits::parse(name);
     std::cout << "parse: successfully parsed " << name << ", int value"
               << fatal::to_integral(value) << '\n';
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     std::cout << "parse: " << e.what() << '\n';
   }
 }

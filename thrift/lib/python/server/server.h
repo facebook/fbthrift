@@ -284,7 +284,7 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
 
   template <class ProtocolIn, class ProtocolOut>
   static apache::thrift::SerializedResponse return_serialized(
-      apache::thrift::ContextStack* ctx, ::folly::IOBuf const& _return) {
+      apache::thrift::ContextStack* ctx, const ::folly::IOBuf& _return) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
     ProtocolOut prot;
 

@@ -976,7 +976,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // server side duplex
   bool isDuplex() { return isDuplex_; }
 
-  std::vector<std::unique_ptr<TransportRoutingHandler>> const*
+  const std::vector<std::unique_ptr<TransportRoutingHandler>>*
   getRoutingHandlers() const {
     return &routingHandlers_;
   }

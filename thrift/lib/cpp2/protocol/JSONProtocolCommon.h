@@ -273,14 +273,14 @@ class JSONProtocolReaderCommon : public detail::ProtocolBase {
   int8_t peekCharSafe();
 
   [[noreturn]] static void throwBadVersion();
-  [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
+  [[noreturn]] static void throwUnrecognizableAsBoolean(const std::string& s);
   [[noreturn]] static void throwUnrecognizableAsIntegral(
       folly::StringPiece s, folly::StringPiece typeName);
   [[noreturn]] static void throwUnrecognizableAsFloatingPoint(
-      std::string const& s);
+      const std::string& s);
   [[noreturn]] static void throwUnrecognizableAsString(
-      std::string const& s, std::exception const& e);
-  [[noreturn]] static void throwUnrecognizableAsAny(std::string const& s);
+      const std::string& s, const std::exception& e);
+  [[noreturn]] static void throwUnrecognizableAsAny(const std::string& s);
   [[noreturn]] static void throwInvalidFieldStart(char ch);
   [[noreturn]] static void throwUnexpectedChar(char ch, char expected);
   [[noreturn]] static void throwInvalidEscapeChar(char ch);

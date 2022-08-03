@@ -63,8 +63,8 @@ struct alignas(folly::cacheline_align_v) enum_find {
   // metadata for the slow path to fill the caches for the fast path
   struct metadata {
     std::size_t const size{};
-    Int const* const values{};
-    folly::StringPiece const* const names{};
+    const Int* const values{};
+    const folly::StringPiece* const names{};
   };
 
   // the fast path cache types
@@ -90,7 +90,7 @@ struct alignas(folly::cacheline_align_v) enum_find {
     find_name_map_t find_name_index;
     find_value_map_t find_value_index;
 
-    FOLLY_NOINLINE explicit bidi_cache(metadata const& meta_) {
+    FOLLY_NOINLINE explicit bidi_cache(const metadata& meta_) {
       find_name_index.reserve(meta_.size);
       find_value_index.reserve(meta_.size);
       for (std::size_t i = 0; i < meta_.size; ++i) {
@@ -104,36 +104,36 @@ struct alignas(folly::cacheline_align_v) enum_find {
   // the metadata is stored separately since it is used only in the slow path
   cache_state state; // protects the fast-path caches
   folly::aligned_storage_for_t<bidi_cache> cache{}; // the fast-path caches
-  metadata const& meta; // source for the fast-path caches
+  const metadata& meta; // source for the fast-path caches
 
-  FOLLY_ERASE explicit constexpr enum_find(metadata const& meta_) noexcept
+  FOLLY_ERASE explicit constexpr enum_find(const metadata& meta_) noexcept
       : meta{meta_} {}
 
   FOLLY_NOINLINE bool prep_and_unlock() noexcept {
-    auto const try_ = [&] { return ::new (&cache) bidi_cache(meta), true; };
-    auto const catch_ = []() noexcept { return false; };
+    const auto try_ = [&] { return ::new (&cache) bidi_cache(meta), true; };
+    const auto catch_ = []() noexcept { return false; };
     return state.unlock(folly::catch_exception(try_, +catch_));
   }
   FOLLY_ERASE bool try_prepare() noexcept {
     return state.try_lock() && prep_and_unlock();
   }
 
-  FOLLY_ERASE find_name_result find_name_fast(Int const value) noexcept {
+  FOLLY_ERASE find_name_result find_name_fast(const Int value) noexcept {
     using result = find_name_result;
-    auto const& map = reinterpret_cast<bidi_cache&>(cache).find_name_index;
-    auto const found = map.find(value);
+    const auto& map = reinterpret_cast<bidi_cache&>(cache).find_name_index;
+    const auto found = map.find(value);
     return found == map.end() ? result() : result(found->second);
   }
-  FOLLY_NOINLINE find_name_result find_name_scan(Int const value) noexcept {
+  FOLLY_NOINLINE find_name_result find_name_scan(const Int value) noexcept {
     using result = find_name_result;
     // reverse order to simulate loop-map-insert then map-find
-    auto const range = folly::range(meta.values, meta.values + meta.size);
-    auto const found = range.rfind(value);
+    const auto range = folly::range(meta.values, meta.values + meta.size);
+    const auto found = range.rfind(value);
     return found == range.npos ? result() : result(meta.names[found]);
   }
   // param order optimizes outline findName by minimizing native instructions
   FOLLY_NOINLINE static find_name_result find_name(
-      Int const value, enum_find& self) noexcept {
+      const Int value, enum_find& self) noexcept {
     // with two likelinesses v.s. one, gets the right code layout
     return FOLLY_LIKELY(self.state.ready()) || FOLLY_LIKELY(self.try_prepare())
         ? self.find_name_fast(value)
@@ -143,16 +143,16 @@ struct alignas(folly::cacheline_align_v) enum_find {
   FOLLY_ERASE find_value_result
   find_value_fast(folly::StringPiece const name) noexcept {
     using result = find_value_result;
-    auto const& map = reinterpret_cast<bidi_cache&>(cache).find_value_index;
-    auto const found = map.find(name);
+    const auto& map = reinterpret_cast<bidi_cache&>(cache).find_value_index;
+    const auto found = map.find(name);
     return found == map.end() ? result() : result(found->second);
   }
   FOLLY_NOINLINE find_value_result
   find_value_scan(folly::StringPiece const name) noexcept {
     using result = find_value_result;
     // reverse order to simulate loop-map-insert then map-find
-    auto const range = folly::range(meta.names, meta.names + meta.size);
-    auto const found = range.rfind(name);
+    const auto range = folly::range(meta.names, meta.names + meta.size);
+    const auto found = range.rfind(name);
     return found == range.npos ? result() : result(meta.values[found]);
   }
   // param order optimizes outline findValue by minimizing native instructions
@@ -170,8 +170,8 @@ template <typename E, typename U = std::underlying_type_t<E>>
 FOLLY_EXPORT FOLLY_ALWAYS_INLINE enum_find<U>& enum_find_instance() {
   using traits = TEnumTraits<E>;
   using metadata = typename enum_find<U>::metadata;
-  auto const values = reinterpret_cast<U const*>(traits::values.data());
-  static metadata const meta{traits::size, values, traits::names.data()};
+  const auto values = reinterpret_cast<const U*>(traits::values.data());
+  static const metadata meta{traits::size, values, traits::names.data()};
   static enum_find<U> impl{meta};
   return impl;
 }
@@ -179,15 +179,15 @@ FOLLY_EXPORT FOLLY_ALWAYS_INLINE enum_find<U>& enum_find_instance() {
 template <typename E, typename U = std::underlying_type_t<E>>
 FOLLY_ERASE bool enum_find_name(
     E const value, folly::StringPiece* const out) noexcept {
-  auto const r = enum_find<U>::find_name(U(value), enum_find_instance<E>());
+  const auto r = enum_find<U>::find_name(U(value), enum_find_instance<E>());
   return r && ((*out = r.result), true);
 }
 
 template <typename E, typename U = std::underlying_type_t<E>>
 FOLLY_ERASE bool enum_find_value(
     folly::StringPiece const name, E* const out) noexcept {
-  auto const uout = reinterpret_cast<U*>(out);
-  auto const r = enum_find<U>::find_value(name, enum_find_instance<E>());
+  const auto uout = reinterpret_cast<U*>(out);
+  const auto r = enum_find<U>::find_value(name, enum_find_instance<E>());
   return r && ((*uout = r.result), true);
 }
 
@@ -215,7 +215,7 @@ struct copy_field_rec<type_class::list<ValueTypeClass>> {
   template <typename T>
   T operator()(T const& t) const {
     T result;
-    for (auto const& e : t) {
+    for (const auto& e : t) {
       result.push_back(copy_field<ValueTypeClass>(e));
     }
     return result;
@@ -227,7 +227,7 @@ struct copy_field_rec<type_class::set<ValueTypeClass>> {
   template <typename T>
   T operator()(T const& t) const {
     T result;
-    for (auto const& e : t) {
+    for (const auto& e : t) {
       result.emplace_hint(result.end(), copy_field<ValueTypeClass>(e));
     }
     return result;
@@ -239,7 +239,7 @@ struct copy_field_rec<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
   T operator()(T const& t) const {
     T result;
-    for (auto const& pair : t) {
+    for (const auto& pair : t) {
       result.emplace_hint(
           result.end(),
           copy_field<KeyTypeClass>(pair.first),
@@ -255,13 +255,13 @@ struct copy_field_fn : copy_field_rec<TypeClass> {
 
   using rec::operator();
   template <typename T>
-  std::unique_ptr<T> operator()(std::unique_ptr<T> const& t) const {
+  std::unique_ptr<T> operator()(const std::unique_ptr<T>& t) const {
     return !t ? nullptr : std::make_unique<T>((*this)(*t));
   }
 
   template <typename T, typename Alloc>
   std::unique_ptr<T, folly::allocator_delete<Alloc>> operator()(
-      std::unique_ptr<T, folly::allocator_delete<Alloc>> const& t) const {
+      const std::unique_ptr<T, folly::allocator_delete<Alloc>>& t) const {
     return !t ? nullptr
               : folly::allocate_unique<T>(
                     t.get_deleter().get_allocator(), (*this)(*t));
@@ -270,16 +270,16 @@ struct copy_field_fn : copy_field_rec<TypeClass> {
 
 struct translate_field_name_table {
   size_t size;
-  folly::StringPiece const* names;
-  int16_t const* ids;
-  protocol::TType const* types;
+  const folly::StringPiece* names;
+  const int16_t* ids;
+  const protocol::TType* types;
 };
 
 void translate_field_name(
     folly::StringPiece fname,
     int16_t& fid,
     protocol::TType& ftype,
-    translate_field_name_table const& table) noexcept;
+    const translate_field_name_table& table) noexcept;
 
 namespace {
 

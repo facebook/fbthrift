@@ -73,7 +73,7 @@ std::shared_ptr<BaseThriftServer> createHttpServer() {
 
 TEST(HTTPClientChannelTest, Basic) {
   ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
+  const auto addr = runner.getAddress();
 
   folly::EventBase eb;
   folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
@@ -88,7 +88,7 @@ TEST(HTTPClientChannelTest, Basic) {
 
 TEST(HTTPClientChannelTest, NoGoodChannel) {
   ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
+  const auto addr = runner.getAddress();
 
   folly::EventBase eb;
   folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));

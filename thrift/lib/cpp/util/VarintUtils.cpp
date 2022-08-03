@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace util {
  * if there is another byte to follow. This can read up to 3 bytes.
  */
 uint32_t readVarint16(
-    uint8_t const* ptr, int16_t* i16, uint8_t const* boundary) {
+    const uint8_t* ptr, int16_t* i16, const uint8_t* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i16 = (int16_t)val;
@@ -41,7 +41,7 @@ uint32_t readVarint16(
  * if there is another byte to follow. This can read up to 5 bytes.
  */
 uint32_t readVarint32(
-    uint8_t const* ptr, int32_t* i32, uint8_t const* boundary) {
+    const uint8_t* ptr, int32_t* i32, const uint8_t* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i32 = (int32_t)val;
@@ -54,7 +54,7 @@ uint32_t readVarint32(
  * Caller is responsible for advancing ptr after call.
  */
 uint32_t readVarint64(
-    uint8_t const* ptr, int64_t* i64, uint8_t const* boundary) {
+    const uint8_t* ptr, int64_t* i64, const uint8_t* boundary) {
   uint32_t rsize = 0;
   uint64_t val = 0;
   int shift = 0;

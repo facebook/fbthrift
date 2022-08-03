@@ -35,7 +35,7 @@ TEST_F(InterleavedVisitorTest, mixed) {
       visited_services.push_back(service);
       return true;
     }
-    std::vector<t_service const*> visited_services;
+    std::vector<const t_service*> visited_services;
     bool ret_;
   };
 

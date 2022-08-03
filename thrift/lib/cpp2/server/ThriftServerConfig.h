@@ -866,6 +866,6 @@ class ThriftServerInitialConfig {
   friend class ThriftServerConfig;
 
   FOLLY_CONSTEVAL ThriftServerInitialConfig(
-      ThriftServerInitialConfig const& rhs) = default;
+      const ThriftServerInitialConfig& rhs) = default;
 };
 } // namespace apache::thrift

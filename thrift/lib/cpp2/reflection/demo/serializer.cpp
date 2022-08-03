@@ -31,18 +31,18 @@
 #include <thrift/lib/cpp2/reflection/reflection.h>
 
 struct memory_buffer {
-  void write(char const* begin, char const* end) {
+  void write(const char* begin, const char* end) {
     buffer_.insert(buffer_.end(), begin, end);
   }
 
-  char const* read(std::size_t size) {
+  const char* read(std::size_t size) {
     assert(index_ <= buffer_.size());
 
     if (buffer_.size() - index_ < size) {
       throw std::underflow_error("not enough data");
     }
 
-    auto const data = std::next(buffer_.data(), index_);
+    const auto data = std::next(buffer_.data(), index_);
     index_ += size;
 
     return data;
@@ -63,8 +63,8 @@ struct data_writer {
   template <typename T>
   void write_opaque(T const* data, std::size_t size) {
     buffer_.write(
-        reinterpret_cast<char const*>(data),
-        reinterpret_cast<char const*>(std::next(data, size)));
+        reinterpret_cast<const char*>(data),
+        reinterpret_cast<const char*>(std::next(data, size)));
   }
 
   template <typename T>
@@ -86,17 +86,17 @@ struct data_reader {
   explicit data_reader(memory_buffer& buffer) : buffer_(buffer) {}
 
   template <typename T = char>
-  std::pair<T const*, T const*> read_opaque(std::size_t size) {
-    auto const data = buffer_.read(size * sizeof(T));
+  std::pair<const T*, T const*> read_opaque(std::size_t size) {
+    const auto data = buffer_.read(size * sizeof(T));
 
     return std::make_pair(
-        reinterpret_cast<T const*>(data),
-        reinterpret_cast<T const*>(std::next(data, size)));
+        reinterpret_cast<const T*>(data),
+        reinterpret_cast<const T*>(std::next(data, size)));
   }
 
   template <typename T>
   T read_raw() {
-    auto const data = read_opaque(sizeof(T));
+    const auto data = read_opaque(sizeof(T));
     T out;
     std::copy(
         data.first, data.second, reinterpret_cast<char*>(std::addressof(out)));
@@ -105,7 +105,7 @@ struct data_reader {
 
   template <typename T>
   void read_string(std::basic_string<T>& out) {
-    auto const data = read_opaque<T>(read_raw<std::size_t>());
+    const auto data = read_opaque<T>(read_raw<std::size_t>());
     out.append(data.first, data.second);
   }
 
@@ -151,7 +151,7 @@ template <>
 struct serializer<type_class::enumeration> {
   template <typename T>
   static void serialize(T const& what, data_writer& writer) {
-    auto const name = fatal::enum_to_string(what, nullptr);
+    const auto name = fatal::enum_to_string(what, nullptr);
     writer.write_string(name, std::strlen(name));
   }
 
@@ -170,7 +170,7 @@ struct serializer<type_class::list<ValueTypeClass>> {
   static void serialize(T const& what, data_writer& writer) {
     writer.write_raw(what.size());
 
-    for (auto const& i : what) {
+    for (const auto& i : what) {
       serializer<ValueTypeClass>::serialize(i, writer);
     }
   }
@@ -192,7 +192,7 @@ struct serializer<type_class::set<ValueTypeClass>> {
   static void serialize(T const& what, data_writer& writer) {
     writer.write_raw(what.size());
 
-    for (auto const& i : what) {
+    for (const auto& i : what) {
       serializer<ValueTypeClass>::serialize(i, writer);
     }
   }
@@ -215,7 +215,7 @@ struct serializer<type_class::map<KeyTypeClass, MappedTypeClass>> {
   static void serialize(T const& what, data_writer& writer) {
     writer.write_raw(what.size());
 
-    for (auto const& i : what) {
+    for (const auto& i : what) {
       serializer<KeyTypeClass>::serialize(i.first, writer);
       serializer<MappedTypeClass>::serialize(i.second, writer);
     }
@@ -239,7 +239,7 @@ struct struct_member_serializer {
   template <typename Member, std::size_t Index, typename T>
   void operator()(
       fatal::indexed<Member, Index>, T const& what, data_writer& writer) const {
-    auto const& value = typename Member::getter{}(what);
+    const auto& value = typename Member::getter{}(what);
     serializer<typename Member::type_class>::serialize(value, writer);
   }
 };
@@ -276,7 +276,7 @@ struct variant_member_serializer {
       data_writer& writer) const {
     using name = typename Member::metadata::name;
     writer.write_string(fatal::z_data<name>(), fatal::size<name>::value);
-    auto const& value = Member::get(variant);
+    const auto& value = Member::get(variant);
     using type_class = typename Member::metadata::type_class;
     serializer<type_class>::serialize(value, writer);
   }
@@ -358,7 +358,7 @@ void test(T const& what) {
     }
 
     std::cout << "success\n";
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     std::cout << "FAILURE: " << e.what() << '\n';
   }
 }

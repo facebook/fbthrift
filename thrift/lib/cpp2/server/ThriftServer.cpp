@@ -391,8 +391,8 @@ ThriftServer::IdleServerAction::IdleServerAction(
 
 void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   try {
-    auto const lastRequestTime = server_.lastRequestTime();
-    auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
+    const auto lastRequestTime = server_.lastRequestTime();
+    const auto elapsed = std::chrono::steady_clock::now() - lastRequestTime;
     if (elapsed >= timeout_) {
       LOG(INFO) << "shutting down server due to inactivity after "
                 << std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -404,7 +404,7 @@ void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
     }
 
     timer_.scheduleTimeout(this, timeout_);
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     LOG(ERROR) << e.what();
   }
 }
@@ -938,7 +938,7 @@ void ThriftServer::ensureResourcePools() {
         if (std::any_of(
                 std::begin(threadManagerPrioritiesAndPoolSizes_),
                 std::end(threadManagerPrioritiesAndPoolSizes_),
-                [](auto const& prioritySize) {
+                [](const auto& prioritySize) {
                   return prioritySize.second != 0;
                 })) {
           // The priorities were specified using setThreadManagerPoolSizes
@@ -979,7 +979,7 @@ void ThriftServer::ensureResourcePools() {
         LOG(FATAL) << "Unexpected ThreadMangerType:" << int(threadManagerType_);
       }
     }
-    for (auto const& pool : pools) {
+    for (const auto& pool : pools) {
       std::string name =
           fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
       std::shared_ptr<folly::ThreadFactory> factory =

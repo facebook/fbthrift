@@ -36,14 +36,14 @@ struct get_property {
 struct legacy_to_flat_translator {
   template <typename Member>
   void operator()(
-      fatal::tag<Member>, std::string const& from, flat_config& to) const {
+      fatal::tag<Member>, const std::string& from, flat_config& to) const {
     auto& value = typename Member::getter{}(to);
     value = folly::to<typename Member::type>(from);
   }
 };
 
-void translate(legacy_config const& from, flat_config& to) {
-  for (auto const& i : from) {
+void translate(const legacy_config& from, flat_config& to) {
+  for (const auto& i : from) {
     fatal::trie_find<reflect_struct<flat_config>::members, get_property>(
         i.first.begin(),
         i.first.end(),
@@ -57,16 +57,16 @@ struct flat_to_legacy_translator {
   template <typename Member, std::size_t Index>
   void operator()(
       fatal::indexed<Member, Index>,
-      flat_config const& from,
+      const flat_config& from,
       legacy_config& to) {
     using property = typename Member::annotations::values::property;
-    auto const key = fatal::z_data<property>();
-    auto const& value = typename Member::getter{}(from);
+    const auto key = fatal::z_data<property>();
+    const auto& value = typename Member::getter{}(from);
     to[key] = folly::to<std::string>(value);
   }
 };
 
-void translate(flat_config const& from, legacy_config& to) {
+void translate(const flat_config& from, legacy_config& to) {
   using members = reflect_struct<flat_config>::members;
 
   fatal::foreach<members>(flat_to_legacy_translator(), from, to);
@@ -86,7 +86,7 @@ template <typename T>
 using get_type_class = typename get_type_class_<T>::type;
 
 template <typename To, typename From>
-void test(From const& from) {
+void test(const From& from) {
   To to;
   translate(from, to);
   print_as(get_type_class<From>{}, from);

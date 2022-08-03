@@ -106,7 +106,7 @@ enum class MessageType {
 
 namespace detail {
 struct SkipNoopString {
-  void append(char const*, size_t) {}
+  void append(const char*, size_t) {}
   void clear() {}
   void reserve(size_t) {}
 };

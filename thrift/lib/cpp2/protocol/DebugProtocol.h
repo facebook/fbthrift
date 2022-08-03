@@ -126,7 +126,7 @@ class DebugProtocolWriter {
   void writeByteRange(folly::ByteRange v);
 
   void writeRaw(folly::StringPiece sp) {
-    out_.push(reinterpret_cast<uint8_t const*>(sp.data()), sp.size());
+    out_.push(reinterpret_cast<const uint8_t*>(sp.data()), sp.size());
   }
 
   template <class... Args>

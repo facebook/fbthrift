@@ -94,8 +94,8 @@ class is_fun {
   static not_fun& test(...);
 
  public:
-  static bool const no_args = sizeof(test<T>(0)) == sizeof(fun_without_args);
-  static bool const has_args = sizeof(test<T>(0)) == sizeof(fun_with_args);
+  static const bool no_args = sizeof(test<T>(0)) == sizeof(fun_without_args);
+  static const bool has_args = sizeof(test<T>(0)) == sizeof(fun_with_args);
 };
 
 template <class N>

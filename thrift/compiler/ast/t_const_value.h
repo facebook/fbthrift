@@ -81,13 +81,13 @@ class t_const_value {
         break;
       case CV_MAP:
         clone->set_map();
-        for (auto const& map_elem : get_map()) {
+        for (const auto& map_elem : get_map()) {
           clone->add_map(map_elem.first->clone(), map_elem.second->clone());
         }
         break;
       case CV_LIST:
         clone->set_list();
-        for (auto const& list_elem : get_list()) {
+        for (const auto& list_elem : get_list()) {
           clone->add_list(list_elem->clone());
         }
         break;
@@ -196,11 +196,11 @@ class t_const_value {
 
   bool is_enum() const { return is_enum_; }
 
-  void set_enum(t_enum const* tenum) { tenum_ = tenum; }
+  void set_enum(const t_enum* tenum) { tenum_ = tenum; }
 
   const t_enum* get_enum() const { return tenum_; }
 
-  void set_enum_value(t_enum_value const* tenum_val) { tenum_val_ = tenum_val; }
+  void set_enum_value(const t_enum_value* tenum_val) { tenum_val_ = tenum_val; }
 
   const t_enum_value* get_enum_value() const { return tenum_val_; }
 
@@ -224,8 +224,8 @@ class t_const_value {
   t_type_ref ttype_;
 
   bool is_enum_ = false;
-  t_enum const* tenum_ = nullptr;
-  t_enum_value const* tenum_val_ = nullptr;
+  const t_enum* tenum_ = nullptr;
+  const t_enum_value* tenum_val_ = nullptr;
 
   t_const_value& operator=(t_const_value&&) = default;
 

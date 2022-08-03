@@ -35,7 +35,7 @@ template <typename OutputStream>
 class indenter {
   struct scope {
     explicit scope(indenter* out) : out_(out) {}
-    scope(scope const&) = delete;
+    scope(const scope&) = delete;
     scope(scope&& rhs) noexcept : out_(rhs.out_) { rhs.out_ = nullptr; }
 
     ~scope() {

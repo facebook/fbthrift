@@ -29,7 +29,7 @@ void print() {
 }
 
 template <typename T, typename... Args>
-void print(T const& value, Args const&... args) {
+void print(T const& value, const Args&... args) {
   std::cout << value;
   print(args...);
 }
@@ -38,12 +38,12 @@ FATAL_DATA_MEMBER_GETTER(audit_id_getter, audit_id);
 
 struct print_audit_id_visitor {
   template <typename T>
-  void impl(std::true_type, T const& member, char const* name) const {
+  void impl(std::true_type, T const& member, const char* name) const {
     print("audit id for ", name, ": ", *member.audit_id_ref());
   }
 
   template <typename T>
-  void impl(std::false_type, T const& member, char const* name) const {
+  void impl(std::false_type, T const& member, const char* name) const {
     (void)member;
     print("no audit id available for ", name);
   }
@@ -51,8 +51,8 @@ struct print_audit_id_visitor {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T const& variant) const {
     using has_audit_id = audit_id_getter::has<typename Member::type>;
-    auto const& member = Member::get(variant);
-    auto const member_name = fatal::z_data<typename Member::metadata::name>();
+    const auto& member = Member::get(variant);
+    const auto member_name = fatal::z_data<typename Member::metadata::name>();
     impl(has_audit_id(), member, member_name);
   }
 };

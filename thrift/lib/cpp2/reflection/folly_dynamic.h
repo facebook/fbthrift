@@ -159,7 +159,7 @@ folly::dynamic to_dynamic(T&& input, dynamic_format format) {
 template <typename TC, typename T>
 void from_dynamic(
     T& out,
-    folly::dynamic const& input,
+    const folly::dynamic& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
   using impl = apache::thrift::detail::dynamic_converter_impl<TC>;
@@ -172,7 +172,7 @@ void from_dynamic(
 template <typename T>
 void from_dynamic(
     T& out,
-    folly::dynamic const& input,
+    const folly::dynamic& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
   using TC = reflect_type_class_of_thrift_class<folly::remove_cvref_t<T>>;
@@ -202,7 +202,7 @@ void from_dynamic(
  */
 template <typename TC, typename T>
 T from_dynamic(
-    folly::dynamic const& input,
+    const folly::dynamic& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
   T result;
@@ -213,7 +213,7 @@ T from_dynamic(
 }
 template <typename T>
 T from_dynamic(
-    folly::dynamic const& input,
+    const folly::dynamic& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
   T result;

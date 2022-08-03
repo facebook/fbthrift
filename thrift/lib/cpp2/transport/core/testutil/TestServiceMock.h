@@ -72,7 +72,7 @@ class TestServiceMock : public apache::thrift::ServiceHandler<TestService> {
 class IntermHeaderService
     : public apache::thrift::ServiceHandler<IntermHeaderService> {
  public:
-  IntermHeaderService(std::string const& host, int16_t port);
+  IntermHeaderService(const std::string& host, int16_t port);
   virtual ~IntermHeaderService();
 
   int32_t callAdd(int32_t) override;

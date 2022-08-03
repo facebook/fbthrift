@@ -51,7 +51,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 namespace detail {
 namespace ac {
 
-[[noreturn]] void throw_app_exn(char const* const msg) {
+[[noreturn]] void throw_app_exn(const char* const msg) {
   throw TApplicationException(msg);
 }
 
@@ -259,7 +259,7 @@ folly::exception_wrapper create_app_exn_unimplemented(const char* name) {
       createUnimplementedMethodException(name));
 }
 
-[[noreturn]] void throw_app_exn_unimplemented(char const* const name) {
+[[noreturn]] void throw_app_exn_unimplemented(const char* const name) {
   throw createUnimplementedMethodException(name);
 }
 } // namespace si

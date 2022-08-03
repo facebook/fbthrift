@@ -379,7 +379,7 @@ size_t writeSet(
   } else {
     // Support containers with defined but non-FIFO iteration order.
     auto get_view = folly::order_preserving_reinsertion_view_or_default;
-    for (auto const& elem : get_view(out)) {
+    for (const auto& elem : get_view(out)) {
       written += writer(context, &elem);
     }
   }

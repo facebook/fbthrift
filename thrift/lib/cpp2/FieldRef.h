@@ -1376,7 +1376,7 @@ FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
         &union_field_ref_owner_vtable_impl::reset<T>};
 template <typename T>
 FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
-    union_field_ref_owner_vtable_for<T const&>{nullptr};
+    union_field_ref_owner_vtable_for<const T&>{nullptr};
 
 } // namespace detail
 
@@ -1419,7 +1419,7 @@ class union_field_ref {
       int_t& type,
       int field_type,
       owner ow,
-      vtable const& vt) noexcept
+      const vtable& vt) noexcept
       : storage_value_(storage_value),
         type_(type),
         field_type_(field_type),
@@ -1535,7 +1535,7 @@ class union_field_ref {
   int_t& type_;
   const int field_type_;
   owner owner_;
-  vtable const& vtable_;
+  const vtable& vtable_;
 };
 
 template <typename T1, typename T2>

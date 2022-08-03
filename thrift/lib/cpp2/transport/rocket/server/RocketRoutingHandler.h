@@ -60,8 +60,8 @@ class RocketRoutingHandler : public TransportRoutingHandler {
   void handleConnection(
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransport::UniquePtr sock,
-      folly::SocketAddress const* peerAddress,
-      wangle::TransportInfo const& tinfo,
+      const folly::SocketAddress* peerAddress,
+      const wangle::TransportInfo& tinfo,
       std::shared_ptr<Cpp2Worker> worker) override;
 
  protected:

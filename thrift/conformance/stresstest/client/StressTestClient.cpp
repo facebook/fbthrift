@@ -44,7 +44,7 @@ folly::coro::Task<void> StressTestClient::co_ping() {
   co_await timedExecute([&]() { return client_->co_ping(); });
 }
 
-folly::coro::Task<void> StressTestClient::co_echo(std::string const& x) {
+folly::coro::Task<void> StressTestClient::co_echo(const std::string& x) {
   co_await timedExecute([&]() { return client_->co_echo(x); });
 }
 

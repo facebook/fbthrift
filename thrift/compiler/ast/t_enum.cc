@@ -53,7 +53,7 @@ void t_enum::append_value(std::unique_ptr<t_enum_value> enum_value) {
 }
 
 const t_enum_value* t_enum::find_value(int32_t value) const {
-  for (auto const& ev : values_) {
+  for (const auto& ev : values_) {
     if (ev->get_value() == value) {
       return ev.get();
     }

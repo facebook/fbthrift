@@ -122,7 +122,7 @@ class ResourcePoolSet {
   // already exists. This can only be called before lock() is called. This is
   // primarily used to set the defaultAsync or defaultSync resource pools.
   void setResourcePool(
-      ResourcePoolHandle const& handle,
+      const ResourcePoolHandle& handle,
       std::unique_ptr<RequestPileInterface>&& requestPile,
       std::shared_ptr<folly::Executor> executor,
       std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,

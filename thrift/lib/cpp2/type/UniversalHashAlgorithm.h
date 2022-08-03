@@ -25,8 +25,8 @@ enum class UniversalHashAlgorithm {
   Sha2_256 = 2,
 };
 
-constexpr int8_t const kMinHashBytes = 8;
-constexpr int8_t const kDefaultHashBytes = 16;
+constexpr const int8_t kMinHashBytes = 8;
+constexpr const int8_t kDefaultHashBytes = 16;
 } // namespace type
 } // namespace thrift
 } // namespace apache

@@ -32,7 +32,7 @@ static constexpr size_t kTestingProtocolMaxDepth = 4;
 
 template <typename ProtocolWriter>
 void makeNestedWriteInner(
-    ProtocolWriter& writer, size_t const levels, TType const& type) {
+    ProtocolWriter& writer, const size_t levels, const TType& type) {
   switch (type) {
     case TType::T_STRUCT: {
       for (size_t i = 0; i < levels; ++i) {
@@ -97,7 +97,7 @@ void makeNestedWriteInner(
 
 template <typename ProtocolWriter>
 folly::IOBufQueue makeNested(
-    size_t const height, size_t const levels, TType const type) {
+    const size_t height, const size_t levels, const TType type) {
   CHECK_GE(levels, 3);
   folly::IOBufQueue q;
   ProtocolWriter writer;
@@ -121,33 +121,33 @@ folly::IOBufQueue makeNested(
 }
 
 template <typename ProtocolReader>
-size_t doSkip(size_t const height, folly::IOBufQueue const& input) {
+size_t doSkip(const size_t height, const folly::IOBufQueue& input) {
   std::string inputs;
   input.appendToString(inputs);
   VLOG(1) << folly::hexlify<std::string>(inputs);
   ProtocolReader reader;
   reader.setHeight(height);
   reader.setInput(input.front());
-  auto const a = reader.getCursorPosition();
+  const auto a = reader.getCursorPosition();
   reader.skip(TType::T_STRUCT);
-  auto const b = reader.getCursorPosition();
+  const auto b = reader.getCursorPosition();
   return b - a;
 }
 
 template <typename ProtocolWriter, typename ProtocolReader>
 void runSkipCheckDepth(
-    folly::tag_t<ProtocolWriter, ProtocolReader>, TType const type) {
-  size_t const height = kTestingProtocolMaxDepth;
+    folly::tag_t<ProtocolWriter, ProtocolReader>, const TType type) {
+  const size_t height = kTestingProtocolMaxDepth;
   {
-    auto const q = makeNested<ProtocolWriter>(height, height - 1, type);
-    auto const s = doSkip<ProtocolReader>(height, q);
+    const auto q = makeNested<ProtocolWriter>(height, height - 1, type);
+    const auto s = doSkip<ProtocolReader>(height, q);
     EXPECT_EQ(q.front()->computeChainDataLength(), s);
   }
   {
     try {
       makeNested<ProtocolWriter>(height, height + 1, type);
       ADD_FAILURE() << "expected TProtocolException";
-    } catch (TProtocolException const& e) {
+    } catch (const TProtocolException& e) {
       EXPECT_EQ(TProtocolException::DEPTH_LIMIT, e.getType());
     }
   }
@@ -156,7 +156,7 @@ void runSkipCheckDepth(
     try {
       doSkip<ProtocolReader>(height, q);
       ADD_FAILURE() << "expected TProtocolException";
-    } catch (TProtocolException const& e) {
+    } catch (const TProtocolException& e) {
       EXPECT_EQ(TProtocolException::DEPTH_LIMIT, e.getType());
     }
   }

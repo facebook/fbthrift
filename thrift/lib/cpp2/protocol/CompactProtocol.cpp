@@ -31,7 +31,7 @@ namespace thrift {
       TProtocolException::BAD_VERSION, "Bad protocol version");
 }
 
-[[noreturn]] void CompactProtocolReader::throwBadType(uint8_t const type) {
+[[noreturn]] void CompactProtocolReader::throwBadType(const uint8_t type) {
   throw TProtocolException(
       folly::to<std::string>("don't know what type: ", type));
 }

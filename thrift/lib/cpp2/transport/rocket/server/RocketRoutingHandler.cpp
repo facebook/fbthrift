@@ -115,8 +115,8 @@ bool RocketRoutingHandler::canAcceptEncryptedConnection(
 void RocketRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransport::UniquePtr sock,
-    folly::SocketAddress const* address,
-    wangle::TransportInfo const& tinfo,
+    const folly::SocketAddress* address,
+    const wangle::TransportInfo& tinfo,
     std::shared_ptr<Cpp2Worker> worker) {
   if (!listening_) {
     return;

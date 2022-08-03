@@ -398,7 +398,7 @@ std::string type_resolver::gen_type_tag(const t_field& field) {
 
 std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {
   static const std::string ns = "::apache::thrift::type::";
-  auto const& type = *original_type.get_true_type();
+  const auto& type = *original_type.get_true_type();
   if (type.is_void()) {
     return ns + "void_t";
   } else if (type.is_bool()) {
@@ -422,17 +422,17 @@ std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {
   } else if (type.is_binary()) {
     return ns + "binary_t";
   } else if (type.is_list()) {
-    auto& list = dynamic_cast<t_list const&>(type);
+    auto& list = dynamic_cast<const t_list&>(type);
     auto& elem = *list.get_elem_type();
     auto elem_tag = gen_type_tag(elem);
     return ns + "list<" + elem_tag + ">";
   } else if (type.is_set()) {
-    auto& set = dynamic_cast<t_set const&>(type);
+    auto& set = dynamic_cast<const t_set&>(type);
     auto& elem = *set.get_elem_type();
     auto elem_tag = gen_type_tag(elem);
     return ns + "set<" + elem_tag + ">";
   } else if (type.is_map()) {
-    auto& map = dynamic_cast<t_map const&>(type);
+    auto& map = dynamic_cast<const t_map&>(type);
     auto& key = *map.get_key_type();
     auto& val = *map.get_val_type();
     auto key_tag = gen_type_tag(key);

@@ -70,7 +70,7 @@ class render_context {
  private:
   static const node null_node;
   const node& find_node(
-      const std::string& token, std::list<node const*> current_nodes);
+      const std::string& token, std::list<const node*> current_nodes);
   std::map<std::string, template_type> m_partials;
   std::deque<node> m_nodes;
   std::list<const node*> m_node_ptrs;

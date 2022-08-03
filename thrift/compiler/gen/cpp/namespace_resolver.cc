@@ -43,7 +43,7 @@ std::string namespace_resolver::gen_namespace(const t_program& program) {
 
 std::string namespace_resolver::gen_unprefixed_namespace(
     const t_program& program) {
-  auto const components = gen_namespace_components(program);
+  const auto components = gen_namespace_components(program);
   return boost::algorithm::join(components, "::");
 }
 

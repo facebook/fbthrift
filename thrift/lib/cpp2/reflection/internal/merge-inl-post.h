@@ -99,7 +99,7 @@ struct merge_impl<type_class::structure> {
   template <typename T>
   struct deref<std::shared_ptr<T>> : deref<T> {};
   template <typename T>
-  struct deref<std::shared_ptr<T const>> : deref<T> {};
+  struct deref<std::shared_ptr<const T>> : deref<T> {};
 
   template <bool Move>
   struct visitor {

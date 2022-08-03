@@ -50,7 +50,7 @@ class ScopedServerInterfaceThread {
 
   ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,
-      folly::SocketAddress const& addr,
+      const folly::SocketAddress& addr,
       ServerConfigCb configCb = {});
 
   explicit ScopedServerInterfaceThread(

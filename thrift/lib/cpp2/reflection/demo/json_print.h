@@ -37,7 +37,7 @@ struct printer {
     std::cout << what;
   }
 
-  static void print(bool const what) { std::cout << (what ? "true" : "false"); }
+  static void print(const bool what) { std::cout << (what ? "true" : "false"); }
 };
 
 template <>
@@ -63,7 +63,7 @@ struct printer<apache::thrift::type_class::list<ValueTypeClass>> {
     std::cout << '[';
 
     bool first = true;
-    for (auto const& i : what) {
+    for (const auto& i : what) {
       if (first) {
         first = false;
       } else {
@@ -88,7 +88,7 @@ struct printer<apache::thrift::type_class::map<KeyTypeClass, MappedTypeClass>> {
     std::cout << '{';
 
     bool first = true;
-    for (auto const& i : what) {
+    for (const auto& i : what) {
       if (first) {
         first = false;
       } else {
@@ -111,10 +111,10 @@ struct struct_member_printer {
       std::cout << ',';
     }
 
-    auto const name = fatal::z_data<typename Member::name>();
+    const auto name = fatal::z_data<typename Member::name>();
     std::cout << '"' << name << "\":";
 
-    auto const& value = typename Member::getter{}(what);
+    const auto& value = typename Member::getter{}(what);
     printer<typename Member::type_class>::print(value);
   }
 };
@@ -133,10 +133,10 @@ struct printer<apache::thrift::type_class::structure> {
 struct variant_member_printer {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T const& what) const {
-    auto const name = fatal::enum_to_string(what.getType(), nullptr);
+    const auto name = fatal::enum_to_string(what.getType(), nullptr);
     std::cout << '"' << name << "\":";
 
-    auto const& value = Member::get(what);
+    const auto& value = Member::get(what);
 
     printer<typename Member::metadata::type_class>::print(value);
   }

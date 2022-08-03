@@ -131,7 +131,7 @@ class t_structured : public t_type {
   std::vector<t_field*> fields_raw_id_order_;
 
   void clone_structured(t_structured* clone) const {
-    for (auto const& field : fields_) {
+    for (const auto& field : fields_) {
       clone->append(field->clone_DO_NOT_USE());
     }
   }

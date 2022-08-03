@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,11 +39,11 @@ namespace apache {
 namespace thrift {
 
 template <typename T>
-void test_to_from(T const& pod, folly::dynamic const& json) {
+void test_to_from(T const& pod, const folly::dynamic& json) {
   std::ostringstream log;
   try {
     log.str("to_dynamic(PORTABLE):\n");
-    auto const actual = apache::thrift::to_dynamic(
+    const auto actual = apache::thrift::to_dynamic(
         pod, apache::thrift::dynamic_format::PORTABLE);
     if (actual != json) {
       log << "actual: " << folly::toPrettyJson(actual) << std::endl
@@ -51,13 +51,13 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(actual, json);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("from_dynamic(PORTABLE):\n");
-    auto const actual = apache::thrift::from_dynamic<T>(
+    const auto actual = apache::thrift::from_dynamic<T>(
         json, apache::thrift::dynamic_format::PORTABLE);
     if (actual != pod) {
       apache::thrift::pretty_print(log << "actual: ", actual);
@@ -67,15 +67,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(actual, pod);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("from_dynamic(PORTABLE)/to_dynamic(PORTABLE):\n");
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         json, apache::thrift::dynamic_format::PORTABLE);
-    auto const to = apache::thrift::to_dynamic(
+    const auto to = apache::thrift::to_dynamic(
         from, apache::thrift::dynamic_format::PORTABLE);
     if (json != to) {
       apache::thrift::pretty_print(log << "from: ", from);
@@ -85,15 +85,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(json, to);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(PORTABLE):\n");
-    auto const to = apache::thrift::to_dynamic(
+    const auto to = apache::thrift::to_dynamic(
         pod, apache::thrift::dynamic_format::PORTABLE);
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         to, apache::thrift::dynamic_format::PORTABLE);
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
@@ -104,15 +104,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(PORTABLE,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic(
+    const auto to = apache::thrift::to_dynamic(
         pod, apache::thrift::dynamic_format::PORTABLE);
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         to,
         apache::thrift::dynamic_format::PORTABLE,
         apache::thrift::format_adherence::LENIENT);
@@ -125,15 +125,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(JSON_1,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic(
+    const auto to = apache::thrift::to_dynamic(
         pod, apache::thrift::dynamic_format::PORTABLE);
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         to,
         apache::thrift::dynamic_format::JSON_1,
         apache::thrift::format_adherence::LENIENT);
@@ -146,15 +146,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("to_dynamic(JSON_1)/from_dynamic(PORTABLE,LENIENT):\n");
-    auto const to =
+    const auto to =
         apache::thrift::to_dynamic(pod, apache::thrift::dynamic_format::JSON_1);
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         to,
         apache::thrift::dynamic_format::PORTABLE,
         apache::thrift::format_adherence::LENIENT);
@@ -167,15 +167,15 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
   try {
     log.str("to_dynamic(JSON_1)/from_dynamic(JSON_1,LENIENT):\n");
-    auto const to =
+    const auto to =
         apache::thrift::to_dynamic(pod, apache::thrift::dynamic_format::JSON_1);
-    auto const from = apache::thrift::from_dynamic<T>(
+    const auto from = apache::thrift::from_dynamic<T>(
         to,
         apache::thrift::dynamic_format::JSON_1,
         apache::thrift::format_adherence::LENIENT);
@@ -188,7 +188,7 @@ void test_to_from(T const& pod, folly::dynamic const& json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const&) {
+  } catch (const std::exception&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -303,7 +303,7 @@ std::pair<Struct3, std::string> test_data_1() {
   pod.fieldR_ref().ensure();
   *pod.fieldR_ref() = {};
 
-  auto const json = folly::stripLeftMargin(R"({
+  const auto json = folly::stripLeftMargin(R"({
     "fieldA": 141,
     "fieldB": "this is a test",
     "fieldC": "field0",
@@ -360,20 +360,20 @@ std::pair<Struct3, std::string> test_data_1() {
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic) {
-  auto const data = test_data_1<
+  const auto data = test_data_1<
       test_cpp2::cpp_reflection::struct3,
       test_cpp2::cpp_reflection::structA,
       test_cpp2::cpp_reflection::structB,
       test_cpp2::cpp_reflection::enum1,
       test_cpp2::cpp_reflection::enum2>();
-  auto const pod = data.first;
-  auto const json = folly::parseJson(data.second);
+  const auto pod = data.first;
+  const auto json = folly::parseJson(data.second);
 
   test_to_from(pod, json);
 }
 
 TEST(fatal_folly_dynamic, booleans) {
-  auto const decode = [](char const* json) {
+  const auto decode = [](const char* json) {
     return apache::thrift::from_dynamic<test_cpp2::cpp_reflection::structB>(
         folly::parseJson(json), apache::thrift::dynamic_format::PORTABLE);
   };
@@ -388,27 +388,27 @@ TEST(fatal_folly_dynamic, booleans) {
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic_compat) {
-  auto const data = test_data_1<
+  const auto data = test_data_1<
       test_cpp2::cpp_compat::compat_struct3,
       test_cpp2::cpp_compat::compat_structA,
       test_cpp2::cpp_compat::compat_structB,
       test_cpp2::cpp_compat::compat_enum1,
       test_cpp2::cpp_compat::compat_enum2>();
-  auto const pod = data.first;
-  auto const json = folly::parseJson(data.second);
+  const auto pod = data.first;
+  const auto json = folly::parseJson(data.second);
 
   test_to_from(pod, json);
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic_global) {
-  auto const data = test_data_1<
+  const auto data = test_data_1<
       ::global_struct3,
       ::global_structA,
       ::global_structB,
       ::global_enum1,
       ::global_enum2>();
-  auto const pod = data.first;
-  auto const json = folly::parseJson(data.second);
+  const auto pod = data.first;
+  const auto json = folly::parseJson(data.second);
 
   test_to_from(pod, json);
 }
@@ -450,8 +450,8 @@ struct SharedHelper {
 
 struct SharedConstHelper {
   template <typename T, typename... Args>
-  static std::shared_ptr<T const> build(Args&&... args) {
-    return std::make_shared<T const>(std::forward<Args>(args)...);
+  static std::shared_ptr<const T> build(Args&&... args) {
+    return std::make_shared<const T>(std::forward<Args>(args)...);
   }
 };
 } // namespace
@@ -464,7 +464,7 @@ void ref_test() {
   std::map<std::string, std::string> helloWorld{{"Hello"s, "World"s}};
 
   Structure v;
-  auto const rawJson = folly::stripLeftMargin(R"({
+  const auto rawJson = folly::stripLeftMargin(R"({
     "aStruct": {
       "a": 0,
       "b": ""
@@ -496,7 +496,7 @@ void ref_test() {
   v.anOptionalSet_ref() = nullptr;
   v.anOptionalMap_ref() = nullptr;
   v.anOptionalUnion_ref() = nullptr;
-  auto const json = folly::parseJson(rawJson);
+  const auto json = folly::parseJson(rawJson);
   test_to_from(v, json);
 
   v.anOptionalStruct_ref() = Helper::template build<structA>();
@@ -537,7 +537,7 @@ void ref_test() {
       },
       "anOptionalUnion": {}
     })";
-  auto const json2 = folly::parseJson(rawJson2);
+  const auto json2 = folly::parseJson(rawJson2);
   test_to_from(v, json2);
 }
 
@@ -563,14 +563,14 @@ TEST(fatal_folly_dynamic, to_from_variant_ref_unique) {
   inner.b() = "testing yo";
   pod.set_aStruct(inner);
 
-  auto const rawJson = folly::stripLeftMargin(R"({
+  const auto rawJson = folly::stripLeftMargin(R"({
     "aStruct": {
       "a": 109,
       "b": "testing yo"
     }
   })");
 
-  auto const json = folly::parseJson(rawJson);
+  const auto json = folly::parseJson(rawJson);
   test_to_from(pod, json);
 }
 
@@ -581,14 +581,14 @@ TEST(fatal_pretty_print, to_from_struct_box) {
   inner.a() = 109;
   inner.b() = "testing yo";
 
-  auto const rawJson = folly::stripLeftMargin(R"({
+  const auto rawJson = folly::stripLeftMargin(R"({
     "anOptionalStruct": {
       "a": 109,
       "b": "testing yo"
     }
   })");
 
-  auto const json = folly::parseJson(rawJson);
+  const auto json = folly::parseJson(rawJson);
   test_to_from(pod, json);
 }
 

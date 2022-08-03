@@ -41,7 +41,7 @@ namespace apache::thrift {
   }
 
   auto ap = detail::ServerRequestHelper::asyncProcessor(serverRequest);
-  AsyncProcessorFactory::MethodMetadata const& metadata =
+  const AsyncProcessorFactory::MethodMetadata& metadata =
       *serverRequest.methodMetadata();
   folly::RequestContextScopeGuard rctx(serverRequest.follyRequestContext());
   try {

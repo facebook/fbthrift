@@ -120,7 +120,7 @@ void TestServiceMock::onewayLogBlob(std::unique_ptr<folly::IOBuf> val) {
 }
 
 IntermHeaderService::IntermHeaderService(
-    std::string const& host, int16_t port) {
+    const std::string& host, int16_t port) {
   if (FLAGS_transport == "header") {
     HeaderClientChannel::Ptr channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {

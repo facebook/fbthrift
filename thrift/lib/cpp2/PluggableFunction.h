@@ -70,7 +70,7 @@ class PluggableFunction<Ret(Args...)> {
   constexpr explicit PluggableFunction(signature& init) noexcept
       : init_{init} {}
 
-  PluggableFunction const& operator=(signature& next) const noexcept {
+  const PluggableFunction& operator=(signature& next) const noexcept {
     if (auto prev = impl_.exchange(&next)) {
       auto msg = prev == &init_
           ? "pluggable function: override after invocation"
@@ -88,7 +88,7 @@ class PluggableFunction<Ret(Args...)> {
 
  private:
   FOLLY_ERASE signature* choose() const {
-    auto const impl = impl_.load();
+    const auto impl = impl_.load();
     return FOLLY_LIKELY(!!impl) ? impl : choose_slow();
   }
 

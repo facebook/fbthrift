@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ class Cpp2Ops<::thrift::test::MyCustomStruct> {
 
   template <class Protocol>
   static uint32_t serializedSize(
-      Protocol const* p, const ::thrift::test::MyCustomStruct* obj) {
+      const Protocol* p, const ::thrift::test::MyCustomStruct* obj) {
     uint32_t xfer = 0;
     assert(obj->data_.size() >= sizeof(int));
     const int prefix = *reinterpret_cast<const int*>(&obj->data_[0]);
@@ -116,7 +116,7 @@ class Cpp2Ops<::thrift::test::MyCustomStruct> {
 
   template <class Protocol>
   static uint32_t serializedSizeZC(
-      Protocol const* p, const ::thrift::test::MyCustomStruct* obj) {
+      const Protocol* p, const ::thrift::test::MyCustomStruct* obj) {
     return serializedSize(p, obj);
   }
 
@@ -194,7 +194,7 @@ class Cpp2Ops<::thrift::test::MyCustomUnion> {
 
   template <class Protocol>
   static uint32_t serializedSize(
-      Protocol const* p, const ::thrift::test::MyCustomUnion* obj) {
+      const Protocol* p, const ::thrift::test::MyCustomUnion* obj) {
     uint32_t xfer = 0;
     xfer += p->serializedStructSize("MyStruct");
     try {
@@ -211,7 +211,7 @@ class Cpp2Ops<::thrift::test::MyCustomUnion> {
 
   template <class Protocol>
   static uint32_t serializedSizeZC(
-      Protocol const* p, const ::thrift::test::MyCustomUnion* obj) {
+      const Protocol* p, const ::thrift::test::MyCustomUnion* obj) {
     return serializedSize(p, obj);
   }
 

@@ -532,7 +532,7 @@ folly::exception_wrapper recv_wrapped_helper(
           state.header(), folly::to_narrow(buffer.computeChainDataLength()));
     }
     return folly::exception_wrapper();
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     return folly::exception_wrapper(std::current_exception(), e);
   } catch (...) {
     return folly::exception_wrapper(std::current_exception());
@@ -553,7 +553,7 @@ folly::exception_wrapper recv_wrapped(
       _returns...);
   auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
-    constexpr auto const kHasReturnType = sizeof...(_returns) != 0;
+    constexpr const auto kHasReturnType = sizeof...(_returns) != 0;
     ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
   }
   if (ctx && ew) {
@@ -745,7 +745,7 @@ folly::exception_wrapper recv_wrapped(
 #endif
 }
 
-[[noreturn]] void throw_app_exn(char const* msg);
+[[noreturn]] void throw_app_exn(const char* msg);
 } // namespace ac
 } // namespace detail
 
@@ -1210,7 +1210,7 @@ void execute(
     Processor* processor,
     ServerRequest&& request,
     protocol::PROTOCOL_TYPES protType,
-    AsyncProcessor::MethodMetadata const& metadata) {
+    const AsyncProcessor::MethodMetadata& metadata) {
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
 
@@ -1727,7 +1727,7 @@ void async_tm_coro(CallbackPtr<T> callback, folly::coro::Task<T>&& task) {
 #endif
 
 folly::exception_wrapper create_app_exn_unimplemented(const char* name);
-[[noreturn]] void throw_app_exn_unimplemented(char const* name);
+[[noreturn]] void throw_app_exn_unimplemented(const char* name);
 
 } // namespace si
 } // namespace detail

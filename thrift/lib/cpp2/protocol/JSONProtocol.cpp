@@ -24,13 +24,13 @@ namespace thrift {
 namespace detail {
 namespace json {
 
-[[noreturn]] void throwNegativeSize(int64_t const size) {
+[[noreturn]] void throwNegativeSize(const int64_t size) {
   throw TProtocolException(
       TProtocolException::NEGATIVE_SIZE, folly::to<std::string>(size, " < 0"));
 }
 
 [[noreturn]] void throwExceededSizeLimit(
-    int64_t const size, int64_t const sizeMax) {
+    const int64_t size, const int64_t sizeMax) {
   throw TProtocolException(
       TProtocolException::SIZE_LIMIT,
       folly::to<std::string>(size, " is too large (", sizeMax, ")"));
@@ -44,7 +44,7 @@ namespace json {
 } // namespace detail
 
 [[noreturn]] void JSONProtocolReader::throwUnrecognizableAsBoolean(
-    int8_t const byte) {
+    const int8_t byte) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       folly::to<std::string>(byte, " is not a valid bool"));

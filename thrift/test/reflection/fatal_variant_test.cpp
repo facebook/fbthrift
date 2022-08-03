@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace cpp_reflection {
 #define TEST_VARIANT_GET(GETTER, TYPE, FIELD, VALUE, ...)         \
   do {                                                            \
     union1 u;                                                     \
-    union1 const& c = u;                                          \
+    const union1& c = u;                                          \
     TYPE __VA_ARGS__ value{VALUE};                                \
     u.set_##FIELD(value);                                         \
                                                                   \
@@ -92,7 +92,7 @@ TEST(fatal_variant, variant_checked_get) {
                                                                             \
     {                                                                       \
       union1 u;                                                             \
-      union1 const& c = u;                                                  \
+      const union1& c = u;                                                  \
       TYPE __VA_ARGS__ value{VALUE};                                        \
       u.set_##FIELD(value);                                                 \
                                                                             \
@@ -138,7 +138,7 @@ TEST(fatal_variant, variant_try_get) {
 #define TEST_IMPL2(TYPE, FIELD, OTHER1, OTHER2, OTHER3, VALUE, ...)           \
   do {                                                                        \
     union1 u;                                                                 \
-    union1 const& c = u;                                                      \
+    const union1& c = u;                                                      \
     TYPE __VA_ARGS__ value{VALUE};                                            \
     u.set_##FIELD(value);                                                     \
                                                                               \
@@ -161,7 +161,7 @@ TEST(fatal_variant, variant_try_get) {
         apache::thrift::variant_try_get<TYPE>(c));                            \
     ASSERT_EQ(union1::Type::FIELD, u.getType());                              \
     EXPECT_SAME<                                                              \
-        TYPE const*,                                                          \
+        const TYPE*,                                                          \
         decltype(apache::thrift::variant_try_get<TYPE>(c))>();                \
                                                                               \
     EXPECT_EQ(nullptr, apache::thrift::variant_try_get<OTHER1>(u));           \
@@ -214,7 +214,7 @@ TEST(fatal_variant, variant_set) {
 #define TEST_IMPL(TYPE, FIELD, VALUE)                         \
   do {                                                        \
     TEST_IMPL2(TYPE, FIELD, VALUE);                           \
-    TEST_IMPL2(TYPE, FIELD, VALUE, static_cast<TYPE const&>); \
+    TEST_IMPL2(TYPE, FIELD, VALUE, static_cast<const TYPE&>); \
     TEST_IMPL2(TYPE, FIELD, VALUE, std::move);                \
   } while (false)
 
@@ -257,7 +257,7 @@ TEST(fatal_variant, variant_emplace) {
     double value = 5.6;
     TEST_IMPL(double, ud, 5.6, value);
     TEST_IMPL(double, ud, 5.6, std::move(value));
-    double const cvalue = 7.2;
+    const double cvalue = 7.2;
     TEST_IMPL(double, ud, 7.2, cvalue);
   }
 
@@ -278,7 +278,7 @@ TEST(fatal_variant, variant_emplace) {
     enum1 value = enum1::field2;
     TEST_IMPL(enum1, ue, enum1::field2, value);
     TEST_IMPL(enum1, ue, enum1::field2, std::move(value));
-    enum1 const cvalue = enum1::field0;
+    const enum1 cvalue = enum1::field0;
     TEST_IMPL(enum1, ue, enum1::field0, cvalue);
   }
 

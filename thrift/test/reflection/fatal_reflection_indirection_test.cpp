@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
       std::int32_t&&,
       decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
-      std::int32_t const&,
-      decltype(member::getter{}(std::declval<type const&>()))>();
+      const std::int32_t&,
+      decltype(member::getter{}(std::declval<const type&>()))>();
 
   type obj;
   member::getter{}(obj) = 12;
@@ -67,8 +67,8 @@ TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
       std::int32_t&&,
       decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
-      std::int32_t const&,
-      decltype(member::getter{}(std::declval<type const&>()))>();
+      const std::int32_t&,
+      decltype(member::getter{}(std::declval<const type&>()))>();
 
   type obj;
   member::getter{}(obj) = 15;
@@ -95,8 +95,8 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
       std::int32_t&&,
       decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
-      std::int32_t const&,
-      decltype(member::getter{}(std::declval<type const&>()))>();
+      const std::int32_t&,
+      decltype(member::getter{}(std::declval<const type&>()))>();
 
   type obj;
   member::getter{}(obj) = -43;
@@ -123,8 +123,8 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
       std::int32_t&&,
       decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
-      std::int32_t const&,
-      decltype(member::getter{}(std::declval<type const&>()))>();
+      const std::int32_t&,
+      decltype(member::getter{}(std::declval<const type&>()))>();
 
   type obj;
   member::getter{}(obj) = -2;
@@ -151,8 +151,8 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
       std::string&&,
       decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
-      std::string const&,
-      decltype(member::getter{}(std::declval<type const&>()))>();
+      const std::string&,
+      decltype(member::getter{}(std::declval<const type&>()))>();
 
   type obj;
   member::getter{}(obj) = "hello";

@@ -414,16 +414,16 @@ std::string get_include_path(
     const std::string& input_filename) {
   std::string include_prefix;
   for (const auto& target : generator_targets) {
-    auto const colon_pos = target.find(':');
+    const auto colon_pos = target.find(':');
     if (colon_pos == std::string::npos) {
       continue;
     }
-    auto const lang_name = target.substr(0, colon_pos);
+    const auto lang_name = target.substr(0, colon_pos);
     if (lang_name != "cpp2" && lang_name != "mstch_cpp2") {
       continue;
     }
 
-    auto const lang_args = target.substr(colon_pos + 1);
+    const auto lang_args = target.substr(colon_pos + 1);
     parse_generator_options(lang_args, [&](std::string k, std::string v) {
       if (k.find("include_prefix") != std::string::npos) {
         include_prefix = std::move(v);

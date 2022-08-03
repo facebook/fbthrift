@@ -125,7 +125,7 @@ class ClientReceiveState {
 
   bool isException() const { return excw_ ? true : false; }
 
-  folly::exception_wrapper const& exception() const { return excw_; }
+  const folly::exception_wrapper& exception() const { return excw_; }
 
   folly::exception_wrapper& exception() { return excw_; }
 
@@ -277,7 +277,7 @@ class RequestCallback : public RequestClientCallback {
     {
       folly::RequestContextScopeGuard rctx(std::move(context_));
       bool sendError = false;
-      ex.with_exception([&](transport::TTransportException const& tex) {
+      ex.with_exception([&](const transport::TTransportException& tex) {
         sendError = tex.getType() ==
             apache::thrift::transport::TTransportException::NOT_OPEN;
       });

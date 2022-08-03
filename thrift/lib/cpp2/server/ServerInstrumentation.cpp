@@ -36,8 +36,8 @@ class TrackerCollection {
 
  public:
   TrackerCollection() = default;
-  TrackerCollection(TrackerCollection const&) = delete;
-  void operator=(TrackerCollection const&) = delete;
+  TrackerCollection(const TrackerCollection&) = delete;
+  void operator=(const TrackerCollection&) = delete;
 
   void forTrackersWithKey(
       std::string_view key,

@@ -71,19 +71,19 @@ gen_adapter_dependency_graph(
     const std::vector</* const */ t_typedef*>& typedefs);
 
 inline std::vector<std::string> get_gen_namespace_components(
-    t_program const& program) {
+    const t_program& program) {
   return gen::cpp::namespace_resolver::gen_namespace_components(program);
 }
 
-inline std::string get_gen_namespace(t_program const& program) {
+inline std::string get_gen_namespace(const t_program& program) {
   return gen::cpp::namespace_resolver::gen_namespace(program);
 }
 
-inline std::string get_gen_unprefixed_namespace(t_program const& program) {
+inline std::string get_gen_unprefixed_namespace(const t_program& program) {
   return gen::cpp::namespace_resolver::gen_unprefixed_namespace(program);
 }
 
-inline std::string get_service_qualified_name(t_service const& service) {
+inline std::string get_service_qualified_name(const t_service& service) {
   return get_gen_namespace(*service.program()) + "::" + get_name(&service);
 }
 
@@ -93,10 +93,10 @@ inline std::string get_service_qualified_name(t_service const& service) {
  * its not considered orderable, and we don't need to generate operator< methods
  */
 bool is_orderable(
-    std::unordered_set<t_type const*>& seen,
-    std::unordered_map<t_type const*, bool>& memo,
-    t_type const& type);
-bool is_orderable(t_type const& type);
+    std::unordered_set<const t_type*>& seen,
+    std::unordered_map<const t_type*, bool>& memo,
+    const t_type& type);
+bool is_orderable(const t_type& type);
 
 /**
  * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
@@ -202,14 +202,14 @@ inline bool is_unique_ref(const t_field* f) {
 }
 
 bool is_stack_arguments(
-    std::map<std::string, std::string> const& options,
-    t_function const& function);
+    const std::map<std::string, std::string>& options,
+    const t_function& function);
 
-int32_t get_split_count(std::map<std::string, std::string> const& options);
+int32_t get_split_count(const std::map<std::string, std::string>& options);
 
 // return client name -- client split count
 std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
-    std::map<std::string, std::string> const& options);
+    const std::map<std::string, std::string>& options);
 
 bool is_mixin(const t_field& field);
 
@@ -249,10 +249,10 @@ std::vector<mixin_member> get_mixins_and_members(const t_struct& strct);
 //
 //  The _with_indirection variant intersperses indirection_tag wherever the
 //  annotation cpp.indirection appears in the corresponding definitions.
-std::string get_gen_type_class(t_type const& type);
-std::string get_gen_type_class_with_indirection(t_type const& type);
+std::string get_gen_type_class(const t_type& type);
+std::string get_gen_type_class_with_indirection(const t_type& type);
 
-std::string sha256_hex(std::string const& in);
+std::string sha256_hex(const std::string& in);
 
 bool is_cpp_ref_unique_either(const t_field* f);
 

@@ -179,7 +179,7 @@ void parsing_driver::parse_file() {
     src = source_mgr_->add_file(path);
     lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
     reset_locations();
-  } catch (std::runtime_error const& ex) {
+  } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
   }
 

@@ -26,7 +26,7 @@ struct print_variant_member {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T const& object) const {
     auto name = fatal::z_data<typename Member::metadata::name>();
-    auto const& value = Member::get(object);
+    const auto& value = Member::get(object);
     std::cout << "currently set: " << name << " = " << value << '\n';
     std::cout << "- type class: "
               << folly::demangle(typeid(typename Member::metadata::type_class))
@@ -40,7 +40,7 @@ struct print_variant_member {
 template <typename T>
 void print_variant_info(T const& object) {
   using traits = fatal::variant_traits<T>;
-  bool const found =
+  const bool found =
       fatal::scalar_search<typename traits::descriptors, fatal::get_type::id>(
           object.getType(), print_variant_member(), object);
 

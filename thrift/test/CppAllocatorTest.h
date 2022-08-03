@@ -47,13 +47,13 @@ struct AlwaysThrowAllocator : private std::allocator<T> {
 
   template <class U>
   friend bool operator==(
-      AlwaysThrowAllocator<T> const&, AlwaysThrowAllocator<U> const&) noexcept {
+      const AlwaysThrowAllocator<T>&, const AlwaysThrowAllocator<U>&) noexcept {
     return true;
   }
 
   template <class U>
   friend bool operator!=(
-      AlwaysThrowAllocator<T> const&, AlwaysThrowAllocator<U> const&) noexcept {
+      const AlwaysThrowAllocator<T>&, const AlwaysThrowAllocator<U>&) noexcept {
     return false;
   }
 };
@@ -158,13 +158,13 @@ struct CountingAlloc : private std::allocator<T> {
 
   template <class U>
   friend bool operator==(
-      CountingAlloc<T> const& a, CountingAlloc<U> const& b) noexcept {
+      const CountingAlloc<T>& a, const CountingAlloc<U>& b) noexcept {
     return a.counter_.get() == b.counter_.get(); // both point to same counter
   }
 
   template <class U>
   friend bool operator!=(
-      CountingAlloc<T> const& a, CountingAlloc<U> const& b) noexcept {
+      const CountingAlloc<T>& a, const CountingAlloc<U>& b) noexcept {
     return !(a == b);
   }
 };

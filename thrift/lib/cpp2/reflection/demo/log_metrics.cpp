@@ -27,12 +27,12 @@ using namespace static_reflection::demo;
 
 struct metrics_client {
   template <typename Metric, typename Value>
-  void add(Metric const& name, Value const& value) {
+  void add(const Metric& name, const Value& value) {
     metrics_[name] += value;
   }
 
   void report() {
-    for (auto const& i : metrics_) {
+    for (const auto& i : metrics_) {
       std::cout << i.first << ": " << i.second << '\n';
     }
   }
@@ -49,9 +49,9 @@ struct export_metric_dynamic {
       fatal::indexed<Member, Index>,
       metrics_client& sink,
       T const& metrics,
-      std::string const& prefix) const {
-    auto const key = prefix + fatal::z_data<typename Member::name>();
-    auto const& value = typename Member::getter{}(metrics);
+      const std::string& prefix) const {
+    const auto key = prefix + fatal::z_data<typename Member::name>();
+    const auto& value = typename Member::getter{}(metrics);
 
     sink.add(key, value);
   }
@@ -86,7 +86,7 @@ struct export_metric_static {
     using key = fatal::
         cat<prefix, dot, typename info::name, dot, typename Member::name>;
 
-    auto const& value = typename Member::getter{}(metrics);
+    const auto& value = typename Member::getter{}(metrics);
     sink.add(fatal::z_data<key>(), value);
   }
 };

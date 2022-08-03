@@ -488,7 +488,7 @@ void serializeValue(Protocol& prot, const Value& value) {
         valueType = getTType(value.mapValue_ref()->begin()->second);
       }
       prot.writeMapBegin(keyType, valueType, size);
-      for (auto const& [key, val] : *value.mapValue_ref()) {
+      for (const auto& [key, val] : *value.mapValue_ref()) {
         ensureSameType(key, keyType);
         ensureSameType(val, valueType);
         serializeValue(prot, key);
@@ -504,7 +504,7 @@ void serializeValue(Protocol& prot, const Value& value) {
         elemType = getTType(*value.setValue_ref()->begin());
       }
       prot.writeSetBegin(elemType, size);
-      for (auto const& val : *value.setValue_ref()) {
+      for (const auto& val : *value.setValue_ref()) {
         ensureSameType(val, elemType);
         serializeValue(prot, val);
       }
@@ -513,7 +513,7 @@ void serializeValue(Protocol& prot, const Value& value) {
     }
     case Value::Type::objectValue: {
       prot.writeStructBegin("");
-      for (auto const& [fieldID, fieldVal] :
+      for (const auto& [fieldID, fieldVal] :
            *value.objectValue_ref()->members()) {
         auto fieldType = getTType(fieldVal);
         prot.writeFieldBegin("", fieldType, fieldID);

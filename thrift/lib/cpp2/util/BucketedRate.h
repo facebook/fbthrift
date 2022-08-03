@@ -60,9 +60,9 @@ class BucketedRate {
    * Indicate that a tick happened
    */
   void tick() {
-    auto const now = Clock::now();
-    auto const index = discardOutdatedBuffer(now);
-    auto const i = (index & (buckets_.size() - 1)); // = index % buckets_.size()
+    const auto now = Clock::now();
+    const auto index = discardOutdatedBuffer(now);
+    const auto i = (index & (buckets_.size() - 1)); // = index % buckets_.size()
     buckets_[i]++;
   }
 

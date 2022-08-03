@@ -32,7 +32,7 @@ class GeneratedAsyncClient : public TClientBase {
 
   GeneratedAsyncClient(std::shared_ptr<RequestChannel> channel);
 
-  virtual char const* getServiceName() const noexcept = 0;
+  virtual const char* getServiceName() const noexcept = 0;
 
   RequestChannel* getChannel() const noexcept { return channel_.get(); }
 

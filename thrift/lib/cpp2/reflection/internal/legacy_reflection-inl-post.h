@@ -69,7 +69,7 @@ struct deref<std::unique_ptr<T, D>> : deref<T> {};
 template <typename T>
 struct deref<std::shared_ptr<T>> : deref<T> {};
 template <typename T>
-struct deref<std::shared_ptr<T const>> : deref<T> {};
+struct deref<std::shared_ptr<const T>> : deref<T> {};
 template <typename T>
 using deref_t = folly::_t<deref<T>>;
 template <typename T>

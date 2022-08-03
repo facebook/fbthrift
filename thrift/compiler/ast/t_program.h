@@ -177,7 +177,7 @@ class t_program : public t_named {
    */
   std::vector<t_program*> get_included_programs() const {
     std::vector<t_program*> included_programs;
-    for (auto const& include : includes_) {
+    for (const auto& include : includes_) {
       included_programs.push_back(include->get_program());
     }
     return included_programs;

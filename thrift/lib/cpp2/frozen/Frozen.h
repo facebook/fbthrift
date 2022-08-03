@@ -38,11 +38,11 @@
 #include <folly/Utility.h>
 #include <folly/container/F14Map-fwd.h>
 #include <folly/container/F14Set-fwd.h>
+#include <folly/container/heap_vector_types.h>
 #include <folly/experimental/Bits.h>
 #include <folly/hash/Hash.h>
 #include <folly/lang/Bits.h>
 #include <folly/sorted_vector_types.h>
-#include <folly/container/heap_vector_types.h>
 #include <thrift/lib/cpp2/frozen/FixedSizeStringHash.h>
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/HintTypes.h>
@@ -990,9 +990,9 @@ class Bundled : public Base {
   }
 
   template <typename T, class Decayed = typename std::decay<T>::type>
-  Decayed const* findFirstOfType() const {
-    for (auto const& h : holds_) {
-      if (auto p = dynamic_cast<HolderImpl<Decayed> const*>(h.get())) {
+  const Decayed* findFirstOfType() const {
+    for (const auto& h : holds_) {
+      if (auto p = dynamic_cast<const HolderImpl<Decayed>*>(h.get())) {
         return &p->t_;
       }
     }

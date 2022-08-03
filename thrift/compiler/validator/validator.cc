@@ -32,7 +32,7 @@ static void fill_validators(validator_list& vs) {
 
 void validator_list::traverse(t_program* const program) {
   auto pointers = std::vector<visitor*>{};
-  for (auto const& v : validators_) {
+  for (const auto& v : validators_) {
     pointers.push_back(v.get());
   }
   interleaved_visitor(pointers).traverse(program);

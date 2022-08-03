@@ -59,7 +59,7 @@ std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
 }
 
 std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor) {
-  auto const pair = readFrameTypeAndFlagsUnsafe(cursor);
+  const auto pair = readFrameTypeAndFlagsUnsafe(cursor);
   switch (static_cast<FrameType>(pair.first)) {
     case FrameType::SETUP:
     case FrameType::REQUEST_RESPONSE:

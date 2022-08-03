@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ using protocol_type_pairs = ::testing::Types<
     RWPair<CompactProtocolReader, CompactProtocolWriter, false>>;
 
 template <bool printable>
-void print_underlying(folly::IOBuf const& buffer, int vlog_level = 5) {
+void print_underlying(const folly::IOBuf& buffer, int vlog_level = 5) {
   if (VLOG_IS_ON(vlog_level)) {
     folly::ByteRange range(buffer.data(), buffer.length());
     if (printable) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,10 +132,10 @@ class TVirtualTransport : public Super_ {
    * additional versions can be added as needed.
    */
   template <typename Arg_>
-  TVirtualTransport(Arg_ const& arg) : Super_(arg) {}
+  TVirtualTransport(const Arg_& arg) : Super_(arg) {}
 
   template <typename Arg1_, typename Arg2_>
-  TVirtualTransport(Arg1_ const& a1, Arg2_ const& a2) : Super_(a1, a2) {}
+  TVirtualTransport(const Arg1_& a1, const Arg2_& a2) : Super_(a1, a2) {}
 };
 
 } // namespace transport

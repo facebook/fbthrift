@@ -73,7 +73,7 @@ TEST(fatal_union, by_id) {
   EXPECT_SAME<enum1, traits::type<uei>>();
 
   union1 u;
-  union1 const& uc = u;
+  const union1& uc = u;
   union1& ul = u;
   union1&& ur = std::move(u);
   EXPECT_TRUE(vtraits::empty(u));
@@ -157,7 +157,7 @@ TEST(fatal_union, by_type) {
   EXPECT_SAME<enum1, traits::type<enum1>>();
 
   union1 u;
-  union1 const& uc = u;
+  const union1& uc = u;
   union1& ul = u;
   union1&& ur = std::move(u);
   EXPECT_TRUE(vtraits::empty(u));

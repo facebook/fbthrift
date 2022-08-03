@@ -51,9 +51,9 @@ struct pretty_print_impl<type_class::list<ValueTypeClass>> {
     out << "<list>[";
     if (!what.empty()) {
       out.newline();
-      auto const size = what.size();
+      const auto size = what.size();
       std::size_t index = 0;
-      for (auto const& i : what) {
+      for (const auto& i : what) {
         auto scope = out.start_scope();
         scope << index << ": ";
         pretty_print_impl<ValueTypeClass>::print(scope, i);
@@ -79,9 +79,9 @@ struct pretty_print_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     out << "<map>{";
     if (!what.empty()) {
       out.newline();
-      auto const size = what.size();
+      const auto size = what.size();
       std::size_t index = 0;
-      for (auto const& i : what) {
+      for (const auto& i : what) {
         auto scope = out.start_scope();
         pretty_print_impl<KeyTypeClass>::print(scope, i.first);
         scope << ": ";
@@ -108,9 +108,9 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
     out << "<set>{";
     if (!what.empty()) {
       out.newline();
-      auto const size = what.size();
+      const auto size = what.size();
       std::size_t index = 0;
-      for (auto const& i : what) {
+      for (const auto& i : what) {
         auto scope = out.start_scope();
         pretty_print_impl<ValueTypeClass>::print(scope, i);
         if (++index < size) {
@@ -146,19 +146,19 @@ struct pretty_print_structure_with_pointers {
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
       OutputStream& out,
-      optional_boxed_field_ref<boxed_value_ptr<T> const&> pMember) {
+      optional_boxed_field_ref<const boxed_value_ptr<T>&> pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember ? &*pMember : nullptr);
   }
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out, std::shared_ptr<T> const& pMember) {
+      OutputStream& out, const std::shared_ptr<T>& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out, std::unique_ptr<T> const& pMember) {
+      OutputStream& out, const std::unique_ptr<T>& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 };
@@ -249,7 +249,7 @@ struct pretty_print_impl {
   }
 
   template <typename OutputStream>
-  static void print(OutputStream& out, bool const what) {
+  static void print(OutputStream& out, const bool what) {
     out << (what ? "true" : "false");
   }
 };

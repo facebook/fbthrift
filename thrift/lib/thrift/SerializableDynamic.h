@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -249,7 +249,7 @@ class Cpp2Ops<SerializableDynamic> {
 
   template <class Protocol_>
   static uint32_t serializedSize(
-      Protocol_ const* p, const SerializableDynamic* obj) {
+      const Protocol_* p, const SerializableDynamic* obj) {
     uint32_t xfer = 0;
     xfer += p->serializedStructSize("Variant");
     switch (obj->value_.type()) {
@@ -305,7 +305,7 @@ class Cpp2Ops<SerializableDynamic> {
 
   template <class Protocol_>
   static uint32_t serializedSizeZC(
-      Protocol_ const* p, const SerializableDynamic* obj) {
+      const Protocol_* p, const SerializableDynamic* obj) {
     return serializedSize(p, obj);
   }
 

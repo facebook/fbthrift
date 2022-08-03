@@ -679,7 +679,7 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
   auto runner = std::make_shared<ScopedServerInterfaceThread>(handler);
   auto& server = runner->getThriftServer();
   auto& thriftServer = dynamic_cast<ThriftServer&>(server);
-  auto const kChunkSize = 1ul << 20; // (1 MiB)
+  const auto kChunkSize = 1ul << 20; // (1 MiB)
   server.setEgressMemoryLimit(kChunkSize * 4); // (4 MiB)
   server.setWriteBatchingInterval(std::chrono::milliseconds::zero());
 
@@ -760,7 +760,7 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
   auto all = folly::collectAll(std::move(fv));
   all.wait();
   ASSERT_TRUE(all.hasValue());
-  for (auto const& rsp : std::move(all).get()) {
+  for (const auto& rsp : std::move(all).get()) {
     EXPECT_TRUE(rsp.hasException());
   }
 }
@@ -836,7 +836,7 @@ TEST(ThriftServer, SocketWriteTimeout) {
   auto all = folly::collectAll(std::move(fv));
   all.wait();
   ASSERT_TRUE(all.hasValue());
-  for (auto const& rsp : std::move(all).get()) {
+  for (const auto& rsp : std::move(all).get()) {
     EXPECT_TRUE(rsp.hasException());
   }
 }
@@ -2199,7 +2199,7 @@ TEST_P(HeaderOrRocket, FailureInjection) {
     void requestError(ClientReceiveState&& state) override {
       ASSERT_TRUE(state.exception());
       auto ex_ = state.exception().get_exception();
-      auto& ex = dynamic_cast<TTransportException const&>(*ex_);
+      auto& ex = dynamic_cast<const TTransportException&>(*ex_);
       if (ex.getType() == TTransportException::TIMED_OUT) {
         EXPECT_EQ(TIMEOUT, *expected_);
       } else {

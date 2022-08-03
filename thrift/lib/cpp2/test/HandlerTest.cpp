@@ -35,7 +35,7 @@ MATCHER(IsMissingResult, "") {
   try {
     arg.value();
     return false;
-  } catch (TApplicationException const& e) {
+  } catch (const TApplicationException& e) {
     LOG(INFO) << e.getType();
     return e.getType() == TApplicationException::MISSING_RESULT;
   } catch (...) {

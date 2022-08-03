@@ -169,8 +169,8 @@ typename std::enable_if<sorted_unique_constructible_v<Map>>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
-    KeyDeserializer const& kr,
-    MappedDeserializer const& mr) {
+    const KeyDeserializer& kr,
+    const MappedDeserializer& mr) {
   if (map_size == 0) {
     return;
   }
@@ -201,8 +201,8 @@ typename std::enable_if<
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
-    KeyDeserializer const& kr,
-    MappedDeserializer const& mr) {
+    const KeyDeserializer& kr,
+    const MappedDeserializer& mr) {
   reserve_if_possible(&map, map_size);
 
   for (auto i = map_size; i--;) {
@@ -221,8 +221,8 @@ typename std::enable_if<
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
-    KeyDeserializer const& kr,
-    MappedDeserializer const& mr) {
+    const KeyDeserializer& kr,
+    const MappedDeserializer& mr) {
   reserve_if_possible(&map, map_size);
 
   for (auto i = map_size; i--;) {
@@ -235,7 +235,7 @@ deserialize_known_length_map(
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<sorted_unique_constructible_v<Set>>::type
 deserialize_known_length_set(
-    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, const ValDeserializer& vr) {
   if (set_size == 0) {
     return;
   }
@@ -262,7 +262,7 @@ typename std::enable_if<
     !sorted_unique_constructible_v<Set> &&
     set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
-    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, const ValDeserializer& vr) {
   reserve_if_possible(&set, set_size);
 
   for (auto i = set_size; i--;) {
@@ -277,7 +277,7 @@ typename std::enable_if<
     !sorted_unique_constructible_v<Set> &&
     !set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
-    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, const ValDeserializer& vr) {
   reserve_if_possible(&set, set_size);
 
   for (auto i = set_size; i--;) {
@@ -313,7 +313,7 @@ struct protocol_methods;
         [&](auto& p) { p.read##Method(out); })(protocol);                    \
   }                                                                          \
   template <typename Protocol>                                               \
-  static std::size_t write(Protocol& protocol, Type const& in) {             \
+  static std::size_t write(Protocol& protocol, const Type& in) {             \
     if (std::is_same<type_class::Class, type_class::binary>::value ||        \
         std::is_same<type_class::Class, type_class::string>::value) {        \
       return checked_container_size(protocol.write##Method(in));             \
@@ -324,7 +324,7 @@ struct protocol_methods;
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(Class, Type, Method)   \
   template <bool, typename Protocol>                                      \
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
+  static std::size_t serializedSize(Protocol& protocol, const Type& in) { \
     return protocol.serializedSize##Method(in);                           \
   }
 
@@ -360,13 +360,13 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
     out = folly::to_unsigned(tmp);                                           \
   }                                                                          \
   template <typename Protocol>                                               \
-  static std::size_t write(Protocol& protocol, Type const& in) {             \
+  static std::size_t write(Protocol& protocol, const Type& in) {             \
     return protocol.write##Method(folly::to_signed(in));                     \
   }
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(Class, Type, Method)       \
   template <bool, typename Protocol>                                      \
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
+  static std::size_t serializedSize(Protocol& protocol, const Type& in) { \
     return protocol.serializedSize##Method(folly::to_signed(in));         \
   }
 
@@ -420,12 +420,12 @@ struct protocol_methods<type_class::binary, Type> {
 
   template <bool ZeroCopy, typename Protocol>
   static typename std::enable_if<ZeroCopy, std::size_t>::type serializedSize(
-      Protocol& protocol, Type const& in) {
+      Protocol& protocol, const Type& in) {
     return protocol.serializedSizeZCBinary(in);
   }
   template <bool ZeroCopy, typename Protocol>
   static typename std::enable_if<!ZeroCopy, std::size_t>::type serializedSize(
-      Protocol& protocol, Type const& in) {
+      Protocol& protocol, const Type& in) {
     return protocol.serializedSizeBinary(in);
   }
 };
@@ -457,13 +457,13 @@ struct enum_protocol_methods {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
+  static std::size_t write(Protocol& protocol, const Type& in) {
     int_type tmp = static_cast<int_type>(in);
     return int_methods::template write<Protocol>(protocol, tmp);
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& in) {
     int_type tmp = static_cast<int_type>(in);
     return int_methods::template serializedSize<ZeroCopy>(protocol, tmp);
   }
@@ -533,13 +533,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& out) {
+  static std::size_t write(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.writeListBegin(
         elem_ttype::value, checked_container_size(out.size()));
 
-    for (auto const& elem : out) {
+    for (const auto& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
     xfer += protocol.writeListEnd();
@@ -547,12 +547,12 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeListBegin(
         elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
-    for (auto const& elem : out) {
+    for (const auto& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
     xfer += protocol.serializedSizeListEnd();
@@ -603,7 +603,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         if (!canReadNElements(protocol, set_size, {reported_type})) {
           protocol::TProtocolException::throwTruncatedData();
         }
-        auto const vreader = [&protocol](auto& value) {
+        const auto vreader = [&protocol](auto& value) {
           elem_methods::read(protocol, value);
         };
         deserialize_known_length_set(out, set_size, vreader);
@@ -618,7 +618,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& out) {
+  static std::size_t write(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.writeSetBegin(
@@ -639,7 +639,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     } else {
       // Support containers with defined but non-FIFO iteration order.
       auto get_view = folly::order_preserving_reinsertion_view_or_default;
-      for (auto const& elem : get_view(out)) {
+      for (const auto& elem : get_view(out)) {
         xfer += elem_methods::write(protocol, elem);
       }
     }
@@ -648,12 +648,12 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeSetBegin(
         elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
-    for (auto const& elem : out) {
+    for (const auto& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
     xfer += protocol.serializedSizeSetEnd();
@@ -716,10 +716,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
                 protocol, map_size, {rpt_key_type, rpt_mapped_type})) {
           protocol::TProtocolException::throwTruncatedData();
         }
-        auto const kreader = [&protocol](auto& key) {
+        const auto kreader = [&protocol](auto& key) {
           key_methods::read(protocol, key);
         };
-        auto const vreader = [&protocol](auto& value) {
+        const auto vreader = [&protocol](auto& value) {
           mapped_methods::read(protocol, value);
         };
         deserialize_known_length_map(out, map_size, kreader, vreader);
@@ -734,7 +734,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& out) {
+  static std::size_t write(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.writeMapBegin(
@@ -761,7 +761,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     } else {
       // Support containers with defined but non-FIFO iteration order.
       auto get_view = folly::order_preserving_reinsertion_view_or_default;
-      for (auto const& elem_pair : get_view(out)) {
+      for (const auto& elem_pair : get_view(out)) {
         xfer += writeMapValueBegin(protocol);
         xfer += key_methods::write(protocol, elem_pair.first);
         xfer += mapped_methods::write(protocol, elem_pair.second);
@@ -773,14 +773,14 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeMapBegin(
         key_ttype::value,
         mapped_ttype::value,
         folly::to_narrow(folly::to_unsigned(out.size())));
-    for (auto const& elem_pair : out) {
+    for (const auto& elem_pair : out) {
       xfer += key_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.first);
       xfer += mapped_methods::template serializedSize<ZeroCopy>(
@@ -847,11 +847,11 @@ struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
+  static std::size_t write(Protocol& protocol, const Type& in) {
     return elem_methods::write(protocol, indirection{}(in));
   }
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& in) {
     return elem_methods::template serializedSize<ZeroCopy>(
         protocol, indirection{}(in));
   }
@@ -872,11 +872,11 @@ struct protocol_methods<type_class::structure, Type> {
     read(protocol, out);
   }
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
+  static std::size_t write(Protocol& protocol, const Type& in) {
     return Cpp2Ops<Type>::write(&protocol, &in);
   }
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
+  static std::size_t serializedSize(Protocol& protocol, const Type& in) {
     if (ZeroCopy) {
       return Cpp2Ops<Type>::serializedSizeZC(&protocol, &in);
     } else {

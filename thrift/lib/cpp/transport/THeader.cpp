@@ -542,10 +542,10 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
 }
 
 static unique_ptr<IOBuf> decompressCodec(
-    IOBuf const& buf, folly::io::CodecType codec) {
+    const IOBuf& buf, folly::io::CodecType codec) {
   try {
     return folly::io::getCodec(codec)->uncompress(&buf);
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     throw TApplicationException(
         TApplicationException::MISSING_RESULT,
         folly::exceptionStr(e).toStdString());
@@ -578,12 +578,12 @@ unique_ptr<IOBuf> THeader::untransform(
 }
 
 static unique_ptr<IOBuf> compressCodec(
-    IOBuf const& buf,
+    const IOBuf& buf,
     folly::io::CodecType codec,
     int level = folly::io::COMPRESSION_LEVEL_DEFAULT) {
   try {
     return folly::io::getCodec(codec, level)->compress(&buf);
-  } catch (std::exception const& e) {
+  } catch (const std::exception& e) {
     throw TTransportException(
         TTransportException::CORRUPTED_DATA,
         folly::exceptionStr(e).toStdString());

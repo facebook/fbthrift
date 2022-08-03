@@ -70,7 +70,7 @@ TEST(constants, examples) {
   pod1.a() = 10;
   pod1.b() = "foo";
 
-  auto const& pod_1 = test_constants::pod_1();
+  const auto& pod_1 = test_constants::pod_1();
   EXPECT_TRUE(pod_1.a().is_set());
   EXPECT_TRUE(pod_1.b().is_set());
   EXPECT_EQ(pod1, pod_1);
@@ -83,7 +83,7 @@ TEST(constants, examples) {
   pod2_c.b() = "bar";
   pod2.d() = std::vector<std::int32_t>{11, 22, 33};
 
-  auto const& pod_2 = test_constants::pod_2();
+  const auto& pod_2 = test_constants::pod_2();
   EXPECT_TRUE(pod_2.a().is_set());
   EXPECT_TRUE(pod_2.b().is_set());
   EXPECT_TRUE(pod_2.c().is_set());
@@ -92,7 +92,7 @@ TEST(constants, examples) {
   EXPECT_TRUE(pod_2.c()->b().is_set());
   EXPECT_EQ(pod2, pod_2);
 
-  auto const& pod_3 = test_constants::pod_3();
+  const auto& pod_3 = test_constants::pod_3();
   EXPECT_TRUE(pod_3.a().is_set());
   EXPECT_TRUE(pod_3.b().is_set());
   EXPECT_TRUE(pod_3.c().is_set());

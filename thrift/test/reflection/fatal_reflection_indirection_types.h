@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
     explicit Foo(std::int32_t& obj) : obj_(obj) {}
     std::int32_t& result() & { return obj_; }
     std::int32_t&& result() && { return std::move(obj_); }
-    std::int32_t const& result() const& { return obj_; }
+    const std::int32_t& result() const& { return obj_; }
 
    private:
     std::int32_t& obj_;
@@ -51,8 +51,8 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
 
   CppHasAResult() {}
   explicit CppHasAResult(std::int32_t result) : result_(result) {}
-  CppHasAResult(CppHasAResult const& that) : result_(that.result_) {}
-  CppHasAResult& operator=(CppHasAResult const& that) {
+  CppHasAResult(const CppHasAResult& that) : result_(that.result_) {}
+  CppHasAResult& operator=(const CppHasAResult& that) {
     this->~CppHasAResult();
     return *::new (this) CppHasAResult(that);
   }
@@ -62,7 +62,7 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
 
   Foo& foo() & { return foo_; }
   Foo&& foo() && { return static_cast<Foo&&>(foo_); }
-  Foo const& foo() const& { return foo_; }
+  const Foo& foo() const& { return foo_; }
 
  private:
   std::int32_t result_{};

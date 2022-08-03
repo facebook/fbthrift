@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -490,7 +490,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::processReadEOF() noexcept {
 
 template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
-    VoidCallback cb, char const* callbackName) noexcept {
+    VoidCallback cb, const char* callbackName) noexcept {
   readState_.unsetCallbackBuffer();
   readCallback_ = VoidCallback();
   readErrorCallback_ = VoidCallback();

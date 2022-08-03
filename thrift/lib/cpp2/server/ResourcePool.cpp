@@ -84,7 +84,7 @@ std::optional<ServerRequestRejection> ResourcePool::accept(
 // ResourcePoolSet
 
 void ResourcePoolSet::setResourcePool(
-    ResourcePoolHandle const& handle,
+    const ResourcePoolHandle& handle,
     std::unique_ptr<RequestPileInterface>&& requestPile,
     std::shared_ptr<folly::Executor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,

@@ -241,7 +241,7 @@ class const_checker {
     if (value->get_type() != t_const_value::CV_MAP) {
       report_type_mismatch("union");
     }
-    auto const& map = value->get_map();
+    const auto& map = value->get_map();
     if (map.size() > 1) {
       error(
           "type error: const `{}` is a union and can't have more than one "

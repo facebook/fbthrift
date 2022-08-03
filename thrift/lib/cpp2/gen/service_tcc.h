@@ -48,9 +48,9 @@ namespace ap {
 template <typename Prot>
 std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
     bool includeEnvelope,
-    TApplicationException const& x,
+    const TApplicationException& x,
     Cpp2RequestContext* const ctx,
-    char const* const method) {
+    const char* const method) {
   Prot prot;
   size_t bufSize = x.serializedSizeZC(&prot);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -86,9 +86,9 @@ void inline sendExceptionHelper(
 // optionally include the envelope.
 template <typename Prot>
 std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
-    TApplicationException const& x,
+    const TApplicationException& x,
     Cpp2RequestContext* const ctx,
-    char const* const method) {
+    const char* const method) {
   return process_serialize_xform_app_exn<Prot>(true, x, ctx, method);
 }
 
@@ -98,7 +98,7 @@ void process_handle_exn_deserialization(
     ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
-    char const* const method) {
+    const char* const method) {
   if (auto trustedServerEx =
           dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
     eb->runInEventBaseThread(
@@ -124,11 +124,11 @@ void process_handle_exn_deserialization(
 
 template <typename Prot>
 void process_throw_wrapped_handler_error(
-    folly::exception_wrapper const& ew,
+    const folly::exception_wrapper& ew,
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     ContextStack* const stack,
-    char const* const method) {
+    const char* const method) {
   if (auto trustedServerEx =
           dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
     req->sendErrorWrapped(
