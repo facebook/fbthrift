@@ -241,9 +241,6 @@ class PythonAsyncProcessor : public AsyncProcessor {
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
-    auto serializedRequest =
-        std::move(serializedCompressedRequest).uncompress();
-
     auto fname = context->getMethodName();
     bool oneway = isOnewayMethod(fname);
 
