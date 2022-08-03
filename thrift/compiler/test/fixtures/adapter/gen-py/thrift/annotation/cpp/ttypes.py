@@ -1070,6 +1070,8 @@ class FieldInterceptor:
   
   The field interceptor intercepts with the field value and the field context.
   It enforces an easily searchable function name `interceptThriftFieldAccess`.
+   - noinline: Setting to true makes compiler not inline and erase function signature for
+  the intercepting field accessor.
   """
 
   thrift_spec = None
@@ -1097,6 +1099,11 @@ class FieldInterceptor:
           self.name = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.BOOL:
+          self.noinline = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -1113,6 +1120,10 @@ class FieldInterceptor:
     if self.name != None:
       oprot.writeFieldBegin('name', TType.STRING, 1)
       oprot.writeString(self.name.encode('utf-8')) if UTF8STRINGS and not isinstance(self.name, bytes) else oprot.writeString(self.name)
+      oprot.writeFieldEnd()
+    if self.noinline != None:
+      oprot.writeFieldBegin('noinline', TType.BOOL, 2)
+      oprot.writeBool(self.noinline)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -1131,6 +1142,8 @@ class FieldInterceptor:
       json_obj = loads(json)
     if 'name' in json_obj and json_obj['name'] is not None:
       self.name = json_obj['name']
+    if 'noinline' in json_obj and json_obj['noinline'] is not None:
+      self.noinline = json_obj['noinline']
 
   def __repr__(self):
     L = []
@@ -1139,6 +1152,10 @@ class FieldInterceptor:
       value = pprint.pformat(self.name, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    name=%s' % (value))
+    if self.noinline is not None:
+      value = pprint.pformat(self.noinline, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    noinline=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1153,6 +1170,7 @@ class FieldInterceptor:
   def __dir__(self):
     return (
       'name',
+      'noinline',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -1326,6 +1344,7 @@ all_structs.append(FieldInterceptor)
 FieldInterceptor.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'name', True, None, 2, ), # 1
+  (2, TType.BOOL, 'noinline', None, None, 2, ), # 2
 )
 
 FieldInterceptor.thrift_struct_annotations = {
@@ -1333,13 +1352,15 @@ FieldInterceptor.thrift_struct_annotations = {
 FieldInterceptor.thrift_field_annotations = {
 }
 
-def FieldInterceptor__init__(self, name=None,):
+def FieldInterceptor__init__(self, name=None, noinline=None,):
   self.name = name
+  self.noinline = noinline
 
 FieldInterceptor.__init__ = FieldInterceptor__init__
 
 def FieldInterceptor__setstate__(self, state):
   state.setdefault('name', None)
+  state.setdefault('noinline', None)
   self.__dict__ = state
 
 FieldInterceptor.__getstate__ = lambda self: self.__dict__.copy()

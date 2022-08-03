@@ -22,7 +22,10 @@ include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/FieldInterceptorTest.h"
 
 struct InterceptedFields {
-  @cpp.FieldInterceptor{name = "::apache::thrift::test::TestFieldInterceptor"}
+  @cpp.FieldInterceptor{
+    name = "::apache::thrift::test::TestFieldInterceptor",
+    noinline = true,
+  }
   1: i32 access_field;
 
   @cpp.FieldInterceptor{name = "::apache::thrift::test::TestFieldInterceptor"}

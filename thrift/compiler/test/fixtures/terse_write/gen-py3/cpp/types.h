@@ -124,6 +124,9 @@ void reset_field<::facebook::thrift::annotation::cpp::FieldInterceptor>(
     case 0:
       obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::FieldInterceptor>().name_ref());
       return;
+    case 1:
+      obj.noinline_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::FieldInterceptor>().noinline_ref());
+      return;
   }
 }
 

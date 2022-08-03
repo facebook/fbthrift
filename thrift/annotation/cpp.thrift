@@ -176,4 +176,10 @@ struct FieldInterceptor {
    * It enforces an easily searchable function name `interceptThriftFieldAccess`.
    */
   1: string name;
+
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  2: bool noinline;
 }

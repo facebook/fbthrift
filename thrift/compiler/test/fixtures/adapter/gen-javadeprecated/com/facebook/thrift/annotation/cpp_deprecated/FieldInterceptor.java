@@ -41,6 +41,7 @@ import com.facebook.thrift.protocol.*;
 public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable, Comparable<FieldInterceptor> {
   private static final TStruct STRUCT_DESC = new TStruct("FieldInterceptor");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
+  private static final TField NOINLINE_FIELD_DESC = new TField("noinline", TType.BOOL, (short)2);
 
   /**
    * The name of a field interceptor.
@@ -57,9 +58,17 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
    * It enforces an easily searchable function name `interceptThriftFieldAccess`.
    */
   public String name;
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  public boolean noinline;
   public static final int NAME = 1;
+  public static final int NOINLINE = 2;
 
   // isset id assignments
+  private static final int __NOINLINE_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -67,6 +76,8 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(NAME, new FieldMetaData("name", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(NOINLINE, new FieldMetaData("noinline", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -78,13 +89,19 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
   }
 
   public FieldInterceptor(
-      String name) {
+      String name,
+      boolean noinline) {
     this();
     this.name = name;
+    this.noinline = noinline;
+    setNoinlineIsSet(true);
   }
 
   public static class Builder {
     private String name;
+    private boolean noinline;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
@@ -94,9 +111,18 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
       return this;
     }
 
+    public Builder setNoinline(final boolean noinline) {
+      this.noinline = noinline;
+      __optional_isset.set(__NOINLINE_ISSET_ID, true);
+      return this;
+    }
+
     public FieldInterceptor build() {
       FieldInterceptor result = new FieldInterceptor();
       result.setName(this.name);
+      if (__optional_isset.get(__NOINLINE_ISSET_ID)) {
+        result.setNoinline(this.noinline);
+      }
       return result;
     }
   }
@@ -109,9 +135,12 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
    * Performs a deep copy on <i>other</i>.
    */
   public FieldInterceptor(FieldInterceptor other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetName()) {
       this.name = TBaseHelper.deepCopy(other.name);
     }
+    this.noinline = TBaseHelper.deepCopy(other.noinline);
   }
 
   public FieldInterceptor deepCopy() {
@@ -170,6 +199,37 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
     }
   }
 
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  public boolean isNoinline() {
+    return this.noinline;
+  }
+
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  public FieldInterceptor setNoinline(boolean noinline) {
+    this.noinline = noinline;
+    setNoinlineIsSet(true);
+    return this;
+  }
+
+  public void unsetNoinline() {
+    __isset_bit_vector.clear(__NOINLINE_ISSET_ID);
+  }
+
+  // Returns true if field noinline is set (has been assigned a value) and false otherwise
+  public boolean isSetNoinline() {
+    return __isset_bit_vector.get(__NOINLINE_ISSET_ID);
+  }
+
+  public void setNoinlineIsSet(boolean __value) {
+    __isset_bit_vector.set(__NOINLINE_ISSET_ID, __value);
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case NAME:
@@ -177,6 +237,14 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
         unsetName();
       } else {
         setName((String)__value);
+      }
+      break;
+
+    case NOINLINE:
+      if (__value == null) {
+        unsetNoinline();
+      } else {
+        setNoinline((Boolean)__value);
       }
       break;
 
@@ -189,6 +257,9 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
     switch (fieldID) {
     case NAME:
       return getName();
+
+    case NOINLINE:
+      return new Boolean(isNoinline());
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -207,12 +278,14 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.noinline, that.noinline)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name});
+    return Arrays.deepHashCode(new Object[] {name, noinline});
   }
 
   @Override
@@ -235,6 +308,14 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetNoinline()).compareTo(other.isSetNoinline());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(noinline, other.noinline);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -252,6 +333,14 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
         case NAME:
           if (__field.type == TType.STRING) {
             this.name = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case NOINLINE:
+          if (__field.type == TType.BOOL) {
+            this.noinline = iprot.readBool();
+            setNoinlineIsSet(true);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -278,6 +367,9 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
       oprot.writeString(this.name);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(NOINLINE_FIELD_DESC);
+    oprot.writeBool(this.noinline);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -307,6 +399,13 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable,
     } else {
       sb.append(TBaseHelper.toString(this.getName(), indent + 1, prettyPrint));
     }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("noinline");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isNoinline(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

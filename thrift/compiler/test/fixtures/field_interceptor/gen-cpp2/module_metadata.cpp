@@ -37,7 +37,7 @@ StructMetadata<::facebook::thrift::test::InterceptedFields>::gen(ThriftMetadata&
   module_InterceptedFields.is_union() = false;
   static const auto* const
   module_InterceptedFields_fields = new std::array<EncodedThriftField, 6>{{
-    {1, "access_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.FieldInterceptor", {{"name", cvString(R"(my::FieldInterceptor)")}}).cv_struct_ref(), }},
+    {1, "access_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.FieldInterceptor", {{"name", cvString(R"(my::FieldInterceptor)")}, {"noinline", cvBool(true)}}).cv_struct_ref(), }},
     {2, "access_shared_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.FieldInterceptor", {{"name", cvString(R"(my::FieldInterceptor)")}}).cv_struct_ref(), *cvStruct("cpp.Ref", {{"type", cvInteger(2)}}).cv_struct_ref(), }},
     {3, "access_optional_shared_field", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.FieldInterceptor", {{"name", cvString(R"(my::FieldInterceptor)")}}).cv_struct_ref(), *cvStruct("cpp.Ref", {{"type", cvInteger(2)}}).cv_struct_ref(), }},
     {4, "access_shared_const_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.FieldInterceptor", {{"name", cvString(R"(my::FieldInterceptor)")}}).cv_struct_ref(), *cvStruct("cpp.Ref", {{"type", cvInteger(1)}}).cv_struct_ref(), }},

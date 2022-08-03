@@ -1138,19 +1138,26 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'var' => 'name',
       'type' => \TType::STRING,
     ),
+    2 => shape(
+      'var' => 'noinline',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
+    'noinline' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'name' => ?string,
+    ?'noinline' => ?bool,
   );
 
   const type TShape = shape(
     'name' => string,
+    'noinline' => bool,
   );
-  const int STRUCTURAL_ID = 2593878277785201336;
+  const int STRUCTURAL_ID = 8132831456632900275;
   /**
    * The name of a field interceptor.
    * 
@@ -1169,9 +1176,18 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    * 1: string name
    */
   public string $name;
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   * 
+   * Original thrift field:-
+   * 2: bool noinline
+   */
+  public bool $noinline;
 
-  public function __construct(?string $name = null)[] {
+  public function __construct(?string $name = null, ?bool $noinline = null)[] {
     $this->name = $name ?? '';
+    $this->noinline = $noinline ?? false;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1181,6 +1197,7 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'noinline'),
     );
   }
 
@@ -1202,6 +1219,17 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
                 )
               ),
               "name" => "name",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "noinline",
             )
           ),
         ],
@@ -1230,12 +1258,14 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
+      $shape['noinline'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
+      'noinline' => $this->noinline,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1251,6 +1281,9 @@ class FieldInterceptor implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
 
     if (idx($parsed, 'name') !== null) {
       $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
+    }
+    if (idx($parsed, 'noinline') !== null) {
+      $this->noinline = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['noinline']);
     }
   }
 

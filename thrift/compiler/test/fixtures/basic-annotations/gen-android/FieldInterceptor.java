@@ -39,6 +39,7 @@ import com.facebook.thrift.protocol.*;
 public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("FieldInterceptor");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
+  private static final TField NOINLINE_FIELD_DESC = new TField("noinline", TType.BOOL, (short)2);
 
   /**
    * The name of a field interceptor.
@@ -55,11 +56,19 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
    * It enforces an easily searchable function name `interceptThriftFieldAccess`.
    */
   public final String name;
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  public final Boolean noinline;
   public static final int NAME = 1;
+  public static final int NOINLINE = 2;
 
   public FieldInterceptor(
-      String name) {
+      String name,
+      Boolean noinline) {
     this.name = name;
+    this.noinline = noinline;
   }
 
   /**
@@ -70,6 +79,11 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
       this.name = TBaseHelper.deepCopy(other.name);
     } else {
       this.name = null;
+    }
+    if (other.isSetNoinline()) {
+      this.noinline = TBaseHelper.deepCopy(other.noinline);
+    } else {
+      this.noinline = null;
     }
   }
 
@@ -100,6 +114,19 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
     return this.name != null;
   }
 
+  /**
+   * Setting to true makes compiler not inline and erase function signature for
+   * the intercepting field accessor.
+   */
+  public Boolean isNoinline() {
+    return this.noinline;
+  }
+
+  // Returns true if field noinline is set (has been assigned a value) and false otherwise
+  public boolean isSetNoinline() {
+    return this.noinline != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -112,12 +139,14 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetNoinline(), that.isSetNoinline(), this.noinline, that.noinline)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name});
+    return Arrays.deepHashCode(new Object[] {name, noinline});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -127,6 +156,7 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
 
   public static FieldInterceptor deserialize(TProtocol iprot) throws TException {
     String tmp_name = null;
+    Boolean tmp_noinline = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -144,6 +174,13 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case NOINLINE:
+          if (__field.type == TType.BOOL) {
+            tmp_noinline = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -155,6 +192,7 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
     FieldInterceptor _that;
     _that = new FieldInterceptor(
       tmp_name
+      ,tmp_noinline
     );
     _that.validate();
     return _that;
@@ -167,6 +205,11 @@ public class FieldInterceptor implements TBase, java.io.Serializable, Cloneable 
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
+      oprot.writeFieldEnd();
+    }
+    if (this.noinline != null) {
+      oprot.writeFieldBegin(NOINLINE_FIELD_DESC);
+      oprot.writeBool(this.noinline);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

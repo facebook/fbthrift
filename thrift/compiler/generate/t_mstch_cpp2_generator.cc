@@ -652,6 +652,8 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::cpp_exactly_one_adapter},
             {"field:cpp_field_interceptor",
              &mstch_cpp2_field::cpp_field_interceptor},
+            {"field:cpp_accessor_attribute",
+             &mstch_cpp2_field::cpp_accessor_attribute},
             {"field:zero_copy_arg", &mstch_cpp2_field::zero_copy_arg},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
@@ -814,6 +816,21 @@ class mstch_cpp2_field : public mstch_field {
     }
     return {};
   }
+
+  // The field accessor is inlined and erased by default, unless 'noinline' is
+  // specified in FieldInterceptor.
+  mstch::node cpp_accessor_attribute() {
+    if (const t_const* annotation = field_->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/FieldInterceptor")) {
+      if (const auto* val =
+              annotation->get_value_from_structured_annotation_or_null(
+                  "noinline")) {
+        return std::string("FOLLY_NOINLINE");
+      }
+    }
+    return std::string("FOLLY_ERASE");
+  }
+
   mstch::node cpp_adapter() {
     // Only find a structured adapter on the field.
     if (const std::string* adapter =

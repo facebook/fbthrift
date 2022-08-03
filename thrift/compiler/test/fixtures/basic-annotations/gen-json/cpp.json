@@ -357,6 +357,21 @@
               "column" : 17
             }
           }
+        },
+        "noinline" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 184,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 184,
+              "column" : 19
+            }
+          }
         }
       },
       "source_range" : {
@@ -365,7 +380,7 @@
           "column" : 1
         },
         "end" : {
-          "line" : 179,
+          "line" : 185,
           "column" : 2
         }
       }

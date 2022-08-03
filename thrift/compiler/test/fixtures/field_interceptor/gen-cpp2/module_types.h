@@ -210,49 +210,49 @@ class InterceptedFields final  {
   bool operator<(const InterceptedFields&) const;
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> access_field_ref() const& {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<const T&> access_field_ref() const& {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {this->__fbthrift_field_access_field, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> access_field_ref() const&& {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<const T&&> access_field_ref() const&& {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {static_cast<const T&&>(this->__fbthrift_field_access_field), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> access_field_ref() & {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<T&> access_field_ref() & {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {this->__fbthrift_field_access_field, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> access_field_ref() && {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<T&&> access_field_ref() && {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {static_cast<T&&>(this->__fbthrift_field_access_field), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> access_field() const& {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<const T&> access_field() const& {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {this->__fbthrift_field_access_field, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> access_field() const&& {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<const T&&> access_field() const&& {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {static_cast<const T&&>(this->__fbthrift_field_access_field), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> access_field() & {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<T&> access_field() & {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {this->__fbthrift_field_access_field, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> access_field() && {
+  FOLLY_NOINLINE ::apache::thrift::field_ref<T&&> access_field() && {
     my::FieldInterceptor::interceptThriftFieldAccess(this->__fbthrift_field_access_field, ::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, 1>{*this});
     return {static_cast<T&&>(this->__fbthrift_field_access_field), __isset.at(0), __isset.bit(0)};
   }

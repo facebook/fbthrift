@@ -1095,8 +1095,11 @@ func (p *StrongType) String() string {
 // 
 // The field interceptor intercepts with the field value and the field context.
 // It enforces an easily searchable function name `interceptThriftFieldAccess`.
+//  - Noinline: Setting to true makes compiler not inline and erase function signature for
+// the intercepting field accessor.
 type FieldInterceptor struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
+  Noinline bool `thrift:"noinline,2" db:"noinline" json:"noinline"`
 }
 
 func NewFieldInterceptor() *FieldInterceptor {
@@ -1106,6 +1109,10 @@ func NewFieldInterceptor() *FieldInterceptor {
 
 func (p *FieldInterceptor) GetName() string {
   return p.Name
+}
+
+func (p *FieldInterceptor) GetNoinline() bool {
+  return p.Noinline
 }
 type FieldInterceptorBuilder struct {
   obj *FieldInterceptor
@@ -1120,6 +1127,7 @@ func NewFieldInterceptorBuilder() *FieldInterceptorBuilder{
 func (p FieldInterceptorBuilder) Emit() *FieldInterceptor{
   return &FieldInterceptor{
     Name: p.obj.Name,
+    Noinline: p.obj.Noinline,
   }
 }
 
@@ -1128,8 +1136,18 @@ func (f *FieldInterceptorBuilder) Name(name string) *FieldInterceptorBuilder {
   return f
 }
 
+func (f *FieldInterceptorBuilder) Noinline(noinline bool) *FieldInterceptorBuilder {
+  f.obj.Noinline = noinline
+  return f
+}
+
 func (f *FieldInterceptor) SetName(name string) *FieldInterceptor {
   f.Name = name
+  return f
+}
+
+func (f *FieldInterceptor) SetNoinline(noinline bool) *FieldInterceptor {
+  f.Noinline = noinline
   return f
 }
 
@@ -1148,6 +1166,10 @@ func (p *FieldInterceptor) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
         return err
       }
     default:
@@ -1174,10 +1196,20 @@ func (p *FieldInterceptor)  ReadField1(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *FieldInterceptor)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Noinline = v
+  }
+  return nil
+}
+
 func (p *FieldInterceptor) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("FieldInterceptor"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1195,12 +1227,23 @@ func (p *FieldInterceptor) writeField1(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *FieldInterceptor) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("noinline", thrift.BOOL, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:noinline: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Noinline)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.noinline (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:noinline: ", p), err) }
+  return err
+}
+
 func (p *FieldInterceptor) String() string {
   if p == nil {
     return "<nil>"
   }
 
   nameVal := fmt.Sprintf("%v", p.Name)
-  return fmt.Sprintf("FieldInterceptor({Name:%s})", nameVal)
+  noinlineVal := fmt.Sprintf("%v", p.Noinline)
+  return fmt.Sprintf("FieldInterceptor({Name:%s Noinline:%s})", nameVal, noinlineVal)
 }
 
