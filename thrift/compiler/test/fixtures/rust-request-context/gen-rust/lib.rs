@@ -4509,8 +4509,15 @@ pub mod server {
                                 crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
                             },
                             ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", Box::new(exn));
-                                crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
+                                match exn {
+                                    crate::errors::my_service::StreamByIdWithExceptionStreamError::ex(exn) => {
+                                        crate::services::my_service::StreamByIdWithExceptionStreamExn::ex(exn)
+                                    },
+                                    _ => {
+                                        let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", Box::new(exn));
+                                        crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
+                                    }
+                                }
                             }
                         };
 

@@ -315,9 +315,21 @@
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
                             },
                             ::std::result::Result::Err(exn) => {
-                                {{!TODO(T127840117): Handle custom stream exceptions}}
+                                {{^function:stream_exceptions?}}
                                 let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
+                                {{/function:stream_exceptions?}}
+                                {{#function:stream_exceptions?}}
+                                match exn {
+                                    {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::ex(exn) => {
+                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ex(exn)
+                                    },
+                                    _ => {
+                                        let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
+                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
+                                    }
+                                }
+                                {{/function:stream_exceptions?}}
                             }
                         };
 

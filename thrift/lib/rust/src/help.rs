@@ -113,8 +113,6 @@ where
     RES: ResultInfo + Serialize<P::Sizer> + Serialize<P::Serializer>,
 {
     Ok(serialize!(P, |p| {
-        // TODO(T127840117): Handle exceptions
-        // Maybe, we need to write `res_type.message_type()` here?
         res.write(p);
     }))
 }
