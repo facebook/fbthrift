@@ -76,16 +76,7 @@ class type_resolver {
 
   const std::string& get_native_type(const t_const& cnst);
 
-  const std::string& get_underlying_type_name(const t_type& node) {
-    if (is_directly_adapted(node)) {
-      return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
-        auto adapter = find_structured_adapter_annotation(node);
-        return gen_adapted_type(adapter, get_underlying_namespaced_name(node));
-      });
-    }
-
-    return get_native_type(node);
-  }
+  const std::string& get_underlying_type_name(const t_type& node);
   const std::string& get_underlying_type_name(const t_typedef& node);
 
   // Returns the c++ type that the runtime knows how to handle.
@@ -111,45 +102,11 @@ class type_resolver {
     return namespaces_.get_namespaced_name(program, node);
   }
 
-  const std::string& get_underlying_namespaced_name(const t_type& node) {
-    return detail::get_or_gen(underlying_namespaced_name_cache_, &node, [&] {
-      if (auto program = node.get_program()) {
-        auto extra = get_extra_namespace(node);
-        return fmt::format(
-            "{}::{}{}",
-            namespaces_.get_namespace(*program),
-            (extra ? *extra + "::" : ""),
-            get_underlying_name(node));
-      }
-      return gen_standard_type(
-          node, &type_resolver::get_underlying_namespaced_name);
-    });
-  }
+  const std::string& get_underlying_namespaced_name(const t_type& node);
 
-  const std::string& get_underlying_name(const t_type& node) {
-    if (const t_const* annotation = find_nontransitive_adapter(node)) {
-      if (const t_const_value* value =
-              annotation->get_value_from_structured_annotation_or_null(
-                  "underlyingName")) {
-        return value->get_string();
-      }
-    }
-    return namespace_resolver::get_cpp_name(node);
-  }
+  const std::string& get_underlying_name(const t_type& node);
 
-  const std::string* get_extra_namespace(const t_type& node) {
-    if (const t_const* annotation = find_nontransitive_adapter(node)) {
-      if (const t_const_value* value =
-              annotation->get_value_from_structured_annotation_or_null(
-                  "extraNamespace")) {
-        return value->get_string().empty() ? nullptr : &value->get_string();
-      }
-      // Default isn't propagated from IDL.
-      static const std::string kDefault = "detail";
-      return &kDefault;
-    }
-    return nullptr;
-  }
+  const std::string* get_extra_namespace(const t_type& node);
 
   // Checks whether a t_type could resolve to a scalar.
   //
@@ -177,30 +134,15 @@ class type_resolver {
       const t_field& field, const t_structured& parent);
 
   static const std::string* find_field_interceptor(const t_field& node) {
-    if (const t_const* annotation = node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/FieldInterceptor")) {
-      return &annotation->get_value_from_structured_annotation("name")
-                  .get_string();
-    }
-    return nullptr;
+    return get_string_from_annotation_or_null(
+        node, "facebook.com/thrift/annotation/cpp/FieldInterceptor", "name");
   }
   static const std::string* find_structured_adapter_annotation(
       const t_named& node) {
-    if (const t_const* annotation = node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/Adapter")) {
-      return &annotation->get_value_from_structured_annotation("name")
-                  .get_string();
-    }
-    return nullptr;
+    return get_string_from_annotation_or_null(
+        node, "facebook.com/thrift/annotation/cpp/Adapter", "name");
   }
-  static const t_const* find_nontransitive_adapter(const t_type& node) {
-    if (!node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/Transitive")) {
-      return node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Adapter");
-    }
-    return nullptr;
-  }
+  static const t_const* find_nontransitive_adapter(const t_type& node);
 
   static const std::string* find_type(const t_type& node) {
     return node.find_annotation_or_null({"cpp.type", "cpp2.type"});
@@ -235,6 +177,9 @@ class type_resolver {
       storage_type_cache_;
   std::unordered_map<const t_type*, std::string> type_tag_cache_;
   std::unordered_map<const t_field*, std::string> field_type_tag_cache_;
+
+  static const std::string* get_string_from_annotation_or_null(
+      const t_named& node, const char* uri, const char* key);
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);
