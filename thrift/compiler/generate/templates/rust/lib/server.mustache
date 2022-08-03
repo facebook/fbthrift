@@ -321,8 +321,8 @@
                                 {{/function:stream_exceptions?}}
                                 {{#function:stream_exceptions?}}
                                 match exn {
-                                    {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::ex(exn) => {
-                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ex(exn)
+                                    {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::{{#function:stream_exceptions}}{{field:rust_name}}{{/function:stream_exceptions}}(exn) => {
+                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::{{#function:stream_exceptions}}{{field:rust_name}}{{/function:stream_exceptions}}(exn)
                                     },
                                     _ => {
                                         let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));

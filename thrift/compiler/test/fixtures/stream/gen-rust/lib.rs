@@ -4008,8 +4008,8 @@ pub mod server {
                             },
                             ::std::result::Result::Err(exn) => {
                                 match exn {
-                                    crate::errors::pub_sub_streaming_service::StreamthrowsStreamError::ex(exn) => {
-                                        crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::ex(exn)
+                                    crate::errors::pub_sub_streaming_service::StreamthrowsStreamError::e(exn) => {
+                                        crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::e(exn)
                                     },
                                     _ => {
                                         let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.streamthrows", Box::new(exn));
@@ -4215,8 +4215,8 @@ pub mod server {
                             },
                             ::std::result::Result::Err(exn) => {
                                 match exn {
-                                    crate::errors::pub_sub_streaming_service::BoththrowsStreamError::ex(exn) => {
-                                        crate::services::pub_sub_streaming_service::BoththrowsStreamExn::ex(exn)
+                                    crate::errors::pub_sub_streaming_service::BoththrowsStreamError::e(exn) => {
+                                        crate::services::pub_sub_streaming_service::BoththrowsStreamExn::e(exn)
                                     },
                                     _ => {
                                         let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.boththrows", Box::new(exn));
@@ -4331,8 +4331,8 @@ pub mod server {
                             },
                             ::std::result::Result::Err(exn) => {
                                 match exn {
-                                    crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError::ex(exn) => {
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::ex(exn)
+                                    crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError::e(exn) => {
+                                        crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::e(exn)
                                     },
                                     _ => {
                                         let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamstreamthrows", Box::new(exn));
@@ -4556,8 +4556,8 @@ pub mod server {
                             },
                             ::std::result::Result::Err(exn) => {
                                 match exn {
-                                    crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError::ex(exn) => {
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::ex(exn)
+                                    crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError::e(exn) => {
+                                        crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::e(exn)
                                     },
                                     _ => {
                                         let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamboththrows", Box::new(exn));
