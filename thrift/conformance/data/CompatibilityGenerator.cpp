@@ -26,6 +26,7 @@
 
 #include <boost/mp11.hpp>
 #include <fmt/core.h>
+#include <folly/container/Foreach.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
@@ -37,6 +38,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/test/testset/Testset.h>
+#include <thrift/test/testset/gen-cpp2/Enum_types.h>
 #include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
 // TODO: use FieldQualifier
@@ -235,6 +237,108 @@ template <class Old, class New>
   return ret;
 }
 
+using test::testset::DifferentNameEnumStruct;
+using test::testset::DifferentValueEnumStruct;
+using test::testset::LessFieldEnumStruct;
+using test::testset::NoZeroEnumStruct;
+using test::testset::StandardEnumStruct;
+
+template <class EnumStruct>
+std::string getEnumStructName() {
+  if constexpr (std::is_same_v<EnumStruct, StandardEnumStruct>) {
+    return "Standard";
+  } else if constexpr (std::is_same_v<EnumStruct, NoZeroEnumStruct>) {
+    return "NoZero";
+  } else if constexpr (std::is_same_v<EnumStruct, LessFieldEnumStruct>) {
+    return "LessField";
+  } else if constexpr (std::is_same_v<EnumStruct, DifferentNameEnumStruct>) {
+    return "DifferentName";
+  } else if constexpr (std::is_same_v<EnumStruct, DifferentValueEnumStruct>) {
+    return "DifferentValue";
+  } else {
+    static_assert(sizeof(EnumStruct) == 0);
+  }
+  return "";
+}
+
+template <class E>
+void setEnum(E& e, std::underlying_type_t<E> i) {
+  e = E(i);
+}
+
+template <class Old, class New>
+[[nodiscard]] TestCase changeEnumValueTestCase(
+    const Protocol& protocol,
+    Old old_data,
+    int32_t old_value,
+    New new_data,
+    int32_t new_value) {
+  setEnum(old_data.field().ensure(), old_value);
+  setEnum(new_data.field().ensure(), new_value);
+
+  RoundTripTestCase roundTrip;
+  roundTrip.request()->value() =
+      AnyRegistry::generated().store(new_data, protocol);
+  roundTrip.request()->value()->data() =
+      *serializeThriftStruct(old_data, protocol);
+  roundTrip.expectedResponse().emplace().value() =
+      AnyRegistry::generated().store(new_data, protocol);
+
+  TestCase testCase;
+  testCase.name() = fmt::format(
+      "testset/ChangeEnumType/{}.{}.{}.{}",
+      getEnumStructName<decltype(old_data)>(),
+      old_value,
+      getEnumStructName<decltype(new_data)>(),
+      new_value);
+  for (char& c : *testCase.name()) {
+    if (c == '-') {
+      c = '_';
+    }
+  }
+  testCase.test()->roundTrip_ref() = std::move(roundTrip);
+  return testCase;
+}
+
+[[nodiscard]] std::vector<TestCase> changeEnumValueTestCases(
+    const Protocol& protocol) {
+  std::vector<TestCase> ret;
+
+  using Enums = std::tuple<
+      StandardEnumStruct,
+      NoZeroEnumStruct,
+      LessFieldEnumStruct,
+      DifferentNameEnumStruct,
+      DifferentValueEnumStruct>;
+
+  folly::for_each(Enums{}, [&](auto old_data) {
+    folly::for_each(Enums{}, [&](auto new_data) {
+      ret.push_back(
+          changeEnumValueTestCase(protocol, old_data, 0, new_data, 0));
+      ret.push_back(
+          changeEnumValueTestCase(protocol, old_data, 1, new_data, 1));
+    });
+  });
+
+  // Remove field 0
+  ret.push_back(changeEnumValueTestCase(
+      protocol, StandardEnumStruct{}, 0, NoZeroEnumStruct{}, 0));
+
+  // Remove field
+  ret.push_back(changeEnumValueTestCase(
+      protocol, StandardEnumStruct{}, 2, LessFieldEnumStruct{}, -1));
+
+  // Rename field
+  ret.push_back(changeEnumValueTestCase(
+      protocol, StandardEnumStruct{}, 2, DifferentNameEnumStruct{}, 2));
+
+  // Change value
+  ret.push_back(changeEnumValueTestCase(
+      protocol, StandardEnumStruct{}, 2, DifferentValueEnumStruct{}, -1));
+
+  return ret;
+}
+
 template <typename TT>
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
@@ -285,6 +389,8 @@ Test createCompatibilityTest(const Protocol& protocol) {
   addToTest(changeQualifierTestCase<
             mod_set<FieldModifier::Required>,
             mod_set<FieldModifier::Optional>>(protocol));
+
+  addToTest(changeEnumValueTestCases(protocol));
 
   return test;
 }
