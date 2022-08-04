@@ -19,7 +19,7 @@ public class __fbthrift_TypeList_e331cd8a implements TypeList {
     list.add(new TypeList.TypeMapping("facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct", "test.fixtures.basicannotations.MyStruct"));
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }

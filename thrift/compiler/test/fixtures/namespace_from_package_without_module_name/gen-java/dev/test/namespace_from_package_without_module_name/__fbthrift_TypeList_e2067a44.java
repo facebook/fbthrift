@@ -19,7 +19,7 @@ public class __fbthrift_TypeList_e2067a44 implements TypeList {
     list.add(new TypeList.TypeMapping("test.dev/namespace_from_package_without_module_name/Foo", "dev.test.namespace_from_package_without_module_name.Foo"));
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }

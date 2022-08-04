@@ -22,7 +22,7 @@ public class __fbthrift_TypeList_296c0e35 implements TypeList {
     list.add(new TypeList.TypeMapping("test.dev/fixtures/basic/MyEnum", "test.fixtures.basic.MyEnum"));
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }

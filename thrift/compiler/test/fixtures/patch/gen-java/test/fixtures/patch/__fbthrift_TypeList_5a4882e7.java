@@ -40,7 +40,7 @@ public class __fbthrift_TypeList_5a4882e7 implements TypeList {
     list.add(new TypeList.TypeMapping("test.dev/fixtures/patch/OptionalMyStructValuePatch", "test.fixtures.patch.OptionalMyStructValuePatch"));
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }

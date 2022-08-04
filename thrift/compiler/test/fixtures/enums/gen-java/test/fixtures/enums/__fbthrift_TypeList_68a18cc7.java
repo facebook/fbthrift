@@ -25,7 +25,7 @@ public class __fbthrift_TypeList_68a18cc7 implements TypeList {
     list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyEnum4", "test.fixtures.enums.MyEnum4"));
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }

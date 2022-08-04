@@ -18,7 +18,7 @@ public class __fbthrift_TypeList_ad50603c implements TypeList {
   static {
   }
 
-  @Override
+  @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {
     return list;
   }
