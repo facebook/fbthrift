@@ -129,6 +129,45 @@ class PyDeprecatedToPy3ConverterTest(unittest.TestCase):
         #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyColor)
 
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = py_deprecated_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_py3_struct(
+            py3_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertEqual(tomahto.mahto, "mahto")
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_py3_struct(
+            py3_types.Potahto,
+            py_deprecated_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.type, py3_types.Potahto.Type.po)
+        self.assertEqual(po.value, 42)
+
+        tah = to_py3_struct(
+            py3_types.Potahto,
+            py_deprecated_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.type, py3_types.Potahto.Type.EMPTY)
+
+        to = to_py3_struct(
+            py3_types.Potahto,
+            py_deprecated_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.type, py3_types.Potahto.Type.to)
+        self.assertEqual(to.value, True)
+
 
 class PythonToPy3ConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
@@ -236,6 +275,45 @@ class PythonToPy3ConverterTest(unittest.TestCase):
         # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.py3_types._T]]` for 1st
         #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyColor)
+
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = python_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_py3_struct(
+            py3_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertEqual(tomahto.mahto, "mahto")
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_py3_struct(
+            py3_types.Potahto,
+            python_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.type, py3_types.Potahto.Type.po)
+        self.assertEqual(po.value, 42)
+
+        tah = to_py3_struct(
+            py3_types.Potahto,
+            python_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.type, py3_types.Potahto.Type.EMPTY)
+
+        to = to_py3_struct(
+            py3_types.Potahto,
+            python_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.type, py3_types.Potahto.Type.to)
+        self.assertEqual(to.value, True)
 
 
 class NoneToPy3ConverterTest(unittest.TestCase):

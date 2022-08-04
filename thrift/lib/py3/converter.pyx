@@ -57,8 +57,8 @@ cdef object _to_py3_struct(object cls, object obj):
 
 cdef object _get_src_field(object obj, FieldSpec field_spec):
     if isinstance(obj, PythonStruct):
-        return getattr(obj, _py3_field_name(field_spec))
-    return getattr(obj, field_spec.name)
+        return getattr(obj, _py3_field_name(field_spec), None)
+    return getattr(obj, field_spec.name, None)
 
 
 cdef object _get_src_union_field(object obj, FieldSpec field_spec):

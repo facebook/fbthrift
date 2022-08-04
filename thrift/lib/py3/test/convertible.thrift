@@ -52,3 +52,25 @@ struct OptionalDefaultsStruct {
   // @lint-ignore THRIFTCHECKS
   2: optional Color sillyColor = Color.RED;
 }
+
+struct Tomayto {
+  1: i64 to;
+  2: string mayto = "mayto";
+}
+
+struct Tomahto {
+  1: i64 to;
+  3: string mahto = "mahto";
+}
+
+union Potayto {
+  1: i64 po;
+  2: string tay;
+  4: bool to;
+}
+
+union Potahto {
+  1: i64 po;
+  3: string tah;
+  4: bool to;
+}
