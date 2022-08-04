@@ -45,7 +45,7 @@ class InteractionTest(unittest.TestCase):
                 async with calc.createAddition() as add:
                     self.assertEqual(await add.getPrimitive(), 0)
 
-                    add.accumulatePrimitive(1)
+                    await add.accumulatePrimitive(1)
                     self.assertEqual(await add.getPrimitive(), 1)
 
                     point = await add.getPoint()
@@ -70,13 +70,13 @@ class InteractionTest(unittest.TestCase):
                 async with calc.createAddition() as add:
                     self.assertEqual(await add.getPrimitive(), 0)
 
-                    add.accumulatePrimitive(1)
+                    await add.accumulatePrimitive(1)
                     self.assertEqual(await add.getPrimitive(), 1)
 
                 async with calc.createAddition() as add:
                     self.assertEqual(await add.getPrimitive(), 0)
 
-                    add.accumulatePrimitive(2)
+                    await add.accumulatePrimitive(2)
                     self.assertEqual(await add.getPrimitive(), 2)
 
         asyncio.run(inner_test())
@@ -88,7 +88,7 @@ class InteractionTest(unittest.TestCase):
                 async with calc.createAddition() as add:
                     self.assertEqual(await add.getPrimitive(), 0)
 
-                    add.accumulatePrimitive(1)
+                    await add.accumulatePrimitive(1)
                     self.assertEqual(await add.getPrimitive(), 1)
 
             async with self.init_client() as calc:
@@ -96,7 +96,7 @@ class InteractionTest(unittest.TestCase):
                 async with calc.createAddition() as add:
                     self.assertEqual(await add.getPrimitive(), 0)
 
-                    add.accumulatePrimitive(2)
+                    await add.accumulatePrimitive(2)
                     self.assertEqual(await add.getPrimitive(), 2)
 
         asyncio.run(inner_test())
@@ -118,7 +118,7 @@ class InteractionTest(unittest.TestCase):
                 async with self.init_client() as calc:
                     self.assertEqual(await calc.addPrimitive(0, 0), 0)
                     async with calc.createAddition() as add:
-                        add.accumulatePrimitive(1)
+                        await add.accumulatePrimitive(1)
                         raise SpecificError("Generic error")
             except SpecificError:
                 pass
