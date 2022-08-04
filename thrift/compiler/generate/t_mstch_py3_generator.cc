@@ -120,7 +120,7 @@ class mstch_py3_type : public mstch_type {
   };
   mstch_py3_type(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog,
@@ -347,9 +347,9 @@ template <bool ForContainers = false>
 class py3_type_factory : public mstch_type_factory {
  public:
   explicit py3_type_factory(const t_program* prog) : prog_{prog} {}
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index) const override;
@@ -362,7 +362,7 @@ class mstch_py3_program : public mstch_program {
  public:
   mstch_py3_program(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_program{program, factories, cache, pos} {
@@ -408,8 +408,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node getContainerTypes() {
-    py3_type_factory<true> factory(program_);
-    return generate_elements(containers_, &factory);
+    return make_mstch_array(containers_, py3_type_factory<true>(program_));
   }
 
   mstch::node getCppIncludes() {
@@ -428,7 +427,7 @@ class mstch_py3_program : public mstch_program {
       }
     }
 
-    return generate_functions(functions);
+    return make_mstch_functions(functions);
   }
 
   mstch::node getCustomTemplates() {
@@ -506,7 +505,7 @@ class mstch_py3_program : public mstch_program {
   };
 
   mstch::array generate_types_array(const std::vector<const t_type*>& types) {
-    return generate_types(types);
+    return make_mstch_types(types);
   }
 
   void gather_included_program_namespaces() {
@@ -609,8 +608,8 @@ class mstch_py3_program : public mstch_program {
   std::string visit_type_with_typedef(
       const t_type* orig_type, TypeDef isTypedef) {
     auto trueType = orig_type->get_true_type();
-    auto baseType =
-        factories_->type_factory->generate(trueType, factories_, cache_);
+    auto baseType = factories_.type_factory->make_mstch_object(
+        trueType, factories_, cache_);
     mstch_py3_type* type = dynamic_cast<mstch_py3_type*>(baseType.get());
     const std::string& flatName = type->get_flat_name();
     // Import all types either beneath a typedef, even if the current type is
@@ -703,7 +702,7 @@ class mstch_py3_function : public mstch_function {
  public:
   mstch_py3_function(
       const t_function* function,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, factories, cache, pos),
@@ -733,7 +732,7 @@ class mstch_py3_service : public mstch_service {
  public:
   mstch_py3_service(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog)
@@ -803,11 +802,11 @@ class mstch_py3_service : public mstch_service {
   }
 
   mstch::node get_lifecycle_functions() {
-    return generate_functions(lifecycleFunctions());
+    return make_mstch_functions(lifecycleFunctions());
   }
 
   mstch::node get_supported_functions() {
-    return generate_functions(supportedFunctions());
+    return make_mstch_functions(supportedFunctions());
   }
 
   mstch::node get_supported_functions_with_lifecycle() {
@@ -815,7 +814,7 @@ class mstch_py3_service : public mstch_service {
     for (auto func : lifecycleFunctions()) {
       funcs.push_back(func);
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
 
  protected:
@@ -833,7 +832,7 @@ class mstch_py3_field : public mstch_field {
   };
   mstch_py3_field(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -913,7 +912,7 @@ class mstch_py3_field : public mstch_field {
     }
 
     const t_struct* parentStruct = mstch_field::field_context_->strct;
-    return (parentStruct->is_union() || generate_legacy_api(*parentStruct));
+    return parentStruct->is_union() || generate_legacy_api(*parentStruct);
   }
 
  protected:
@@ -963,7 +962,7 @@ class mstch_py3_struct : public mstch_struct {
  public:
   mstch_py3_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_struct(strct, factories, cache, pos) {
@@ -983,7 +982,7 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:py3_fields", &mstch_py3_struct::py3_fields},
             {"struct:py3_fields?", &mstch_py3_struct::has_py3_fields},
         });
-    py3_fields_ = strct_->fields().copy();
+    py3_fields_ = struct_->fields().copy();
     py3_fields_.erase(
         std::remove_if(
             py3_fields_.begin(),
@@ -997,35 +996,35 @@ class mstch_py3_struct : public mstch_struct {
   mstch::node getSize() { return std::to_string(py3_fields_.size()); }
 
   mstch::node isStructOrderable() {
-    return cpp2::is_orderable(*strct_) &&
-        !strct_->has_annotation("no_default_comparators");
+    return cpp2::is_orderable(*struct_) &&
+        !struct_->has_annotation("no_default_comparators");
   }
 
   mstch::node cppNonComparable() {
-    return strct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
+    return struct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
   }
 
   mstch::node cppNonCopyable() {
-    return strct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"});
+    return struct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"});
   }
 
   mstch::node hasExceptionMessage() {
-    return strct_->has_annotation("message");
+    return struct_->has_annotation("message");
   }
 
-  mstch::node exceptionMessage() { return strct_->get_annotation("message"); }
+  mstch::node exceptionMessage() { return struct_->get_annotation("message"); }
 
-  mstch::node py3_fields() { return generate_fields(py3_fields_); }
+  mstch::node py3_fields() { return make_mstch_fields(py3_fields_); }
 
   mstch::node has_py3_fields() { return !py3_fields_.empty(); }
 
   mstch::node fields_and_mixin_fields() {
     std::vector<const t_field*> fields = py3_fields_;
-    for (const auto& m : cpp2::get_mixins_and_members(*strct_)) {
+    for (const auto& m : cpp2::get_mixins_and_members(*struct_)) {
       fields.push_back(m.member);
     }
 
-    return generate_fields(fields);
+    return make_mstch_fields(fields);
   }
 
  private:
@@ -1036,7 +1035,7 @@ class mstch_py3_enum : public mstch_enum {
  public:
   mstch_py3_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, factories, cache, pos) {
@@ -1055,11 +1054,11 @@ class mstch_py3_enum : public mstch_enum {
 class mstch_py3_enum_value : public mstch_enum_value {
  public:
   mstch_py3_enum_value(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const t_enum_value* enum_value,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, factories, cache, pos) {
+      : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1069,12 +1068,12 @@ class mstch_py3_enum_value : public mstch_enum_value {
         });
   }
 
-  mstch::node pyName() { return py3::get_py3_name(*enm_value_); }
+  mstch::node pyName() { return py3::get_py3_name(*enum_value_); }
 
-  mstch::node cppName() { return cpp2::get_name(enm_value_); }
+  mstch::node cppName() { return cpp2::get_name(enum_value_); }
 
   mstch::node hasPyName() {
-    return py3::get_py3_name(*enm_value_) != enm_value_->get_name();
+    return py3::get_py3_name(*enum_value_) != enum_value_->get_name();
   }
 };
 
@@ -1082,7 +1081,7 @@ class mstch_py3_container_type : public mstch_py3_type {
  public:
   mstch_py3_container_type(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog,
@@ -1107,7 +1106,7 @@ class mstch_py3_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   mstch_py3_deprecated_annotation(
       const t_annotation* annotation,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -1138,9 +1137,9 @@ class mstch_py3_deprecated_annotation : public mstch_deprecated_annotation {
 
 class py3_program_factory : public mstch_program_factory {
  public:
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1162,9 +1161,9 @@ class py3_service_factory : public mstch_service_factory {
  public:
   explicit py3_service_factory(const t_program* prog) : prog_{prog} {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1301,9 +1300,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
 } // namespace
 
 template <bool ForContainers>
-std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
+std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::make_mstch_object(
     const t_type* type,
-    std::shared_ptr<const mstch_factories> factories,
+    const mstch_factories& factories,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t /*index*/) const {
@@ -1311,7 +1310,7 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
       conditional_t<ForContainers, mstch_py3_container_type, mstch_py3_type>;
   auto trueType = type->get_true_type();
   auto& propsCache =
-      dynamic_cast<py3_program_factory&>(*factories->program_factory)
+      dynamic_cast<py3_program_factory&>(*factories.program_factory)
           .typePropsCache;
   auto it = propsCache.find(trueType);
   if (it == propsCache.end()) {
@@ -1327,23 +1326,22 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
 }
 
 void t_mstch_py3_generator::set_mstch_factories() {
-  factories_->program_factory = std::make_unique<py3_program_factory>();
-  factories_->service_factory = std::make_unique<py3_service_factory>(program_);
-  factories_->set_function_factory<mstch_py3_function>();
-  factories_->type_factory =
-      std::make_unique<py3_type_factory<false>>(program_);
-  factories_->set_struct_factory<mstch_py3_struct>();
-  factories_->set_field_factory<mstch_py3_field>();
-  factories_->set_enum_factory<mstch_py3_enum>();
-  factories_->set_enum_value_factory<mstch_py3_enum_value>();
+  factories_.program_factory = std::make_unique<py3_program_factory>();
+  factories_.service_factory = std::make_unique<py3_service_factory>(program_);
+  factories_.set_function_factory<mstch_py3_function>();
+  factories_.type_factory = std::make_unique<py3_type_factory<false>>(program_);
+  factories_.set_struct_factory<mstch_py3_struct>();
+  factories_.set_field_factory<mstch_py3_field>();
+  factories_.set_enum_factory<mstch_py3_enum>();
+  factories_.set_enum_value_factory<mstch_py3_enum_value>();
   factories_
-      ->set_deprecated_annotation_factory<mstch_py3_deprecated_annotation>();
+      .set_deprecated_annotation_factory<mstch_py3_deprecated_annotation>();
 }
 
 void t_mstch_py3_generator::generate_init_files() {
   boost::filesystem::path p = generateRootPath_;
-  auto nodePtr =
-      factories_->program_factory->generate(get_program(), factories_, cache_);
+  auto nodePtr = factories_.program_factory->make_mstch_object(
+      get_program(), factories_, cache_);
   while (!p.empty()) {
     render_to_file(nodePtr, "common/auto_generated_py", p / "__init__.py");
     p = p.parent_path();
@@ -1370,8 +1368,8 @@ void t_mstch_py3_generator::generate_file(
   } else {
     cache_->options_.erase("is_types_file");
   }
-  auto nodePtr =
-      factories_->program_factory->generate(program, factories_, cache_);
+  auto nodePtr = factories_.program_factory->make_mstch_object(
+      program, factories_, cache_);
   render_to_file(nodePtr, file, base / name / file);
 }
 

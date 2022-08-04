@@ -229,7 +229,7 @@ class t_mstch_generator : public t_generator {
   }
 
  protected:
-  std::shared_ptr<mstch_factories> factories_;
+  mstch_factories factories_;
   std::shared_ptr<mstch_cache> cache_;
 
   const std::shared_ptr<mstch_base>& cached_program(const t_program* program);

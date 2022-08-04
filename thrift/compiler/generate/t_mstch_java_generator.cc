@@ -154,16 +154,12 @@ class t_mstch_java_generator : public t_mstch_generator {
    * Generate multiple Java items according to the given template. Writes
    * output to package_dir underneath the global output directory.
    */
-  template <typename T, typename Generator, typename Cache>
-  void generate_rpc_interfaces(
-      const Generator* generator,
-      Cache& c,
-      const t_program* program,
-      const std::vector<T*>& items) {
+  void generate_rpc_interfaces() {
+    const t_program* program = get_program();
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] =
-          factories_->program_factory->generate(program, factories_, cache_);
+      cache_->programs_[id] = factories_.program_factory->make_mstch_object(
+          program, factories_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -171,28 +167,31 @@ class t_mstch_java_generator : public t_mstch_generator {
         ? "services" / raw_package_dir
         : raw_package_dir;
 
-    for (const T* item : items) {
-      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
-      const auto& item_id = id + item->get_name();
-      if (!c.count(item_id)) {
-        c[item_id] = generator->generate(item, factories_, cache_);
+    for (const t_service* service : program->services()) {
+      auto& cache = cache_->services_;
+      auto filename =
+          java::mangle_java_name(service->get_name(), true) + ".java";
+      const auto& item_id = id + service->get_name();
+      if (!cache.count(item_id)) {
+        cache[item_id] = factories_.service_factory->make_mstch_object(
+            service, factories_, cache_);
       }
 
-      render_to_file(c[item_id], "Service", package_dir / filename);
+      render_to_file(cache[item_id], "Service", package_dir / filename);
     }
   }
 
-  template <typename T, typename Generator, typename Cache>
+  template <typename T, typename Factory, typename Cache>
   void generate_items(
-      const Generator* generator,
+      const Factory& factory,
       Cache& c,
       const t_program* program,
       const std::vector<T*>& items,
       const std::string& tpl_path) {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] =
-          factories_->program_factory->generate(program, factories_, cache_);
+      cache_->programs_[id] = factories_.program_factory->make_mstch_object(
+          program, factories_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -207,7 +206,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto filename = classname + ".java";
       const auto& item_id = id + item->get_name();
       if (!c.count(item_id)) {
-        c[item_id] = generator->generate(item, factories_, cache_);
+        c[item_id] = factory.make_mstch_object(item, factories_, cache_);
       }
 
       render_to_file(c[item_id], tpl_path, package_dir / filename);
@@ -224,16 +223,14 @@ class t_mstch_java_generator : public t_mstch_generator {
    * Generate Service Client implementation - Sync & Async. Writes
    * output to package_dir
    */
-  template <typename T, typename Generator, typename Cache>
-  void generate_services(
-      const Generator* generator,
-      Cache& c,
-      const t_program* program,
-      const std::vector<T*>& services) {
+  void generate_services() {
+    const auto& service_factory = *factories_.service_factory;
+    auto& cache = cache_->services_;
+    const t_program* program = get_program();
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] =
-          factories_->program_factory->generate(program, factories_, cache_);
+      cache_->programs_[id] = factories_.program_factory->make_mstch_object(
+          program, factories_, cache_);
     }
 
     auto raw_package_dir = boost::filesystem::path{
@@ -244,7 +241,7 @@ class t_mstch_java_generator : public t_mstch_generator {
         : raw_package_dir;
 
     // Iterate through services
-    for (const T* service : services) {
+    for (const t_service* service : program->services()) {
       auto service_name = java::mangle_java_name(service->get_name(), true);
       // NOTE: generation of ClientImpl and AsyncClientImpl is deprecated and
       // only customers who are still using netty3 for some reason should use it
@@ -253,25 +250,26 @@ class t_mstch_java_generator : public t_mstch_generator {
         // Generate deprecated sync client
         auto sync_filename = service_name + "ClientImpl.java";
         const auto& sync_service_id = id + service->get_name() + "Client";
-        if (!c.count(sync_service_id)) {
-          c[sync_service_id] = generator->generate(service, factories_, cache_);
+        if (!cache.count(sync_service_id)) {
+          cache[sync_service_id] =
+              service_factory.make_mstch_object(service, factories_, cache_);
         }
 
         render_to_file(
-            c[sync_service_id],
+            cache[sync_service_id],
             "deprecated/ServiceClient",
             package_dir / sync_filename);
 
         // Generate deprecated async client
         auto async_filename = service_name + "AsyncClientImpl.java";
         const auto& async_service_id = id + service->get_name() + "AsyncClient";
-        if (!c.count(async_service_id)) {
-          c[async_service_id] =
-              generator->generate(service, factories_, cache_);
+        if (!cache.count(async_service_id)) {
+          cache[async_service_id] =
+              service_factory.make_mstch_object(service, factories_, cache_);
         }
 
         render_to_file(
-            c[async_service_id],
+            cache[async_service_id],
             "deprecated/ServiceAsyncClient",
             package_dir / async_filename);
       }
@@ -281,13 +279,13 @@ class t_mstch_java_generator : public t_mstch_generator {
           service_name + "AsyncReactiveWrapper.java";
       const auto& async_reactive_wrapper_id =
           id + service->get_name() + "AsyncReactiveWrapper";
-      if (!c.count(async_reactive_wrapper_id)) {
-        c[async_reactive_wrapper_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(async_reactive_wrapper_id)) {
+        cache[async_reactive_wrapper_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[async_reactive_wrapper_id],
+          cache[async_reactive_wrapper_id],
           "AsyncReactiveWrapper",
           package_dir / async_reactive_wrapper_filename);
 
@@ -296,13 +294,13 @@ class t_mstch_java_generator : public t_mstch_generator {
           service_name + "BlockingReactiveWrapper.java";
       const auto& blocking_reactive_wrapper_id =
           id + service->get_name() + "BlockingReactiveWrapper";
-      if (!c.count(blocking_reactive_wrapper_id)) {
-        c[blocking_reactive_wrapper_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(blocking_reactive_wrapper_id)) {
+        cache[blocking_reactive_wrapper_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[blocking_reactive_wrapper_id],
+          cache[blocking_reactive_wrapper_id],
           "BlockingReactiveWrapper",
           package_dir / blocking_reactive_wrapper_filename);
 
@@ -311,13 +309,13 @@ class t_mstch_java_generator : public t_mstch_generator {
           service_name + "ReactiveAsyncWrapper.java";
       const auto& reactive_async_wrapper_id =
           id + service->get_name() + "ReactiveAsyncWrapper";
-      if (!c.count(reactive_async_wrapper_id)) {
-        c[reactive_async_wrapper_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(reactive_async_wrapper_id)) {
+        cache[reactive_async_wrapper_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[reactive_async_wrapper_id],
+          cache[reactive_async_wrapper_id],
           "ReactiveAsyncWrapper",
           package_dir / reactive_async_wrapper_filename);
 
@@ -326,13 +324,13 @@ class t_mstch_java_generator : public t_mstch_generator {
           service_name + "ReactiveBlockingWrapper.java";
       const auto& reactive_blocking_wrapper_id =
           id + service->get_name() + "ReactiveBlockingWrapper";
-      if (!c.count(reactive_blocking_wrapper_id)) {
-        c[reactive_blocking_wrapper_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(reactive_blocking_wrapper_id)) {
+        cache[reactive_blocking_wrapper_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[reactive_blocking_wrapper_id],
+          cache[reactive_blocking_wrapper_id],
           "ReactiveBlockingWrapper",
           package_dir / reactive_blocking_wrapper_filename);
 
@@ -340,13 +338,13 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto reactive_client_filename = service_name + "ReactiveClient.java";
       const auto& reactive_client_wrapper_id =
           id + service->get_name() + "ReactiveClient";
-      if (!c.count(reactive_client_wrapper_id)) {
-        c[reactive_client_wrapper_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(reactive_client_wrapper_id)) {
+        cache[reactive_client_wrapper_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[reactive_client_wrapper_id],
+          cache[reactive_client_wrapper_id],
           "ReactiveClient",
           package_dir / reactive_client_filename);
 
@@ -354,13 +352,13 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto rpc_server_handler_filename = service_name + "RpcServerHandler.java";
       const auto& rpc_server_handler_id =
           id + service->get_name() + "RpcServerHandler";
-      if (!c.count(rpc_server_handler_id)) {
-        c[rpc_server_handler_id] =
-            generator->generate(service, factories_, cache_);
+      if (!cache.count(rpc_server_handler_id)) {
+        cache[rpc_server_handler_id] =
+            service_factory.make_mstch_object(service, factories_, cache_);
       }
 
       render_to_file(
-          c[rpc_server_handler_id],
+          cache[rpc_server_handler_id],
           "RpcServerHandler",
           package_dir / rpc_server_handler_filename);
     }
@@ -422,7 +420,7 @@ class mstch_java_program : public mstch_program {
  public:
   mstch_java_program(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_program(program, factories, cache, pos) {
@@ -463,7 +461,7 @@ class mstch_java_struct : public mstch_struct {
  public:
   mstch_java_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_struct(strct, factories, cache, pos) {
@@ -488,12 +486,12 @@ class mstch_java_struct : public mstch_struct {
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(strct_->program()));
+    return get_namespace_or_default(*struct_->program());
   }
-  mstch::node is_struct_union() { return strct_->is_union(); }
+  mstch::node is_struct_union() { return struct_->is_union(); }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       auto type_name = field.type()->get_full_name();
       std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
       if (field_types.find(type_with_erasure) != field_types.end()) {
@@ -505,7 +503,7 @@ class mstch_java_struct : public mstch_struct {
     return true;
   }
   mstch::node has_terse_field() {
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       if (field.qualifier() == t_field_qualifier::terse) {
         return true;
       }
@@ -513,8 +511,8 @@ class mstch_java_struct : public mstch_struct {
     return false;
   }
   mstch::node is_as_bean() {
-    if (!strct_->is_xception() && !strct_->is_union()) {
-      return strct_->get_annotation("java.swift.mutable") == "true";
+    if (!struct_->is_xception() && !struct_->is_union()) {
+      return struct_->get_annotation("java.swift.mutable") == "true";
     } else {
       return false;
     }
@@ -522,38 +520,38 @@ class mstch_java_struct : public mstch_struct {
 
   mstch::node is_BigStruct() {
     return (
-        strct_->is_struct() && strct_->fields().size() > bigStructThreshold);
+        struct_->is_struct() && struct_->fields().size() > bigStructThreshold);
   }
 
   mstch::node java_capital_name() {
-    return java::mangle_java_name(strct_->get_name(), true);
+    return java::mangle_java_name(struct_->get_name(), true);
   }
   mstch::node has_java_annotations() {
-    return strct_->has_annotation("java.swift.annotations");
+    return struct_->has_annotation("java.swift.annotations");
   }
   mstch::node java_annotations() {
-    return strct_->get_annotation("java.swift.annotations");
+    return struct_->get_annotation("java.swift.annotations");
   }
   mstch::node exception_message() {
-    const auto& field_name_to_use = strct_->get_annotation("message");
-    if (const auto* field = strct_->get_field_by_name(field_name_to_use)) {
+    const auto& field_name_to_use = struct_->get_annotation("message");
+    if (const auto* field = struct_->get_field_by_name(field_name_to_use)) {
       return get_java_swift_name(field);
     }
 
     throw std::runtime_error{
         "The exception message field '" + field_name_to_use +
-        "' is not found in " + strct_->get_name() + "!"};
+        "' is not found in " + struct_->get_name() + "!"};
   }
   // we can only override Throwable's getMessage() if:
   //  1 - there is provided 'message' annotation
   //  2 - there is no struct field named 'message'
   //      (since it will generate getMessage() as well)
   mstch::node needs_exception_message() {
-    return strct_->is_xception() && strct_->has_annotation("message") &&
-        strct_->get_field_by_name("message") == nullptr;
+    return struct_->is_xception() && struct_->has_annotation("message") &&
+        struct_->get_field_by_name("message") == nullptr;
   }
   mstch::node enable_is_set() {
-    return strct_->has_annotation("java.swift.enable_is_set");
+    return struct_->has_annotation("java.swift.enable_is_set");
   }
 };
 
@@ -561,7 +559,7 @@ class mstch_java_service : public mstch_service {
  public:
   mstch_java_service(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_service(service, factories, cache, pos) {
@@ -594,7 +592,7 @@ class mstch_java_service : public mstch_service {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
   mstch::node get_request_response_functions() {
     std::vector<t_function*> funcs;
@@ -604,7 +602,7 @@ class mstch_java_service : public mstch_service {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
   mstch::node get_single_request_functions() {
     std::vector<t_function*> funcs;
@@ -614,7 +612,7 @@ class mstch_java_service : public mstch_service {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
 
   mstch::node get_streaming_functions() {
@@ -624,7 +622,7 @@ class mstch_java_service : public mstch_service {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
 
   mstch::node get_sink_functions() {
@@ -634,7 +632,7 @@ class mstch_java_service : public mstch_service {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return make_mstch_functions(funcs);
   }
 };
 
@@ -642,7 +640,7 @@ class mstch_java_function : public mstch_function {
  public:
   mstch_java_function(
       const t_function* function,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, factories, cache, pos) {
@@ -703,7 +701,7 @@ class mstch_java_field : public mstch_field {
  public:
   mstch_java_field(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -928,7 +926,7 @@ class mstch_java_enum : public mstch_enum {
  public:
   mstch_java_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, factories, cache, pos) {
@@ -955,11 +953,11 @@ class mstch_java_enum : public mstch_enum {
 class mstch_java_enum_value : public mstch_enum_value {
  public:
   mstch_java_enum_value(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const t_enum_value* enum_value,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, factories, cache, pos) {
+      : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -968,7 +966,7 @@ class mstch_java_enum_value : public mstch_enum_value {
         });
   }
   mstch::node java_constant_name() {
-    return java::mangle_java_constant_name(enm_value_->get_name());
+    return java::mangle_java_constant_name(enum_value_->get_name());
   }
 };
 
@@ -976,7 +974,7 @@ class mstch_java_const : public mstch_const {
  public:
   mstch_java_const(
       const t_const* cnst,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -1002,7 +1000,7 @@ class mstch_java_const : public mstch_const {
         });
   }
   mstch::node java_capital_name() {
-    return java::mangle_java_constant_name(cnst_->get_name());
+    return java::mangle_java_constant_name(const_->get_name());
   }
   mstch::node java_field_name() {
     return java::mangle_java_name(field_->get_name(), true);
@@ -1010,22 +1008,22 @@ class mstch_java_const : public mstch_const {
   mstch::node java_ignore_constant() {
     // we have to ignore constants if they are enums that we handled as ints, as
     // we don't have the constant values to work with.
-    if (cnst_->get_type()->is_map()) {
-      t_map* map = (t_map*)cnst_->get_type();
+    if (const_->get_type()->is_map()) {
+      t_map* map = (t_map*)const_->get_type();
       if (map->get_key_type()->is_enum()) {
         return map->get_key_type()->has_annotation(
             "java.swift.skip_enum_name_map");
       }
     }
-    if (cnst_->get_type()->is_list()) {
-      t_list* list = (t_list*)cnst_->get_type();
+    if (const_->get_type()->is_list()) {
+      t_list* list = (t_list*)const_->get_type();
       if (list->get_elem_type()->is_enum()) {
         return list->get_elem_type()->has_annotation(
             "java.swift.skip_enum_name_map");
       }
     }
-    if (cnst_->get_type()->is_set()) {
-      t_set* set = (t_set*)cnst_->get_type();
+    if (const_->get_type()->is_set()) {
+      t_set* set = (t_set*)const_->get_type();
       if (set->get_elem_type()->is_enum()) {
         return set->get_elem_type()->has_annotation(
             "java.swift.skip_enum_name_map");
@@ -1039,7 +1037,7 @@ class mstch_java_const_value : public mstch_const_value {
  public:
   mstch_java_const_value(
       const t_const_value* const_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -1081,7 +1079,7 @@ class mstch_java_type : public mstch_type {
  public:
   mstch_java_type(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_type(type, factories, cache, pos) {
@@ -1141,30 +1139,22 @@ void t_mstch_java_generator::generate_program() {
   auto name = get_program()->name();
   const auto& id = get_program()->path();
   if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] = factories_->program_factory->generate(
+    cache_->programs_[id] = factories_.program_factory->make_mstch_object(
         get_program(), factories_, cache_);
   }
 
   str_type_list = "";
   type_list_hash = "";
   generate_items(
-      factories_->struct_factory.get(),
+      *factories_.struct_factory,
       cache_->structs_,
       get_program(),
       get_program()->objects(),
       "Object");
-  generate_rpc_interfaces(
-      factories_->service_factory.get(),
-      cache_->services_,
-      get_program(),
-      get_program()->services());
-  generate_services(
-      factories_->service_factory.get(),
-      cache_->services_,
-      get_program(),
-      get_program()->services());
+  generate_rpc_interfaces();
+  generate_services();
   generate_items(
-      factories_->enum_factory.get(),
+      *factories_.enum_factory,
       cache_->enums_,
       get_program(),
       get_program()->enums(),
@@ -1175,16 +1165,16 @@ void t_mstch_java_generator::generate_program() {
 }
 
 void t_mstch_java_generator::set_mstch_factories() {
-  factories_->set_program_factory<mstch_java_program>();
-  factories_->set_service_factory<mstch_java_service>();
-  factories_->set_function_factory<mstch_java_function>();
-  factories_->set_type_factory<mstch_java_type>();
-  factories_->set_struct_factory<mstch_java_struct>();
-  factories_->set_field_factory<mstch_java_field>();
-  factories_->set_enum_factory<mstch_java_enum>();
-  factories_->set_enum_value_factory<mstch_java_enum_value>();
-  factories_->set_const_factory<mstch_java_const>();
-  factories_->set_const_value_factory<mstch_java_const_value>();
+  factories_.set_program_factory<mstch_java_program>();
+  factories_.set_service_factory<mstch_java_service>();
+  factories_.set_function_factory<mstch_java_function>();
+  factories_.set_type_factory<mstch_java_type>();
+  factories_.set_struct_factory<mstch_java_struct>();
+  factories_.set_field_factory<mstch_java_field>();
+  factories_.set_enum_factory<mstch_java_enum>();
+  factories_.set_enum_value_factory<mstch_java_enum_value>();
+  factories_.set_const_factory<mstch_java_const>();
+  factories_.set_const_value_factory<mstch_java_const_value>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_java, "Java", "");

@@ -364,7 +364,7 @@ class mstch_rust_program : public mstch_program {
  public:
   mstch_rust_program(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -434,7 +434,7 @@ class mstch_rust_program : public mstch_program {
   mstch::node rust_includes() {
     mstch::array includes;
     for (auto* program : program_->get_included_programs()) {
-      includes.push_back(factories_->program_factory->generate(
+      includes.push_back(factories_.program_factory->make_mstch_object(
           program, factories_, cache_, pos_));
     }
     return includes;
@@ -495,7 +495,7 @@ class mstch_rust_program : public mstch_program {
     });
     std::vector<const t_type*> elements(
         nonstandard_types.begin(), nonstandard_types.end());
-    return generate_types(elements);
+    return make_mstch_types(elements);
   }
   mstch::node rust_has_docs() { return program_->has_doc(); }
   mstch::node rust_docs() { return quoted_rust_doc(program_); }
@@ -517,7 +517,7 @@ class mstch_rust_struct : public mstch_struct {
  public:
   mstch_rust_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -543,56 +543,56 @@ class mstch_rust_struct : public mstch_struct {
         });
   }
   mstch::node rust_name() {
-    if (!strct_->has_annotation("rust.name")) {
-      return mangle_type(strct_->get_name());
+    if (!struct_->has_annotation("rust.name")) {
+      return mangle_type(struct_->get_name());
     }
-    return strct_->get_annotation("rust.name");
+    return struct_->get_annotation("rust.name");
   }
   mstch::node rust_package() {
-    return get_import_name(strct_->program(), options_);
+    return get_import_name(struct_->program(), options_);
   }
   mstch::node rust_is_ord() {
-    if (strct_->has_annotation("rust.ord")) {
+    if (struct_->has_annotation("rust.ord")) {
       return true;
     }
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       if (!can_derive_ord(field.get_type())) {
         return false;
       }
     }
     return true;
   }
-  mstch::node rust_is_copy() { return strct_->has_annotation("rust.copy"); }
+  mstch::node rust_is_copy() { return struct_->has_annotation("rust.copy"); }
   mstch::node rust_is_exhaustive() {
-    return strct_->has_annotation("rust.exhaustive");
+    return struct_->has_annotation("rust.exhaustive");
   }
   mstch::node rust_fields_by_name() {
-    auto fields = strct_->fields().copy();
+    auto fields = struct_->fields().copy();
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_fields(fields);
+    return make_mstch_fields(fields);
   }
-  mstch::node rust_has_doc() { return strct_->has_doc(); }
-  mstch::node rust_doc() { return quoted_rust_doc(strct_); }
+  mstch::node rust_has_doc() { return struct_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(struct_); }
   mstch::node rust_derive() {
-    if (!strct_->has_annotation("rust.derive")) {
+    if (!struct_->has_annotation("rust.derive")) {
       return nullptr;
     }
-    return strct_->get_annotation("rust.derive");
+    return struct_->get_annotation("rust.derive");
   }
   mstch::node has_exception_message() {
-    return strct_->has_annotation("message");
+    return struct_->has_annotation("message");
   }
   mstch::node is_exception_message_optional() {
-    if (!strct_->has_annotation("message")) {
+    if (!struct_->has_annotation("message")) {
       return nullptr;
     }
-    return strct_->get_field_by_name(strct_->get_annotation("message"))
+    return struct_->get_field_by_name(struct_->get_annotation("message"))
                ->get_req() == t_field::e_req::optional;
   }
-  mstch::node exception_message() { return strct_->get_annotation("message"); }
-  mstch::node rust_serde() { return rust_serde_enabled(options_, *strct_); }
+  mstch::node exception_message() { return struct_->get_annotation("message"); }
+  mstch::node rust_serde() { return rust_serde_enabled(options_, *struct_); }
 
  private:
   const rust_codegen_options& options_;
@@ -602,7 +602,7 @@ class mstch_rust_service : public mstch_service {
  public:
   mstch_rust_service(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -654,7 +654,7 @@ class mstch_rust_service : public mstch_service {
       node["extendedService:packagePrefix"] = type_prefix;
       node["extendedService:asRefImpl"] = as_ref_impl;
       node["extendedService:service"] =
-          generate_cached_extended_service(parent_service);
+          make_mstch_extended_service_cached(parent_service);
       extended_services.push_back(node);
       as_ref_impl = "self.parent.as_ref()";
       service = parent_service;
@@ -675,7 +675,7 @@ class mstch_rust_function : public mstch_function {
  public:
   mstch_rust_function(
       const t_function* function,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -745,14 +745,14 @@ class mstch_rust_function : public mstch_function {
       }
     }
 
-    return generate_fields(unique_exceptions);
+    return make_mstch_fields(unique_exceptions);
   }
   mstch::node rust_args_by_name() {
     auto params = function_->get_paramlist()->fields().copy();
     std::sort(params.begin(), params.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_fields(params);
+    return make_mstch_fields(params);
   }
   mstch::node rust_returns_by_name() {
     auto returns = function_->get_xceptions()->fields().copy();
@@ -760,7 +760,7 @@ class mstch_rust_function : public mstch_function {
     std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_fields(returns);
+    return make_mstch_fields(returns);
   }
   mstch::node rust_has_doc() { return function_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(function_); }
@@ -780,11 +780,11 @@ class mstch_rust_function : public mstch_function {
 class mstch_rust_enum_value : public mstch_enum_value {
  public:
   mstch_rust_enum_value(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const t_enum_value* enum_value,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, factories, cache, pos) {
+      : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -794,20 +794,20 @@ class mstch_rust_enum_value : public mstch_enum_value {
         });
   }
   mstch::node rust_name() {
-    if (!enm_value_->has_annotation("rust.name")) {
-      return mangle(enm_value_->get_name());
+    if (!enum_value_->has_annotation("rust.name")) {
+      return mangle(enum_value_->get_name());
     }
-    return enm_value_->get_annotation("rust.name");
+    return enum_value_->get_annotation("rust.name");
   }
-  mstch::node rust_has_doc() { return enm_value_->has_doc(); }
-  mstch::node rust_doc() { return quoted_rust_doc(enm_value_); }
+  mstch::node rust_has_doc() { return enum_value_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(enum_value_); }
 };
 
 class mstch_rust_enum : public mstch_enum {
  public:
   mstch_rust_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -838,14 +838,14 @@ class mstch_rust_enum : public mstch_enum {
     std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_enum_values(variants);
+    return make_mstch_enum_values(variants);
   }
   mstch::node variants_by_number() {
     std::vector<t_enum_value*> variants = enm_->get_enum_values();
     std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
       return a->get_value() < b->get_value();
     });
-    return generate_enum_values(variants);
+    return make_mstch_enum_values(variants);
   }
   mstch::node rust_has_doc() { return enm_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(enm_); }
@@ -859,7 +859,7 @@ class mstch_rust_type : public mstch_type {
  public:
   mstch_rust_type(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
@@ -909,7 +909,7 @@ class mstch_rust_value : public mstch_base {
       const t_const_value* const_value,
       const t_type* type,
       unsigned depth,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1166,7 +1166,7 @@ class mstch_rust_map_entry : public mstch_base {
       const t_const_value* value,
       const t_type* value_type,
       unsigned depth,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1208,7 +1208,7 @@ class mstch_rust_struct_field : public mstch_base {
       const t_field* field,
       const t_const_value* value,
       unsigned depth,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1323,7 +1323,7 @@ class mstch_rust_const : public mstch_const {
  public:
   mstch_rust_const(
       const t_const* cnst,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -1352,26 +1352,26 @@ class mstch_rust_const : public mstch_const {
         });
   }
   mstch::node rust_package() {
-    return get_import_name(cnst_->get_program(), options_);
+    return get_import_name(const_->get_program(), options_);
   }
   mstch::node rust_lazy() {
-    auto type = cnst_->get_type()->get_true_type();
+    auto type = const_->get_type()->get_true_type();
     return type->is_list() || type->is_map() || type->is_set() ||
         type->is_struct();
   }
   mstch::node rust_typed_value() {
     unsigned depth = 0;
     return std::make_shared<mstch_rust_value>(
-        cnst_->get_value(),
-        cnst_->get_type(),
+        const_->get_value(),
+        const_->get_type(),
         depth,
         factories_,
         cache_,
         pos_,
         options_);
   }
-  mstch::node rust_has_docs() { return cnst_->has_doc(); }
-  mstch::node rust_docs() { return quoted_rust_doc(cnst_); }
+  mstch::node rust_has_docs() { return const_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(const_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1381,7 +1381,7 @@ class mstch_rust_field : public mstch_field {
  public:
   mstch_rust_field(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -1438,7 +1438,7 @@ class mstch_rust_typedef : public mstch_typedef {
  public:
   mstch_rust_typedef(
       const t_typedef* typedf,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
@@ -1458,41 +1458,43 @@ class mstch_rust_typedef : public mstch_typedef {
         });
   }
   mstch::node rust_name() {
-    if (!typedf_->has_annotation("rust.name")) {
-      return mangle_type(typedf_->name());
+    if (!typedef_->has_annotation("rust.name")) {
+      return mangle_type(typedef_->name());
     }
-    return typedf_->get_annotation("rust.name");
+    return typedef_->get_annotation("rust.name");
   }
-  mstch::node rust_newtype() { return typedf_->has_annotation("rust.newtype"); }
+  mstch::node rust_newtype() {
+    return typedef_->has_annotation("rust.newtype");
+  }
   mstch::node rust_type() {
-    const std::string& rust_type = typedf_->get_annotation("rust.type");
+    const std::string& rust_type = typedef_->get_annotation("rust.type");
     if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
       return "fbthrift::builtin_types::" + rust_type;
     }
     return rust_type;
   }
   mstch::node rust_ord() {
-    return typedf_->has_annotation("rust.ord") ||
-        can_derive_ord(typedf_->get_type());
+    return typedef_->has_annotation("rust.ord") ||
+        can_derive_ord(typedef_->get_type());
   }
   mstch::node rust_copy() {
-    auto inner = typedf_->get_true_type();
+    auto inner = typedef_->get_true_type();
     if (inner->is_bool() || inner->is_byte() || inner->is_i16() ||
         inner->is_i32() || inner->is_i64() || inner->is_enum() ||
         inner->is_void()) {
       return true;
     }
-    if (typedf_->has_annotation("rust.copy")) {
+    if (typedef_->has_annotation("rust.copy")) {
       return true;
     }
     return false;
   }
   mstch::node rust_nonstandard() {
-    return typedf_->get_annotation("rust.type").find("::") != string::npos;
+    return typedef_->get_annotation("rust.type").find("::") != string::npos;
   }
-  mstch::node rust_has_docs() { return typedf_->has_doc(); }
-  mstch::node rust_docs() { return quoted_rust_doc(typedf_); }
-  mstch::node rust_serde() { return rust_serde_enabled(options_, *typedf_); }
+  mstch::node rust_has_docs() { return typedef_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(typedef_); }
+  mstch::node rust_serde() { return rust_serde_enabled(options_, *typedef_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1502,7 +1504,7 @@ class mstch_rust_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   mstch_rust_deprecated_annotation(
       const t_annotation* annotation,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -1530,9 +1532,9 @@ class rust_program_factory : public mstch_program_factory {
   explicit rust_program_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1549,9 +1551,9 @@ class rust_type_factory : public mstch_type_factory {
   explicit rust_type_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1568,9 +1570,9 @@ class rust_typedef_factory : public mstch_typedef_factory {
   explicit rust_typedef_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_typedef* typedf,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1587,9 +1589,9 @@ class rust_struct_factory : public mstch_struct_factory {
   explicit rust_struct_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_struct* s,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1606,9 +1608,9 @@ class rust_field_factory : public mstch_field_factory {
   explicit rust_field_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -1626,9 +1628,9 @@ class rust_enum_factory : public mstch_enum_factory {
   explicit rust_enum_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1645,9 +1647,9 @@ class rust_service_factory : public mstch_service_factory {
   explicit rust_service_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1661,9 +1663,9 @@ class rust_service_factory : public mstch_service_factory {
 
 class rust_function_factory {
  public:
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_function* function,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -1675,9 +1677,10 @@ class rust_function_factory {
 };
 
 mstch::node mstch_rust_service::rust_functions() {
-  rust_function_factory function_factory;
-  return generate_elements(
-      service_->get_functions(), &function_factory, function_upcamel_names_);
+  return make_mstch_array(
+      service_->get_functions(),
+      rust_function_factory(),
+      function_upcamel_names_);
 }
 
 struct name_less {
@@ -1701,14 +1704,12 @@ mstch::node mstch_rust_service::rust_all_exceptions() {
   for (const auto& funcs : function_map) {
     mstch::map data;
     rust_type_factory factory(options_);
-    data["rust_exception:type"] = factory.generate(
+    data["rust_exception:type"] = factory.make_mstch_object(
         funcs.first, factories_, cache_, ELEMENT_POSITION::NONE, 0);
 
-    rust_function_factory function_factory;
-
-    auto functions = generate_elements(
-        funcs.second, &function_factory, function_upcamel_names_);
-    auto fields = generate_fields(field_map[funcs.first]);
+    auto functions = make_mstch_array(
+        funcs.second, rust_function_factory(), function_upcamel_names_);
+    auto fields = make_mstch_fields(field_map[funcs.first]);
 
     mstch::array function_data;
     for (size_t i = 0; i < fields.size(); i++) {
@@ -1730,9 +1731,9 @@ class rust_const_factory : public mstch_const_factory {
   explicit rust_const_factory(const rust_codegen_options& options)
       : options_(options) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_const* cnst,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -1766,20 +1767,17 @@ void t_mstch_rust_generator::generate_program() {
 }
 
 void t_mstch_rust_generator::set_mstch_factories() {
-  factories_->program_factory =
-      std::make_unique<rust_program_factory>(options_);
-  factories_->service_factory =
-      std::make_unique<rust_service_factory>(options_);
-  factories_->type_factory = std::make_unique<rust_type_factory>(options_);
-  factories_->typedef_factory =
-      std::make_unique<rust_typedef_factory>(options_);
-  factories_->struct_factory = std::make_unique<rust_struct_factory>(options_);
-  factories_->field_factory = std::make_unique<rust_field_factory>(options_);
-  factories_->enum_factory = std::make_unique<rust_enum_factory>(options_);
-  factories_->set_enum_value_factory<mstch_rust_enum_value>();
+  factories_.program_factory = std::make_unique<rust_program_factory>(options_);
+  factories_.service_factory = std::make_unique<rust_service_factory>(options_);
+  factories_.type_factory = std::make_unique<rust_type_factory>(options_);
+  factories_.typedef_factory = std::make_unique<rust_typedef_factory>(options_);
+  factories_.struct_factory = std::make_unique<rust_struct_factory>(options_);
+  factories_.field_factory = std::make_unique<rust_field_factory>(options_);
+  factories_.enum_factory = std::make_unique<rust_enum_factory>(options_);
+  factories_.set_enum_value_factory<mstch_rust_enum_value>();
   factories_
-      ->set_deprecated_annotation_factory<mstch_rust_deprecated_annotation>();
-  factories_->const_factory = std::make_unique<rust_const_factory>(options_);
+      .set_deprecated_annotation_factory<mstch_rust_deprecated_annotation>();
+  factories_.const_factory = std::make_unique<rust_const_factory>(options_);
 }
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {

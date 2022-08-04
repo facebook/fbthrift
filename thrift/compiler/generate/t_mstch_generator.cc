@@ -69,7 +69,6 @@ t_mstch_generator::t_mstch_generator(
     : t_generator(program, std::move(context)),
       options_(std::move(options)),
       convert_delimiter_(convert_delimiter),
-      factories_(std::make_shared<mstch_factories>()),
       cache_(std::make_shared<mstch_cache>()) {
   cache_->options_ = options_;
   gen_template_map(template_prefix);
@@ -534,7 +533,7 @@ const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
     itr = cache_->programs_
               .emplace(
                   id,
-                  factories_->program_factory->generate(
+                  factories_.program_factory->make_mstch_object(
                       program, factories_, cache_))
               .first;
   }

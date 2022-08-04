@@ -239,7 +239,7 @@ class mstch_cpp2_enum : public mstch_enum {
  public:
   mstch_cpp2_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, std::move(factories), std::move(cache), pos) {
@@ -306,10 +306,10 @@ class mstch_cpp2_enum : public mstch_enum {
         {"cpp.declare_bitwise_ops", "cpp2.declare_bitwise_ops"});
   }
   mstch::node has_zero() {
-    auto* enm_value = enm_->find_value(0);
-    if (enm_value != nullptr) {
-      return factories_->enum_value_factory->generate(
-          enm_value, factories_, cache_, pos_);
+    auto* enum_value = enm_->find_value(0);
+    if (enum_value != nullptr) {
+      return factories_.enum_value_factory->make_mstch_object(
+          enum_value, factories_, cache_, pos_);
     }
     return mstch::node();
   }
@@ -317,7 +317,7 @@ class mstch_cpp2_enum : public mstch_enum {
     return get_fatal_annotations(enm_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(enm_->annotations()));
+    return make_mstch_annotations(get_fatal_annotations(enm_->annotations()));
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(enm_->get_type_id());
@@ -330,12 +330,12 @@ class mstch_cpp2_enum : public mstch_enum {
 class mstch_cpp2_enum_value : public mstch_enum_value {
  public:
   mstch_cpp2_enum_value(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const t_enum_value* enum_value,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum_value(
-            enm_value, std::move(factories), std::move(cache), pos) {
+            enum_value, std::move(factories), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -348,15 +348,15 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
         });
   }
   mstch::node name_hash() {
-    return "__fbthrift_hash_" + cpp2::sha256_hex(enm_value_->get_name());
+    return "__fbthrift_hash_" + cpp2::sha256_hex(enum_value_->get_name());
   }
-  mstch::node cpp_name() { return cpp2::get_name(enm_value_); }
+  mstch::node cpp_name() { return cpp2::get_name(enum_value_); }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(enm_value_->annotations()).size() > 0;
+    return get_fatal_annotations(enum_value_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(
-        get_fatal_annotations(enm_value_->annotations()));
+    return make_mstch_annotations(
+        get_fatal_annotations(enum_value_->annotations()));
   }
 };
 
@@ -364,7 +364,7 @@ class mstch_cpp2_const_value : public mstch_const_value {
  public:
   mstch_cpp2_const_value(
       const t_const_value* const_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -390,7 +390,7 @@ class mstch_cpp2_typedef : public mstch_typedef {
  public:
   mstch_cpp2_typedef(
       const t_typedef* typedf,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -404,10 +404,10 @@ class mstch_cpp2_typedef : public mstch_typedef {
         });
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_underlying_type_name(*typedf_);
+    return context_->resolver().get_underlying_type_name(*typedef_);
   }
   mstch::node cpp_strong_type() {
-    return typedf_->find_structured_annotation_or_null(
+    return typedef_->find_structured_annotation_or_null(
                "facebook.com/thrift/annotation/cpp/StrongType") != nullptr;
   }
 
@@ -419,7 +419,7 @@ class mstch_cpp2_type : public mstch_type {
  public:
   mstch_cpp2_type(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -603,7 +603,7 @@ class mstch_cpp2_field : public mstch_field {
  public:
   mstch_cpp2_field(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -849,10 +849,10 @@ class mstch_cpp2_field : public mstch_field {
       const auto* const_value = field_->get_value();
       using cv = t_const_value::t_const_value_type;
       if (const_value->get_type() == cv::CV_INTEGER) {
-        auto* enm_value = enm->find_value(const_value->get_integer());
-        if (enm_value != nullptr) {
-          return factories_->enum_value_factory->generate(
-              enm_value, factories_, cache_, pos_);
+        auto* enum_value = enm->find_value(const_value->get_integer());
+        if (enum_value != nullptr) {
+          return factories_.enum_value_factory->make_mstch_object(
+              enum_value, factories_, cache_, pos_);
         }
       }
     }
@@ -869,7 +869,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node serialization_next_field_type() {
     assert(field_context_ && field_context_->serialization_next);
     return field_context_->serialization_next
-        ? factories_->type_factory->generate(
+        ? factories_.type_factory->make_mstch_object(
               field_context_->serialization_next->get_type(),
               factories_,
               cache_,
@@ -893,7 +893,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node has_isset() { return cpp2::field_has_isset(field_); }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(field_->annotations()));
+    return make_mstch_annotations(get_fatal_annotations(field_->annotations()));
   }
   mstch::node fatal_required_qualifier() {
     switch (field_->get_req()) {
@@ -968,7 +968,7 @@ class mstch_cpp2_struct : public mstch_struct {
  public:
   mstch_cpp2_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       std::shared_ptr<cpp2_generator_context> context)
@@ -1045,7 +1045,7 @@ class mstch_cpp2_struct : public mstch_struct {
     register_has_option(
         "struct:deprecated_tag_incompatible?", "deprecated_tag_incompatible");
   }
-  mstch::node fields_size() { return std::to_string(strct_->fields().size()); }
+  mstch::node fields_size() { return std::to_string(struct_->fields().size()); }
   mstch::node explicitly_constructed_fields() {
     // Filter fields according to the following criteria:
     // Get all enums
@@ -1067,7 +1067,7 @@ class mstch_cpp2_struct : public mstch_struct {
           (type->is_container() && field->get_value() != nullptr &&
            !field->get_value()->is_empty()) ||
           (type->is_struct() &&
-           (strct_ != dynamic_cast<const t_struct*>(type)) &&
+           (struct_ != dynamic_cast<const t_struct*>(type)) &&
            ((field->get_value() && !field->get_value()->is_empty()) ||
             (cpp2::is_explicit_ref(field) &&
              field->get_req() != t_field::e_req::optional))) ||
@@ -1078,14 +1078,14 @@ class mstch_cpp2_struct : public mstch_struct {
         filtered_fields.push_back(field);
       }
     }
-    return generate_fields(filtered_fields);
+    return make_mstch_fields(filtered_fields);
   }
 
   mstch::node mixin_fields() {
     mstch::array fields;
-    for (auto i : cpp2::get_mixins_and_members(*strct_)) {
+    for (auto i : cpp2::get_mixins_and_members(*struct_)) {
       const auto suffix =
-          ::apache::thrift::compiler::generate_legacy_api(*strct_) ||
+          ::apache::thrift::compiler::generate_legacy_api(*struct_) ||
               i.mixin->type()->is_union()
           ? "_ref"
           : "";
@@ -1098,14 +1098,14 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
   mstch::node is_struct_orderable() {
-    return context_->is_orderable(*strct_) &&
-        !strct_->has_annotation("no_default_comparators");
+    return context_->is_orderable(*struct_) &&
+        !struct_->has_annotation("no_default_comparators");
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
-    if (strct_->has_annotation("cpp.allocator")) {
+    if (struct_->has_annotation("cpp.allocator")) {
       return true;
     }
-    for (const auto& f : strct_->fields()) {
+    for (const auto& f : struct_->fields()) {
       if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f) ||
           gen::cpp::type_resolver::find_first_adapter(f)) {
         return true;
@@ -1113,37 +1113,37 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return false;
   }
-  mstch::node cpp_name() { return cpp2::get_name(strct_); }
+  mstch::node cpp_name() { return cpp2::get_name(struct_); }
   mstch::node cpp_fullname() {
-    return context_->resolver().get_underlying_namespaced_name(*strct_);
+    return context_->resolver().get_underlying_namespaced_name(*struct_);
   }
   mstch::node cpp_underlying_name() {
-    return context_->resolver().get_underlying_name(*strct_);
+    return context_->resolver().get_underlying_name(*struct_);
   }
   mstch::node cpp_underlying_type() {
-    return context_->resolver().get_underlying_type_name(*strct_);
+    return context_->resolver().get_underlying_type_name(*struct_);
   }
   mstch::node is_directly_adapted() {
-    return context_->resolver().is_directly_adapted(*strct_);
+    return context_->resolver().is_directly_adapted(*struct_);
   }
 
   mstch::node cpp_methods() {
-    return strct_->get_annotation({"cpp.methods", "cpp2.methods"});
+    return struct_->get_annotation({"cpp.methods", "cpp2.methods"});
   }
   mstch::node cpp_declare_hash() {
-    return strct_->has_annotation({"cpp.declare_hash", "cpp2.declare_hash"});
+    return struct_->has_annotation({"cpp.declare_hash", "cpp2.declare_hash"});
   }
   mstch::node cpp_declare_equal_to() {
-    return strct_->has_annotation(
+    return struct_->has_annotation(
         {"cpp.declare_equal_to", "cpp2.declare_equal_to"});
   }
   mstch::node cpp_noncopyable() {
-    if (strct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"})) {
+    if (struct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"})) {
       return true;
     }
 
     bool result = false;
-    cpp2::for_each_transitive_field(strct_, [&result](const t_field* field) {
+    cpp2::for_each_transitive_field(struct_, [&result](const t_field* field) {
       auto has_move_only_adapter = [](const auto* strct) {
         if (auto adapter = strct->find_structured_annotation_or_null(
                 "facebook.com/thrift/annotation/cpp/Adapter")) {
@@ -1177,52 +1177,52 @@ class mstch_cpp2_struct : public mstch_struct {
     return result;
   }
   mstch::node cpp_noncomparable() {
-    return strct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
+    return struct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
   }
   mstch::node cpp_trivially_relocatable() {
     return nullptr !=
-        strct_->find_structured_annotation_or_null(
+        struct_->find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/cpp/TriviallyRelocatable");
   }
   mstch::node is_eligible_for_constexpr() {
-    return is_eligible_for_constexpr_(strct_) ||
-        strct_->has_annotation({"cpp.methods", "cpp2.methods"});
+    return is_eligible_for_constexpr_(struct_) ||
+        struct_->has_annotation({"cpp.methods", "cpp2.methods"});
   }
   mstch::node cpp_virtual() {
-    return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
+    return struct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
   }
   mstch::node message() {
-    if (!strct_->is_exception()) {
+    if (!struct_->is_exception()) {
       return mstch::node();
     }
 
-    const auto& message = strct_->get_annotation("message");
+    const auto& message = struct_->get_annotation("message");
 
     if (message == "") {
       return message;
     }
 
-    if (!should_mangle_field_storage_name_in_struct(*strct_)) {
+    if (!should_mangle_field_storage_name_in_struct(*struct_)) {
       return message;
     }
 
     return mangle_field_name(message);
   }
   mstch::node cpp_allocator() {
-    return strct_->get_annotation("cpp.allocator");
+    return struct_->get_annotation("cpp.allocator");
   }
   mstch::node cpp_data_method() {
-    return strct_->has_annotation("cpp.internal.deprecated._data.method");
+    return struct_->has_annotation("cpp.internal.deprecated._data.method");
   }
   mstch::node cpp_frozen2_exclude() {
     // TODO(dokwon): Fix frozen2 compatibility with adapter.
-    return strct_->has_annotation("cpp.frozen2_exclude") ||
-        context_->resolver().is_directly_adapted(*strct_);
+    return struct_->has_annotation("cpp.frozen2_exclude") ||
+        context_->resolver().is_directly_adapted(*struct_);
   }
   mstch::node cpp_allocator_via() {
     if (const auto* name =
-            strct_->find_annotation_or_null("cpp.allocator_via")) {
-      for (const auto& field : strct_->fields()) {
+            struct_->find_annotation_or_null("cpp.allocator_via")) {
+      for (const auto& field : struct_->fields()) {
         if (cpp2::get_name(&field) == *name) {
           return mangle_field_name(*name);
         }
@@ -1232,7 +1232,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::string();
   }
   mstch::node has_lazy_fields() {
-    for (const auto& field : strct_->get_members()) {
+    for (const auto& field : struct_->get_members()) {
       if (cpp2::is_lazy(field)) {
         return true;
       }
@@ -1241,7 +1241,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node indexing() { return has_lazy_fields(); }
   mstch::node write_lazy_field_checksum() {
-    if (strct_->find_structured_annotation_or_null(
+    if (struct_->find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/cpp/DisableLazyChecksum")) {
       return std::string("false");
     }
@@ -1249,7 +1249,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::string("true");
   }
   mstch::node has_isset_fields() {
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       if (cpp2::field_has_isset(&field)) {
         return true;
       }
@@ -1258,7 +1258,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node isset_fields() {
     std::vector<const t_field*> fields;
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       if (cpp2::field_has_isset(&field)) {
         fields.push_back(&field);
       }
@@ -1266,11 +1266,11 @@ class mstch_cpp2_struct : public mstch_struct {
     if (fields.empty()) {
       return mstch::node();
     }
-    return generate_fields(fields);
+    return make_mstch_fields(fields);
   }
   mstch::node isset_fields_size() {
     std::size_t size = 0;
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       if (cpp2::field_has_isset(&field)) {
         size++;
       }
@@ -1280,7 +1280,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node isset_bitset_option() {
     static const std::string kPrefix =
         "apache::thrift::detail::IssetBitsetOption::";
-    if (const auto* anno = cpp2::packed_isset(*strct_)) {
+    if (const auto* anno = cpp2::packed_isset(*struct_)) {
       for (const auto& kv : anno->value()->get_map()) {
         if (kv.first->get_string() == "atomic") {
           if (!kv.second->get_bool()) {
@@ -1298,14 +1298,14 @@ class mstch_cpp2_struct : public mstch_struct {
     // enough members and at least one has a non-trivial destructor
     // (involving at least a branch and a likely deallocation).
     // TODO(ott): Support unions.
-    if (strct_->is_exception()) {
+    if (struct_->is_exception()) {
       return true;
     }
     constexpr size_t kLargeStructThreshold = 4;
-    if (strct_->fields().size() <= kLargeStructThreshold) {
+    if (struct_->fields().size() <= kLargeStructThreshold) {
       return false;
     }
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       const auto* resolved_typedef = field.type()->get_true_type();
       if (cpp2::is_ref(&field) || resolved_typedef->is_string_or_binary() ||
           resolved_typedef->is_container()) {
@@ -1315,29 +1315,30 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(strct_->annotations()).size() > 0;
+    return get_fatal_annotations(struct_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(strct_->annotations()));
+    return make_mstch_annotations(
+        get_fatal_annotations(struct_->annotations()));
   }
   mstch::node get_legacy_type_id() {
-    return std::to_string(strct_->get_type_id());
+    return std::to_string(struct_->get_type_id());
   }
   mstch::node legacy_api() {
-    return ::apache::thrift::compiler::generate_legacy_api(*strct_);
+    return ::apache::thrift::compiler::generate_legacy_api(*struct_);
   }
   mstch::node metadata_name() {
-    return strct_->program()->name() + "_" + strct_->get_name();
+    return struct_->program()->name() + "_" + struct_->get_name();
   }
 
   mstch::node get_num_union_members() {
-    if (!strct_->is_union()) {
+    if (!struct_->is_union()) {
       throw std::runtime_error("not a union struct");
     }
-    return std::to_string(strct_->fields().size());
+    return std::to_string(struct_->fields().size());
   }
   mstch::node has_non_optional_and_non_terse_field() {
-    const auto& fields = strct_->fields();
+    const auto& fields = struct_->fields();
     return std::any_of(
         fields.begin(),
         fields.end(),
@@ -1350,19 +1351,20 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
   mstch::node scoped_enum_as_union_type() {
-    return strct_->find_structured_annotation_or_null(
+    return struct_->find_structured_annotation_or_null(
         "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType");
   }
 
   mstch::node extra_namespace() {
-    auto* extra = context_->resolver().get_extra_namespace(*strct_);
+    auto* extra = context_->resolver().get_extra_namespace(*struct_);
     return extra ? *extra : mstch::node{};
   }
 
-  mstch::node type_tag() { return context_->resolver().get_type_tag(*strct_); }
+  mstch::node type_tag() { return context_->resolver().get_type_tag(*struct_); }
 
   mstch::node no_deprecated_tag_incompatible_and_thrift_uri() {
-    return !has_option("deprecated_tag_incompatible") && !strct_->uri().empty();
+    return !has_option("deprecated_tag_incompatible") &&
+        !struct_->uri().empty();
   }
 
  protected:
@@ -1433,15 +1435,15 @@ class mstch_cpp2_struct : public mstch_struct {
   // Returns the struct members reordered to minimize padding if the
   // cpp.minimize_padding annotation is specified.
   const std::vector<const t_field*>& get_members_in_layout_order() {
-    if (strct_->fields().size() == fields_in_layout_order_.size()) {
+    if (struct_->fields().size() == fields_in_layout_order_.size()) {
       // Already reordered.
       return fields_in_layout_order_;
     }
 
-    if (!strct_->has_annotation("cpp.minimize_padding") &&
-        !strct_->find_structured_annotation_or_null(
+    if (!struct_->has_annotation("cpp.minimize_padding") &&
+        !struct_->find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/cpp/MinimizePadding")) {
-      return fields_in_layout_order_ = strct_->fields().copy();
+      return fields_in_layout_order_ = struct_->fields().copy();
     }
 
     // Compute field alignments.
@@ -1450,13 +1452,13 @@ class mstch_cpp2_struct : public mstch_struct {
       size_t align = 0;
     };
     std::vector<FieldAlign> field_alignments;
-    field_alignments.reserve(strct_->fields().size());
+    field_alignments.reserve(struct_->fields().size());
     std::unordered_map<const t_field*, size_t> memo;
-    for (const auto& field : strct_->fields()) {
+    for (const auto& field : struct_->fields()) {
       auto align = compute_alignment(&field, memo);
       if (align == 0) {
         // Unknown alignment, don't reorder anything.
-        return fields_in_layout_order_ = strct_->fields().copy();
+        return fields_in_layout_order_ = struct_->fields().copy();
       }
       field_alignments.push_back(FieldAlign{&field, align});
     }
@@ -1469,7 +1471,7 @@ class mstch_cpp2_struct : public mstch_struct {
         [](const auto& lhs, const auto& rhs) { return lhs.align > rhs.align; });
 
     // Construct the reordered field vector.
-    fields_in_layout_order_.reserve(strct_->fields().size());
+    fields_in_layout_order_.reserve(struct_->fields().size());
     std::transform(
         field_alignments.begin(),
         field_alignments.end(),
@@ -1479,15 +1481,16 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
   mstch::node fields_in_layout_order() {
-    return generate_fields(get_members_in_layout_order());
+    return make_mstch_fields(get_members_in_layout_order());
   }
 
   mstch::node fields_in_key_order() {
-    return generate_fields(get_members_in_key_order());
+    return make_mstch_fields(get_members_in_key_order());
   }
 
   mstch::node any() {
-    return strct_->uri() != "" && !strct_->has_annotation("cpp.detail.no_any");
+    return struct_->uri() != "" &&
+        !struct_->has_annotation("cpp.detail.no_any");
   }
 
   std::shared_ptr<cpp2_generator_context> context_;
@@ -1500,7 +1503,7 @@ class mstch_cpp2_function : public mstch_function {
  public:
   mstch_cpp2_function(
       const t_function* function,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, std::move(factories), std::move(cache), pos) {
@@ -1544,7 +1547,7 @@ class mstch_cpp2_service : public mstch_service {
  public:
   mstch_cpp2_service(
       const t_service* service,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t split_id = 0,
@@ -1593,8 +1596,7 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node thrift_includes() {
     mstch::array a;
     for (const auto* program : service_->program()->get_included_programs()) {
-      a.push_back(generate_cached(
-          *factories_->program_factory, program, factories_, cache_));
+      a.push_back(make_mstch_program_cached(program, factories_, cache_));
     }
     return a;
   }
@@ -1608,7 +1610,7 @@ class mstch_cpp2_service : public mstch_service {
         oneway_functions.push_back(function);
       }
     }
-    return generate_functions(oneway_functions);
+    return make_mstch_functions(oneway_functions);
   }
   mstch::node has_oneway() {
     for (const auto* function : get_functions()) {
@@ -1649,7 +1651,7 @@ class mstch_cpp2_interaction : public mstch_cpp2_service {
  public:
   mstch_cpp2_interaction(
       const t_interaction* interaction,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t,
@@ -1676,7 +1678,7 @@ class mstch_cpp2_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   mstch_cpp2_deprecated_annotation(
       const t_annotation* annotation,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
@@ -1699,7 +1701,7 @@ class mstch_cpp2_const : public mstch_const {
  public:
   mstch_cpp2_const(
       const t_const* cnst,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -1727,30 +1729,30 @@ class mstch_cpp2_const : public mstch_const {
         });
   }
   mstch::node enum_value() {
-    if (cnst_->get_type()->is_enum()) {
-      const auto* enm = static_cast<const t_enum*>(cnst_->get_type());
-      const auto* enm_val = enm->find_value(cnst_->get_value()->get_integer());
+    if (const_->get_type()->is_enum()) {
+      const auto* enm = static_cast<const t_enum*>(const_->get_type());
+      const auto* enm_val = enm->find_value(const_->get_value()->get_integer());
       if (enm_val) {
         return enm_val->get_name();
       } else {
-        return std::to_string(cnst_->get_value()->get_integer());
+        return std::to_string(const_->get_value()->get_integer());
       }
     }
     return mstch::node();
   }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_adapter() {
-    if (!cnst_) {
+    if (!const_) {
       return false;
     }
     if (const std::string* adapter =
-            context_->resolver().find_structured_adapter_annotation(*cnst_)) {
+            context_->resolver().find_structured_adapter_annotation(*const_)) {
       return *adapter;
     }
     return {};
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_native_type(*cnst_);
+    return context_->resolver().get_native_type(*const_);
   }
 
  private:
@@ -1761,7 +1763,7 @@ class mstch_cpp2_program : public mstch_program {
  public:
   mstch_cpp2_program(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       boost::optional<int32_t> split_id = boost::none,
@@ -1920,8 +1922,7 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a;
     for (const auto* program : program_->get_included_programs()) {
-      a.push_back(generate_cached(
-          *factories_->program_factory, program, factories_, cache_));
+      a.push_back(make_mstch_program_cached(program, factories_, cache_));
     }
     return a;
   }
@@ -2071,17 +2072,16 @@ class mstch_cpp2_program : public mstch_program {
         std::back_inserter(ret),
         [&](const t_type* node) -> mstch::node {
           if (auto typedf = dynamic_cast<t_typedef const*>(node)) {
-            return factories_->typedef_factory->generate(
+            return factories_.typedef_factory->make_mstch_object(
                 typedf, factories_, cache_);
-          } else {
-            return generate_element_cached(
-                static_cast<t_struct const*>(node),
-                factories_->struct_factory.get(),
-                cache_->structs_,
-                id,
-                0,
-                0);
           }
+          return make_mstch_element_cached(
+              static_cast<const t_struct*>(node),
+              *factories_.struct_factory,
+              cache_->structs_,
+              id,
+              0,
+              0);
         });
     return ret;
   }
@@ -2127,9 +2127,9 @@ class cpp2_typedef_factory : public mstch_typedef_factory {
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_typedef* typedf,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2147,9 +2147,9 @@ class cpp2_type_factory : public mstch_type_factory {
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_type* type,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2166,9 +2166,9 @@ class cpp2_struct_factory : public mstch_struct_factory {
   explicit cpp2_struct_factory(std::shared_ptr<cpp2_generator_context> context)
       : context_(std::move(context)) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -2186,9 +2186,9 @@ class cpp2_field_factory : public mstch_field_factory {
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -2213,9 +2213,9 @@ class cpp2_const_factory : public mstch_const_factory {
       std::shared_ptr<cpp2_generator_context> context) noexcept
       : context_(std::move(context)) {}
 
-  std::shared_ptr<mstch_base> generate(
+  std::shared_ptr<mstch_base> make_mstch_object(
       const t_const* cnst,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -2272,21 +2272,20 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 void t_mstch_cpp2_generator::set_mstch_factories() {
-  factories_->set_program_factory<mstch_cpp2_program>();
-  factories_->set_service_factory<mstch_cpp2_service>();
-  factories_->set_interaction_factory<mstch_cpp2_interaction>();
-  factories_->set_function_factory<mstch_cpp2_function>();
-  factories_->typedef_factory =
-      std::make_unique<cpp2_typedef_factory>(context_);
-  factories_->type_factory = std::make_unique<cpp2_type_factory>(context_);
-  factories_->struct_factory = std::make_unique<cpp2_struct_factory>(context_);
-  factories_->field_factory = std::make_unique<cpp2_field_factory>(context_);
-  factories_->set_enum_factory<mstch_cpp2_enum>();
-  factories_->set_enum_value_factory<mstch_cpp2_enum_value>();
-  factories_->set_const_value_factory<mstch_cpp2_const_value>();
-  factories_->const_factory = std::make_unique<cpp2_const_factory>(context_);
+  factories_.set_program_factory<mstch_cpp2_program>();
+  factories_.set_service_factory<mstch_cpp2_service>();
+  factories_.set_interaction_factory<mstch_cpp2_interaction>();
+  factories_.set_function_factory<mstch_cpp2_function>();
+  factories_.typedef_factory = std::make_unique<cpp2_typedef_factory>(context_);
+  factories_.type_factory = std::make_unique<cpp2_type_factory>(context_);
+  factories_.struct_factory = std::make_unique<cpp2_struct_factory>(context_);
+  factories_.field_factory = std::make_unique<cpp2_field_factory>(context_);
+  factories_.set_enum_factory<mstch_cpp2_enum>();
+  factories_.set_enum_value_factory<mstch_cpp2_enum_value>();
+  factories_.set_const_value_factory<mstch_cpp2_const_value>();
+  factories_.const_factory = std::make_unique<cpp2_const_factory>(context_);
   factories_
-      ->set_deprecated_annotation_factory<mstch_cpp2_deprecated_annotation>();
+      .set_deprecated_annotation_factory<mstch_cpp2_deprecated_annotation>();
 }
 
 void t_mstch_cpp2_generator::generate_constants(const t_program* program) {
@@ -2391,15 +2390,15 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
 void t_mstch_cpp2_generator::generate_out_of_line_service(
     const t_service* service) {
   const auto& name = service->get_name();
+  auto mstch_service =
+      make_mstch_service_cached(get_program(), service, factories_, cache_);
 
-  auto serv = generate_cached(
-      *factories_->service_factory, get_program(), service, factories_, cache_);
-
-  render_to_file(serv, "ServiceAsyncClient.h", name + "AsyncClient.h");
-  render_to_file(serv, "service.cpp", name + ".cpp");
-  render_to_file(serv, "service.h", name + ".h");
-  render_to_file(serv, "service.tcc", name + ".tcc");
-  render_to_file(serv, "types_custom_protocol.h", name + "_custom_protocol.h");
+  render_to_file(mstch_service, "ServiceAsyncClient.h", name + "AsyncClient.h");
+  render_to_file(mstch_service, "service.cpp", name + ".cpp");
+  render_to_file(mstch_service, "service.h", name + ".h");
+  render_to_file(mstch_service, "service.tcc", name + ".tcc");
+  render_to_file(
+      mstch_service, "types_custom_protocol.h", name + "_custom_protocol.h");
 
   auto iter = client_name_to_split_count_.find(name);
   if (iter != client_name_to_split_count_.end()) {
@@ -2421,7 +2420,8 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
           name + "." + s + ".async_client_split.cpp");
     }
   } else {
-    render_to_file(serv, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
+    render_to_file(
+        mstch_service, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
   }
 
   std::vector<std::array<std::string, 3>> protocols = {
@@ -2430,7 +2430,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
   };
   for (const auto& protocol : protocols) {
     render_to_file(
-        serv,
+        mstch_service,
         "service_processmap_protocol.cpp",
         name + "_processmap_" + protocol.at(0) + ".cpp");
   }
@@ -2442,19 +2442,14 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
     generate_out_of_line_service(service);
   }
 
-  mstch::array service_contexts;
-  service_contexts.reserve(services.size());
+  mstch::array mstch_services;
+  mstch_services.reserve(services.size());
   for (const t_service* service : services) {
-    auto service_context = generate_cached(
-        *factories_->service_factory,
-        get_program(),
-        service,
-        factories_,
-        cache_);
-    service_contexts.push_back(std::move(service_context));
+    mstch_services.push_back(
+        make_mstch_service_cached(get_program(), service, factories_, cache_));
   }
   mstch::map context{
-      {"services", std::move(service_contexts)},
+      {"services", std::move(mstch_services)},
   };
   const auto& module_name = get_program()->name();
   render_to_file(
@@ -2465,16 +2460,11 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
 
 void t_mstch_cpp2_generator::generate_inline_services(
     const std::vector<t_service*>& services) {
-  mstch::array service_contexts;
-  service_contexts.reserve(services.size());
+  mstch::array mstch_services;
+  mstch_services.reserve(services.size());
   for (const t_service* service : services) {
-    auto service_context = generate_cached(
-        *factories_->service_factory,
-        get_program(),
-        service,
-        factories_,
-        cache_);
-    service_contexts.push_back(std::move(service_context));
+    mstch_services.push_back(
+        make_mstch_service_cached(get_program(), service, factories_, cache_));
   }
   auto any_service_has_any_function = [&](auto&& predicate) -> bool {
     return std::any_of(
@@ -2497,7 +2487,7 @@ void t_mstch_cpp2_generator::generate_inline_services(
          return func.is_interaction_constructor() ||
              !func.returned_interaction().empty();
        })},
-      {"services", std::move(service_contexts)},
+      {"services", std::move(mstch_services)},
   };
   const auto& module_name = get_program()->name();
   render_to_file(context, "module_clients.h", module_name + "_clients.h");

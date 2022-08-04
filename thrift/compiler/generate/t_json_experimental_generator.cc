@@ -46,7 +46,7 @@ class json_experimental_program : public mstch_program {
  public:
   json_experimental_program(
       const t_program* program,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_program(program, factories, cache, pos) {
@@ -93,7 +93,7 @@ class json_experimental_service : public mstch_service {
  public:
   json_experimental_service(
       const t_service* srvc,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_service(srvc, factories, cache, pos) {
@@ -114,7 +114,7 @@ class json_experimental_function : public mstch_function {
  public:
   json_experimental_function(
       const t_function* func,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(func, factories, cache, pos) {
@@ -139,7 +139,7 @@ class json_experimental_struct : public mstch_struct {
  public:
   json_experimental_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_struct(strct, factories, cache, pos) {
@@ -151,16 +151,16 @@ class json_experimental_struct : public mstch_struct {
             {"struct:docstring", &json_experimental_struct::get_docstring},
         });
   }
-  mstch::node get_lineno() { return strct_->get_lineno(); }
-  mstch::node has_docstring() { return strct_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(strct_->get_doc()); }
+  mstch::node get_lineno() { return struct_->get_lineno(); }
+  mstch::node has_docstring() { return struct_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(struct_->get_doc()); }
 };
 
 class json_experimental_field : public mstch_field {
  public:
   json_experimental_field(
       const t_field* field,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
@@ -183,7 +183,7 @@ class json_experimental_enum : public mstch_enum {
  public:
   json_experimental_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_enum(enm, factories, cache, pos) {
@@ -205,11 +205,11 @@ class json_experimental_enum : public mstch_enum {
 class json_experimental_enum_value : public mstch_enum_value {
  public:
   json_experimental_enum_value(
-      const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const t_enum_value* enum_value,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, factories, cache, pos) {
+      : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -220,10 +220,10 @@ class json_experimental_enum_value : public mstch_enum_value {
              &json_experimental_enum_value::get_docstring},
         });
   }
-  mstch::node get_lineno() { return enm_value_->get_lineno(); }
-  mstch::node has_docstring() { return enm_value_->has_doc(); }
+  mstch::node get_lineno() { return enum_value_->get_lineno(); }
+  mstch::node has_docstring() { return enum_value_->has_doc(); }
   mstch::node get_docstring() {
-    return json_quote_ascii(enm_value_->get_doc());
+    return json_quote_ascii(enum_value_->get_doc());
   }
 };
 
@@ -283,7 +283,7 @@ class json_experimental_const_value : public mstch_const_value {
  public:
   json_experimental_const_value(
       const t_const_value* const_value,
-      std::shared_ptr<const mstch_factories> factories,
+      const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
@@ -324,20 +324,20 @@ class json_experimental_const_value : public mstch_const_value {
 void t_json_experimental_generator::generate_program() {
   const auto* program = get_program();
   set_mstch_factories();
-  auto output =
-      factories_->program_factory->generate(program, factories_, cache_);
+  auto output = factories_.program_factory->make_mstch_object(
+      program, factories_, cache_);
   render_to_file(output, "thrift_ast", program->name() + ".json");
 }
 
 void t_json_experimental_generator::set_mstch_factories() {
-  factories_->set_program_factory<json_experimental_program>();
-  factories_->set_service_factory<json_experimental_service>();
-  factories_->set_function_factory<json_experimental_function>();
-  factories_->set_struct_factory<json_experimental_struct>();
-  factories_->set_field_factory<json_experimental_field>();
-  factories_->set_enum_factory<json_experimental_enum>();
-  factories_->set_enum_value_factory<json_experimental_enum_value>();
-  factories_->set_const_value_factory<json_experimental_const_value>();
+  factories_.set_program_factory<json_experimental_program>();
+  factories_.set_service_factory<json_experimental_service>();
+  factories_.set_function_factory<json_experimental_function>();
+  factories_.set_struct_factory<json_experimental_struct>();
+  factories_.set_field_factory<json_experimental_field>();
+  factories_.set_enum_factory<json_experimental_enum>();
+  factories_.set_enum_value_factory<json_experimental_enum_value>();
+  factories_.set_const_value_factory<json_experimental_const_value>();
 }
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");
