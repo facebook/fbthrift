@@ -159,7 +159,7 @@ void testCopySharedPointer(auto src, auto dst, auto ordinal) {
 
 TEST(CopyTest, FieldRefCopyNotOptional) {
   FieldRefNotOptionalStruct src, dst;
-  type::for_each_ordinal<type::struct_t<FieldRefNotOptionalStruct>>(
+  op::for_each_ordinal<type::struct_t<FieldRefNotOptionalStruct>>(
       [&](auto fieldOrdinalTag) {
         testCopyNotOptional(src, dst, fieldOrdinalTag);
       });
@@ -167,7 +167,7 @@ TEST(CopyTest, FieldRefCopyNotOptional) {
 
 TEST(CopyTest, FieldRefCopyOptional) {
   FieldRefOptionalStruct src, dst;
-  type::for_each_ordinal<type::struct_t<FieldRefOptionalStruct>>(
+  op::for_each_ordinal<type::struct_t<FieldRefOptionalStruct>>(
       [&](auto fieldOrdinalTag) {
         testCopyOptional(src, dst, fieldOrdinalTag);
       });
@@ -175,7 +175,7 @@ TEST(CopyTest, FieldRefCopyOptional) {
 
 TEST(CopyTest, UniquePointer) {
   UniquePointerStruct src, dst;
-  type::for_each_ordinal<type::struct_t<UniquePointerStruct>>(
+  op::for_each_ordinal<type::struct_t<UniquePointerStruct>>(
       [&](auto fieldOrdinalTag) {
         testCopyUniquePointer(src, dst, fieldOrdinalTag);
       });
@@ -183,7 +183,7 @@ TEST(CopyTest, UniquePointer) {
 
 TEST(CopyTest, SharedPointer) {
   SharedPointerStruct src, dst;
-  type::for_each_ordinal<type::struct_t<SharedPointerStruct>>(
+  op::for_each_ordinal<type::struct_t<SharedPointerStruct>>(
       [&](auto fieldOrdinalTag) {
         testCopySharedPointer(src, dst, fieldOrdinalTag);
       });
