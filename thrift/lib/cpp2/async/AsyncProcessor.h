@@ -326,7 +326,9 @@ class AsyncProcessor : public TProcessorBase {
       protocol::PROTOCOL_TYPES,
       Cpp2RequestContext*,
       folly::EventBase*,
-      concurrency::ThreadManager*) = 0;
+      concurrency::ThreadManager*) {
+    LOG(FATAL) << "AsyncProcessor::processSerializedRequest is not implemented";
+  }
 
   /**
    * DEPRECATED! This will be removed.
