@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface BadService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService> serverHandlerBuilder(BadService _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new BadServiceRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
 
     static com.facebook.thrift.client.ClientBuilder<BadService> clientBuilder() {
         return new ClientBuilder<BadService>() {
-            @Override
+            @java.lang.Override
             public BadService build(Mono<RpcClient> rpcClientMono) {
                 BadService.Reactive _delegate =
                     new BadServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Async> serverHandlerBuilder(BadService.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new BadServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
 
         static com.facebook.thrift.client.ClientBuilder<BadService.Async> clientBuilder() {
             return new ClientBuilder<BadService.Async>() {
-                @Override
+                @java.lang.Override
                 public BadService.Async build(Mono<RpcClient> rpcClientMono) {
                     BadService.Reactive _delegate =
                         new BadServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -111,7 +111,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Reactive> serverHandlerBuilder(BadService.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new BadServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -120,7 +120,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
 
         static com.facebook.thrift.client.ClientBuilder<BadService.Reactive> clientBuilder() {
             return new ClientBuilder<BadService.Reactive>() {
-                @Override
+                @java.lang.Override
                 public BadService.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new BadServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }
@@ -164,8 +164,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
         ResponseWrapper<Void> fooWrapper(
             RpcOptions rpcOptions) throws org.apache.thrift.TException;
 
-        @java.lang.Override
-        void close();
+        @java.lang.Override void close();
     }
 
     BadInteraction createBadInteraction();

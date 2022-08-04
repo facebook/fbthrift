@@ -90,7 +90,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -100,7 +100,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -115,7 +115,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -184,5 +184,5 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     public static NonCopyableUnion defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

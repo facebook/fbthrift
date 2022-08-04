@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments> serverHandlerBuilder(DbMixedStackArguments _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new DbMixedStackArgumentsRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
 
     static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments> clientBuilder() {
         return new ClientBuilder<DbMixedStackArguments>() {
-            @Override
+            @java.lang.Override
             public DbMixedStackArguments build(Mono<RpcClient> rpcClientMono) {
                 DbMixedStackArguments.Reactive _delegate =
                     new DbMixedStackArgumentsReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments.Async> serverHandlerBuilder(DbMixedStackArguments.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new DbMixedStackArgumentsRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
 
         static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments.Async> clientBuilder() {
             return new ClientBuilder<DbMixedStackArguments.Async>() {
-                @Override
+                @java.lang.Override
                 public DbMixedStackArguments.Async build(Mono<RpcClient> rpcClientMono) {
                     DbMixedStackArguments.Reactive _delegate =
                         new DbMixedStackArgumentsReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -133,7 +133,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments.Reactive> serverHandlerBuilder(DbMixedStackArguments.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<DbMixedStackArguments.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new DbMixedStackArgumentsRpcServerHandler(impl, eventHandlers);
                 }
@@ -142,7 +142,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
 
         static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments.Reactive> clientBuilder() {
             return new ClientBuilder<DbMixedStackArguments.Reactive>() {
-                @Override
+                @java.lang.Override
                 public DbMixedStackArguments.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new DbMixedStackArgumentsReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

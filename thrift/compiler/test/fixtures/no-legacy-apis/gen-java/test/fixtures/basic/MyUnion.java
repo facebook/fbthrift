@@ -39,7 +39,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       THRIFT_NAMES_TO_IDS.put("myDataItem", 2);
       FIELD_METADATA.put(2, MY_DATA_ITEM_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/no-legacy-apis/MyUnion"), 
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/no-legacy-apis/MyUnion"),
         MyUnion.class, MyUnion::read0));
     }
 
@@ -128,7 +128,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -138,7 +138,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -153,7 +153,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -236,5 +236,5 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static MyUnion defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

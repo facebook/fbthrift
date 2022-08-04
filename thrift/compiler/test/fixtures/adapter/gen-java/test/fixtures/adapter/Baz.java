@@ -54,7 +54,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
       THRIFT_NAMES_TO_IDS.put("longField", 9);
       FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/Baz"), 
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/Baz"),
         Baz.class, Baz::read0));
     }
 
@@ -233,7 +233,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -243,7 +243,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -258,7 +258,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -432,5 +432,5 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     public static Baz defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

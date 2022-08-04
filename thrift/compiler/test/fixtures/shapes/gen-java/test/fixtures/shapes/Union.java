@@ -125,7 +125,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -135,7 +135,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -150,7 +150,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -233,5 +233,5 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     public static Union defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

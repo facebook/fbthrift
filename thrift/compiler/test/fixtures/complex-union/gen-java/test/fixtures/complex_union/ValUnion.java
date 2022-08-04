@@ -123,7 +123,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -133,7 +133,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -148,7 +148,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -231,5 +231,5 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     public static ValUnion defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot> serverHandlerBuilder(MyRoot _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new MyRootRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     static com.facebook.thrift.client.ClientBuilder<MyRoot> clientBuilder() {
         return new ClientBuilder<MyRoot>() {
-            @Override
+            @java.lang.Override
             public MyRoot build(Mono<RpcClient> rpcClientMono) {
                 MyRoot.Reactive _delegate =
                     new MyRootReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.Bloc
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot.Async> serverHandlerBuilder(MyRoot.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyRootRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<MyRoot.Async> clientBuilder() {
             return new ClientBuilder<MyRoot.Async>() {
-                @Override
+                @java.lang.Override
                 public MyRoot.Async build(Mono<RpcClient> rpcClientMono) {
                     MyRoot.Reactive _delegate =
                         new MyRootReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -95,7 +95,7 @@ public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.Bloc
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot.Reactive> serverHandlerBuilder(MyRoot.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyRoot.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyRootRpcServerHandler(impl, eventHandlers);
                 }
@@ -104,7 +104,7 @@ public interface MyRoot extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<MyRoot.Reactive> clientBuilder() {
             return new ClientBuilder<MyRoot.Reactive>() {
-                @Override
+                @java.lang.Override
                 public MyRoot.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new MyRootReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

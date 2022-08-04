@@ -55,7 +55,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public void accept(Visitor visitor) {
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -65,7 +65,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -80,7 +80,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -135,5 +135,5 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static MyUnion defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

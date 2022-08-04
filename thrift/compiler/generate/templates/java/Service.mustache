@@ -33,8 +33,8 @@ import reactor.core.publisher.Mono;
 public interface {{service:javaCapitalName}} extends java.io.Closeable, com.facebook.thrift.util.BlockingService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}> serverHandlerBuilder({{service:javaCapitalName}} _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
             }
         };
@@ -42,7 +42,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
     static com.facebook.thrift.client.ClientBuilder<{{service:javaCapitalName}}> clientBuilder() {
         return new ClientBuilder<{{service:javaCapitalName}}>() {
-            @Override
+            @java.lang.Override
             public {{service:javaCapitalName}} build(Mono<RpcClient> rpcClientMono) {
                 {{service:javaCapitalName}}.Reactive _delegate =
                     new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -55,7 +55,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Async> serverHandlerBuilder({{service:javaCapitalName}}.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
                 }
@@ -64,7 +64,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
         static com.facebook.thrift.client.ClientBuilder<{{service:javaCapitalName}}.Async> clientBuilder() {
             return new ClientBuilder<{{service:javaCapitalName}}.Async>() {
-                @Override
+                @java.lang.Override
                 public {{service:javaCapitalName}}.Async build(Mono<RpcClient> rpcClientMono) {
                     {{service:javaCapitalName}}.Reactive _delegate =
                         new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -163,7 +163,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Reactive> serverHandlerBuilder({{service:javaCapitalName}}.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
                 }
@@ -172,7 +172,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
         static com.facebook.thrift.client.ClientBuilder<{{service:javaCapitalName}}.Reactive> clientBuilder() {
             return new ClientBuilder<{{service:javaCapitalName}}.Reactive>() {
-                @Override
+                @java.lang.Override
                 public {{service:javaCapitalName}}.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }
@@ -283,8 +283,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
             }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
         {{/service:singleRequestFunctions}}
 
-        @java.lang.Override
-        void close();
+        @java.lang.Override void close();
     }
 
     {{service:name}} create{{service:name}}();

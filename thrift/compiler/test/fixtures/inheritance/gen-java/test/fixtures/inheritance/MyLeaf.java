@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.inheritance.MyNode {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf> serverHandlerBuilder(MyLeaf _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new MyLeafRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     static com.facebook.thrift.client.ClientBuilder<MyLeaf> clientBuilder() {
         return new ClientBuilder<MyLeaf>() {
-            @Override
+            @java.lang.Override
             public MyLeaf build(Mono<RpcClient> rpcClientMono) {
                 MyLeaf.Reactive _delegate =
                     new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.inheritance.MyNode.Async {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf.Async> serverHandlerBuilder(MyLeaf.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyLeafRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<MyLeaf.Async> clientBuilder() {
             return new ClientBuilder<MyLeaf.Async>() {
-                @Override
+                @java.lang.Override
                 public MyLeaf.Async build(Mono<RpcClient> rpcClientMono) {
                     MyLeaf.Reactive _delegate =
                         new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -95,7 +95,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.inheritance.MyNode.Reactive {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf.Reactive> serverHandlerBuilder(MyLeaf.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyLeaf.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyLeafRpcServerHandler(impl, eventHandlers);
                 }
@@ -104,7 +104,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<MyLeaf.Reactive> clientBuilder() {
             return new ClientBuilder<MyLeaf.Reactive>() {
-                @Override
+                @java.lang.Override
                 public MyLeaf.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

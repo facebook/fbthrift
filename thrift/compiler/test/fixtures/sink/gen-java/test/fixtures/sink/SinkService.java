@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface SinkService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService> serverHandlerBuilder(SinkService _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new SinkServiceRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
 
     static com.facebook.thrift.client.ClientBuilder<SinkService> clientBuilder() {
         return new ClientBuilder<SinkService>() {
-            @Override
+            @java.lang.Override
             public SinkService build(Mono<RpcClient> rpcClientMono) {
                 SinkService.Reactive _delegate =
                     new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Async> serverHandlerBuilder(SinkService.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new SinkServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
 
         static com.facebook.thrift.client.ClientBuilder<SinkService.Async> clientBuilder() {
             return new ClientBuilder<SinkService.Async>() {
-                @Override
+                @java.lang.Override
                 public SinkService.Async build(Mono<RpcClient> rpcClientMono) {
                     SinkService.Reactive _delegate =
                         new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -70,7 +70,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Reactive> serverHandlerBuilder(SinkService.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new SinkServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -79,7 +79,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
 
         static com.facebook.thrift.client.ClientBuilder<SinkService.Reactive> clientBuilder() {
             return new ClientBuilder<SinkService.Reactive>() {
-                @Override
+                @java.lang.Override
                 public SinkService.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

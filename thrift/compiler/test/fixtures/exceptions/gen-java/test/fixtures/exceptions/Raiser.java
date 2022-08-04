@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser> serverHandlerBuilder(Raiser _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new RaiserRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     static com.facebook.thrift.client.ClientBuilder<Raiser> clientBuilder() {
         return new ClientBuilder<Raiser>() {
-            @Override
+            @java.lang.Override
             public Raiser build(Mono<RpcClient> rpcClientMono) {
                 Raiser.Reactive _delegate =
                     new RaiserReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser.Async> serverHandlerBuilder(Raiser.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new RaiserRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<Raiser.Async> clientBuilder() {
             return new ClientBuilder<Raiser.Async>() {
-                @Override
+                @java.lang.Override
                 public Raiser.Async build(Mono<RpcClient> rpcClientMono) {
                     Raiser.Reactive _delegate =
                         new RaiserReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -193,7 +193,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser.Reactive> serverHandlerBuilder(Raiser.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<Raiser.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new RaiserRpcServerHandler(impl, eventHandlers);
                 }
@@ -202,7 +202,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
         static com.facebook.thrift.client.ClientBuilder<Raiser.Reactive> clientBuilder() {
             return new ClientBuilder<Raiser.Reactive>() {
-                @Override
+                @java.lang.Override
                 public Raiser.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new RaiserReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

@@ -34,7 +34,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
       THRIFT_NAMES_TO_IDS.put("reserved_field", 1);
       FIELD_METADATA.put(1, RESERVED_FIELD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/UnionToBeRenamed"), 
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/UnionToBeRenamed"),
         UnionToBeRenamed.class, UnionToBeRenamed::read0));
     }
 
@@ -93,7 +93,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -103,7 +103,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -118,7 +118,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -187,5 +187,5 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
     public static UnionToBeRenamed defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

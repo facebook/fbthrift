@@ -222,7 +222,7 @@ public class MyServicePrioParentRpcServerHandler
   }
 
 
-  @Override
+  @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 
@@ -261,7 +261,7 @@ public class MyServicePrioParentRpcServerHandler
     return _result;
   }
 
-  @Override
+  @java.lang.Override
   public reactor.core.publisher.Mono<Void> singleRequestNoResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 

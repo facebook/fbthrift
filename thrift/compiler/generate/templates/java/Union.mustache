@@ -54,7 +54,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
       {{/struct:fields}}
       {{#struct:thrift_uri}}
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("{{struct:thrift_uri}}"), 
+        new com.facebook.thrift.type.UniversalName("{{struct:thrift_uri}}"),
         {{struct:javaCapitalName}}.class, {{struct:javaCapitalName}}::read0));
       {{/struct:thrift_uri}}
     }
@@ -109,7 +109,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     {{/struct:fields}}
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -119,7 +119,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -134,7 +134,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -155,5 +155,5 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     public static {{struct:javaCapitalName}} defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

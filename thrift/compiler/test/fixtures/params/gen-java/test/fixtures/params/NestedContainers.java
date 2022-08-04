@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface NestedContainers extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers> serverHandlerBuilder(NestedContainers _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new NestedContainersRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
     static com.facebook.thrift.client.ClientBuilder<NestedContainers> clientBuilder() {
         return new ClientBuilder<NestedContainers>() {
-            @Override
+            @java.lang.Override
             public NestedContainers build(Mono<RpcClient> rpcClientMono) {
                 NestedContainers.Reactive _delegate =
                     new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Async> serverHandlerBuilder(NestedContainers.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new NestedContainersRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
         static com.facebook.thrift.client.ClientBuilder<NestedContainers.Async> clientBuilder() {
             return new ClientBuilder<NestedContainers.Async>() {
-                @Override
+                @java.lang.Override
                 public NestedContainers.Async build(Mono<RpcClient> rpcClientMono) {
                     NestedContainers.Reactive _delegate =
                         new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -229,7 +229,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Reactive> serverHandlerBuilder(NestedContainers.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new NestedContainersRpcServerHandler(impl, eventHandlers);
                 }
@@ -238,7 +238,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
         static com.facebook.thrift.client.ClientBuilder<NestedContainers.Reactive> clientBuilder() {
             return new ClientBuilder<NestedContainers.Reactive>() {
-                @Override
+                @java.lang.Override
                 public NestedContainers.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

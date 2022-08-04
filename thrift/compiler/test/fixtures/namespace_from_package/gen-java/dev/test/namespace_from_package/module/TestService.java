@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface TestService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<TestService> serverHandlerBuilder(TestService _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<TestService>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new TestServiceRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
 
     static com.facebook.thrift.client.ClientBuilder<TestService> clientBuilder() {
         return new ClientBuilder<TestService>() {
-            @Override
+            @java.lang.Override
             public TestService build(Mono<RpcClient> rpcClientMono) {
                 TestService.Reactive _delegate =
                     new TestServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<TestService.Async> serverHandlerBuilder(TestService.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<TestService.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new TestServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
 
         static com.facebook.thrift.client.ClientBuilder<TestService.Async> clientBuilder() {
             return new ClientBuilder<TestService.Async>() {
-                @Override
+                @java.lang.Override
                 public TestService.Async build(Mono<RpcClient> rpcClientMono) {
                     TestService.Reactive _delegate =
                         new TestServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -101,7 +101,7 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<TestService.Reactive> serverHandlerBuilder(TestService.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<TestService.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new TestServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -110,7 +110,7 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
 
         static com.facebook.thrift.client.ClientBuilder<TestService.Reactive> clientBuilder() {
             return new ClientBuilder<TestService.Reactive>() {
-                @Override
+                @java.lang.Override
                 public TestService.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new TestServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

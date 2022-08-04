@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface PubSubStreamingService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService> serverHandlerBuilder(PubSubStreamingService _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new PubSubStreamingServiceRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
 
     static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService> clientBuilder() {
         return new ClientBuilder<PubSubStreamingService>() {
-            @Override
+            @java.lang.Override
             public PubSubStreamingService build(Mono<RpcClient> rpcClientMono) {
                 PubSubStreamingService.Reactive _delegate =
                     new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService.Async> serverHandlerBuilder(PubSubStreamingService.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new PubSubStreamingServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
 
         static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService.Async> clientBuilder() {
             return new ClientBuilder<PubSubStreamingService.Async>() {
-                @Override
+                @java.lang.Override
                 public PubSubStreamingService.Async build(Mono<RpcClient> rpcClientMono) {
                     PubSubStreamingService.Reactive _delegate =
                         new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -70,7 +70,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService.Reactive> serverHandlerBuilder(PubSubStreamingService.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<PubSubStreamingService.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new PubSubStreamingServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -79,7 +79,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
 
         static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService.Reactive> clientBuilder() {
             return new ClientBuilder<PubSubStreamingService.Reactive>() {
-                @Override
+                @java.lang.Override
                 public PubSubStreamingService.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

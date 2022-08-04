@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface LegacyService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService> serverHandlerBuilder(LegacyService _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new LegacyServiceRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
 
     static com.facebook.thrift.client.ClientBuilder<LegacyService> clientBuilder() {
         return new ClientBuilder<LegacyService>() {
-            @Override
+            @java.lang.Override
             public LegacyService build(Mono<RpcClient> rpcClientMono) {
                 LegacyService.Reactive _delegate =
                     new LegacyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService.Async> serverHandlerBuilder(LegacyService.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new LegacyServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
 
         static com.facebook.thrift.client.ClientBuilder<LegacyService.Async> clientBuilder() {
             return new ClientBuilder<LegacyService.Async>() {
-                @Override
+                @java.lang.Override
                 public LegacyService.Async build(Mono<RpcClient> rpcClientMono) {
                     LegacyService.Reactive _delegate =
                         new LegacyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -107,7 +107,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService.Reactive> serverHandlerBuilder(LegacyService.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<LegacyService.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new LegacyServiceRpcServerHandler(impl, eventHandlers);
                 }
@@ -116,7 +116,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
 
         static com.facebook.thrift.client.ClientBuilder<LegacyService.Reactive> clientBuilder() {
             return new ClientBuilder<LegacyService.Reactive>() {
-                @Override
+                @java.lang.Override
                 public LegacyService.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new LegacyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }

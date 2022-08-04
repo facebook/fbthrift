@@ -34,7 +34,7 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
       THRIFT_NAMES_TO_IDS.put("innerOption", 1);
       FIELD_METADATA.put(1, INNER_OPTION_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/InnerUnion"), 
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/InnerUnion"),
         InnerUnion.class, InnerUnion::read0));
     }
 
@@ -93,7 +93,7 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
         }
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return toStringHelper(this)
             .add("value", value)
@@ -103,7 +103,7 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
             .toString();
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
@@ -118,7 +118,7 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
                 && Objects.deepEquals(this.value, other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             id,
@@ -187,5 +187,5 @@ public final class InnerUnion implements com.facebook.thrift.payload.ThriftSeria
     public static InnerUnion defaultInstance() {
         return _DEFAULT;
     }
-    
+
 }

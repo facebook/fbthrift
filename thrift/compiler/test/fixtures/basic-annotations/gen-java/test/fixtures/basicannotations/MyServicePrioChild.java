@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.basicannotations.MyServicePrioParent {
     static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild> serverHandlerBuilder(MyServicePrioChild _serverImpl) {
         return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild>(_serverImpl) {
-            @Override
-            public com.facebook.thrift.server.RpcServerHandler build() {
+                @java.lang.Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
                 return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
             }
         };
@@ -30,7 +30,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
 
     static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild> clientBuilder() {
         return new ClientBuilder<MyServicePrioChild>() {
-            @Override
+            @java.lang.Override
             public MyServicePrioChild build(Mono<RpcClient> rpcClientMono) {
                 MyServicePrioChild.Reactive _delegate =
                     new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -43,7 +43,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.basicannotations.MyServicePrioParent.Async {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Async> serverHandlerBuilder(MyServicePrioChild.Async _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Async>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
                 }
@@ -52,7 +52,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
 
         static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild.Async> clientBuilder() {
             return new ClientBuilder<MyServicePrioChild.Async>() {
-                @Override
+                @java.lang.Override
                 public MyServicePrioChild.Async build(Mono<RpcClient> rpcClientMono) {
                     MyServicePrioChild.Reactive _delegate =
                         new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
@@ -95,7 +95,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
         static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Reactive> serverHandlerBuilder(MyServicePrioChild.Reactive _serverImpl) {
             return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Reactive>(_serverImpl) {
-                @Override
+                @java.lang.Override
                 public com.facebook.thrift.server.RpcServerHandler build() {
                     return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
                 }
@@ -104,7 +104,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
 
         static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild.Reactive> clientBuilder() {
             return new ClientBuilder<MyServicePrioChild.Reactive>() {
-                @Override
+                @java.lang.Override
                 public MyServicePrioChild.Reactive build(Mono<RpcClient> rpcClientMono) {
                     return new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }
