@@ -163,7 +163,7 @@ class t_mstch_java_generator : public t_mstch_generator {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] =
-          generators_->program_factory->generate(program, generators_, cache_);
+          factories_->program_factory->generate(program, factories_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -175,7 +175,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
       const auto& item_id = id + item->get_name();
       if (!c.count(item_id)) {
-        c[item_id] = generator->generate(item, generators_, cache_);
+        c[item_id] = generator->generate(item, factories_, cache_);
       }
 
       render_to_file(c[item_id], "Service", package_dir / filename);
@@ -192,7 +192,7 @@ class t_mstch_java_generator : public t_mstch_generator {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] =
-          generators_->program_factory->generate(program, generators_, cache_);
+          factories_->program_factory->generate(program, factories_, cache_);
     }
     auto raw_package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
@@ -207,7 +207,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto filename = classname + ".java";
       const auto& item_id = id + item->get_name();
       if (!c.count(item_id)) {
-        c[item_id] = generator->generate(item, generators_, cache_);
+        c[item_id] = generator->generate(item, factories_, cache_);
       }
 
       render_to_file(c[item_id], tpl_path, package_dir / filename);
@@ -233,7 +233,7 @@ class t_mstch_java_generator : public t_mstch_generator {
     const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] =
-          generators_->program_factory->generate(program, generators_, cache_);
+          factories_->program_factory->generate(program, factories_, cache_);
     }
 
     auto raw_package_dir = boost::filesystem::path{
@@ -254,8 +254,7 @@ class t_mstch_java_generator : public t_mstch_generator {
         auto sync_filename = service_name + "ClientImpl.java";
         const auto& sync_service_id = id + service->get_name() + "Client";
         if (!c.count(sync_service_id)) {
-          c[sync_service_id] =
-              generator->generate(service, generators_, cache_);
+          c[sync_service_id] = generator->generate(service, factories_, cache_);
         }
 
         render_to_file(
@@ -268,7 +267,7 @@ class t_mstch_java_generator : public t_mstch_generator {
         const auto& async_service_id = id + service->get_name() + "AsyncClient";
         if (!c.count(async_service_id)) {
           c[async_service_id] =
-              generator->generate(service, generators_, cache_);
+              generator->generate(service, factories_, cache_);
         }
 
         render_to_file(
@@ -284,7 +283,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "AsyncReactiveWrapper";
       if (!c.count(async_reactive_wrapper_id)) {
         c[async_reactive_wrapper_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -299,7 +298,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "BlockingReactiveWrapper";
       if (!c.count(blocking_reactive_wrapper_id)) {
         c[blocking_reactive_wrapper_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -314,7 +313,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "ReactiveAsyncWrapper";
       if (!c.count(reactive_async_wrapper_id)) {
         c[reactive_async_wrapper_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -329,7 +328,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "ReactiveBlockingWrapper";
       if (!c.count(reactive_blocking_wrapper_id)) {
         c[reactive_blocking_wrapper_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -343,7 +342,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "ReactiveClient";
       if (!c.count(reactive_client_wrapper_id)) {
         c[reactive_client_wrapper_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -357,7 +356,7 @@ class t_mstch_java_generator : public t_mstch_generator {
           id + service->get_name() + "RpcServerHandler";
       if (!c.count(rpc_server_handler_id)) {
         c[rpc_server_handler_id] =
-            generator->generate(service, generators_, cache_);
+            generator->generate(service, factories_, cache_);
       }
 
       render_to_file(
@@ -421,10 +420,10 @@ class mstch_java_program : public mstch_program {
  public:
   mstch_java_program(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_program(program, generators, cache, pos) {
+      : mstch_program(program, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -462,10 +461,10 @@ class mstch_java_struct : public mstch_struct {
  public:
   mstch_java_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
+      : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -560,10 +559,10 @@ class mstch_java_service : public mstch_service {
  public:
   mstch_java_service(
       const t_service* service,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_service(service, generators, cache, pos) {
+      : mstch_service(service, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -641,10 +640,10 @@ class mstch_java_function : public mstch_function {
  public:
   mstch_java_function(
       const t_function* function,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos) {
+      : mstch_function(function, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -702,12 +701,12 @@ class mstch_java_field : public mstch_field {
  public:
   mstch_java_field(
       const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
       const field_generator_context* field_context)
-      : mstch_field(field, generators, cache, pos, index, field_context) {
+      : mstch_field(field, factories, cache, pos, index, field_context) {
     register_methods(
         this,
         {{"field:javaName", &mstch_java_field::java_name},
@@ -927,10 +926,10 @@ class mstch_java_enum : public mstch_enum {
  public:
   mstch_java_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum(enm, generators, cache, pos) {
+      : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -955,10 +954,10 @@ class mstch_java_enum_value : public mstch_enum_value {
  public:
   mstch_java_enum_value(
       const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, generators, cache, pos) {
+      : mstch_enum_value(enm_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -975,21 +974,21 @@ class mstch_java_const : public mstch_const {
  public:
   mstch_java_const(
       const t_const* cnst,
-      const t_const* current_const,
-      const t_type* expected_type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
+      const t_const* current_const,
+      const t_type* expected_type,
       const t_field* field)
       : mstch_const(
             cnst,
-            current_const,
-            expected_type,
-            generators,
+            factories,
             cache,
             pos,
             index,
+            current_const,
+            expected_type,
             field) {
     register_methods(
         this,
@@ -1038,20 +1037,20 @@ class mstch_java_const_value : public mstch_const_value {
  public:
   mstch_java_const_value(
       const t_const_value* const_value,
-      const t_const* current_const,
-      const t_type* expected_type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index)
+      int32_t index,
+      const t_const* current_const,
+      const t_type* expected_type)
       : mstch_const_value(
             const_value,
-            current_const,
-            expected_type,
-            generators,
+            factories,
             cache,
             pos,
-            index) {
+            index,
+            current_const,
+            expected_type) {
     register_methods(
         this,
         {
@@ -1080,10 +1079,10 @@ class mstch_java_type : public mstch_type {
  public:
   mstch_java_type(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_type(type, generators, cache, pos) {
+      : mstch_type(type, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1134,84 +1133,36 @@ class mstch_java_type : public mstch_type {
   }
 };
 
-class const_java_generator : public const_generator {
- public:
-  const_java_generator() = default;
-  ~const_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_const* cnst,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      const t_const* current_const,
-      const t_type* expected_type,
-      const t_field* field) const override {
-    return std::make_shared<mstch_java_const>(
-        cnst,
-        current_const,
-        expected_type,
-        generators,
-        cache,
-        pos,
-        index,
-        field);
-  }
-};
-
-class const_value_java_generator : public const_value_generator {
- public:
-  const_value_java_generator() = default;
-  ~const_value_java_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_const_value* const_value,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      const t_const* current_const,
-      const t_type* expected_type) const override {
-    return std::make_shared<mstch_java_const_value>(
-        const_value,
-        current_const,
-        expected_type,
-        generators,
-        cache,
-        pos,
-        index);
-  }
-};
-
 void t_mstch_java_generator::generate_program() {
   set_mstch_factories();
 
   auto name = get_program()->name();
   const auto& id = get_program()->path();
   if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] = generators_->program_factory->generate(
-        get_program(), generators_, cache_);
+    cache_->programs_[id] = factories_->program_factory->generate(
+        get_program(), factories_, cache_);
   }
 
   str_type_list = "";
   type_list_hash = "";
   generate_items(
-      generators_->struct_factory.get(),
+      factories_->struct_factory.get(),
       cache_->structs_,
       get_program(),
       get_program()->objects(),
       "Object");
   generate_rpc_interfaces(
-      generators_->service_factory.get(),
+      factories_->service_factory.get(),
       cache_->services_,
       get_program(),
       get_program()->services());
   generate_services(
-      generators_->service_factory.get(),
+      factories_->service_factory.get(),
       cache_->services_,
       get_program(),
       get_program()->services());
   generate_items(
-      generators_->enum_factory.get(),
+      factories_->enum_factory.get(),
       cache_->enums_,
       get_program(),
       get_program()->enums(),
@@ -1222,17 +1173,16 @@ void t_mstch_java_generator::generate_program() {
 }
 
 void t_mstch_java_generator::set_mstch_factories() {
-  generators_->set_program_factory<mstch_java_program>();
-  generators_->set_service_factory<mstch_java_service>();
-  generators_->set_function_factory<mstch_java_function>();
-  generators_->set_type_factory<mstch_java_type>();
-  generators_->set_struct_factory<mstch_java_struct>();
-  generators_->set_field_factory<mstch_java_field>();
-  generators_->set_enum_factory<mstch_java_enum>();
-  generators_->set_enum_value_factory<mstch_java_enum_value>();
-  generators_->set_const_generator(std::make_unique<const_java_generator>());
-  generators_->set_const_value_generator(
-      std::make_unique<const_value_java_generator>());
+  factories_->set_program_factory<mstch_java_program>();
+  factories_->set_service_factory<mstch_java_service>();
+  factories_->set_function_factory<mstch_java_function>();
+  factories_->set_type_factory<mstch_java_type>();
+  factories_->set_struct_factory<mstch_java_struct>();
+  factories_->set_field_factory<mstch_java_field>();
+  factories_->set_enum_factory<mstch_java_enum>();
+  factories_->set_enum_value_factory<mstch_java_enum_value>();
+  factories_->set_const_factory<mstch_java_const>();
+  factories_->set_const_value_factory<mstch_java_const_value>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_java, "Java", "");

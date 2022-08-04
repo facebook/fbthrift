@@ -69,14 +69,14 @@ t_mstch_generator::t_mstch_generator(
     : t_generator(program, std::move(context)),
       options_(std::move(options)),
       convert_delimiter_(convert_delimiter),
-      generators_(std::make_shared<mstch_generators>()),
+      factories_(std::make_shared<mstch_factories>()),
       cache_(std::make_shared<mstch_cache>()) {
   cache_->options_ = options_;
   gen_template_map(template_prefix);
 }
 
 t_mstch_generator::~t_mstch_generator() {
-  // The cache can hold circular references to contexts and other generators,
+  // The cache can hold circular references to contexts and other factories,
   // which results in a memory leak on cleanup. Therefore, we must explicitly
   // clear the cache when we are destroyed, to break the cycles. (Hopefully
   // nobody has kept a reference to us, or this will never be called!)
@@ -534,8 +534,8 @@ const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
     itr = cache_->programs_
               .emplace(
                   id,
-                  generators_->program_factory->generate(
-                      program, generators_, cache_))
+                  factories_->program_factory->generate(
+                      program, factories_, cache_))
               .first;
   }
   return itr->second;

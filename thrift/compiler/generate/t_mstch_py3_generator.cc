@@ -120,12 +120,12 @@ class mstch_py3_type : public mstch_type {
   };
   mstch_py3_type(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog,
       CachedProperties& cachedProps)
-      : mstch_type(type, generators, cache, pos),
+      : mstch_type(type, factories, cache, pos),
         prog_{prog},
         cachedProps_{cachedProps} {
     strip_cpp_comments_and_newlines(cachedProps_.cppType);
@@ -349,7 +349,7 @@ class py3_type_factory : public mstch_type_factory {
   explicit py3_type_factory(const t_program* prog) : prog_{prog} {}
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index) const override;
@@ -362,10 +362,10 @@ class mstch_py3_program : public mstch_program {
  public:
   mstch_py3_program(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_program{program, generators, cache, pos} {
+      : mstch_program{program, factories, cache, pos} {
     register_methods(
         this,
         {
@@ -610,7 +610,7 @@ class mstch_py3_program : public mstch_program {
       const t_type* orig_type, TypeDef isTypedef) {
     auto trueType = orig_type->get_true_type();
     auto baseType =
-        generators_->type_factory->generate(trueType, generators_, cache_);
+        factories_->type_factory->generate(trueType, factories_, cache_);
     mstch_py3_type* type = dynamic_cast<mstch_py3_type*>(baseType.get());
     const std::string& flatName = type->get_flat_name();
     // Import all types either beneath a typedef, even if the current type is
@@ -703,10 +703,10 @@ class mstch_py3_function : public mstch_function {
  public:
   mstch_py3_function(
       const t_function* function,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos),
+      : mstch_function(function, factories, cache, pos),
         cppName_{cpp2::get_name(function)} {
     register_methods(
         this,
@@ -733,11 +733,11 @@ class mstch_py3_service : public mstch_service {
  public:
   mstch_py3_service(
       const t_service* service,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog)
-      : mstch_service(service, generators, cache, pos), prog_{prog} {
+      : mstch_service(service, factories, cache, pos), prog_{prog} {
     register_methods(
         this,
         {
@@ -833,12 +833,12 @@ class mstch_py3_field : public mstch_field {
   };
   mstch_py3_field(
       const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
       const field_generator_context* field_context)
-      : mstch_field(field, generators, cache, pos, index, field_context),
+      : mstch_field(field, factories, cache, pos, index, field_context),
         pyName_{py3::get_py3_name(*field)},
         cppName_{cpp2::get_name(field)} {
     register_methods(
@@ -963,10 +963,10 @@ class mstch_py3_struct : public mstch_struct {
  public:
   mstch_py3_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
+      : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1036,10 +1036,10 @@ class mstch_py3_enum : public mstch_enum {
  public:
   mstch_py3_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum(enm, generators, cache, pos) {
+      : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1056,10 +1056,10 @@ class mstch_py3_enum_value : public mstch_enum_value {
  public:
   mstch_py3_enum_value(
       const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, generators, cache, pos) {
+      : mstch_enum_value(enm_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1082,12 +1082,12 @@ class mstch_py3_container_type : public mstch_py3_type {
  public:
   mstch_py3_container_type(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog,
       CachedProperties& cachedProps)
-      : mstch_py3_type(type, generators, cache, pos, prog, cachedProps) {
+      : mstch_py3_type(type, factories, cache, pos, prog, cachedProps) {
     register_methods(
         this,
         {
@@ -1103,36 +1103,29 @@ class mstch_py3_container_type : public mstch_py3_type {
   }
 };
 
-class mstch_py3_annotation : public mstch_annotation {
+class mstch_py3_deprecated_annotation : public mstch_deprecated_annotation {
  public:
-  mstch_py3_annotation(
-      const t_annotation& annotation,
-      std::shared_ptr<const mstch_generators> generators,
+  mstch_py3_deprecated_annotation(
+      const t_annotation* annotation,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
-      : mstch_annotation(
-            annotation.first,
-            annotation.second,
-            generators,
-            cache,
-            pos,
-            index) {
+      : mstch_deprecated_annotation(annotation, factories, cache, pos, index) {
     register_methods(
         this,
         {
-            {"annotation:value?", &mstch_py3_annotation::hasValue},
-            {"annotation:py_quoted_key", &mstch_py3_annotation::pyQuotedKey},
+            {"annotation:value?", &mstch_py3_deprecated_annotation::has_value},
+            {"annotation:py_quoted_key",
+             &mstch_py3_deprecated_annotation::py_quoted_key},
             {"annotation:py_quoted_value",
-             &mstch_py3_annotation::pyQuotedValue},
+             &mstch_py3_deprecated_annotation::py_quoted_value},
         });
   }
 
-  mstch::node hasValue() { return !val_.value.empty(); }
-
-  mstch::node pyQuotedKey() { return to_python_string_literal(key_); }
-
-  mstch::node pyQuotedValue() { return to_python_string_literal(val_.value); }
+  mstch::node has_value() { return !val_.value.empty(); }
+  mstch::node py_quoted_key() { return to_python_string_literal(key_); }
+  mstch::node py_quoted_value() { return to_python_string_literal(val_.value); }
 
  protected:
   std::string to_python_string_literal(std::string val) const {
@@ -1147,7 +1140,7 @@ class py3_program_factory : public mstch_program_factory {
  public:
   std::shared_ptr<mstch_base> generate(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -1158,7 +1151,7 @@ class py3_program_factory : public mstch_program_factory {
     }
     auto r = cache->programs_.emplace(
         id,
-        std::make_shared<mstch_py3_program>(program, generators, cache, pos));
+        std::make_shared<mstch_py3_program>(program, factories, cache, pos));
     return r.first->second;
   }
   std::unordered_map<const t_type*, mstch_py3_type::CachedProperties>
@@ -1171,29 +1164,16 @@ class py3_service_factory : public mstch_service_factory {
 
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_py3_service>(
-        service, generators, cache, pos, prog_);
+        service, factories, cache, pos, prog_);
   }
 
  protected:
   const t_program* prog_;
-};
-
-class annotation_py3_generator : public annotation_generator {
- public:
-  std::shared_ptr<mstch_base> generate(
-      const t_annotation& annotation,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index) const override {
-    return std::make_shared<mstch_py3_annotation>(
-        annotation, generators, cache, pos, index);
-  }
 };
 
 // Generator-specific validator that enforces that a reserved key is not used as
@@ -1323,7 +1303,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 template <bool ForContainers>
 std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
     const t_type* type,
-    std::shared_ptr<const mstch_generators> generators,
+    std::shared_ptr<const mstch_factories> factories,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t /*index*/) const {
@@ -1331,7 +1311,7 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
       conditional_t<ForContainers, mstch_py3_container_type, mstch_py3_type>;
   auto trueType = type->get_true_type();
   auto& propsCache =
-      dynamic_cast<py3_program_factory&>(*generators->program_factory)
+      dynamic_cast<py3_program_factory&>(*factories->program_factory)
           .typePropsCache;
   auto it = propsCache.find(trueType);
   if (it == propsCache.end()) {
@@ -1343,28 +1323,27 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::generate(
             {}});
   }
   return std::make_shared<T>(
-      trueType, generators, cache, pos, prog_, propsCache.at(trueType));
+      trueType, factories, cache, pos, prog_, propsCache.at(trueType));
 }
 
 void t_mstch_py3_generator::set_mstch_factories() {
-  generators_->program_factory = std::make_unique<py3_program_factory>();
-  generators_->service_factory =
-      std::make_unique<py3_service_factory>(program_);
-  generators_->set_function_factory<mstch_py3_function>();
-  generators_->type_factory =
+  factories_->program_factory = std::make_unique<py3_program_factory>();
+  factories_->service_factory = std::make_unique<py3_service_factory>(program_);
+  factories_->set_function_factory<mstch_py3_function>();
+  factories_->type_factory =
       std::make_unique<py3_type_factory<false>>(program_);
-  generators_->set_struct_factory<mstch_py3_struct>();
-  generators_->set_field_factory<mstch_py3_field>();
-  generators_->set_enum_factory<mstch_py3_enum>();
-  generators_->set_enum_value_factory<mstch_py3_enum_value>();
-  generators_->set_annotation_generator(
-      std::make_unique<annotation_py3_generator>());
+  factories_->set_struct_factory<mstch_py3_struct>();
+  factories_->set_field_factory<mstch_py3_field>();
+  factories_->set_enum_factory<mstch_py3_enum>();
+  factories_->set_enum_value_factory<mstch_py3_enum_value>();
+  factories_
+      ->set_deprecated_annotation_factory<mstch_py3_deprecated_annotation>();
 }
 
 void t_mstch_py3_generator::generate_init_files() {
   boost::filesystem::path p = generateRootPath_;
-  auto nodePtr = generators_->program_factory->generate(
-      get_program(), generators_, cache_);
+  auto nodePtr =
+      factories_->program_factory->generate(get_program(), factories_, cache_);
   while (!p.empty()) {
     render_to_file(nodePtr, "common/auto_generated_py", p / "__init__.py");
     p = p.parent_path();
@@ -1392,7 +1371,7 @@ void t_mstch_py3_generator::generate_file(
     cache_->options_.erase("is_types_file");
   }
   auto nodePtr =
-      generators_->program_factory->generate(program, generators_, cache_);
+      factories_->program_factory->generate(program, factories_, cache_);
   render_to_file(nodePtr, file, base / name / file);
 }
 

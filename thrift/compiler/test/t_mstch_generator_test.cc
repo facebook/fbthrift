@@ -30,11 +30,11 @@ TEST(t_mstch_generator_test, cache_leaks) {
    public:
     leaky_program(
         const t_program* program,
-        std::shared_ptr<const mstch_generators> generators,
+        std::shared_ptr<const mstch_factories> factories,
         std::shared_ptr<mstch_cache> cache,
         ELEMENT_POSITION pos,
         int* object_count)
-        : mstch_program(program, generators, cache, pos),
+        : mstch_program(program, factories, cache, pos),
           object_count_(object_count) {
       (*object_count_) += 1;
     }
@@ -51,12 +51,12 @@ TEST(t_mstch_generator_test, cache_leaks) {
 
     virtual std::shared_ptr<mstch_base> generate(
         const t_program* program,
-        std::shared_ptr<const mstch_generators> generators,
+        std::shared_ptr<const mstch_factories> factories,
         std::shared_ptr<mstch_cache> cache,
         ELEMENT_POSITION pos,
         int32_t /*index*/) const override {
       return std::make_shared<leaky_program>(
-          program, generators, cache, pos, object_count_);
+          program, factories, cache, pos, object_count_);
     }
 
    private:
@@ -70,7 +70,7 @@ TEST(t_mstch_generator_test, cache_leaks) {
           object_count_(object_count) {}
 
     void generate_program() override {
-      generators_->program_factory =
+      factories_->program_factory =
           std::make_unique<leaky_program_factory>(object_count_);
       std::shared_ptr<mstch_base> prog = cached_program(get_program());
     }

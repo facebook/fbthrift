@@ -74,10 +74,10 @@ class mstch_python_typedef : public mstch_typedef {
  public:
   mstch_python_typedef(
       const t_typedef* typedf,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_typedef(typedf, std::move(generators), std::move(cache), pos),
+      : mstch_typedef(typedf, std::move(factories), std::move(cache), pos),
         adapter_annotation_(find_structured_adapter_annotation(*typedf)) {
     register_methods(
         this,
@@ -102,15 +102,12 @@ class mstch_python_type : public mstch_type {
  public:
   mstch_python_type(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const t_program* prog)
       : mstch_type(
-            type->get_true_type(),
-            std::move(generators),
-            std::move(cache),
-            pos),
+            type->get_true_type(), std::move(factories), std::move(cache), pos),
         prog_{prog},
         adapter_annotation_(find_structured_adapter_annotation(*type)) {
     register_methods(
@@ -214,20 +211,20 @@ class mstch_python_const_value : public mstch_const_value {
  public:
   mstch_python_const_value(
       const t_const_value* const_value,
-      const t_const* current_const,
-      const t_type* expected_type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index)
+      int32_t index,
+      const t_const* current_const,
+      const t_type* expected_type)
       : mstch_const_value(
             const_value,
-            current_const,
-            expected_type,
-            std::move(generators),
+            std::move(factories),
             std::move(cache),
             pos,
-            index) {
+            index,
+            current_const,
+            expected_type) {
     register_methods(
         this,
         {
@@ -267,7 +264,7 @@ class mstch_python_const_value : public mstch_const_value {
     }
     const auto* type = const_value_->ttype()->get_true_type();
     if (type->is_enum()) {
-      return generators_->type_factory->generate(type, generators_, cache_);
+      return factories_->type_factory->generate(type, factories_, cache_);
     }
     return {};
   }
@@ -335,8 +332,8 @@ class mstch_python_const_value : public mstch_const_value {
       } else {
         return {};
       }
-      return generators_->type_factory->generate(
-          elem_type, generators_, cache_, pos_);
+      return factories_->type_factory->generate(
+          elem_type, factories_, cache_, pos_);
     }
     return {};
   }
@@ -352,9 +349,9 @@ class mstch_python_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return generators_->type_factory->generate(
+        return factories_->type_factory->generate(
             dynamic_cast<const t_map*>(type)->get_key_type(),
-            generators_,
+            factories_,
             cache_,
             pos_);
       }
@@ -366,9 +363,9 @@ class mstch_python_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return generators_->type_factory->generate(
+        return factories_->type_factory->generate(
             dynamic_cast<const t_map*>(type)->get_val_type(),
-            generators_,
+            factories_,
             cache_,
             pos_);
       }
@@ -382,12 +379,12 @@ class python_type_factory : public mstch_type_factory {
   explicit python_type_factory(const t_program* prog) : prog_{prog} {}
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_python_type>(
-        type, generators, cache, pos, prog_);
+        type, factories, cache, pos, prog_);
   }
 
  protected:
@@ -398,10 +395,10 @@ class mstch_python_program : public mstch_program {
  public:
   mstch_python_program(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_program{program, std::move(generators), std::move(cache), pos} {
+      : mstch_program{program, std::move(factories), std::move(cache), pos} {
     register_methods(
         this,
         {
@@ -670,14 +667,14 @@ class mstch_python_field : public mstch_field {
  public:
   mstch_python_field(
       const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
       const field_generator_context* field_context)
       : mstch_field(
             field,
-            std::move(generators),
+            std::move(factories),
             std::move(cache),
             pos,
             index,
@@ -728,8 +725,8 @@ class mstch_python_field : public mstch_field {
         const_cast<t_const_value*>(value)->set_map();
       }
     }
-    return generators_->const_value_generator_->generate(
-        value, generators_, cache_, pos_);
+    return factories_->const_value_factory->generate(
+        value, factories_, cache_, pos_, 0, nullptr, nullptr);
   }
   mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
   mstch::node adapter_name() {
@@ -748,10 +745,10 @@ class mstch_python_struct : public mstch_struct {
  public:
   mstch_python_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_struct(strct, std::move(generators), std::move(cache), pos),
+      : mstch_struct(strct, std::move(factories), std::move(cache), pos),
         adapter_annotation_(find_structured_adapter_annotation(*strct)) {
     register_methods(
         this,
@@ -803,10 +800,10 @@ class mstch_python_enum : public mstch_enum {
  public:
   mstch_python_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_enum(enm, std::move(generators), std::move(cache), pos) {
+      : mstch_enum(enm, std::move(factories), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -821,11 +818,11 @@ class mstch_python_enum_value : public mstch_enum_value {
  public:
   mstch_python_enum_value(
       const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
       : mstch_enum_value(
-            enm_value, std::move(generators), std::move(cache), pos) {
+            enm_value, std::move(factories), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -840,7 +837,7 @@ class python_program_factory : public mstch_program_factory {
  public:
   std::shared_ptr<mstch_base> generate(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
@@ -851,8 +848,7 @@ class python_program_factory : public mstch_program_factory {
     }
     auto r = cache->programs_.emplace(
         id,
-        std::make_shared<mstch_python_program>(
-            program, generators, cache, pos));
+        std::make_shared<mstch_python_program>(program, factories, cache, pos));
     return r.first->second;
   }
 };
@@ -861,10 +857,10 @@ class mstch_python_function : public mstch_function {
  public:
   mstch_python_function(
       const t_function* function,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos) {
+      : mstch_function(function, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -891,8 +887,8 @@ class mstch_python_function : public mstch_function {
       rettype = stream->has_first_response() ? stream->get_first_response_type()
                                              : &t_base_type::t_void();
     }
-    return generators_->type_factory->generate(
-        rettype, generators_, cache_, pos_);
+    return factories_->type_factory->generate(
+        rettype, factories_, cache_, pos_);
   }
 
   mstch::node return_stream_elem_type() {
@@ -903,9 +899,9 @@ class mstch_python_function : public mstch_function {
     if (!rettype->is_streamresponse()) {
       return {};
     }
-    return generators_->type_factory->generate(
+    return factories_->type_factory->generate(
         dynamic_cast<const t_stream_response*>(rettype)->get_elem_type(),
-        generators_,
+        factories_,
         cache_,
         pos_);
   }
@@ -922,11 +918,11 @@ class mstch_python_service : public mstch_service {
  public:
   mstch_python_service(
       const t_service* service,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       const t_program* prog)
-      : mstch_service(service, generators, cache, pos), prog_{prog} {
+      : mstch_service(service, factories, cache, pos), prog_{prog} {
     register_methods(
         this,
         {
@@ -992,39 +988,16 @@ class python_service_factory : public mstch_service_factory {
 
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_python_service>(
-        service, generators, cache, pos, prog_);
+        service, factories, cache, pos, prog_);
   }
 
  protected:
   const t_program* prog_;
-};
-
-class const_value_python_generator : public const_value_generator {
- public:
-  const_value_python_generator() = default;
-  ~const_value_python_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_const_value* const_value,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      const t_const* current_const,
-      const t_type* expected_type) const override {
-    return std::make_shared<mstch_python_const_value>(
-        const_value,
-        current_const,
-        expected_type,
-        generators,
-        cache,
-        pos,
-        index);
-  }
 };
 
 // Generator-specific validator that enforces that a reserved key is not used as
@@ -1155,18 +1128,17 @@ class t_mstch_python_generator : public t_mstch_generator {
 } // namespace
 
 void t_mstch_python_generator::set_mstch_factories() {
-  generators_->program_factory = std::make_unique<python_program_factory>();
-  generators_->service_factory =
+  factories_->program_factory = std::make_unique<python_program_factory>();
+  factories_->service_factory =
       std::make_unique<python_service_factory>(program_);
-  generators_->set_function_factory<mstch_python_function>();
-  generators_->type_factory = std::make_unique<python_type_factory>(program_);
-  generators_->set_typedef_factory<mstch_python_typedef>();
-  generators_->set_struct_factory<mstch_python_struct>();
-  generators_->set_field_factory<mstch_python_field>();
-  generators_->set_enum_factory<mstch_python_enum>();
-  generators_->set_enum_value_factory<mstch_python_enum_value>();
-  generators_->set_const_value_generator(
-      std::make_unique<const_value_python_generator>());
+  factories_->set_function_factory<mstch_python_function>();
+  factories_->type_factory = std::make_unique<python_type_factory>(program_);
+  factories_->set_typedef_factory<mstch_python_typedef>();
+  factories_->set_struct_factory<mstch_python_struct>();
+  factories_->set_field_factory<mstch_python_field>();
+  factories_->set_enum_factory<mstch_python_enum>();
+  factories_->set_enum_value_factory<mstch_python_enum_value>();
+  factories_->set_const_value_factory<mstch_python_const_value>();
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {
@@ -1186,7 +1158,7 @@ void t_mstch_python_generator::generate_file(
     cache_->options_.erase("is_types_file");
   }
   auto node_ptr =
-      generators_->program_factory->generate(program, generators_, cache_);
+      factories_->program_factory->generate(program, factories_, cache_);
   render_to_file(node_ptr, file, base / name / file);
 }
 

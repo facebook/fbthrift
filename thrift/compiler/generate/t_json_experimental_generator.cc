@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <memory>
-#include <vector>
 
 #include <thrift/compiler/generate/json.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -46,17 +46,17 @@ class json_experimental_program : public mstch_program {
  public:
   json_experimental_program(
       const t_program* program,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_program(program, generators, cache, pos) {
+      : mstch_program(program, factories, cache, pos) {
     register_methods(
         this,
         {
             {"program:py_namespace",
              &json_experimental_program::get_py_namespace},
-            {"program:namespaces", &json_experimental_program::namespaces},
             {"program:namespaces?", &json_experimental_program::has_namespaces},
+            {"program:namespaces", &json_experimental_program::namespaces},
             {"program:docstring?", &json_experimental_program::has_docstring},
             {"program:docstring", &json_experimental_program::get_docstring},
             {"program:normalizedIncludePrefix",
@@ -64,6 +64,7 @@ class json_experimental_program : public mstch_program {
         });
   }
   mstch::node get_py_namespace() { return program_->get_namespace("py"); }
+  mstch::node has_namespaces() { return !program_->namespaces().empty(); }
   mstch::node namespaces() {
     mstch::array result;
     auto last = program_->namespaces().size();
@@ -73,7 +74,6 @@ class json_experimental_program : public mstch_program {
     }
     return result;
   }
-  mstch::node has_namespaces() { return !program_->namespaces().empty(); }
   mstch::node has_docstring() { return !program_->get_doc().empty(); }
   mstch::node get_docstring() { return json_quote_ascii(program_->get_doc()); }
 
@@ -93,10 +93,10 @@ class json_experimental_service : public mstch_service {
  public:
   json_experimental_service(
       const t_service* srvc,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_service(srvc, generators, cache, pos) {
+      : mstch_service(srvc, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -114,10 +114,10 @@ class json_experimental_function : public mstch_function {
  public:
   json_experimental_function(
       const t_function* func,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(func, generators, cache, pos) {
+      : mstch_function(func, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -139,10 +139,10 @@ class json_experimental_struct : public mstch_struct {
  public:
   json_experimental_struct(
       const t_struct* strct,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
+      : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -160,12 +160,12 @@ class json_experimental_field : public mstch_field {
  public:
   json_experimental_field(
       const t_field* field,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
       const field_generator_context* field_context)
-      : mstch_field(field, generators, cache, pos, index, field_context) {
+      : mstch_field(field, factories, cache, pos, index, field_context) {
     register_methods(
         this,
         {
@@ -183,10 +183,10 @@ class json_experimental_enum : public mstch_enum {
  public:
   json_experimental_enum(
       const t_enum* enm,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum(enm, generators, cache, pos) {
+      : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -206,10 +206,10 @@ class json_experimental_enum_value : public mstch_enum_value {
  public:
   json_experimental_enum_value(
       const t_enum_value* enm_value,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, generators, cache, pos) {
+      : mstch_enum_value(enm_value, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -227,8 +227,8 @@ class json_experimental_enum_value : public mstch_enum_value {
   }
 };
 
-// trim all white spaces and commas from end (in place)
-static inline void rtrim(std::string& s) {
+// Trim all white spaces and commas from end (in place).
+void rtrim(std::string& s) {
   s.erase(
       std::find_if(
           s.rbegin(),
@@ -238,7 +238,7 @@ static inline void rtrim(std::string& s) {
       s.end());
 }
 
-static inline std::string to_string(const t_const_value* value) {
+std::string to_string(const t_const_value* value) {
   auto stringify_list = [](const auto& value) {
     std::string result;
     for (const auto& v : value) {
@@ -283,20 +283,20 @@ class json_experimental_const_value : public mstch_const_value {
  public:
   json_experimental_const_value(
       const t_const_value* const_value,
-      const t_const* current_const,
-      const t_type* expected_type,
-      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<const mstch_factories> factories,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index)
+      int32_t index,
+      const t_const* current_const,
+      const t_type* expected_type)
       : mstch_const_value(
             const_value,
-            current_const,
-            expected_type,
-            generators,
+            factories,
             cache,
             pos,
-            index) {
+            index,
+            current_const,
+            expected_type) {
     register_methods(
         this,
         {
@@ -321,53 +321,28 @@ class json_experimental_const_value : public mstch_const_value {
   mstch::node string_value_any() { return to_string(const_value_); }
 };
 
-class const_value_json_experimental_generator : public const_value_generator {
- public:
-  const_value_json_experimental_generator() = default;
-  ~const_value_json_experimental_generator() override = default;
-  std::shared_ptr<mstch_base> generate(
-      const t_const_value* const_value,
-      std::shared_ptr<const mstch_generators> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
-      const t_const* current_const,
-      const t_type* expected_type) const override {
-    return std::make_shared<json_experimental_const_value>(
-        const_value,
-        current_const,
-        expected_type,
-        generators,
-        cache,
-        pos,
-        index);
-  }
-};
-
 void t_json_experimental_generator::generate_program() {
   const auto* program = get_program();
   set_mstch_factories();
   auto output =
-      generators_->program_factory->generate(program, generators_, cache_);
+      factories_->program_factory->generate(program, factories_, cache_);
   render_to_file(output, "thrift_ast", program->name() + ".json");
 }
 
 void t_json_experimental_generator::set_mstch_factories() {
-  generators_->set_program_factory<json_experimental_program>();
-  generators_->set_service_factory<json_experimental_service>();
-  generators_->set_function_factory<json_experimental_function>();
-  generators_->set_struct_factory<json_experimental_struct>();
-  generators_->set_field_factory<json_experimental_field>();
-  generators_->set_enum_factory<json_experimental_enum>();
-  generators_->set_enum_value_factory<json_experimental_enum_value>();
-  generators_->set_const_value_generator(
-      std::make_unique<const_value_json_experimental_generator>());
+  factories_->set_program_factory<json_experimental_program>();
+  factories_->set_service_factory<json_experimental_service>();
+  factories_->set_function_factory<json_experimental_function>();
+  factories_->set_struct_factory<json_experimental_struct>();
+  factories_->set_field_factory<json_experimental_field>();
+  factories_->set_enum_factory<json_experimental_enum>();
+  factories_->set_enum_value_factory<json_experimental_enum_value>();
+  factories_->set_const_value_factory<json_experimental_const_value>();
 }
-
-} // namespace
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");
 
+} // namespace
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
