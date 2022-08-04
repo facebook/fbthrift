@@ -160,6 +160,10 @@ The server **may** specify a chunk timeout which is the time the server **should
 
 Requests that are part of the interaction **must** be sent over the same connection to the server. Each interaction **must** have an ID that is unique to the connection. The server **must** maintain the state that is associated with each interaction so that subsequent requests can use that state.
 
+All requests in an interaction, including the factory function if used, **must** reach the server in the order they are sent by the client. The server **may** begin processing subsequent requests before the earlier ones complete, provided they are started in order.
+
+The RPC contracts of member requests are otherwise handled the same as if the requests were not in an interaction. A single interaction **may** include multiple streams/sinks, and these are flow-controlled independently.
+
 #### Creation
 
 Interactions can be created in two different ways as described below.
@@ -174,7 +178,13 @@ Interaction constructors are a lazy way to create an interaction, in that the in
 
 #### Termination
 
-Only the client can terminate the interaction and it can do so at any time after the interaction has been created. When an interaction is terminated, the client **must** send a termination signal to the server. The server **should** finish processing any outstanding requests once the termination signal is received and **must** call the interaction destructor once all responses have been sent back to the client.
+Only the client can terminate the interaction and it can do so at any time after the interaction has been created, including with requests outstanding. When an interaction is terminated, the client **must** send a termination signal to the server. The server **must** finish processing any outstanding requests when the termination signal is received, including waiting for streams/sinks to complete normally; terminating an interaction **must not** cancel member streams/sinks. The server **must** invoke the following two hooks:
+- onTermination: scheduled immediately when termination signal is received, without waiting for outstanding requests to complete.
+- destructor: scheduled once all responses have been sent back to the client and streams/sinks completed.
+
+#### Serial interactions
+
+For interactions annotated `(serial)` the server **must** ensure no more than one request is being executed at a time by buffering concurrent requests and executing them sequentially. The client **may** send multiple requests in such an interaction without waiting for responses in between.
 
 ### Oneway Requests (Deprecated)
 
