@@ -110,6 +110,45 @@ class Py3ToPyDeprecatedConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.get_simpleField().intField, 42)
         self.assertEqual(complex_union.get_simpleField().name, "renamed")
 
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = py3_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_py_struct(
+            py_deprecated_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertIsNone(tomahto.mahto)
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_py_struct(
+            py_deprecated_types.Potahto,
+            py3_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.getType(), py_deprecated_types.Potahto.PO)
+        self.assertEqual(po.get_po(), 42)
+
+        tah = to_py_struct(
+            py_deprecated_types.Potahto,
+            py3_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.getType(), py_deprecated_types.Potahto.__EMPTY__)
+
+        to = to_py_struct(
+            py_deprecated_types.Potahto,
+            py3_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.getType(), py_deprecated_types.Potahto.TO)
+        self.assertEqual(to.get_to(), True)
+
 
 class PythonToPyDeprecatedConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
@@ -199,6 +238,45 @@ class PythonToPyDeprecatedConverterTest(unittest.TestCase):
         )._to_py_deprecated()
         self.assertEqual(complex_union.get_simpleField().intField, 42)
         self.assertEqual(complex_union.get_simpleField().name, "renamed")
+
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = python_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_py_struct(
+            py_deprecated_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertIsNone(tomahto.mahto)
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_py_struct(
+            py_deprecated_types.Potahto,
+            python_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.getType(), py_deprecated_types.Potahto.PO)
+        self.assertEqual(po.get_po(), 42)
+
+        tah = to_py_struct(
+            py_deprecated_types.Potahto,
+            python_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.getType(), py_deprecated_types.Potahto.__EMPTY__)
+
+        to = to_py_struct(
+            py_deprecated_types.Potahto,
+            python_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.getType(), py_deprecated_types.Potahto.TO)
+        self.assertEqual(to.get_to(), True)
 
 
 class NoneToPyDeprecatedConverterTest(unittest.TestCase):

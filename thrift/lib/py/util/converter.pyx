@@ -64,7 +64,7 @@ cdef object _to_py_struct(object cls, object obj):
                 field.name: _to_py_field(
                     field.type,
                     field.type_args,
-                    getattr(obj, field_id_to_name.get(field.id, field.name)),
+                    getattr(obj, field_id_to_name.get(field.id, field.name), None),
                 )
                 for field in parse_struct_spec(cls)
                 if field_id_to_name.get(field.id, field.name) == obj.type.name
@@ -76,7 +76,7 @@ cdef object _to_py_struct(object cls, object obj):
                 field.name: _to_py_field(
                     field.type,
                     field.type_args,
-                    getattr(obj, field_id_to_name.get(field.id, field.name)),
+                    getattr(obj, field_id_to_name.get(field.id, field.name), None),
                 )
                 for field in parse_struct_spec(cls)
             }
