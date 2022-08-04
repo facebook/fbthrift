@@ -122,6 +122,45 @@ class Py3ToPythonConverterTest(unittest.TestCase):
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
 
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = py3_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_python_struct(
+            python_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertEqual(tomahto.mahto, "mahto")
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_python_struct(
+            python_types.Potahto,
+            py3_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.type, python_types.Potahto.Type.po)
+        self.assertEqual(po.value, 42)
+
+        tah = to_python_struct(
+            python_types.Potahto,
+            py3_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.type, python_types.Potahto.Type.EMPTY)
+
+        to = to_python_struct(
+            python_types.Potahto,
+            py3_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.type, python_types.Potahto.Type.to)
+        self.assertEqual(to.value, True)
+
 
 class PyDeprecatedToPythonConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
@@ -221,6 +260,45 @@ class PyDeprecatedToPythonConverterTest(unittest.TestCase):
         )._to_python()
         self.assertEqual(complex_union.type, python_types.Union.Type.simple_)
         self.assertEqual(complex_union.simple_.intField, 42)
+
+    def test_struct_with_mismatching_field(self) -> None:
+        tomayto = py_deprecated_types.Tomayto(
+            to=42,
+            mayto="blah",
+        )
+        tomahto = to_python_struct(
+            python_types.Tomahto,
+            tomayto,
+        )
+        self.assertEqual(tomahto.to, 42)
+        self.assertEqual(tomahto.mahto, "mahto")
+
+    def test_union_with_mismatching_field(self) -> None:
+        po = to_python_struct(
+            python_types.Potahto,
+            py_deprecated_types.Potayto(
+                po=42,
+            ),
+        )
+        self.assertEqual(po.type, python_types.Potahto.Type.po)
+        self.assertEqual(po.value, 42)
+
+        tah = to_python_struct(
+            python_types.Potahto,
+            py_deprecated_types.Potayto(
+                tay="tay",
+            ),
+        )
+        self.assertEqual(tah.type, python_types.Potahto.Type.EMPTY)
+
+        to = to_python_struct(
+            python_types.Potahto,
+            py_deprecated_types.Potayto(
+                to=True,
+            ),
+        )
+        self.assertEqual(to.type, python_types.Potahto.Type.to)
+        self.assertEqual(to.value, True)
 
 
 class PythonToPythonConverterTest(unittest.TestCase):

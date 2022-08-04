@@ -60,11 +60,11 @@ cdef object _to_python_struct(object cls, object obj):
 
 cdef object _get_src_field(object obj, tuple field):
     if isinstance(obj, py3_types.Struct):
-        return getattr(obj, field[2])
+        return getattr(obj, field[2], None)
     for spec in obj.thrift_spec:
         if spec and spec[0] == field[0]:
-            return getattr(obj, spec[2])
-    raise AttributeError(f"{obj} doesn't have field with id {field[0]} or name {field[2]}")
+            return getattr(obj, spec[2], None)
+    return None
 
 
 cdef object _get_src_union_field(object obj, tuple field):
