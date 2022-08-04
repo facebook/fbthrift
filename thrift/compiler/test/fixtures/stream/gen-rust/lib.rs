@@ -187,22 +187,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ReturnstreamExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ReturnstreamExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Returnstream");
-                match self {
-                    ReturnstreamExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ReturnstreamExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -401,22 +385,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for StreamthrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let StreamthrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Streamthrows");
-                match self {
-                    StreamthrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    StreamthrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -603,33 +571,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ServicethrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ServicethrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Servicethrows");
-                match self {
-                    ServicethrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ServicethrowsExn::e(inner) => {
-                        p.write_field_begin(
-                            "e",
-                            ::fbthrift::TType::Struct,
-                            1,
-                        );
-                        inner.write(p);
-                        p.write_field_end();
-                    }
-                    ServicethrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }                p.write_field_stop();
-                p.write_struct_end();
-            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -840,33 +781,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for BoththrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let BoththrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Boththrows");
-                match self {
-                    BoththrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    BoththrowsExn::e(inner) => {
-                        p.write_field_begin(
-                            "e",
-                            ::fbthrift::TType::Struct,
-                            1,
-                        );
-                        inner.write(p);
-                        p.write_field_end();
-                    }
-                    BoththrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }                p.write_field_stop();
-                p.write_struct_end();
-            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -1190,22 +1104,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ResponseandstreamstreamthrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ResponseandstreamstreamthrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Responseandstreamstreamthrows");
-                match self {
-                    ResponseandstreamstreamthrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ResponseandstreamstreamthrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -1540,33 +1438,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ResponseandstreamservicethrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ResponseandstreamservicethrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Responseandstreamservicethrows");
-                match self {
-                    ResponseandstreamservicethrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ResponseandstreamservicethrowsExn::e(inner) => {
-                        p.write_field_begin(
-                            "e",
-                            ::fbthrift::TType::Struct,
-                            1,
-                        );
-                        inner.write(p);
-                        p.write_field_end();
-                    }
-                    ResponseandstreamservicethrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }                p.write_field_stop();
-                p.write_struct_end();
-            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -1925,33 +1796,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ResponseandstreamboththrowsExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ResponseandstreamboththrowsExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Responseandstreamboththrows");
-                match self {
-                    ResponseandstreamboththrowsExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ResponseandstreamboththrowsExn::e(inner) => {
-                        p.write_field_begin(
-                            "e",
-                            ::fbthrift::TType::Struct,
-                            1,
-                        );
-                        inner.write(p);
-                        p.write_field_end();
-                    }
-                    ResponseandstreamboththrowsExn::ApplicationException(_aexn) => unreachable!(),
-                }                p.write_field_stop();
-                p.write_struct_end();
-            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -2126,22 +1970,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for ReturnstreamFastExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let ReturnstreamFastExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("ReturnstreamFast");
-                match self {
-                    ReturnstreamFastExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    ReturnstreamFastExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
     }
 }
@@ -3921,16 +3749,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "returnstream",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4028,16 +3847,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "streamthrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4128,16 +3938,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "servicethrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4235,16 +4036,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "boththrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4351,16 +4143,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "responseandstreamstreamthrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4460,16 +4243,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "responseandstreamservicethrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4576,16 +4350,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "responseandstreamboththrows",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -4677,16 +4442,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "returnstreamFast",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }

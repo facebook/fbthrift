@@ -104,13 +104,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(_inner) => {
+                    PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::myExcept(inner) => {
@@ -235,13 +235,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetRandomData");
                 match self {
-                    GetRandomDataExn::Success(_inner) => {
+                    GetRandomDataExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     GetRandomDataExn::ApplicationException(_aexn) => unreachable!(),
@@ -358,13 +358,13 @@ pub mod services {
                 }
                 p.write_struct_begin("HasDataById");
                 match self {
-                    HasDataByIdExn::Success(_inner) => {
+                    HasDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Bool,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     HasDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -481,13 +481,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataById");
                 match self {
-                    GetDataByIdExn::Success(_inner) => {
+                    GetDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -604,13 +604,13 @@ pub mod services {
                 }
                 p.write_struct_begin("PutDataById");
                 match self {
-                    PutDataByIdExn::Success(_inner) => {
+                    PutDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PutDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -721,13 +721,13 @@ pub mod services {
                 }
                 p.write_struct_begin("LobDataById");
                 match self {
-                    LobDataByIdExn::Success(_inner) => {
+                    LobDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     LobDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -838,13 +838,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoNothing");
                 match self {
-                    DoNothingExn::Success(_inner) => {
+                    DoNothingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoNothingExn::ApplicationException(_aexn) => unreachable!(),
@@ -957,13 +957,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(_inner) => {
+                    PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -1074,13 +1074,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Pong");
                 match self {
-                    PongExn::Success(_inner) => {
+                    PongExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PongExn::ApplicationException(_aexn) => unreachable!(),
@@ -1193,13 +1193,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Pang");
                 match self {
-                    PangExn::Success(_inner) => {
+                    PangExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PangExn::ApplicationException(_aexn) => unreachable!(),
@@ -1313,13 +1313,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Foo");
                 match self {
-                    FooExn::Success(_inner) => {
+                    FooExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FooExn::ApplicationException(_aexn) => unreachable!(),
@@ -1431,13 +1431,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Bar");
                 match self {
-                    BarExn::Success(_inner) => {
+                    BarExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     BarExn::ApplicationException(_aexn) => unreachable!(),

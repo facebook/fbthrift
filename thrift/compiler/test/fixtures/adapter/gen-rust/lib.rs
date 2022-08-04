@@ -91,13 +91,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Func");
                 match self {
-                    FuncExn::Success(_inner) => {
+                    FuncExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FuncExn::ApplicationException(_aexn) => unreachable!(),

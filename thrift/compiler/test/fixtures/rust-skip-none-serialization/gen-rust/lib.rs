@@ -75,13 +75,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(_inner) => {
+                    PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -192,13 +192,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetRandomData");
                 match self {
-                    GetRandomDataExn::Success(_inner) => {
+                    GetRandomDataExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     GetRandomDataExn::ApplicationException(_aexn) => unreachable!(),
@@ -315,13 +315,13 @@ pub mod services {
                 }
                 p.write_struct_begin("HasDataById");
                 match self {
-                    HasDataByIdExn::Success(_inner) => {
+                    HasDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Bool,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     HasDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -438,13 +438,13 @@ pub mod services {
                 }
                 p.write_struct_begin("GetDataById");
                 match self {
-                    GetDataByIdExn::Success(_inner) => {
+                    GetDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     GetDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -561,13 +561,13 @@ pub mod services {
                 }
                 p.write_struct_begin("PutDataById");
                 match self {
-                    PutDataByIdExn::Success(_inner) => {
+                    PutDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PutDataByIdExn::ApplicationException(_aexn) => unreachable!(),
@@ -678,13 +678,13 @@ pub mod services {
                 }
                 p.write_struct_begin("LobDataById");
                 match self {
-                    LobDataByIdExn::Success(_inner) => {
+                    LobDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     LobDataByIdExn::ApplicationException(_aexn) => unreachable!(),

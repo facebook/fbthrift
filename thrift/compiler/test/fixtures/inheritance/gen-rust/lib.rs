@@ -71,13 +71,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoRoot");
                 match self {
-                    DoRootExn::Success(_inner) => {
+                    DoRootExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoRootExn::ApplicationException(_aexn) => unreachable!(),
@@ -190,13 +190,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoMid");
                 match self {
-                    DoMidExn::Success(_inner) => {
+                    DoMidExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoMidExn::ApplicationException(_aexn) => unreachable!(),
@@ -309,13 +309,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoLeaf");
                 match self {
-                    DoLeafExn::Success(_inner) => {
+                    DoLeafExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoLeafExn::ApplicationException(_aexn) => unreachable!(),

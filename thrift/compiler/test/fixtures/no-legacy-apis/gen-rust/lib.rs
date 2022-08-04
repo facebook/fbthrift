@@ -75,13 +75,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Query");
                 match self {
-                    QueryExn::Success(_inner) => {
+                    QueryExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Struct,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     QueryExn::ApplicationException(_aexn) => unreachable!(),

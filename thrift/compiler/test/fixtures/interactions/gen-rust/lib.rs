@@ -86,13 +86,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Frobnicate");
                 match self {
-                    FrobnicateExn::Success(_inner) => {
+                    FrobnicateExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FrobnicateExn::ex(inner) => {
@@ -223,13 +223,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(_inner) => {
+                    PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -453,22 +453,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for TruthifyExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let TruthifyExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Truthify");
-                match self {
-                    TruthifyExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    TruthifyExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -530,13 +514,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Encode");
                 match self {
-                    EncodeExn::Success(_inner) => {
+                    EncodeExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     EncodeExn::ApplicationException(_aexn) => unreachable!(),
@@ -655,13 +639,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Frobnicate");
                 match self {
-                    FrobnicateExn::Success(_inner) => {
+                    FrobnicateExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FrobnicateExn::ApplicationException(_aexn) => unreachable!(),
@@ -778,13 +762,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Ping");
                 match self {
-                    PingExn::Success(_inner) => {
+                    PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
@@ -1008,22 +992,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for TruthifyExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let TruthifyExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Truthify");
-                match self {
-                    TruthifyExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    TruthifyExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
 
         #[derive(Clone, Debug)]
@@ -1085,13 +1053,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Encode");
                 match self {
-                    EncodeExn::Success(_inner) => {
+                    EncodeExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     EncodeExn::ApplicationException(_aexn) => unreachable!(),
@@ -1210,13 +1178,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Frobnicate");
                 match self {
-                    FrobnicateExn::Success(_inner) => {
+                    FrobnicateExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FrobnicateExn::ApplicationException(_aexn) => unreachable!(),
@@ -1328,13 +1296,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Foo");
                 match self {
-                    FooExn::Success(_inner) => {
+                    FooExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     FooExn::ApplicationException(_aexn) => unreachable!(),
@@ -1445,13 +1413,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Interact");
                 match self {
-                    InteractExn::Success(_inner) => {
+                    InteractExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     InteractExn::ApplicationException(_aexn) => unreachable!(),
@@ -1568,13 +1536,13 @@ pub mod services {
                 }
                 p.write_struct_begin("InteractFast");
                 match self {
-                    InteractFastExn::Success(_inner) => {
+                    InteractFastExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     InteractFastExn::ApplicationException(_aexn) => unreachable!(),
@@ -1929,22 +1897,6 @@ pub mod services {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P> ::fbthrift::Serialize<P> for SerializeExn
-        where
-            P: ::fbthrift::ProtocolWriter,
-        {
-            fn write(&self, p: &mut P) {
-                if let SerializeExn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("Serialize");
-                match self {
-                    SerializeExn::Success(_inner) => {
-                        unreachable!("Encoding for streaming is done separately");
-                    }
-                    SerializeExn::ApplicationException(_aexn) => unreachable!(),
-                }            }
-        }
 
     }
 }
@@ -4453,16 +4405,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "truthify",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -5115,16 +5058,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "truthify",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }
@@ -6202,16 +6136,7 @@ pub mod server {
                     Ok(())
                 },
                 _ => {
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "serialize",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
         }

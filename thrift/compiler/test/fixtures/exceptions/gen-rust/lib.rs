@@ -74,13 +74,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoBland");
                 match self {
-                    DoBlandExn::Success(_inner) => {
+                    DoBlandExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoBlandExn::ApplicationException(_aexn) => unreachable!(),
@@ -224,13 +224,13 @@ pub mod services {
                 }
                 p.write_struct_begin("DoRaise");
                 match self {
-                    DoRaiseExn::Success(_inner) => {
+                    DoRaiseExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::Void,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     DoRaiseExn::b(inner) => {
@@ -383,13 +383,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Get200");
                 match self {
-                    Get200Exn::Success(_inner) => {
+                    Get200Exn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     Get200Exn::ApplicationException(_aexn) => unreachable!(),
@@ -539,13 +539,13 @@ pub mod services {
                 }
                 p.write_struct_begin("Get500");
                 match self {
-                    Get500Exn::Success(_inner) => {
+                    Get500Exn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::String,
                             0i16,
                         );
-                        _inner.write(p);
+                        inner.write(p);
                         p.write_field_end();
                     }
                     Get500Exn::f(inner) => {

@@ -343,17 +343,8 @@
                     Ok(())
                 },
                 _ => {
-                    {{!Service exceptions can go through the normal response channel}}
-                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "{{function:name}}",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        res
-                    )?;
-                    reply_state.lock().unwrap().send_reply(env);
-                    Ok(())
+                    {{!TODO: Handle service exceptions for stream requests}}
+                    panic!("Service exception for stream requests not handled yet");
                 }
             }
             {{/function:returns_streams?}}
