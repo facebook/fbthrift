@@ -18,7 +18,6 @@
 #include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/op/Ensure.h>
 #include <thrift/lib/cpp2/op/Get.h>
-#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/ensure_types.h>
 
 namespace apache::thrift::test {
@@ -26,7 +25,7 @@ namespace {
 
 void testEnsure(auto obj, auto ordinal) {
   using StructTag = type::struct_t<decltype(obj)>;
-  using FieldTag = type::get_field_tag<StructTag, decltype(ordinal)>;
+  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
   auto field = op::get<StructTag, decltype(ordinal)>(obj);
   op::ensure<FieldTag>(field, obj);
   EXPECT_EQ(field, 0);
@@ -37,7 +36,7 @@ void testEnsure(auto obj, auto ordinal) {
 
 void testEnsurePtr(auto obj, auto ordinal) {
   using StructTag = type::struct_t<decltype(obj)>;
-  using FieldTag = type::get_field_tag<StructTag, decltype(ordinal)>;
+  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
   auto& field = op::get<StructTag, decltype(ordinal)>(obj);
   op::ensure<FieldTag>(field, obj);
   EXPECT_EQ(*field, 0);
@@ -66,7 +65,7 @@ TEST(EnsureTest, SmartPointer) {
 TEST(EnsureTest, Optional) {
   FieldRefStruct obj;
   using FieldTag =
-      type::get_field_tag<type::struct_t<FieldRefStruct>, field_ordinal<2>>;
+      op::get_field_tag<type::struct_t<FieldRefStruct>, field_ordinal<2>>;
   auto opt = obj.optional_i32_ref().to_optional();
   op::ensure<FieldTag>(opt, obj);
   EXPECT_EQ(*opt, 0);

@@ -17,7 +17,6 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Get.h>
-#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/clear_types.h>
 
 namespace apache::thrift::test {
@@ -136,7 +135,7 @@ template <size_t Ord, typename Struct>
 void clear_struct_impl(Struct& s) {
   if constexpr (Ord != 0) {
     using FieldOrdinal = field_ordinal<Ord>;
-    using FieldTag = type::get_field_tag<type::struct_t<Struct>, FieldOrdinal>;
+    using FieldTag = op::get_field_tag<type::struct_t<Struct>, FieldOrdinal>;
     op::clear_field<FieldTag>(
         op::get<type::struct_t<Struct>, FieldOrdinal>(s), s);
     clear_struct_impl<Ord - 1>(s);
@@ -145,7 +144,7 @@ void clear_struct_impl(Struct& s) {
 
 template <typename Struct>
 void clear_struct(Struct& s) {
-  clear_struct_impl<type::field_size_v<type::struct_t<Struct>>>(s);
+  clear_struct_impl<op::size_v<type::struct_t<Struct>>>(s);
 }
 
 TEST(ClearStructTest, StructWithDefaultStruct) {

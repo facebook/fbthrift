@@ -18,7 +18,6 @@
 #include <thrift/lib/cpp2/op/Copy.h>
 #include <thrift/lib/cpp2/op/Ensure.h>
 #include <thrift/lib/cpp2/op/Get.h>
-#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/copy_types.h>
 
 namespace apache::thrift::test {
@@ -95,7 +94,7 @@ void testCopyOptional(auto src, auto dst, auto ordinal) {
 
 void testCopyUniquePointer(auto src, auto dst, auto ordinal) {
   using StructTag = type::struct_t<decltype(src)>;
-  using FieldTag = type::get_field_tag<StructTag, decltype(ordinal)>;
+  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
   auto& srcField = op::get<StructTag, decltype(ordinal)>(src);
   auto& dstField = op::get<StructTag, decltype(ordinal)>(dst);
 
@@ -129,7 +128,7 @@ void testCopyUniquePointer(auto src, auto dst, auto ordinal) {
 
 void testCopySharedPointer(auto src, auto dst, auto ordinal) {
   using StructTag = type::struct_t<decltype(src)>;
-  using FieldTag = type::get_field_tag<StructTag, decltype(ordinal)>;
+  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
   auto& srcField = op::get<StructTag, decltype(ordinal)>(src);
   auto& dstField = op::get<StructTag, decltype(ordinal)>(dst);
 

@@ -43,7 +43,7 @@ using ValueTag = type::union_t<Value>;
 
 template <typename Tag>
 using value_native_type =
-    type::native_type<type::get_field_tag<ValueTag, value_field_id<Tag>>>;
+    type::native_type<op::get_field_tag<ValueTag, value_field_id<Tag>>>;
 
 PatchOp toOp(FieldId id) {
   auto op = static_cast<PatchOp>(id);
