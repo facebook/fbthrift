@@ -22,6 +22,8 @@
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/test/testset/Testset.h>
 
 namespace mp11 = boost::mp11;
@@ -37,6 +39,7 @@ Test createRoundTripTest(
 
   Test test;
   test.name() = protocol.name();
+  test.tags()->emplace(getSpecDefinitionTag<TT>());
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
     // Test case #1: Use ValueStruct
     RoundTripTestCase roundTrip;

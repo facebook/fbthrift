@@ -18,6 +18,8 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
+#include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::conformance {
 
@@ -88,6 +90,17 @@ inline testing::TestInfo* RegisterTest(
       TestT::SetUpTestCase,
       TestT::TearDownTestCase,
       new FactoryImpl{std::move(factory)});
+}
+
+// Converts conformance test tags into helpful links, so they can be reported
+// with failures.
+template <typename T>
+std::string genTagLinks(const T& tagged) {
+  std::string result;
+  for (const auto& tag : *tagged.tags()) {
+    result += "    sdoc thrift/docs/" + tag + "\n";
+  }
+  return result;
 }
 
 } // namespace apache::thrift::conformance

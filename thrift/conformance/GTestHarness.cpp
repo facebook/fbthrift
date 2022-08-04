@@ -120,17 +120,39 @@ class ConformanceTest : public testing::Test {
  public:
   ConformanceTest(
       ConformanceServiceAsyncClient* client,
+      const TestSuite* suite,
+      const conformance::Test* test,
       const TestCase* testCase,
       bool conforming)
-      : client_(client), testCase_(*testCase), conforming_(conforming) {}
+      : client_(client),
+        suite_(*suite),
+        test_(*test),
+        testCase_(*testCase),
+        conforming_(conforming) {}
 
  protected:
   void TestBody() override {
-    EXPECT_EQ(RunTestCase(*client_, testCase_), conforming_);
+    testing::AssertionResult conforming = RunTestCase(*client_, testCase_);
+    if (conforming_) {
+      EXPECT_TRUE(conforming) << "For more detail see:"
+                              << std::endl
+                              // Most specific to least specific.
+                              << genTagLinks(testCase_) << genTagLinks(test_)
+                              << genTagLinks(suite_);
+      ;
+    } else {
+      EXPECT_FALSE(conforming)
+          << "If intentional, please remove the associated entry from:"
+          << std::endl
+          << "    thrift/conformance/data/nonconforming.txt" << std::endl;
+    }
   }
 
  private:
   ConformanceServiceAsyncClient* const client_;
+
+  const TestSuite& suite_;
+  const conformance::Test& test_;
   const TestCase& testCase_;
   const bool conforming_;
 };
@@ -155,8 +177,9 @@ void RegisterTests(
           conforming ? nullptr : "nonconforming",
           file,
           line,
-          [&testCase, clientFn, conforming]() {
-            return new ConformanceTest(&clientFn(), &testCase, conforming);
+          [&test, &testCase, suite, clientFn, conforming]() {
+            return new ConformanceTest(
+                &clientFn(), suite, &test, &testCase, conforming);
           });
     }
   }
