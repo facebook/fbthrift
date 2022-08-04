@@ -32,7 +32,7 @@ namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type_id
 namespace java com.facebook.thrift.type
-namespace java.swift com.facebook.thrift.type_swift
+namespace java.swift com.facebook.thrift.type_id
 namespace py.asyncio apache_thrift_asyncio.id
 namespace go thrift.lib.thrift.id
 namespace py thrift.lib.thrift.id
@@ -90,8 +90,7 @@ namespace py thrift.lib.thrift.id
 typedef i64 ExternId
 
 // Unset/Empty/Null/npos/0 never refers to a valid external value.
-// TODO(afuller): Uncomment when consts in multiple files is supported by java2.
-// const id.ExternId noId = 0;
+const ExternId noId = 0;
 
 // The id of an externally stored Thrift Value.
 //

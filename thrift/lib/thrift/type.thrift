@@ -130,14 +130,12 @@ typedef type_rep.TimeStruct Timestamp
  */
 // TODO(afuller): Ignore single quote (') in number literals.
 // TODO(afuller): Allow unquoted identifiers as field names/string map keys.
-// TODO(afuller): Uncomment when consts in multiple files is supported by java2.
-// const Timestamp minTimestamp = {"seconds": -62135769600};
+const Timestamp minTimestamp = {"seconds": -62135769600};
 
 /**
  * The maximum timestamp allowed by [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).
  */
-// TODO(afuller): Uncomment when consts in multiple files is supported by java2.
-// const Timestamp maxTimestamp = {"seconds": 253402300799, "nanos": 999999999};
+const Timestamp maxTimestamp = {"seconds": 253402300799, "nanos": 999999999};
 
 /**
  * A 'normal' Fraction.
