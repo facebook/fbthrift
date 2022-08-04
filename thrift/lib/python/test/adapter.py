@@ -20,16 +20,14 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from thrift.python.test.adapter.thrift_types import (
-    _fbthrift_unadapted_Baz,
-    AdaptedInt,
-    Bar,
-    Baz,
-    Datetime,
-    Foo,
-)
+from thrift.python.test.adapter.thrift_types import AdaptedInt, Bar, Baz, Datetime, Foo
 from thrift.python.test.adapters.datetime import DatetimeAdapter
 from thrift.python.test.adapters.noop import Wrapped
+
+# @manual=//thrift/lib/python/test:adapter_thrift-python-types
+from thrift.python.test.adapter.thrift_types import (
+    _fbthrift_unadapted_Baz,
+)  # isort:skip
 
 
 class AdapterTest(unittest.TestCase):
