@@ -397,17 +397,19 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 
   void generate_type_list(const t_program* program) {
-    if (type_list.size() == 0) {
-      return;
-    }
+    // NOTE: ideally, we do not really need to generated type list if
+    // `type_list.size() == 0`, but due to build system limitations.
+    // all java_library need at least one .java file.
 
-    auto raw_package_dir = boost::filesystem::path{
-        java::package_to_path(get_namespace_or_default(*program))};
+    auto java_namespace = get_namespace_or_default(*program);
+    auto raw_package_dir =
+        boost::filesystem::path{java::package_to_path(java_namespace)};
     auto package_dir = has_option("separate_data_type_from_services")
         ? "data-type" / raw_package_dir
         : raw_package_dir;
 
-    type_list_hash = toHex(hash(str_type_list));
+    auto program_name = program->name();
+    type_list_hash = toHex(hash(program_name + java_namespace + str_type_list));
 
     std::string file_name = "__fbthrift_TypeList_" + type_list_hash + ".java";
 

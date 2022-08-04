@@ -11,7 +11,7 @@ import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_0a0b1f63 implements TypeList {
+public class __fbthrift_TypeList_05d0385e implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 

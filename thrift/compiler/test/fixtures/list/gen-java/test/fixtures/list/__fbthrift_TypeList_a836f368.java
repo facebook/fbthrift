@@ -5,18 +5,17 @@
  *  @generated
  */
 
-package dev.test.namespace_from_package.module;
+package test.fixtures.list;
 
 import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_5f9ddd2c implements TypeList {
+public class __fbthrift_TypeList_a836f368 implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
   static {
-    list.add(new TypeList.TypeMapping("test.dev/namespace_from_package/module/Foo", "dev.test.namespace_from_package.module.Foo"));
   }
 
   @Override

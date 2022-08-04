@@ -152,7 +152,3 @@ typedef list<DefinitionId> DefinitionIds
 // TODO(afuller): Add conformance tests to make sure this is true.
 @thrift.Experimental // TODO(afuller): Adapt!
 typedef list<ProgramId> IncludeIds
-
-// TODO(afuller): java2 currently fails to build in xplat, without at least
-// one definition it does code gen for.
-struct FbthriftInternal_id_Java2Bug {}

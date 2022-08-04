@@ -5,18 +5,17 @@
  *  @generated
  */
 
-package test.fixtures.basicannotations;
+package com.facebook.thrift.test;
 
 import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_f8a22d2a implements TypeList {
+public class __fbthrift_TypeList_87a069bd implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
   static {
-    list.add(new TypeList.TypeMapping("facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct", "test.fixtures.basicannotations.MyStruct"));
   }
 
   @Override

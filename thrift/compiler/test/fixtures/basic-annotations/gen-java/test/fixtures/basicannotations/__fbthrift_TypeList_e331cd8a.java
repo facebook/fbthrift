@@ -5,18 +5,18 @@
  *  @generated
  */
 
-package dev.test.namespace_from_package_without_module_name;
+package test.fixtures.basicannotations;
 
 import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_27e27a3c implements TypeList {
+public class __fbthrift_TypeList_e331cd8a implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
   static {
-    list.add(new TypeList.TypeMapping("test.dev/namespace_from_package_without_module_name/Foo", "dev.test.namespace_from_package_without_module_name.Foo"));
+    list.add(new TypeList.TypeMapping("facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct", "test.fixtures.basicannotations.MyStruct"));
   }
 
   @Override
