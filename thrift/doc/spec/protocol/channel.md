@@ -96,33 +96,7 @@ Common other fields:
 
 #### SerializedRequest
 
-Method arguments wrapped in an anonymous struct and serialized using the protocol specified in the metadata. May also be compressed using the algorithm specified in the metadata.
-For example, this method:
-
-```
-i32 foo(1: i32 a, 2: string b)
-```
-
-called with this metadata struct:
-
-```
-RequestRpcMetadata {
-  protocol = ProtocolId.COMPACT;
-  name = "foo";
-  kind = RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE;
-}
-```
-
-will have as its SerializedRequest the result of placing the arguments in a
-
-```
-struct ‹Anonymous› {
-  1: i32 a;
-  2: string b;
-}
-```
-
-and calling CompactSerializer::serialize on the ‹Anonymous›.
+Method arguments wrapped in an anonymous struct and serialized as described in the [interface spec](interface/index.md#serialization-details).
 
 #### Response
 
@@ -134,6 +108,7 @@ A serialized response is received for all methods except oneway (including void-
 
 If the exception comes from the second hop of a proxied request a ‘p’ is prepended to these magic keys.
 
+The content of the serialized response is described in the [interface spec](interface/index.md#response).
 
 ## Interactions
 

@@ -14,6 +14,32 @@ The client **must** take the user provided arguments to the Interface method and
 
 The parameters to an Interface method **must** be treated as fields of a Thrift struct with an empty name (`""`). The order of the fields **must** be the same as the order of the parameters in the IDL. If the Interface method has no parameters then the struct **must** have no fields. To prepare for sending the request through one of the underlying transport protocols, this unnamed struct **must** be serialized with one of Thrift’s [data protocols](../data.md).
 
+For example, this method:
+
+```
+i32 foo(1: i32 a, 2: string b)
+```
+
+might be called with these fields set in the metadata:
+
+```
+  protocol = ProtocolId.COMPACT;
+  name = "foo";
+  kind = RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE;
+  compression = CompressionAlgorithm.ZSTD;
+```
+
+in which case it will have as its serialized request the result of placing the arguments in a
+
+```
+struct ‹Anonymous› {
+  1: i32 a;
+  2: string b;
+}
+```
+
+passing the `‹Anonymous›` to a serializer for the [Compact Protocol](../data.md#compact-protocol) and passing the resulting string to a compressor for [zstd](https://facebook.github.io/zstd/).
+
 ## Response
 
 A response may be one of the following types:
