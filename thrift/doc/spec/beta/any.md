@@ -54,6 +54,7 @@ void copy(Mask, ThriftStruct src, ThriftStruct dst);
 void clear(Mask, protocol::Object);
 void copy(Mask, protocol::Object src, protocol::Object dst);
 ```
+Also, [debug protocol](../protocol/data/#debug-protocol) can be used to convert Mask to a human readable string.
 
 ## Protocol Object and Value
 
