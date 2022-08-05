@@ -33,18 +33,18 @@ enum NoZero {
   value_2 = 2,
 }
 
-enum LessField {
+enum MissingField {
   value_0 = 0,
   value_1 = 1,
 }
 
-enum DifferentName {
+enum NameMismatch {
   value_0 = 0,
   value_1 = 1,
   value_3 = 2,
 }
 
-enum DifferentValue {
+enum ValueMismatch {
   value_0 = 0,
   value_1 = 1,
   value_2 = 3,
@@ -59,13 +59,13 @@ struct NoZeroEnumStruct {
 }
 
 struct LessFieldEnumStruct {
-  1: optional LessField field;
+  1: optional MissingField field;
 }
 
 struct DifferentNameEnumStruct {
-  1: optional DifferentName field;
+  1: optional NameMismatch field;
 }
 
 struct DifferentValueEnumStruct {
-  1: optional DifferentValue field;
+  1: optional ValueMismatch field;
 }

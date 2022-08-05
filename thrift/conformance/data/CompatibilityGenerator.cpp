@@ -250,11 +250,11 @@ std::string getEnumStructName() {
   } else if constexpr (std::is_same_v<EnumStruct, NoZeroEnumStruct>) {
     return "NoZero";
   } else if constexpr (std::is_same_v<EnumStruct, LessFieldEnumStruct>) {
-    return "LessField";
+    return "MissingField";
   } else if constexpr (std::is_same_v<EnumStruct, DifferentNameEnumStruct>) {
-    return "DifferentName";
+    return "NameMismatch";
   } else if constexpr (std::is_same_v<EnumStruct, DifferentValueEnumStruct>) {
-    return "DifferentValue";
+    return "ValueMismatch";
   } else {
     static_assert(sizeof(EnumStruct) == 0);
   }
