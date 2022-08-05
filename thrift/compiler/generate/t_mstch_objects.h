@@ -36,7 +36,7 @@ namespace thrift {
 namespace compiler {
 
 class mstch_base;
-struct mstch_factories;
+class mstch_factories;
 
 struct mstch_element_position {
   mstch_element_position() = default;
@@ -123,24 +123,8 @@ using mstch_const_map_element_factory = mstch_factory<
 using mstch_structured_annotation_factory = mstch_factory<t_const>;
 using mstch_deprecated_annotation_factory = mstch_factory<t_annotation>;
 
-namespace detail {
-
-template <typename MstchType, typename Base, typename... Args>
-class mstch_factory_impl : public Base {
+class mstch_factories {
  public:
-  std::shared_ptr<mstch_base> make_mstch_object(
-      const typename Base::node_type* node,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      Args... args) const override {
-    return std::make_shared<MstchType>(node, factories, cache, pos, args...);
-  }
-};
-
-} // namespace detail
-
-struct mstch_factories {
   std::unique_ptr<mstch_program_factory> program_factory;
   std::unique_ptr<mstch_service_factory> service_factory;
   std::unique_ptr<mstch_interaction_factory> interaction_factory;
@@ -161,117 +145,128 @@ struct mstch_factories {
 
   mstch_factories();
 
+  struct no_context {};
+
   // The following functions set factories for mstch object types.
+  // ctx: An optional context to be passed by value as the last argument to an
+  //      mstch object constructor.
   //
   // Example:
   //   set_program_factory<my_mstch_program>();
   //
   // where my_mstch_program is a subclass of mstch_program.
-
-  template <typename MstchType>
-  void set_program_factory() {
-    program_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_program_factory>>();
+  template <typename MstchType, typename Context = no_context>
+  void set_program_factory(Context ctx = {}) {
+    set_factory<MstchType>(program_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_service_factory(Context ctx = {}) {
+    set_factory<MstchType>(service_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_interaction_factory(Context ctx = {}) {
+    set_factory<MstchType>(interaction_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_function_factory(Context ctx = {}) {
+    set_factory<MstchType>(function_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_type_factory(Context ctx = {}) {
+    set_factory<MstchType>(type_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_typedef_factory(Context ctx = {}) {
+    set_factory<MstchType>(typedef_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_struct_factory(Context ctx = {}) {
+    set_factory<MstchType>(struct_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_field_factory(Context ctx = {}) {
+    set_factory<MstchType>(field_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_enum_factory(Context ctx = {}) {
+    set_factory<MstchType>(enum_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_enum_value_factory(Context ctx = {}) {
+    set_factory<MstchType>(enum_value_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_const_factory(Context ctx = {}) {
+    set_factory<MstchType>(const_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_const_value_factory(Context ctx = {}) {
+    set_factory<MstchType>(const_value_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_const_map_element_factory(Context ctx = {}) {
+    set_factory<MstchType>(const_map_element_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_structured_annotation_factory(Context ctx = {}) {
+    set_factory<MstchType>(structured_annotation_factory, ctx);
+  }
+  template <typename MstchType, typename Context = no_context>
+  void set_deprecated_annotation_factory(Context ctx = {}) {
+    set_factory<MstchType>(deprecated_annotation_factory, ctx);
   }
 
-  template <typename MstchType>
-  void set_service_factory() {
-    service_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_service_factory>>();
-  }
+ private:
+  template <
+      typename Context,
+      typename MstchType,
+      typename Node,
+      typename... Args>
+  class mstch_factory_impl : public mstch_factory<Node, Args...> {
+   private:
+    Context ctx_;
 
-  template <typename MstchType>
-  void set_interaction_factory() {
-    interaction_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_interaction_factory,
-        const t_service*>>();
-  }
+   public:
+    explicit mstch_factory_impl(Context ctx) : ctx_(ctx) {}
 
-  template <typename MstchType>
-  void set_function_factory() {
-    function_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_function_factory>>();
-  }
+    std::shared_ptr<mstch_base> make_mstch_object(
+        const Node* node,
+        const mstch_factories& factories,
+        std::shared_ptr<mstch_cache> cache,
+        mstch_element_position pos,
+        Args... args) const override {
+      return std::make_shared<MstchType>(
+          node, factories, cache, pos, args..., ctx_);
+    }
+  };
 
-  template <typename MstchType>
-  void set_type_factory() {
-    type_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_type_factory>>();
-  }
+  template <typename MstchType, typename Node, typename... Args>
+  class mstch_factory_impl<no_context, MstchType, Node, Args...>
+      : public mstch_factory<Node, Args...> {
+   public:
+    explicit mstch_factory_impl(no_context) {}
 
-  template <typename MstchType>
-  void set_typedef_factory() {
-    typedef_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_typedef_factory>>();
-  }
+    std::shared_ptr<mstch_base> make_mstch_object(
+        const Node* node,
+        const mstch_factories& factories,
+        std::shared_ptr<mstch_cache> cache,
+        mstch_element_position pos,
+        Args... args) const override {
+      return std::make_shared<MstchType>(node, factories, cache, pos, args...);
+    }
+  };
 
-  template <typename MstchType>
-  void set_struct_factory() {
-    struct_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_struct_factory>>();
-  }
-
-  template <typename MstchType>
-  void set_field_factory() {
-    field_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_field_factory,
-        const field_generator_context*>>();
-  }
-
-  template <typename MstchType>
-  void set_enum_factory() {
-    enum_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_enum_factory>>();
-  }
-
-  template <typename MstchType>
-  void set_enum_value_factory() {
-    enum_value_factory = std::make_unique<
-        detail::mstch_factory_impl<MstchType, mstch_enum_value_factory>>();
-  }
-
-  template <typename MstchType>
-  void set_const_factory() {
-    const_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_const_factory,
-        const t_const*,
-        const t_type*,
-        const t_field*>>();
-  }
-
-  template <typename MstchType>
-  void set_const_value_factory() {
-    const_value_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_const_value_factory,
-        const t_const*,
-        const t_type*>>();
-  }
-
-  template <typename MstchType>
-  void set_const_map_element_factory() {
-    const_map_element_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_const_map_element_factory,
-        const t_const*,
-        const std::pair<const t_type*, const t_type*>&>>();
-  }
-
-  template <typename MstchType>
-  void set_structured_annotation_factory() {
-    structured_annotation_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_structured_annotation_factory>>();
-  }
-
-  template <typename MstchType>
-  void set_deprecated_annotation_factory() {
-    deprecated_annotation_factory = std::make_unique<detail::mstch_factory_impl<
-        MstchType,
-        mstch_deprecated_annotation_factory>>();
+  template <
+      typename MstchType,
+      typename Node,
+      typename... Args,
+      typename Context = no_context>
+  void set_factory(
+      std::unique_ptr<mstch_factory<Node, Args...>>& factory,
+      Context ctx = {}) {
+    factory =
+        std::make_unique<mstch_factory_impl<Context, MstchType, Node, Args...>>(
+            ctx);
   }
 };
 
@@ -459,561 +454,182 @@ class mstch_base : public mstch::object {
   const mstch_element_position pos_;
 };
 
-class mstch_enum_value : public mstch_base {
+class mstch_program : public mstch_base {
  public:
-  using node_type = t_enum_value;
-
-  mstch_enum_value(
-      const t_enum_value* enum_value,
+  mstch_program(
+      const t_program* p,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos)
-      : mstch_base(factories, cache, pos), enum_value_(enum_value) {
+      : mstch_base(factories, cache, pos), program_(p) {
     register_methods(
         this,
         {
-            {"enum_value:name", &mstch_enum_value::name},
-            {"enum_value:value", &mstch_enum_value::value},
+            {"program:name", &mstch_program::name},
+            {"program:path", &mstch_program::path},
+            {"program:includePrefix", &mstch_program::include_prefix},
+            {"program:structs", &mstch_program::structs},
+            {"program:enums", &mstch_program::enums},
+            {"program:services", &mstch_program::services},
+            {"program:typedefs", &mstch_program::typedefs},
+            {"program:constants", &mstch_program::constants},
+            {"program:enums?", &mstch_program::has_enums},
+            {"program:structs?", &mstch_program::has_structs},
+            {"program:unions?", &mstch_program::has_unions},
+            {"program:services?", &mstch_program::has_services},
+            {"program:typedefs?", &mstch_program::has_typedefs},
+            {"program:constants?", &mstch_program::has_constants},
+            {"program:thrift_uris?", &mstch_program::has_thrift_uris},
         });
+    register_has_option("program:frozen?", "frozen");
+    register_has_option("program:json?", "json");
+    register_has_option("program:any?", "any");
+    register_has_option(
+        "program:unstructured_annotations_in_metadata?",
+        "deprecated_unstructured_annotations_in_metadata");
   }
-  mstch::node name() { return enum_value_->get_name(); }
-  mstch::node value() { return std::to_string(enum_value_->get_value()); }
+
+  virtual std::string get_program_namespace(const t_program*) { return {}; }
+
+  mstch::node name() { return program_->name(); }
+  mstch::node path() { return program_->path(); }
+  mstch::node include_prefix() { return program_->include_prefix(); }
+  mstch::node has_enums() { return !program_->enums().empty(); }
+  mstch::node has_structs() {
+    return !program_->structs().empty() || !program_->xceptions().empty();
+  }
+  mstch::node has_services() { return !program_->services().empty(); }
+  mstch::node has_typedefs() { return !program_->typedefs().empty(); }
+  mstch::node has_constants() { return !program_->consts().empty(); }
+  mstch::node has_unions() {
+    auto& structs = program_->structs();
+    return std::any_of(
+        structs.cbegin(), structs.cend(), std::mem_fn(&t_struct::is_union));
+  }
+
+  mstch::node has_thrift_uris();
+  mstch::node structs();
+  mstch::node enums();
+  mstch::node services();
+  mstch::node typedefs();
+  mstch::node constants();
 
  protected:
-  const t_enum_value* enum_value_;
+  const t_program* program_;
+
+  virtual const std::vector<t_struct*>& get_program_objects();
+  virtual const std::vector<t_enum*>& get_program_enums();
 };
 
-class mstch_enum : public mstch_base {
+class mstch_service : public mstch_base {
  public:
-  using node_type = t_enum;
-
-  mstch_enum(
-      const t_enum* e,
+  mstch_service(
+      const t_service* s,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos)
-      : mstch_base(factories, cache, pos), enum_(e) {
+      : mstch_base(factories, cache, pos), service_(s) {
     register_methods(
         this,
         {
-            {"enum:name", &mstch_enum::name},
-            {"enum:values", &mstch_enum::values},
-            {"enum:structured_annotations",
-             &mstch_enum::structured_annotations},
-        });
-  }
-
-  mstch::node name() { return enum_->get_name(); }
-  mstch::node values();
-  mstch::node structured_annotations() {
-    return mstch_base::structured_annotations(enum_);
-  }
-
- protected:
-  const t_enum* enum_;
-};
-
-class mstch_const_value : public mstch_base {
- public:
-  using cv = t_const_value::t_const_value_type;
-
-  mstch_const_value(
-      const t_const_value* const_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      const t_const* current_const,
-      const t_type* expected_type)
-      : mstch_base(factories, cache, pos),
-        const_value_(const_value),
-        current_const_(current_const),
-        expected_type_(expected_type),
-        type_(const_value->get_type()) {
-    register_methods(
-        this,
-        {
-            {"value:bool?", &mstch_const_value::is_bool},
-            {"value:double?", &mstch_const_value::is_double},
-            {"value:integer?", &mstch_const_value::is_integer},
-            {"value:enum?", &mstch_const_value::is_enum},
-            {"value:enum_value?", &mstch_const_value::has_enum_value},
-            {"value:string?", &mstch_const_value::is_string},
-            {"value:string_multi_line?",
-             &mstch_const_value::is_string_multi_line},
-            {"value:base?", &mstch_const_value::is_base},
-            {"value:map?", &mstch_const_value::is_map},
-            {"value:list?", &mstch_const_value::is_list},
-            {"value:container?", &mstch_const_value::is_container},
-            {"value:empty_container?", &mstch_const_value::is_empty_container},
-            {"value:value", &mstch_const_value::value},
-            {"value:integer_value", &mstch_const_value::integer_value},
-            {"value:double_value", &mstch_const_value::double_value},
-            {"value:bool_value", &mstch_const_value::bool_value},
-            {"value:nonzero?", &mstch_const_value::is_non_zero},
-            {"value:enum_name", &mstch_const_value::enum_name},
-            {"value:enum_value_name", &mstch_const_value::enum_value_name},
-            {"value:string_value", &mstch_const_value::string_value},
-            {"value:list_elements", &mstch_const_value::list_elems},
-            {"value:map_elements", &mstch_const_value::map_elems},
-            {"value:const_struct", &mstch_const_value::const_struct},
-            {"value:const_struct?", &mstch_const_value::is_const_struct},
-            {"value:const_struct_type", &mstch_const_value::const_struct_type},
-            {"value:referenceable?", &mstch_const_value::referenceable},
-            {"value:owning_const", &mstch_const_value::owning_const},
-            {"value:enable_referencing",
-             &mstch_const_value::enable_referencing},
-        });
-  }
-
-  std::string format_double_string(const double d) {
-    std::ostringstream oss;
-    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
-    return oss.str();
-  }
-  mstch::node is_bool() { return type_ == cv::CV_BOOL; }
-  mstch::node is_double() { return type_ == cv::CV_DOUBLE; }
-  mstch::node is_integer() {
-    return type_ == cv::CV_INTEGER && !const_value_->is_enum();
-  }
-  mstch::node is_enum() {
-    return type_ == cv::CV_INTEGER && const_value_->is_enum();
-  }
-  mstch::node has_enum_value() {
-    return const_value_->get_enum_value() != nullptr;
-  }
-  mstch::node is_string() { return type_ == cv::CV_STRING; }
-  mstch::node is_string_multi_line() {
-    return type_ == cv::CV_STRING &&
-        const_value_->get_string().find("\n") != std::string::npos;
-  }
-  mstch::node is_base() {
-    return type_ == cv::CV_BOOL || type_ == cv::CV_DOUBLE ||
-        type_ == cv::CV_INTEGER || type_ == cv::CV_STRING;
-  }
-  mstch::node is_map() { return type_ == cv::CV_MAP; }
-  mstch::node is_list() { return type_ == cv::CV_LIST; }
-  mstch::node is_container() {
-    return type_ == cv::CV_MAP || type_ == cv::CV_LIST;
-  }
-  mstch::node is_empty_container() {
-    return (type_ == cv::CV_MAP && const_value_->get_map().empty()) ||
-        (type_ == cv::CV_LIST && const_value_->get_list().empty());
-  }
-  mstch::node value();
-  mstch::node integer_value();
-  mstch::node double_value();
-  mstch::node bool_value();
-  mstch::node is_non_zero();
-  mstch::node enum_name();
-  mstch::node enum_value_name();
-  mstch::node string_value();
-  mstch::node list_elems();
-  mstch::node map_elems();
-  mstch::node const_struct();
-  mstch::node referenceable() {
-    return current_const_ && const_value_->get_owner() &&
-        current_const_ != const_value_->get_owner() && same_type_as_expected();
-  }
-  mstch::node owning_const();
-  mstch::node enable_referencing() {
-    return mstch::map{{"value:enable_referencing?", true}};
-  }
-  mstch::node is_const_struct();
-  mstch::node const_struct_type();
-
- protected:
-  const t_const_value* const_value_;
-  const t_const* current_const_;
-  const t_type* expected_type_;
-  const cv type_;
-
-  virtual bool same_type_as_expected() const { return false; }
-};
-
-class mstch_const_map_element : public mstch_base {
- public:
-  mstch_const_map_element(
-      const std::pair<t_const_value*, t_const_value*>* element,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      const t_const* current_const,
-      const std::pair<const t_type*, const t_type*>& expected_types)
-      : mstch_base(factories, cache, pos),
-        element_(*element),
-        current_const_(current_const),
-        expected_types_(expected_types) {
-    register_methods(
-        this,
-        {
-            {"element:key", &mstch_const_map_element::element_key},
-            {"element:value", &mstch_const_map_element::element_value},
-        });
-  }
-  mstch::node element_key();
-  mstch::node element_value();
-
- protected:
-  const std::pair<t_const_value*, t_const_value*> element_;
-  const t_const* current_const_;
-  const std::pair<const t_type*, const t_type*> expected_types_;
-};
-
-class mstch_type : public mstch_base {
- public:
-  mstch_type(
-      const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos),
-        type_(type),
-        resolved_type_(type->get_true_type()) {
-    register_methods(
-        this,
-        {
-            {"type:name", &mstch_type::name},
-            {"type:void?", &mstch_type::is_void},
-            {"type:string?", &mstch_type::is_string},
-            {"type:binary?", &mstch_type::is_binary},
-            {"type:bool?", &mstch_type::is_bool},
-            {"type:byte?", &mstch_type::is_byte},
-            {"type:i16?", &mstch_type::is_i16},
-            {"type:i32?", &mstch_type::is_i32},
-            {"type:i64?", &mstch_type::is_i64},
-            {"type:double?", &mstch_type::is_double},
-            {"type:float?", &mstch_type::is_float},
-            {"type:floating_point?", &mstch_type::is_floating_point},
-            {"type:struct?", &mstch_type::is_struct},
-            {"type:union?", &mstch_type::is_union},
-            {"type:enum?", &mstch_type::is_enum},
-            {"type:sink?", &mstch_type::is_sink},
-            {"type:sink_has_first_response?",
-             &mstch_type::sink_has_first_response},
-            {"type:stream_or_sink?", &mstch_type::is_stream_or_sink},
-            {"type:streamresponse?", &mstch_type::is_streamresponse},
-            {"type:stream_has_first_response?",
-             &mstch_type::stream_has_first_response},
-            {"type:service?", &mstch_type::is_service},
-            {"type:base?", &mstch_type::is_base},
-            {"type:container?", &mstch_type::is_container},
-            {"type:list?", &mstch_type::is_list},
-            {"type:set?", &mstch_type::is_set},
-            {"type:map?", &mstch_type::is_map},
-            {"type:typedef?", &mstch_type::is_typedef},
-            {"type:struct", &mstch_type::get_struct},
-            {"type:enum", &mstch_type::get_enum},
-            {"type:list_elem_type", &mstch_type::get_list_type},
-            {"type:set_elem_type", &mstch_type::get_set_type},
-            {"type:sink_elem_type", &mstch_type::get_sink_elem_type},
-            {"type:sink_final_response_type",
-             &mstch_type::get_sink_final_reponse_type},
-            {"type:sink_first_response_type",
-             &mstch_type::get_sink_first_response_type},
-            {"type:stream_elem_type", &mstch_type::get_stream_elem_type},
-            {"type:stream_first_response_type",
-             &mstch_type::get_stream_first_response_type},
-            {"type:key_type", &mstch_type::get_key_type},
-            {"type:value_type", &mstch_type::get_value_type},
-            {"type:typedef_type", &mstch_type::get_typedef_type},
-            {"type:typedef", &mstch_type::get_typedef},
-            {"type:interaction?", &mstch_type::is_interaction},
-        });
-  }
-
-  mstch::node name() { return type_->get_name(); }
-  mstch::node is_void() { return resolved_type_->is_void(); }
-  mstch::node is_string() { return resolved_type_->is_string(); }
-  mstch::node is_binary() { return resolved_type_->is_binary(); }
-  mstch::node is_bool() { return resolved_type_->is_bool(); }
-  mstch::node is_byte() { return resolved_type_->is_byte(); }
-  mstch::node is_i16() { return resolved_type_->is_i16(); }
-  mstch::node is_i32() { return resolved_type_->is_i32(); }
-  mstch::node is_i64() { return resolved_type_->is_i64(); }
-  mstch::node is_double() { return resolved_type_->is_double(); }
-  mstch::node is_float() { return resolved_type_->is_float(); }
-  mstch::node is_floating_point() {
-    return resolved_type_->is_floating_point();
-  }
-  mstch::node is_struct() {
-    return resolved_type_->is_struct() || resolved_type_->is_xception();
-  }
-  mstch::node is_union() { return resolved_type_->is_union(); }
-  mstch::node is_enum() { return resolved_type_->is_enum(); }
-  mstch::node is_sink() { return resolved_type_->is_sink(); }
-  mstch::node sink_has_first_response() {
-    return resolved_type_->is_sink() &&
-        dynamic_cast<const t_sink*>(resolved_type_)->sink_has_first_response();
-  }
-  mstch::node is_stream_or_sink() {
-    return resolved_type_->is_streamresponse() || resolved_type_->is_sink();
-  }
-  mstch::node is_streamresponse() {
-    return resolved_type_->is_streamresponse();
-  }
-  mstch::node stream_has_first_response() {
-    return resolved_type_->is_streamresponse() &&
-        !dynamic_cast<const t_stream_response*>(resolved_type_)
-             ->first_response_type()
-             .empty();
-  }
-  mstch::node is_service() { return resolved_type_->is_service(); }
-  mstch::node is_base() { return resolved_type_->is_base_type(); }
-  mstch::node is_container() { return resolved_type_->is_container(); }
-  mstch::node is_list() { return resolved_type_->is_list(); }
-  mstch::node is_set() { return resolved_type_->is_set(); }
-  mstch::node is_map() { return resolved_type_->is_map(); }
-  mstch::node is_typedef() { return type_->is_typedef(); }
-  virtual std::string get_type_namespace(const t_program*) { return ""; }
-  mstch::node get_struct();
-  mstch::node get_enum();
-  mstch::node get_list_type();
-  mstch::node get_set_type();
-  mstch::node get_key_type();
-  mstch::node get_value_type();
-  mstch::node get_typedef_type();
-  mstch::node get_typedef();
-  mstch::node get_sink_first_response_type();
-  mstch::node get_sink_elem_type();
-  mstch::node get_sink_final_reponse_type();
-  mstch::node get_stream_elem_type();
-  mstch::node get_stream_first_response_type();
-  mstch::node is_interaction() { return type_->is_service(); }
-
- protected:
-  const t_type* type_;
-  const t_type* resolved_type_;
-};
-
-class mstch_field : public mstch_base {
- public:
-  mstch_field(
-      const t_field* field,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      const field_generator_context* field_context)
-      : mstch_base(factories, cache, pos),
-        field_(field),
-        field_context_(field_context) {
-    register_methods(
-        this,
-        {
-            {"field:name", &mstch_field::name},
-            {"field:key", &mstch_field::key},
-            {"field:value", &mstch_field::value},
-            {"field:type", &mstch_field::type},
-            {"field:index", &mstch_field::index},
-            {"field:required?", &mstch_field::is_required},
-            {"field:terse?", &mstch_field::is_terse},
-            {"field:optional?", &mstch_field::is_optional},
-            {"field:opt_in_req_out?", &mstch_field::is_optInReqOut},
-            {"field:annotations", &mstch_field::annotations},
-            {"field:structured_annotations",
-             &mstch_field::structured_annotations},
-        });
-  }
-  mstch::node name() { return field_->get_name(); }
-  mstch::node key() { return std::to_string(field_->get_key()); }
-  mstch::node value();
-  mstch::node type();
-  mstch::node index() { return std::to_string(pos_.index); }
-  mstch::node is_terse() {
-    return field_->qualifier() == t_field_qualifier::terse;
-  }
-  mstch::node is_required() {
-    return field_->get_req() == t_field::e_req::required;
-  }
-  mstch::node is_optional() {
-    return field_->get_req() == t_field::e_req::optional;
-  }
-  mstch::node is_optInReqOut() {
-    return field_->get_req() == t_field::e_req::opt_in_req_out;
-  }
-  mstch::node annotations() { return mstch_base::annotations(field_); }
-  mstch::node structured_annotations() {
-    return mstch_base::structured_annotations(field_);
-  }
-
- protected:
-  const t_field* field_;
-  const field_generator_context* field_context_;
-};
-
-class mstch_deprecated_annotation : public mstch_base {
- public:
-  mstch_deprecated_annotation(
-      const t_annotation* annotation,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos),
-        key_(annotation->first),
-        val_(annotation->second) {
-    register_methods(
-        this,
-        {
-            {"annotation:key", &mstch_deprecated_annotation::key},
-            {"annotation:value", &mstch_deprecated_annotation::value},
-        });
-  }
-  mstch::node key() { return key_; }
-  mstch::node value() { return val_.value; }
-
- protected:
-  const std::string key_;
-  const annotation_value val_;
-};
-
-class mstch_structured_annotation : public mstch_base {
- public:
-  mstch_structured_annotation(
-      const t_const* c,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), const_(*c) {
-    register_methods(
-        this,
-        {{"structured_annotation:const",
-          &mstch_structured_annotation::constant},
-         {"structured_annotation:const_struct?",
-          &mstch_structured_annotation::is_const_struct}});
-  }
-  mstch::node constant() {
-    return factories_.const_factory->make_mstch_object(
-        &const_,
-        factories_,
-        cache_,
-        pos_,
-        &const_,
-        const_.type()->get_true_type(),
-        nullptr);
-  }
-
-  mstch::node is_const_struct() {
-    return const_.type()->get_true_type()->is_struct();
-  }
-
- protected:
-  const t_const& const_;
-};
-
-class mstch_struct : public mstch_base {
- public:
-  mstch_struct(
-      const t_struct* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), struct_(s) {
-    register_methods(
-        this,
-        {
-            {"struct:name", &mstch_struct::name},
-            {"struct:fields?", &mstch_struct::has_fields},
-            {"struct:fields", &mstch_struct::fields},
-            {"struct:fields_in_serialization_order",
-             &mstch_struct::fields_in_serialization_order},
-            {"struct:exception?", &mstch_struct::is_exception},
-            {"struct:union?", &mstch_struct::is_union},
-            {"struct:plain?", &mstch_struct::is_plain},
-            {"struct:annotations", &mstch_struct::annotations},
-            {"struct:thrift_uri", &mstch_struct::thrift_uri},
-            {"struct:structured_annotations",
-             &mstch_struct::structured_annotations},
-            {"struct:exception_kind", &mstch_struct::exception_kind},
-            {"struct:exception_safety", &mstch_struct::exception_safety},
-            {"struct:exception_blame", &mstch_struct::exception_blame},
+            {"service:name", &mstch_service::name},
+            {"service:functions", &mstch_service::functions},
+            {"service:functions?", &mstch_service::has_functions},
+            {"service:extends", &mstch_service::extends},
+            {"service:extends?", &mstch_service::has_extends},
+            {"service:streams?", &mstch_service::has_streams},
+            {"service:sinks?", &mstch_service::has_sinks},
+            {"service:annotations", &mstch_service::annotations},
+            {"service:thrift_uri", &mstch_service::thrift_uri},
+            {"service:parent", &mstch_service::parent},
+            {"service:interaction?", &mstch_service::is_interaction},
+            {"service:interactions", &mstch_service::interactions},
+            {"service:interactions?", &mstch_service::has_interactions},
+            {"service:structured_annotations",
+             &mstch_service::structured_annotations},
+            {"interaction:serial?", &mstch_service::is_serial_interaction},
+            {"interaction:eb?", &mstch_service::is_event_base_interaction},
         });
 
-    // Populate field_context_generator for each field.
-    auto ctx = field_generator_context{};
-    ctx.strct = struct_;
-    for (const t_field& field : s->fields()) {
-      if (cpp2::field_has_isset(&field)) {
-        ctx.isset_index++;
+    // Collect performed interactions and cache them
+    for (const auto* function : get_functions()) {
+      if (function->get_returntype()->is_service()) {
+        interactions_.insert(
+            dynamic_cast<const t_interaction*>(function->get_returntype()));
+      } else if (auto interaction = function->returned_interaction()) {
+        interactions_.insert(
+            dynamic_cast<const t_interaction*>(interaction->get_true_type()));
       }
-      context_map[&field] = ctx;
     }
+    assert(interactions_.count(nullptr) == 0);
+  }
 
-    const t_field* prev = nullptr;
-    for (const t_field* curr : get_members_in_serialization_order()) {
-      if (prev) {
-        context_map[prev].serialization_next = curr;
-        context_map[curr].serialization_prev = prev;
-      }
-      prev = curr;
+  virtual std::string get_service_namespace(const t_program*) { return {}; }
+
+  mstch::node name() { return service_->get_name(); }
+  mstch::node has_functions() { return !get_functions().empty(); }
+  mstch::node has_extends() { return service_->get_extends() != nullptr; }
+  mstch::node functions();
+  mstch::node extends();
+  mstch::node annotations() { return mstch_base::annotations(service_); }
+  mstch::node thrift_uri() { return service_->uri(); }
+
+  mstch::node parent() { return cache_->options_.at("parent_service_name"); }
+
+  mstch::node has_streams() {
+    auto& funcs = get_functions();
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
+      return func->returns_stream();
+    });
+  }
+
+  mstch::node has_sinks() {
+    auto& funcs = get_functions();
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
+      return func->returns_sink();
+    });
+  }
+
+  mstch::node has_interactions() { return !interactions_.empty(); }
+  mstch::node interactions() {
+    if (!service_->is_interaction()) {
+      // for Python interactions
+      cache_->options_["parent_service_name"] = service_->get_name();
+      cache_->options_["parent_service_cpp_name"] = cpp2::get_name(service_);
     }
+    return make_mstch_interactions(interactions_, service_);
   }
-  mstch::node name() { return struct_->get_name(); }
-  mstch::node has_fields() { return struct_->has_fields(); }
-  mstch::node fields();
-  mstch::node is_exception() { return struct_->is_xception(); }
-  mstch::node is_union() { return struct_->is_union(); }
-  mstch::node is_plain() {
-    return !struct_->is_xception() && !struct_->is_union();
-  }
-  mstch::node annotations() { return mstch_base::annotations(struct_); }
   mstch::node structured_annotations() {
-    return mstch_base::structured_annotations(struct_);
+    return mstch_base::structured_annotations(service_);
   }
-  mstch::node thrift_uri() { return struct_->uri(); }
-
-  mstch::node exception_safety();
-  mstch::node exception_blame();
-  mstch::node exception_kind();
-
-  mstch::array make_mstch_fields(const field_range& fields) override {
-    mstch::array a;
-    size_t i = 0;
-    for (const auto* field : fields) {
-      auto pos = mstch_element_position(i, fields.size());
-      a.push_back(factories_.field_factory->make_mstch_object(
-          field, factories_, cache_, pos, &context_map[field]));
-      ++i;
-    }
-    return a;
+  mstch::node is_interaction() { return service_->is_interaction(); }
+  mstch::node is_serial_interaction() {
+    return service_->is_serial_interaction();
+  }
+  mstch::node is_event_base_interaction() {
+    return service_->has_annotation("process_in_event_base");
   }
 
-  // Returns the struct members ordered by the key.
-  const std::vector<const t_field*>& get_members_in_key_order();
-
-  field_range get_members_in_serialization_order() {
-    if (struct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/SerializeInFieldIdOrder")) {
-      return get_members_in_key_order();
-    }
-
-    return struct_->get_members();
-  }
-
-  mstch::node fields_in_serialization_order() {
-    return make_mstch_fields(get_members_in_serialization_order());
-  }
+  virtual ~mstch_service() = default;
 
  protected:
-  const t_struct* struct_;
-  // Although mstch_fields can be generated in a different order than the IDL
-  // order, field_generator_context should be always computed in the IDL order,
-  // as the context does not change by reordering. Without the map, each
-  // different reordering recomputes field_generator_context, and each
-  // field takes O(N) to loop through node_list_view<t_field> or
-  // std::vector<t_field*> to find the exact t_field to compute
-  // field_generator_context.
-  std::unordered_map<const t_field*, field_generator_context> context_map;
+  const t_service* service_;
+  std::set<const t_interaction*> interactions_;
 
-  std::vector<const t_field*> fields_in_key_order_;
+  mstch::node make_mstch_extended_service_cached(const t_service* service);
+  virtual const std::vector<t_function*>& get_functions() const {
+    return service_->get_functions();
+  }
 };
 
 class mstch_function : public mstch_base {
  public:
   mstch_function(
-      const t_function* function,
+      const t_function* f,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos)
-      : mstch_base(factories, cache, pos), function_(function) {
+      : mstch_base(factories, cache, pos), function_(f) {
     register_methods(
         this,
         {
@@ -1131,105 +747,130 @@ class mstch_function : public mstch_base {
   const t_function* function_;
 };
 
-class mstch_service : public mstch_base {
+class mstch_type : public mstch_base {
  public:
-  mstch_service(
-      const t_service* service,
+  mstch_type(
+      const t_type* t,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos)
-      : mstch_base(factories, cache, pos), service_(service) {
+      : mstch_base(factories, cache, pos),
+        type_(t),
+        resolved_type_(t->get_true_type()) {
     register_methods(
         this,
         {
-            {"service:name", &mstch_service::name},
-            {"service:functions", &mstch_service::functions},
-            {"service:functions?", &mstch_service::has_functions},
-            {"service:extends", &mstch_service::extends},
-            {"service:extends?", &mstch_service::has_extends},
-            {"service:streams?", &mstch_service::has_streams},
-            {"service:sinks?", &mstch_service::has_sinks},
-            {"service:annotations", &mstch_service::annotations},
-            {"service:thrift_uri", &mstch_service::thrift_uri},
-            {"service:parent", &mstch_service::parent},
-            {"service:interaction?", &mstch_service::is_interaction},
-            {"service:interactions", &mstch_service::interactions},
-            {"service:interactions?", &mstch_service::has_interactions},
-            {"service:structured_annotations",
-             &mstch_service::structured_annotations},
-            {"interaction:serial?", &mstch_service::is_serial_interaction},
-            {"interaction:eb?", &mstch_service::is_event_base_interaction},
+            {"type:name", &mstch_type::name},
+            {"type:void?", &mstch_type::is_void},
+            {"type:string?", &mstch_type::is_string},
+            {"type:binary?", &mstch_type::is_binary},
+            {"type:bool?", &mstch_type::is_bool},
+            {"type:byte?", &mstch_type::is_byte},
+            {"type:i16?", &mstch_type::is_i16},
+            {"type:i32?", &mstch_type::is_i32},
+            {"type:i64?", &mstch_type::is_i64},
+            {"type:double?", &mstch_type::is_double},
+            {"type:float?", &mstch_type::is_float},
+            {"type:floating_point?", &mstch_type::is_floating_point},
+            {"type:struct?", &mstch_type::is_struct},
+            {"type:union?", &mstch_type::is_union},
+            {"type:enum?", &mstch_type::is_enum},
+            {"type:sink?", &mstch_type::is_sink},
+            {"type:sink_has_first_response?",
+             &mstch_type::sink_has_first_response},
+            {"type:stream_or_sink?", &mstch_type::is_stream_or_sink},
+            {"type:streamresponse?", &mstch_type::is_streamresponse},
+            {"type:stream_has_first_response?",
+             &mstch_type::stream_has_first_response},
+            {"type:service?", &mstch_type::is_service},
+            {"type:base?", &mstch_type::is_base},
+            {"type:container?", &mstch_type::is_container},
+            {"type:list?", &mstch_type::is_list},
+            {"type:set?", &mstch_type::is_set},
+            {"type:map?", &mstch_type::is_map},
+            {"type:typedef?", &mstch_type::is_typedef},
+            {"type:struct", &mstch_type::get_struct},
+            {"type:enum", &mstch_type::get_enum},
+            {"type:list_elem_type", &mstch_type::get_list_type},
+            {"type:set_elem_type", &mstch_type::get_set_type},
+            {"type:sink_elem_type", &mstch_type::get_sink_elem_type},
+            {"type:sink_final_response_type",
+             &mstch_type::get_sink_final_reponse_type},
+            {"type:sink_first_response_type",
+             &mstch_type::get_sink_first_response_type},
+            {"type:stream_elem_type", &mstch_type::get_stream_elem_type},
+            {"type:stream_first_response_type",
+             &mstch_type::get_stream_first_response_type},
+            {"type:key_type", &mstch_type::get_key_type},
+            {"type:value_type", &mstch_type::get_value_type},
+            {"type:typedef_type", &mstch_type::get_typedef_type},
+            {"type:typedef", &mstch_type::get_typedef},
+            {"type:interaction?", &mstch_type::is_interaction},
         });
-
-    // Collect performed interactions and cache them
-    for (const auto* function : get_functions()) {
-      if (function->get_returntype()->is_service()) {
-        interactions_.insert(
-            dynamic_cast<const t_interaction*>(function->get_returntype()));
-      } else if (auto interaction = function->returned_interaction()) {
-        interactions_.insert(
-            dynamic_cast<const t_interaction*>(interaction->get_true_type()));
-      }
-    }
-    assert(interactions_.count(nullptr) == 0);
   }
 
-  virtual std::string get_service_namespace(const t_program*) { return {}; }
-
-  mstch::node name() { return service_->get_name(); }
-  mstch::node has_functions() { return !get_functions().empty(); }
-  mstch::node has_extends() { return service_->get_extends() != nullptr; }
-  mstch::node functions();
-  mstch::node extends();
-  mstch::node annotations() { return mstch_base::annotations(service_); }
-  mstch::node thrift_uri() { return service_->uri(); }
-
-  mstch::node parent() { return cache_->options_.at("parent_service_name"); }
-
-  mstch::node has_streams() {
-    auto& funcs = get_functions();
-    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
-      return func->returns_stream();
-    });
+  mstch::node name() { return type_->get_name(); }
+  mstch::node is_void() { return resolved_type_->is_void(); }
+  mstch::node is_string() { return resolved_type_->is_string(); }
+  mstch::node is_binary() { return resolved_type_->is_binary(); }
+  mstch::node is_bool() { return resolved_type_->is_bool(); }
+  mstch::node is_byte() { return resolved_type_->is_byte(); }
+  mstch::node is_i16() { return resolved_type_->is_i16(); }
+  mstch::node is_i32() { return resolved_type_->is_i32(); }
+  mstch::node is_i64() { return resolved_type_->is_i64(); }
+  mstch::node is_double() { return resolved_type_->is_double(); }
+  mstch::node is_float() { return resolved_type_->is_float(); }
+  mstch::node is_floating_point() {
+    return resolved_type_->is_floating_point();
   }
-
-  mstch::node has_sinks() {
-    auto& funcs = get_functions();
-    return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
-      return func->returns_sink();
-    });
+  mstch::node is_struct() {
+    return resolved_type_->is_struct() || resolved_type_->is_xception();
   }
-
-  mstch::node has_interactions() { return !interactions_.empty(); }
-  mstch::node interactions() {
-    if (!service_->is_interaction()) {
-      // for Python interactions
-      cache_->options_["parent_service_name"] = service_->get_name();
-      cache_->options_["parent_service_cpp_name"] = cpp2::get_name(service_);
-    }
-    return make_mstch_interactions(interactions_, service_);
+  mstch::node is_union() { return resolved_type_->is_union(); }
+  mstch::node is_enum() { return resolved_type_->is_enum(); }
+  mstch::node is_sink() { return resolved_type_->is_sink(); }
+  mstch::node sink_has_first_response() {
+    return resolved_type_->is_sink() &&
+        dynamic_cast<const t_sink*>(resolved_type_)->sink_has_first_response();
   }
-  mstch::node structured_annotations() {
-    return mstch_base::structured_annotations(service_);
+  mstch::node is_stream_or_sink() {
+    return resolved_type_->is_streamresponse() || resolved_type_->is_sink();
   }
-  mstch::node is_interaction() { return service_->is_interaction(); }
-  mstch::node is_serial_interaction() {
-    return service_->is_serial_interaction();
+  mstch::node is_streamresponse() {
+    return resolved_type_->is_streamresponse();
   }
-  mstch::node is_event_base_interaction() {
-    return service_->has_annotation("process_in_event_base");
+  mstch::node stream_has_first_response() {
+    return resolved_type_->is_streamresponse() &&
+        !dynamic_cast<const t_stream_response*>(resolved_type_)
+             ->first_response_type()
+             .empty();
   }
-
-  virtual ~mstch_service() = default;
+  mstch::node is_service() { return resolved_type_->is_service(); }
+  mstch::node is_base() { return resolved_type_->is_base_type(); }
+  mstch::node is_container() { return resolved_type_->is_container(); }
+  mstch::node is_list() { return resolved_type_->is_list(); }
+  mstch::node is_set() { return resolved_type_->is_set(); }
+  mstch::node is_map() { return resolved_type_->is_map(); }
+  mstch::node is_typedef() { return type_->is_typedef(); }
+  virtual std::string get_type_namespace(const t_program*) { return ""; }
+  mstch::node get_struct();
+  mstch::node get_enum();
+  mstch::node get_list_type();
+  mstch::node get_set_type();
+  mstch::node get_key_type();
+  mstch::node get_value_type();
+  mstch::node get_typedef_type();
+  mstch::node get_typedef();
+  mstch::node get_sink_first_response_type();
+  mstch::node get_sink_elem_type();
+  mstch::node get_sink_final_reponse_type();
+  mstch::node get_stream_elem_type();
+  mstch::node get_stream_first_response_type();
+  mstch::node is_interaction() { return type_->is_service(); }
 
  protected:
-  const t_service* service_;
-  std::set<const t_interaction*> interactions_;
-
-  mstch::node make_mstch_extended_service_cached(const t_service* service);
-  virtual const std::vector<t_function*>& get_functions() const {
-    return service_->get_functions();
-  }
+  const t_type* type_;
+  const t_type* resolved_type_;
 };
 
 class mstch_typedef : public mstch_base {
@@ -1261,6 +902,222 @@ class mstch_typedef : public mstch_base {
 
  protected:
   const t_typedef* typedef_;
+};
+
+class mstch_struct : public mstch_base {
+ public:
+  mstch_struct(
+      const t_struct* s,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos)
+      : mstch_base(factories, cache, pos), struct_(s) {
+    register_methods(
+        this,
+        {
+            {"struct:name", &mstch_struct::name},
+            {"struct:fields?", &mstch_struct::has_fields},
+            {"struct:fields", &mstch_struct::fields},
+            {"struct:fields_in_serialization_order",
+             &mstch_struct::fields_in_serialization_order},
+            {"struct:exception?", &mstch_struct::is_exception},
+            {"struct:union?", &mstch_struct::is_union},
+            {"struct:plain?", &mstch_struct::is_plain},
+            {"struct:annotations", &mstch_struct::annotations},
+            {"struct:thrift_uri", &mstch_struct::thrift_uri},
+            {"struct:structured_annotations",
+             &mstch_struct::structured_annotations},
+            {"struct:exception_kind", &mstch_struct::exception_kind},
+            {"struct:exception_safety", &mstch_struct::exception_safety},
+            {"struct:exception_blame", &mstch_struct::exception_blame},
+        });
+
+    // Populate field_context_generator for each field.
+    auto ctx = field_generator_context{};
+    ctx.strct = struct_;
+    for (const t_field& field : s->fields()) {
+      if (cpp2::field_has_isset(&field)) {
+        ctx.isset_index++;
+      }
+      context_map[&field] = ctx;
+    }
+
+    const t_field* prev = nullptr;
+    for (const t_field* curr : get_members_in_serialization_order()) {
+      if (prev) {
+        context_map[prev].serialization_next = curr;
+        context_map[curr].serialization_prev = prev;
+      }
+      prev = curr;
+    }
+  }
+  mstch::node name() { return struct_->get_name(); }
+  mstch::node has_fields() { return struct_->has_fields(); }
+  mstch::node fields();
+  mstch::node is_exception() { return struct_->is_xception(); }
+  mstch::node is_union() { return struct_->is_union(); }
+  mstch::node is_plain() {
+    return !struct_->is_xception() && !struct_->is_union();
+  }
+  mstch::node annotations() { return mstch_base::annotations(struct_); }
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(struct_);
+  }
+  mstch::node thrift_uri() { return struct_->uri(); }
+
+  mstch::node exception_safety();
+  mstch::node exception_blame();
+  mstch::node exception_kind();
+
+  mstch::array make_mstch_fields(const field_range& fields) override {
+    mstch::array a;
+    size_t i = 0;
+    for (const auto* field : fields) {
+      auto pos = mstch_element_position(i, fields.size());
+      a.push_back(factories_.field_factory->make_mstch_object(
+          field, factories_, cache_, pos, &context_map[field]));
+      ++i;
+    }
+    return a;
+  }
+
+  // Returns the struct members ordered by the key.
+  const std::vector<const t_field*>& get_members_in_key_order();
+
+  field_range get_members_in_serialization_order() {
+    if (struct_->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/SerializeInFieldIdOrder")) {
+      return get_members_in_key_order();
+    }
+
+    return struct_->get_members();
+  }
+
+  mstch::node fields_in_serialization_order() {
+    return make_mstch_fields(get_members_in_serialization_order());
+  }
+
+ protected:
+  const t_struct* struct_;
+  // Although mstch_fields can be generated in a different order than the IDL
+  // order, field_generator_context should be always computed in the IDL order,
+  // as the context does not change by reordering. Without the map, each
+  // different reordering recomputes field_generator_context, and each
+  // field takes O(N) to loop through node_list_view<t_field> or
+  // std::vector<t_field*> to find the exact t_field to compute
+  // field_generator_context.
+  std::unordered_map<const t_field*, field_generator_context> context_map;
+
+  std::vector<const t_field*> fields_in_key_order_;
+};
+
+class mstch_field : public mstch_base {
+ public:
+  mstch_field(
+      const t_field* f,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos,
+      const field_generator_context* field_context)
+      : mstch_base(factories, cache, pos),
+        field_(f),
+        field_context_(field_context) {
+    register_methods(
+        this,
+        {
+            {"field:name", &mstch_field::name},
+            {"field:key", &mstch_field::key},
+            {"field:value", &mstch_field::value},
+            {"field:type", &mstch_field::type},
+            {"field:index", &mstch_field::index},
+            {"field:required?", &mstch_field::is_required},
+            {"field:terse?", &mstch_field::is_terse},
+            {"field:optional?", &mstch_field::is_optional},
+            {"field:opt_in_req_out?", &mstch_field::is_optInReqOut},
+            {"field:annotations", &mstch_field::annotations},
+            {"field:structured_annotations",
+             &mstch_field::structured_annotations},
+        });
+  }
+  mstch::node name() { return field_->get_name(); }
+  mstch::node key() { return std::to_string(field_->get_key()); }
+  mstch::node value();
+  mstch::node type();
+  mstch::node index() { return std::to_string(pos_.index); }
+  mstch::node is_terse() {
+    return field_->qualifier() == t_field_qualifier::terse;
+  }
+  mstch::node is_required() {
+    return field_->get_req() == t_field::e_req::required;
+  }
+  mstch::node is_optional() {
+    return field_->get_req() == t_field::e_req::optional;
+  }
+  mstch::node is_optInReqOut() {
+    return field_->get_req() == t_field::e_req::opt_in_req_out;
+  }
+  mstch::node annotations() { return mstch_base::annotations(field_); }
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(field_);
+  }
+
+ protected:
+  const t_field* field_;
+  const field_generator_context* field_context_;
+};
+
+class mstch_enum : public mstch_base {
+ public:
+  using node_type = t_enum;
+
+  mstch_enum(
+      const t_enum* e,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos)
+      : mstch_base(factories, cache, pos), enum_(e) {
+    register_methods(
+        this,
+        {
+            {"enum:name", &mstch_enum::name},
+            {"enum:values", &mstch_enum::values},
+            {"enum:structured_annotations",
+             &mstch_enum::structured_annotations},
+        });
+  }
+
+  mstch::node name() { return enum_->get_name(); }
+  mstch::node values();
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(enum_);
+  }
+
+ protected:
+  const t_enum* enum_;
+};
+
+class mstch_enum_value : public mstch_base {
+ public:
+  using node_type = t_enum_value;
+
+  mstch_enum_value(
+      const t_enum_value* ev,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos)
+      : mstch_base(factories, cache, pos), enum_value_(ev) {
+    register_methods(
+        this,
+        {
+            {"enum_value:name", &mstch_enum_value::name},
+            {"enum_value:value", &mstch_enum_value::value},
+        });
+  }
+  mstch::node name() { return enum_value_->get_name(); }
+  mstch::node value() { return std::to_string(enum_value_->get_value()); }
+
+ protected:
+  const t_enum_value* enum_value_;
 };
 
 class mstch_const : public mstch_base {
@@ -1301,71 +1158,209 @@ class mstch_const : public mstch_base {
   const t_field* field_;
 };
 
-class mstch_program : public mstch_base {
+class mstch_const_value : public mstch_base {
  public:
-  mstch_program(
-      const t_program* program,
+  using cv = t_const_value::t_const_value_type;
+
+  mstch_const_value(
+      const t_const_value* cv,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), program_(program) {
+      mstch_element_position pos,
+      const t_const* current_const,
+      const t_type* expected_type)
+      : mstch_base(factories, cache, pos),
+        const_value_(cv),
+        current_const_(current_const),
+        expected_type_(expected_type),
+        type_(cv->get_type()) {
     register_methods(
         this,
         {
-            {"program:name", &mstch_program::name},
-            {"program:path", &mstch_program::path},
-            {"program:includePrefix", &mstch_program::include_prefix},
-            {"program:structs", &mstch_program::structs},
-            {"program:enums", &mstch_program::enums},
-            {"program:services", &mstch_program::services},
-            {"program:typedefs", &mstch_program::typedefs},
-            {"program:constants", &mstch_program::constants},
-            {"program:enums?", &mstch_program::has_enums},
-            {"program:structs?", &mstch_program::has_structs},
-            {"program:unions?", &mstch_program::has_unions},
-            {"program:services?", &mstch_program::has_services},
-            {"program:typedefs?", &mstch_program::has_typedefs},
-            {"program:constants?", &mstch_program::has_constants},
-            {"program:thrift_uris?", &mstch_program::has_thrift_uris},
+            {"value:bool?", &mstch_const_value::is_bool},
+            {"value:double?", &mstch_const_value::is_double},
+            {"value:integer?", &mstch_const_value::is_integer},
+            {"value:enum?", &mstch_const_value::is_enum},
+            {"value:enum_value?", &mstch_const_value::has_enum_value},
+            {"value:string?", &mstch_const_value::is_string},
+            {"value:string_multi_line?",
+             &mstch_const_value::is_string_multi_line},
+            {"value:base?", &mstch_const_value::is_base},
+            {"value:map?", &mstch_const_value::is_map},
+            {"value:list?", &mstch_const_value::is_list},
+            {"value:container?", &mstch_const_value::is_container},
+            {"value:empty_container?", &mstch_const_value::is_empty_container},
+            {"value:value", &mstch_const_value::value},
+            {"value:integer_value", &mstch_const_value::integer_value},
+            {"value:double_value", &mstch_const_value::double_value},
+            {"value:bool_value", &mstch_const_value::bool_value},
+            {"value:nonzero?", &mstch_const_value::is_non_zero},
+            {"value:enum_name", &mstch_const_value::enum_name},
+            {"value:enum_value_name", &mstch_const_value::enum_value_name},
+            {"value:string_value", &mstch_const_value::string_value},
+            {"value:list_elements", &mstch_const_value::list_elems},
+            {"value:map_elements", &mstch_const_value::map_elems},
+            {"value:const_struct", &mstch_const_value::const_struct},
+            {"value:const_struct?", &mstch_const_value::is_const_struct},
+            {"value:const_struct_type", &mstch_const_value::const_struct_type},
+            {"value:referenceable?", &mstch_const_value::referenceable},
+            {"value:owning_const", &mstch_const_value::owning_const},
+            {"value:enable_referencing",
+             &mstch_const_value::enable_referencing},
         });
-    register_has_option("program:frozen?", "frozen");
-    register_has_option("program:json?", "json");
-    register_has_option("program:any?", "any");
-    register_has_option(
-        "program:unstructured_annotations_in_metadata?",
-        "deprecated_unstructured_annotations_in_metadata");
   }
 
-  virtual std::string get_program_namespace(const t_program*) { return {}; }
-
-  mstch::node name() { return program_->name(); }
-  mstch::node path() { return program_->path(); }
-  mstch::node include_prefix() { return program_->include_prefix(); }
-  mstch::node has_enums() { return !program_->enums().empty(); }
-  mstch::node has_structs() {
-    return !program_->structs().empty() || !program_->xceptions().empty();
+  std::string format_double_string(const double d) {
+    std::ostringstream oss;
+    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
+    return oss.str();
   }
-  mstch::node has_services() { return !program_->services().empty(); }
-  mstch::node has_typedefs() { return !program_->typedefs().empty(); }
-  mstch::node has_constants() { return !program_->consts().empty(); }
-  mstch::node has_unions() {
-    auto& structs = program_->structs();
-    return std::any_of(
-        structs.cbegin(), structs.cend(), std::mem_fn(&t_struct::is_union));
+  mstch::node is_bool() { return type_ == cv::CV_BOOL; }
+  mstch::node is_double() { return type_ == cv::CV_DOUBLE; }
+  mstch::node is_integer() {
+    return type_ == cv::CV_INTEGER && !const_value_->is_enum();
   }
-
-  mstch::node has_thrift_uris();
-  mstch::node structs();
-  mstch::node enums();
-  mstch::node services();
-  mstch::node typedefs();
-  mstch::node constants();
+  mstch::node is_enum() {
+    return type_ == cv::CV_INTEGER && const_value_->is_enum();
+  }
+  mstch::node has_enum_value() {
+    return const_value_->get_enum_value() != nullptr;
+  }
+  mstch::node is_string() { return type_ == cv::CV_STRING; }
+  mstch::node is_string_multi_line() {
+    return type_ == cv::CV_STRING &&
+        const_value_->get_string().find("\n") != std::string::npos;
+  }
+  mstch::node is_base() {
+    return type_ == cv::CV_BOOL || type_ == cv::CV_DOUBLE ||
+        type_ == cv::CV_INTEGER || type_ == cv::CV_STRING;
+  }
+  mstch::node is_map() { return type_ == cv::CV_MAP; }
+  mstch::node is_list() { return type_ == cv::CV_LIST; }
+  mstch::node is_container() {
+    return type_ == cv::CV_MAP || type_ == cv::CV_LIST;
+  }
+  mstch::node is_empty_container() {
+    return (type_ == cv::CV_MAP && const_value_->get_map().empty()) ||
+        (type_ == cv::CV_LIST && const_value_->get_list().empty());
+  }
+  mstch::node value();
+  mstch::node integer_value();
+  mstch::node double_value();
+  mstch::node bool_value();
+  mstch::node is_non_zero();
+  mstch::node enum_name();
+  mstch::node enum_value_name();
+  mstch::node string_value();
+  mstch::node list_elems();
+  mstch::node map_elems();
+  mstch::node const_struct();
+  mstch::node referenceable() {
+    return current_const_ && const_value_->get_owner() &&
+        current_const_ != const_value_->get_owner() && same_type_as_expected();
+  }
+  mstch::node owning_const();
+  mstch::node enable_referencing() {
+    return mstch::map{{"value:enable_referencing?", true}};
+  }
+  mstch::node is_const_struct();
+  mstch::node const_struct_type();
 
  protected:
-  const t_program* program_;
+  const t_const_value* const_value_;
+  const t_const* current_const_;
+  const t_type* expected_type_;
+  const cv type_;
 
-  virtual const std::vector<t_struct*>& get_program_objects();
-  virtual const std::vector<t_enum*>& get_program_enums();
+  virtual bool same_type_as_expected() const { return false; }
+};
+
+class mstch_const_map_element : public mstch_base {
+ public:
+  using element_type = std::pair<t_const_value*, t_const_value*>;
+
+  mstch_const_map_element(
+      const element_type* e,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos,
+      const t_const* current_const,
+      const std::pair<const t_type*, const t_type*>& expected_types)
+      : mstch_base(factories, cache, pos),
+        element_(*e),
+        current_const_(current_const),
+        expected_types_(expected_types) {
+    register_methods(
+        this,
+        {
+            {"element:key", &mstch_const_map_element::element_key},
+            {"element:value", &mstch_const_map_element::element_value},
+        });
+  }
+  mstch::node element_key();
+  mstch::node element_value();
+
+ protected:
+  const std::pair<t_const_value*, t_const_value*> element_;
+  const t_const* current_const_;
+  const std::pair<const t_type*, const t_type*> expected_types_;
+};
+
+class mstch_structured_annotation : public mstch_base {
+ public:
+  mstch_structured_annotation(
+      const t_const* c,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos)
+      : mstch_base(factories, cache, pos), const_(*c) {
+    register_methods(
+        this,
+        {{"structured_annotation:const",
+          &mstch_structured_annotation::constant},
+         {"structured_annotation:const_struct?",
+          &mstch_structured_annotation::is_const_struct}});
+  }
+  mstch::node constant() {
+    return factories_.const_factory->make_mstch_object(
+        &const_,
+        factories_,
+        cache_,
+        pos_,
+        &const_,
+        const_.type()->get_true_type(),
+        nullptr);
+  }
+
+  mstch::node is_const_struct() {
+    return const_.type()->get_true_type()->is_struct();
+  }
+
+ protected:
+  const t_const& const_;
+};
+
+class mstch_deprecated_annotation : public mstch_base {
+ public:
+  mstch_deprecated_annotation(
+      const t_annotation* a,
+      const mstch_factories& factories,
+      std::shared_ptr<mstch_cache> cache,
+      mstch_element_position pos)
+      : mstch_base(factories, cache, pos), key_(a->first), val_(a->second) {
+    register_methods(
+        this,
+        {
+            {"annotation:key", &mstch_deprecated_annotation::key},
+            {"annotation:value", &mstch_deprecated_annotation::value},
+        });
+  }
+  mstch::node key() { return key_; }
+  mstch::node value() { return val_.value; }
+
+ protected:
+  const std::string key_;
+  const annotation_value val_;
 };
 
 } // namespace compiler

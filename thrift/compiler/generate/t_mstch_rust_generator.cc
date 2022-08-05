@@ -360,40 +360,40 @@ class t_mstch_rust_generator : public t_mstch_generator {
   rust_codegen_options options_;
 };
 
-class mstch_rust_program : public mstch_program {
+class rust_mstch_program : public mstch_program {
  public:
-  mstch_rust_program(
+  rust_mstch_program(
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos,
-      const rust_codegen_options& options)
-      : mstch_program(program, factories, cache, pos), options_(options) {
+      const rust_codegen_options* options)
+      : mstch_program(program, factories, cache, pos), options_(*options) {
     register_methods(
         this,
         {
-            {"program:types?", &mstch_rust_program::rust_has_types},
+            {"program:types?", &rust_mstch_program::rust_has_types},
             {"program:structsOrEnums?",
-             &mstch_rust_program::rust_structs_or_enums},
+             &rust_mstch_program::rust_structs_or_enums},
             {"program:nonexhaustiveStructs?",
-             &mstch_rust_program::rust_nonexhaustive_structs},
-            {"program:serde?", &mstch_rust_program::rust_serde},
+             &rust_mstch_program::rust_nonexhaustive_structs},
+            {"program:serde?", &rust_mstch_program::rust_serde},
             {"program:skip_none_serialization?",
-             &mstch_rust_program::rust_skip_none_serialization},
-            {"program:server?", &mstch_rust_program::rust_server},
-            {"program:multifile?", &mstch_rust_program::rust_multifile},
-            {"program:crate", &mstch_rust_program::rust_crate},
-            {"program:package", &mstch_rust_program::rust_package},
-            {"program:includes", &mstch_rust_program::rust_includes},
+             &rust_mstch_program::rust_skip_none_serialization},
+            {"program:server?", &rust_mstch_program::rust_server},
+            {"program:multifile?", &rust_mstch_program::rust_multifile},
+            {"program:crate", &rust_mstch_program::rust_crate},
+            {"program:package", &rust_mstch_program::rust_package},
+            {"program:includes", &rust_mstch_program::rust_includes},
             {"program:anyServiceWithoutParent?",
-             &mstch_rust_program::rust_any_service_without_parent},
+             &rust_mstch_program::rust_any_service_without_parent},
             {"program:nonstandardTypes?",
-             &mstch_rust_program::rust_has_nonstandard_types},
+             &rust_mstch_program::rust_has_nonstandard_types},
             {"program:nonstandardTypes",
-             &mstch_rust_program::rust_nonstandard_types},
-            {"program:docs?", &mstch_rust_program::rust_has_docs},
-            {"program:docs", &mstch_rust_program::rust_docs},
-            {"program:include_srcs", &mstch_rust_program::rust_include_srcs},
+             &rust_mstch_program::rust_nonstandard_types},
+            {"program:docs?", &rust_mstch_program::rust_has_docs},
+            {"program:docs", &rust_mstch_program::rust_docs},
+            {"program:include_srcs", &rust_mstch_program::rust_include_srcs},
         });
   }
   mstch::node rust_has_types() {
@@ -1514,24 +1514,6 @@ class mstch_rust_deprecated_annotation : public mstch_deprecated_annotation {
   mstch::node rust_value() { return quote(val_.value); }
 };
 
-class rust_program_factory : public mstch_program_factory {
- public:
-  explicit rust_program_factory(const rust_codegen_options& options)
-      : options_(options) {}
-
-  std::shared_ptr<mstch_base> make_mstch_object(
-      const t_program* program,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos) const override {
-    return std::make_shared<mstch_rust_program>(
-        program, factories, cache, pos, options_);
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
 class rust_type_factory : public mstch_type_factory {
  public:
   explicit rust_type_factory(const rust_codegen_options& options)
@@ -1736,15 +1718,13 @@ class rust_const_factory : public mstch_const_factory {
 void t_mstch_rust_generator::generate_program() {
   set_mstch_factories();
 
-  const auto* program = get_program();
-  const auto& prog = cached_program(program);
-
+  const auto& prog = cached_program(get_program());
   render_to_file(prog, "lib.rs", "lib.rs");
   render_to_file(prog, "types.rs", "types.rs");
 }
 
 void t_mstch_rust_generator::set_mstch_factories() {
-  factories_.program_factory = std::make_unique<rust_program_factory>(options_);
+  factories_.set_program_factory<rust_mstch_program>(&options_);
   factories_.service_factory = std::make_unique<rust_service_factory>(options_);
   factories_.type_factory = std::make_unique<rust_type_factory>(options_);
   factories_.typedef_factory = std::make_unique<rust_typedef_factory>(options_);
