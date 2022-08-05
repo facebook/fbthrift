@@ -4540,17 +4540,9 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_interaction::TruthifyExn::Success(res) => {
                     let response = crate::services::my_interaction::TruthifyResponseExn::Success(());
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "truthify",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4568,14 +4560,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_interaction::TruthifyExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_interaction::TruthifyResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "truthify",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -4583,10 +4576,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyInteraction.encode"))]
@@ -5212,17 +5204,9 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_interaction_fast::TruthifyExn::Success(res) => {
                     let response = crate::services::my_interaction_fast::TruthifyResponseExn::Success(());
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "truthify",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -5240,14 +5224,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_interaction_fast::TruthifyResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "truthify",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -5255,10 +5240,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyInteractionFast.encode"))]
@@ -6300,18 +6284,10 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_service::SerializeExn::Success(res) => {
                     let (response, stream) = res;
                     let response = crate::services::my_service::SerializeResponseExn::Success(response);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "serialize",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -6328,14 +6304,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_service::SerializeExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_service::SerializeResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "serialize",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -6343,10 +6320,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
     }
 

@@ -289,30 +289,14 @@
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => {
                     {{#function:stream_has_first_response?}}
                     let (response, stream) = res;
                     let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::Success(response);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "{{function:name}}",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     {{/function:stream_has_first_response?}}{{!
                     }}{{^function:stream_has_first_response?}}
                     let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::Success(());
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "{{function:name}}",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     let stream = res;
                     {{/function:stream_has_first_response?}}
 
@@ -345,29 +329,21 @@
                     })
                     {{!TODO(T125947234): should we instrument with tracing?}}
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 {{#function:exceptions?}}
                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn) => {
                     let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "{{function:name}}",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
+                    (response, None)
                 },
                 {{/function:exceptions?}}
                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)=> {
                     let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "{{function:name}}",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -375,10 +351,9 @@
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
             {{/function:returns_streams?}}
         }{{!
         }}{{/function:starts_interaction?}}{{#function:starts_interaction?}}

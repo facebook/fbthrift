@@ -4509,17 +4509,9 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_service::StreamByIdExn::Success(res) => {
                     let response = crate::services::my_service::StreamByIdResponseExn::Success(());
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "streamById",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4537,14 +4529,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_service::StreamByIdResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "streamById",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -4552,10 +4545,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithException"))]
@@ -4620,17 +4612,9 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_service::StreamByIdWithExceptionExn::Success(res) => {
                     let response = crate::services::my_service::StreamByIdWithExceptionResponseExn::Success(());
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "streamByIdWithException",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4655,14 +4639,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_service::StreamByIdWithExceptionResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "streamByIdWithException",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -4670,10 +4655,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
 
         #[::tracing::instrument(skip_all, fields(method = "MyService.streamByIdWithResponse"))]
@@ -4738,18 +4722,10 @@ pub mod server {
 
             use ::futures::StreamExt as _;
 
-            match res {
+            let (response, stream) = match res {
                 crate::services::my_service::StreamByIdWithResponseExn::Success(res) => {
                     let (response, stream) = res;
                     let response = crate::services::my_service::StreamByIdWithResponseResponseExn::Success(response);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
-                        "streamByIdWithResponse",
-                        METHOD_NAME.as_cstr(),
-                        _seqid,
-                        req_ctxt,
-                        &mut ctx_stack,
-                        response
-                    )?;
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -4766,14 +4742,15 @@ pub mod server {
 
                     })
                     .boxed();
-                    let stream = Some(stream);
-
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
-                    Ok(())
+                    (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn)=> {
                     let response = crate::services::my_service::StreamByIdWithResponseResponseExn::ApplicationException(aexn);
-                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                    (response, None)
+                },
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "streamByIdWithResponse",
                         METHOD_NAME.as_cstr(),
                         _seqid,
@@ -4781,10 +4758,9 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
-                    Ok(())
-                },
-            }
+
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            Ok(())
         }
 
         fn handle_createMyInteraction(
