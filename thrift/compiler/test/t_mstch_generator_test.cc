@@ -32,11 +32,11 @@ TEST(t_mstch_generator_test, cache_leaks) {
         const t_program* program,
         const mstch_factories& factories,
         std::shared_ptr<mstch_cache> cache,
-        ELEMENT_POSITION pos,
+        mstch_element_position pos,
         int* object_count)
         : mstch_program(program, factories, cache, pos),
           object_count_(object_count) {
-      (*object_count_) += 1;
+      *object_count_ += 1;
     }
     virtual ~leaky_program() override { (*object_count_)--; }
 
@@ -53,8 +53,7 @@ TEST(t_mstch_generator_test, cache_leaks) {
         const t_program* program,
         const mstch_factories& factories,
         std::shared_ptr<mstch_cache> cache,
-        ELEMENT_POSITION pos,
-        int32_t /*index*/) const override {
+        mstch_element_position pos) const override {
       return std::make_shared<leaky_program>(
           program, factories, cache, pos, object_count_);
     }

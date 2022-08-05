@@ -24,7 +24,7 @@ std::shared_ptr<mstch_base> make_mstch_program_cached(
     const t_program* program,
     const mstch_factories& factories,
     std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos) {
+    mstch_element_position pos) {
   const auto& id = program->path();
   auto itr = cache->programs_.find(id);
   if (itr == cache->programs_.end()) {
@@ -42,7 +42,7 @@ std::shared_ptr<mstch_base> make_mstch_service_cached(
     const t_service* service,
     const mstch_factories& factories,
     std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos) {
+    mstch_element_position pos) {
   std::string service_id = program->path() + service->get_name();
   auto itr = cache->services_.find(service_id);
   if (itr == cache->services_.end()) {
@@ -94,7 +94,7 @@ mstch_factories::mstch_factories() {
 }
 
 mstch::node mstch_enum::values() {
-  return make_mstch_enum_values(enm_->get_enum_values());
+  return make_mstch_enum_values(enum_->get_enum_values());
 }
 
 mstch::node mstch_type::get_struct() {
@@ -247,7 +247,7 @@ mstch::node mstch_field::value() {
     return mstch::node();
   }
   return factories_.const_value_factory->make_mstch_object(
-      field_->get_value(), factories_, cache_, pos_, 0, nullptr, nullptr);
+      field_->get_value(), factories_, cache_, pos_, nullptr, nullptr);
 }
 
 mstch::node mstch_const_map_element::element_key() {
@@ -256,7 +256,6 @@ mstch::node mstch_const_map_element::element_key() {
       factories_,
       cache_,
       pos_,
-      index_,
       current_const_,
       expected_types_.first);
 }
@@ -267,7 +266,6 @@ mstch::node mstch_const_map_element::element_value() {
       factories_,
       cache_,
       pos_,
-      index_,
       current_const_,
       expected_types_.second);
 }
@@ -425,14 +423,12 @@ mstch::node mstch_const_value::const_struct() {
     }
   }
 
-  for (size_t i = 0; i < constants.size(); ++i) {
-    auto pos = element_position(i, constants.size());
+  for (size_t i = 0, size = constants.size(); i < size; ++i) {
     a.push_back(factories_.const_factory->make_mstch_object(
         constants[i],
         factories_,
         cache_,
-        pos,
-        fields[i]->get_key(),
+        mstch_element_position(i, size),
         current_const_,
         constants[i]->get_type(),
         fields[i]));
@@ -446,7 +442,6 @@ mstch::node mstch_const_value::owning_const() {
       factories_,
       cache_,
       pos_,
-      0,
       nullptr,
       nullptr,
       nullptr);
@@ -579,15 +574,8 @@ mstch::node mstch_service::make_mstch_extended_service_cached(
     const t_service* service) {
   std::string id =
       service->program()->name() + get_service_namespace(service->program());
-  size_t element_index = 0;
-  size_t element_count = 1;
   return make_mstch_element_cached(
-      service,
-      *factories_.service_factory,
-      cache_->services_,
-      id,
-      element_index,
-      element_count);
+      service, *factories_.service_factory, cache_->services_, id, 0, 1);
 }
 
 mstch::node mstch_typedef::type() {
@@ -602,7 +590,7 @@ mstch::node mstch_const::type() {
 
 mstch::node mstch_const::value() {
   return factories_.const_value_factory->make_mstch_object(
-      const_->get_value(), factories_, cache_, pos_, 0, const_, expected_type_);
+      const_->get_value(), factories_, cache_, pos_, const_, expected_type_);
 }
 
 mstch::node mstch_const::program() {
@@ -644,14 +632,12 @@ mstch::node mstch_program::typedefs() {
 mstch::node mstch_program::constants() {
   mstch::array a;
   const auto& container = program_->consts();
-  for (size_t i = 0; i < container.size(); ++i) {
-    auto pos = element_position(i, container.size());
+  for (size_t i = 0, size = container.size(); i < size; ++i) {
     a.push_back(factories_.const_factory->make_mstch_object(
         container[i],
         factories_,
         cache_,
-        pos,
-        i,
+        mstch_element_position(i, size),
         container[i],
         container[i]->get_type(),
         nullptr));

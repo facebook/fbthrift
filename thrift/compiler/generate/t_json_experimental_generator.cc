@@ -48,7 +48,7 @@ class json_experimental_program : public mstch_program {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_program(program, factories, cache, pos) {
     register_methods(
         this,
@@ -95,7 +95,7 @@ class json_experimental_service : public mstch_service {
       const t_service* srvc,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_service(srvc, factories, cache, pos) {
     register_methods(
         this,
@@ -116,7 +116,7 @@ class json_experimental_function : public mstch_function {
       const t_function* func,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_function(func, factories, cache, pos) {
     register_methods(
         this,
@@ -141,7 +141,7 @@ class json_experimental_struct : public mstch_struct {
       const t_struct* strct,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
@@ -162,10 +162,9 @@ class json_experimental_field : public mstch_field {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_field(field, factories, cache, pos, index, field_context) {
+      : mstch_field(field, factories, cache, pos, field_context) {
     register_methods(
         this,
         {
@@ -185,7 +184,7 @@ class json_experimental_enum : public mstch_enum {
       const t_enum* enm,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
@@ -196,10 +195,10 @@ class json_experimental_enum : public mstch_enum {
             {"enum:docstring", &json_experimental_enum::get_docstring},
         });
   }
-  mstch::node is_empty() { return enm_->get_enum_values().empty(); }
-  mstch::node get_lineno() { return enm_->get_lineno(); }
-  mstch::node has_docstring() { return enm_->has_doc(); }
-  mstch::node get_docstring() { return json_quote_ascii(enm_->get_doc()); }
+  mstch::node is_empty() { return enum_->get_enum_values().empty(); }
+  mstch::node get_lineno() { return enum_->get_lineno(); }
+  mstch::node has_docstring() { return enum_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(enum_->get_doc()); }
 };
 
 class json_experimental_enum_value : public mstch_enum_value {
@@ -208,7 +207,7 @@ class json_experimental_enum_value : public mstch_enum_value {
       const t_enum_value* enum_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
@@ -285,18 +284,11 @@ class json_experimental_const_value : public mstch_const_value {
       const t_const_value* const_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
       : mstch_const_value(
-            const_value,
-            factories,
-            cache,
-            pos,
-            index,
-            current_const,
-            expected_type) {
+            const_value, factories, cache, pos, current_const, expected_type) {
     register_methods(
         this,
         {

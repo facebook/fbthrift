@@ -238,11 +238,11 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 class mstch_cpp2_enum : public mstch_enum {
  public:
   mstch_cpp2_enum(
-      const t_enum* enm,
+      const t_enum* e,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_enum(enm, std::move(factories), std::move(cache), pos) {
+      mstch_element_position pos)
+      : mstch_enum(e, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -263,13 +263,13 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:legacy_api?", &mstch_cpp2_enum::legacy_api},
         });
   }
-  mstch::node is_empty() { return enm_->get_enum_values().empty(); }
-  mstch::node size() { return std::to_string(enm_->get_enum_values().size()); }
+  mstch::node is_empty() { return enum_->get_enum_values().empty(); }
+  mstch::node size() { return std::to_string(enum_->get_enum_values().size()); }
   mstch::node min() {
-    if (!enm_->get_enum_values().empty()) {
+    if (!enum_->get_enum_values().empty()) {
       auto e_min = std::min_element(
-          enm_->get_enum_values().begin(),
-          enm_->get_enum_values().end(),
+          enum_->get_enum_values().begin(),
+          enum_->get_enum_values().end(),
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
@@ -278,10 +278,10 @@ class mstch_cpp2_enum : public mstch_enum {
     return mstch::node();
   }
   mstch::node max() {
-    if (!enm_->get_enum_values().empty()) {
+    if (!enum_->get_enum_values().empty()) {
       auto e_max = std::max_element(
-          enm_->get_enum_values().begin(),
-          enm_->get_enum_values().end(),
+          enum_->get_enum_values().begin(),
+          enum_->get_enum_values().end(),
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
@@ -290,23 +290,23 @@ class mstch_cpp2_enum : public mstch_enum {
     return mstch::node();
   }
   const std::string& cpp_is_unscoped_() {
-    return enm_->get_annotation(
+    return enum_->get_annotation(
         {"cpp2.deprecated_enum_unscoped", "cpp.deprecated_enum_unscoped"});
   }
   mstch::node cpp_is_unscoped() { return cpp_is_unscoped_(); }
-  mstch::node cpp_name() { return cpp2::get_name(enm_); }
+  mstch::node cpp_name() { return cpp2::get_name(enum_); }
   mstch::node cpp_enum_type() {
     static std::string kInt = "int";
-    return enm_->get_annotation(
+    return enum_->get_annotation(
         {"cpp.enum_type", "cpp2.enum_type"},
         cpp_is_unscoped_().empty() ? nullptr : &kInt);
   }
   mstch::node cpp_declare_bitwise_ops() {
-    return enm_->get_annotation(
+    return enum_->get_annotation(
         {"cpp.declare_bitwise_ops", "cpp2.declare_bitwise_ops"});
   }
   mstch::node has_zero() {
-    auto* enum_value = enm_->find_value(0);
+    auto* enum_value = enum_->find_value(0);
     if (enum_value != nullptr) {
       return factories_.enum_value_factory->make_mstch_object(
           enum_value, factories_, cache_, pos_);
@@ -314,16 +314,16 @@ class mstch_cpp2_enum : public mstch_enum {
     return mstch::node();
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(enm_->annotations()).size() > 0;
+    return get_fatal_annotations(enum_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return make_mstch_annotations(get_fatal_annotations(enm_->annotations()));
+    return make_mstch_annotations(get_fatal_annotations(enum_->annotations()));
   }
   mstch::node get_legacy_type_id() {
-    return std::to_string(enm_->get_type_id());
+    return std::to_string(enum_->get_type_id());
   }
   mstch::node legacy_api() {
-    return ::apache::thrift::compiler::generate_legacy_api(*enm_);
+    return ::apache::thrift::compiler::generate_legacy_api(*enum_);
   }
 };
 
@@ -333,9 +333,8 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
       const t_enum_value* enum_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_enum_value(
-            enum_value, std::move(factories), std::move(cache), pos) {
+      mstch_element_position pos)
+      : mstch_enum_value(enum_value, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -366,16 +365,14 @@ class mstch_cpp2_const_value : public mstch_const_value {
       const t_const_value* const_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
       : mstch_const_value(
             const_value,
-            std::move(factories),
+            factories,
             std::move(cache),
             pos,
-            index,
             current_const,
             expected_type) {}
 
@@ -389,12 +386,12 @@ class mstch_cpp2_const_value : public mstch_const_value {
 class mstch_cpp2_typedef : public mstch_typedef {
  public:
   mstch_cpp2_typedef(
-      const t_typedef* typedf,
+      const t_typedef* t,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
+      mstch_element_position pos,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_typedef(typedf, std::move(factories), std::move(cache), pos),
+      : mstch_typedef(t, factories, std::move(cache), pos),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -421,9 +418,9 @@ class mstch_cpp2_type : public mstch_type {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_type(type, std::move(factories), std::move(cache), pos),
+      : mstch_type(type, factories, std::move(cache), pos),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -605,17 +602,10 @@ class mstch_cpp2_field : public mstch_field {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_field(
-            field,
-            std::move(factories),
-            std::move(cache),
-            pos,
-            index,
-            field_context),
+      : mstch_field(field, factories, std::move(cache), pos, field_context),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -687,7 +677,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node name_hash() {
     return "__fbthrift_hash_" + cpp2::sha256_hex(field_->get_name());
   }
-  mstch::node index_plus_one() { return std::to_string(index_ + 1); }
+  mstch::node index_plus_one() { return std::to_string(pos_.index + 1); }
   mstch::node ordinal() { return index_plus_one(); }
   mstch::node isset_index() {
     assert(field_context_);
@@ -967,12 +957,12 @@ class mstch_cpp2_field : public mstch_field {
 class mstch_cpp2_struct : public mstch_struct {
  public:
   mstch_cpp2_struct(
-      const t_struct* strct,
+      const t_struct* s,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_struct(strct, std::move(factories), std::move(cache), pos),
+      : mstch_struct(s, factories, std::move(cache), pos),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -1505,8 +1495,8 @@ class mstch_cpp2_function : public mstch_function {
       const t_function* function,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_function(function, std::move(factories), std::move(cache), pos) {
+      mstch_element_position pos)
+      : mstch_function(function, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -1549,10 +1539,10 @@ class mstch_cpp2_service : public mstch_service {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       int32_t split_id = 0,
       int32_t split_count = 1)
-      : mstch_service(service, std::move(factories), std::move(cache), pos) {
+      : mstch_service(service, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -1653,11 +1643,9 @@ class mstch_cpp2_interaction : public mstch_cpp2_service {
       const t_interaction* interaction,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t,
+      mstch_element_position pos,
       const t_service* containing_service)
-      : mstch_cpp2_service(
-            interaction, std::move(factories), std::move(cache), pos),
+      : mstch_cpp2_service(interaction, factories, std::move(cache), pos),
         containing_service_(containing_service) {}
 
   mstch::node parent_service_name() override {
@@ -1671,7 +1659,7 @@ class mstch_cpp2_interaction : public mstch_cpp2_service {
   }
 
  private:
-  const t_service* containing_service_{nullptr};
+  const t_service* containing_service_ = nullptr;
 };
 
 class mstch_cpp2_deprecated_annotation : public mstch_deprecated_annotation {
@@ -1680,10 +1668,9 @@ class mstch_cpp2_deprecated_annotation : public mstch_deprecated_annotation {
       const t_annotation* annotation,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index)
+      mstch_element_position pos)
       : mstch_deprecated_annotation(
-            annotation, std::move(factories), std::move(cache), pos, index) {
+            annotation, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -1700,21 +1687,19 @@ class mstch_cpp2_deprecated_annotation : public mstch_deprecated_annotation {
 class mstch_cpp2_const : public mstch_const {
  public:
   mstch_cpp2_const(
-      const t_const* cnst,
+      const t_const* c,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field,
       std::shared_ptr<cpp2_generator_context> context)
       : mstch_const(
-            cnst,
-            std::move(factories),
+            c,
+            factories,
             std::move(cache),
             pos,
-            index,
             current_const,
             expected_type,
             field),
@@ -1731,9 +1716,10 @@ class mstch_cpp2_const : public mstch_const {
   mstch::node enum_value() {
     if (const_->get_type()->is_enum()) {
       const auto* enm = static_cast<const t_enum*>(const_->get_type());
-      const auto* enm_val = enm->find_value(const_->get_value()->get_integer());
-      if (enm_val) {
-        return enm_val->get_name();
+      const auto* enum_val =
+          enm->find_value(const_->get_value()->get_integer());
+      if (enum_val) {
+        return enum_val->get_name();
       } else {
         return std::to_string(const_->get_value()->get_integer());
       }
@@ -1765,10 +1751,10 @@ class mstch_cpp2_program : public mstch_program {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       boost::optional<int32_t> split_id = boost::none,
       boost::optional<std::vector<t_struct*>> split_structs = boost::none)
-      : mstch_program(program, std::move(factories), std::move(cache), pos),
+      : mstch_program(program, factories, std::move(cache), pos),
         split_id_(split_id),
         split_structs_(split_structs) {
     register_methods(
@@ -2128,13 +2114,12 @@ class cpp2_typedef_factory : public mstch_typedef_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> make_mstch_object(
-      const t_typedef* typedf,
+      const t_typedef* t,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_cpp2_typedef>(
-        typedf, std::move(factories), std::move(cache), pos, context_);
+        t, factories, std::move(cache), pos, context_);
   }
 
  private:
@@ -2148,13 +2133,12 @@ class cpp2_type_factory : public mstch_type_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> make_mstch_object(
-      const t_type* type,
+      const t_type* t,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_cpp2_type>(
-        type, std::move(factories), std::move(cache), pos, context_);
+        t, factories, std::move(cache), pos, context_);
   }
 
  private:
@@ -2167,13 +2151,12 @@ class cpp2_struct_factory : public mstch_struct_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> make_mstch_object(
-      const t_struct* strct,
+      const t_struct* s,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_cpp2_struct>(
-        strct, std::move(factories), std::move(cache), pos, context_);
+        s, factories, std::move(cache), pos, context_);
   }
 
  private:
@@ -2190,17 +2173,10 @@ class cpp2_field_factory : public mstch_field_factory {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context) const override {
     return std::make_shared<mstch_cpp2_field>(
-        field,
-        std::move(factories),
-        std::move(cache),
-        pos,
-        index,
-        field_context,
-        context_);
+        field, factories, std::move(cache), pos, field_context, context_);
   }
 
  private:
@@ -2214,20 +2190,18 @@ class cpp2_const_factory : public mstch_const_factory {
       : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> make_mstch_object(
-      const t_const* cnst,
+      const t_const* c,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field) const override {
     return std::make_shared<mstch_cpp2_const>(
-        cnst,
-        std::move(factories),
+        c,
+        factories,
         std::move(cache),
         pos,
-        index,
         current_const,
         expected_type,
         field,
@@ -2365,7 +2339,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
           program,
           factories_,
           cache_,
-          ELEMENT_POSITION::NONE,
+          mstch_element_position(),
           split_id,
           shards.at(split_id));
       render_to_file(
@@ -2411,7 +2385,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
           service,
           factories_,
           cache_,
-          ELEMENT_POSITION::NONE,
+          mstch_element_position(),
           split_id,
           split_count);
       render_to_file(

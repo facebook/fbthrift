@@ -422,7 +422,7 @@ class mstch_java_program : public mstch_program {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_program(program, factories, cache, pos) {
     register_methods(
         this,
@@ -463,7 +463,7 @@ class mstch_java_struct : public mstch_struct {
       const t_struct* strct,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
@@ -561,7 +561,7 @@ class mstch_java_service : public mstch_service {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_service(service, factories, cache, pos) {
     register_methods(
         this,
@@ -642,7 +642,7 @@ class mstch_java_function : public mstch_function {
       const t_function* function,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_function(function, factories, cache, pos) {
     register_methods(
         this,
@@ -703,10 +703,9 @@ class mstch_java_field : public mstch_field {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_field(field, factories, cache, pos, index, field_context) {
+      : mstch_field(field, factories, cache, pos, field_context) {
     register_methods(
         this,
         {{"field:javaName", &mstch_java_field::java_name},
@@ -928,7 +927,7 @@ class mstch_java_enum : public mstch_enum {
       const t_enum* enm,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
@@ -940,13 +939,13 @@ class mstch_java_enum : public mstch_enum {
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(enm_->program()));
+    return get_namespace_or_default(*enum_->program());
   }
   mstch::node java_capital_name() {
-    return java::mangle_java_name(enm_->get_name(), true);
+    return java::mangle_java_name(enum_->get_name(), true);
   }
   mstch::node java_skip_enum_name_map() {
-    return enm_->has_annotation("java.swift.skip_enum_name_map");
+    return enum_->has_annotation("java.swift.skip_enum_name_map");
   }
 };
 
@@ -956,7 +955,7 @@ class mstch_java_enum_value : public mstch_enum_value {
       const t_enum_value* enum_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
@@ -976,20 +975,12 @@ class mstch_java_const : public mstch_const {
       const t_const* cnst,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field)
       : mstch_const(
-            cnst,
-            factories,
-            cache,
-            pos,
-            index,
-            current_const,
-            expected_type,
-            field) {
+            cnst, factories, cache, pos, current_const, expected_type, field) {
     register_methods(
         this,
         {
@@ -1039,18 +1030,11 @@ class mstch_java_const_value : public mstch_const_value {
       const t_const_value* const_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
       : mstch_const_value(
-            const_value,
-            factories,
-            cache,
-            pos,
-            index,
-            current_const,
-            expected_type) {
+            const_value, factories, cache, pos, current_const, expected_type) {
     register_methods(
         this,
         {
@@ -1081,7 +1065,7 @@ class mstch_java_type : public mstch_type {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_type(type, factories, cache, pos) {
     register_methods(
         this,

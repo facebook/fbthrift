@@ -73,12 +73,12 @@ const std::string extract_module_path(const std::string& fully_qualified_name) {
 class mstch_python_typedef : public mstch_typedef {
  public:
   mstch_python_typedef(
-      const t_typedef* typedf,
+      const t_typedef* t,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_typedef(typedf, factories, std::move(cache), pos),
-        adapter_annotation_(find_structured_adapter_annotation(*typedf)) {
+      mstch_element_position pos)
+      : mstch_typedef(t, factories, std::move(cache), pos),
+        adapter_annotation_(find_structured_adapter_annotation(*t)) {
     register_methods(
         this,
         {
@@ -104,11 +104,10 @@ class mstch_python_type : public mstch_type {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
+      mstch_element_position pos,
       const t_program* prog)
-      : mstch_type(
-            type->get_true_type(), std::move(factories), std::move(cache), pos),
-        prog_{prog},
+      : mstch_type(type->get_true_type(), factories, std::move(cache), pos),
+        prog_(prog),
         adapter_annotation_(find_structured_adapter_annotation(*type)) {
     register_methods(
         this,
@@ -213,16 +212,14 @@ class mstch_python_const_value : public mstch_const_value {
       const t_const_value* const_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
       : mstch_const_value(
             const_value,
-            std::move(factories),
+            factories,
             std::move(cache),
             pos,
-            index,
             current_const,
             expected_type) {
     register_methods(
@@ -377,14 +374,13 @@ class mstch_python_const_value : public mstch_const_value {
 
 class python_type_factory : public mstch_type_factory {
  public:
-  explicit python_type_factory(const t_program* prog) : prog_{prog} {}
+  explicit python_type_factory(const t_program* prog) : prog_(prog) {}
 
   std::shared_ptr<mstch_base> make_mstch_object(
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_python_type>(
         type, factories, cache, pos, prog_);
   }
@@ -399,8 +395,8 @@ class mstch_python_program : public mstch_program {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_program{program, std::move(factories), std::move(cache), pos} {
+      mstch_element_position pos)
+      : mstch_program{program, factories, std::move(cache), pos} {
     register_methods(
         this,
         {
@@ -671,16 +667,9 @@ class mstch_python_field : public mstch_field {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_field(
-            field,
-            std::move(factories),
-            std::move(cache),
-            pos,
-            index,
-            field_context),
+      : mstch_field(field, factories, std::move(cache), pos, field_context),
         py_name_{py3::get_py3_name(*field)},
         adapter_annotation_(find_structured_adapter_annotation(*field)) {
     register_methods(
@@ -728,7 +717,7 @@ class mstch_python_field : public mstch_field {
       }
     }
     return factories_.const_value_factory->make_mstch_object(
-        value, factories_, cache_, pos_, 0, nullptr, nullptr);
+        value, factories_, cache_, pos_, nullptr, nullptr);
   }
   mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
   mstch::node adapter_name() {
@@ -746,12 +735,12 @@ class mstch_python_field : public mstch_field {
 class mstch_python_struct : public mstch_struct {
  public:
   mstch_python_struct(
-      const t_struct* strct,
+      const t_struct* s,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_struct(strct, std::move(factories), std::move(cache), pos),
-        adapter_annotation_(find_structured_adapter_annotation(*strct)) {
+      mstch_element_position pos)
+      : mstch_struct(s, factories, std::move(cache), pos),
+        adapter_annotation_(find_structured_adapter_annotation(*s)) {
     register_methods(
         this,
         {
@@ -801,11 +790,11 @@ class mstch_python_struct : public mstch_struct {
 class mstch_python_enum : public mstch_enum {
  public:
   mstch_python_enum(
-      const t_enum* enm,
+      const t_enum* e,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_enum(enm, std::move(factories), std::move(cache), pos) {
+      mstch_element_position pos)
+      : mstch_enum(e, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -813,7 +802,7 @@ class mstch_python_enum : public mstch_enum {
         });
   }
 
-  mstch::node has_flags() { return enm_->has_annotation("py3.flags"); }
+  mstch::node has_flags() { return enum_->has_annotation("py3.flags"); }
 };
 
 class mstch_python_enum_value : public mstch_enum_value {
@@ -822,9 +811,8 @@ class mstch_python_enum_value : public mstch_enum_value {
       const t_enum_value* enum_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_enum_value(
-            enum_value, std::move(factories), std::move(cache), pos) {
+      mstch_element_position pos)
+      : mstch_enum_value(enum_value, factories, std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -841,8 +829,7 @@ class python_program_factory : public mstch_program_factory {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     const std::string& id = program->path();
     auto it = cache->programs_.find(id);
     if (it != cache->programs_.end()) {
@@ -861,7 +848,7 @@ class mstch_python_function : public mstch_function {
       const t_function* function,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_function(function, factories, cache, pos) {
     register_methods(
         this,
@@ -922,7 +909,7 @@ class mstch_python_service : public mstch_service {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       const t_program* prog)
       : mstch_service(service, factories, cache, pos), prog_{prog} {
     register_methods(
@@ -992,8 +979,7 @@ class python_service_factory : public mstch_service_factory {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_python_service>(
         service, factories, cache, pos, prog_);
   }

@@ -122,7 +122,7 @@ class mstch_py3_type : public mstch_type {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       const t_program* prog,
       CachedProperties& cachedProps)
       : mstch_type(type, factories, cache, pos),
@@ -351,8 +351,7 @@ class py3_type_factory : public mstch_type_factory {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index) const override;
+      mstch_element_position pos) const override;
 
  protected:
   const t_program* prog_;
@@ -364,8 +363,8 @@ class mstch_py3_program : public mstch_program {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_program{program, factories, cache, pos} {
+      mstch_element_position pos)
+      : mstch_program(program, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -704,7 +703,7 @@ class mstch_py3_function : public mstch_function {
       const t_function* function,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_function(function, factories, cache, pos),
         cppName_{cpp2::get_name(function)} {
     register_methods(
@@ -734,7 +733,7 @@ class mstch_py3_service : public mstch_service {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       const t_program* prog)
       : mstch_service(service, factories, cache, pos), prog_{prog} {
     register_methods(
@@ -834,12 +833,11 @@ class mstch_py3_field : public mstch_field {
       const t_field* field,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index,
+      mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_field(field, factories, cache, pos, index, field_context),
-        pyName_{py3::get_py3_name(*field)},
-        cppName_{cpp2::get_name(field)} {
+      : mstch_field(field, factories, cache, pos, field_context),
+        pyName_(py3::get_py3_name(*field)),
+        cppName_(cpp2::get_name(field)) {
     register_methods(
         this,
         {
@@ -964,7 +962,7 @@ class mstch_py3_struct : public mstch_struct {
       const t_struct* strct,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_struct(strct, factories, cache, pos) {
     register_methods(
         this,
@@ -1037,7 +1035,7 @@ class mstch_py3_enum : public mstch_enum {
       const t_enum* enm,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum(enm, factories, cache, pos) {
     register_methods(
         this,
@@ -1047,8 +1045,8 @@ class mstch_py3_enum : public mstch_enum {
         });
   }
 
-  mstch::node hasFlags() { return enm_->has_annotation("py3.flags"); }
-  mstch::node cpp_name() { return cpp2::get_name(enm_); }
+  mstch::node hasFlags() { return enum_->has_annotation("py3.flags"); }
+  mstch::node cpp_name() { return cpp2::get_name(enum_); }
 };
 
 class mstch_py3_enum_value : public mstch_enum_value {
@@ -1057,7 +1055,7 @@ class mstch_py3_enum_value : public mstch_enum_value {
       const t_enum_value* enum_value,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      mstch_element_position pos)
       : mstch_enum_value(enum_value, factories, cache, pos) {
     register_methods(
         this,
@@ -1083,7 +1081,7 @@ class mstch_py3_container_type : public mstch_py3_type {
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
+      mstch_element_position pos,
       const t_program* prog,
       CachedProperties& cachedProps)
       : mstch_py3_type(type, factories, cache, pos, prog, cachedProps) {
@@ -1108,9 +1106,8 @@ class mstch_py3_deprecated_annotation : public mstch_deprecated_annotation {
       const t_annotation* annotation,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index)
-      : mstch_deprecated_annotation(annotation, factories, cache, pos, index) {
+      mstch_element_position pos)
+      : mstch_deprecated_annotation(annotation, factories, cache, pos) {
     register_methods(
         this,
         {
@@ -1141,8 +1138,7 @@ class py3_program_factory : public mstch_program_factory {
       const t_program* program,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     const std::string& id = program->path();
     auto it = cache->programs_.find(id);
     if (it != cache->programs_.end()) {
@@ -1165,8 +1161,7 @@ class py3_service_factory : public mstch_service_factory {
       const t_service* service,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t /*index*/) const override {
+      mstch_element_position pos) const override {
     return std::make_shared<mstch_py3_service>(
         service, factories, cache, pos, prog_);
   }
@@ -1304,8 +1299,7 @@ std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::make_mstch_object(
     const t_type* type,
     const mstch_factories& factories,
     std::shared_ptr<mstch_cache> cache,
-    ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
+    mstch_element_position pos) const {
   using T = std::
       conditional_t<ForContainers, mstch_py3_container_type, mstch_py3_type>;
   auto trueType = type->get_true_type();
