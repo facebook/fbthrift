@@ -338,14 +338,48 @@
                     })
                     {{!TODO(T125947234): should we instrument with tracing?}}
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
+                {{#function:stream_has_first_response?}}
+                {{#function:exceptions?}}
+                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn) => {
+                    let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                {{/function:exceptions?}}
+                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)=> {
+                    let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                {{/function:stream_has_first_response?}}
+                {{^function:stream_has_first_response?}}
                 _ => {
-                    {{!TODO: Handle service exceptions for stream requests}}
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
+                {{/function:stream_has_first_response?}}
             }
             {{/function:returns_streams?}}
         }{{!

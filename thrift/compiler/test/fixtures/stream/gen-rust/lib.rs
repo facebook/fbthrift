@@ -3744,12 +3744,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -3842,12 +3843,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -3933,12 +3935,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -4031,12 +4034,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -4138,13 +4142,25 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("Service exception for stream requests not handled yet");
-                }
+                crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamstreamthrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -4238,13 +4254,39 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("Service exception for stream requests not handled yet");
-                }
+                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::e(exn) => {
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsResponseExn::e(exn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamservicethrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamservicethrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -4345,13 +4387,39 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("Service exception for stream requests not handled yet");
-                }
+                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::e(exn) => {
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsResponseExn::e(exn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamboththrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "responseandstreamboththrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -4437,12 +4505,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }

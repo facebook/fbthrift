@@ -1348,12 +1348,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }

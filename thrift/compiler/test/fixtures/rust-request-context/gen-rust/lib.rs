@@ -4369,12 +4369,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -4468,12 +4469,13 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
                 _ => {
-                    panic!("Service exception for stream requests not handled yet");
+                    panic!("TODO: Handle no initial response");
                 }
             }
         }
@@ -4569,13 +4571,25 @@ pub mod server {
 
                     })
                     .boxed();
+                    let stream = Some(stream);
 
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("Service exception for stream requests not handled yet");
-                }
+                crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn)=> {
+                    let response = crate::services::my_service::StreamByIdWithResponseResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamByIdWithResponse",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let response = Some(response);
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
