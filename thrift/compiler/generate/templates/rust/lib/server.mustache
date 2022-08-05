@@ -302,10 +302,17 @@
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     {{/function:stream_has_first_response?}}{{!
                     }}{{^function:stream_has_first_response?}}
-                    let response = None;
+                    let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
                     {{/function:stream_has_first_response?}}
 
@@ -343,7 +350,6 @@
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                {{#function:stream_has_first_response?}}
                 {{#function:exceptions?}}
                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn) => {
                     let response = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn::{{#function:exceptions}}{{field:rust_name}}{{/function:exceptions}}(exn);
@@ -355,7 +361,6 @@
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -370,16 +375,9 @@
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
-                {{/function:stream_has_first_response?}}
-                {{^function:stream_has_first_response?}}
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
-                {{/function:stream_has_first_response?}}
             }
             {{/function:returns_streams?}}
         }{{!

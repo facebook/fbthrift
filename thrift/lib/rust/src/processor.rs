@@ -47,7 +47,7 @@ where
     fn send_reply(&mut self, reply: FramingEncodedFinal<F>);
     fn send_stream_reply(
         &mut self,
-        response: Option<FramingEncodedFinal<F>>,
+        response: FramingEncodedFinal<F>,
         stream: Option<
             Pin<Box<dyn Stream<Item = Result<FramingEncodedFinal<F>>> + Send + 'static>>,
         >,

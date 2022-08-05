@@ -405,6 +405,85 @@ pub mod services {
             }
         }
 
+        #[derive(Clone, Debug)]
+        pub enum TruthifyResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for TruthifyResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for TruthifyResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    TruthifyResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    TruthifyResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for TruthifyResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                TruthifyResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for TruthifyResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for TruthifyResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Truthify");
+                match self {
+                    TruthifyResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    TruthifyResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+
         pub enum TruthifyExn {
             #[doc(hidden)]
             Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>),
@@ -943,6 +1022,85 @@ pub mod services {
                 )
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum TruthifyResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for TruthifyResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    TruthifyResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    TruthifyResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for TruthifyResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    TruthifyResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    TruthifyResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for TruthifyResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                TruthifyResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for TruthifyResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for TruthifyResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Truthify");
+                match self {
+                    TruthifyResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    TruthifyResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
 
         pub enum TruthifyExn {
             #[doc(hidden)]
@@ -1723,10 +1881,12 @@ pub mod services {
                 )
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum SerializeResponseExn {
             #[doc(hidden)]
             Success(::std::primitive::i32),
+
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1781,13 +1941,13 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Serialize");
                 match self {
-                    SerializeResponseExn::Success(inner) => {
+                    SerializeResponseExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     SerializeResponseExn::ApplicationException(_) => panic!(
@@ -4382,7 +4542,15 @@ pub mod server {
 
             match res {
                 crate::services::my_interaction::TruthifyExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::my_interaction::TruthifyResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "truthify",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4405,9 +4573,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::my_interaction::TruthifyExn::ApplicationException(aexn)=> {
+                    let response = crate::services::my_interaction::TruthifyResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "truthify",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -5036,7 +5214,15 @@ pub mod server {
 
             match res {
                 crate::services::my_interaction_fast::TruthifyExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::my_interaction_fast::TruthifyResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "truthify",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -5059,9 +5245,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn)=> {
+                    let response = crate::services::my_interaction_fast::TruthifyResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "truthify",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -6116,7 +6312,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -6148,7 +6343,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },

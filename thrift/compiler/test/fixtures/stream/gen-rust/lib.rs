@@ -139,6 +139,85 @@ pub mod services {
             }
         }
 
+        #[derive(Clone, Debug)]
+        pub enum ReturnstreamResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for ReturnstreamResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    ReturnstreamResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    ReturnstreamResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    ReturnstreamResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    ReturnstreamResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    ReturnstreamResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    ReturnstreamResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for ReturnstreamResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    ReturnstreamResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    ReturnstreamResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for ReturnstreamResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                ReturnstreamResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for ReturnstreamResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for ReturnstreamResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Returnstream");
+                match self {
+                    ReturnstreamResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    ReturnstreamResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+
         pub enum ReturnstreamExn {
             #[doc(hidden)]
             Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>),
@@ -337,6 +416,85 @@ pub mod services {
             }
         }
 
+        #[derive(Clone, Debug)]
+        pub enum StreamthrowsResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for StreamthrowsResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    StreamthrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    StreamthrowsResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    StreamthrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    StreamthrowsResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    StreamthrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    StreamthrowsResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for StreamthrowsResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    StreamthrowsResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    StreamthrowsResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamthrowsResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamthrowsResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamthrowsResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for StreamthrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Streamthrows");
+                match self {
+                    StreamthrowsResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    StreamthrowsResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+
         pub enum StreamthrowsExn {
             #[doc(hidden)]
             Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>),
@@ -511,6 +669,102 @@ pub mod services {
                 )
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum ServicethrowsResponseExn {
+            #[doc(hidden)]
+            Success(()),
+            e(crate::types::FooEx),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for ServicethrowsResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    ServicethrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    ServicethrowsResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                    ServicethrowsResponseExn::e(exn) => exn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    ServicethrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    ServicethrowsResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                    ServicethrowsResponseExn::e(exn) => exn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    ServicethrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    ServicethrowsResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    ServicethrowsResponseExn::e(exn) => exn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for ServicethrowsResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    ServicethrowsResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    ServicethrowsResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    ServicethrowsResponseExn::e(_exn) => fbthrift::ResultType::Error,
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::types::FooEx> for ServicethrowsResponseExn {
+            fn from(exn: crate::types::FooEx) -> Self {
+                ServicethrowsResponseExn::e(exn)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for ServicethrowsResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                ServicethrowsResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for ServicethrowsResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for ServicethrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Servicethrows");
+                match self {
+                    ServicethrowsResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    ServicethrowsResponseExn::e(inner) => {
+                        p.write_field_begin(
+                            "e",
+                            ::fbthrift::TType::Struct,
+                            1,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    ServicethrowsResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
 
         pub enum ServicethrowsExn {
             #[doc(hidden)]
@@ -722,6 +976,102 @@ pub mod services {
             }
         }
 
+        #[derive(Clone, Debug)]
+        pub enum BoththrowsResponseExn {
+            #[doc(hidden)]
+            Success(()),
+            e(crate::types::FooEx),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for BoththrowsResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    BoththrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    BoththrowsResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                    BoththrowsResponseExn::e(exn) => exn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    BoththrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    BoththrowsResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                    BoththrowsResponseExn::e(exn) => exn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    BoththrowsResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    BoththrowsResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    BoththrowsResponseExn::e(exn) => exn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for BoththrowsResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    BoththrowsResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    BoththrowsResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    BoththrowsResponseExn::e(_exn) => fbthrift::ResultType::Error,
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::types::FooEx> for BoththrowsResponseExn {
+            fn from(exn: crate::types::FooEx) -> Self {
+                BoththrowsResponseExn::e(exn)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for BoththrowsResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                BoththrowsResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for BoththrowsResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for BoththrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Boththrows");
+                match self {
+                    BoththrowsResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    BoththrowsResponseExn::e(inner) => {
+                        p.write_field_begin(
+                            "e",
+                            ::fbthrift::TType::Struct,
+                            1,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    BoththrowsResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+
         pub enum BoththrowsExn {
             #[doc(hidden)]
             Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>),
@@ -930,10 +1280,12 @@ pub mod services {
                 )
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum ResponseandstreamstreamthrowsResponseExn {
             #[doc(hidden)]
             Success(::std::primitive::i32),
+
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -988,13 +1340,13 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamstreamthrows");
                 match self {
-                    ResponseandstreamstreamthrowsResponseExn::Success(inner) => {
+                    ResponseandstreamstreamthrowsResponseExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ResponseandstreamstreamthrowsResponseExn::ApplicationException(_) => panic!(
@@ -1230,6 +1582,7 @@ pub mod services {
                 )
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum ResponseandstreamservicethrowsResponseExn {
             #[doc(hidden)]
@@ -1297,13 +1650,13 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamservicethrows");
                 match self {
-                    ResponseandstreamservicethrowsResponseExn::Success(inner) => {
+                    ResponseandstreamservicethrowsResponseExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ResponseandstreamservicethrowsResponseExn::e(inner) => {
@@ -1588,6 +1941,7 @@ pub mod services {
                 )
             }
         }
+
         #[derive(Clone, Debug)]
         pub enum ResponseandstreamboththrowsResponseExn {
             #[doc(hidden)]
@@ -1655,13 +2009,13 @@ pub mod services {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Responseandstreamboththrows");
                 match self {
-                    ResponseandstreamboththrowsResponseExn::Success(inner) => {
+                    ResponseandstreamboththrowsResponseExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
                             ::fbthrift::TType::I32,
                             0i16,
                         );
-                        inner.write(p);
+                        _inner.write(p);
                         p.write_field_end();
                     }
                     ResponseandstreamboththrowsResponseExn::e(inner) => {
@@ -1921,6 +2275,85 @@ pub mod services {
                 )
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum ReturnstreamFastResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for ReturnstreamFastResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    ReturnstreamFastResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    ReturnstreamFastResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    ReturnstreamFastResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    ReturnstreamFastResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    ReturnstreamFastResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    ReturnstreamFastResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for ReturnstreamFastResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    ReturnstreamFastResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    ReturnstreamFastResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for ReturnstreamFastResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                ReturnstreamFastResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for ReturnstreamFastResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for ReturnstreamFastResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("ReturnstreamFast");
+                match self {
+                    ReturnstreamFastResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    ReturnstreamFastResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
 
         pub enum ReturnstreamFastExn {
             #[doc(hidden)]
@@ -3726,7 +4159,15 @@ pub mod server {
 
             match res {
                 crate::services::pub_sub_streaming_service::ReturnstreamExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::pub_sub_streaming_service::ReturnstreamResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "returnstream",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -3749,9 +4190,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ReturnstreamResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "returnstream",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -3818,7 +4269,15 @@ pub mod server {
 
             match res {
                 crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::pub_sub_streaming_service::StreamthrowsResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamthrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -3848,9 +4307,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::StreamthrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "streamthrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -3917,7 +4386,15 @@ pub mod server {
 
             match res {
                 crate::services::pub_sub_streaming_service::ServicethrowsExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "servicethrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -3940,9 +4417,32 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::pub_sub_streaming_service::ServicethrowsExn::e(exn) => {
+                    let response = crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::e(exn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "servicethrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                crate::services::pub_sub_streaming_service::ServicethrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "servicethrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -4009,7 +4509,15 @@ pub mod server {
 
             match res {
                 crate::services::pub_sub_streaming_service::BoththrowsExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::pub_sub_streaming_service::BoththrowsResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "boththrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4039,9 +4547,32 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::pub_sub_streaming_service::BoththrowsExn::e(exn) => {
+                    let response = crate::services::pub_sub_streaming_service::BoththrowsResponseExn::e(exn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "boththrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
+                crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::BoththrowsResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "boththrows",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 
@@ -4118,7 +4649,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -4157,7 +4687,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -4237,7 +4766,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -4269,7 +4797,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -4283,7 +4810,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -4363,7 +4889,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
 
                     let stream = stream.map(|item| {
                         let item = match item {
@@ -4402,7 +4927,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -4416,7 +4940,6 @@ pub mod server {
                         &mut ctx_stack,
                         response
                     )?;
-                    let response = Some(response);
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
                     Ok(())
                 },
@@ -4487,7 +5010,15 @@ pub mod server {
 
             match res {
                 crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "returnstreamFast",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -4510,9 +5041,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn)=> {
+                    let response = crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "returnstreamFast",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
     }

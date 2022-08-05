@@ -273,6 +273,85 @@ pub mod services {
             }
         }
 
+        #[derive(Clone, Debug)]
+        pub enum NumbersResponseExn {
+            #[doc(hidden)]
+            Success(()),
+
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for NumbersResponseExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    NumbersResponseExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    NumbersResponseExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    NumbersResponseExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    NumbersResponseExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    NumbersResponseExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    NumbersResponseExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for NumbersResponseExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    NumbersResponseExn::Success(_) => ::fbthrift::ResultType::Return,
+                    NumbersResponseExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for NumbersResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                NumbersResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for NumbersResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for NumbersResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Numbers");
+                match self {
+                    NumbersResponseExn::Success(_inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        p.write_field_end();
+                    }
+                    NumbersResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+
         pub enum NumbersExn {
             #[doc(hidden)]
             Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>),
@@ -1330,7 +1409,15 @@ pub mod server {
 
             match res {
                 crate::services::c::NumbersExn::Success(res) => {
-                    let response = None;
+                    let response = crate::services::c::NumbersResponseExn::Success(());
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "numbers",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
                     let stream = res;
 
                     let stream = stream.map(|item| {
@@ -1353,9 +1440,19 @@ pub mod server {
                     let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
                     Ok(())
                 },
-                _ => {
-                    panic!("TODO: Handle no initial response");
-                }
+                crate::services::c::NumbersExn::ApplicationException(aexn)=> {
+                    let response = crate::services::c::NumbersResponseExn::ApplicationException(aexn);
+                    let response = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "numbers",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        req_ctxt,
+                        &mut ctx_stack,
+                        response
+                    )?;
+                    let _ = reply_state.lock().unwrap().send_stream_reply(response, None);
+                    Ok(())
+                },
             }
         }
 

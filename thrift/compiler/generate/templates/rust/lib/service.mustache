@@ -207,11 +207,16 @@
                 }}{{/function:void?}}
             }
         }
-        {{#function:stream_has_first_response?}}
+
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}ResponseExn {
             #[doc(hidden)]
-            Success({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}}),{{!
+            {{#function:stream_has_first_response?}}
+            Success({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}}),
+            {{/function:stream_has_first_response?}}
+            {{^function:stream_has_first_response?}}
+            Success(()),
+            {{/function:stream_has_first_response?}}{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
@@ -278,7 +283,12 @@
         }
 
         impl ::fbthrift::GetTType for {{function:upcamel}}ResponseExn {
+            {{#function:stream_has_first_response?}}
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+            {{/function:stream_has_first_response?}}
+            {{^function:stream_has_first_response?}}
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Void;
+            {{/function:stream_has_first_response?}}
         }
 
         impl<P> ::fbthrift::Serialize<P> for {{function:upcamel}}ResponseExn
@@ -288,13 +298,20 @@
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("{{function:upcamel}}");
                 match self {
-                    {{function:upcamel}}ResponseExn::Success(inner) => {
+                    {{function:upcamel}}ResponseExn::Success(_inner) => {
                         p.write_field_begin(
                             "Success",
+                            {{#function:stream_has_first_response?}}
                             {{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/ttype}}{{/type:stream_first_response_type}}{{/function:return_type}},
+                            {{/function:stream_has_first_response?}}
+                            {{^function:stream_has_first_response?}}
+                            ::fbthrift::TType::Void,
+                            {{/function:stream_has_first_response?}}
                             0i16,
                         );
-                        inner.write(p);
+                        {{#function:stream_has_first_response?}}
+                        _inner.write(p);
+                        {{/function:stream_has_first_response?}}
                         p.write_field_end();
                     }{{!
                     }}{{#function:exceptions}}
@@ -319,6 +336,7 @@
             }
         }
 
+        {{#function:stream_has_first_response?}}
         impl<P> ::fbthrift::Deserialize<P> for {{function:upcamel}}ResponseExn
         where
             P: ::fbthrift::ProtocolReader,
@@ -392,7 +410,8 @@
                 }}{{/function:void?}}
             }
         }
-        {{/function:stream_has_first_response?}}{{/function:returns_stream?}}
+        {{/function:stream_has_first_response?}}
+        {{/function:returns_stream?}}
 
         {{^function:returns_stream?}}
         #[derive(Clone, Debug)]
