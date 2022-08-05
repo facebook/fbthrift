@@ -162,6 +162,11 @@ class JSONProtocolWriterCommon : public detail::ProtocolBase {
   uint32_t writeJSONDoubleInternal(double dbl);
   uint32_t writeJSONDoubleInternal(float flt);
   uint32_t writeJSONIntInternal(int64_t num);
+  uint32_t writeJSONBoolInternal(bool val);
+  bool isMapKey() {
+    return !context.empty() && context.back().type == ContextType::MAP &&
+        context.back().meta % 2 == 1;
+  }
 };
 
 class JSONProtocolReaderCommon : public detail::ProtocolBase {

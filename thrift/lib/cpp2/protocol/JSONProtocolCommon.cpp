@@ -86,27 +86,48 @@ const uint8_t JSONProtocolReaderCommon::kEscapeCharVals[8] = {
 
 uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(double dbl) {
   WrappedIOBufQueueAppender appender(out_);
-  folly::toAppend(dbl, &appender);
+  if (isMapKey()) {
+    folly::toAppend('"', dbl, '"', &appender);
+  } else {
+    folly::toAppend(dbl, &appender);
+  }
   return appender.size();
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(float flt) {
   WrappedIOBufQueueAppender appender(out_);
+  if (isMapKey()) {
+    folly::toAppend('"', &appender);
+  }
   folly::toAppend(
       flt,
       &appender,
       double_conversion::DoubleToStringConverter::SHORTEST_SINGLE,
       0);
+  if (isMapKey()) {
+    folly::toAppend('"', &appender);
+  }
   return appender.size();
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONIntInternal(int64_t num) {
   WrappedIOBufQueueAppender appender(out_);
-  if (!context.empty() && context.back().type == ContextType::MAP &&
-      context.back().meta % 2 == 1) {
+  if (isMapKey()) {
     folly::toAppend('"', num, '"', &appender);
   } else {
     folly::toAppend(num, &appender);
+  }
+  return appender.size();
+}
+
+uint32_t JSONProtocolWriterCommon::writeJSONBoolInternal(bool val) {
+  const auto& out = val ? apache::thrift::detail::json::kJSONTrue
+                        : apache::thrift::detail::json::kJSONFalse;
+  WrappedIOBufQueueAppender appender(out_);
+  if (isMapKey()) {
+    folly::toAppend('"', out, '"', &appender);
+  } else {
+    folly::toAppend(out, &appender);
   }
   return appender.size();
 }

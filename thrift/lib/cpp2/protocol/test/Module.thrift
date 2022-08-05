@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,4 +123,17 @@ struct OptionalFields {
   1: optional string f1;
   2: optional set<string> f2;
   3: optional list<string> f3;
+}
+
+struct NonStringMapKeyFields {
+  // @lint-ignore THRIFTCHECKS
+  1: map<bool, i32> f1;
+  2: map<byte, i32> f2;
+  3: map<i16, i32> f3;
+  4: map<i32, i32> f4;
+  5: map<i64, i32> f5;
+  // @lint-ignore THRIFTCHECKS
+  6: map<float, i32> f6;
+  // @lint-ignore THRIFTCHECKS
+  7: map<double, i32> f7;
 }

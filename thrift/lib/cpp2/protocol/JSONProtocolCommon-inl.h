@@ -332,10 +332,7 @@ inline uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
 }
 
 inline uint32_t JSONProtocolWriterCommon::writeJSONBool(bool val) {
-  const auto& out = val ? apache::thrift::detail::json::kJSONTrue
-                        : apache::thrift::detail::json::kJSONFalse;
-  out_.push((const uint8_t*)out.data(), out.size());
-  return folly::to_narrow(out.size());
+  return writeJSONBoolInternal(val);
 }
 
 inline uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {

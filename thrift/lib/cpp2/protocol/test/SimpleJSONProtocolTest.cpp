@@ -90,3 +90,19 @@ TEST_F(SimpleJSONProtocolTest, roundtrip_one_of_each_float_range) {
     EXPECT_EQ(orig, deserialized) << serialized;
   }
 }
+
+TEST_F(SimpleJSONProtocolTest, roundtrip_non_string_map_keys) {
+  auto orig = NonStringMapKeyFields{};
+  orig.f1() = {{false, 1}, {true, 2}};
+  orig.f2()->emplace(24, 3);
+  orig.f3()->emplace(42, 4);
+  orig.f4()->emplace(100, 5);
+  orig.f5()->emplace(200, 6);
+  orig.f6()->emplace(12345.f, 7);
+  orig.f7()->emplace(12345.0, 8);
+  const auto serialized = S::serialize<string>(orig);
+  NonStringMapKeyFields deserialized;
+  const auto size = S::deserialize(serialized, deserialized);
+  EXPECT_EQ(serialized.size(), size);
+  EXPECT_EQ(orig, deserialized);
+}
