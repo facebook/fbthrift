@@ -91,6 +91,11 @@ const char* MyDataItem::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyDataItem";
 }
 
+const folly::StringPiece MyDataItem::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataItem>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
@@ -158,6 +163,11 @@ namespace test { namespace fixtures { namespace basic {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyStruct";
+}
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyStruct::MyStruct(const MyStruct&) = default;
@@ -397,6 +407,11 @@ const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyUnion";
 }
 
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -516,6 +531,11 @@ const char* ReservedKeyword::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/ReservedKeyword";
 }
 
+const folly::StringPiece ReservedKeyword::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ReservedKeyword>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 ReservedKeyword::ReservedKeyword(apache::thrift::FragileConstructor, ::std::int32_t reserved_field__arg) :
     __fbthrift_field_reserved_field(std::move(reserved_field__arg)) {
@@ -610,6 +630,11 @@ namespace test { namespace fixtures { namespace basic {
 
 const char* UnionToBeRenamed::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/UnionToBeRenamed";
+}
+
+const folly::StringPiece UnionToBeRenamed::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<UnionToBeRenamed>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 void UnionToBeRenamed::__fbthrift_clear() {

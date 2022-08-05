@@ -39,6 +39,11 @@ const char* MyData::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyData";
 }
 
+const folly::StringPiece MyData::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyData>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyData::MyData(const MyData&) = default;
 MyData& MyData::operator=(const MyData&) = default;
 MyData::MyData(FOLLY_MAYBE_UNUSED MyData&& other) noexcept :
@@ -157,6 +162,11 @@ const char* InnerUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/InnerUnion";
 }
 
+const folly::StringPiece InnerUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InnerUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void InnerUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -258,6 +268,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnion";
+}
+
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 void MyUnion::__fbthrift_clear() {
@@ -364,6 +379,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStruct";
+}
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyStruct::MyStruct(const MyStruct&) = default;
@@ -846,6 +866,11 @@ const char* MyDataFieldPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataFieldPatch";
 }
 
+const folly::StringPiece MyDataFieldPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataFieldPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyDataFieldPatchStruct::MyDataFieldPatchStruct(const MyDataFieldPatchStruct& srcObj) :
     __fbthrift_field_data1(srcObj.__fbthrift_field_data1),
     __fbthrift_field_data2(srcObj.__fbthrift_field_data2),
@@ -979,6 +1004,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* MyDataPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataPatch";
+}
+
+const folly::StringPiece MyDataPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyDataPatchStruct::MyDataPatchStruct(const MyDataPatchStruct& srcObj) :
@@ -1123,6 +1153,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyDataPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyDataPatch";
+}
+
+const folly::StringPiece OptionalMyDataPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyDataPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 OptionalMyDataPatchStruct::OptionalMyDataPatchStruct(const OptionalMyDataPatchStruct& srcObj) :
@@ -1291,6 +1326,11 @@ const char* InnerUnionFieldPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/InnerUnionFieldPatch";
 }
 
+const folly::StringPiece InnerUnionFieldPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InnerUnionFieldPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 InnerUnionFieldPatchStruct::InnerUnionFieldPatchStruct(const InnerUnionFieldPatchStruct& srcObj) :
     __fbthrift_field_innerOption(srcObj.__fbthrift_field_innerOption),
     __isset(srcObj.__isset) {
@@ -1402,6 +1442,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* InnerUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/InnerUnionPatch";
+}
+
+const folly::StringPiece InnerUnionPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InnerUnionPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 InnerUnionPatchStruct::InnerUnionPatchStruct(const InnerUnionPatchStruct& srcObj) :
@@ -1579,6 +1624,11 @@ const char* OptionalInnerUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalInnerUnionPatch";
 }
 
+const folly::StringPiece OptionalInnerUnionPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalInnerUnionPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 OptionalInnerUnionPatchStruct::OptionalInnerUnionPatchStruct(const OptionalInnerUnionPatchStruct& srcObj) :
     __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
     __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
@@ -1745,6 +1795,11 @@ const char* MyUnionFieldPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionFieldPatch";
 }
 
+const folly::StringPiece MyUnionFieldPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnionFieldPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyUnionFieldPatchStruct::MyUnionFieldPatchStruct(const MyUnionFieldPatchStruct& srcObj) :
     __fbthrift_field_option1(srcObj.__fbthrift_field_option1),
     __fbthrift_field_option2(srcObj.__fbthrift_field_option2),
@@ -1900,6 +1955,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* MyUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionPatch";
+}
+
+const folly::StringPiece MyUnionPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnionPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyUnionPatchStruct::MyUnionPatchStruct(const MyUnionPatchStruct& srcObj) :
@@ -2077,6 +2137,11 @@ const char* OptionalMyUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyUnionPatch";
 }
 
+const folly::StringPiece OptionalMyUnionPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyUnionPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 OptionalMyUnionPatchStruct::OptionalMyUnionPatchStruct(const OptionalMyUnionPatchStruct& srcObj) :
     __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
     __fbthrift_field_patch(srcObj.__fbthrift_field_patch),
@@ -2243,6 +2308,11 @@ const char* MyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField21Patch";
 }
 
+const folly::StringPiece MyStructField21PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructField21PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructField21PatchStruct::MyStructField21PatchStruct(const MyStructField21PatchStruct&) = default;
 MyStructField21PatchStruct& MyStructField21PatchStruct::operator=(const MyStructField21PatchStruct&) = default;
 MyStructField21PatchStruct::MyStructField21PatchStruct(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct&& other) noexcept :
@@ -2396,6 +2466,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField21Patch";
+}
+
+const folly::StringPiece OptionalMyStructField21PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyStructField21PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(const OptionalMyStructField21PatchStruct& srcObj) :
@@ -2567,6 +2642,11 @@ const char* MyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField22Patch";
 }
 
+const folly::StringPiece MyStructField22PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructField22PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructField22PatchStruct::MyStructField22PatchStruct(const MyStructField22PatchStruct&) = default;
 MyStructField22PatchStruct& MyStructField22PatchStruct::operator=(const MyStructField22PatchStruct&) = default;
 MyStructField22PatchStruct::MyStructField22PatchStruct(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct&& other) noexcept :
@@ -2720,6 +2800,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField22Patch";
+}
+
+const folly::StringPiece OptionalMyStructField22PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyStructField22PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(const OptionalMyStructField22PatchStruct& srcObj) :
@@ -2891,6 +2976,11 @@ const char* MyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField23Patch";
 }
 
+const folly::StringPiece MyStructField23PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructField23PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructField23PatchStruct::MyStructField23PatchStruct(const MyStructField23PatchStruct&) = default;
 MyStructField23PatchStruct& MyStructField23PatchStruct::operator=(const MyStructField23PatchStruct&) = default;
 MyStructField23PatchStruct::MyStructField23PatchStruct(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct&& other) noexcept :
@@ -3024,6 +3114,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField23Patch";
+}
+
+const folly::StringPiece OptionalMyStructField23PatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyStructField23PatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(const OptionalMyStructField23PatchStruct& srcObj) :
@@ -3193,6 +3288,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructFieldPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructFieldPatch";
+}
+
+const folly::StringPiece MyStructFieldPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructFieldPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyStructFieldPatchStruct::MyStructFieldPatchStruct(const MyStructFieldPatchStruct& srcObj) :
@@ -3814,6 +3914,11 @@ const char* MyStructPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructPatch";
 }
 
+const folly::StringPiece MyStructPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructPatchStruct::MyStructPatchStruct(const MyStructPatchStruct& srcObj) :
     __fbthrift_field_assign(srcObj.__fbthrift_field_assign),
     __fbthrift_field_clear(srcObj.__fbthrift_field_clear),
@@ -3956,6 +4061,11 @@ namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructPatch";
+}
+
+const folly::StringPiece OptionalMyStructPatchStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalMyStructPatchStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 OptionalMyStructPatchStruct::OptionalMyStructPatchStruct(const OptionalMyStructPatchStruct& srcObj) :

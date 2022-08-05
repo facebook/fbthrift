@@ -96,6 +96,11 @@ struct struct_private_access {
     return T::__fbthrift_thrift_uri();
   }
 
+  template <typename T, typename Ord>
+  static const folly::StringPiece __fbthrift_get_field_name() {
+    return T::__fbthrift_get_field_name(Ord::value);
+  }
+
   template <typename T>
   static constexpr ExceptionSafety __fbthrift_cpp2_gen_exception_safety() {
     return T::__fbthrift_cpp2_gen_exception_safety;

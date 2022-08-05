@@ -181,6 +181,7 @@ class MyStructNestedAnnotation final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -305,6 +306,7 @@ class YourUnion final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -439,6 +441,7 @@ class FOLLY_EXPORT YourException : public virtual apache::thrift::TException {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -521,6 +524,7 @@ class YourStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 10;
 
   template<class T>
@@ -1247,6 +1251,7 @@ class SecretStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();

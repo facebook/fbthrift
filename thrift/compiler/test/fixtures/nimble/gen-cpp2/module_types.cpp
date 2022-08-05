@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::BasicTypes>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece BasicTypes::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<BasicTypes>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg) :
     __fbthrift_field_first(std::move(first__arg)),

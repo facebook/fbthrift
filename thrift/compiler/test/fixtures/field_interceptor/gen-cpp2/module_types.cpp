@@ -39,6 +39,11 @@ const char* InterceptedFields::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/InterceptedFields";
 }
 
+const folly::StringPiece InterceptedFields::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InterceptedFields>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 InterceptedFields::InterceptedFields(const InterceptedFields&) = default;
 InterceptedFields& InterceptedFields::operator=(const InterceptedFields&) = default;
 InterceptedFields::InterceptedFields() :

@@ -61,6 +61,11 @@ void TccStructTraits<::apache::thrift::test::StructWithDefaultStruct>::translate
 
 namespace apache { namespace thrift { namespace test {
 
+const folly::StringPiece StructWithDefaultStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<StructWithDefaultStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 StructWithDefaultStruct::StructWithDefaultStruct(const StructWithDefaultStruct&) = default;
 StructWithDefaultStruct& StructWithDefaultStruct::operator=(const StructWithDefaultStruct&) = default;
 StructWithDefaultStruct::StructWithDefaultStruct() :

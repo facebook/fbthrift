@@ -61,6 +61,11 @@ void TccStructTraits<::some::ns::ModuleA>::translateFieldName(
 
 namespace some { namespace ns {
 
+const folly::StringPiece ModuleA::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ModuleA>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 ModuleA::ModuleA(const ModuleA&) = default;
 ModuleA& ModuleA::operator=(const ModuleA&) = default;
 ModuleA::ModuleA() :
@@ -263,6 +268,11 @@ void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
 
 namespace some { namespace ns {
 
+const folly::StringPiece ModuleB::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ModuleB>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :
     __fbthrift_field_i32Field(std::move(i32Field__arg)),
@@ -351,6 +361,11 @@ void TccStructTraits<::some::ns::detail::DirectlyAdapted>::translateFieldName(
 
 namespace some { namespace ns {namespace detail {
 
+
+const folly::StringPiece DirectlyAdapted::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<DirectlyAdapted>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 DirectlyAdapted::DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :

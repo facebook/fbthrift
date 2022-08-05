@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::SmallStruct>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece SmallStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SmallStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg) :
     __fbthrift_field_small_A(std::move(small_A__arg)),
@@ -148,6 +153,11 @@ void TccStructTraits<::cpp2::containerStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece containerStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<containerStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 containerStruct::containerStruct(const containerStruct& srcObj) :
     __fbthrift_field_fieldA(srcObj.__fbthrift_field_fieldA),

@@ -39,6 +39,11 @@ const char* Foo::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo";
 }
 
+const folly::StringPiece Foo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Foo>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Foo::Foo(const Foo& srcObj) :
     __fbthrift_field_intField(srcObj.__fbthrift_field_intField),
     __fbthrift_field_optionalIntField(srcObj.__fbthrift_field_optionalIntField),
@@ -305,6 +310,11 @@ const char* Baz::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/Baz";
 }
 
+const folly::StringPiece Baz::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Baz>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void Baz::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -399,6 +409,11 @@ const char* DirectlyAdapted::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/DirectlyAdapted";
 }
 
+const folly::StringPiece DirectlyAdapted::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<DirectlyAdapted>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 DirectlyAdapted::DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :
     __fbthrift_field_field(std::move(field__arg)) {
@@ -480,6 +495,11 @@ namespace facebook { namespace thrift { namespace test {
 
 const char* Bar::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/Bar";
+}
+
+const folly::StringPiece Bar::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Bar>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 Bar::Bar(const Bar& srcObj) :
@@ -710,6 +730,11 @@ const char* StructWithFieldAdapter::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/StructWithFieldAdapter";
 }
 
+const folly::StringPiece StructWithFieldAdapter::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<StructWithFieldAdapter>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) :
     __fbthrift_field_field(srcObj.__fbthrift_field_field),
     shared_field(srcObj.shared_field),
@@ -862,6 +887,11 @@ const char* TerseAdaptedFields::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/TerseAdaptedFields";
 }
 
+const folly::StringPiece TerseAdaptedFields::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseAdaptedFields>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 TerseAdaptedFields::TerseAdaptedFields(const TerseAdaptedFields& srcObj) :
     __fbthrift_field_int_field(srcObj.__fbthrift_field_int_field),
     __fbthrift_field_string_field(srcObj.__fbthrift_field_string_field),
@@ -998,6 +1028,11 @@ const char* A::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/A";
 }
 
+const folly::StringPiece A::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<A>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 A::A(apache::thrift::FragileConstructor) {}
 
@@ -1065,6 +1100,11 @@ namespace facebook { namespace thrift { namespace test {
 
 const char* B::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/B";
+}
+
+const folly::StringPiece B::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<B>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 B::B(const B& srcObj) :
@@ -1177,6 +1217,11 @@ namespace facebook { namespace thrift { namespace test {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/MyStruct";
+}
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 

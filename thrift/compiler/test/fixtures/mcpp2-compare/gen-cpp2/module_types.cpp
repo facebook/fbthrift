@@ -139,6 +139,11 @@ void TccStructTraits<::some::valid::ns::Empty>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece Empty::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Empty>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
@@ -207,6 +212,11 @@ void TccStructTraits<::some::valid::ns::ASimpleStruct>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece ASimpleStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ASimpleStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -281,6 +291,11 @@ void TccStructTraits<::some::valid::ns::ASimpleStructNoexcept>::translateFieldNa
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece ASimpleStructNoexcept::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ASimpleStructNoexcept>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -363,6 +378,11 @@ void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MyStruct::MyStruct(const MyStruct& srcObj) :
     __fbthrift_field_MyBoolField(srcObj.__fbthrift_field_MyBoolField),
@@ -647,6 +667,11 @@ bool TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findValue(folly::StringP
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece SimpleUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SimpleUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void SimpleUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -753,6 +778,11 @@ bool TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findValue(folly::String
 }
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece ComplexUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void ComplexUnion::__fbthrift_clear() {
   // clear all fields
@@ -1110,6 +1140,11 @@ void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece AnException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AnException>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AnException::AnException(const AnException& srcObj) :
     __fbthrift_field_code(srcObj.__fbthrift_field_code),
@@ -1548,6 +1583,11 @@ void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece AnotherException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AnotherException>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 AnotherException::AnotherException(const AnotherException&) = default;
 AnotherException& AnotherException::operator=(const AnotherException&) = default;
 AnotherException::AnotherException() :
@@ -1673,6 +1713,11 @@ void TccStructTraits<::some::valid::ns::containerStruct>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece containerStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<containerStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 containerStruct::containerStruct() :
       fieldA(),
@@ -2545,6 +2590,11 @@ void TccStructTraits<::some::valid::ns::MyIncludedStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece MyIncludedStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyIncludedStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) :
     __fbthrift_field_MyIncludedInt(srcObj.__fbthrift_field_MyIncludedInt),
     __fbthrift_field_MyIncludedStruct(srcObj.__fbthrift_field_MyIncludedStruct),
@@ -2720,6 +2770,11 @@ void TccStructTraits<::some::valid::ns::AnnotatedStruct>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece AnnotatedStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AnnotatedStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AnnotatedStruct::AnnotatedStruct() :
       cpp_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
@@ -3291,6 +3346,11 @@ void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldN
 
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece ComplexContainerStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexContainerStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) :
     __fbthrift_field_map_of_iobufs(srcObj.__fbthrift_field_map_of_iobufs),
     __fbthrift_field_map_of_iobuf_ptrs(::apache::thrift::detail::st::copy_field<
@@ -3426,6 +3486,11 @@ void TccStructTraits<::some::valid::ns::FloatStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece FloatStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FloatStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg) :
     __fbthrift_field_floatField(std::move(floatField__arg)),
@@ -3533,6 +3598,11 @@ bool TEnumTraits<::some::valid::ns::FloatUnion::Type>::findValue(folly::StringPi
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+const folly::StringPiece FloatUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FloatUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void FloatUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -3625,6 +3695,11 @@ void TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::trans
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+const folly::StringPiece AllRequiredNoExceptMoveCtrStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AllRequiredNoExceptMoveCtrStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :

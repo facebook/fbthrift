@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyStructNestedAnnotation::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructNestedAnnotation>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation::MyStructNestedAnnotation(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept :
@@ -167,6 +172,11 @@ bool TEnumTraits<::cpp2::detail::YourUnion::Type>::findValue(folly::StringPiece 
 namespace cpp2 {namespace detail {
 
 
+const folly::StringPiece YourUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<YourUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void YourUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -243,6 +253,11 @@ void TccStructTraits<::cpp2::detail::YourException>::translateFieldName(
 
 namespace cpp2 {namespace detail {
 
+
+const folly::StringPiece YourException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<YourException>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 YourException::YourException(const YourException&) = default;
 YourException& YourException::operator=(const YourException&) = default;
@@ -326,6 +341,11 @@ namespace cpp2 {namespace detail {
 
 const char* YourStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct";
+}
+
+const folly::StringPiece YourStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<YourStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 YourStruct::YourStruct(const YourStruct& srcObj) :
@@ -571,6 +591,11 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece SecretStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SecretStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 SecretStruct::SecretStruct(const SecretStruct&) = default;
 SecretStruct& SecretStruct::operator=(const SecretStruct&) = default;

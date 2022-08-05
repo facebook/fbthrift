@@ -35,6 +35,11 @@ void TccStructTraits<::some::ns::IncludedA>::translateFieldName(
 
 namespace some { namespace ns {
 
+const folly::StringPiece IncludedA::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<IncludedA>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 IncludedA::IncludedA(const IncludedA&) = default;
 IncludedA& IncludedA::operator=(const IncludedA&) = default;
 IncludedA::IncludedA(FOLLY_MAYBE_UNUSED IncludedA&& other) noexcept :

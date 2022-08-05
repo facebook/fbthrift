@@ -35,6 +35,11 @@ void TccStructTraits<::module2::Struct>::translateFieldName(
 
 namespace module2 {
 
+const folly::StringPiece Struct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Struct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Struct::Struct(const Struct&) = default;
 Struct& Struct::operator=(const Struct&) = default;
 Struct::Struct(FOLLY_MAYBE_UNUSED Struct&& other) noexcept :
@@ -165,6 +170,11 @@ void TccStructTraits<::module2::BigStruct>::translateFieldName(
 } // namespace apache
 
 namespace module2 {
+
+const folly::StringPiece BigStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<BigStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 BigStruct::BigStruct(const BigStruct&) = default;
 BigStruct& BigStruct::operator=(const BigStruct&) = default;

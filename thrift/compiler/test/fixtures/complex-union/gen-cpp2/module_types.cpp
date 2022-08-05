@@ -49,6 +49,11 @@ bool TEnumTraits<::cpp2::ComplexUnion::Type>::findValue(folly::StringPiece name,
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece ComplexUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void ComplexUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -180,6 +185,11 @@ bool TEnumTraits<::cpp2::ListUnion::Type>::findValue(folly::StringPiece name, ty
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece ListUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ListUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void ListUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -283,6 +293,11 @@ bool TEnumTraits<::cpp2::DataUnion::Type>::findValue(folly::StringPiece name, ty
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece DataUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<DataUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void DataUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -374,6 +389,11 @@ void TccStructTraits<::cpp2::Val>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Val::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Val>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Val::Val(const Val&) = default;
 Val& Val::operator=(const Val&) = default;
@@ -512,6 +532,11 @@ bool TEnumTraits<::cpp2::ValUnion::Type>::findValue(folly::StringPiece name, typ
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece ValUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ValUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void ValUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -627,6 +652,11 @@ bool TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findValue(folly::StringPiec
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece VirtualComplexUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<VirtualComplexUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void VirtualComplexUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -715,6 +745,11 @@ void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece NonCopyableStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NonCopyableStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
@@ -807,6 +842,11 @@ bool TEnumTraits<::cpp2::NonCopyableUnion::Type>::findValue(folly::StringPiece n
 }
 }} // apache::thrift
 namespace cpp2 {
+
+const folly::StringPiece NonCopyableUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NonCopyableUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void NonCopyableUnion::__fbthrift_clear() {
   // clear all fields

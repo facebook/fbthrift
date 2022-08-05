@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::FooStreamEx>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece FooStreamEx::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FooStreamEx>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 FooStreamEx::FooStreamEx(const FooStreamEx&) = default;
 FooStreamEx& FooStreamEx::operator=(const FooStreamEx&) = default;
 FooStreamEx::FooStreamEx() {
@@ -112,6 +117,11 @@ void TccStructTraits<::cpp2::FooEx>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece FooEx::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FooEx>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 FooEx::FooEx(const FooEx&) = default;
 FooEx& FooEx::operator=(const FooEx&) = default;

@@ -61,6 +61,11 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
 
 namespace a { namespace different { namespace ns {
 
+const folly::StringPiece AStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
     __fbthrift_field_FieldA(std::move(FieldA__arg)) {
@@ -142,6 +147,11 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 } // namespace apache
 
 namespace a { namespace different { namespace ns {
+
+const folly::StringPiece AStructB::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AStructB>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AStructB::AStructB(const AStructB&) = default;
 AStructB& AStructB::operator=(const AStructB&) = default;

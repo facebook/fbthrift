@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Fields>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Fields::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Fields>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Fields::Fields(const Fields&) = default;
 Fields& Fields::operator=(const Fields&) = default;
 Fields::Fields(FOLLY_MAYBE_UNUSED Fields&& other) noexcept :
@@ -126,6 +131,11 @@ void TccStructTraits<::cpp2::FieldsInjectedToEmptyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece FieldsInjectedToEmptyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FieldsInjectedToEmptyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct&) = default;
 FieldsInjectedToEmptyStruct& FieldsInjectedToEmptyStruct::operator=(const FieldsInjectedToEmptyStruct&) = default;
 FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct&& other) noexcept :
@@ -216,6 +226,11 @@ void TccStructTraits<::cpp2::FieldsInjectedToStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece FieldsInjectedToStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FieldsInjectedToStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 FieldsInjectedToStruct::FieldsInjectedToStruct(const FieldsInjectedToStruct&) = default;
 FieldsInjectedToStruct& FieldsInjectedToStruct::operator=(const FieldsInjectedToStruct&) = default;
@@ -319,6 +334,11 @@ void TccStructTraits<::cpp2::FieldsInjectedWithIncludedStruct>::translateFieldNa
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece FieldsInjectedWithIncludedStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FieldsInjectedWithIncludedStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(const FieldsInjectedWithIncludedStruct&) = default;
 FieldsInjectedWithIncludedStruct& FieldsInjectedWithIncludedStruct::operator=(const FieldsInjectedWithIncludedStruct&) = default;

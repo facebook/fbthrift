@@ -153,6 +153,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::findValue(folly::St
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece union1::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<union1>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void union1::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -269,6 +274,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::findValue(folly::St
 }
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece union2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<union2>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void union2::__fbthrift_clear() {
   // clear all fields
@@ -387,6 +397,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::findValue(folly::St
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece union3::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<union3>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void union3::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -489,6 +504,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece structA::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<structA>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 structA::structA(const structA&) = default;
 structA& structA::operator=(const structA&) = default;
@@ -607,6 +627,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::findValue(folly::St
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece unionA::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<unionA>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void unionA::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -723,6 +748,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structB>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece structB::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<structB>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     __fbthrift_field_c(std::move(c__arg)),
@@ -810,6 +840,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structC>::translateFieldName(
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece structC::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<structC>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 structC::structC(const structC&) = default;
 structC& structC::operator=(const structC&) = default;
@@ -1519,6 +1554,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct1>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece struct1::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct1>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 struct1::struct1(const struct1&) = default;
 struct1& struct1::operator=(const struct1&) = default;
 struct1::struct1() :
@@ -1704,6 +1744,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct2>::translateFieldName(
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece struct2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct2>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 struct2::struct2(const struct2&) = default;
 struct2& struct2::operator=(const struct2&) = default;
@@ -1918,6 +1963,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct3>::translateFieldName(
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece struct3::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct3>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 struct3::struct3(const struct3&) = default;
 struct3& struct3::operator=(const struct3&) = default;
@@ -2383,6 +2433,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct4>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece struct4::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct4>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 struct4::struct4(const struct4& srcObj) :
     __fbthrift_field_field0(srcObj.__fbthrift_field_field0),
     __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
@@ -2526,6 +2581,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct5>::translateFieldName(
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece struct5::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct5>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 struct5::struct5(const struct5&) = default;
 struct5& struct5::operator=(const struct5&) = default;
@@ -2701,6 +2761,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_binary>::translateField
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece struct_binary::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct_binary>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 struct_binary::struct_binary(const struct_binary&) = default;
 struct_binary& struct_binary::operator=(const struct_binary&) = default;
 struct_binary::struct_binary(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept :
@@ -2791,6 +2856,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_A_struct>::translateFieldN
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece dep_A_struct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<dep_A_struct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
@@ -2918,6 +2988,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_B_struct>::translateFieldN
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece dep_B_struct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<dep_B_struct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     __fbthrift_field_b(std::move(b__arg)),
@@ -3044,6 +3119,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::annotated>::translateFieldName
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece annotated::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<annotated>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) :
     __fbthrift_field_a(std::move(a__arg)) {
@@ -3135,6 +3215,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::f
 }
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece union_with_special_names::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<union_with_special_names>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void union_with_special_names::__fbthrift_clear() {
   // clear all fields
@@ -3406,6 +3491,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_special_names>::tr
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece struct_with_special_names::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct_with_special_names>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, ::std::int32_t get__arg, ::std::int32_t getter__arg, ::std::int32_t lists__arg, ::std::int32_t maps__arg, ::std::int32_t name__arg, ::std::int32_t name_to_value__arg, ::std::int32_t names__arg, ::std::int32_t prefix_tree__arg, ::std::int32_t sets__arg, ::std::int32_t setter__arg, ::std::int32_t str__arg, ::std::int32_t strings__arg, ::std::int32_t type__arg, ::std::int32_t value__arg, ::std::int32_t value_to_name__arg, ::std::int32_t values__arg, ::std::int32_t id__arg, ::std::int32_t ids__arg, ::std::int32_t descriptor__arg, ::std::int32_t descriptors__arg, ::std::int32_t key__arg, ::std::int32_t keys__arg, ::std::int32_t annotation__arg, ::std::int32_t annotations__arg, ::std::int32_t member__arg, ::std::int32_t members__arg, ::std::int32_t field__arg, ::std::int32_t fields__arg) :
@@ -3755,6 +3845,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_indirections>::tra
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece struct_with_indirections::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<struct_with_indirections>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 struct_with_indirections::struct_with_indirections(const struct_with_indirections&) = default;
 struct_with_indirections& struct_with_indirections::operator=(const struct_with_indirections&) = default;
 struct_with_indirections::struct_with_indirections() :
@@ -3904,6 +3999,11 @@ void TccStructTraits<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::trans
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+const folly::StringPiece StructWithFieldAdapter::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<StructWithFieldAdapter>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) :
     __fbthrift_field_field(srcObj.__fbthrift_field_field),
     __isset(srcObj.__isset) {
@@ -4008,6 +4108,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter::Type
 }
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+const folly::StringPiece UnionWithTypedefFieldAdapter::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<UnionWithTypedefFieldAdapter>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void UnionWithTypedefFieldAdapter::__fbthrift_clear() {
   // clear all fields

@@ -65,6 +65,11 @@ const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/no-legacy-apis/MyStruct";
 }
 
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
@@ -178,6 +183,11 @@ namespace test { namespace fixtures { namespace basic {
 
 const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/no-legacy-apis/MyUnion";
+}
+
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 void MyUnion::__fbthrift_clear() {

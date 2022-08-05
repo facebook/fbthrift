@@ -35,6 +35,11 @@ void TccStructTraits<::apache::thrift::test::TerseFoo>::translateFieldName(
 
 namespace apache { namespace thrift { namespace test {
 
+const folly::StringPiece TerseFoo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseFoo>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 TerseFoo::TerseFoo(const TerseFoo&) = default;
 TerseFoo& TerseFoo::operator=(const TerseFoo&) = default;
 TerseFoo::TerseFoo(FOLLY_MAYBE_UNUSED TerseFoo&& other) noexcept :
@@ -196,6 +201,11 @@ void TccStructTraits<::apache::thrift::test::TerseLazyFoo>::translateFieldName(
 } // namespace apache
 
 namespace apache { namespace thrift { namespace test {
+
+const folly::StringPiece TerseLazyFoo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseLazyFoo>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) :
     __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
@@ -479,6 +489,11 @@ void TccStructTraits<::apache::thrift::test::TerseOptionalFoo>::translateFieldNa
 
 namespace apache { namespace thrift { namespace test {
 
+const folly::StringPiece TerseOptionalFoo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseOptionalFoo>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 TerseOptionalFoo::TerseOptionalFoo(const TerseOptionalFoo&) = default;
 TerseOptionalFoo& TerseOptionalFoo::operator=(const TerseOptionalFoo&) = default;
 TerseOptionalFoo::TerseOptionalFoo(FOLLY_MAYBE_UNUSED TerseOptionalFoo&& other) noexcept :
@@ -640,6 +655,11 @@ void TccStructTraits<::apache::thrift::test::TerseOptionalLazyFoo>::translateFie
 } // namespace apache
 
 namespace apache { namespace thrift { namespace test {
+
+const folly::StringPiece TerseOptionalLazyFoo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseOptionalLazyFoo>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) :
     __fbthrift_field_field1(srcObj.__fbthrift_field_field1),

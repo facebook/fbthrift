@@ -70,6 +70,11 @@ const char* MyStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyStruct";
 }
 
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
@@ -179,6 +184,11 @@ const char* MyUnion::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyUnion";
 }
 
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -263,6 +273,11 @@ namespace cpp2 {
 
 const char* MyException::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyException";
+}
+
+const folly::StringPiece MyException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyException>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 MyException::MyException(const MyException&) = default;

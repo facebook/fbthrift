@@ -61,6 +61,11 @@ void TccStructTraits<::apache::thrift::test::MyStruct>::translateFieldName(
 
 namespace apache { namespace thrift { namespace test {
 
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor) {}
 
@@ -125,6 +130,11 @@ void TccStructTraits<::apache::thrift::test::EmptiableStruct>::translateFieldNam
 } // namespace apache
 
 namespace apache { namespace thrift { namespace test {
+
+const folly::StringPiece EmptiableStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<EmptiableStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 EmptiableStruct::EmptiableStruct(const EmptiableStruct&) = default;
 EmptiableStruct& EmptiableStruct::operator=(const EmptiableStruct&) = default;
@@ -437,6 +447,11 @@ void TccStructTraits<::apache::thrift::test::EmptiableTerseStruct>::translateFie
 
 namespace apache { namespace thrift { namespace test {
 
+const folly::StringPiece EmptiableTerseStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<EmptiableTerseStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 EmptiableTerseStruct::EmptiableTerseStruct(const EmptiableTerseStruct&) = default;
 EmptiableTerseStruct& EmptiableTerseStruct::operator=(const EmptiableTerseStruct&) = default;
 EmptiableTerseStruct::EmptiableTerseStruct() :
@@ -742,6 +757,11 @@ void TccStructTraits<::apache::thrift::test::NotEmptiableStruct>::translateField
 } // namespace apache
 
 namespace apache { namespace thrift { namespace test {
+
+const folly::StringPiece NotEmptiableStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NotEmptiableStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 NotEmptiableStruct::NotEmptiableStruct(const NotEmptiableStruct&) = default;
 NotEmptiableStruct& NotEmptiableStruct::operator=(const NotEmptiableStruct&) = default;

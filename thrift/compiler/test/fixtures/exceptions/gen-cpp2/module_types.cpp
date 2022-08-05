@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Fiery>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Fiery::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Fiery>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Fiery::Fiery(const Fiery&) = default;
 Fiery& Fiery::operator=(const Fiery&) = default;
 Fiery::Fiery() {
@@ -130,6 +135,11 @@ void TccStructTraits<::cpp2::Serious>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Serious::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Serious>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Serious::Serious(const Serious&) = default;
 Serious& Serious::operator=(const Serious&) = default;
@@ -231,6 +241,11 @@ void TccStructTraits<::cpp2::ComplexFieldNames>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece ComplexFieldNames::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexFieldNames>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
 ComplexFieldNames& ComplexFieldNames::operator=(const ComplexFieldNames&) = default;
@@ -345,6 +360,11 @@ void TccStructTraits<::cpp2::CustomFieldNames>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece CustomFieldNames::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<CustomFieldNames>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
 CustomFieldNames& CustomFieldNames::operator=(const CustomFieldNames&) = default;
 CustomFieldNames::CustomFieldNames() {
@@ -457,6 +477,11 @@ void TccStructTraits<::cpp2::ExceptionWithPrimitiveField>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece ExceptionWithPrimitiveField::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ExceptionWithPrimitiveField>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField&) = default;
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
@@ -571,6 +596,11 @@ void TccStructTraits<::cpp2::Banal>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Banal::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Banal>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Banal::Banal(const Banal&) = default;
 Banal& Banal::operator=(const Banal&) = default;

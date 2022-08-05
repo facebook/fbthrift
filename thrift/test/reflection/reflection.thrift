@@ -553,7 +553,9 @@ struct StructWithIOBuf {
 
 struct struct_with_renamed_field {
   1: string fancy.idl.name (cpp.name = "boring_cxx_name");
-}
+} (
+  thrift.uri = "facebook.com/thrift/test/reflection/reflection/struct_with_renamed_field",
+)
 
 union union_with_renamed_field {
   1: string fancy.idl.name (cpp.name = "boring_cxx_name");

@@ -1157,6 +1157,7 @@ class Empty final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -1222,6 +1223,7 @@ class ASimpleStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -1342,6 +1344,7 @@ class ASimpleStructNoexcept final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -1462,6 +1465,7 @@ class MyStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -2106,6 +2110,7 @@ class SimpleUnion  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -2380,6 +2385,7 @@ class ComplexUnion final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -4604,6 +4610,7 @@ class FOLLY_EXPORT AnException : public virtual apache::thrift::TException {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -5547,6 +5554,7 @@ class FOLLY_EXPORT AnotherException : public virtual apache::thrift::TException 
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -5787,6 +5795,7 @@ class containerStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -7338,6 +7347,7 @@ class MyIncludedStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -7580,6 +7590,7 @@ class AnnotatedStruct  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -8734,6 +8745,7 @@ class ComplexContainerStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -8901,6 +8913,7 @@ class FloatStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -9074,6 +9087,7 @@ class FloatUnion final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();
@@ -9334,6 +9348,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
 
   void __fbthrift_clear();
   void __fbthrift_clear_terse_fields();

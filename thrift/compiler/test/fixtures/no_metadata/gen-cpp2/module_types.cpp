@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyDataItem::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataItem>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
@@ -125,6 +130,11 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
@@ -279,6 +289,11 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(folly::StringPiece name, type
 }
 }} // apache::thrift
 namespace cpp2 {
+
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields

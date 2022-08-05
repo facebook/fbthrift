@@ -232,6 +232,7 @@ class Foo final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 11;
 
   template<class T>
@@ -888,6 +889,7 @@ class DirectlyAdapted final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -1055,6 +1057,7 @@ class Baz final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 5;
 
   template<class T>
@@ -1628,6 +1631,7 @@ class Bar final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 7;
 
   template<class T>
@@ -2103,6 +2107,7 @@ class A final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 0;
 
   template<class T>
@@ -2205,6 +2210,7 @@ class StructWithFieldAdapter final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 4;
 
   template<class T>
@@ -2468,6 +2474,7 @@ class TerseAdaptedFields final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 3;
 
   template<class T>
@@ -2721,6 +2728,7 @@ class B final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>
@@ -2873,6 +2881,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static const char* __fbthrift_thrift_uri();
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static constexpr std::size_t __fbthrift_field_size_v = 1;
 
   template<class T>

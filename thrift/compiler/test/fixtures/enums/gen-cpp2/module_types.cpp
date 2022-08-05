@@ -169,6 +169,11 @@ const char* SomeStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/enums/SomeStruct";
 }
 
+const folly::StringPiece SomeStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SomeStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 SomeStruct::SomeStruct(const SomeStruct&) = default;
 SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
 SomeStruct::SomeStruct(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept :
@@ -306,6 +311,11 @@ namespace test { namespace fixtures { namespace enums {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/enums/MyStruct";
+}
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 

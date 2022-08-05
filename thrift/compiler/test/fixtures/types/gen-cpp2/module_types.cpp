@@ -139,6 +139,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::decorated_struct>::trans
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece decorated_struct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<decorated_struct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 decorated_struct::decorated_struct(const decorated_struct&) = default;
 decorated_struct& decorated_struct::operator=(const decorated_struct&) = default;
 decorated_struct::decorated_struct(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept :
@@ -229,6 +234,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct>::transl
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece ContainerStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ContainerStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
 ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
@@ -446,6 +456,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translat
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece CppTypeStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<CppTypeStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 CppTypeStruct::CppTypeStruct(const CppTypeStruct&) = default;
 CppTypeStruct& CppTypeStruct::operator=(const CppTypeStruct&) = default;
 CppTypeStruct::CppTypeStruct(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept :
@@ -545,6 +560,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translat
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece VirtualStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<VirtualStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 VirtualStruct::VirtualStruct(const VirtualStruct&) = default;
 VirtualStruct& VirtualStruct::operator=(const VirtualStruct&) = default;
 VirtualStruct::VirtualStruct(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept :
@@ -635,6 +655,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEn
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece MyStructWithForwardRefEnum::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructWithForwardRefEnum>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(const MyStructWithForwardRefEnum&) = default;
@@ -739,6 +764,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::transla
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece TrivialNumeric::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TrivialNumeric>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg) :
     __fbthrift_field_a(std::move(a__arg)),
@@ -826,6 +856,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece TrivialNestedWithDefault::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TrivialNestedWithDefault>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
@@ -928,6 +963,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translat
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece ComplexString::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexString>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ComplexString::ComplexString(const ComplexString&) = default;
 ComplexString& ComplexString::operator=(const ComplexString&) = default;
@@ -1039,6 +1079,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece ComplexNestedWithDefault::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexNestedWithDefault>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ComplexNestedWithDefault::ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
 ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(const ComplexNestedWithDefault&) = default;
@@ -1156,6 +1201,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFi
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece MinPadding::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MinPadding>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MinPadding::MinPadding(const MinPadding&) = default;
 MinPadding& MinPadding::operator=(const MinPadding&) = default;
@@ -1287,6 +1337,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFi
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece MyDataItem::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataItem>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
@@ -1343,6 +1398,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFiel
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
@@ -1452,6 +1512,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::Renamed>::translateField
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece Renamed::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Renamed>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 Renamed::Renamed(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     __fbthrift_field_bar(std::move(bar__arg)) {
@@ -1529,6 +1594,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::transla
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece AnnotatedTypes::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AnnotatedTypes>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AnnotatedTypes::AnnotatedTypes(const AnnotatedTypes&) = default;
 AnnotatedTypes& AnnotatedTypes::operator=(const AnnotatedTypes&) = default;
@@ -1629,6 +1699,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::tra
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece ForwardUsageStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ForwardUsageStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ForwardUsageStruct::ForwardUsageStruct(const ForwardUsageStruct&) = default;
 ForwardUsageStruct& ForwardUsageStruct::operator=(const ForwardUsageStruct&) = default;
@@ -1734,6 +1809,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::trans
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece ForwardUsageRoot::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ForwardUsageRoot>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) :
     __fbthrift_field_ForwardUsageStruct(srcObj.__fbthrift_field_ForwardUsageStruct),
@@ -1869,6 +1949,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::tran
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece ForwardUsageByRef::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ForwardUsageByRef>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 ForwardUsageByRef::ForwardUsageByRef(const ForwardUsageByRef&) = default;
 ForwardUsageByRef& ForwardUsageByRef::operator=(const ForwardUsageByRef&) = default;
 ForwardUsageByRef::ForwardUsageByRef(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept :
@@ -1974,6 +2059,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::tran
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece NoexceptMoveEmpty::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NoexceptMoveEmpty>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 
@@ -2038,6 +2128,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece NoexceptMoveSimpleStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NoexceptMoveSimpleStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -2116,6 +2211,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruc
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece NoexceptMoveComplexStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NoexceptMoveComplexStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
 NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(const NoexceptMoveComplexStruct&) = default;
@@ -2344,6 +2444,11 @@ bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::fi
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece NoExceptMoveUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NoExceptMoveUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void NoExceptMoveUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -2432,6 +2537,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece AllocatorAware::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AllocatorAware>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
     __fbthrift_alloc(srcObj.__fbthrift_alloc),
@@ -2653,6 +2763,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::transl
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const folly::StringPiece AllocatorAware2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AllocatorAware2>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 AllocatorAware2::AllocatorAware2(const AllocatorAware2& srcObj) :
     __fbthrift_alloc(srcObj.__fbthrift_alloc),
     __fbthrift_field_not_a_container(srcObj.__fbthrift_field_not_a_container),
@@ -2757,6 +2872,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::TypedefStruct>::translat
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece TypedefStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TypedefStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 TypedefStruct::TypedefStruct(const TypedefStruct&) = default;
 TypedefStruct& TypedefStruct::operator=(const TypedefStruct&) = default;
@@ -2872,6 +2992,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::StructWithDoubleUndersco
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const folly::StringPiece StructWithDoubleUnderscores::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<StructWithDoubleUnderscores>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 
 StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg) :

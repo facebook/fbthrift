@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::ReflectionStruct>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece ReflectionStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ReflectionStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     __fbthrift_field_fieldA(std::move(fieldA__arg)) {

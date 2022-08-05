@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::InitialResponse>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece InitialResponse::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InitialResponse>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 InitialResponse::InitialResponse(const InitialResponse&) = default;
 InitialResponse& InitialResponse::operator=(const InitialResponse&) = default;
 InitialResponse::InitialResponse(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept :
@@ -125,6 +130,11 @@ void TccStructTraits<::cpp2::FinalResponse>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece FinalResponse::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FinalResponse>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 FinalResponse::FinalResponse(const FinalResponse&) = default;
 FinalResponse& FinalResponse::operator=(const FinalResponse&) = default;
@@ -217,6 +227,11 @@ void TccStructTraits<::cpp2::SinkPayload>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece SinkPayload::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SinkPayload>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 SinkPayload::SinkPayload(const SinkPayload&) = default;
 SinkPayload& SinkPayload::operator=(const SinkPayload&) = default;
 SinkPayload::SinkPayload(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept :
@@ -308,6 +323,11 @@ void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece CompatibleWithKeywordSink::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<CompatibleWithKeywordSink>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept :
@@ -398,6 +418,11 @@ void TccStructTraits<::cpp2::InitialException>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece InitialException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<InitialException>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 InitialException::InitialException(const InitialException&) = default;
 InitialException& InitialException::operator=(const InitialException&) = default;
@@ -496,6 +521,11 @@ void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece SinkException1::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SinkException1>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 SinkException1::SinkException1(const SinkException1&) = default;
 SinkException1& SinkException1::operator=(const SinkException1&) = default;
 SinkException1::SinkException1() {
@@ -592,6 +622,11 @@ void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece SinkException2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SinkException2>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 SinkException2::SinkException2(const SinkException2&) = default;
 SinkException2& SinkException2::operator=(const SinkException2&) = default;

@@ -165,6 +165,11 @@ void TccStructTraits<::facebook::ns::qwerty::SomeStruct>::translateFieldName(
 
 namespace facebook { namespace ns { namespace qwerty {
 
+const folly::StringPiece SomeStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SomeStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     __fbthrift_field_fieldA(std::move(fieldA__arg)) {

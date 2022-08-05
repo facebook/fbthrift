@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::A>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece A::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<A>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
     __fbthrift_field_useless_field(std::move(useless_field__arg)) {
@@ -153,6 +158,11 @@ bool TEnumTraits<::cpp2::U::Type>::findValue(folly::StringPiece name, type* out)
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece U::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<U>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void U::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -241,6 +251,11 @@ void TccStructTraits<::cpp2::Bang>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Bang::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Bang>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Bang::Bang(const Bang&) = default;
 Bang& Bang::operator=(const Bang&) = default;

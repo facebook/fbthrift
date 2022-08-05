@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Default>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Default::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Default>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Default::Default(const Default&) = default;
 Default& Default::operator=(const Default&) = default;
 Default::Default(FOLLY_MAYBE_UNUSED Default&& other) noexcept :
@@ -164,6 +169,11 @@ void TccStructTraits<::cpp2::NonAtomic>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece NonAtomic::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<NonAtomic>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 NonAtomic::NonAtomic(const NonAtomic&) = default;
 NonAtomic& NonAtomic::operator=(const NonAtomic&) = default;
@@ -295,6 +305,11 @@ void TccStructTraits<::cpp2::Atomic>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Atomic::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Atomic>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Atomic::Atomic(const Atomic&) = default;
 Atomic& Atomic::operator=(const Atomic&) = default;
 Atomic::Atomic(FOLLY_MAYBE_UNUSED Atomic&& other) noexcept :
@@ -424,6 +439,11 @@ void TccStructTraits<::cpp2::AtomicFoo>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece AtomicFoo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AtomicFoo>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 AtomicFoo::AtomicFoo(const AtomicFoo&) = default;
 AtomicFoo& AtomicFoo::operator=(const AtomicFoo&) = default;

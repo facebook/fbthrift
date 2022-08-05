@@ -113,6 +113,11 @@ void TccStructTraits<::py3::simple::SimpleException>::translateFieldName(
 
 namespace py3 { namespace simple {
 
+const folly::StringPiece SimpleException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SimpleException>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 SimpleException::SimpleException(const SimpleException&) = default;
 SimpleException& SimpleException::operator=(const SimpleException&) = default;
 SimpleException::SimpleException() :
@@ -210,6 +215,11 @@ void TccStructTraits<::py3::simple::OptionalRefStruct>::translateFieldName(
 } // namespace apache
 
 namespace py3 { namespace simple {
+
+const folly::StringPiece OptionalRefStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<OptionalRefStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) :
     optional_blob(::apache::thrift::detail::st::copy_field<
@@ -311,6 +321,11 @@ void TccStructTraits<::py3::simple::SimpleStruct>::translateFieldName(
 } // namespace apache
 
 namespace py3 { namespace simple {
+
+const folly::StringPiece SimpleStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SimpleStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
@@ -486,6 +501,11 @@ void TccStructTraits<::py3::simple::ComplexStruct>::translateFieldName(
 } // namespace apache
 
 namespace py3 { namespace simple {
+
+const folly::StringPiece ComplexStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ComplexStruct::ComplexStruct(const ComplexStruct&) = default;
 ComplexStruct& ComplexStruct::operator=(const ComplexStruct&) = default;
@@ -724,6 +744,11 @@ bool TEnumTraits<::py3::simple::BinaryUnion::Type>::findValue(folly::StringPiece
 }} // apache::thrift
 namespace py3 { namespace simple {
 
+const folly::StringPiece BinaryUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<BinaryUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void BinaryUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -783,6 +808,11 @@ void TccStructTraits<::py3::simple::BinaryUnionStruct>::translateFieldName(
 } // namespace apache
 
 namespace py3 { namespace simple {
+
+const folly::StringPiece BinaryUnionStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<BinaryUnionStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
 BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;

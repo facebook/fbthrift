@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::Color>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Color::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Color>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg) :
     __fbthrift_field_red(std::move(red__arg)),
@@ -168,6 +173,11 @@ void TccStructTraits<::cpp2::Vehicle>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Vehicle::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Vehicle>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Vehicle::Vehicle(const Vehicle&) = default;
 Vehicle& Vehicle::operator=(const Vehicle&) = default;
@@ -328,6 +338,11 @@ void TccStructTraits<::cpp2::Person>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Person::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Person>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Person::Person(const Person&) = default;
 Person& Person::operator=(const Person&) = default;

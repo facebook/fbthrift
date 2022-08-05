@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Mixin1>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Mixin1::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Mixin1>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Mixin1::Mixin1(const Mixin1&) = default;
 Mixin1& Mixin1::operator=(const Mixin1&) = default;
 Mixin1::Mixin1(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept :
@@ -125,6 +130,11 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Mixin2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Mixin2>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Mixin2::Mixin2(const Mixin2&) = default;
 Mixin2& Mixin2::operator=(const Mixin2&) = default;
@@ -243,6 +253,11 @@ void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Mixin3Base::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Mixin3Base>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
 Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
 Mixin3Base::Mixin3Base(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept :
@@ -333,6 +348,11 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece Foo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Foo>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;

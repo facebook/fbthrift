@@ -61,6 +61,11 @@ void TccStructTraits<::cpp2::MyStructFloatFieldThrowExp>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyStructFloatFieldThrowExp::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructFloatFieldThrowExp>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
 MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(const MyStructFloatFieldThrowExp&) = default;
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept :
@@ -188,6 +193,11 @@ void TccStructTraits<::cpp2::MyStructMapFloatThrowExp>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyStructMapFloatThrowExp::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructMapFloatThrowExp>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept :
@@ -299,6 +309,11 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyDataItem::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyDataItem>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
@@ -363,6 +378,11 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
@@ -957,6 +977,11 @@ void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece SimpleStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<SimpleStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
 SimpleStruct::SimpleStruct(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept :
@@ -1059,6 +1084,11 @@ void TccStructTraits<::cpp2::ComplexNestedStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece ComplexNestedStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ComplexNestedStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ComplexNestedStruct::ComplexNestedStruct(const ComplexNestedStruct&) = default;
 ComplexNestedStruct& ComplexNestedStruct::operator=(const ComplexNestedStruct&) = default;
@@ -1549,6 +1579,11 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(folly::StringPiece name, type
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece MyUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -1683,6 +1718,11 @@ void TccStructTraits<::cpp2::defaultStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece defaultStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<defaultStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 defaultStruct::defaultStruct(const defaultStruct&) = default;
 defaultStruct& defaultStruct::operator=(const defaultStruct&) = default;
@@ -2184,6 +2224,11 @@ void TccStructTraits<::cpp2::MyStructTypeDef>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece MyStructTypeDef::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructTypeDef>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
 MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
 MyStructTypeDef::MyStructTypeDef() :
@@ -2433,6 +2478,11 @@ bool TEnumTraits<::cpp2::MyUnionFloatFieldThrowExp::Type>::findValue(folly::Stri
 }} // apache::thrift
 namespace cpp2 {
 
+const folly::StringPiece MyUnionFloatFieldThrowExp::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyUnionFloatFieldThrowExp>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
   // clear all fields
   if (getType() == Type::__EMPTY__) { return; }
@@ -2547,6 +2597,11 @@ void TccStructTraits<::cpp2::TypeRemapped>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece TypeRemapped::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TypeRemapped>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
 TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
@@ -2691,6 +2746,11 @@ void TccStructTraits<::cpp2::emptyXcep>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece emptyXcep::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<emptyXcep>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 emptyXcep::emptyXcep(const emptyXcep&) = default;
 emptyXcep& emptyXcep::operator=(const emptyXcep&) = default;
 emptyXcep::emptyXcep() {
@@ -2768,6 +2828,11 @@ void TccStructTraits<::cpp2::reqXcep>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece reqXcep::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<reqXcep>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 reqXcep::reqXcep(const reqXcep&) = default;
 reqXcep& reqXcep::operator=(const reqXcep&) = default;
@@ -2872,6 +2937,11 @@ void TccStructTraits<::cpp2::optXcep>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece optXcep::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<optXcep>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 optXcep::optXcep(const optXcep&) = default;
 optXcep& optXcep::operator=(const optXcep&) = default;
@@ -2983,6 +3053,11 @@ void TccStructTraits<::cpp2::complexException>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const folly::StringPiece complexException::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<complexException>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 complexException::complexException(const complexException&) = default;
 complexException& complexException::operator=(const complexException&) = default;

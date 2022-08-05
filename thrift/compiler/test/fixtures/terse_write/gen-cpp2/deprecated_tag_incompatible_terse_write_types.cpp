@@ -65,6 +65,11 @@ const char* MyStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/MyStruct";
 }
 
+const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor) {}
 
@@ -132,6 +137,11 @@ namespace facebook { namespace thrift { namespace test { namespace terse_write {
 
 const char* MyStructWithCustomDefault::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/MyStructWithCustomDefault";
+}
+
+const folly::StringPiece MyStructWithCustomDefault::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<MyStructWithCustomDefault>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 
@@ -214,6 +224,11 @@ namespace facebook { namespace thrift { namespace test { namespace terse_write {
 
 const char* StructLevelTerseStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/StructLevelTerseStruct";
+}
+
+const folly::StringPiece StructLevelTerseStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<StructLevelTerseStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 StructLevelTerseStruct::StructLevelTerseStruct(const StructLevelTerseStruct&) = default;
@@ -524,6 +539,11 @@ namespace facebook { namespace thrift { namespace test { namespace terse_write {
 
 const char* FieldLevelTerseStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/FieldLevelTerseStruct";
+}
+
+const folly::StringPiece FieldLevelTerseStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<FieldLevelTerseStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 FieldLevelTerseStruct::FieldLevelTerseStruct(const FieldLevelTerseStruct&) = default;
@@ -1040,6 +1060,11 @@ const char* TerseStructWithCustomDefault::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/TerseStructWithCustomDefault";
 }
 
+const folly::StringPiece TerseStructWithCustomDefault::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseStructWithCustomDefault>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 TerseStructWithCustomDefault::TerseStructWithCustomDefault(const TerseStructWithCustomDefault&) = default;
 TerseStructWithCustomDefault& TerseStructWithCustomDefault::operator=(const TerseStructWithCustomDefault&) = default;
 TerseStructWithCustomDefault::TerseStructWithCustomDefault() :
@@ -1355,6 +1380,11 @@ namespace facebook { namespace thrift { namespace test { namespace terse_write {
 
 const char* AdaptedFields::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/test/terse_write/deprecated_tag_incompatible/AdaptedFields";
+}
+
+const folly::StringPiece AdaptedFields::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<AdaptedFields>::fields_names[folly::to_underlying(ord) - 1];
 }
 
 AdaptedFields::AdaptedFields(const AdaptedFields& srcObj) :

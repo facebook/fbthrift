@@ -35,6 +35,11 @@ void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
 
 namespace extra { namespace svc {
 
+const folly::StringPiece containerStruct2::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<containerStruct2>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 containerStruct2::containerStruct2(const containerStruct2&) = default;
 containerStruct2& containerStruct2::operator=(const containerStruct2&) = default;
 containerStruct2::containerStruct2() :

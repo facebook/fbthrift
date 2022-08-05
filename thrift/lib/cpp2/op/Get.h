@@ -96,6 +96,17 @@ void for_each_ident(F&& f) {
       [&](auto ord) { f(folly::tag_t<get_ident<Tag, decltype(ord)>>{}); });
 }
 
+// Gets the thrift field name, for example:
+//
+//   // Returns the thrift field name associated with field 7 in MyStruct.
+//   get_field_name<struct_t<MyStruct>, field_id<7>>
+//
+template <class Tag, class Id>
+FOLLY_INLINE_VARIABLE const folly::StringPiece get_field_name = ::apache::
+    thrift::detail::st::struct_private_access::__fbthrift_get_field_name<
+        type::native_type<Tag>,
+        get_ordinal<Tag, Id>>();
+
 // Gets the Thrift type tag, for example:
 //
 //   // Resolves to Thrift type tag for the field "foo" in MyStruct.

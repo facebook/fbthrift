@@ -102,6 +102,11 @@ FOLLY_POP_WARNING
 
 namespace test { namespace fixtures { namespace tablebased {
 
+const folly::StringPiece TrivialTypesStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TrivialTypesStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 TrivialTypesStruct::TrivialTypesStruct(const TrivialTypesStruct& srcObj) :
     __fbthrift_field_fieldA(srcObj.__fbthrift_field_fieldA),
     __fbthrift_field_fieldB(srcObj.__fbthrift_field_fieldB),
@@ -294,6 +299,11 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
 }}} // test::fixtures::tablebased
 
 namespace test { namespace fixtures { namespace tablebased {
+
+const folly::StringPiece ContainerStruct::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ContainerStruct>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
 ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
@@ -586,6 +596,11 @@ bool TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findValue(fo
 }
 }} // apache::thrift
 namespace test { namespace fixtures { namespace tablebased {
+
+const folly::StringPiece ExampleUnion::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ExampleUnion>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void ExampleUnion::__fbthrift_clear() {
   // clear all fields

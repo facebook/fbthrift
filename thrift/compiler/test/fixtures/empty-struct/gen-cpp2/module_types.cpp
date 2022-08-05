@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Empty>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Empty::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Empty>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
@@ -113,6 +118,11 @@ bool TEnumTraits<::cpp2::Nada::Type>::findValue(folly::StringPiece name, type* o
 }
 }} // apache::thrift
 namespace cpp2 {
+
+const folly::StringPiece Nada::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Nada>::fields_names[folly::to_underlying(ord) - 1];
+}
 
 void Nada::__fbthrift_clear() {
   // clear all fields

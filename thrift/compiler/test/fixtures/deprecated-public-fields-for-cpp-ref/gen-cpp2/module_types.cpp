@@ -35,6 +35,11 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+const folly::StringPiece Foo::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Foo>::fields_names[folly::to_underlying(ord) - 1];
+}
+
 Foo::Foo(const Foo& srcObj) :
     __fbthrift_field_foo(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::structure>(srcObj.__fbthrift_field_foo)),
