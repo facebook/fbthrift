@@ -95,7 +95,7 @@
     {
         {{#extendedService:service}}
         fn as_ref(&self) -> &(dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'mock) {
-            self
+            &self.parent
         }
         {{/extendedService:service}}
     }

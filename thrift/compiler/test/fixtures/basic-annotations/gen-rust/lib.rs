@@ -6345,7 +6345,7 @@ pub mod mock {
     impl<'mock> ::std::convert::AsRef<dyn crate::client::MyServicePrioParent + 'mock> for MyServicePrioChild<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyServicePrioParent + 'mock) {
-            self
+            &self.parent
         }
     }
 

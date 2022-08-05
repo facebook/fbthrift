@@ -2394,7 +2394,7 @@ pub mod mock {
     impl<'mock> ::std::convert::AsRef<dyn crate::client::MyRoot + 'mock> for MyNode<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
-            self
+            &self.parent
         }
     }
 
@@ -2429,7 +2429,7 @@ pub mod mock {
     impl<'mock> ::std::convert::AsRef<dyn crate::client::MyNode + 'mock> for MyLeaf<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyNode + 'mock) {
-            self
+            &self.parent
         }
     }
 
@@ -2437,7 +2437,7 @@ pub mod mock {
     impl<'mock> ::std::convert::AsRef<dyn crate::client::MyRoot + 'mock> for MyLeaf<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
-            self
+            &self.parent
         }
     }
 
