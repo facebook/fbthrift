@@ -37,8 +37,11 @@ void ConformanceHandler::roundTrip(
 
 void ConformanceHandler::requestResponseBasic(
     Response& res, std::unique_ptr<Request> req) {
-  result_.requestResponse_ref().emplace().request() = *req;
-  res = *testCase_->requestResponse_ref()->basic_ref()->response();
+  result_.requestResponseBasic_ref().emplace().request() = *req;
+  res = *testCase_->rpc_ref()
+             ->serverInstruction_ref()
+             ->requestResponseBasic_ref()
+             ->response();
 }
 
 } // namespace apache::thrift::conformance

@@ -65,39 +65,44 @@ testing::AssertionResult RunRoundTripTest(
   return testing::AssertionSuccess();
 }
 
-testing::AssertionResult RunRequestResponseBasicTest(
+RequestResponseBasicClientTestResult RunRequestResponseBasic(
     ConformanceServiceAsyncClient& client,
-    const RequestResponseBasicTestCase& testCase) {
-  try {
-    Response res;
-    client.sync_requestResponseBasic(res, *testCase.request());
-    if (res != testCase.response()) {
-      return testing::AssertionFailure();
-    }
-  } catch (const apache::thrift::TApplicationException&) {
+    const RequestResponseBasicClientInstruction& instruction) {
+  RequestResponseBasicClientTestResult result;
+  client.sync_requestResponseBasic(
+      result.response().emplace(), *instruction.request());
+  return result;
+}
+
+ClientTestResult RunClientSteps(
+    ConformanceServiceAsyncClient& client,
+    const ClientInstruction& clientInstruction) {
+  ClientTestResult result;
+  switch (clientInstruction.getType()) {
+    case ClientInstruction::Type::requestResponseBasic:
+      result.set_requestResponseBasic(RunRequestResponseBasic(
+          client, *clientInstruction.requestResponseBasic_ref()));
+      break;
+    default:
+      break;
+  }
+  return result;
+}
+
+testing::AssertionResult RunRpcTest(
+    ConformanceServiceAsyncClient& client, const RpcTestCase& rpc) {
+  auto actualClientResult = RunClientSteps(client, *rpc.clientInstruction());
+  if (actualClientResult != *rpc.clientTestResult()) {
     return testing::AssertionFailure();
   }
 
   // Get result from server
-  ServerTestResult result;
-  client.sync_getTestResult(result);
-
-  if (result.requestResponse_ref()->request() != *testCase.request()) {
+  ServerTestResult actualServerResult;
+  client.sync_getTestResult(actualServerResult);
+  if (actualServerResult != *rpc.serverTestResult()) {
     return testing::AssertionFailure();
   }
-
   return testing::AssertionSuccess();
-}
-
-testing::AssertionResult RunRequestResponseTest(
-    ConformanceServiceAsyncClient& client,
-    const RequestResponseTestCase& requestResponse) {
-  switch (requestResponse.getType()) {
-    case RequestResponseTestCase::Type::basic:
-      return RunRequestResponseBasicTest(client, *requestResponse.basic_ref());
-    default:
-      return testing::AssertionFailure();
-  }
 }
 
 } // namespace
@@ -108,8 +113,8 @@ testing::AssertionResult RunTestCase(
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());
-    case TestCaseUnion::Type::requestResponse:
-      return RunRequestResponseTest(client, *testCase.requestResponse_ref());
+    case TestCaseUnion::Type::rpc:
+      return RunRpcTest(client, *testCase.rpc_ref());
     default:
       return testing::AssertionFailure()
           << "Unsupported test case type: " << testCase.test()->getType();

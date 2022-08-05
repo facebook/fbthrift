@@ -21,13 +21,11 @@ namespace py.asyncio thrift_asyncio.conformance.rpc
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 
-union RequestResponseTestCase {
-  1: RequestResponseBasicTestCase basic;
-}
-
-struct RequestResponseBasicTestCase {
-  1: Request request;
-  2: Response response;
+struct RpcTestCase {
+  1: ClientInstruction clientInstruction;
+  2: ClientTestResult clientTestResult;
+  3: ServerInstruction serverInstruction;
+  4: ServerTestResult serverTestResult;
 }
 
 struct Request {
@@ -41,17 +39,33 @@ struct Response {
 }
 
 union ServerTestResult {
-  1: RequestResponseServerTestResult requestResponse;
+  1: RequestResponseBasicServerTestResult requestResponseBasic;
 }
 
 union ClientTestResult {
-  1: RequestResponseClientTestResult requestResponse;
+  1: RequestResponseBasicClientTestResult requestResponseBasic;
 }
 
-struct RequestResponseServerTestResult {
-  1: optional Request request;
+struct RequestResponseBasicServerTestResult {
+  1: Request request;
 }
 
-struct RequestResponseClientTestResult {
-  1: optional Response response;
+struct RequestResponseBasicClientTestResult {
+  1: Response response;
+}
+
+union ClientInstruction {
+  1: RequestResponseBasicClientInstruction requestResponseBasic;
+}
+
+union ServerInstruction {
+  1: RequestResponseBasicServerInstruction requestResponseBasic;
+}
+
+struct RequestResponseBasicClientInstruction {
+  1: Request request;
+}
+
+struct RequestResponseBasicServerInstruction {
+  1: Response response;
 }

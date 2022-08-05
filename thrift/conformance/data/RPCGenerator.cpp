@@ -26,10 +26,36 @@ Test createRequestResponseBasicTest() {
   auto& testCase = ret.testCases()->emplace_back();
   testCase.name() = "RequestResponse/Success";
 
-  auto& requestResponseBasicTestCase =
-      testCase.test()->requestResponse_ref().emplace().basic_ref().emplace();
-  requestResponseBasicTestCase.request().emplace().data() = "hello";
-  requestResponseBasicTestCase.response().emplace().data() = "world";
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+
+  rpcTest.serverInstruction_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
 
   return ret;
 }

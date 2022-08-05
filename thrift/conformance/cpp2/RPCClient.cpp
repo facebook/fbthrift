@@ -37,19 +37,13 @@ std::unique_ptr<Client<ConformanceService>> createClient() {
               folly::SocketAddress("::1", FLAGS_port)))));
 }
 
-RequestResponseClientTestResult runRequestResponseTest(
-    const RequestResponseTestCase& requestResponse) {
-  RequestResponseClientTestResult result;
-  switch (requestResponse.getType()) {
-    case RequestResponseTestCase::Type::basic: {
-      auto client = createClient();
-      client->sync_requestResponseBasic(
-          result.response().emplace(), *requestResponse.basic_ref()->request());
-      return result;
-    }
-    default:
-      return result;
-  }
+RequestResponseBasicClientTestResult runRequestResponseTest(
+    const RequestResponseBasicClientInstruction& instruction) {
+  RequestResponseBasicClientTestResult result;
+  auto client = createClient();
+  client->sync_requestResponseBasic(
+      result.response().emplace(), *instruction.request());
+  return result;
 }
 
 int main(int argc, char** argv) {
@@ -58,12 +52,13 @@ int main(int argc, char** argv) {
   TestCase testCase;
   auto client = createClient();
   client->sync_getTestCase(testCase);
+  auto& clientInstruction = *testCase.rpc_ref()->clientInstruction_ref();
 
   ClientTestResult result;
-  switch (testCase.test()->getType()) {
-    case TestCaseUnion::Type::requestResponse:
-      result.set_requestResponse(
-          runRequestResponseTest(*testCase.requestResponse_ref()));
+  switch (clientInstruction.getType()) {
+    case ClientInstruction::Type::requestResponseBasic:
+      result.set_requestResponseBasic(runRequestResponseTest(
+          *clientInstruction.requestResponseBasic_ref()));
       break;
     default:
       throw std::runtime_error("Invalid TestCase type");

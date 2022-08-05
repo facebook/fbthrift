@@ -28,7 +28,7 @@ TEST(TestGeneratorTest, RoundTripSuite) {
   EXPECT_EQ(test.name(), "RequestResponseBasicTest");
   const auto& testCase = test.testCases()->at(0);
   EXPECT_EQ(testCase.name(), "RequestResponse/Success");
-  EXPECT_TRUE(testCase.test()->requestResponse_ref());
+  EXPECT_TRUE(testCase.test()->rpc_ref());
 }
 
 } // namespace apache::thrift::conformance::data

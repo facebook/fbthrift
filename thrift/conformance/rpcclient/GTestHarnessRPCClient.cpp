@@ -43,8 +43,13 @@ class ConformanceVerificationServer
     clientResultPromise_.setValue(*result);
   }
 
-  void requestResponseBasic(Response& res, std::unique_ptr<Request>) override {
-    res = *testCase_.requestResponse_ref()->basic_ref()->response();
+  void requestResponseBasic(
+      Response& res, std::unique_ptr<Request> req) override {
+    res = *testCase_.rpc_ref()
+               ->serverInstruction()
+               ->requestResponseBasic_ref()
+               ->response();
+    serverResult_.requestResponseBasic_ref().emplace().request() = *req;
   }
 
   folly::SemiFuture<folly::Unit> getTestReceived() {
@@ -55,47 +60,14 @@ class ConformanceVerificationServer
     return clientResultPromise_.getSemiFuture();
   }
 
+  const ServerTestResult& serverResult() { return serverResult_; }
+
  private:
   const TestCase& testCase_;
   folly::Promise<folly::Unit> getTestReceivedPromise_;
   folly::Promise<ClientTestResult> clientResultPromise_;
+  ServerTestResult serverResult_;
 };
-
-testing::AssertionResult performRequestResponseBasicAssertions(
-    const RequestResponseBasicTestCase& testCase,
-    const ClientTestResult& result) {
-  if (result.requestResponse_ref()->response() != *testCase.response()) {
-    return testing::AssertionFailure();
-  }
-  return testing::AssertionSuccess();
-}
-
-testing::AssertionResult performRequestResponseAssertions(
-    const RequestResponseTestCase& requestResponse,
-    const ClientTestResult& result) {
-  switch (requestResponse.getType()) {
-    case RequestResponseTestCase::Type::basic:
-      return performRequestResponseBasicAssertions(
-          *requestResponse.basic_ref(), result);
-    default:
-      return testing::AssertionFailure()
-          << "Unsupported request response test case type: "
-          << requestResponse.getType();
-  }
-}
-
-testing::AssertionResult performAssertions(
-    const TestCase& testCase, const ClientTestResult& result) {
-  switch (testCase.test()->getType()) {
-    case TestCaseUnion::Type::requestResponse:
-      return performRequestResponseAssertions(
-          *testCase.test()->requestResponse_ref(), result);
-      break;
-    default:
-      return testing::AssertionFailure()
-          << "Unsupported test case type: " << testCase.test()->getType();
-  }
-}
 
 class RPCClientConformanceTest : public testing::Test {
  public:
@@ -124,16 +96,27 @@ class RPCClientConformanceTest : public testing::Test {
     }
 
     // Wait for result from client
-    folly::Try<ClientTestResult> result =
+    folly::Try<ClientTestResult> actualClientResult =
         handler_->clientResult().within(std::chrono::seconds(1)).getTry();
 
     // End test if result was not received
-    if (result.hasException()) {
+    if (actualClientResult.hasException()) {
       EXPECT_FALSE(conforming_);
       return;
     }
 
-    EXPECT_EQ(conforming_, performAssertions(testCase_, *result));
+    auto& expectedClientResult = *testCase_.rpc_ref()->clientTestResult();
+    if (*actualClientResult != expectedClientResult) {
+      EXPECT_FALSE(conforming_);
+    }
+
+    auto& actualServerResult = handler_->serverResult();
+    auto& expectedServerResult = *testCase_.rpc_ref()->serverTestResult();
+    if (actualServerResult != expectedServerResult) {
+      EXPECT_FALSE(conforming_);
+    }
+
+    EXPECT_TRUE(conforming_);
   }
 
   void TearDown() override {

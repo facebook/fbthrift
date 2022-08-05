@@ -72,5 +72,5 @@ struct TestCase {
 // A union of all supported test case types.
 union TestCaseUnion {
   1: serialization.RoundTripTestCase roundTrip;
-  2: rpc.RequestResponseTestCase requestResponse;
+  2: rpc.RpcTestCase rpc;
 }
