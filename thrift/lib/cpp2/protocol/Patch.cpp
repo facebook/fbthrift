@@ -141,6 +141,8 @@ void ApplyPatch::operator()(const Object& patch, protocol::Value& value) const {
       return operator()(patch, *value.setValue_ref());
     case Value::Type::mapValue:
       return operator()(patch, *value.mapValue_ref());
+    case Value::Type::objectValue:
+      return operator()(patch, *value.objectValue_ref());
     default:
       folly::throw_exception<std::runtime_error>("Not Implemented.");
   }
@@ -332,6 +334,34 @@ void ApplyPatch::operator()(
   if (auto* add = findOp(patch, PatchOp::Put)) {
     for (const auto& [key, val] : *add->mapValue_ref()) {
       value.insert_or_assign(key, val);
+    }
+  }
+}
+
+void ApplyPatch::operator()(const Object& patch, Object& value) const {
+  checkOps(
+      patch,
+      Value::Type::objectValue,
+      {PatchOp::Assign, PatchOp::Clear, PatchOp::Patch});
+  if (applyAssign<type::struct_c>(patch, value)) {
+    return; // Ignore all other ops.
+  }
+
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    if (argAs<type::bool_t>(*clear)) {
+      value.members().ensure().clear();
+    }
+  }
+
+  if (auto* patchFields = findOp(patch, PatchOp::Patch)) {
+    auto& valueMembers = value.members().ensure();
+    for (const auto& [id, field_value] :
+         *patchFields->objectValue_ref()->members()) {
+      // Only patch values for fields that exist for now
+      auto fieldIt = valueMembers.find(id);
+      if (fieldIt != valueMembers.end()) {
+        applyPatch(*field_value.objectValue_ref(), fieldIt->second);
+      }
     }
   }
 }

@@ -39,6 +39,7 @@ struct ApplyPatch {
   void operator()(const Object& patch, std::vector<Value>& value) const;
   void operator()(const Object& patch, std::set<Value>& value) const;
   void operator()(const Object& patch, std::map<Value, Value>& value) const;
+  void operator()(const Object& patch, Object& value) const;
 };
 
 } // namespace detail

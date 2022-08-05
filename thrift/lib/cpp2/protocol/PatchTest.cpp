@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/thrift/gen-cpp2/patch_types.h>
 #include <thrift/test/testset/Testset.h>
+#include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
 namespace apache::thrift::protocol {
 namespace {
@@ -541,6 +542,66 @@ TEST_F(PatchTest, Map) {
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
   }
+}
+
+TEST_F(PatchTest, Struct) {
+  test::testset::struct_with<type::list<type::i32_t>> valueObject;
+  test::testset::struct_with<type::list<type::i32_t>> patchObject;
+
+  valueObject.field_1_ref() = std::vector<int>{1, 2, 3};
+  patchObject.field_1_ref() = std::vector<int>{3, 2, 1};
+
+  auto value = asValueStruct<type::struct_c>(valueObject);
+  auto patchValue = asValueStruct<type::struct_c>(patchObject);
+
+  // Noop
+  {
+    Object patchObj;
+    EXPECT_EQ(
+        *value.objectValue_ref(),
+        *applyContainerPatch(patchObj, value).objectValue_ref());
+  }
+
+  // Assign
+  EXPECT_EQ(
+      *patchValue.objectValue_ref(),
+      *applyContainerPatch(makePatch(op::PatchOp::Assign, patchValue), value)
+           .objectValue_ref());
+
+  // Clear
+  EXPECT_TRUE(
+      applyContainerPatch(
+          makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
+          value)
+          .objectValue_ref()
+          ->members()
+          ->empty());
+
+  // Patch
+  auto applyFieldPatchTest = [&](auto op, auto expected) {
+    {
+      Value fieldPatchValue;
+      fieldPatchValue.objectValue_ref() = makePatch(
+          op,
+          asValueStruct<type::list<type::i32_t>>(std::vector<int>{3, 2, 1}));
+      Value fieldPatch;
+      fieldPatch.objectValue_ref().ensure().members().ensure()[1] =
+          fieldPatchValue;
+      EXPECT_EQ(
+          expected,
+          applyContainerPatch(makePatch(op::PatchOp::Patch, fieldPatch), value)
+              .objectValue_ref()
+              ->members()
+              .ensure()[1]);
+    }
+  };
+
+  applyFieldPatchTest(
+      op::PatchOp::Assign, patchValue.objectValue_ref()->members().ensure()[1]);
+
+  auto expected = asValueStruct<type::list<type::i32_t>>(
+      std::vector<int>{1, 2, 3, 3, 2, 1});
+  applyFieldPatchTest(op::PatchOp::Put, expected);
 }
 
 } // namespace
