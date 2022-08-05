@@ -26,24 +26,66 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("InnerUnionPatch");
-  private static final TField INNER_OPTION_FIELD_DESC = new TField("innerOption", TType.STRUCT, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
-  public final BinaryPatch innerOption;
-  public static final int INNEROPTION = 1;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public final Boolean clear;
+  /**
+   * Patches any set value. Applies second.
+   */
+  public final InnerUnionFieldPatch patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public final InnerUnion ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public final InnerUnionFieldPatch patchAfter;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
+  public static final int ENSURE = 4;
+  public static final int PATCHAFTER = 6;
 
   public InnerUnionPatch(
-      BinaryPatch innerOption) {
-    this.innerOption = innerOption;
+      Boolean clear,
+      InnerUnionFieldPatch patch,
+      InnerUnion ensure,
+      InnerUnionFieldPatch patchAfter) {
+    this.clear = clear;
+    this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public InnerUnionPatch(InnerUnionPatch other) {
-    if (other.isSetInnerOption()) {
-      this.innerOption = TBaseHelper.deepCopy(other.innerOption);
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
     } else {
-      this.innerOption = null;
+      this.clear = null;
+    }
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
+    } else {
+      this.patch = null;
+    }
+    if (other.isSetEnsure()) {
+      this.ensure = TBaseHelper.deepCopy(other.ensure);
+    } else {
+      this.ensure = null;
+    }
+    if (other.isSetPatchAfter()) {
+      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    } else {
+      this.patchAfter = null;
     }
   }
 
@@ -51,13 +93,52 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
     return new InnerUnionPatch(this);
   }
 
-  public BinaryPatch getInnerOption() {
-    return this.innerOption;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public Boolean isClear() {
+    return this.clear;
   }
 
-  // Returns true if field innerOption is set (has been assigned a value) and false otherwise
-  public boolean isSetInnerOption() {
-    return this.innerOption != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
+  }
+
+  /**
+   * Patches any set value. Applies second.
+   */
+  public InnerUnionFieldPatch getPatch() {
+    return this.patch;
+  }
+
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
+  }
+
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public InnerUnion getEnsure() {
+    return this.ensure;
+  }
+
+  // Returns true if field ensure is set (has been assigned a value) and false otherwise
+  public boolean isSetEnsure() {
+    return this.ensure != null;
+  }
+
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public InnerUnionFieldPatch getPatchAfter() {
+    return this.patchAfter;
+  }
+
+  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchAfter() {
+    return this.patchAfter != null;
   }
 
   @Override
@@ -70,14 +151,20 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
       return false;
     InnerUnionPatch that = (InnerUnionPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetInnerOption(), that.isSetInnerOption(), this.innerOption, that.innerOption)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {innerOption});
+    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -86,7 +173,10 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static InnerUnionPatch deserialize(TProtocol iprot) throws TException {
-    BinaryPatch tmp_innerOption = null;
+    Boolean tmp_clear = null;
+    InnerUnionFieldPatch tmp_patch = null;
+    InnerUnion tmp_ensure = null;
+    InnerUnionFieldPatch tmp_patchAfter = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -97,9 +187,31 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
-        case INNEROPTION:
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            tmp_innerOption = BinaryPatch.deserialize(iprot);
+            tmp_patch = InnerUnionFieldPatch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case ENSURE:
+          if (__field.type == TType.STRUCT) {
+            tmp_ensure = new InnerUnion();
+            tmp_ensure.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            tmp_patchAfter = InnerUnionFieldPatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -114,7 +226,10 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
 
     InnerUnionPatch _that;
     _that = new InnerUnionPatch(
-      tmp_innerOption
+      tmp_clear
+      ,tmp_patch
+      ,tmp_ensure
+      ,tmp_patchAfter
     );
     _that.validate();
     return _that;
@@ -124,9 +239,24 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.innerOption != null) {
-      oprot.writeFieldBegin(INNER_OPTION_FIELD_DESC);
-      this.innerOption.write(oprot);
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+    }
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.ensure != null) {
+      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+      this.ensure.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.patchAfter != null) {
+      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+      this.patchAfter.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

@@ -26,134 +26,40 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Comparable<MyStructPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("MyStructPatch");
-  private static final TField BOOL_VAL_FIELD_DESC = new TField("boolVal", TType.STRUCT, (short)1);
-  private static final TField BYTE_VAL_FIELD_DESC = new TField("byteVal", TType.STRUCT, (short)2);
-  private static final TField I16_VAL_FIELD_DESC = new TField("i16Val", TType.STRUCT, (short)3);
-  private static final TField I32_VAL_FIELD_DESC = new TField("i32Val", TType.STRUCT, (short)4);
-  private static final TField I64_VAL_FIELD_DESC = new TField("i64Val", TType.STRUCT, (short)5);
-  private static final TField FLOAT_VAL_FIELD_DESC = new TField("floatVal", TType.STRUCT, (short)6);
-  private static final TField DOUBLE_VAL_FIELD_DESC = new TField("doubleVal", TType.STRUCT, (short)7);
-  private static final TField STRING_VAL_FIELD_DESC = new TField("stringVal", TType.STRUCT, (short)8);
-  private static final TField BINARY_VAL_FIELD_DESC = new TField("binaryVal", TType.STRUCT, (short)9);
-  private static final TField STRUCT_VAL_FIELD_DESC = new TField("structVal", TType.STRUCT, (short)10);
-  private static final TField OPT_BOOL_VAL_FIELD_DESC = new TField("optBoolVal", TType.STRUCT, (short)11);
-  private static final TField OPT_BYTE_VAL_FIELD_DESC = new TField("optByteVal", TType.STRUCT, (short)12);
-  private static final TField OPT_I16_VAL_FIELD_DESC = new TField("optI16Val", TType.STRUCT, (short)13);
-  private static final TField OPT_I32_VAL_FIELD_DESC = new TField("optI32Val", TType.STRUCT, (short)14);
-  private static final TField OPT_I64_VAL_FIELD_DESC = new TField("optI64Val", TType.STRUCT, (short)15);
-  private static final TField OPT_FLOAT_VAL_FIELD_DESC = new TField("optFloatVal", TType.STRUCT, (short)16);
-  private static final TField OPT_DOUBLE_VAL_FIELD_DESC = new TField("optDoubleVal", TType.STRUCT, (short)17);
-  private static final TField OPT_STRING_VAL_FIELD_DESC = new TField("optStringVal", TType.STRUCT, (short)18);
-  private static final TField OPT_BINARY_VAL_FIELD_DESC = new TField("optBinaryVal", TType.STRUCT, (short)19);
-  private static final TField OPT_STRUCT_VAL_FIELD_DESC = new TField("optStructVal", TType.STRUCT, (short)20);
-  private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.STRUCT, (short)21);
-  private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.STRUCT, (short)22);
-  private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
-  private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
+  private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
-  public com.facebook.thrift.op.BoolPatch boolVal;
-  public com.facebook.thrift.op.BytePatch byteVal;
-  public com.facebook.thrift.op.I16Patch i16Val;
-  public com.facebook.thrift.op.I32Patch i32Val;
-  public com.facebook.thrift.op.I64Patch i64Val;
-  public com.facebook.thrift.op.FloatPatch floatVal;
-  public com.facebook.thrift.op.DoublePatch doubleVal;
-  public com.facebook.thrift.op.StringPatch stringVal;
-  public com.facebook.thrift.op.BinaryPatch binaryVal;
-  public MyDataValuePatch structVal;
-  public com.facebook.thrift.op.OptionalBoolPatch optBoolVal;
-  public com.facebook.thrift.op.OptionalBytePatch optByteVal;
-  public com.facebook.thrift.op.OptionalI16Patch optI16Val;
-  public com.facebook.thrift.op.OptionalI32Patch optI32Val;
-  public com.facebook.thrift.op.OptionalI64Patch optI64Val;
-  public com.facebook.thrift.op.OptionalFloatPatch optFloatVal;
-  public com.facebook.thrift.op.OptionalDoublePatch optDoubleVal;
-  public com.facebook.thrift.op.OptionalStringPatch optStringVal;
-  public com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal;
-  public OptionalMyDataValuePatch optStructVal;
-  public OptionalMyStructField21Patch optListVal;
-  public OptionalMyStructField22Patch optSetVal;
-  public OptionalMyStructField23Patch optMapVal;
-  public MyUnionValuePatch unionVal;
-  public static final int BOOLVAL = 1;
-  public static final int BYTEVAL = 2;
-  public static final int I16VAL = 3;
-  public static final int I32VAL = 4;
-  public static final int I64VAL = 5;
-  public static final int FLOATVAL = 6;
-  public static final int DOUBLEVAL = 7;
-  public static final int STRINGVAL = 8;
-  public static final int BINARYVAL = 9;
-  public static final int STRUCTVAL = 10;
-  public static final int OPTBOOLVAL = 11;
-  public static final int OPTBYTEVAL = 12;
-  public static final int OPTI16VAL = 13;
-  public static final int OPTI32VAL = 14;
-  public static final int OPTI64VAL = 15;
-  public static final int OPTFLOATVAL = 16;
-  public static final int OPTDOUBLEVAL = 17;
-  public static final int OPTSTRINGVAL = 18;
-  public static final int OPTBINARYVAL = 19;
-  public static final int OPTSTRUCTVAL = 20;
-  public static final int OPTLISTVAL = 21;
-  public static final int OPTSETVAL = 22;
-  public static final int OPTMAPVAL = 23;
-  public static final int UNIONVAL = 30;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyStruct assign;
+  /**
+   * Clears a value. Applies first.
+   */
+  public boolean clear;
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyStructFieldPatch patch;
+  public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
 
   // isset id assignments
+  private static final int __CLEAR_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
-    tmpMetaDataMap.put(BOOLVAL, new FieldMetaData("boolVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BoolPatch.class)));
-    tmpMetaDataMap.put(BYTEVAL, new FieldMetaData("byteVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BytePatch.class)));
-    tmpMetaDataMap.put(I16VAL, new FieldMetaData("i16Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I16Patch.class)));
-    tmpMetaDataMap.put(I32VAL, new FieldMetaData("i32Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
-    tmpMetaDataMap.put(I64VAL, new FieldMetaData("i64Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I64Patch.class)));
-    tmpMetaDataMap.put(FLOATVAL, new FieldMetaData("floatVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.FloatPatch.class)));
-    tmpMetaDataMap.put(DOUBLEVAL, new FieldMetaData("doubleVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.DoublePatch.class)));
-    tmpMetaDataMap.put(STRINGVAL, new FieldMetaData("stringVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
-    tmpMetaDataMap.put(BINARYVAL, new FieldMetaData("binaryVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BinaryPatch.class)));
-    tmpMetaDataMap.put(STRUCTVAL, new FieldMetaData("structVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, MyDataValuePatch.class)));
-    tmpMetaDataMap.put(OPTBOOLVAL, new FieldMetaData("optBoolVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBoolPatch.class)));
-    tmpMetaDataMap.put(OPTBYTEVAL, new FieldMetaData("optByteVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBytePatch.class)));
-    tmpMetaDataMap.put(OPTI16VAL, new FieldMetaData("optI16Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI16Patch.class)));
-    tmpMetaDataMap.put(OPTI32VAL, new FieldMetaData("optI32Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI32Patch.class)));
-    tmpMetaDataMap.put(OPTI64VAL, new FieldMetaData("optI64Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI64Patch.class)));
-    tmpMetaDataMap.put(OPTFLOATVAL, new FieldMetaData("optFloatVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalFloatPatch.class)));
-    tmpMetaDataMap.put(OPTDOUBLEVAL, new FieldMetaData("optDoubleVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalDoublePatch.class)));
-    tmpMetaDataMap.put(OPTSTRINGVAL, new FieldMetaData("optStringVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalStringPatch.class)));
-    tmpMetaDataMap.put(OPTBINARYVAL, new FieldMetaData("optBinaryVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBinaryPatch.class)));
-    tmpMetaDataMap.put(OPTSTRUCTVAL, new FieldMetaData("optStructVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalMyDataValuePatch.class)));
-    tmpMetaDataMap.put(OPTLISTVAL, new FieldMetaData("optListVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalMyStructField21Patch.class)));
-    tmpMetaDataMap.put(OPTSETVAL, new FieldMetaData("optSetVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalMyStructField22Patch.class)));
-    tmpMetaDataMap.put(OPTMAPVAL, new FieldMetaData("optMapVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalMyStructField23Patch.class)));
-    tmpMetaDataMap.put(UNIONVAL, new FieldMetaData("unionVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, MyUnionValuePatch.class)));
+    tmpMetaDataMap.put(ASSIGN, new FieldMetaData("assign", TFieldRequirementType.OPTIONAL, 
+        new StructMetaData(TType.STRUCT, MyStruct.class)));
+    tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyStructFieldPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -165,232 +71,58 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   }
 
   public MyStructPatch(
-      com.facebook.thrift.op.BoolPatch boolVal,
-      com.facebook.thrift.op.BytePatch byteVal,
-      com.facebook.thrift.op.I16Patch i16Val,
-      com.facebook.thrift.op.I32Patch i32Val,
-      com.facebook.thrift.op.I64Patch i64Val,
-      com.facebook.thrift.op.FloatPatch floatVal,
-      com.facebook.thrift.op.DoublePatch doubleVal,
-      com.facebook.thrift.op.StringPatch stringVal,
-      com.facebook.thrift.op.BinaryPatch binaryVal,
-      MyDataValuePatch structVal,
-      com.facebook.thrift.op.OptionalBoolPatch optBoolVal,
-      com.facebook.thrift.op.OptionalBytePatch optByteVal,
-      com.facebook.thrift.op.OptionalI16Patch optI16Val,
-      com.facebook.thrift.op.OptionalI32Patch optI32Val,
-      com.facebook.thrift.op.OptionalI64Patch optI64Val,
-      com.facebook.thrift.op.OptionalFloatPatch optFloatVal,
-      com.facebook.thrift.op.OptionalDoublePatch optDoubleVal,
-      com.facebook.thrift.op.OptionalStringPatch optStringVal,
-      com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal,
-      OptionalMyDataValuePatch optStructVal,
-      OptionalMyStructField21Patch optListVal,
-      OptionalMyStructField22Patch optSetVal,
-      OptionalMyStructField23Patch optMapVal,
-      MyUnionValuePatch unionVal) {
+      boolean clear,
+      MyStructFieldPatch patch) {
     this();
-    this.boolVal = boolVal;
-    this.byteVal = byteVal;
-    this.i16Val = i16Val;
-    this.i32Val = i32Val;
-    this.i64Val = i64Val;
-    this.floatVal = floatVal;
-    this.doubleVal = doubleVal;
-    this.stringVal = stringVal;
-    this.binaryVal = binaryVal;
-    this.structVal = structVal;
-    this.optBoolVal = optBoolVal;
-    this.optByteVal = optByteVal;
-    this.optI16Val = optI16Val;
-    this.optI32Val = optI32Val;
-    this.optI64Val = optI64Val;
-    this.optFloatVal = optFloatVal;
-    this.optDoubleVal = optDoubleVal;
-    this.optStringVal = optStringVal;
-    this.optBinaryVal = optBinaryVal;
-    this.optStructVal = optStructVal;
-    this.optListVal = optListVal;
-    this.optSetVal = optSetVal;
-    this.optMapVal = optMapVal;
-    this.unionVal = unionVal;
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
+  }
+
+  public MyStructPatch(
+      MyStruct assign,
+      boolean clear,
+      MyStructFieldPatch patch) {
+    this();
+    this.assign = assign;
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
   }
 
   public static class Builder {
-    private com.facebook.thrift.op.BoolPatch boolVal;
-    private com.facebook.thrift.op.BytePatch byteVal;
-    private com.facebook.thrift.op.I16Patch i16Val;
-    private com.facebook.thrift.op.I32Patch i32Val;
-    private com.facebook.thrift.op.I64Patch i64Val;
-    private com.facebook.thrift.op.FloatPatch floatVal;
-    private com.facebook.thrift.op.DoublePatch doubleVal;
-    private com.facebook.thrift.op.StringPatch stringVal;
-    private com.facebook.thrift.op.BinaryPatch binaryVal;
-    private MyDataValuePatch structVal;
-    private com.facebook.thrift.op.OptionalBoolPatch optBoolVal;
-    private com.facebook.thrift.op.OptionalBytePatch optByteVal;
-    private com.facebook.thrift.op.OptionalI16Patch optI16Val;
-    private com.facebook.thrift.op.OptionalI32Patch optI32Val;
-    private com.facebook.thrift.op.OptionalI64Patch optI64Val;
-    private com.facebook.thrift.op.OptionalFloatPatch optFloatVal;
-    private com.facebook.thrift.op.OptionalDoublePatch optDoubleVal;
-    private com.facebook.thrift.op.OptionalStringPatch optStringVal;
-    private com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal;
-    private OptionalMyDataValuePatch optStructVal;
-    private OptionalMyStructField21Patch optListVal;
-    private OptionalMyStructField22Patch optSetVal;
-    private OptionalMyStructField23Patch optMapVal;
-    private MyUnionValuePatch unionVal;
+    private MyStruct assign;
+    private boolean clear;
+    private MyStructFieldPatch patch;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
-    public Builder setBoolVal(final com.facebook.thrift.op.BoolPatch boolVal) {
-      this.boolVal = boolVal;
+    public Builder setAssign(final MyStruct assign) {
+      this.assign = assign;
       return this;
     }
 
-    public Builder setByteVal(final com.facebook.thrift.op.BytePatch byteVal) {
-      this.byteVal = byteVal;
+    public Builder setClear(final boolean clear) {
+      this.clear = clear;
+      __optional_isset.set(__CLEAR_ISSET_ID, true);
       return this;
     }
 
-    public Builder setI16Val(final com.facebook.thrift.op.I16Patch i16Val) {
-      this.i16Val = i16Val;
-      return this;
-    }
-
-    public Builder setI32Val(final com.facebook.thrift.op.I32Patch i32Val) {
-      this.i32Val = i32Val;
-      return this;
-    }
-
-    public Builder setI64Val(final com.facebook.thrift.op.I64Patch i64Val) {
-      this.i64Val = i64Val;
-      return this;
-    }
-
-    public Builder setFloatVal(final com.facebook.thrift.op.FloatPatch floatVal) {
-      this.floatVal = floatVal;
-      return this;
-    }
-
-    public Builder setDoubleVal(final com.facebook.thrift.op.DoublePatch doubleVal) {
-      this.doubleVal = doubleVal;
-      return this;
-    }
-
-    public Builder setStringVal(final com.facebook.thrift.op.StringPatch stringVal) {
-      this.stringVal = stringVal;
-      return this;
-    }
-
-    public Builder setBinaryVal(final com.facebook.thrift.op.BinaryPatch binaryVal) {
-      this.binaryVal = binaryVal;
-      return this;
-    }
-
-    public Builder setStructVal(final MyDataValuePatch structVal) {
-      this.structVal = structVal;
-      return this;
-    }
-
-    public Builder setOptBoolVal(final com.facebook.thrift.op.OptionalBoolPatch optBoolVal) {
-      this.optBoolVal = optBoolVal;
-      return this;
-    }
-
-    public Builder setOptByteVal(final com.facebook.thrift.op.OptionalBytePatch optByteVal) {
-      this.optByteVal = optByteVal;
-      return this;
-    }
-
-    public Builder setOptI16Val(final com.facebook.thrift.op.OptionalI16Patch optI16Val) {
-      this.optI16Val = optI16Val;
-      return this;
-    }
-
-    public Builder setOptI32Val(final com.facebook.thrift.op.OptionalI32Patch optI32Val) {
-      this.optI32Val = optI32Val;
-      return this;
-    }
-
-    public Builder setOptI64Val(final com.facebook.thrift.op.OptionalI64Patch optI64Val) {
-      this.optI64Val = optI64Val;
-      return this;
-    }
-
-    public Builder setOptFloatVal(final com.facebook.thrift.op.OptionalFloatPatch optFloatVal) {
-      this.optFloatVal = optFloatVal;
-      return this;
-    }
-
-    public Builder setOptDoubleVal(final com.facebook.thrift.op.OptionalDoublePatch optDoubleVal) {
-      this.optDoubleVal = optDoubleVal;
-      return this;
-    }
-
-    public Builder setOptStringVal(final com.facebook.thrift.op.OptionalStringPatch optStringVal) {
-      this.optStringVal = optStringVal;
-      return this;
-    }
-
-    public Builder setOptBinaryVal(final com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal) {
-      this.optBinaryVal = optBinaryVal;
-      return this;
-    }
-
-    public Builder setOptStructVal(final OptionalMyDataValuePatch optStructVal) {
-      this.optStructVal = optStructVal;
-      return this;
-    }
-
-    public Builder setOptListVal(final OptionalMyStructField21Patch optListVal) {
-      this.optListVal = optListVal;
-      return this;
-    }
-
-    public Builder setOptSetVal(final OptionalMyStructField22Patch optSetVal) {
-      this.optSetVal = optSetVal;
-      return this;
-    }
-
-    public Builder setOptMapVal(final OptionalMyStructField23Patch optMapVal) {
-      this.optMapVal = optMapVal;
-      return this;
-    }
-
-    public Builder setUnionVal(final MyUnionValuePatch unionVal) {
-      this.unionVal = unionVal;
+    public Builder setPatch(final MyStructFieldPatch patch) {
+      this.patch = patch;
       return this;
     }
 
     public MyStructPatch build() {
       MyStructPatch result = new MyStructPatch();
-      result.setBoolVal(this.boolVal);
-      result.setByteVal(this.byteVal);
-      result.setI16Val(this.i16Val);
-      result.setI32Val(this.i32Val);
-      result.setI64Val(this.i64Val);
-      result.setFloatVal(this.floatVal);
-      result.setDoubleVal(this.doubleVal);
-      result.setStringVal(this.stringVal);
-      result.setBinaryVal(this.binaryVal);
-      result.setStructVal(this.structVal);
-      result.setOptBoolVal(this.optBoolVal);
-      result.setOptByteVal(this.optByteVal);
-      result.setOptI16Val(this.optI16Val);
-      result.setOptI32Val(this.optI32Val);
-      result.setOptI64Val(this.optI64Val);
-      result.setOptFloatVal(this.optFloatVal);
-      result.setOptDoubleVal(this.optDoubleVal);
-      result.setOptStringVal(this.optStringVal);
-      result.setOptBinaryVal(this.optBinaryVal);
-      result.setOptStructVal(this.optStructVal);
-      result.setOptListVal(this.optListVal);
-      result.setOptSetVal(this.optSetVal);
-      result.setOptMapVal(this.optMapVal);
-      result.setUnionVal(this.unionVal);
+      result.setAssign(this.assign);
+      if (__optional_isset.get(__CLEAR_ISSET_ID)) {
+        result.setClear(this.clear);
+      }
+      result.setPatch(this.patch);
       return result;
     }
   }
@@ -403,77 +135,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
    * Performs a deep copy on <i>other</i>.
    */
   public MyStructPatch(MyStructPatch other) {
-    if (other.isSetBoolVal()) {
-      this.boolVal = TBaseHelper.deepCopy(other.boolVal);
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetAssign()) {
+      this.assign = TBaseHelper.deepCopy(other.assign);
     }
-    if (other.isSetByteVal()) {
-      this.byteVal = TBaseHelper.deepCopy(other.byteVal);
-    }
-    if (other.isSetI16Val()) {
-      this.i16Val = TBaseHelper.deepCopy(other.i16Val);
-    }
-    if (other.isSetI32Val()) {
-      this.i32Val = TBaseHelper.deepCopy(other.i32Val);
-    }
-    if (other.isSetI64Val()) {
-      this.i64Val = TBaseHelper.deepCopy(other.i64Val);
-    }
-    if (other.isSetFloatVal()) {
-      this.floatVal = TBaseHelper.deepCopy(other.floatVal);
-    }
-    if (other.isSetDoubleVal()) {
-      this.doubleVal = TBaseHelper.deepCopy(other.doubleVal);
-    }
-    if (other.isSetStringVal()) {
-      this.stringVal = TBaseHelper.deepCopy(other.stringVal);
-    }
-    if (other.isSetBinaryVal()) {
-      this.binaryVal = TBaseHelper.deepCopy(other.binaryVal);
-    }
-    if (other.isSetStructVal()) {
-      this.structVal = TBaseHelper.deepCopy(other.structVal);
-    }
-    if (other.isSetOptBoolVal()) {
-      this.optBoolVal = TBaseHelper.deepCopy(other.optBoolVal);
-    }
-    if (other.isSetOptByteVal()) {
-      this.optByteVal = TBaseHelper.deepCopy(other.optByteVal);
-    }
-    if (other.isSetOptI16Val()) {
-      this.optI16Val = TBaseHelper.deepCopy(other.optI16Val);
-    }
-    if (other.isSetOptI32Val()) {
-      this.optI32Val = TBaseHelper.deepCopy(other.optI32Val);
-    }
-    if (other.isSetOptI64Val()) {
-      this.optI64Val = TBaseHelper.deepCopy(other.optI64Val);
-    }
-    if (other.isSetOptFloatVal()) {
-      this.optFloatVal = TBaseHelper.deepCopy(other.optFloatVal);
-    }
-    if (other.isSetOptDoubleVal()) {
-      this.optDoubleVal = TBaseHelper.deepCopy(other.optDoubleVal);
-    }
-    if (other.isSetOptStringVal()) {
-      this.optStringVal = TBaseHelper.deepCopy(other.optStringVal);
-    }
-    if (other.isSetOptBinaryVal()) {
-      this.optBinaryVal = TBaseHelper.deepCopy(other.optBinaryVal);
-    }
-    if (other.isSetOptStructVal()) {
-      this.optStructVal = TBaseHelper.deepCopy(other.optStructVal);
-    }
-    if (other.isSetOptListVal()) {
-      this.optListVal = TBaseHelper.deepCopy(other.optListVal);
-    }
-    if (other.isSetOptSetVal()) {
-      this.optSetVal = TBaseHelper.deepCopy(other.optSetVal);
-    }
-    if (other.isSetOptMapVal()) {
-      this.optMapVal = TBaseHelper.deepCopy(other.optMapVal);
-    }
-    if (other.isSetUnionVal()) {
-      this.unionVal = TBaseHelper.deepCopy(other.unionVal);
+    this.clear = TBaseHelper.deepCopy(other.clear);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     }
   }
 
@@ -481,773 +150,118 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     return new MyStructPatch(this);
   }
 
-  public com.facebook.thrift.op.BoolPatch getBoolVal() {
-    return this.boolVal;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyStruct getAssign() {
+    return this.assign;
   }
 
-  public MyStructPatch setBoolVal(com.facebook.thrift.op.BoolPatch boolVal) {
-    this.boolVal = boolVal;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyStructPatch setAssign(MyStruct assign) {
+    this.assign = assign;
     return this;
   }
 
-  public void unsetBoolVal() {
-    this.boolVal = null;
+  public void unsetAssign() {
+    this.assign = null;
   }
 
-  // Returns true if field boolVal is set (has been assigned a value) and false otherwise
-  public boolean isSetBoolVal() {
-    return this.boolVal != null;
+  // Returns true if field assign is set (has been assigned a value) and false otherwise
+  public boolean isSetAssign() {
+    return this.assign != null;
   }
 
-  public void setBoolValIsSet(boolean __value) {
+  public void setAssignIsSet(boolean __value) {
     if (!__value) {
-      this.boolVal = null;
+      this.assign = null;
     }
   }
 
-  public com.facebook.thrift.op.BytePatch getByteVal() {
-    return this.byteVal;
+  /**
+   * Clears a value. Applies first.
+   */
+  public boolean isClear() {
+    return this.clear;
   }
 
-  public MyStructPatch setByteVal(com.facebook.thrift.op.BytePatch byteVal) {
-    this.byteVal = byteVal;
+  /**
+   * Clears a value. Applies first.
+   */
+  public MyStructPatch setClear(boolean clear) {
+    this.clear = clear;
+    setClearIsSet(true);
     return this;
   }
 
-  public void unsetByteVal() {
-    this.byteVal = null;
+  public void unsetClear() {
+    __isset_bit_vector.clear(__CLEAR_ISSET_ID);
   }
 
-  // Returns true if field byteVal is set (has been assigned a value) and false otherwise
-  public boolean isSetByteVal() {
-    return this.byteVal != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return __isset_bit_vector.get(__CLEAR_ISSET_ID);
   }
 
-  public void setByteValIsSet(boolean __value) {
-    if (!__value) {
-      this.byteVal = null;
-    }
+  public void setClearIsSet(boolean __value) {
+    __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
   }
 
-  public com.facebook.thrift.op.I16Patch getI16Val() {
-    return this.i16Val;
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyStructFieldPatch getPatch() {
+    return this.patch;
   }
 
-  public MyStructPatch setI16Val(com.facebook.thrift.op.I16Patch i16Val) {
-    this.i16Val = i16Val;
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyStructPatch setPatch(MyStructFieldPatch patch) {
+    this.patch = patch;
     return this;
   }
 
-  public void unsetI16Val() {
-    this.i16Val = null;
+  public void unsetPatch() {
+    this.patch = null;
   }
 
-  // Returns true if field i16Val is set (has been assigned a value) and false otherwise
-  public boolean isSetI16Val() {
-    return this.i16Val != null;
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
-  public void setI16ValIsSet(boolean __value) {
+  public void setPatchIsSet(boolean __value) {
     if (!__value) {
-      this.i16Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.I32Patch getI32Val() {
-    return this.i32Val;
-  }
-
-  public MyStructPatch setI32Val(com.facebook.thrift.op.I32Patch i32Val) {
-    this.i32Val = i32Val;
-    return this;
-  }
-
-  public void unsetI32Val() {
-    this.i32Val = null;
-  }
-
-  // Returns true if field i32Val is set (has been assigned a value) and false otherwise
-  public boolean isSetI32Val() {
-    return this.i32Val != null;
-  }
-
-  public void setI32ValIsSet(boolean __value) {
-    if (!__value) {
-      this.i32Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.I64Patch getI64Val() {
-    return this.i64Val;
-  }
-
-  public MyStructPatch setI64Val(com.facebook.thrift.op.I64Patch i64Val) {
-    this.i64Val = i64Val;
-    return this;
-  }
-
-  public void unsetI64Val() {
-    this.i64Val = null;
-  }
-
-  // Returns true if field i64Val is set (has been assigned a value) and false otherwise
-  public boolean isSetI64Val() {
-    return this.i64Val != null;
-  }
-
-  public void setI64ValIsSet(boolean __value) {
-    if (!__value) {
-      this.i64Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.FloatPatch getFloatVal() {
-    return this.floatVal;
-  }
-
-  public MyStructPatch setFloatVal(com.facebook.thrift.op.FloatPatch floatVal) {
-    this.floatVal = floatVal;
-    return this;
-  }
-
-  public void unsetFloatVal() {
-    this.floatVal = null;
-  }
-
-  // Returns true if field floatVal is set (has been assigned a value) and false otherwise
-  public boolean isSetFloatVal() {
-    return this.floatVal != null;
-  }
-
-  public void setFloatValIsSet(boolean __value) {
-    if (!__value) {
-      this.floatVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.DoublePatch getDoubleVal() {
-    return this.doubleVal;
-  }
-
-  public MyStructPatch setDoubleVal(com.facebook.thrift.op.DoublePatch doubleVal) {
-    this.doubleVal = doubleVal;
-    return this;
-  }
-
-  public void unsetDoubleVal() {
-    this.doubleVal = null;
-  }
-
-  // Returns true if field doubleVal is set (has been assigned a value) and false otherwise
-  public boolean isSetDoubleVal() {
-    return this.doubleVal != null;
-  }
-
-  public void setDoubleValIsSet(boolean __value) {
-    if (!__value) {
-      this.doubleVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.StringPatch getStringVal() {
-    return this.stringVal;
-  }
-
-  public MyStructPatch setStringVal(com.facebook.thrift.op.StringPatch stringVal) {
-    this.stringVal = stringVal;
-    return this;
-  }
-
-  public void unsetStringVal() {
-    this.stringVal = null;
-  }
-
-  // Returns true if field stringVal is set (has been assigned a value) and false otherwise
-  public boolean isSetStringVal() {
-    return this.stringVal != null;
-  }
-
-  public void setStringValIsSet(boolean __value) {
-    if (!__value) {
-      this.stringVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.BinaryPatch getBinaryVal() {
-    return this.binaryVal;
-  }
-
-  public MyStructPatch setBinaryVal(com.facebook.thrift.op.BinaryPatch binaryVal) {
-    this.binaryVal = binaryVal;
-    return this;
-  }
-
-  public void unsetBinaryVal() {
-    this.binaryVal = null;
-  }
-
-  // Returns true if field binaryVal is set (has been assigned a value) and false otherwise
-  public boolean isSetBinaryVal() {
-    return this.binaryVal != null;
-  }
-
-  public void setBinaryValIsSet(boolean __value) {
-    if (!__value) {
-      this.binaryVal = null;
-    }
-  }
-
-  public MyDataValuePatch getStructVal() {
-    return this.structVal;
-  }
-
-  public MyStructPatch setStructVal(MyDataValuePatch structVal) {
-    this.structVal = structVal;
-    return this;
-  }
-
-  public void unsetStructVal() {
-    this.structVal = null;
-  }
-
-  // Returns true if field structVal is set (has been assigned a value) and false otherwise
-  public boolean isSetStructVal() {
-    return this.structVal != null;
-  }
-
-  public void setStructValIsSet(boolean __value) {
-    if (!__value) {
-      this.structVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalBoolPatch getOptBoolVal() {
-    return this.optBoolVal;
-  }
-
-  public MyStructPatch setOptBoolVal(com.facebook.thrift.op.OptionalBoolPatch optBoolVal) {
-    this.optBoolVal = optBoolVal;
-    return this;
-  }
-
-  public void unsetOptBoolVal() {
-    this.optBoolVal = null;
-  }
-
-  // Returns true if field optBoolVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptBoolVal() {
-    return this.optBoolVal != null;
-  }
-
-  public void setOptBoolValIsSet(boolean __value) {
-    if (!__value) {
-      this.optBoolVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalBytePatch getOptByteVal() {
-    return this.optByteVal;
-  }
-
-  public MyStructPatch setOptByteVal(com.facebook.thrift.op.OptionalBytePatch optByteVal) {
-    this.optByteVal = optByteVal;
-    return this;
-  }
-
-  public void unsetOptByteVal() {
-    this.optByteVal = null;
-  }
-
-  // Returns true if field optByteVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptByteVal() {
-    return this.optByteVal != null;
-  }
-
-  public void setOptByteValIsSet(boolean __value) {
-    if (!__value) {
-      this.optByteVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalI16Patch getOptI16Val() {
-    return this.optI16Val;
-  }
-
-  public MyStructPatch setOptI16Val(com.facebook.thrift.op.OptionalI16Patch optI16Val) {
-    this.optI16Val = optI16Val;
-    return this;
-  }
-
-  public void unsetOptI16Val() {
-    this.optI16Val = null;
-  }
-
-  // Returns true if field optI16Val is set (has been assigned a value) and false otherwise
-  public boolean isSetOptI16Val() {
-    return this.optI16Val != null;
-  }
-
-  public void setOptI16ValIsSet(boolean __value) {
-    if (!__value) {
-      this.optI16Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalI32Patch getOptI32Val() {
-    return this.optI32Val;
-  }
-
-  public MyStructPatch setOptI32Val(com.facebook.thrift.op.OptionalI32Patch optI32Val) {
-    this.optI32Val = optI32Val;
-    return this;
-  }
-
-  public void unsetOptI32Val() {
-    this.optI32Val = null;
-  }
-
-  // Returns true if field optI32Val is set (has been assigned a value) and false otherwise
-  public boolean isSetOptI32Val() {
-    return this.optI32Val != null;
-  }
-
-  public void setOptI32ValIsSet(boolean __value) {
-    if (!__value) {
-      this.optI32Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalI64Patch getOptI64Val() {
-    return this.optI64Val;
-  }
-
-  public MyStructPatch setOptI64Val(com.facebook.thrift.op.OptionalI64Patch optI64Val) {
-    this.optI64Val = optI64Val;
-    return this;
-  }
-
-  public void unsetOptI64Val() {
-    this.optI64Val = null;
-  }
-
-  // Returns true if field optI64Val is set (has been assigned a value) and false otherwise
-  public boolean isSetOptI64Val() {
-    return this.optI64Val != null;
-  }
-
-  public void setOptI64ValIsSet(boolean __value) {
-    if (!__value) {
-      this.optI64Val = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalFloatPatch getOptFloatVal() {
-    return this.optFloatVal;
-  }
-
-  public MyStructPatch setOptFloatVal(com.facebook.thrift.op.OptionalFloatPatch optFloatVal) {
-    this.optFloatVal = optFloatVal;
-    return this;
-  }
-
-  public void unsetOptFloatVal() {
-    this.optFloatVal = null;
-  }
-
-  // Returns true if field optFloatVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptFloatVal() {
-    return this.optFloatVal != null;
-  }
-
-  public void setOptFloatValIsSet(boolean __value) {
-    if (!__value) {
-      this.optFloatVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalDoublePatch getOptDoubleVal() {
-    return this.optDoubleVal;
-  }
-
-  public MyStructPatch setOptDoubleVal(com.facebook.thrift.op.OptionalDoublePatch optDoubleVal) {
-    this.optDoubleVal = optDoubleVal;
-    return this;
-  }
-
-  public void unsetOptDoubleVal() {
-    this.optDoubleVal = null;
-  }
-
-  // Returns true if field optDoubleVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptDoubleVal() {
-    return this.optDoubleVal != null;
-  }
-
-  public void setOptDoubleValIsSet(boolean __value) {
-    if (!__value) {
-      this.optDoubleVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalStringPatch getOptStringVal() {
-    return this.optStringVal;
-  }
-
-  public MyStructPatch setOptStringVal(com.facebook.thrift.op.OptionalStringPatch optStringVal) {
-    this.optStringVal = optStringVal;
-    return this;
-  }
-
-  public void unsetOptStringVal() {
-    this.optStringVal = null;
-  }
-
-  // Returns true if field optStringVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptStringVal() {
-    return this.optStringVal != null;
-  }
-
-  public void setOptStringValIsSet(boolean __value) {
-    if (!__value) {
-      this.optStringVal = null;
-    }
-  }
-
-  public com.facebook.thrift.op.OptionalBinaryPatch getOptBinaryVal() {
-    return this.optBinaryVal;
-  }
-
-  public MyStructPatch setOptBinaryVal(com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal) {
-    this.optBinaryVal = optBinaryVal;
-    return this;
-  }
-
-  public void unsetOptBinaryVal() {
-    this.optBinaryVal = null;
-  }
-
-  // Returns true if field optBinaryVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptBinaryVal() {
-    return this.optBinaryVal != null;
-  }
-
-  public void setOptBinaryValIsSet(boolean __value) {
-    if (!__value) {
-      this.optBinaryVal = null;
-    }
-  }
-
-  public OptionalMyDataValuePatch getOptStructVal() {
-    return this.optStructVal;
-  }
-
-  public MyStructPatch setOptStructVal(OptionalMyDataValuePatch optStructVal) {
-    this.optStructVal = optStructVal;
-    return this;
-  }
-
-  public void unsetOptStructVal() {
-    this.optStructVal = null;
-  }
-
-  // Returns true if field optStructVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptStructVal() {
-    return this.optStructVal != null;
-  }
-
-  public void setOptStructValIsSet(boolean __value) {
-    if (!__value) {
-      this.optStructVal = null;
-    }
-  }
-
-  public OptionalMyStructField21Patch getOptListVal() {
-    return this.optListVal;
-  }
-
-  public MyStructPatch setOptListVal(OptionalMyStructField21Patch optListVal) {
-    this.optListVal = optListVal;
-    return this;
-  }
-
-  public void unsetOptListVal() {
-    this.optListVal = null;
-  }
-
-  // Returns true if field optListVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptListVal() {
-    return this.optListVal != null;
-  }
-
-  public void setOptListValIsSet(boolean __value) {
-    if (!__value) {
-      this.optListVal = null;
-    }
-  }
-
-  public OptionalMyStructField22Patch getOptSetVal() {
-    return this.optSetVal;
-  }
-
-  public MyStructPatch setOptSetVal(OptionalMyStructField22Patch optSetVal) {
-    this.optSetVal = optSetVal;
-    return this;
-  }
-
-  public void unsetOptSetVal() {
-    this.optSetVal = null;
-  }
-
-  // Returns true if field optSetVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptSetVal() {
-    return this.optSetVal != null;
-  }
-
-  public void setOptSetValIsSet(boolean __value) {
-    if (!__value) {
-      this.optSetVal = null;
-    }
-  }
-
-  public OptionalMyStructField23Patch getOptMapVal() {
-    return this.optMapVal;
-  }
-
-  public MyStructPatch setOptMapVal(OptionalMyStructField23Patch optMapVal) {
-    this.optMapVal = optMapVal;
-    return this;
-  }
-
-  public void unsetOptMapVal() {
-    this.optMapVal = null;
-  }
-
-  // Returns true if field optMapVal is set (has been assigned a value) and false otherwise
-  public boolean isSetOptMapVal() {
-    return this.optMapVal != null;
-  }
-
-  public void setOptMapValIsSet(boolean __value) {
-    if (!__value) {
-      this.optMapVal = null;
-    }
-  }
-
-  public MyUnionValuePatch getUnionVal() {
-    return this.unionVal;
-  }
-
-  public MyStructPatch setUnionVal(MyUnionValuePatch unionVal) {
-    this.unionVal = unionVal;
-    return this;
-  }
-
-  public void unsetUnionVal() {
-    this.unionVal = null;
-  }
-
-  // Returns true if field unionVal is set (has been assigned a value) and false otherwise
-  public boolean isSetUnionVal() {
-    return this.unionVal != null;
-  }
-
-  public void setUnionValIsSet(boolean __value) {
-    if (!__value) {
-      this.unionVal = null;
+      this.patch = null;
     }
   }
 
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
-    case BOOLVAL:
+    case ASSIGN:
       if (__value == null) {
-        unsetBoolVal();
+        unsetAssign();
       } else {
-        setBoolVal((com.facebook.thrift.op.BoolPatch)__value);
+        setAssign((MyStruct)__value);
       }
       break;
 
-    case BYTEVAL:
+    case CLEAR:
       if (__value == null) {
-        unsetByteVal();
+        unsetClear();
       } else {
-        setByteVal((com.facebook.thrift.op.BytePatch)__value);
+        setClear((Boolean)__value);
       }
       break;
 
-    case I16VAL:
+    case PATCH:
       if (__value == null) {
-        unsetI16Val();
+        unsetPatch();
       } else {
-        setI16Val((com.facebook.thrift.op.I16Patch)__value);
-      }
-      break;
-
-    case I32VAL:
-      if (__value == null) {
-        unsetI32Val();
-      } else {
-        setI32Val((com.facebook.thrift.op.I32Patch)__value);
-      }
-      break;
-
-    case I64VAL:
-      if (__value == null) {
-        unsetI64Val();
-      } else {
-        setI64Val((com.facebook.thrift.op.I64Patch)__value);
-      }
-      break;
-
-    case FLOATVAL:
-      if (__value == null) {
-        unsetFloatVal();
-      } else {
-        setFloatVal((com.facebook.thrift.op.FloatPatch)__value);
-      }
-      break;
-
-    case DOUBLEVAL:
-      if (__value == null) {
-        unsetDoubleVal();
-      } else {
-        setDoubleVal((com.facebook.thrift.op.DoublePatch)__value);
-      }
-      break;
-
-    case STRINGVAL:
-      if (__value == null) {
-        unsetStringVal();
-      } else {
-        setStringVal((com.facebook.thrift.op.StringPatch)__value);
-      }
-      break;
-
-    case BINARYVAL:
-      if (__value == null) {
-        unsetBinaryVal();
-      } else {
-        setBinaryVal((com.facebook.thrift.op.BinaryPatch)__value);
-      }
-      break;
-
-    case STRUCTVAL:
-      if (__value == null) {
-        unsetStructVal();
-      } else {
-        setStructVal((MyDataValuePatch)__value);
-      }
-      break;
-
-    case OPTBOOLVAL:
-      if (__value == null) {
-        unsetOptBoolVal();
-      } else {
-        setOptBoolVal((com.facebook.thrift.op.OptionalBoolPatch)__value);
-      }
-      break;
-
-    case OPTBYTEVAL:
-      if (__value == null) {
-        unsetOptByteVal();
-      } else {
-        setOptByteVal((com.facebook.thrift.op.OptionalBytePatch)__value);
-      }
-      break;
-
-    case OPTI16VAL:
-      if (__value == null) {
-        unsetOptI16Val();
-      } else {
-        setOptI16Val((com.facebook.thrift.op.OptionalI16Patch)__value);
-      }
-      break;
-
-    case OPTI32VAL:
-      if (__value == null) {
-        unsetOptI32Val();
-      } else {
-        setOptI32Val((com.facebook.thrift.op.OptionalI32Patch)__value);
-      }
-      break;
-
-    case OPTI64VAL:
-      if (__value == null) {
-        unsetOptI64Val();
-      } else {
-        setOptI64Val((com.facebook.thrift.op.OptionalI64Patch)__value);
-      }
-      break;
-
-    case OPTFLOATVAL:
-      if (__value == null) {
-        unsetOptFloatVal();
-      } else {
-        setOptFloatVal((com.facebook.thrift.op.OptionalFloatPatch)__value);
-      }
-      break;
-
-    case OPTDOUBLEVAL:
-      if (__value == null) {
-        unsetOptDoubleVal();
-      } else {
-        setOptDoubleVal((com.facebook.thrift.op.OptionalDoublePatch)__value);
-      }
-      break;
-
-    case OPTSTRINGVAL:
-      if (__value == null) {
-        unsetOptStringVal();
-      } else {
-        setOptStringVal((com.facebook.thrift.op.OptionalStringPatch)__value);
-      }
-      break;
-
-    case OPTBINARYVAL:
-      if (__value == null) {
-        unsetOptBinaryVal();
-      } else {
-        setOptBinaryVal((com.facebook.thrift.op.OptionalBinaryPatch)__value);
-      }
-      break;
-
-    case OPTSTRUCTVAL:
-      if (__value == null) {
-        unsetOptStructVal();
-      } else {
-        setOptStructVal((OptionalMyDataValuePatch)__value);
-      }
-      break;
-
-    case OPTLISTVAL:
-      if (__value == null) {
-        unsetOptListVal();
-      } else {
-        setOptListVal((OptionalMyStructField21Patch)__value);
-      }
-      break;
-
-    case OPTSETVAL:
-      if (__value == null) {
-        unsetOptSetVal();
-      } else {
-        setOptSetVal((OptionalMyStructField22Patch)__value);
-      }
-      break;
-
-    case OPTMAPVAL:
-      if (__value == null) {
-        unsetOptMapVal();
-      } else {
-        setOptMapVal((OptionalMyStructField23Patch)__value);
-      }
-      break;
-
-    case UNIONVAL:
-      if (__value == null) {
-        unsetUnionVal();
-      } else {
-        setUnionVal((MyUnionValuePatch)__value);
+        setPatch((MyStructFieldPatch)__value);
       }
       break;
 
@@ -1258,77 +272,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
-    case BOOLVAL:
-      return getBoolVal();
+    case ASSIGN:
+      return getAssign();
 
-    case BYTEVAL:
-      return getByteVal();
+    case CLEAR:
+      return new Boolean(isClear());
 
-    case I16VAL:
-      return getI16Val();
-
-    case I32VAL:
-      return getI32Val();
-
-    case I64VAL:
-      return getI64Val();
-
-    case FLOATVAL:
-      return getFloatVal();
-
-    case DOUBLEVAL:
-      return getDoubleVal();
-
-    case STRINGVAL:
-      return getStringVal();
-
-    case BINARYVAL:
-      return getBinaryVal();
-
-    case STRUCTVAL:
-      return getStructVal();
-
-    case OPTBOOLVAL:
-      return getOptBoolVal();
-
-    case OPTBYTEVAL:
-      return getOptByteVal();
-
-    case OPTI16VAL:
-      return getOptI16Val();
-
-    case OPTI32VAL:
-      return getOptI32Val();
-
-    case OPTI64VAL:
-      return getOptI64Val();
-
-    case OPTFLOATVAL:
-      return getOptFloatVal();
-
-    case OPTDOUBLEVAL:
-      return getOptDoubleVal();
-
-    case OPTSTRINGVAL:
-      return getOptStringVal();
-
-    case OPTBINARYVAL:
-      return getOptBinaryVal();
-
-    case OPTSTRUCTVAL:
-      return getOptStructVal();
-
-    case OPTLISTVAL:
-      return getOptListVal();
-
-    case OPTSETVAL:
-      return getOptSetVal();
-
-    case OPTMAPVAL:
-      return getOptMapVal();
-
-    case UNIONVAL:
-      return getUnionVal();
+    case PATCH:
+      return getPatch();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1345,60 +296,18 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return false;
     MyStructPatch that = (MyStructPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetBoolVal(), that.isSetBoolVal(), this.boolVal, that.boolVal)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetByteVal(), that.isSetByteVal(), this.byteVal, that.byteVal)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetI16Val(), that.isSetI16Val(), this.i16Val, that.i16Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetI32Val(), that.isSetI32Val(), this.i32Val, that.i32Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetI64Val(), that.isSetI64Val(), this.i64Val, that.i64Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetFloatVal(), that.isSetFloatVal(), this.floatVal, that.floatVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetDoubleVal(), that.isSetDoubleVal(), this.doubleVal, that.doubleVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetStringVal(), that.isSetStringVal(), this.stringVal, that.stringVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetBinaryVal(), that.isSetBinaryVal(), this.binaryVal, that.binaryVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetStructVal(), that.isSetStructVal(), this.structVal, that.structVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptBoolVal(), that.isSetOptBoolVal(), this.optBoolVal, that.optBoolVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptByteVal(), that.isSetOptByteVal(), this.optByteVal, that.optByteVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptI16Val(), that.isSetOptI16Val(), this.optI16Val, that.optI16Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptI32Val(), that.isSetOptI32Val(), this.optI32Val, that.optI32Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptI64Val(), that.isSetOptI64Val(), this.optI64Val, that.optI64Val)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptFloatVal(), that.isSetOptFloatVal(), this.optFloatVal, that.optFloatVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptDoubleVal(), that.isSetOptDoubleVal(), this.optDoubleVal, that.optDoubleVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptStringVal(), that.isSetOptStringVal(), this.optStringVal, that.optStringVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptBinaryVal(), that.isSetOptBinaryVal(), this.optBinaryVal, that.optBinaryVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptStructVal(), that.isSetOptStructVal(), this.optStructVal, that.optStructVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptListVal(), that.isSetOptListVal(), this.optListVal, that.optListVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptSetVal(), that.isSetOptSetVal(), this.optSetVal, that.optSetVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetOptMapVal(), that.isSetOptMapVal(), this.optMapVal, that.optMapVal)) { return false; }
-
-    if (!TBaseHelper.equalsNobinary(this.isSetUnionVal(), that.isSetUnionVal(), this.unionVal, that.unionVal)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal, unionVal});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch});
   }
 
   @Override
@@ -1413,195 +322,27 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetBoolVal()).compareTo(other.isSetBoolVal());
+    lastComparison = Boolean.valueOf(isSetAssign()).compareTo(other.isSetAssign());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(boolVal, other.boolVal);
+    lastComparison = TBaseHelper.compareTo(assign, other.assign);
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetByteVal()).compareTo(other.isSetByteVal());
+    lastComparison = Boolean.valueOf(isSetClear()).compareTo(other.isSetClear());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(byteVal, other.byteVal);
+    lastComparison = TBaseHelper.compareTo(clear, other.clear);
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetI16Val()).compareTo(other.isSetI16Val());
+    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(i16Val, other.i16Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetI32Val()).compareTo(other.isSetI32Val());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(i32Val, other.i32Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetI64Val()).compareTo(other.isSetI64Val());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(i64Val, other.i64Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetFloatVal()).compareTo(other.isSetFloatVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(floatVal, other.floatVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetDoubleVal()).compareTo(other.isSetDoubleVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(doubleVal, other.doubleVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetStringVal()).compareTo(other.isSetStringVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(stringVal, other.stringVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetBinaryVal()).compareTo(other.isSetBinaryVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(binaryVal, other.binaryVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetStructVal()).compareTo(other.isSetStructVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(structVal, other.structVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptBoolVal()).compareTo(other.isSetOptBoolVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optBoolVal, other.optBoolVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptByteVal()).compareTo(other.isSetOptByteVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optByteVal, other.optByteVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptI16Val()).compareTo(other.isSetOptI16Val());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optI16Val, other.optI16Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptI32Val()).compareTo(other.isSetOptI32Val());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optI32Val, other.optI32Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptI64Val()).compareTo(other.isSetOptI64Val());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optI64Val, other.optI64Val);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptFloatVal()).compareTo(other.isSetOptFloatVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optFloatVal, other.optFloatVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptDoubleVal()).compareTo(other.isSetOptDoubleVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optDoubleVal, other.optDoubleVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptStringVal()).compareTo(other.isSetOptStringVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optStringVal, other.optStringVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptBinaryVal()).compareTo(other.isSetOptBinaryVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optBinaryVal, other.optBinaryVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptStructVal()).compareTo(other.isSetOptStructVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optStructVal, other.optStructVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptListVal()).compareTo(other.isSetOptListVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optListVal, other.optListVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptSetVal()).compareTo(other.isSetOptSetVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optSetVal, other.optSetVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetOptMapVal()).compareTo(other.isSetOptMapVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(optMapVal, other.optMapVal);
-    if (lastComparison != 0) { 
-      return lastComparison;
-    }
-    lastComparison = Boolean.valueOf(isSetUnionVal()).compareTo(other.isSetUnionVal());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    lastComparison = TBaseHelper.compareTo(unionVal, other.unionVal);
+    lastComparison = TBaseHelper.compareTo(patch, other.patch);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -1619,194 +360,26 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       }
       switch (__field.id)
       {
-        case BOOLVAL:
+        case ASSIGN:
           if (__field.type == TType.STRUCT) {
-            this.boolVal = new com.facebook.thrift.op.BoolPatch();
-            this.boolVal.read(iprot);
+            this.assign = new MyStruct();
+            this.assign.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case BYTEVAL:
-          if (__field.type == TType.STRUCT) {
-            this.byteVal = new com.facebook.thrift.op.BytePatch();
-            this.byteVal.read(iprot);
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            this.clear = iprot.readBool();
+            setClearIsSet(true);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case I16VAL:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.i16Val = new com.facebook.thrift.op.I16Patch();
-            this.i16Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case I32VAL:
-          if (__field.type == TType.STRUCT) {
-            this.i32Val = new com.facebook.thrift.op.I32Patch();
-            this.i32Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case I64VAL:
-          if (__field.type == TType.STRUCT) {
-            this.i64Val = new com.facebook.thrift.op.I64Patch();
-            this.i64Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case FLOATVAL:
-          if (__field.type == TType.STRUCT) {
-            this.floatVal = new com.facebook.thrift.op.FloatPatch();
-            this.floatVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case DOUBLEVAL:
-          if (__field.type == TType.STRUCT) {
-            this.doubleVal = new com.facebook.thrift.op.DoublePatch();
-            this.doubleVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case STRINGVAL:
-          if (__field.type == TType.STRUCT) {
-            this.stringVal = new com.facebook.thrift.op.StringPatch();
-            this.stringVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case BINARYVAL:
-          if (__field.type == TType.STRUCT) {
-            this.binaryVal = new com.facebook.thrift.op.BinaryPatch();
-            this.binaryVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case STRUCTVAL:
-          if (__field.type == TType.STRUCT) {
-            this.structVal = new MyDataValuePatch();
-            this.structVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTBOOLVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optBoolVal = new com.facebook.thrift.op.OptionalBoolPatch();
-            this.optBoolVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTBYTEVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optByteVal = new com.facebook.thrift.op.OptionalBytePatch();
-            this.optByteVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTI16VAL:
-          if (__field.type == TType.STRUCT) {
-            this.optI16Val = new com.facebook.thrift.op.OptionalI16Patch();
-            this.optI16Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTI32VAL:
-          if (__field.type == TType.STRUCT) {
-            this.optI32Val = new com.facebook.thrift.op.OptionalI32Patch();
-            this.optI32Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTI64VAL:
-          if (__field.type == TType.STRUCT) {
-            this.optI64Val = new com.facebook.thrift.op.OptionalI64Patch();
-            this.optI64Val.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTFLOATVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optFloatVal = new com.facebook.thrift.op.OptionalFloatPatch();
-            this.optFloatVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTDOUBLEVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optDoubleVal = new com.facebook.thrift.op.OptionalDoublePatch();
-            this.optDoubleVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTSTRINGVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optStringVal = new com.facebook.thrift.op.OptionalStringPatch();
-            this.optStringVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTBINARYVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optBinaryVal = new com.facebook.thrift.op.OptionalBinaryPatch();
-            this.optBinaryVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTSTRUCTVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optStructVal = new OptionalMyDataValuePatch();
-            this.optStructVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTLISTVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optListVal = new OptionalMyStructField21Patch();
-            this.optListVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTSETVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optSetVal = new OptionalMyStructField22Patch();
-            this.optSetVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case OPTMAPVAL:
-          if (__field.type == TType.STRUCT) {
-            this.optMapVal = new OptionalMyStructField23Patch();
-            this.optMapVal.read(iprot);
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
-        case UNIONVAL:
-          if (__field.type == TType.STRUCT) {
-            this.unionVal = new MyUnionValuePatch();
-            this.unionVal.read(iprot);
+            this.patch = new MyStructFieldPatch();
+            this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -1828,124 +401,19 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.boolVal != null) {
-      oprot.writeFieldBegin(BOOL_VAL_FIELD_DESC);
-      this.boolVal.write(oprot);
-      oprot.writeFieldEnd();
+    if (this.assign != null) {
+      if (isSetAssign()) {
+        oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+        this.assign.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
-    if (this.byteVal != null) {
-      oprot.writeFieldBegin(BYTE_VAL_FIELD_DESC);
-      this.byteVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.i16Val != null) {
-      oprot.writeFieldBegin(I16_VAL_FIELD_DESC);
-      this.i16Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.i32Val != null) {
-      oprot.writeFieldBegin(I32_VAL_FIELD_DESC);
-      this.i32Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.i64Val != null) {
-      oprot.writeFieldBegin(I64_VAL_FIELD_DESC);
-      this.i64Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.floatVal != null) {
-      oprot.writeFieldBegin(FLOAT_VAL_FIELD_DESC);
-      this.floatVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.doubleVal != null) {
-      oprot.writeFieldBegin(DOUBLE_VAL_FIELD_DESC);
-      this.doubleVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.stringVal != null) {
-      oprot.writeFieldBegin(STRING_VAL_FIELD_DESC);
-      this.stringVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.binaryVal != null) {
-      oprot.writeFieldBegin(BINARY_VAL_FIELD_DESC);
-      this.binaryVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.structVal != null) {
-      oprot.writeFieldBegin(STRUCT_VAL_FIELD_DESC);
-      this.structVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optBoolVal != null) {
-      oprot.writeFieldBegin(OPT_BOOL_VAL_FIELD_DESC);
-      this.optBoolVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optByteVal != null) {
-      oprot.writeFieldBegin(OPT_BYTE_VAL_FIELD_DESC);
-      this.optByteVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optI16Val != null) {
-      oprot.writeFieldBegin(OPT_I16_VAL_FIELD_DESC);
-      this.optI16Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optI32Val != null) {
-      oprot.writeFieldBegin(OPT_I32_VAL_FIELD_DESC);
-      this.optI32Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optI64Val != null) {
-      oprot.writeFieldBegin(OPT_I64_VAL_FIELD_DESC);
-      this.optI64Val.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optFloatVal != null) {
-      oprot.writeFieldBegin(OPT_FLOAT_VAL_FIELD_DESC);
-      this.optFloatVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optDoubleVal != null) {
-      oprot.writeFieldBegin(OPT_DOUBLE_VAL_FIELD_DESC);
-      this.optDoubleVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optStringVal != null) {
-      oprot.writeFieldBegin(OPT_STRING_VAL_FIELD_DESC);
-      this.optStringVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optBinaryVal != null) {
-      oprot.writeFieldBegin(OPT_BINARY_VAL_FIELD_DESC);
-      this.optBinaryVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optStructVal != null) {
-      oprot.writeFieldBegin(OPT_STRUCT_VAL_FIELD_DESC);
-      this.optStructVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optListVal != null) {
-      oprot.writeFieldBegin(OPT_LIST_VAL_FIELD_DESC);
-      this.optListVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optSetVal != null) {
-      oprot.writeFieldBegin(OPT_SET_VAL_FIELD_DESC);
-      this.optSetVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.optMapVal != null) {
-      oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
-      this.optMapVal.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.unionVal != null) {
-      oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
-      this.unionVal.write(oprot);
+    oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+    oprot.writeBool(this.clear);
+    oprot.writeFieldEnd();
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1968,267 +436,35 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     sb.append(newLine);
     boolean first = true;
 
+    if (isSetAssign())
+    {
+      sb.append(indentStr);
+      sb.append("assign");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getAssign() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getAssign(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("boolVal");
+    sb.append("clear");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getBoolVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getBoolVal(), indent + 1, prettyPrint));
-    }
+    sb.append(TBaseHelper.toString(this.isClear(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("byteVal");
+    sb.append("patch");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getByteVal() == null) {
+    if (this.getPatch() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getByteVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("i16Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getI16Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getI16Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("i32Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getI32Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getI32Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("i64Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getI64Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getI64Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("floatVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getFloatVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getFloatVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("doubleVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getDoubleVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getDoubleVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("stringVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getStringVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getStringVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("binaryVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getBinaryVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getBinaryVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("structVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getStructVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getStructVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optBoolVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptBoolVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptBoolVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optByteVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptByteVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptByteVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optI16Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptI16Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptI16Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optI32Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptI32Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptI32Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optI64Val");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptI64Val() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptI64Val(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optFloatVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptFloatVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptFloatVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optDoubleVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptDoubleVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptDoubleVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optStringVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptStringVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptStringVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optBinaryVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptBinaryVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptBinaryVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optStructVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptStructVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptStructVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optListVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptListVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptListVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optSetVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptSetVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptSetVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("optMapVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getOptMapVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getOptMapVal(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("unionVal");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getUnionVal() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getUnionVal(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

@@ -258,8 +258,8 @@
         "is_union" : false,
         "lineno" : 43
       },
-      "MyDataPatch" : {
-        "name" : "MyDataPatch",
+      "MyDataFieldPatch" : {
+        "name" : "MyDataFieldPatch",
         "fields" : {
           "data1" : {
             "name" : "data1",
@@ -286,8 +286,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "MyDataValuePatch" : {
-        "name" : "MyDataValuePatch",
+      "MyDataPatch" : {
+        "name" : "MyDataPatch",
         "fields" : {
           "assign" : {
             "name" : "assign",
@@ -316,7 +316,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyDataPatch"
+  "name" : "MyDataFieldPatch"
 }
           }
         },
@@ -324,8 +324,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "OptionalMyDataValuePatch" : {
-        "name" : "OptionalMyDataValuePatch",
+      "OptionalMyDataPatch" : {
+        "name" : "OptionalMyDataPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -343,7 +343,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyDataValuePatch"
+  "name" : "MyDataPatch"
 }
           },
           "ensure" : {
@@ -365,7 +365,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyDataValuePatch"
+  "name" : "MyDataPatch"
 }
           }
         },
@@ -373,8 +373,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "InnerUnionPatch" : {
-        "name" : "InnerUnionPatch",
+      "InnerUnionFieldPatch" : {
+        "name" : "InnerUnionFieldPatch",
         "fields" : {
           "innerOption" : {
             "name" : "innerOption",
@@ -391,8 +391,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "InnerUnionValuePatch" : {
-        "name" : "InnerUnionValuePatch",
+      "InnerUnionPatch" : {
+        "name" : "InnerUnionPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -410,7 +410,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "InnerUnionPatch"
+  "name" : "InnerUnionFieldPatch"
 }
           },
           "ensure" : {
@@ -432,7 +432,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "InnerUnionPatch"
+  "name" : "InnerUnionFieldPatch"
 }
           }
         },
@@ -440,8 +440,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "OptionalInnerUnionValuePatch" : {
-        "name" : "OptionalInnerUnionValuePatch",
+      "OptionalInnerUnionPatch" : {
+        "name" : "OptionalInnerUnionPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -459,7 +459,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "InnerUnionValuePatch"
+  "name" : "InnerUnionPatch"
 }
           },
           "ensure" : {
@@ -481,7 +481,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "InnerUnionValuePatch"
+  "name" : "InnerUnionPatch"
 }
           }
         },
@@ -489,8 +489,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "MyUnionPatch" : {
-        "name" : "MyUnionPatch",
+      "MyUnionFieldPatch" : {
+        "name" : "MyUnionFieldPatch",
         "fields" : {
           "option1" : {
             "name" : "option1",
@@ -519,7 +519,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "InnerUnionValuePatch"
+  "name" : "InnerUnionPatch"
 }
           }
         },
@@ -527,8 +527,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "MyUnionValuePatch" : {
-        "name" : "MyUnionValuePatch",
+      "MyUnionPatch" : {
+        "name" : "MyUnionPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -546,7 +546,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyUnionPatch"
+  "name" : "MyUnionFieldPatch"
 }
           },
           "ensure" : {
@@ -568,7 +568,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyUnionPatch"
+  "name" : "MyUnionFieldPatch"
 }
           }
         },
@@ -576,8 +576,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "OptionalMyUnionValuePatch" : {
-        "name" : "OptionalMyUnionValuePatch",
+      "OptionalMyUnionPatch" : {
+        "name" : "OptionalMyUnionPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -595,7 +595,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyUnionValuePatch"
+  "name" : "MyUnionPatch"
 }
           },
           "ensure" : {
@@ -617,7 +617,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyUnionValuePatch"
+  "name" : "MyUnionPatch"
 }
           }
         },
@@ -625,8 +625,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "MyStructPatch" : {
-        "name" : "MyStructPatch",
+      "MyStructFieldPatch" : {
+        "name" : "MyStructFieldPatch",
         "fields" : {
           "boolVal" : {
             "name" : "boolVal",
@@ -725,7 +725,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyDataValuePatch"
+  "name" : "MyDataPatch"
 }
           },
           "optBoolVal" : {
@@ -825,7 +825,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "OptionalMyDataValuePatch"
+  "name" : "OptionalMyDataPatch"
 }
           },
           "optListVal" : {
@@ -865,7 +865,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyUnionValuePatch"
+  "name" : "MyUnionPatch"
 }
           }
         },
@@ -1159,8 +1159,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "MyStructValuePatch" : {
-        "name" : "MyStructValuePatch",
+      "MyStructPatch" : {
+        "name" : "MyStructPatch",
         "fields" : {
           "assign" : {
             "name" : "assign",
@@ -1189,7 +1189,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyStructPatch"
+  "name" : "MyStructFieldPatch"
 }
           }
         },
@@ -1197,8 +1197,8 @@
         "is_union" : false,
         "lineno" : 22
       },
-      "OptionalMyStructValuePatch" : {
-        "name" : "OptionalMyStructValuePatch",
+      "OptionalMyStructPatch" : {
+        "name" : "OptionalMyStructPatch",
         "fields" : {
           "clear" : {
             "name" : "clear",
@@ -1216,7 +1216,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyStructValuePatch"
+  "name" : "MyStructPatch"
 }
           },
           "ensure" : {
@@ -1238,7 +1238,7 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
-  "name" : "MyStructValuePatch"
+  "name" : "MyStructPatch"
 }
           }
         },

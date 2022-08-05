@@ -26,24 +26,40 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comparable<MyDataPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("MyDataPatch");
-  private static final TField DATA1_FIELD_DESC = new TField("data1", TType.STRUCT, (short)1);
-  private static final TField DATA2_FIELD_DESC = new TField("data2", TType.STRUCT, (short)2);
+  private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
-  public com.facebook.thrift.op.StringPatch data1;
-  public com.facebook.thrift.op.I32Patch data2;
-  public static final int DATA1 = 1;
-  public static final int DATA2 = 2;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyData assign;
+  /**
+   * Clears a value. Applies first.
+   */
+  public boolean clear;
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyDataFieldPatch patch;
+  public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
 
   // isset id assignments
+  private static final int __CLEAR_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
-    tmpMetaDataMap.put(DATA1, new FieldMetaData("data1", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
-    tmpMetaDataMap.put(DATA2, new FieldMetaData("data2", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
+    tmpMetaDataMap.put(ASSIGN, new FieldMetaData("assign", TFieldRequirementType.OPTIONAL, 
+        new StructMetaData(TType.STRUCT, MyData.class)));
+    tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyDataFieldPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -55,34 +71,58 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   public MyDataPatch(
-      com.facebook.thrift.op.StringPatch data1,
-      com.facebook.thrift.op.I32Patch data2) {
+      boolean clear,
+      MyDataFieldPatch patch) {
     this();
-    this.data1 = data1;
-    this.data2 = data2;
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
+  }
+
+  public MyDataPatch(
+      MyData assign,
+      boolean clear,
+      MyDataFieldPatch patch) {
+    this();
+    this.assign = assign;
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
   }
 
   public static class Builder {
-    private com.facebook.thrift.op.StringPatch data1;
-    private com.facebook.thrift.op.I32Patch data2;
+    private MyData assign;
+    private boolean clear;
+    private MyDataFieldPatch patch;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
-    public Builder setData1(final com.facebook.thrift.op.StringPatch data1) {
-      this.data1 = data1;
+    public Builder setAssign(final MyData assign) {
+      this.assign = assign;
       return this;
     }
 
-    public Builder setData2(final com.facebook.thrift.op.I32Patch data2) {
-      this.data2 = data2;
+    public Builder setClear(final boolean clear) {
+      this.clear = clear;
+      __optional_isset.set(__CLEAR_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setPatch(final MyDataFieldPatch patch) {
+      this.patch = patch;
       return this;
     }
 
     public MyDataPatch build() {
       MyDataPatch result = new MyDataPatch();
-      result.setData1(this.data1);
-      result.setData2(this.data2);
+      result.setAssign(this.assign);
+      if (__optional_isset.get(__CLEAR_ISSET_ID)) {
+        result.setClear(this.clear);
+      }
+      result.setPatch(this.patch);
       return result;
     }
   }
@@ -95,11 +135,14 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
    * Performs a deep copy on <i>other</i>.
    */
   public MyDataPatch(MyDataPatch other) {
-    if (other.isSetData1()) {
-      this.data1 = TBaseHelper.deepCopy(other.data1);
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetAssign()) {
+      this.assign = TBaseHelper.deepCopy(other.assign);
     }
-    if (other.isSetData2()) {
-      this.data2 = TBaseHelper.deepCopy(other.data2);
+    this.clear = TBaseHelper.deepCopy(other.clear);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     }
   }
 
@@ -107,69 +150,118 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     return new MyDataPatch(this);
   }
 
-  public com.facebook.thrift.op.StringPatch getData1() {
-    return this.data1;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyData getAssign() {
+    return this.assign;
   }
 
-  public MyDataPatch setData1(com.facebook.thrift.op.StringPatch data1) {
-    this.data1 = data1;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyDataPatch setAssign(MyData assign) {
+    this.assign = assign;
     return this;
   }
 
-  public void unsetData1() {
-    this.data1 = null;
+  public void unsetAssign() {
+    this.assign = null;
   }
 
-  // Returns true if field data1 is set (has been assigned a value) and false otherwise
-  public boolean isSetData1() {
-    return this.data1 != null;
+  // Returns true if field assign is set (has been assigned a value) and false otherwise
+  public boolean isSetAssign() {
+    return this.assign != null;
   }
 
-  public void setData1IsSet(boolean __value) {
+  public void setAssignIsSet(boolean __value) {
     if (!__value) {
-      this.data1 = null;
+      this.assign = null;
     }
   }
 
-  public com.facebook.thrift.op.I32Patch getData2() {
-    return this.data2;
+  /**
+   * Clears a value. Applies first.
+   */
+  public boolean isClear() {
+    return this.clear;
   }
 
-  public MyDataPatch setData2(com.facebook.thrift.op.I32Patch data2) {
-    this.data2 = data2;
+  /**
+   * Clears a value. Applies first.
+   */
+  public MyDataPatch setClear(boolean clear) {
+    this.clear = clear;
+    setClearIsSet(true);
     return this;
   }
 
-  public void unsetData2() {
-    this.data2 = null;
+  public void unsetClear() {
+    __isset_bit_vector.clear(__CLEAR_ISSET_ID);
   }
 
-  // Returns true if field data2 is set (has been assigned a value) and false otherwise
-  public boolean isSetData2() {
-    return this.data2 != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return __isset_bit_vector.get(__CLEAR_ISSET_ID);
   }
 
-  public void setData2IsSet(boolean __value) {
+  public void setClearIsSet(boolean __value) {
+    __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
+  }
+
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyDataFieldPatch getPatch() {
+    return this.patch;
+  }
+
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyDataPatch setPatch(MyDataFieldPatch patch) {
+    this.patch = patch;
+    return this;
+  }
+
+  public void unsetPatch() {
+    this.patch = null;
+  }
+
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
+  }
+
+  public void setPatchIsSet(boolean __value) {
     if (!__value) {
-      this.data2 = null;
+      this.patch = null;
     }
   }
 
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
-    case DATA1:
+    case ASSIGN:
       if (__value == null) {
-        unsetData1();
+        unsetAssign();
       } else {
-        setData1((com.facebook.thrift.op.StringPatch)__value);
+        setAssign((MyData)__value);
       }
       break;
 
-    case DATA2:
+    case CLEAR:
       if (__value == null) {
-        unsetData2();
+        unsetClear();
       } else {
-        setData2((com.facebook.thrift.op.I32Patch)__value);
+        setClear((Boolean)__value);
+      }
+      break;
+
+    case PATCH:
+      if (__value == null) {
+        unsetPatch();
+      } else {
+        setPatch((MyDataFieldPatch)__value);
       }
       break;
 
@@ -180,11 +272,14 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
-    case DATA1:
-      return getData1();
+    case ASSIGN:
+      return getAssign();
 
-    case DATA2:
-      return getData2();
+    case CLEAR:
+      return new Boolean(isClear());
+
+    case PATCH:
+      return getPatch();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -201,16 +296,18 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       return false;
     MyDataPatch that = (MyDataPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetData1(), that.isSetData1(), this.data1, that.data1)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetData2(), that.isSetData2(), this.data2, that.data2)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {data1, data2});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch});
   }
 
   @Override
@@ -225,19 +322,27 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     }
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetData1()).compareTo(other.isSetData1());
+    lastComparison = Boolean.valueOf(isSetAssign()).compareTo(other.isSetAssign());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(data1, other.data1);
+    lastComparison = TBaseHelper.compareTo(assign, other.assign);
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetData2()).compareTo(other.isSetData2());
+    lastComparison = Boolean.valueOf(isSetClear()).compareTo(other.isSetClear());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(data2, other.data2);
+    lastComparison = TBaseHelper.compareTo(clear, other.clear);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(patch, other.patch);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -255,18 +360,26 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       }
       switch (__field.id)
       {
-        case DATA1:
+        case ASSIGN:
           if (__field.type == TType.STRUCT) {
-            this.data1 = new com.facebook.thrift.op.StringPatch();
-            this.data1.read(iprot);
+            this.assign = new MyData();
+            this.assign.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case DATA2:
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            this.clear = iprot.readBool();
+            setClearIsSet(true);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.data2 = new com.facebook.thrift.op.I32Patch();
-            this.data2.read(iprot);
+            this.patch = new MyDataFieldPatch();
+            this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -288,14 +401,19 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.data1 != null) {
-      oprot.writeFieldBegin(DATA1_FIELD_DESC);
-      this.data1.write(oprot);
-      oprot.writeFieldEnd();
+    if (this.assign != null) {
+      if (isSetAssign()) {
+        oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+        this.assign.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
-    if (this.data2 != null) {
-      oprot.writeFieldBegin(DATA2_FIELD_DESC);
-      this.data2.write(oprot);
+    oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+    oprot.writeBool(this.clear);
+    oprot.writeFieldEnd();
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -318,25 +436,35 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     sb.append(newLine);
     boolean first = true;
 
+    if (isSetAssign())
+    {
+      sb.append(indentStr);
+      sb.append("assign");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getAssign() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getAssign(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("data1");
+    sb.append("clear");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getData1() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getData1(), indent + 1, prettyPrint));
-    }
+    sb.append(TBaseHelper.toString(this.isClear(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("data2");
+    sb.append("patch");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getData2() == null) {
+    if (this.getPatch() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getData2(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

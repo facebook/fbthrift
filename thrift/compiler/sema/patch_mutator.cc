@@ -279,13 +279,12 @@ void generate_struct_patch(
           ctx.program().inherit_annotation_or_null(node, kGeneratePatchUri)) {
     auto& generator = patch_generator::get_for(ctx, mctx);
 
-    // Add a 'structured patch' and 'struct value patch' using it.
-    auto& struct_patch =
-        generator.add_structured_patch(*annot, node, "FieldPatchAdapter");
-    auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
+    // Add a 'field patch' and 'struct patch' using it.
+    auto& patch = generator.add_field_patch(*annot, node);
+    auto& struct_patch = generator.add_struct_patch(*annot, node, patch);
 
     // Add an 'optional patch' based on the added patch type.
-    generator.add_optional_patch(*annot, node, patch);
+    generator.add_optional_patch(*annot, node, struct_patch);
   }
 }
 
@@ -296,12 +295,11 @@ void generate_union_patch(
     auto& generator = patch_generator::get_for(ctx, mctx);
 
     // Add a 'structured patch' and 'union value patch' using it.
-    auto& struct_patch =
-        generator.add_structured_patch(*annot, node, "FieldPatchAdapter");
-    auto& patch = generator.add_union_value_patch(*annot, node, struct_patch);
+    auto& patch = generator.add_field_patch(*annot, node);
+    auto& union_patch = generator.add_union_patch(*annot, node, patch);
 
     // Add an 'optional patch' based on the added patch type.
-    generator.add_optional_patch(*annot, node, patch);
+    generator.add_optional_patch(*annot, node, union_patch);
   }
 }
 
@@ -333,9 +331,23 @@ t_struct& patch_generator::add_optional_patch(
   return gen;
 }
 
-t_struct& patch_generator::add_union_value_patch(
+t_struct& patch_generator::add_field_patch(
+    const t_const& annot, t_structured& orig) {
+  StructGen gen{annot, gen_suffix_struct(annot, orig, "FieldPatch")};
+  for (const auto& field : orig.fields()) {
+    if (t_type_ref patch_type = find_patch_type(annot, orig, field)) {
+      gen.field(field.id(), patch_type, field.name());
+    } else {
+      ctx_.warning(field, "Could not resolve patch type for field.");
+    }
+  }
+  gen.set_adapter("FieldPatchAdapter", program_);
+  return gen;
+}
+
+t_struct& patch_generator::add_union_patch(
     const t_node& annot, t_union& value_type, t_type_ref patch_type) {
-  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "ValuePatch")}};
+  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "Patch")}};
   // TODO(afuller): Add 'assign`.
   gen.clearOpt();
   gen.patchOpt(patch_type);
@@ -346,23 +358,9 @@ t_struct& patch_generator::add_union_value_patch(
   return gen;
 }
 
-t_struct& patch_generator::add_structured_patch(
-    const t_const& annot, t_structured& orig, const char* adapter) {
-  StructGen gen{annot, gen_suffix_struct(annot, orig, "Patch")};
-  for (const auto& field : orig.fields()) {
-    if (t_type_ref patch_type = find_patch_type(annot, orig, field)) {
-      gen.field(field.id(), patch_type, field.name());
-    } else {
-      ctx_.warning(field, "Could not resolve patch type for field.");
-    }
-  }
-  gen.set_adapter(adapter, program_);
-  return gen;
-}
-
-t_struct& patch_generator::add_struct_value_patch(
+t_struct& patch_generator::add_struct_patch(
     const t_node& annot, t_struct& value_type, t_type_ref patch_type) {
-  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "ValuePatch")}};
+  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "Patch")}};
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
@@ -416,7 +414,7 @@ t_type_ref patch_generator::find_patch_type(
   }
 
   if (auto* structured = dynamic_cast<const t_structured*>(type)) {
-    std::string name = structured->name() + "ValuePatch";
+    std::string name = structured->name() + "Patch";
     if (field.qualifier() == t_field_qualifier::optional) {
       name = "Optional" + std::move(name);
     }

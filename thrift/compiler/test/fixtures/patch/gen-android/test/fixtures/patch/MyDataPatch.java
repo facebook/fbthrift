@@ -26,34 +26,53 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyDataPatch");
-  private static final TField DATA1_FIELD_DESC = new TField("data1", TType.STRUCT, (short)1);
-  private static final TField DATA2_FIELD_DESC = new TField("data2", TType.STRUCT, (short)2);
+  private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
-  public final StringPatch data1;
-  public final I32Patch data2;
-  public static final int DATA1 = 1;
-  public static final int DATA2 = 2;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public final MyData assign;
+  /**
+   * Clears a value. Applies first.
+   */
+  public final Boolean clear;
+  /**
+   * Patches a value. Applies second.
+   */
+  public final MyDataFieldPatch patch;
+  public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
 
   public MyDataPatch(
-      StringPatch data1,
-      I32Patch data2) {
-    this.data1 = data1;
-    this.data2 = data2;
+      MyData assign,
+      Boolean clear,
+      MyDataFieldPatch patch) {
+    this.assign = assign;
+    this.clear = clear;
+    this.patch = patch;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public MyDataPatch(MyDataPatch other) {
-    if (other.isSetData1()) {
-      this.data1 = TBaseHelper.deepCopy(other.data1);
+    if (other.isSetAssign()) {
+      this.assign = TBaseHelper.deepCopy(other.assign);
     } else {
-      this.data1 = null;
+      this.assign = null;
     }
-    if (other.isSetData2()) {
-      this.data2 = TBaseHelper.deepCopy(other.data2);
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
     } else {
-      this.data2 = null;
+      this.clear = null;
+    }
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
+    } else {
+      this.patch = null;
     }
   }
 
@@ -61,22 +80,40 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
     return new MyDataPatch(this);
   }
 
-  public StringPatch getData1() {
-    return this.data1;
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public MyData getAssign() {
+    return this.assign;
   }
 
-  // Returns true if field data1 is set (has been assigned a value) and false otherwise
-  public boolean isSetData1() {
-    return this.data1 != null;
+  // Returns true if field assign is set (has been assigned a value) and false otherwise
+  public boolean isSetAssign() {
+    return this.assign != null;
   }
 
-  public I32Patch getData2() {
-    return this.data2;
+  /**
+   * Clears a value. Applies first.
+   */
+  public Boolean isClear() {
+    return this.clear;
   }
 
-  // Returns true if field data2 is set (has been assigned a value) and false otherwise
-  public boolean isSetData2() {
-    return this.data2 != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
+  }
+
+  /**
+   * Patches a value. Applies second.
+   */
+  public MyDataFieldPatch getPatch() {
+    return this.patch;
+  }
+
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
   @Override
@@ -89,16 +126,18 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
       return false;
     MyDataPatch that = (MyDataPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetData1(), that.isSetData1(), this.data1, that.data1)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetData2(), that.isSetData2(), this.data2, that.data2)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {data1, data2});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -107,8 +146,9 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static MyDataPatch deserialize(TProtocol iprot) throws TException {
-    StringPatch tmp_data1 = null;
-    I32Patch tmp_data2 = null;
+    MyData tmp_assign = null;
+    Boolean tmp_clear = null;
+    MyDataFieldPatch tmp_patch = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -119,16 +159,23 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
-        case DATA1:
+        case ASSIGN:
           if (__field.type == TType.STRUCT) {
-            tmp_data1 = StringPatch.deserialize(iprot);
+            tmp_assign = MyData.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case DATA2:
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            tmp_data2 = I32Patch.deserialize(iprot);
+            tmp_patch = MyDataFieldPatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -143,8 +190,9 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
 
     MyDataPatch _that;
     _that = new MyDataPatch(
-      tmp_data1
-      ,tmp_data2
+      tmp_assign
+      ,tmp_clear
+      ,tmp_patch
     );
     _that.validate();
     return _that;
@@ -154,14 +202,21 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.data1 != null) {
-      oprot.writeFieldBegin(DATA1_FIELD_DESC);
-      this.data1.write(oprot);
+    if (this.assign != null) {
+      if (isSetAssign()) {
+        oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+        this.assign.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.data2 != null) {
-      oprot.writeFieldBegin(DATA2_FIELD_DESC);
-      this.data2.write(oprot);
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

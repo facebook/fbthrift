@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, Cloneable, Comparable<OptionalMyUnionValuePatch> {
-  private static final TStruct STRUCT_DESC = new TStruct("OptionalMyUnionValuePatch");
+public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Cloneable, Comparable<OptionalInnerUnionPatch> {
+  private static final TStruct STRUCT_DESC = new TStruct("OptionalInnerUnionPatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
@@ -38,15 +38,15 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Patches any set value. Applies second.
    */
-  public MyUnionValuePatch patch;
+  public InnerUnionPatch patch;
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public MyUnion ensure;
+  public InnerUnion ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public MyUnionValuePatch patchAfter;
+  public InnerUnionPatch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
@@ -63,25 +63,25 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
     tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, MyUnionValuePatch.class)));
+        new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
     tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
-        new StructMetaData(TType.STRUCT, MyUnion.class)));
+        new StructMetaData(TType.STRUCT, InnerUnion.class)));
     tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, MyUnionValuePatch.class)));
+        new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(OptionalMyUnionValuePatch.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(OptionalInnerUnionPatch.class, metaDataMap);
   }
 
-  public OptionalMyUnionValuePatch() {
+  public OptionalInnerUnionPatch() {
   }
 
-  public OptionalMyUnionValuePatch(
+  public OptionalInnerUnionPatch(
       boolean clear,
-      MyUnionValuePatch patch,
-      MyUnionValuePatch patchAfter) {
+      InnerUnionPatch patch,
+      InnerUnionPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
@@ -89,11 +89,11 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
     this.patchAfter = patchAfter;
   }
 
-  public OptionalMyUnionValuePatch(
+  public OptionalInnerUnionPatch(
       boolean clear,
-      MyUnionValuePatch patch,
-      MyUnion ensure,
-      MyUnionValuePatch patchAfter) {
+      InnerUnionPatch patch,
+      InnerUnion ensure,
+      InnerUnionPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
@@ -104,9 +104,9 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
 
   public static class Builder {
     private boolean clear;
-    private MyUnionValuePatch patch;
-    private MyUnion ensure;
-    private MyUnionValuePatch patchAfter;
+    private InnerUnionPatch patch;
+    private InnerUnion ensure;
+    private InnerUnionPatch patchAfter;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -119,23 +119,23 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
       return this;
     }
 
-    public Builder setPatch(final MyUnionValuePatch patch) {
+    public Builder setPatch(final InnerUnionPatch patch) {
       this.patch = patch;
       return this;
     }
 
-    public Builder setEnsure(final MyUnion ensure) {
+    public Builder setEnsure(final InnerUnion ensure) {
       this.ensure = ensure;
       return this;
     }
 
-    public Builder setPatchAfter(final MyUnionValuePatch patchAfter) {
+    public Builder setPatchAfter(final InnerUnionPatch patchAfter) {
       this.patchAfter = patchAfter;
       return this;
     }
 
-    public OptionalMyUnionValuePatch build() {
-      OptionalMyUnionValuePatch result = new OptionalMyUnionValuePatch();
+    public OptionalInnerUnionPatch build() {
+      OptionalInnerUnionPatch result = new OptionalInnerUnionPatch();
       if (__optional_isset.get(__CLEAR_ISSET_ID)) {
         result.setClear(this.clear);
       }
@@ -153,7 +153,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public OptionalMyUnionValuePatch(OptionalMyUnionValuePatch other) {
+  public OptionalInnerUnionPatch(OptionalInnerUnionPatch other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.clear = TBaseHelper.deepCopy(other.clear);
@@ -168,8 +168,8 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
     }
   }
 
-  public OptionalMyUnionValuePatch deepCopy() {
-    return new OptionalMyUnionValuePatch(this);
+  public OptionalInnerUnionPatch deepCopy() {
+    return new OptionalInnerUnionPatch(this);
   }
 
   /**
@@ -182,7 +182,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Clears any set value. Applies first.
    */
-  public OptionalMyUnionValuePatch setClear(boolean clear) {
+  public OptionalInnerUnionPatch setClear(boolean clear) {
     this.clear = clear;
     setClearIsSet(true);
     return this;
@@ -204,14 +204,14 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Patches any set value. Applies second.
    */
-  public MyUnionValuePatch getPatch() {
+  public InnerUnionPatch getPatch() {
     return this.patch;
   }
 
   /**
    * Patches any set value. Applies second.
    */
-  public OptionalMyUnionValuePatch setPatch(MyUnionValuePatch patch) {
+  public OptionalInnerUnionPatch setPatch(InnerUnionPatch patch) {
     this.patch = patch;
     return this;
   }
@@ -234,14 +234,14 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public MyUnion getEnsure() {
+  public InnerUnion getEnsure() {
     return this.ensure;
   }
 
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public OptionalMyUnionValuePatch setEnsure(MyUnion ensure) {
+  public OptionalInnerUnionPatch setEnsure(InnerUnion ensure) {
     this.ensure = ensure;
     return this;
   }
@@ -264,14 +264,14 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public MyUnionValuePatch getPatchAfter() {
+  public InnerUnionPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public OptionalMyUnionValuePatch setPatchAfter(MyUnionValuePatch patchAfter) {
+  public OptionalInnerUnionPatch setPatchAfter(InnerUnionPatch patchAfter) {
     this.patchAfter = patchAfter;
     return this;
   }
@@ -305,7 +305,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
       if (__value == null) {
         unsetPatch();
       } else {
-        setPatch((MyUnionValuePatch)__value);
+        setPatch((InnerUnionPatch)__value);
       }
       break;
 
@@ -313,7 +313,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
       if (__value == null) {
         unsetEnsure();
       } else {
-        setEnsure((MyUnion)__value);
+        setEnsure((InnerUnion)__value);
       }
       break;
 
@@ -321,7 +321,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
       if (__value == null) {
         unsetPatchAfter();
       } else {
-        setPatchAfter((MyUnionValuePatch)__value);
+        setPatchAfter((InnerUnionPatch)__value);
       }
       break;
 
@@ -355,9 +355,9 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof OptionalMyUnionValuePatch))
+    if (!(_that instanceof OptionalInnerUnionPatch))
       return false;
-    OptionalMyUnionValuePatch that = (OptionalMyUnionValuePatch)_that;
+    OptionalInnerUnionPatch that = (OptionalInnerUnionPatch)_that;
 
     if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
@@ -376,7 +376,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
   }
 
   @Override
-  public int compareTo(OptionalMyUnionValuePatch other) {
+  public int compareTo(OptionalInnerUnionPatch other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -443,7 +443,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
           break;
         case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.patch = new MyUnionValuePatch();
+            this.patch = new InnerUnionPatch();
             this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -451,7 +451,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
           break;
         case ENSURE:
           if (__field.type == TType.STRUCT) {
-            this.ensure = new MyUnion();
+            this.ensure = new InnerUnion();
             this.ensure.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -459,7 +459,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
           break;
         case PATCHAFTER:
           if (__field.type == TType.STRUCT) {
-            this.patchAfter = new MyUnionValuePatch();
+            this.patchAfter = new InnerUnionPatch();
             this.patchAfter.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -516,7 +516,7 @@ public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, C
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("OptionalMyUnionValuePatch");
+    StringBuilder sb = new StringBuilder("OptionalInnerUnionPatch");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

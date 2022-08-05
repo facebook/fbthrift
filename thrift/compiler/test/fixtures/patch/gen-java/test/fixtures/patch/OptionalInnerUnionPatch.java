@@ -20,15 +20,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@com.facebook.swift.codec.ThriftStruct(value="OptionalMyDataValuePatch", builder=OptionalMyDataValuePatch.Builder.class)
-public final class OptionalMyDataValuePatch implements com.facebook.thrift.payload.ThriftSerializable {
+@com.facebook.swift.codec.ThriftStruct(value="OptionalInnerUnionPatch", builder=OptionalInnerUnionPatch.Builder.class)
+public final class OptionalInnerUnionPatch implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
-    public OptionalMyDataValuePatch(
+    public OptionalInnerUnionPatch(
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataValuePatch patch,
-        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData ensure,
-        @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataValuePatch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnionPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.InnerUnion ensure,
+        @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnionPatch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -37,7 +37,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     }
     
     @ThriftConstructor
-    protected OptionalMyDataValuePatch() {
+    protected OptionalInnerUnionPatch() {
       this.clear = false;
       this.patch = null;
       this.ensure = null;
@@ -47,9 +47,9 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     public static class Builder {
     
         private boolean clear = false;
-        private test.fixtures.patch.MyDataValuePatch patch = null;
-        private test.fixtures.patch.MyData ensure = null;
-        private test.fixtures.patch.MyDataValuePatch patchAfter = null;
+        private test.fixtures.patch.InnerUnionPatch patch = null;
+        private test.fixtures.patch.InnerUnion ensure = null;
+        private test.fixtures.patch.InnerUnionPatch patchAfter = null;
     
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
         public Builder setClear(boolean clear) {
@@ -60,31 +60,31 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
         public boolean isClear() { return clear; }
     
             @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-        public Builder setPatch(test.fixtures.patch.MyDataValuePatch patch) {
+        public Builder setPatch(test.fixtures.patch.InnerUnionPatch patch) {
             this.patch = patch;
             return this;
         }
     
-        public test.fixtures.patch.MyDataValuePatch getPatch() { return patch; }
+        public test.fixtures.patch.InnerUnionPatch getPatch() { return patch; }
     
             @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
-        public Builder setEnsure(test.fixtures.patch.MyData ensure) {
+        public Builder setEnsure(test.fixtures.patch.InnerUnion ensure) {
             this.ensure = ensure;
             return this;
         }
     
-        public test.fixtures.patch.MyData getEnsure() { return ensure; }
+        public test.fixtures.patch.InnerUnion getEnsure() { return ensure; }
     
             @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
-        public Builder setPatchAfter(test.fixtures.patch.MyDataValuePatch patchAfter) {
+        public Builder setPatchAfter(test.fixtures.patch.InnerUnionPatch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
         }
     
-        public test.fixtures.patch.MyDataValuePatch getPatchAfter() { return patchAfter; }
+        public test.fixtures.patch.InnerUnionPatch getPatchAfter() { return patchAfter; }
     
         public Builder() { }
-        public Builder(OptionalMyDataValuePatch other) {
+        public Builder(OptionalInnerUnionPatch other) {
             this.clear = other.clear;
             this.patch = other.patch;
             this.ensure = other.ensure;
@@ -92,8 +92,8 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
         }
     
         @ThriftConstructor
-        public OptionalMyDataValuePatch build() {
-            OptionalMyDataValuePatch result = new OptionalMyDataValuePatch (
+        public OptionalInnerUnionPatch build() {
+            OptionalInnerUnionPatch result = new OptionalInnerUnionPatch (
                 this.clear,
                 this.patch,
                 this.ensure,
@@ -105,17 +105,17 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
-    private static final TStruct STRUCT_DESC = new TStruct("OptionalMyDataValuePatch");
+    private static final TStruct STRUCT_DESC = new TStruct("OptionalInnerUnionPatch");
     private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final test.fixtures.patch.MyDataValuePatch patch;
+        private final test.fixtures.patch.InnerUnionPatch patch;
     public static final int _PATCH = 3;
     private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
-        private final test.fixtures.patch.MyData ensure;
+        private final test.fixtures.patch.InnerUnion ensure;
     public static final int _ENSURE = 4;
     private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
-        private final test.fixtures.patch.MyDataValuePatch patchAfter;
+        private final test.fixtures.patch.InnerUnionPatch patchAfter;
     public static final int _PATCHAFTER = 6;
     private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
     static {
@@ -132,8 +132,8 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
       THRIFT_NAMES_TO_IDS.put("patchAfter", 6);
       FIELD_METADATA.put(6, PATCH_AFTER_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/OptionalMyDataValuePatch"), 
-        OptionalMyDataValuePatch.class, OptionalMyDataValuePatch::read0));
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/OptionalInnerUnionPatch"), 
+        OptionalInnerUnionPatch.class, OptionalInnerUnionPatch::read0));
     }
     
     
@@ -143,17 +143,17 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-    public test.fixtures.patch.MyDataValuePatch getPatch() { return patch; }
+    public test.fixtures.patch.InnerUnionPatch getPatch() { return patch; }
     
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
-    public test.fixtures.patch.MyData getEnsure() { return ensure; }
+    public test.fixtures.patch.InnerUnion getEnsure() { return ensure; }
     
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
-    public test.fixtures.patch.MyDataValuePatch getPatchAfter() { return patchAfter; }
+    public test.fixtures.patch.InnerUnionPatch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override
     public String toString() {
@@ -174,7 +174,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
             return false;
         }
     
-        OptionalMyDataValuePatch other = (OptionalMyDataValuePatch)o;
+        OptionalInnerUnionPatch other = (OptionalInnerUnionPatch)o;
     
         return
             Objects.equals(clear, other.clear) &&
@@ -195,14 +195,14 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     }
     
     
-    public static com.facebook.thrift.payload.Reader<OptionalMyDataValuePatch> asReader() {
-      return OptionalMyDataValuePatch::read0;
+    public static com.facebook.thrift.payload.Reader<OptionalInnerUnionPatch> asReader() {
+      return OptionalInnerUnionPatch::read0;
     }
     
-    public static OptionalMyDataValuePatch read0(TProtocol oprot) throws TException {
+    public static OptionalInnerUnionPatch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(OptionalMyDataValuePatch.NAMES_TO_IDS, OptionalMyDataValuePatch.THRIFT_NAMES_TO_IDS, OptionalMyDataValuePatch.FIELD_METADATA);
-      OptionalMyDataValuePatch.Builder builder = new OptionalMyDataValuePatch.Builder();
+      oprot.readStructBegin(OptionalInnerUnionPatch.NAMES_TO_IDS, OptionalInnerUnionPatch.THRIFT_NAMES_TO_IDS, OptionalInnerUnionPatch.FIELD_METADATA);
+      OptionalInnerUnionPatch.Builder builder = new OptionalInnerUnionPatch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
         if (__field.type == TType.STOP) { break; }
@@ -217,7 +217,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
           break;
         case _PATCH:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyDataValuePatch patch = test.fixtures.patch.MyDataValuePatch.read0(oprot);
+            test.fixtures.patch.InnerUnionPatch patch = test.fixtures.patch.InnerUnionPatch.read0(oprot);
             builder.setPatch(patch);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -225,7 +225,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
           break;
         case _ENSURE:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyData ensure = test.fixtures.patch.MyData.read0(oprot);
+            test.fixtures.patch.InnerUnion ensure = test.fixtures.patch.InnerUnion.read0(oprot);
             builder.setEnsure(ensure);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -233,7 +233,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
           break;
         case _PATCHAFTER:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyDataValuePatch patchAfter = test.fixtures.patch.MyDataValuePatch.read0(oprot);
+            test.fixtures.patch.InnerUnionPatch patchAfter = test.fixtures.patch.InnerUnionPatch.read0(oprot);
             builder.setPatchAfter(patchAfter);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -273,11 +273,11 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
       oprot.writeStructEnd();
     }
     
-    private static class _OptionalMyDataValuePatchLazy {
-        private static final OptionalMyDataValuePatch _DEFAULT = new OptionalMyDataValuePatch.Builder().build();
+    private static class _OptionalInnerUnionPatchLazy {
+        private static final OptionalInnerUnionPatch _DEFAULT = new OptionalInnerUnionPatch.Builder().build();
     }
     
-    public static OptionalMyDataValuePatch defaultInstance() {
-        return  _OptionalMyDataValuePatchLazy._DEFAULT;
+    public static OptionalInnerUnionPatch defaultInstance() {
+        return  _OptionalInnerUnionPatchLazy._DEFAULT;
     }
 }

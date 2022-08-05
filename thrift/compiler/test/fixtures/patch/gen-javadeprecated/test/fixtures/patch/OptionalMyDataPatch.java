@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class InnerUnionValuePatch implements TBase, java.io.Serializable, Cloneable, Comparable<InnerUnionValuePatch> {
-  private static final TStruct STRUCT_DESC = new TStruct("InnerUnionValuePatch");
+public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneable, Comparable<OptionalMyDataPatch> {
+  private static final TStruct STRUCT_DESC = new TStruct("OptionalMyDataPatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
@@ -38,15 +38,15 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Patches any set value. Applies second.
    */
-  public InnerUnionPatch patch;
+  public MyDataPatch patch;
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public InnerUnion ensure;
+  public MyData ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public InnerUnionPatch patchAfter;
+  public MyDataPatch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
@@ -63,26 +63,37 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
     tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
-    tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, InnerUnion.class)));
+        new StructMetaData(TType.STRUCT, MyDataPatch.class)));
+    tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
+        new StructMetaData(TType.STRUCT, MyData.class)));
     tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
+        new StructMetaData(TType.STRUCT, MyDataPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(InnerUnionValuePatch.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(OptionalMyDataPatch.class, metaDataMap);
   }
 
-  public InnerUnionValuePatch() {
+  public OptionalMyDataPatch() {
   }
 
-  public InnerUnionValuePatch(
+  public OptionalMyDataPatch(
       boolean clear,
-      InnerUnionPatch patch,
-      InnerUnion ensure,
-      InnerUnionPatch patchAfter) {
+      MyDataPatch patch,
+      MyDataPatch patchAfter) {
+    this();
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
+    this.patchAfter = patchAfter;
+  }
+
+  public OptionalMyDataPatch(
+      boolean clear,
+      MyDataPatch patch,
+      MyData ensure,
+      MyDataPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
@@ -93,9 +104,9 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
 
   public static class Builder {
     private boolean clear;
-    private InnerUnionPatch patch;
-    private InnerUnion ensure;
-    private InnerUnionPatch patchAfter;
+    private MyDataPatch patch;
+    private MyData ensure;
+    private MyDataPatch patchAfter;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -108,23 +119,23 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       return this;
     }
 
-    public Builder setPatch(final InnerUnionPatch patch) {
+    public Builder setPatch(final MyDataPatch patch) {
       this.patch = patch;
       return this;
     }
 
-    public Builder setEnsure(final InnerUnion ensure) {
+    public Builder setEnsure(final MyData ensure) {
       this.ensure = ensure;
       return this;
     }
 
-    public Builder setPatchAfter(final InnerUnionPatch patchAfter) {
+    public Builder setPatchAfter(final MyDataPatch patchAfter) {
       this.patchAfter = patchAfter;
       return this;
     }
 
-    public InnerUnionValuePatch build() {
-      InnerUnionValuePatch result = new InnerUnionValuePatch();
+    public OptionalMyDataPatch build() {
+      OptionalMyDataPatch result = new OptionalMyDataPatch();
       if (__optional_isset.get(__CLEAR_ISSET_ID)) {
         result.setClear(this.clear);
       }
@@ -142,7 +153,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public InnerUnionValuePatch(InnerUnionValuePatch other) {
+  public OptionalMyDataPatch(OptionalMyDataPatch other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.clear = TBaseHelper.deepCopy(other.clear);
@@ -157,8 +168,8 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public InnerUnionValuePatch deepCopy() {
-    return new InnerUnionValuePatch(this);
+  public OptionalMyDataPatch deepCopy() {
+    return new OptionalMyDataPatch(this);
   }
 
   /**
@@ -171,7 +182,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Clears any set value. Applies first.
    */
-  public InnerUnionValuePatch setClear(boolean clear) {
+  public OptionalMyDataPatch setClear(boolean clear) {
     this.clear = clear;
     setClearIsSet(true);
     return this;
@@ -193,14 +204,14 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Patches any set value. Applies second.
    */
-  public InnerUnionPatch getPatch() {
+  public MyDataPatch getPatch() {
     return this.patch;
   }
 
   /**
    * Patches any set value. Applies second.
    */
-  public InnerUnionValuePatch setPatch(InnerUnionPatch patch) {
+  public OptionalMyDataPatch setPatch(MyDataPatch patch) {
     this.patch = patch;
     return this;
   }
@@ -223,14 +234,14 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public InnerUnion getEnsure() {
+  public MyData getEnsure() {
     return this.ensure;
   }
 
   /**
    * Assigns the value, if not already set. Applies third.
    */
-  public InnerUnionValuePatch setEnsure(InnerUnion ensure) {
+  public OptionalMyDataPatch setEnsure(MyData ensure) {
     this.ensure = ensure;
     return this;
   }
@@ -253,14 +264,14 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public InnerUnionPatch getPatchAfter() {
+  public MyDataPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public InnerUnionValuePatch setPatchAfter(InnerUnionPatch patchAfter) {
+  public OptionalMyDataPatch setPatchAfter(MyDataPatch patchAfter) {
     this.patchAfter = patchAfter;
     return this;
   }
@@ -294,7 +305,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       if (__value == null) {
         unsetPatch();
       } else {
-        setPatch((InnerUnionPatch)__value);
+        setPatch((MyDataPatch)__value);
       }
       break;
 
@@ -302,7 +313,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       if (__value == null) {
         unsetEnsure();
       } else {
-        setEnsure((InnerUnion)__value);
+        setEnsure((MyData)__value);
       }
       break;
 
@@ -310,7 +321,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       if (__value == null) {
         unsetPatchAfter();
       } else {
-        setPatchAfter((InnerUnionPatch)__value);
+        setPatchAfter((MyDataPatch)__value);
       }
       break;
 
@@ -344,9 +355,9 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof InnerUnionValuePatch))
+    if (!(_that instanceof OptionalMyDataPatch))
       return false;
-    InnerUnionValuePatch that = (InnerUnionValuePatch)_that;
+    OptionalMyDataPatch that = (OptionalMyDataPatch)_that;
 
     if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
@@ -365,7 +376,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
   }
 
   @Override
-  public int compareTo(InnerUnionValuePatch other) {
+  public int compareTo(OptionalMyDataPatch other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -432,7 +443,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
           break;
         case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.patch = new InnerUnionPatch();
+            this.patch = new MyDataPatch();
             this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -440,7 +451,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
           break;
         case ENSURE:
           if (__field.type == TType.STRUCT) {
-            this.ensure = new InnerUnion();
+            this.ensure = new MyData();
             this.ensure.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -448,7 +459,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
           break;
         case PATCHAFTER:
           if (__field.type == TType.STRUCT) {
-            this.patchAfter = new InnerUnionPatch();
+            this.patchAfter = new MyDataPatch();
             this.patchAfter.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -480,9 +491,11 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {
-      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
-      this.ensure.write(oprot);
-      oprot.writeFieldEnd();
+      if (isSetEnsure()) {
+        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+        this.ensure.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.patchAfter != null) {
       oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
@@ -503,7 +516,7 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("InnerUnionValuePatch");
+    StringBuilder sb = new StringBuilder("OptionalMyDataPatch");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);
@@ -526,17 +539,20 @@ public class InnerUnionValuePatch implements TBase, java.io.Serializable, Clonea
       sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("ensure");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getEnsure() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getEnsure(), indent + 1, prettyPrint));
+    if (isSetEnsure())
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("ensure");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getEnsure() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getEnsure(), indent + 1, prettyPrint));
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("patchAfter");

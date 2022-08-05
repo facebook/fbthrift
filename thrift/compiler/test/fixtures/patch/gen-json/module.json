@@ -520,7 +520,7 @@
         }
       }
     },
-    "MyDataPatch" : {
+    "MyDataFieldPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -567,7 +567,7 @@
         }
       }
     },
-    "MyDataValuePatch" : {
+    "MyDataPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -604,7 +604,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyDataPatch",
+          "spec_args" : "MyDataFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -629,7 +629,7 @@
         }
       }
     },
-    "OptionalMyDataValuePatch" : {
+    "OptionalMyDataPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -651,7 +651,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyDataValuePatch",
+          "spec_args" : "MyDataPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -681,7 +681,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyDataValuePatch",
+          "spec_args" : "MyDataPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -706,7 +706,7 @@
         }
       }
     },
-    "InnerUnionPatch" : {
+    "InnerUnionFieldPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -738,7 +738,7 @@
         }
       }
     },
-    "InnerUnionValuePatch" : {
+    "InnerUnionPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -760,7 +760,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "InnerUnionPatch",
+          "spec_args" : "InnerUnionFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -790,7 +790,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "InnerUnionPatch",
+          "spec_args" : "InnerUnionFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -815,7 +815,7 @@
         }
       }
     },
-    "OptionalInnerUnionValuePatch" : {
+    "OptionalInnerUnionPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -837,7 +837,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "InnerUnionValuePatch",
+          "spec_args" : "InnerUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -867,7 +867,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "InnerUnionValuePatch",
+          "spec_args" : "InnerUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -892,7 +892,7 @@
         }
       }
     },
-    "MyUnionPatch" : {
+    "MyUnionFieldPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -929,7 +929,7 @@
         },
         "option3" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "InnerUnionValuePatch",
+          "spec_args" : "InnerUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -954,7 +954,7 @@
         }
       }
     },
-    "MyUnionValuePatch" : {
+    "MyUnionPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -976,7 +976,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyUnionPatch",
+          "spec_args" : "MyUnionFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1006,7 +1006,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyUnionPatch",
+          "spec_args" : "MyUnionFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1031,7 +1031,7 @@
         }
       }
     },
-    "OptionalMyUnionValuePatch" : {
+    "OptionalMyUnionPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -1053,7 +1053,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyUnionValuePatch",
+          "spec_args" : "MyUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1083,7 +1083,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyUnionValuePatch",
+          "spec_args" : "MyUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1108,7 +1108,7 @@
         }
       }
     },
-    "MyStructPatch" : {
+    "MyStructFieldPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -1250,7 +1250,7 @@
         },
         "structVal" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyDataValuePatch",
+          "spec_args" : "MyDataPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1400,7 +1400,7 @@
         },
         "optStructVal" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "OptionalMyDataValuePatch",
+          "spec_args" : "OptionalMyDataPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1460,7 +1460,7 @@
         },
         "unionVal" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyUnionValuePatch",
+          "spec_args" : "MyUnionPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1932,7 +1932,7 @@
         }
       }
     },
-    "MyStructValuePatch" : {
+    "MyStructPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -1969,7 +1969,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyStructPatch",
+          "spec_args" : "MyStructFieldPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -1994,7 +1994,7 @@
         }
       }
     },
-    "OptionalMyStructValuePatch" : {
+    "OptionalMyStructPatch" : {
       "lineno" : 0,
       "is_exception" : false,
       "is_union" : false,
@@ -2016,7 +2016,7 @@
         },
         "patch" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyStructValuePatch",
+          "spec_args" : "MyStructPatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -2046,7 +2046,7 @@
         },
         "patchAfter" : {
           "type_enum" : "STRUCT",
-          "spec_args" : "MyStructValuePatch",
+          "spec_args" : "MyStructPatch",
           "required" : true,
           "source_range" : {
             "begin" : {

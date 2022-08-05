@@ -26,29 +26,48 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Comparable<MyUnionPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("MyUnionPatch");
-  private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRUCT, (short)1);
-  private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.STRUCT, (short)2);
-  private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
-  public com.facebook.thrift.op.StringPatch option1;
-  public com.facebook.thrift.op.I32Patch option2;
-  public InnerUnionValuePatch option3;
-  public static final int OPTION1 = 1;
-  public static final int OPTION2 = 2;
-  public static final int OPTION3 = 3;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public boolean clear;
+  /**
+   * Patches any set value. Applies second.
+   */
+  public MyUnionFieldPatch patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public MyUnion ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public MyUnionFieldPatch patchAfter;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
+  public static final int ENSURE = 4;
+  public static final int PATCHAFTER = 6;
 
   // isset id assignments
+  private static final int __CLEAR_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
-    tmpMetaDataMap.put(OPTION1, new FieldMetaData("option1", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
-    tmpMetaDataMap.put(OPTION2, new FieldMetaData("option2", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
-    tmpMetaDataMap.put(OPTION3, new FieldMetaData("option3", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, InnerUnionValuePatch.class)));
+    tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyUnionFieldPatch.class)));
+    tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyUnion.class)));
+    tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyUnionFieldPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -60,43 +79,58 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   public MyUnionPatch(
-      com.facebook.thrift.op.StringPatch option1,
-      com.facebook.thrift.op.I32Patch option2,
-      InnerUnionValuePatch option3) {
+      boolean clear,
+      MyUnionFieldPatch patch,
+      MyUnion ensure,
+      MyUnionFieldPatch patchAfter) {
     this();
-    this.option1 = option1;
-    this.option2 = option2;
-    this.option3 = option3;
+    this.clear = clear;
+    setClearIsSet(true);
+    this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   public static class Builder {
-    private com.facebook.thrift.op.StringPatch option1;
-    private com.facebook.thrift.op.I32Patch option2;
-    private InnerUnionValuePatch option3;
+    private boolean clear;
+    private MyUnionFieldPatch patch;
+    private MyUnion ensure;
+    private MyUnionFieldPatch patchAfter;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
-    public Builder setOption1(final com.facebook.thrift.op.StringPatch option1) {
-      this.option1 = option1;
+    public Builder setClear(final boolean clear) {
+      this.clear = clear;
+      __optional_isset.set(__CLEAR_ISSET_ID, true);
       return this;
     }
 
-    public Builder setOption2(final com.facebook.thrift.op.I32Patch option2) {
-      this.option2 = option2;
+    public Builder setPatch(final MyUnionFieldPatch patch) {
+      this.patch = patch;
       return this;
     }
 
-    public Builder setOption3(final InnerUnionValuePatch option3) {
-      this.option3 = option3;
+    public Builder setEnsure(final MyUnion ensure) {
+      this.ensure = ensure;
+      return this;
+    }
+
+    public Builder setPatchAfter(final MyUnionFieldPatch patchAfter) {
+      this.patchAfter = patchAfter;
       return this;
     }
 
     public MyUnionPatch build() {
       MyUnionPatch result = new MyUnionPatch();
-      result.setOption1(this.option1);
-      result.setOption2(this.option2);
-      result.setOption3(this.option3);
+      if (__optional_isset.get(__CLEAR_ISSET_ID)) {
+        result.setClear(this.clear);
+      }
+      result.setPatch(this.patch);
+      result.setEnsure(this.ensure);
+      result.setPatchAfter(this.patchAfter);
       return result;
     }
   }
@@ -109,14 +143,17 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
    * Performs a deep copy on <i>other</i>.
    */
   public MyUnionPatch(MyUnionPatch other) {
-    if (other.isSetOption1()) {
-      this.option1 = TBaseHelper.deepCopy(other.option1);
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.clear = TBaseHelper.deepCopy(other.clear);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     }
-    if (other.isSetOption2()) {
-      this.option2 = TBaseHelper.deepCopy(other.option2);
+    if (other.isSetEnsure()) {
+      this.ensure = TBaseHelper.deepCopy(other.ensure);
     }
-    if (other.isSetOption3()) {
-      this.option3 = TBaseHelper.deepCopy(other.option3);
+    if (other.isSetPatchAfter()) {
+      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
     }
   }
 
@@ -124,101 +161,156 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     return new MyUnionPatch(this);
   }
 
-  public com.facebook.thrift.op.StringPatch getOption1() {
-    return this.option1;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public boolean isClear() {
+    return this.clear;
   }
 
-  public MyUnionPatch setOption1(com.facebook.thrift.op.StringPatch option1) {
-    this.option1 = option1;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public MyUnionPatch setClear(boolean clear) {
+    this.clear = clear;
+    setClearIsSet(true);
     return this;
   }
 
-  public void unsetOption1() {
-    this.option1 = null;
+  public void unsetClear() {
+    __isset_bit_vector.clear(__CLEAR_ISSET_ID);
   }
 
-  // Returns true if field option1 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption1() {
-    return this.option1 != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return __isset_bit_vector.get(__CLEAR_ISSET_ID);
   }
 
-  public void setOption1IsSet(boolean __value) {
+  public void setClearIsSet(boolean __value) {
+    __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
+  }
+
+  /**
+   * Patches any set value. Applies second.
+   */
+  public MyUnionFieldPatch getPatch() {
+    return this.patch;
+  }
+
+  /**
+   * Patches any set value. Applies second.
+   */
+  public MyUnionPatch setPatch(MyUnionFieldPatch patch) {
+    this.patch = patch;
+    return this;
+  }
+
+  public void unsetPatch() {
+    this.patch = null;
+  }
+
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
+  }
+
+  public void setPatchIsSet(boolean __value) {
     if (!__value) {
-      this.option1 = null;
+      this.patch = null;
     }
   }
 
-  public com.facebook.thrift.op.I32Patch getOption2() {
-    return this.option2;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public MyUnion getEnsure() {
+    return this.ensure;
   }
 
-  public MyUnionPatch setOption2(com.facebook.thrift.op.I32Patch option2) {
-    this.option2 = option2;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public MyUnionPatch setEnsure(MyUnion ensure) {
+    this.ensure = ensure;
     return this;
   }
 
-  public void unsetOption2() {
-    this.option2 = null;
+  public void unsetEnsure() {
+    this.ensure = null;
   }
 
-  // Returns true if field option2 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption2() {
-    return this.option2 != null;
+  // Returns true if field ensure is set (has been assigned a value) and false otherwise
+  public boolean isSetEnsure() {
+    return this.ensure != null;
   }
 
-  public void setOption2IsSet(boolean __value) {
+  public void setEnsureIsSet(boolean __value) {
     if (!__value) {
-      this.option2 = null;
+      this.ensure = null;
     }
   }
 
-  public InnerUnionValuePatch getOption3() {
-    return this.option3;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public MyUnionFieldPatch getPatchAfter() {
+    return this.patchAfter;
   }
 
-  public MyUnionPatch setOption3(InnerUnionValuePatch option3) {
-    this.option3 = option3;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public MyUnionPatch setPatchAfter(MyUnionFieldPatch patchAfter) {
+    this.patchAfter = patchAfter;
     return this;
   }
 
-  public void unsetOption3() {
-    this.option3 = null;
+  public void unsetPatchAfter() {
+    this.patchAfter = null;
   }
 
-  // Returns true if field option3 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption3() {
-    return this.option3 != null;
+  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchAfter() {
+    return this.patchAfter != null;
   }
 
-  public void setOption3IsSet(boolean __value) {
+  public void setPatchAfterIsSet(boolean __value) {
     if (!__value) {
-      this.option3 = null;
+      this.patchAfter = null;
     }
   }
 
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
-    case OPTION1:
+    case CLEAR:
       if (__value == null) {
-        unsetOption1();
+        unsetClear();
       } else {
-        setOption1((com.facebook.thrift.op.StringPatch)__value);
+        setClear((Boolean)__value);
       }
       break;
 
-    case OPTION2:
+    case PATCH:
       if (__value == null) {
-        unsetOption2();
+        unsetPatch();
       } else {
-        setOption2((com.facebook.thrift.op.I32Patch)__value);
+        setPatch((MyUnionFieldPatch)__value);
       }
       break;
 
-    case OPTION3:
+    case ENSURE:
       if (__value == null) {
-        unsetOption3();
+        unsetEnsure();
       } else {
-        setOption3((InnerUnionValuePatch)__value);
+        setEnsure((MyUnion)__value);
+      }
+      break;
+
+    case PATCHAFTER:
+      if (__value == null) {
+        unsetPatchAfter();
+      } else {
+        setPatchAfter((MyUnionFieldPatch)__value);
       }
       break;
 
@@ -229,14 +321,17 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
-    case OPTION1:
-      return getOption1();
+    case CLEAR:
+      return new Boolean(isClear());
 
-    case OPTION2:
-      return getOption2();
+    case PATCH:
+      return getPatch();
 
-    case OPTION3:
-      return getOption3();
+    case ENSURE:
+      return getEnsure();
+
+    case PATCHAFTER:
+      return getPatchAfter();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -253,18 +348,20 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
       return false;
     MyUnionPatch that = (MyUnionPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption1(), that.isSetOption1(), this.option1, that.option1)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption2(), that.isSetOption2(), this.option2, that.option2)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption3(), that.isSetOption3(), this.option3, that.option3)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {option1, option2, option3});
+    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
   }
 
   @Override
@@ -279,27 +376,35 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     }
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetOption1()).compareTo(other.isSetOption1());
+    lastComparison = Boolean.valueOf(isSetClear()).compareTo(other.isSetClear());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(option1, other.option1);
+    lastComparison = TBaseHelper.compareTo(clear, other.clear);
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetOption2()).compareTo(other.isSetOption2());
+    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(option2, other.option2);
+    lastComparison = TBaseHelper.compareTo(patch, other.patch);
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetOption3()).compareTo(other.isSetOption3());
+    lastComparison = Boolean.valueOf(isSetEnsure()).compareTo(other.isSetEnsure());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(option3, other.option3);
+    lastComparison = TBaseHelper.compareTo(ensure, other.ensure);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetPatchAfter()).compareTo(other.isSetPatchAfter());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(patchAfter, other.patchAfter);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -317,26 +422,34 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
       }
       switch (__field.id)
       {
-        case OPTION1:
-          if (__field.type == TType.STRUCT) {
-            this.option1 = new com.facebook.thrift.op.StringPatch();
-            this.option1.read(iprot);
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            this.clear = iprot.readBool();
+            setClearIsSet(true);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case OPTION2:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.option2 = new com.facebook.thrift.op.I32Patch();
-            this.option2.read(iprot);
+            this.patch = new MyUnionFieldPatch();
+            this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case OPTION3:
+        case ENSURE:
           if (__field.type == TType.STRUCT) {
-            this.option3 = new InnerUnionValuePatch();
-            this.option3.read(iprot);
+            this.ensure = new MyUnion();
+            this.ensure.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            this.patchAfter = new MyUnionFieldPatch();
+            this.patchAfter.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -358,19 +471,22 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.option1 != null) {
-      oprot.writeFieldBegin(OPTION1_FIELD_DESC);
-      this.option1.write(oprot);
+    oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+    oprot.writeBool(this.clear);
+    oprot.writeFieldEnd();
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.option2 != null) {
-      oprot.writeFieldBegin(OPTION2_FIELD_DESC);
-      this.option2.write(oprot);
+    if (this.ensure != null) {
+      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+      this.ensure.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.option3 != null) {
-      oprot.writeFieldBegin(OPTION3_FIELD_DESC);
-      this.option3.write(oprot);
+    if (this.patchAfter != null) {
+      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+      this.patchAfter.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -394,35 +510,42 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     boolean first = true;
 
     sb.append(indentStr);
-    sb.append("option1");
+    sb.append("clear");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getOption1() == null) {
+    sb.append(TBaseHelper.toString(this.isClear(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("patch");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getPatch() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getOption1(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("option2");
+    sb.append("ensure");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getOption2() == null) {
+    if (this.getEnsure() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getOption2(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getEnsure(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("option3");
+    sb.append("patchAfter");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getOption3() == null) {
+    if (this.getPatchAfter() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getOption3(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatchAfter(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

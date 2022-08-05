@@ -67,7 +67,7 @@ pub struct MyStruct {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct MyDataPatch {
+pub struct MyDataFieldPatch {
     pub data1: patch::types::StringPatch,
     pub data2: patch::types::I32Patch,
     // This field forces `..Default::default()` when instantiating this
@@ -79,13 +79,13 @@ pub struct MyDataPatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct MyDataValuePatch {
+pub struct MyDataPatch {
     #[doc = "Assigns a value. If set, all other operations are ignored."]
     pub assign: ::std::option::Option<::std::boxed::Box<crate::types::MyData>>,
     #[doc = "Clears a value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches a value. Applies second."]
-    pub patch: crate::types::MyDataPatch,
+    pub patch: crate::types::MyDataFieldPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -95,15 +95,15 @@ pub struct MyDataValuePatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct OptionalMyDataValuePatch {
+pub struct OptionalMyDataPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any set value. Applies second."]
-    pub patch: crate::types::MyDataValuePatch,
+    pub patch: crate::types::MyDataPatch,
     #[doc = "Assigns the value, if not already set. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyData>>,
     #[doc = "Patches any set value, including newly set values. Applies fourth."]
-    pub patchAfter: crate::types::MyDataValuePatch,
+    pub patchAfter: crate::types::MyDataPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -113,7 +113,7 @@ pub struct OptionalMyDataValuePatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct InnerUnionPatch {
+pub struct InnerUnionFieldPatch {
     pub innerOption: patch::types::BinaryPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
@@ -124,13 +124,31 @@ pub struct InnerUnionPatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct InnerUnionValuePatch {
+pub struct InnerUnionPatch {
+    #[doc = "Clears any set value. Applies first."]
+    pub clear: ::std::primitive::bool,
+    #[doc = "Patches any set value. Applies second."]
+    pub patch: crate::types::InnerUnionFieldPatch,
+    #[doc = "Assigns the value, if not already set. Applies third."]
+    pub ensure: crate::types::InnerUnion,
+    #[doc = "Patches any set value, including newly set values. Applies fourth."]
+    pub patchAfter: crate::types::InnerUnionFieldPatch,
+    // This field forces `..Default::default()` when instantiating this
+    // struct, to make code future-proof against new fields added later to
+    // the definition in Thrift. If you don't want this, add the annotation
+    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+    #[doc(hidden)]
+    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+}
+
+#[derive(Clone, PartialEq)]
+pub struct OptionalInnerUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any set value. Applies second."]
     pub patch: crate::types::InnerUnionPatch,
     #[doc = "Assigns the value, if not already set. Applies third."]
-    pub ensure: crate::types::InnerUnion,
+    pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::InnerUnion>>,
     #[doc = "Patches any set value, including newly set values. Applies fourth."]
     pub patchAfter: crate::types::InnerUnionPatch,
     // This field forces `..Default::default()` when instantiating this
@@ -142,15 +160,10 @@ pub struct InnerUnionValuePatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct OptionalInnerUnionValuePatch {
-    #[doc = "Clears any set value. Applies first."]
-    pub clear: ::std::primitive::bool,
-    #[doc = "Patches any set value. Applies second."]
-    pub patch: crate::types::InnerUnionValuePatch,
-    #[doc = "Assigns the value, if not already set. Applies third."]
-    pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::InnerUnion>>,
-    #[doc = "Patches any set value, including newly set values. Applies fourth."]
-    pub patchAfter: crate::types::InnerUnionValuePatch,
+pub struct MyUnionFieldPatch {
+    pub option1: patch::types::StringPatch,
+    pub option2: patch::types::I32Patch,
+    pub option3: crate::types::InnerUnionPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -161,9 +174,14 @@ pub struct OptionalInnerUnionValuePatch {
 
 #[derive(Clone, PartialEq)]
 pub struct MyUnionPatch {
-    pub option1: patch::types::StringPatch,
-    pub option2: patch::types::I32Patch,
-    pub option3: crate::types::InnerUnionValuePatch,
+    #[doc = "Clears any set value. Applies first."]
+    pub clear: ::std::primitive::bool,
+    #[doc = "Patches any set value. Applies second."]
+    pub patch: crate::types::MyUnionFieldPatch,
+    #[doc = "Assigns the value, if not already set. Applies third."]
+    pub ensure: crate::types::MyUnion,
+    #[doc = "Patches any set value, including newly set values. Applies fourth."]
+    pub patchAfter: crate::types::MyUnionFieldPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -173,13 +191,13 @@ pub struct MyUnionPatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct MyUnionValuePatch {
+pub struct OptionalMyUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any set value. Applies second."]
     pub patch: crate::types::MyUnionPatch,
     #[doc = "Assigns the value, if not already set. Applies third."]
-    pub ensure: crate::types::MyUnion,
+    pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyUnion>>,
     #[doc = "Patches any set value, including newly set values. Applies fourth."]
     pub patchAfter: crate::types::MyUnionPatch,
     // This field forces `..Default::default()` when instantiating this
@@ -191,25 +209,7 @@ pub struct MyUnionValuePatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct OptionalMyUnionValuePatch {
-    #[doc = "Clears any set value. Applies first."]
-    pub clear: ::std::primitive::bool,
-    #[doc = "Patches any set value. Applies second."]
-    pub patch: crate::types::MyUnionValuePatch,
-    #[doc = "Assigns the value, if not already set. Applies third."]
-    pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyUnion>>,
-    #[doc = "Patches any set value, including newly set values. Applies fourth."]
-    pub patchAfter: crate::types::MyUnionValuePatch,
-    // This field forces `..Default::default()` when instantiating this
-    // struct, to make code future-proof against new fields added later to
-    // the definition in Thrift. If you don't want this, add the annotation
-    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
-    #[doc(hidden)]
-    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
-}
-
-#[derive(Clone, PartialEq)]
-pub struct MyStructPatch {
+pub struct MyStructFieldPatch {
     pub boolVal: patch::types::BoolPatch,
     pub byteVal: patch::types::BytePatch,
     pub i16Val: patch::types::I16Patch,
@@ -219,7 +219,7 @@ pub struct MyStructPatch {
     pub doubleVal: patch::types::DoublePatch,
     pub stringVal: patch::types::StringPatch,
     pub binaryVal: patch::types::BinaryPatch,
-    pub structVal: crate::types::MyDataValuePatch,
+    pub structVal: crate::types::MyDataPatch,
     pub optBoolVal: patch::types::OptionalBoolPatch,
     pub optByteVal: patch::types::OptionalBytePatch,
     pub optI16Val: patch::types::OptionalI16Patch,
@@ -229,11 +229,11 @@ pub struct MyStructPatch {
     pub optDoubleVal: patch::types::OptionalDoublePatch,
     pub optStringVal: patch::types::OptionalStringPatch,
     pub optBinaryVal: patch::types::OptionalBinaryPatch,
-    pub optStructVal: crate::types::OptionalMyDataValuePatch,
+    pub optStructVal: crate::types::OptionalMyDataPatch,
     pub optListVal: crate::types::OptionalMyStructField21Patch,
     pub optSetVal: crate::types::OptionalMyStructField22Patch,
     pub optMapVal: crate::types::OptionalMyStructField23Patch,
-    pub unionVal: crate::types::MyUnionValuePatch,
+    pub unionVal: crate::types::MyUnionPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -349,13 +349,13 @@ pub struct OptionalMyStructField23Patch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct MyStructValuePatch {
+pub struct MyStructPatch {
     #[doc = "Assigns a value. If set, all other operations are ignored."]
     pub assign: ::std::option::Option<::std::boxed::Box<crate::types::MyStruct>>,
     #[doc = "Clears a value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches a value. Applies second."]
-    pub patch: crate::types::MyStructPatch,
+    pub patch: crate::types::MyStructFieldPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -365,15 +365,15 @@ pub struct MyStructValuePatch {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct OptionalMyStructValuePatch {
+pub struct OptionalMyStructPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any set value. Applies second."]
-    pub patch: crate::types::MyStructValuePatch,
+    pub patch: crate::types::MyStructPatch,
     #[doc = "Assigns the value, if not already set. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyStruct>>,
     #[doc = "Patches any set value, including newly set values. Applies fourth."]
-    pub patchAfter: crate::types::MyStructValuePatch,
+    pub patchAfter: crate::types::MyStructPatch,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -939,7 +939,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyDataPatch {
+impl ::std::default::Default for self::MyDataFieldPatch {
     fn default() -> Self {
         Self {
             data1: ::std::default::Default::default(),
@@ -949,35 +949,35 @@ impl ::std::default::Default for self::MyDataPatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyDataPatch {
+impl ::std::fmt::Debug for self::MyDataFieldPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyDataPatch")
+            .debug_struct("MyDataFieldPatch")
             .field("data1", &self.data1)
             .field("data2", &self.data2)
             .finish()
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyDataPatch {}
-unsafe impl ::std::marker::Sync for self::MyDataPatch {}
+unsafe impl ::std::marker::Send for self::MyDataFieldPatch {}
+unsafe impl ::std::marker::Sync for self::MyDataFieldPatch {}
 
-impl ::fbthrift::GetTType for self::MyDataPatch {
+impl ::fbthrift::GetTType for self::MyDataFieldPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyDataPatch {
+impl ::fbthrift::GetUri for self::MyDataFieldPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyDataPatch"
+        "test.dev/fixtures/patch/MyDataFieldPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyDataPatch
+impl<P> ::fbthrift::Serialize<P> for self::MyDataFieldPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyDataPatch");
+        p.write_struct_begin("MyDataFieldPatch");
         p.write_field_begin("data1", ::fbthrift::TType::Struct, 1);
         ::fbthrift::Serialize::write(&self.data1, p);
         p.write_field_end();
@@ -989,7 +989,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyDataPatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyDataFieldPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1022,7 +1022,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyDataValuePatch {
+impl ::std::default::Default for self::MyDataPatch {
     fn default() -> Self {
         Self {
             assign: ::std::option::Option::None,
@@ -1033,10 +1033,10 @@ impl ::std::default::Default for self::MyDataValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyDataValuePatch {
+impl ::std::fmt::Debug for self::MyDataPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyDataValuePatch")
+            .debug_struct("MyDataPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
             .field("patch", &self.patch)
@@ -1044,25 +1044,25 @@ impl ::std::fmt::Debug for self::MyDataValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyDataValuePatch {}
-unsafe impl ::std::marker::Sync for self::MyDataValuePatch {}
+unsafe impl ::std::marker::Send for self::MyDataPatch {}
+unsafe impl ::std::marker::Sync for self::MyDataPatch {}
 
-impl ::fbthrift::GetTType for self::MyDataValuePatch {
+impl ::fbthrift::GetTType for self::MyDataPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyDataValuePatch {
+impl ::fbthrift::GetUri for self::MyDataPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyDataValuePatch"
+        "test.dev/fixtures/patch/MyDataPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyDataValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::MyDataPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyDataValuePatch");
+        p.write_struct_begin("MyDataPatch");
         if let ::std::option::Option::Some(some) = &self.assign {
             p.write_field_begin("assign", ::fbthrift::TType::Struct, 1);
             ::fbthrift::Serialize::write(some, p);
@@ -1079,7 +1079,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyDataValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyDataPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1116,7 +1116,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::OptionalMyDataValuePatch {
+impl ::std::default::Default for self::OptionalMyDataPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -1128,10 +1128,10 @@ impl ::std::default::Default for self::OptionalMyDataValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::OptionalMyDataValuePatch {
+impl ::std::fmt::Debug for self::OptionalMyDataPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("OptionalMyDataValuePatch")
+            .debug_struct("OptionalMyDataPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -1140,25 +1140,25 @@ impl ::std::fmt::Debug for self::OptionalMyDataValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::OptionalMyDataValuePatch {}
-unsafe impl ::std::marker::Sync for self::OptionalMyDataValuePatch {}
+unsafe impl ::std::marker::Send for self::OptionalMyDataPatch {}
+unsafe impl ::std::marker::Sync for self::OptionalMyDataPatch {}
 
-impl ::fbthrift::GetTType for self::OptionalMyDataValuePatch {
+impl ::fbthrift::GetTType for self::OptionalMyDataPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::OptionalMyDataValuePatch {
+impl ::fbthrift::GetUri for self::OptionalMyDataPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/OptionalMyDataValuePatch"
+        "test.dev/fixtures/patch/OptionalMyDataPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::OptionalMyDataValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::OptionalMyDataPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("OptionalMyDataValuePatch");
+        p.write_struct_begin("OptionalMyDataPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -1178,7 +1178,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyDataValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyDataPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1219,7 +1219,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::InnerUnionPatch {
+impl ::std::default::Default for self::InnerUnionFieldPatch {
     fn default() -> Self {
         Self {
             innerOption: ::std::default::Default::default(),
@@ -1228,34 +1228,34 @@ impl ::std::default::Default for self::InnerUnionPatch {
     }
 }
 
-impl ::std::fmt::Debug for self::InnerUnionPatch {
+impl ::std::fmt::Debug for self::InnerUnionFieldPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("InnerUnionPatch")
+            .debug_struct("InnerUnionFieldPatch")
             .field("innerOption", &self.innerOption)
             .finish()
     }
 }
 
-unsafe impl ::std::marker::Send for self::InnerUnionPatch {}
-unsafe impl ::std::marker::Sync for self::InnerUnionPatch {}
+unsafe impl ::std::marker::Send for self::InnerUnionFieldPatch {}
+unsafe impl ::std::marker::Sync for self::InnerUnionFieldPatch {}
 
-impl ::fbthrift::GetTType for self::InnerUnionPatch {
+impl ::fbthrift::GetTType for self::InnerUnionFieldPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::InnerUnionPatch {
+impl ::fbthrift::GetUri for self::InnerUnionFieldPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/InnerUnionPatch"
+        "test.dev/fixtures/patch/InnerUnionFieldPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::InnerUnionPatch
+impl<P> ::fbthrift::Serialize<P> for self::InnerUnionFieldPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("InnerUnionPatch");
+        p.write_struct_begin("InnerUnionFieldPatch");
         p.write_field_begin("innerOption", ::fbthrift::TType::Struct, 1);
         ::fbthrift::Serialize::write(&self.innerOption, p);
         p.write_field_end();
@@ -1264,7 +1264,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::InnerUnionPatch
+impl<P> ::fbthrift::Deserialize<P> for self::InnerUnionFieldPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1293,7 +1293,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::InnerUnionValuePatch {
+impl ::std::default::Default for self::InnerUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -1305,10 +1305,10 @@ impl ::std::default::Default for self::InnerUnionValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::InnerUnionValuePatch {
+impl ::std::fmt::Debug for self::InnerUnionPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("InnerUnionValuePatch")
+            .debug_struct("InnerUnionPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -1317,25 +1317,25 @@ impl ::std::fmt::Debug for self::InnerUnionValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::InnerUnionValuePatch {}
-unsafe impl ::std::marker::Sync for self::InnerUnionValuePatch {}
+unsafe impl ::std::marker::Send for self::InnerUnionPatch {}
+unsafe impl ::std::marker::Sync for self::InnerUnionPatch {}
 
-impl ::fbthrift::GetTType for self::InnerUnionValuePatch {
+impl ::fbthrift::GetTType for self::InnerUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::InnerUnionValuePatch {
+impl ::fbthrift::GetUri for self::InnerUnionPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/InnerUnionValuePatch"
+        "test.dev/fixtures/patch/InnerUnionPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::InnerUnionValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::InnerUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("InnerUnionValuePatch");
+        p.write_struct_begin("InnerUnionPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -1353,7 +1353,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::InnerUnionValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::InnerUnionPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1394,7 +1394,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::OptionalInnerUnionValuePatch {
+impl ::std::default::Default for self::OptionalInnerUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -1406,10 +1406,10 @@ impl ::std::default::Default for self::OptionalInnerUnionValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::OptionalInnerUnionValuePatch {
+impl ::std::fmt::Debug for self::OptionalInnerUnionPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("OptionalInnerUnionValuePatch")
+            .debug_struct("OptionalInnerUnionPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -1418,25 +1418,25 @@ impl ::std::fmt::Debug for self::OptionalInnerUnionValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::OptionalInnerUnionValuePatch {}
-unsafe impl ::std::marker::Sync for self::OptionalInnerUnionValuePatch {}
+unsafe impl ::std::marker::Send for self::OptionalInnerUnionPatch {}
+unsafe impl ::std::marker::Sync for self::OptionalInnerUnionPatch {}
 
-impl ::fbthrift::GetTType for self::OptionalInnerUnionValuePatch {
+impl ::fbthrift::GetTType for self::OptionalInnerUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::OptionalInnerUnionValuePatch {
+impl ::fbthrift::GetUri for self::OptionalInnerUnionPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/OptionalInnerUnionValuePatch"
+        "test.dev/fixtures/patch/OptionalInnerUnionPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::OptionalInnerUnionValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::OptionalInnerUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("OptionalInnerUnionValuePatch");
+        p.write_struct_begin("OptionalInnerUnionPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -1456,7 +1456,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::OptionalInnerUnionValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::OptionalInnerUnionPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1497,7 +1497,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyUnionPatch {
+impl ::std::default::Default for self::MyUnionFieldPatch {
     fn default() -> Self {
         Self {
             option1: ::std::default::Default::default(),
@@ -1508,10 +1508,10 @@ impl ::std::default::Default for self::MyUnionPatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyUnionPatch {
+impl ::std::fmt::Debug for self::MyUnionFieldPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyUnionPatch")
+            .debug_struct("MyUnionFieldPatch")
             .field("option1", &self.option1)
             .field("option2", &self.option2)
             .field("option3", &self.option3)
@@ -1519,25 +1519,25 @@ impl ::std::fmt::Debug for self::MyUnionPatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyUnionPatch {}
-unsafe impl ::std::marker::Sync for self::MyUnionPatch {}
+unsafe impl ::std::marker::Send for self::MyUnionFieldPatch {}
+unsafe impl ::std::marker::Sync for self::MyUnionFieldPatch {}
 
-impl ::fbthrift::GetTType for self::MyUnionPatch {
+impl ::fbthrift::GetTType for self::MyUnionFieldPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyUnionPatch {
+impl ::fbthrift::GetUri for self::MyUnionFieldPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyUnionPatch"
+        "test.dev/fixtures/patch/MyUnionFieldPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyUnionPatch
+impl<P> ::fbthrift::Serialize<P> for self::MyUnionFieldPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyUnionPatch");
+        p.write_struct_begin("MyUnionFieldPatch");
         p.write_field_begin("option1", ::fbthrift::TType::Struct, 1);
         ::fbthrift::Serialize::write(&self.option1, p);
         p.write_field_end();
@@ -1552,7 +1552,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyUnionPatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyUnionFieldPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1589,7 +1589,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyUnionValuePatch {
+impl ::std::default::Default for self::MyUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -1601,10 +1601,10 @@ impl ::std::default::Default for self::MyUnionValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyUnionValuePatch {
+impl ::std::fmt::Debug for self::MyUnionPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyUnionValuePatch")
+            .debug_struct("MyUnionPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -1613,25 +1613,25 @@ impl ::std::fmt::Debug for self::MyUnionValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyUnionValuePatch {}
-unsafe impl ::std::marker::Sync for self::MyUnionValuePatch {}
+unsafe impl ::std::marker::Send for self::MyUnionPatch {}
+unsafe impl ::std::marker::Sync for self::MyUnionPatch {}
 
-impl ::fbthrift::GetTType for self::MyUnionValuePatch {
+impl ::fbthrift::GetTType for self::MyUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyUnionValuePatch {
+impl ::fbthrift::GetUri for self::MyUnionPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyUnionValuePatch"
+        "test.dev/fixtures/patch/MyUnionPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyUnionValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::MyUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyUnionValuePatch");
+        p.write_struct_begin("MyUnionPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -1649,7 +1649,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyUnionValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyUnionPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1690,7 +1690,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::OptionalMyUnionValuePatch {
+impl ::std::default::Default for self::OptionalMyUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -1702,10 +1702,10 @@ impl ::std::default::Default for self::OptionalMyUnionValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::OptionalMyUnionValuePatch {
+impl ::std::fmt::Debug for self::OptionalMyUnionPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("OptionalMyUnionValuePatch")
+            .debug_struct("OptionalMyUnionPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -1714,25 +1714,25 @@ impl ::std::fmt::Debug for self::OptionalMyUnionValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::OptionalMyUnionValuePatch {}
-unsafe impl ::std::marker::Sync for self::OptionalMyUnionValuePatch {}
+unsafe impl ::std::marker::Send for self::OptionalMyUnionPatch {}
+unsafe impl ::std::marker::Sync for self::OptionalMyUnionPatch {}
 
-impl ::fbthrift::GetTType for self::OptionalMyUnionValuePatch {
+impl ::fbthrift::GetTType for self::OptionalMyUnionPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::OptionalMyUnionValuePatch {
+impl ::fbthrift::GetUri for self::OptionalMyUnionPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/OptionalMyUnionValuePatch"
+        "test.dev/fixtures/patch/OptionalMyUnionPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::OptionalMyUnionValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::OptionalMyUnionPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("OptionalMyUnionValuePatch");
+        p.write_struct_begin("OptionalMyUnionPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -1752,7 +1752,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyUnionValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyUnionPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -1793,7 +1793,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyStructPatch {
+impl ::std::default::Default for self::MyStructFieldPatch {
     fn default() -> Self {
         Self {
             boolVal: ::std::default::Default::default(),
@@ -1825,10 +1825,10 @@ impl ::std::default::Default for self::MyStructPatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyStructPatch {
+impl ::std::fmt::Debug for self::MyStructFieldPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyStructPatch")
+            .debug_struct("MyStructFieldPatch")
             .field("boolVal", &self.boolVal)
             .field("byteVal", &self.byteVal)
             .field("i16Val", &self.i16Val)
@@ -1857,25 +1857,25 @@ impl ::std::fmt::Debug for self::MyStructPatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyStructPatch {}
-unsafe impl ::std::marker::Sync for self::MyStructPatch {}
+unsafe impl ::std::marker::Send for self::MyStructFieldPatch {}
+unsafe impl ::std::marker::Sync for self::MyStructFieldPatch {}
 
-impl ::fbthrift::GetTType for self::MyStructPatch {
+impl ::fbthrift::GetTType for self::MyStructFieldPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyStructPatch {
+impl ::fbthrift::GetUri for self::MyStructFieldPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyStructPatch"
+        "test.dev/fixtures/patch/MyStructFieldPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyStructPatch
+impl<P> ::fbthrift::Serialize<P> for self::MyStructFieldPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyStructPatch");
+        p.write_struct_begin("MyStructFieldPatch");
         p.write_field_begin("boolVal", ::fbthrift::TType::Struct, 1);
         ::fbthrift::Serialize::write(&self.boolVal, p);
         p.write_field_end();
@@ -1953,7 +1953,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyStructPatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyStructFieldPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -2683,7 +2683,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::MyStructValuePatch {
+impl ::std::default::Default for self::MyStructPatch {
     fn default() -> Self {
         Self {
             assign: ::std::option::Option::None,
@@ -2694,10 +2694,10 @@ impl ::std::default::Default for self::MyStructValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::MyStructValuePatch {
+impl ::std::fmt::Debug for self::MyStructPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("MyStructValuePatch")
+            .debug_struct("MyStructPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
             .field("patch", &self.patch)
@@ -2705,25 +2705,25 @@ impl ::std::fmt::Debug for self::MyStructValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::MyStructValuePatch {}
-unsafe impl ::std::marker::Sync for self::MyStructValuePatch {}
+unsafe impl ::std::marker::Send for self::MyStructPatch {}
+unsafe impl ::std::marker::Sync for self::MyStructPatch {}
 
-impl ::fbthrift::GetTType for self::MyStructValuePatch {
+impl ::fbthrift::GetTType for self::MyStructPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::MyStructValuePatch {
+impl ::fbthrift::GetUri for self::MyStructPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/MyStructValuePatch"
+        "test.dev/fixtures/patch/MyStructPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::MyStructValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::MyStructPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("MyStructValuePatch");
+        p.write_struct_begin("MyStructPatch");
         if let ::std::option::Option::Some(some) = &self.assign {
             p.write_field_begin("assign", ::fbthrift::TType::Struct, 1);
             ::fbthrift::Serialize::write(some, p);
@@ -2740,7 +2740,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::MyStructValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::MyStructPatch
 where
     P: ::fbthrift::ProtocolReader,
 {
@@ -2777,7 +2777,7 @@ where
 
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for self::OptionalMyStructValuePatch {
+impl ::std::default::Default for self::OptionalMyStructPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
@@ -2789,10 +2789,10 @@ impl ::std::default::Default for self::OptionalMyStructValuePatch {
     }
 }
 
-impl ::std::fmt::Debug for self::OptionalMyStructValuePatch {
+impl ::std::fmt::Debug for self::OptionalMyStructPatch {
     fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         formatter
-            .debug_struct("OptionalMyStructValuePatch")
+            .debug_struct("OptionalMyStructPatch")
             .field("clear", &self.clear)
             .field("patch", &self.patch)
             .field("ensure", &self.ensure)
@@ -2801,25 +2801,25 @@ impl ::std::fmt::Debug for self::OptionalMyStructValuePatch {
     }
 }
 
-unsafe impl ::std::marker::Send for self::OptionalMyStructValuePatch {}
-unsafe impl ::std::marker::Sync for self::OptionalMyStructValuePatch {}
+unsafe impl ::std::marker::Send for self::OptionalMyStructPatch {}
+unsafe impl ::std::marker::Sync for self::OptionalMyStructPatch {}
 
-impl ::fbthrift::GetTType for self::OptionalMyStructValuePatch {
+impl ::fbthrift::GetTType for self::OptionalMyStructPatch {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
 
-impl ::fbthrift::GetUri for self::OptionalMyStructValuePatch {
+impl ::fbthrift::GetUri for self::OptionalMyStructPatch {
     fn uri() -> &'static str {
-        "test.dev/fixtures/patch/OptionalMyStructValuePatch"
+        "test.dev/fixtures/patch/OptionalMyStructPatch"
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructValuePatch
+impl<P> ::fbthrift::Serialize<P> for self::OptionalMyStructPatch
 where
     P: ::fbthrift::ProtocolWriter,
 {
     fn write(&self, p: &mut P) {
-        p.write_struct_begin("OptionalMyStructValuePatch");
+        p.write_struct_begin("OptionalMyStructPatch");
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
@@ -2839,7 +2839,7 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyStructValuePatch
+impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyStructPatch
 where
     P: ::fbthrift::ProtocolReader,
 {

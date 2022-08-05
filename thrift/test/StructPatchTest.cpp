@@ -29,11 +29,11 @@ namespace {
 using namespace test::patch;
 
 using ListPatch = std::decay_t<
-    decltype(std::declval<MyStructValuePatch>()->optListVal()->ensure())>;
+    decltype(std::declval<MyStructFieldPatch>()->optListVal()->ensure())>;
 using SetPatch = std::decay_t<
-    decltype(std::declval<MyStructValuePatch>()->optSetVal()->ensure())>;
+    decltype(std::declval<MyStructFieldPatch>()->optSetVal()->ensure())>;
 using MapPatch = std::decay_t<
-    decltype(std::declval<MyStructValuePatch>()->optMapVal()->ensure())>;
+    decltype(std::declval<MyStructFieldPatch>()->optMapVal()->ensure())>;
 
 MyStruct testValue() {
   MyStruct val;
@@ -50,9 +50,9 @@ MyStruct testValue() {
   return val;
 }
 
-MyStructValuePatch testPatch() {
+MyStructPatch testPatch() {
   auto val = testValue();
-  MyStructValuePatch patch;
+  MyStructPatch patch;
   patch.patch()->boolVal() = !op::BoolPatch{};
   *patch->byteVal() = val.byteVal();
   *patch->i16Val() += 2;
@@ -65,9 +65,9 @@ MyStructValuePatch testPatch() {
   return patch;
 }
 
-MyStructValuePatch testOptPatch() {
+MyStructPatch testOptPatch() {
   auto val = testValue();
-  MyStructValuePatch patch;
+  MyStructPatch patch;
   patch.patch()->optBoolVal()->patch() = !op::BoolPatch{};
   patch->optByteVal()->patch() = val.byteVal();
   patch->optI16Val()->patch() += 2;
@@ -84,29 +84,29 @@ MyStructValuePatch testOptPatch() {
 
 TEST(StructPatchTest, Noop) {
   // Empty patch does nothing.
-  MyStructValuePatch patch;
+  MyStructPatch patch;
   test::expectPatch(patch, {}, {});
 }
 
 TEST(StructPatchTest, Assign) {
   // Assign in a single step.
-  auto patch = MyStructValuePatch::createAssign(testValue());
+  auto patch = MyStructPatch::createAssign(testValue());
   test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, AssignSplit) {
-  auto patch = MyStructValuePatch::createAssign(testValue());
+  auto patch = MyStructPatch::createAssign(testValue());
   // Break apart the assign patch and check the result;
   patch.patch();
   EXPECT_FALSE(patch.toThrift().assign().has_value());
   EXPECT_TRUE(*patch.toThrift().clear());
-  EXPECT_NE(*patch.toThrift().patch(), MyStructPatch{});
+  EXPECT_NE(*patch.toThrift().patch(), MyStructFieldPatch{});
   test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, Clear) {
   // Clear patch, clears all fields (even ones with defaults)
-  test::expectPatch(MyStructValuePatch::createClear(), testValue(), {});
+  test::expectPatch(MyStructPatch::createClear(), testValue(), {});
   test::expectPatch(op::StringPatch::createClear(), {"hi"}, "");
 }
 
@@ -138,23 +138,23 @@ TEST(StructPatchTest, Patch) {
   auto patch = testPatch();
   test::expectPatch(patch, val, expected1, expected2);
 
-  patch.merge(MyStructValuePatch::createClear());
+  patch.merge(MyStructPatch::createClear());
   EXPECT_FALSE(patch.toThrift().assign().has_value());
-  EXPECT_EQ(patch.patch(), MyStructPatch{});
+  EXPECT_EQ(patch.patch(), MyStructFieldPatch{});
   EXPECT_TRUE(*patch.toThrift().clear());
   test::expectPatch(patch, testValue(), {});
 }
 
 TEST(StructPatchTest, ClearAssign) {
-  auto patch = MyStructValuePatch::createClear();
-  patch.merge(MyStructValuePatch::createAssign(testValue()));
+  auto patch = MyStructPatch::createClear();
+  patch.merge(MyStructPatch::createAssign(testValue()));
   // Assign takes precedence, like usual.
   test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, AssignClear) {
-  auto patch = MyStructValuePatch::createAssign(testValue());
-  patch.merge(MyStructValuePatch::createClear());
+  auto patch = MyStructPatch::createAssign(testValue());
+  patch.merge(MyStructPatch::createClear());
   test::expectPatch(patch, testValue(), {});
 
   // Clear patch takes precedence (as it is smaller to encode and slightly
@@ -164,8 +164,8 @@ TEST(StructPatchTest, AssignClear) {
 }
 
 TEST(StructPatchTest, OptionalFields) {
-  MyStructValuePatch patch = testPatch();
-  MyStructValuePatch optPatch = testOptPatch();
+  MyStructPatch patch = testPatch();
+  MyStructPatch optPatch = testOptPatch();
 
   MyStruct actual;
   std::optional<std::string> optStr;
@@ -308,7 +308,7 @@ TEST(StructPatchTest, PrimitivesNotBoxed) {
 }
 
 TEST(StructPatchTest, FieldPatch) {
-  MyStructValuePatch patch;
+  MyStructPatch patch;
   patch->optListVal()->ensure() = {1, 2};
   MyStruct expected;
   expected.optListVal().ensure() = {1, 2};
@@ -373,11 +373,10 @@ TEST(StructPatchTest, MapPatch) {
 }
 
 TEST(UnionPatchTest, ClearAndAssign) {
-  MyUnionValuePatch noop;
+  MyUnionPatch noop;
   MyUnion actual;
-  MyUnionValuePatch assignEmpty = MyUnionValuePatch::createAssign(actual);
-  EXPECT_EQ(
-      assignEmpty.toThrift(), MyUnionValuePatch::createClear().toThrift());
+  MyUnionPatch assignEmpty = MyUnionPatch::createAssign(actual);
+  EXPECT_EQ(assignEmpty.toThrift(), MyUnionPatch::createClear().toThrift());
   EXPECT_EQ(actual.getType(), MyUnion::Type::__EMPTY__);
   EXPECT_EQ(*assignEmpty.toThrift().clear(), true);
   EXPECT_EQ(
@@ -388,7 +387,7 @@ TEST(UnionPatchTest, ClearAndAssign) {
   test::expectPatch(assignEmpty, actual, {});
 
   actual.option1_ref() = "hi";
-  MyUnionValuePatch assign = MyUnionValuePatch::createAssign(actual);
+  MyUnionPatch assign = MyUnionPatch::createAssign(actual);
   EXPECT_EQ(actual.getType(), MyUnion::Type::option1);
   test::expectPatch(noop, actual, actual);
   test::expectPatch(assignEmpty, actual, {});
@@ -402,7 +401,7 @@ TEST(UnionPatchTest, ClearAndAssign) {
 }
 
 TEST(UnionPatchTest, Ensure) {
-  MyUnionValuePatch patch;
+  MyUnionPatch patch;
   MyUnion expected, actual;
   patch.ensure().option1_ref() = "hi";
   expected.option1_ref() = "hi";
@@ -428,7 +427,7 @@ TEST(UnionPatchTest, Ensure) {
 }
 
 TEST(UnionPatchTest, Patch) {
-  MyUnionValuePatch patch;
+  MyUnionPatch patch;
   *patch.patch()->option1() = "Hi";
   patch.ensure().option1_ref() = "Bye";
   *patch.patch()->option1() += " World!";
@@ -449,7 +448,7 @@ TEST(UnionPatchTest, Patch) {
 }
 
 TEST(UnionPatchTest, PatchInner) {
-  MyUnionValuePatch patch;
+  MyUnionPatch patch;
   *patch.patch()->option3()->patch()->option1() = "World";
 
   MyUnion a, b;

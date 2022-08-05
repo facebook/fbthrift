@@ -58,8 +58,7 @@ class patch_generator {
   //     1: Foo myFoo;
   //   }
   //
-  t_struct& add_structured_patch(
-      const t_const& annot, t_structured& node, const char* adapter);
+  t_struct& add_field_patch(const t_const& annot, t_structured& node);
 
   // Add a value patch representation for the given struct and associate patch
   // type, and return a reference to it.
@@ -77,7 +76,7 @@ class patch_generator {
   //     Patch patch;
   //   }
   //
-  t_struct& add_struct_value_patch(
+  t_struct& add_struct_patch(
       const t_node& annot, t_struct& value_type, t_type_ref patch_type);
 
   // Add a value patch representation for the given union and associate patch
@@ -99,7 +98,7 @@ class patch_generator {
   //     Patch patchAfter;
   //   }
   //
-  t_struct& add_union_value_patch(
+  t_struct& add_union_patch(
       const t_node& annot, t_union& value_type, t_type_ref patch_type);
 
   // Add an optional patch representation for the patch type, and return a

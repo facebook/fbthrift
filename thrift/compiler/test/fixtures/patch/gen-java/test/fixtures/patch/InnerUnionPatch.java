@@ -25,65 +25,143 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
 
     @ThriftConstructor
     public InnerUnionPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE) final com.facebook.thrift.op.BinaryPatch innerOption
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnionFieldPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnion ensure,
+        @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.InnerUnionFieldPatch patchAfter
     ) {
-        this.innerOption = innerOption;
+        this.clear = clear;
+        this.patch = patch;
+        this.ensure = ensure;
+        this.patchAfter = patchAfter;
     }
     
     @ThriftConstructor
     protected InnerUnionPatch() {
-      this.innerOption = null;
+      this.clear = false;
+      this.patch = null;
+      this.ensure = null;
+      this.patchAfter = null;
     }
     
     public static class Builder {
     
-        private com.facebook.thrift.op.BinaryPatch innerOption = null;
+        private boolean clear = false;
+        private test.fixtures.patch.InnerUnionFieldPatch patch = null;
+        private test.fixtures.patch.InnerUnion ensure = null;
+        private test.fixtures.patch.InnerUnionFieldPatch patchAfter = null;
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE)
-        public Builder setInnerOption(com.facebook.thrift.op.BinaryPatch innerOption) {
-            this.innerOption = innerOption;
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+        public Builder setClear(boolean clear) {
+            this.clear = clear;
             return this;
         }
     
-        public com.facebook.thrift.op.BinaryPatch getInnerOption() { return innerOption; }
+        public boolean isClear() { return clear; }
+    
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+        public Builder setPatch(test.fixtures.patch.InnerUnionFieldPatch patch) {
+            this.patch = patch;
+            return this;
+        }
+    
+        public test.fixtures.patch.InnerUnionFieldPatch getPatch() { return patch; }
+    
+            @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE)
+        public Builder setEnsure(test.fixtures.patch.InnerUnion ensure) {
+            this.ensure = ensure;
+            return this;
+        }
+    
+        public test.fixtures.patch.InnerUnion getEnsure() { return ensure; }
+    
+            @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
+        public Builder setPatchAfter(test.fixtures.patch.InnerUnionFieldPatch patchAfter) {
+            this.patchAfter = patchAfter;
+            return this;
+        }
+    
+        public test.fixtures.patch.InnerUnionFieldPatch getPatchAfter() { return patchAfter; }
     
         public Builder() { }
         public Builder(InnerUnionPatch other) {
-            this.innerOption = other.innerOption;
+            this.clear = other.clear;
+            this.patch = other.patch;
+            this.ensure = other.ensure;
+            this.patchAfter = other.patchAfter;
         }
     
         @ThriftConstructor
         public InnerUnionPatch build() {
             InnerUnionPatch result = new InnerUnionPatch (
-                this.innerOption
+                this.clear,
+                this.patch,
+                this.ensure,
+                this.patchAfter
             );
             return result;
         }
     }
-        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("InnerUnionPatch");
-    private final com.facebook.thrift.op.BinaryPatch innerOption;
-    public static final int _INNEROPTION = 1;
-    private static final TField INNER_OPTION_FIELD_DESC = new TField("innerOption", TType.STRUCT, (short)1);
+    private final boolean clear;
+    public static final int _CLEAR = 2;
+    private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+        private final test.fixtures.patch.InnerUnionFieldPatch patch;
+    public static final int _PATCH = 3;
+    private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+        private final test.fixtures.patch.InnerUnion ensure;
+    public static final int _ENSURE = 4;
+    private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
+        private final test.fixtures.patch.InnerUnionFieldPatch patchAfter;
+    public static final int _PATCHAFTER = 6;
+    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
     static {
-      NAMES_TO_IDS.put("innerOption", 1);
-      THRIFT_NAMES_TO_IDS.put("innerOption", 1);
-      FIELD_METADATA.put(1, INNER_OPTION_FIELD_DESC);
+      NAMES_TO_IDS.put("clear", 2);
+      THRIFT_NAMES_TO_IDS.put("clear", 2);
+      FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
+      NAMES_TO_IDS.put("patch", 3);
+      THRIFT_NAMES_TO_IDS.put("patch", 3);
+      FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      NAMES_TO_IDS.put("ensure", 4);
+      THRIFT_NAMES_TO_IDS.put("ensure", 4);
+      FIELD_METADATA.put(4, ENSURE_FIELD_DESC);
+      NAMES_TO_IDS.put("patchAfter", 6);
+      THRIFT_NAMES_TO_IDS.put("patchAfter", 6);
+      FIELD_METADATA.put(6, PATCH_AFTER_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/InnerUnionPatch"), 
         InnerUnionPatch.class, InnerUnionPatch::read0));
     }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+    public boolean isClear() { return clear; }
+    
+    
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=1, name="innerOption", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op.BinaryPatch getInnerOption() { return innerOption; }
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.InnerUnionFieldPatch getPatch() { return patch; }
+    
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.InnerUnion getEnsure() { return ensure; }
+    
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.InnerUnionFieldPatch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
-        helper.add("innerOption", innerOption);
+        helper.add("clear", clear);
+        helper.add("patch", patch);
+        helper.add("ensure", ensure);
+        helper.add("patchAfter", patchAfter);
         return helper.toString();
     }
     
@@ -99,14 +177,20 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
         InnerUnionPatch other = (InnerUnionPatch)o;
     
         return
-            Objects.equals(innerOption, other.innerOption) &&
+            Objects.equals(clear, other.clear) &&
+    Objects.equals(patch, other.patch) &&
+    Objects.equals(ensure, other.ensure) &&
+    Objects.equals(patchAfter, other.patchAfter) &&
             true;
     }
     
     @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
-            innerOption
+            clear,
+            patch,
+            ensure,
+            patchAfter
         });
     }
     
@@ -123,10 +207,34 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
         __field = oprot.readFieldBegin();
         if (__field.type == TType.STOP) { break; }
         switch (__field.id) {
-        case _INNEROPTION:
+        case _CLEAR:
+          if (__field.type == TType.BOOL) {
+            boolean clear = oprot.readBool();
+            builder.setClear(clear);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PATCH:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op.BinaryPatch innerOption = com.facebook.thrift.op.BinaryPatch.read0(oprot);
-            builder.setInnerOption(innerOption);
+            test.fixtures.patch.InnerUnionFieldPatch patch = test.fixtures.patch.InnerUnionFieldPatch.read0(oprot);
+            builder.setPatch(patch);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ENSURE:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.InnerUnion ensure = test.fixtures.patch.InnerUnion.read0(oprot);
+            builder.setEnsure(ensure);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.InnerUnionFieldPatch patchAfter = test.fixtures.patch.InnerUnionFieldPatch.read0(oprot);
+            builder.setPatchAfter(patchAfter);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -143,9 +251,22 @@ public final class InnerUnionPatch implements com.facebook.thrift.payload.Thrift
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.innerOption != null) {
-        oprot.writeFieldBegin(INNER_OPTION_FIELD_DESC);
-        this.innerOption.write0(oprot);
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+      if (this.patch != null) {
+        oprot.writeFieldBegin(PATCH_FIELD_DESC);
+        this.patch.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.ensure != null) {
+        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+        this.ensure.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.patchAfter != null) {
+        oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+        this.patchAfter.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

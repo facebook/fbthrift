@@ -26,44 +26,66 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyUnionPatch");
-  private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRUCT, (short)1);
-  private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.STRUCT, (short)2);
-  private static final TField OPTION3_FIELD_DESC = new TField("option3", TType.STRUCT, (short)3);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
-  public final StringPatch option1;
-  public final I32Patch option2;
-  public final InnerUnionValuePatch option3;
-  public static final int OPTION1 = 1;
-  public static final int OPTION2 = 2;
-  public static final int OPTION3 = 3;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public final Boolean clear;
+  /**
+   * Patches any set value. Applies second.
+   */
+  public final MyUnionFieldPatch patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public final MyUnion ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public final MyUnionFieldPatch patchAfter;
+  public static final int CLEAR = 2;
+  public static final int PATCH = 3;
+  public static final int ENSURE = 4;
+  public static final int PATCHAFTER = 6;
 
   public MyUnionPatch(
-      StringPatch option1,
-      I32Patch option2,
-      InnerUnionValuePatch option3) {
-    this.option1 = option1;
-    this.option2 = option2;
-    this.option3 = option3;
+      Boolean clear,
+      MyUnionFieldPatch patch,
+      MyUnion ensure,
+      MyUnionFieldPatch patchAfter) {
+    this.clear = clear;
+    this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public MyUnionPatch(MyUnionPatch other) {
-    if (other.isSetOption1()) {
-      this.option1 = TBaseHelper.deepCopy(other.option1);
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
     } else {
-      this.option1 = null;
+      this.clear = null;
     }
-    if (other.isSetOption2()) {
-      this.option2 = TBaseHelper.deepCopy(other.option2);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     } else {
-      this.option2 = null;
+      this.patch = null;
     }
-    if (other.isSetOption3()) {
-      this.option3 = TBaseHelper.deepCopy(other.option3);
+    if (other.isSetEnsure()) {
+      this.ensure = TBaseHelper.deepCopy(other.ensure);
     } else {
-      this.option3 = null;
+      this.ensure = null;
+    }
+    if (other.isSetPatchAfter()) {
+      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    } else {
+      this.patchAfter = null;
     }
   }
 
@@ -71,31 +93,52 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
     return new MyUnionPatch(this);
   }
 
-  public StringPatch getOption1() {
-    return this.option1;
+  /**
+   * Clears any set value. Applies first.
+   */
+  public Boolean isClear() {
+    return this.clear;
   }
 
-  // Returns true if field option1 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption1() {
-    return this.option1 != null;
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
   }
 
-  public I32Patch getOption2() {
-    return this.option2;
+  /**
+   * Patches any set value. Applies second.
+   */
+  public MyUnionFieldPatch getPatch() {
+    return this.patch;
   }
 
-  // Returns true if field option2 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption2() {
-    return this.option2 != null;
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
-  public InnerUnionValuePatch getOption3() {
-    return this.option3;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   */
+  public MyUnion getEnsure() {
+    return this.ensure;
   }
 
-  // Returns true if field option3 is set (has been assigned a value) and false otherwise
-  public boolean isSetOption3() {
-    return this.option3 != null;
+  // Returns true if field ensure is set (has been assigned a value) and false otherwise
+  public boolean isSetEnsure() {
+    return this.ensure != null;
+  }
+
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   */
+  public MyUnionFieldPatch getPatchAfter() {
+    return this.patchAfter;
+  }
+
+  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchAfter() {
+    return this.patchAfter != null;
   }
 
   @Override
@@ -108,18 +151,20 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
       return false;
     MyUnionPatch that = (MyUnionPatch)_that;
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption1(), that.isSetOption1(), this.option1, that.option1)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption2(), that.isSetOption2(), this.option2, that.option2)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetOption3(), that.isSetOption3(), this.option3, that.option3)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {option1, option2, option3});
+    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -128,9 +173,10 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static MyUnionPatch deserialize(TProtocol iprot) throws TException {
-    StringPatch tmp_option1 = null;
-    I32Patch tmp_option2 = null;
-    InnerUnionValuePatch tmp_option3 = null;
+    Boolean tmp_clear = null;
+    MyUnionFieldPatch tmp_patch = null;
+    MyUnion tmp_ensure = null;
+    MyUnionFieldPatch tmp_patchAfter = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -141,23 +187,31 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
-        case OPTION1:
-          if (__field.type == TType.STRUCT) {
-            tmp_option1 = StringPatch.deserialize(iprot);
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case OPTION2:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            tmp_option2 = I32Patch.deserialize(iprot);
+            tmp_patch = MyUnionFieldPatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case OPTION3:
+        case ENSURE:
           if (__field.type == TType.STRUCT) {
-            tmp_option3 = InnerUnionValuePatch.deserialize(iprot);
+            tmp_ensure = new MyUnion();
+            tmp_ensure.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            tmp_patchAfter = MyUnionFieldPatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -172,9 +226,10 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
 
     MyUnionPatch _that;
     _that = new MyUnionPatch(
-      tmp_option1
-      ,tmp_option2
-      ,tmp_option3
+      tmp_clear
+      ,tmp_patch
+      ,tmp_ensure
+      ,tmp_patchAfter
     );
     _that.validate();
     return _that;
@@ -184,19 +239,24 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.option1 != null) {
-      oprot.writeFieldBegin(OPTION1_FIELD_DESC);
-      this.option1.write(oprot);
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.option2 != null) {
-      oprot.writeFieldBegin(OPTION2_FIELD_DESC);
-      this.option2.write(oprot);
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.option3 != null) {
-      oprot.writeFieldBegin(OPTION3_FIELD_DESC);
-      this.option3.write(oprot);
+    if (this.ensure != null) {
+      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+      this.ensure.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.patchAfter != null) {
+      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+      this.patchAfter.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

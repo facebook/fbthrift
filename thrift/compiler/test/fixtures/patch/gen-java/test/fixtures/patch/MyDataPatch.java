@@ -25,91 +25,117 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
 
     @ThriftConstructor
     public MyDataPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE) final com.facebook.thrift.op.StringPatch data1,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE) final com.facebook.thrift.op.I32Patch data2
+        @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData assign,
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataFieldPatch patch
     ) {
-        this.data1 = data1;
-        this.data2 = data2;
+        this.assign = assign;
+        this.clear = clear;
+        this.patch = patch;
     }
     
     @ThriftConstructor
     protected MyDataPatch() {
-      this.data1 = null;
-      this.data2 = null;
+      this.assign = null;
+      this.clear = false;
+      this.patch = null;
     }
     
     public static class Builder {
     
-        private com.facebook.thrift.op.StringPatch data1 = null;
-        private com.facebook.thrift.op.I32Patch data2 = null;
+        private test.fixtures.patch.MyData assign = null;
+        private boolean clear = false;
+        private test.fixtures.patch.MyDataFieldPatch patch = null;
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
-        public Builder setData1(com.facebook.thrift.op.StringPatch data1) {
-            this.data1 = data1;
+        @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL)
+        public Builder setAssign(test.fixtures.patch.MyData assign) {
+            this.assign = assign;
             return this;
         }
     
-        public com.facebook.thrift.op.StringPatch getData1() { return data1; }
+        public test.fixtures.patch.MyData getAssign() { return assign; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
-        public Builder setData2(com.facebook.thrift.op.I32Patch data2) {
-            this.data2 = data2;
+            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+        public Builder setClear(boolean clear) {
+            this.clear = clear;
             return this;
         }
     
-        public com.facebook.thrift.op.I32Patch getData2() { return data2; }
+        public boolean isClear() { return clear; }
+    
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+        public Builder setPatch(test.fixtures.patch.MyDataFieldPatch patch) {
+            this.patch = patch;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyDataFieldPatch getPatch() { return patch; }
     
         public Builder() { }
         public Builder(MyDataPatch other) {
-            this.data1 = other.data1;
-            this.data2 = other.data2;
+            this.assign = other.assign;
+            this.clear = other.clear;
+            this.patch = other.patch;
         }
     
         @ThriftConstructor
         public MyDataPatch build() {
             MyDataPatch result = new MyDataPatch (
-                this.data1,
-                this.data2
+                this.assign,
+                this.clear,
+                this.patch
             );
             return result;
         }
     }
-            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataPatch");
-    private final com.facebook.thrift.op.StringPatch data1;
-    public static final int _DATA1 = 1;
-    private static final TField DATA1_FIELD_DESC = new TField("data1", TType.STRUCT, (short)1);
-        private final com.facebook.thrift.op.I32Patch data2;
-    public static final int _DATA2 = 2;
-    private static final TField DATA2_FIELD_DESC = new TField("data2", TType.STRUCT, (short)2);
+    private final test.fixtures.patch.MyData assign;
+    public static final int _ASSIGN = 1;
+    private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
+        private final boolean clear;
+    public static final int _CLEAR = 2;
+    private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+        private final test.fixtures.patch.MyDataFieldPatch patch;
+    public static final int _PATCH = 3;
+    private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
     static {
-      NAMES_TO_IDS.put("data1", 1);
-      THRIFT_NAMES_TO_IDS.put("data1", 1);
-      FIELD_METADATA.put(1, DATA1_FIELD_DESC);
-      NAMES_TO_IDS.put("data2", 2);
-      THRIFT_NAMES_TO_IDS.put("data2", 2);
-      FIELD_METADATA.put(2, DATA2_FIELD_DESC);
+      NAMES_TO_IDS.put("assign", 1);
+      THRIFT_NAMES_TO_IDS.put("assign", 1);
+      FIELD_METADATA.put(1, ASSIGN_FIELD_DESC);
+      NAMES_TO_IDS.put("clear", 2);
+      THRIFT_NAMES_TO_IDS.put("clear", 2);
+      FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
+      NAMES_TO_IDS.put("patch", 3);
+      THRIFT_NAMES_TO_IDS.put("patch", 3);
+      FIELD_METADATA.put(3, PATCH_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyDataPatch"), 
         MyDataPatch.class, MyDataPatch::read0));
     }
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op.StringPatch getData1() { return data1; }
+    @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL)
+    public test.fixtures.patch.MyData getAssign() { return assign; }
+    
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+    public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
-    public com.facebook.thrift.op.I32Patch getData2() { return data2; }
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyDataFieldPatch getPatch() { return patch; }
     
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
-        helper.add("data1", data1);
-        helper.add("data2", data2);
+        helper.add("assign", assign);
+        helper.add("clear", clear);
+        helper.add("patch", patch);
         return helper.toString();
     }
     
@@ -125,16 +151,18 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
         MyDataPatch other = (MyDataPatch)o;
     
         return
-            Objects.equals(data1, other.data1) &&
-    Objects.equals(data2, other.data2) &&
+            Objects.equals(assign, other.assign) &&
+    Objects.equals(clear, other.clear) &&
+    Objects.equals(patch, other.patch) &&
             true;
     }
     
     @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
-            data1,
-            data2
+            assign,
+            clear,
+            patch
         });
     }
     
@@ -151,18 +179,26 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
         __field = oprot.readFieldBegin();
         if (__field.type == TType.STOP) { break; }
         switch (__field.id) {
-        case _DATA1:
+        case _ASSIGN:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op.StringPatch data1 = com.facebook.thrift.op.StringPatch.read0(oprot);
-            builder.setData1(data1);
+            test.fixtures.patch.MyData assign = test.fixtures.patch.MyData.read0(oprot);
+            builder.setAssign(assign);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _DATA2:
+        case _CLEAR:
+          if (__field.type == TType.BOOL) {
+            boolean clear = oprot.readBool();
+            builder.setClear(clear);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PATCH:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.op.I32Patch data2 = com.facebook.thrift.op.I32Patch.read0(oprot);
-            builder.setData2(data2);
+            test.fixtures.patch.MyDataFieldPatch patch = test.fixtures.patch.MyDataFieldPatch.read0(oprot);
+            builder.setPatch(patch);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -179,14 +215,17 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.data1 != null) {
-        oprot.writeFieldBegin(DATA1_FIELD_DESC);
-        this.data1.write0(oprot);
+      if (this.assign != null) {
+        oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+        this.assign.write0(oprot);
         oprot.writeFieldEnd();
       }
-      if (this.data2 != null) {
-        oprot.writeFieldBegin(DATA2_FIELD_DESC);
-        this.data2.write0(oprot);
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+      if (this.patch != null) {
+        oprot.writeFieldBegin(PATCH_FIELD_DESC);
+        this.patch.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

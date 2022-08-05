@@ -596,24 +596,24 @@ class MyData;
 class InnerUnion;
 class MyUnion;
 class MyStruct;
+class MyDataFieldPatchStruct;
 class MyDataPatchStruct;
-class MyDataValuePatchStruct;
-class OptionalMyDataValuePatchStruct;
+class OptionalMyDataPatchStruct;
+class InnerUnionFieldPatchStruct;
 class InnerUnionPatchStruct;
-class InnerUnionValuePatchStruct;
-class OptionalInnerUnionValuePatchStruct;
+class OptionalInnerUnionPatchStruct;
+class MyUnionFieldPatchStruct;
 class MyUnionPatchStruct;
-class MyUnionValuePatchStruct;
-class OptionalMyUnionValuePatchStruct;
+class OptionalMyUnionPatchStruct;
 class MyStructField21PatchStruct;
 class OptionalMyStructField21PatchStruct;
 class MyStructField22PatchStruct;
 class OptionalMyStructField22PatchStruct;
 class MyStructField23PatchStruct;
 class OptionalMyStructField23PatchStruct;
+class MyStructFieldPatchStruct;
 class MyStructPatchStruct;
-class MyStructValuePatchStruct;
-class OptionalMyStructValuePatchStruct;
+class OptionalMyStructPatchStruct;
 }}} // test::fixtures::patch
 // END forward_declare
 // BEGIN hash_and_equal_to
@@ -3117,7 +3117,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
 }
 
 
-class MyDataPatchStruct final  {
+class MyDataFieldPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -3182,27 +3182,27 @@ class MyDataPatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyDataPatchStruct;
+  using __fbthrift_cpp2_type = MyDataFieldPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyDataPatchStruct() {
+  MyDataFieldPatchStruct() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_data1, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_data2, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyDataPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch data1__arg, ::apache::thrift::op::I32Patch data2__arg);
+  MyDataFieldPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch data1__arg, ::apache::thrift::op::I32Patch data2__arg);
 
-  MyDataPatchStruct(MyDataPatchStruct&&) noexcept;
-  MyDataPatchStruct(const MyDataPatchStruct& src);
+  MyDataFieldPatchStruct(MyDataFieldPatchStruct&&) noexcept;
+  MyDataFieldPatchStruct(const MyDataFieldPatchStruct& src);
 
 
-  MyDataPatchStruct& operator=(MyDataPatchStruct&&) noexcept;
-  MyDataPatchStruct& operator=(const MyDataPatchStruct& src);
+  MyDataFieldPatchStruct& operator=(MyDataFieldPatchStruct&&) noexcept;
+  MyDataFieldPatchStruct& operator=(const MyDataFieldPatchStruct& src);
  private:
   ::apache::thrift::op::StringPatch __fbthrift_field_data1;
  private:
@@ -3212,8 +3212,8 @@ class MyDataPatchStruct final  {
 
  public:
 
-  bool operator==(const MyDataPatchStruct&) const;
-  bool operator<(const MyDataPatchStruct&) const;
+  bool operator==(const MyDataFieldPatchStruct&) const;
+  bool operator<(const MyDataFieldPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::op::StringPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> data1_ref() const& {
@@ -3308,21 +3308,21 @@ class MyDataPatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyDataPatchStruct>;
-  friend void swap(MyDataPatchStruct& a, MyDataPatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyDataFieldPatchStruct>;
+  friend void swap(MyDataFieldPatchStruct& a, MyDataFieldPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyDataPatchStruct::read(Protocol_* iprot) {
+unsigned long MyDataFieldPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyDataPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>;
+using MyDataFieldPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyDataFieldPatchStruct>;
 
 
-class MyDataValuePatchStruct final  {
+class MyDataPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -3344,7 +3344,7 @@ class MyDataValuePatchStruct final  {
                                                          void,
                                                          ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataFieldPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -3378,7 +3378,7 @@ class MyDataValuePatchStruct final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -3395,40 +3395,40 @@ class MyDataValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyDataValuePatchStruct;
+  using __fbthrift_cpp2_type = MyDataPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyDataValuePatchStruct() :
+  MyDataPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 3>(__fbthrift_field_patch, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyDataValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> assign__arg, bool clear__arg, ::test::fixtures::patch::MyDataPatch patch__arg);
+  MyDataPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> assign__arg, bool clear__arg, ::test::fixtures::patch::MyDataFieldPatch patch__arg);
 
-  MyDataValuePatchStruct(MyDataValuePatchStruct&&) noexcept;
-  MyDataValuePatchStruct(const MyDataValuePatchStruct& src);
+  MyDataPatchStruct(MyDataPatchStruct&&) noexcept;
+  MyDataPatchStruct(const MyDataPatchStruct& src);
 
 
-  MyDataValuePatchStruct& operator=(MyDataValuePatchStruct&&) noexcept;
-  MyDataValuePatchStruct& operator=(const MyDataValuePatchStruct& src);
+  MyDataPatchStruct& operator=(MyDataPatchStruct&&) noexcept;
+  MyDataPatchStruct& operator=(const MyDataPatchStruct& src);
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> __fbthrift_field_assign;
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyDataPatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyDataFieldPatch __fbthrift_field_patch;
  private:
   apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const MyDataValuePatchStruct&) const;
-  bool operator<(const MyDataValuePatchStruct&) const;
+  bool operator==(const MyDataPatchStruct&) const;
+  bool operator<(const MyDataPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> assign_ref() const& {
@@ -3510,42 +3510,42 @@ class MyDataValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -3573,21 +3573,21 @@ class MyDataValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyDataValuePatchStruct>;
-  friend void swap(MyDataValuePatchStruct& a, MyDataValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyDataPatchStruct>;
+  friend void swap(MyDataPatchStruct& a, MyDataPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyDataValuePatchStruct::read(Protocol_* iprot) {
+unsigned long MyDataPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>;
+using MyDataPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>;
 
 
-class OptionalMyDataValuePatchStruct final  {
+class OptionalMyDataPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -3609,9 +3609,9 @@ class OptionalMyDataValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>,
                                                          ::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -3649,9 +3649,9 @@ class OptionalMyDataValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyData>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -3668,43 +3668,43 @@ class OptionalMyDataValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = OptionalMyDataValuePatchStruct;
+  using __fbthrift_cpp2_type = OptionalMyDataPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  OptionalMyDataValuePatchStruct() :
+  OptionalMyDataPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  OptionalMyDataValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyDataValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> ensure__arg, ::test::fixtures::patch::MyDataValuePatch patchAfter__arg);
+  OptionalMyDataPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyDataPatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> ensure__arg, ::test::fixtures::patch::MyDataPatch patchAfter__arg);
 
-  OptionalMyDataValuePatchStruct(OptionalMyDataValuePatchStruct&&) noexcept;
-  OptionalMyDataValuePatchStruct(const OptionalMyDataValuePatchStruct& src);
+  OptionalMyDataPatchStruct(OptionalMyDataPatchStruct&&) noexcept;
+  OptionalMyDataPatchStruct(const OptionalMyDataPatchStruct& src);
 
 
-  OptionalMyDataValuePatchStruct& operator=(OptionalMyDataValuePatchStruct&&) noexcept;
-  OptionalMyDataValuePatchStruct& operator=(const OptionalMyDataValuePatchStruct& src);
+  OptionalMyDataPatchStruct& operator=(OptionalMyDataPatchStruct&&) noexcept;
+  OptionalMyDataPatchStruct& operator=(const OptionalMyDataPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyDataValuePatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyDataPatch __fbthrift_field_patch;
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::MyDataValuePatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::MyDataPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const OptionalMyDataValuePatchStruct&) const;
-  bool operator<(const OptionalMyDataValuePatchStruct&) const;
+  bool operator==(const OptionalMyDataPatchStruct&) const;
+  bool operator<(const OptionalMyDataPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -3746,42 +3746,42 @@ class OptionalMyDataValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -3826,42 +3826,42 @@ class OptionalMyDataValuePatchStruct final  {
     return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
@@ -3889,21 +3889,21 @@ class OptionalMyDataValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalMyDataValuePatchStruct>;
-  friend void swap(OptionalMyDataValuePatchStruct& a, OptionalMyDataValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<OptionalMyDataPatchStruct>;
+  friend void swap(OptionalMyDataPatchStruct& a, OptionalMyDataPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long OptionalMyDataValuePatchStruct::read(Protocol_* iprot) {
+unsigned long OptionalMyDataPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using OptionalMyDataValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>;
+using OptionalMyDataPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataPatchStruct>;
 
 
-class InnerUnionPatchStruct final  {
+class InnerUnionFieldPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -3960,26 +3960,26 @@ class InnerUnionPatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = InnerUnionPatchStruct;
+  using __fbthrift_cpp2_type = InnerUnionFieldPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  InnerUnionPatchStruct() {
+  InnerUnionFieldPatchStruct() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::AssignPatchAdapter, 1>(__fbthrift_field_innerOption, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  InnerUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BinaryPatch innerOption__arg);
+  InnerUnionFieldPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BinaryPatch innerOption__arg);
 
-  InnerUnionPatchStruct(InnerUnionPatchStruct&&) noexcept;
-  InnerUnionPatchStruct(const InnerUnionPatchStruct& src);
+  InnerUnionFieldPatchStruct(InnerUnionFieldPatchStruct&&) noexcept;
+  InnerUnionFieldPatchStruct(const InnerUnionFieldPatchStruct& src);
 
 
-  InnerUnionPatchStruct& operator=(InnerUnionPatchStruct&&) noexcept;
-  InnerUnionPatchStruct& operator=(const InnerUnionPatchStruct& src);
+  InnerUnionFieldPatchStruct& operator=(InnerUnionFieldPatchStruct&&) noexcept;
+  InnerUnionFieldPatchStruct& operator=(const InnerUnionFieldPatchStruct& src);
  private:
   ::apache::thrift::op::BinaryPatch __fbthrift_field_innerOption;
  private:
@@ -3987,8 +3987,8 @@ class InnerUnionPatchStruct final  {
 
  public:
 
-  bool operator==(const InnerUnionPatchStruct&) const;
-  bool operator<(const InnerUnionPatchStruct&) const;
+  bool operator==(const InnerUnionFieldPatchStruct&) const;
+  bool operator<(const InnerUnionFieldPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::op::BinaryPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> innerOption_ref() const& {
@@ -4043,21 +4043,21 @@ class InnerUnionPatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<InnerUnionPatchStruct>;
-  friend void swap(InnerUnionPatchStruct& a, InnerUnionPatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<InnerUnionFieldPatchStruct>;
+  friend void swap(InnerUnionFieldPatchStruct& a, InnerUnionFieldPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long InnerUnionPatchStruct::read(Protocol_* iprot) {
+unsigned long InnerUnionFieldPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using InnerUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>;
+using InnerUnionFieldPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::InnerUnionFieldPatchStruct>;
 
 
-class InnerUnionValuePatchStruct final  {
+class InnerUnionPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -4079,9 +4079,9 @@ class InnerUnionValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionFieldPatchStruct>>,
                                                          ::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionFieldPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4119,9 +4119,9 @@ class InnerUnionValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -4138,43 +4138,43 @@ class InnerUnionValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = InnerUnionValuePatchStruct;
+  using __fbthrift_cpp2_type = InnerUnionPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  InnerUnionValuePatchStruct() :
+  InnerUnionPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  InnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionPatch patch__arg, ::test::fixtures::patch::InnerUnion ensure__arg, ::test::fixtures::patch::InnerUnionPatch patchAfter__arg);
+  InnerUnionPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionFieldPatch patch__arg, ::test::fixtures::patch::InnerUnion ensure__arg, ::test::fixtures::patch::InnerUnionFieldPatch patchAfter__arg);
 
-  InnerUnionValuePatchStruct(InnerUnionValuePatchStruct&&) noexcept;
-  InnerUnionValuePatchStruct(const InnerUnionValuePatchStruct& src);
+  InnerUnionPatchStruct(InnerUnionPatchStruct&&) noexcept;
+  InnerUnionPatchStruct(const InnerUnionPatchStruct& src);
 
 
-  InnerUnionValuePatchStruct& operator=(InnerUnionValuePatchStruct&&) noexcept;
-  InnerUnionValuePatchStruct& operator=(const InnerUnionValuePatchStruct& src);
+  InnerUnionPatchStruct& operator=(InnerUnionPatchStruct&&) noexcept;
+  InnerUnionPatchStruct& operator=(const InnerUnionPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::InnerUnionPatch __fbthrift_field_patch;
+  ::test::fixtures::patch::InnerUnionFieldPatch __fbthrift_field_patch;
  private:
   ::test::fixtures::patch::InnerUnion __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::InnerUnionPatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::InnerUnionFieldPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const InnerUnionValuePatchStruct&) const;
-  bool operator<(const InnerUnionValuePatchStruct&) const;
+  bool operator==(const InnerUnionPatchStruct&) const;
+  bool operator<(const InnerUnionPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -4216,42 +4216,42 @@ class InnerUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -4296,42 +4296,42 @@ class InnerUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
@@ -4348,10 +4348,10 @@ class InnerUnionValuePatchStruct final  {
   const ::test::fixtures::patch::InnerUnion& get_ensure() const&;
   ::test::fixtures::patch::InnerUnion get_ensure() &&;
 
-  template <typename T_InnerUnionValuePatchStruct_ensure_struct_setter = ::test::fixtures::patch::InnerUnion>
+  template <typename T_InnerUnionPatchStruct_ensure_struct_setter = ::test::fixtures::patch::InnerUnion>
   [[deprecated("Use `FOO.ensure_ref() = BAR;` instead of `FOO.set_ensure(BAR);`")]]
-  ::test::fixtures::patch::InnerUnion& set_ensure(T_InnerUnionValuePatchStruct_ensure_struct_setter&& ensure_) {
-    ensure_ref() = std::forward<T_InnerUnionValuePatchStruct_ensure_struct_setter>(ensure_);
+  ::test::fixtures::patch::InnerUnion& set_ensure(T_InnerUnionPatchStruct_ensure_struct_setter&& ensure_) {
+    ensure_ref() = std::forward<T_InnerUnionPatchStruct_ensure_struct_setter>(ensure_);
     return __fbthrift_field_ensure;
   }
 
@@ -4368,21 +4368,21 @@ class InnerUnionValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<InnerUnionValuePatchStruct>;
-  friend void swap(InnerUnionValuePatchStruct& a, InnerUnionValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<InnerUnionPatchStruct>;
+  friend void swap(InnerUnionPatchStruct& a, InnerUnionPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long InnerUnionValuePatchStruct::read(Protocol_* iprot) {
+unsigned long InnerUnionPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using InnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionValuePatchStruct>;
+using InnerUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::InnerUnionPatchStruct>;
 
 
-class OptionalInnerUnionValuePatchStruct final  {
+class OptionalInnerUnionPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -4404,9 +4404,9 @@ class OptionalInnerUnionValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>,
                                                          ::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4444,9 +4444,9 @@ class OptionalInnerUnionValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::InnerUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -4463,43 +4463,43 @@ class OptionalInnerUnionValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = OptionalInnerUnionValuePatchStruct;
+  using __fbthrift_cpp2_type = OptionalInnerUnionPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  OptionalInnerUnionValuePatchStruct() :
+  OptionalInnerUnionPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  OptionalInnerUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> ensure__arg, ::test::fixtures::patch::InnerUnionValuePatch patchAfter__arg);
+  OptionalInnerUnionPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::InnerUnionPatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> ensure__arg, ::test::fixtures::patch::InnerUnionPatch patchAfter__arg);
 
-  OptionalInnerUnionValuePatchStruct(OptionalInnerUnionValuePatchStruct&&) noexcept;
-  OptionalInnerUnionValuePatchStruct(const OptionalInnerUnionValuePatchStruct& src);
+  OptionalInnerUnionPatchStruct(OptionalInnerUnionPatchStruct&&) noexcept;
+  OptionalInnerUnionPatchStruct(const OptionalInnerUnionPatchStruct& src);
 
 
-  OptionalInnerUnionValuePatchStruct& operator=(OptionalInnerUnionValuePatchStruct&&) noexcept;
-  OptionalInnerUnionValuePatchStruct& operator=(const OptionalInnerUnionValuePatchStruct& src);
+  OptionalInnerUnionPatchStruct& operator=(OptionalInnerUnionPatchStruct&&) noexcept;
+  OptionalInnerUnionPatchStruct& operator=(const OptionalInnerUnionPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::InnerUnionValuePatch __fbthrift_field_patch;
+  ::test::fixtures::patch::InnerUnionPatch __fbthrift_field_patch;
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::InnerUnion> __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::InnerUnionValuePatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::InnerUnionPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const OptionalInnerUnionValuePatchStruct&) const;
-  bool operator<(const OptionalInnerUnionValuePatchStruct&) const;
+  bool operator==(const OptionalInnerUnionPatchStruct&) const;
+  bool operator<(const OptionalInnerUnionPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -4541,42 +4541,42 @@ class OptionalInnerUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -4621,42 +4621,42 @@ class OptionalInnerUnionValuePatchStruct final  {
     return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
@@ -4684,21 +4684,21 @@ class OptionalInnerUnionValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalInnerUnionValuePatchStruct>;
-  friend void swap(OptionalInnerUnionValuePatchStruct& a, OptionalInnerUnionValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<OptionalInnerUnionPatchStruct>;
+  friend void swap(OptionalInnerUnionPatchStruct& a, OptionalInnerUnionPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long OptionalInnerUnionValuePatchStruct::read(Protocol_* iprot) {
+unsigned long OptionalInnerUnionPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using OptionalInnerUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalInnerUnionValuePatchStruct>;
+using OptionalInnerUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalInnerUnionPatchStruct>;
 
 
-class MyUnionPatchStruct final  {
+class MyUnionFieldPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -4720,7 +4720,7 @@ class MyUnionPatchStruct final  {
                                                          void,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -4754,7 +4754,7 @@ class MyUnionPatchStruct final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::InnerUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -4771,41 +4771,41 @@ class MyUnionPatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyUnionPatchStruct;
+  using __fbthrift_cpp2_type = MyUnionFieldPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyUnionPatchStruct() {
+  MyUnionFieldPatchStruct() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_option3, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyUnionPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch option1__arg, ::apache::thrift::op::I32Patch option2__arg, ::test::fixtures::patch::InnerUnionValuePatch option3__arg);
+  MyUnionFieldPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::StringPatch option1__arg, ::apache::thrift::op::I32Patch option2__arg, ::test::fixtures::patch::InnerUnionPatch option3__arg);
 
-  MyUnionPatchStruct(MyUnionPatchStruct&&) noexcept;
-  MyUnionPatchStruct(const MyUnionPatchStruct& src);
+  MyUnionFieldPatchStruct(MyUnionFieldPatchStruct&&) noexcept;
+  MyUnionFieldPatchStruct(const MyUnionFieldPatchStruct& src);
 
 
-  MyUnionPatchStruct& operator=(MyUnionPatchStruct&&) noexcept;
-  MyUnionPatchStruct& operator=(const MyUnionPatchStruct& src);
+  MyUnionFieldPatchStruct& operator=(MyUnionFieldPatchStruct&&) noexcept;
+  MyUnionFieldPatchStruct& operator=(const MyUnionFieldPatchStruct& src);
  private:
   ::apache::thrift::op::StringPatch __fbthrift_field_option1;
  private:
   ::apache::thrift::op::I32Patch __fbthrift_field_option2;
  private:
-  ::test::fixtures::patch::InnerUnionValuePatch __fbthrift_field_option3;
+  ::test::fixtures::patch::InnerUnionPatch __fbthrift_field_option3;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const MyUnionPatchStruct&) const;
-  bool operator<(const MyUnionPatchStruct&) const;
+  bool operator==(const MyUnionFieldPatchStruct&) const;
+  bool operator<(const MyUnionFieldPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::op::StringPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> option1_ref() const& {
@@ -4887,42 +4887,42 @@ class MyUnionPatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> option3_ref() const& {
     return {this->__fbthrift_field_option3, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option3_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_option3), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> option3_ref() & {
     return {this->__fbthrift_field_option3, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> option3_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_option3), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> option3() const& {
     return {this->__fbthrift_field_option3, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option3() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_option3), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> option3() & {
     return {this->__fbthrift_field_option3, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::InnerUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::InnerUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> option3() && {
     return {static_cast<T&&>(this->__fbthrift_field_option3), __isset.at(2), __isset.bit(2)};
   }
@@ -4940,21 +4940,21 @@ class MyUnionPatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnionPatchStruct>;
-  friend void swap(MyUnionPatchStruct& a, MyUnionPatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyUnionFieldPatchStruct>;
+  friend void swap(MyUnionFieldPatchStruct& a, MyUnionFieldPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyUnionPatchStruct::read(Protocol_* iprot) {
+unsigned long MyUnionFieldPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>;
+using MyUnionFieldPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyUnionFieldPatchStruct>;
 
 
-class MyUnionValuePatchStruct final  {
+class MyUnionPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -4976,9 +4976,9 @@ class MyUnionValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionFieldPatchStruct>>,
                                                          ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionFieldPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -5016,9 +5016,9 @@ class MyUnionValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -5035,43 +5035,43 @@ class MyUnionValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyUnionValuePatchStruct;
+  using __fbthrift_cpp2_type = MyUnionPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyUnionValuePatchStruct() :
+  MyUnionPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionPatch patch__arg, ::test::fixtures::patch::MyUnion ensure__arg, ::test::fixtures::patch::MyUnionPatch patchAfter__arg);
+  MyUnionPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionFieldPatch patch__arg, ::test::fixtures::patch::MyUnion ensure__arg, ::test::fixtures::patch::MyUnionFieldPatch patchAfter__arg);
 
-  MyUnionValuePatchStruct(MyUnionValuePatchStruct&&) noexcept;
-  MyUnionValuePatchStruct(const MyUnionValuePatchStruct& src);
+  MyUnionPatchStruct(MyUnionPatchStruct&&) noexcept;
+  MyUnionPatchStruct(const MyUnionPatchStruct& src);
 
 
-  MyUnionValuePatchStruct& operator=(MyUnionValuePatchStruct&&) noexcept;
-  MyUnionValuePatchStruct& operator=(const MyUnionValuePatchStruct& src);
+  MyUnionPatchStruct& operator=(MyUnionPatchStruct&&) noexcept;
+  MyUnionPatchStruct& operator=(const MyUnionPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyUnionPatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyUnionFieldPatch __fbthrift_field_patch;
  private:
   ::test::fixtures::patch::MyUnion __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::MyUnionPatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::MyUnionFieldPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const MyUnionValuePatchStruct&) const;
-  bool operator<(const MyUnionValuePatchStruct&) const;
+  bool operator==(const MyUnionPatchStruct&) const;
+  bool operator<(const MyUnionPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -5113,42 +5113,42 @@ class MyUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -5193,42 +5193,42 @@ class MyUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
@@ -5245,10 +5245,10 @@ class MyUnionValuePatchStruct final  {
   const ::test::fixtures::patch::MyUnion& get_ensure() const&;
   ::test::fixtures::patch::MyUnion get_ensure() &&;
 
-  template <typename T_MyUnionValuePatchStruct_ensure_struct_setter = ::test::fixtures::patch::MyUnion>
+  template <typename T_MyUnionPatchStruct_ensure_struct_setter = ::test::fixtures::patch::MyUnion>
   [[deprecated("Use `FOO.ensure_ref() = BAR;` instead of `FOO.set_ensure(BAR);`")]]
-  ::test::fixtures::patch::MyUnion& set_ensure(T_MyUnionValuePatchStruct_ensure_struct_setter&& ensure_) {
-    ensure_ref() = std::forward<T_MyUnionValuePatchStruct_ensure_struct_setter>(ensure_);
+  ::test::fixtures::patch::MyUnion& set_ensure(T_MyUnionPatchStruct_ensure_struct_setter&& ensure_) {
+    ensure_ref() = std::forward<T_MyUnionPatchStruct_ensure_struct_setter>(ensure_);
     return __fbthrift_field_ensure;
   }
 
@@ -5265,21 +5265,21 @@ class MyUnionValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnionValuePatchStruct>;
-  friend void swap(MyUnionValuePatchStruct& a, MyUnionValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyUnionPatchStruct>;
+  friend void swap(MyUnionPatchStruct& a, MyUnionPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyUnionValuePatchStruct::read(Protocol_* iprot) {
+unsigned long MyUnionPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>;
+using MyUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>;
 
 
-class OptionalMyUnionValuePatchStruct final  {
+class OptionalMyUnionPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -5301,9 +5301,9 @@ class OptionalMyUnionValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>,
                                                          ::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -5341,9 +5341,9 @@ class OptionalMyUnionValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::union_t<::test::fixtures::patch::MyUnion>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -5360,43 +5360,43 @@ class OptionalMyUnionValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = OptionalMyUnionValuePatchStruct;
+  using __fbthrift_cpp2_type = OptionalMyUnionPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  OptionalMyUnionValuePatchStruct() :
+  OptionalMyUnionPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  OptionalMyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> ensure__arg, ::test::fixtures::patch::MyUnionValuePatch patchAfter__arg);
+  OptionalMyUnionPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyUnionPatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> ensure__arg, ::test::fixtures::patch::MyUnionPatch patchAfter__arg);
 
-  OptionalMyUnionValuePatchStruct(OptionalMyUnionValuePatchStruct&&) noexcept;
-  OptionalMyUnionValuePatchStruct(const OptionalMyUnionValuePatchStruct& src);
+  OptionalMyUnionPatchStruct(OptionalMyUnionPatchStruct&&) noexcept;
+  OptionalMyUnionPatchStruct(const OptionalMyUnionPatchStruct& src);
 
 
-  OptionalMyUnionValuePatchStruct& operator=(OptionalMyUnionValuePatchStruct&&) noexcept;
-  OptionalMyUnionValuePatchStruct& operator=(const OptionalMyUnionValuePatchStruct& src);
+  OptionalMyUnionPatchStruct& operator=(OptionalMyUnionPatchStruct&&) noexcept;
+  OptionalMyUnionPatchStruct& operator=(const OptionalMyUnionPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyUnionValuePatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyUnionPatch __fbthrift_field_patch;
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::MyUnionValuePatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::MyUnionPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const OptionalMyUnionValuePatchStruct&) const;
-  bool operator<(const OptionalMyUnionValuePatchStruct&) const;
+  bool operator==(const OptionalMyUnionPatchStruct&) const;
+  bool operator<(const OptionalMyUnionPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -5438,42 +5438,42 @@ class OptionalMyUnionValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -5518,42 +5518,42 @@ class OptionalMyUnionValuePatchStruct final  {
     return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
@@ -5581,18 +5581,18 @@ class OptionalMyUnionValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalMyUnionValuePatchStruct>;
-  friend void swap(OptionalMyUnionValuePatchStruct& a, OptionalMyUnionValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<OptionalMyUnionPatchStruct>;
+  friend void swap(OptionalMyUnionPatchStruct& a, OptionalMyUnionPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long OptionalMyUnionValuePatchStruct::read(Protocol_* iprot) {
+unsigned long OptionalMyUnionPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using OptionalMyUnionValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>;
+using OptionalMyUnionPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyUnionPatchStruct>;
 
 
 class MyStructField21PatchStruct final  {
@@ -7543,7 +7543,7 @@ unsigned long OptionalMyStructField23PatchStruct::read(Protocol_* iprot) {
 using OptionalMyStructField23Patch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>;
 
 
-class MyStructPatchStruct final  {
+class MyStructFieldPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -7593,7 +7593,7 @@ class MyStructPatchStruct final  {
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::DoublePatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBoolPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBytePatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI16PatchStruct>>,
@@ -7603,11 +7603,11 @@ class MyStructPatchStruct final  {
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalDoublePatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalStringPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBinaryPatchStruct>>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyDataValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyDataPatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField21PatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField22PatchStruct>>,
                                                          ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField23PatchStruct>>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -7753,7 +7753,7 @@ class MyStructPatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::DoublePatchStruct>>, T, std::enable_if_t<sizeof(T) != -7>> { static constexpr int value = 7; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>, T, std::enable_if_t<sizeof(T) != -8>> { static constexpr int value = 8; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>, T, std::enable_if_t<sizeof(T) != -9>> { static constexpr int value = 9; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -10>> { static constexpr int value = 10; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -10>> { static constexpr int value = 10; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBoolPatchStruct>>, T, std::enable_if_t<sizeof(T) != -11>> { static constexpr int value = 11; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBytePatchStruct>>, T, std::enable_if_t<sizeof(T) != -12>> { static constexpr int value = 12; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI16PatchStruct>>, T, std::enable_if_t<sizeof(T) != -13>> { static constexpr int value = 13; };
@@ -7763,11 +7763,11 @@ class MyStructPatchStruct final  {
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalDoublePatchStruct>>, T, std::enable_if_t<sizeof(T) != -17>> { static constexpr int value = 17; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalStringPatchStruct>>, T, std::enable_if_t<sizeof(T) != -18>> { static constexpr int value = 18; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBinaryPatchStruct>>, T, std::enable_if_t<sizeof(T) != -19>> { static constexpr int value = 19; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyDataValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -20>> { static constexpr int value = 20; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyDataPatchStruct>>, T, std::enable_if_t<sizeof(T) != -20>> { static constexpr int value = 20; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField21PatchStruct>>, T, std::enable_if_t<sizeof(T) != -21>> { static constexpr int value = 21; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField22PatchStruct>>, T, std::enable_if_t<sizeof(T) != -22>> { static constexpr int value = 22; };
     template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::OptionalMyStructField23PatchStruct>>, T, std::enable_if_t<sizeof(T) != -23>> { static constexpr int value = 23; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -24>> { static constexpr int value = 24; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyUnionPatchStruct>>, T, std::enable_if_t<sizeof(T) != -24>> { static constexpr int value = 24; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -7784,14 +7784,14 @@ class MyStructPatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyStructPatchStruct;
+  using __fbthrift_cpp2_type = MyStructFieldPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyStructPatchStruct() {
+  MyStructFieldPatchStruct() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::BoolPatchAdapter, 1>(__fbthrift_field_boolVal, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_byteVal, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 3>(__fbthrift_field_i16Val, *this);
@@ -7819,14 +7819,14 @@ class MyStructPatchStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BoolPatch boolVal__arg, ::apache::thrift::op::BytePatch byteVal__arg, ::apache::thrift::op::I16Patch i16Val__arg, ::apache::thrift::op::I32Patch i32Val__arg, ::apache::thrift::op::I64Patch i64Val__arg, ::apache::thrift::op::FloatPatch floatVal__arg, ::apache::thrift::op::DoublePatch doubleVal__arg, ::apache::thrift::op::StringPatch stringVal__arg, ::apache::thrift::op::BinaryPatch binaryVal__arg, ::test::fixtures::patch::MyDataValuePatch structVal__arg, ::apache::thrift::op::OptionalBoolPatch optBoolVal__arg, ::apache::thrift::op::OptionalBytePatch optByteVal__arg, ::apache::thrift::op::OptionalI16Patch optI16Val__arg, ::apache::thrift::op::OptionalI32Patch optI32Val__arg, ::apache::thrift::op::OptionalI64Patch optI64Val__arg, ::apache::thrift::op::OptionalFloatPatch optFloatVal__arg, ::apache::thrift::op::OptionalDoublePatch optDoubleVal__arg, ::apache::thrift::op::OptionalStringPatch optStringVal__arg, ::apache::thrift::op::OptionalBinaryPatch optBinaryVal__arg, ::test::fixtures::patch::OptionalMyDataValuePatch optStructVal__arg, ::test::fixtures::patch::OptionalMyStructField21Patch optListVal__arg, ::test::fixtures::patch::OptionalMyStructField22Patch optSetVal__arg, ::test::fixtures::patch::OptionalMyStructField23Patch optMapVal__arg, ::test::fixtures::patch::MyUnionValuePatch unionVal__arg);
+  MyStructFieldPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::op::BoolPatch boolVal__arg, ::apache::thrift::op::BytePatch byteVal__arg, ::apache::thrift::op::I16Patch i16Val__arg, ::apache::thrift::op::I32Patch i32Val__arg, ::apache::thrift::op::I64Patch i64Val__arg, ::apache::thrift::op::FloatPatch floatVal__arg, ::apache::thrift::op::DoublePatch doubleVal__arg, ::apache::thrift::op::StringPatch stringVal__arg, ::apache::thrift::op::BinaryPatch binaryVal__arg, ::test::fixtures::patch::MyDataPatch structVal__arg, ::apache::thrift::op::OptionalBoolPatch optBoolVal__arg, ::apache::thrift::op::OptionalBytePatch optByteVal__arg, ::apache::thrift::op::OptionalI16Patch optI16Val__arg, ::apache::thrift::op::OptionalI32Patch optI32Val__arg, ::apache::thrift::op::OptionalI64Patch optI64Val__arg, ::apache::thrift::op::OptionalFloatPatch optFloatVal__arg, ::apache::thrift::op::OptionalDoublePatch optDoubleVal__arg, ::apache::thrift::op::OptionalStringPatch optStringVal__arg, ::apache::thrift::op::OptionalBinaryPatch optBinaryVal__arg, ::test::fixtures::patch::OptionalMyDataPatch optStructVal__arg, ::test::fixtures::patch::OptionalMyStructField21Patch optListVal__arg, ::test::fixtures::patch::OptionalMyStructField22Patch optSetVal__arg, ::test::fixtures::patch::OptionalMyStructField23Patch optMapVal__arg, ::test::fixtures::patch::MyUnionPatch unionVal__arg);
 
-  MyStructPatchStruct(MyStructPatchStruct&&) noexcept;
-  MyStructPatchStruct(const MyStructPatchStruct& src);
+  MyStructFieldPatchStruct(MyStructFieldPatchStruct&&) noexcept;
+  MyStructFieldPatchStruct(const MyStructFieldPatchStruct& src);
 
 
-  MyStructPatchStruct& operator=(MyStructPatchStruct&&) noexcept;
-  MyStructPatchStruct& operator=(const MyStructPatchStruct& src);
+  MyStructFieldPatchStruct& operator=(MyStructFieldPatchStruct&&) noexcept;
+  MyStructFieldPatchStruct& operator=(const MyStructFieldPatchStruct& src);
  private:
   ::apache::thrift::op::BoolPatch __fbthrift_field_boolVal;
  private:
@@ -7846,7 +7846,7 @@ class MyStructPatchStruct final  {
  private:
   ::apache::thrift::op::BinaryPatch __fbthrift_field_binaryVal;
  private:
-  ::test::fixtures::patch::MyDataValuePatch __fbthrift_field_structVal;
+  ::test::fixtures::patch::MyDataPatch __fbthrift_field_structVal;
  private:
   ::apache::thrift::op::OptionalBoolPatch __fbthrift_field_optBoolVal;
  private:
@@ -7866,7 +7866,7 @@ class MyStructPatchStruct final  {
  private:
   ::apache::thrift::op::OptionalBinaryPatch __fbthrift_field_optBinaryVal;
  private:
-  ::test::fixtures::patch::OptionalMyDataValuePatch __fbthrift_field_optStructVal;
+  ::test::fixtures::patch::OptionalMyDataPatch __fbthrift_field_optStructVal;
  private:
   ::test::fixtures::patch::OptionalMyStructField21Patch __fbthrift_field_optListVal;
  private:
@@ -7874,14 +7874,14 @@ class MyStructPatchStruct final  {
  private:
   ::test::fixtures::patch::OptionalMyStructField23Patch __fbthrift_field_optMapVal;
  private:
-  ::test::fixtures::patch::MyUnionValuePatch __fbthrift_field_unionVal;
+  ::test::fixtures::patch::MyUnionPatch __fbthrift_field_unionVal;
  private:
   apache::thrift::detail::isset_bitset<24, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const MyStructPatchStruct&) const;
-  bool operator<(const MyStructPatchStruct&) const;
+  bool operator==(const MyStructFieldPatchStruct&) const;
+  bool operator<(const MyStructFieldPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::op::BoolPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolVal_ref() const& {
@@ -8243,42 +8243,42 @@ class MyStructPatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_binaryVal), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structVal_ref() const& {
     return {this->__fbthrift_field_structVal, __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structVal_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_structVal), __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structVal_ref() & {
     return {this->__fbthrift_field_structVal, __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structVal_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_structVal), __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structVal() const& {
     return {this->__fbthrift_field_structVal, __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structVal() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_structVal), __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structVal() & {
     return {this->__fbthrift_field_structVal, __isset.at(9), __isset.bit(9)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structVal() && {
     return {static_cast<T&&>(this->__fbthrift_field_structVal), __isset.at(9), __isset.bit(9)};
   }
@@ -8643,42 +8643,42 @@ class MyStructPatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_optBinaryVal), __isset.at(18), __isset.bit(18)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> optStructVal_ref() const& {
     return {this->__fbthrift_field_optStructVal, __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> optStructVal_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_optStructVal), __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> optStructVal_ref() & {
     return {this->__fbthrift_field_optStructVal, __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> optStructVal_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_optStructVal), __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> optStructVal() const& {
     return {this->__fbthrift_field_optStructVal, __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> optStructVal() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_optStructVal), __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> optStructVal() & {
     return {this->__fbthrift_field_optStructVal, __isset.at(19), __isset.bit(19)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::OptionalMyDataPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> optStructVal() && {
     return {static_cast<T&&>(this->__fbthrift_field_optStructVal), __isset.at(19), __isset.bit(19)};
   }
@@ -8803,42 +8803,42 @@ class MyStructPatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_optMapVal), __isset.at(22), __isset.bit(22)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> unionVal_ref() const& {
     return {this->__fbthrift_field_unionVal, __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> unionVal_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_unionVal), __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> unionVal_ref() & {
     return {this->__fbthrift_field_unionVal, __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> unionVal_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_unionVal), __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> unionVal() const& {
     return {this->__fbthrift_field_unionVal, __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> unionVal() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_unionVal), __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> unionVal() & {
     return {this->__fbthrift_field_unionVal, __isset.at(23), __isset.bit(23)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyUnionValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyUnionPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> unionVal() && {
     return {static_cast<T&&>(this->__fbthrift_field_unionVal), __isset.at(23), __isset.bit(23)};
   }
@@ -8856,21 +8856,21 @@ class MyStructPatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructPatchStruct>;
-  friend void swap(MyStructPatchStruct& a, MyStructPatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyStructFieldPatchStruct>;
+  friend void swap(MyStructFieldPatchStruct& a, MyStructFieldPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyStructPatchStruct::read(Protocol_* iprot) {
+unsigned long MyStructFieldPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyStructPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>;
+using MyStructFieldPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::FieldPatchAdapter, ::test::fixtures::patch::MyStructFieldPatchStruct>;
 
 
-class MyStructValuePatchStruct final  {
+class MyStructPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -8892,7 +8892,7 @@ class MyStructValuePatchStruct final  {
                                                          void,
                                                          ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructFieldPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -8926,7 +8926,7 @@ class MyStructValuePatchStruct final  {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::FieldPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructFieldPatchStruct>>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -8943,40 +8943,40 @@ class MyStructValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = MyStructValuePatchStruct;
+  using __fbthrift_cpp2_type = MyStructPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  MyStructValuePatchStruct() :
+  MyStructPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::FieldPatchAdapter, 3>(__fbthrift_field_patch, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStructValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> assign__arg, bool clear__arg, ::test::fixtures::patch::MyStructPatch patch__arg);
+  MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> assign__arg, bool clear__arg, ::test::fixtures::patch::MyStructFieldPatch patch__arg);
 
-  MyStructValuePatchStruct(MyStructValuePatchStruct&&) noexcept;
-  MyStructValuePatchStruct(const MyStructValuePatchStruct& src);
+  MyStructPatchStruct(MyStructPatchStruct&&) noexcept;
+  MyStructPatchStruct(const MyStructPatchStruct& src);
 
 
-  MyStructValuePatchStruct& operator=(MyStructValuePatchStruct&&) noexcept;
-  MyStructValuePatchStruct& operator=(const MyStructValuePatchStruct& src);
+  MyStructPatchStruct& operator=(MyStructPatchStruct&&) noexcept;
+  MyStructPatchStruct& operator=(const MyStructPatchStruct& src);
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> __fbthrift_field_assign;
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyStructPatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyStructFieldPatch __fbthrift_field_patch;
  private:
   apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const MyStructValuePatchStruct&) const;
-  bool operator<(const MyStructValuePatchStruct&) const;
+  bool operator==(const MyStructPatchStruct&) const;
+  bool operator<(const MyStructPatchStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> assign_ref() const& {
@@ -9058,42 +9058,42 @@ class MyStructValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructFieldPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -9121,21 +9121,21 @@ class MyStructValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructValuePatchStruct>;
-  friend void swap(MyStructValuePatchStruct& a, MyStructValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<MyStructPatchStruct>;
+  friend void swap(MyStructPatchStruct& a, MyStructPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long MyStructValuePatchStruct::read(Protocol_* iprot) {
+unsigned long MyStructPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using MyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>;
+using MyStructPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>;
 
 
-class OptionalMyStructValuePatchStruct final  {
+class OptionalMyStructPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
@@ -9157,9 +9157,9 @@ class OptionalMyStructValuePatchStruct final  {
   using __fbthrift_type_tag = folly::type_pack_element_t<folly::to_underlying(T::value),
                                                          void,
                                                          ::apache::thrift::type::bool_t,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>,
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>,
                                                          ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>,
-                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>>;
+                                                         ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>>;
 
   template<class T>
   using __fbthrift_ident = folly::type_pack_element_t<folly::to_underlying(T::value),
@@ -9197,9 +9197,9 @@ class OptionalMyStructValuePatchStruct final  {
   struct __fbthrift_ordinal_impl_for_non_unique_type {
     template<class, class, class> struct Impl { static constexpr int value = 0; };
     template<class T> struct Impl<::apache::thrift::type::bool_t, T, std::enable_if_t<sizeof(T) != -1>> { static constexpr int value = 1; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>, T, std::enable_if_t<sizeof(T) != -2>> { static constexpr int value = 2; };
     template<class T> struct Impl<::apache::thrift::type::struct_t<::test::fixtures::patch::MyStruct>, T, std::enable_if_t<sizeof(T) != -3>> { static constexpr int value = 3; };
-    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructValuePatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
+    template<class T> struct Impl<::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::test::fixtures::patch::MyStructPatchStruct>>, T, std::enable_if_t<sizeof(T) != -4>> { static constexpr int value = 4; };
 
     template<class T> static constexpr int value = Impl<T, T, void>::value;
   };
@@ -9216,43 +9216,43 @@ class OptionalMyStructValuePatchStruct final  {
   bool __fbthrift_is_empty() const;
 
  public:
-  using __fbthrift_cpp2_type = OptionalMyStructValuePatchStruct;
+  using __fbthrift_cpp2_type = OptionalMyStructPatchStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
 
  public:
 
-  OptionalMyStructValuePatchStruct() :
+  OptionalMyStructPatchStruct() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 6>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  OptionalMyStructValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> ensure__arg, ::test::fixtures::patch::MyStructValuePatch patchAfter__arg);
+  OptionalMyStructPatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::test::fixtures::patch::MyStructPatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> ensure__arg, ::test::fixtures::patch::MyStructPatch patchAfter__arg);
 
-  OptionalMyStructValuePatchStruct(OptionalMyStructValuePatchStruct&&) noexcept;
-  OptionalMyStructValuePatchStruct(const OptionalMyStructValuePatchStruct& src);
+  OptionalMyStructPatchStruct(OptionalMyStructPatchStruct&&) noexcept;
+  OptionalMyStructPatchStruct(const OptionalMyStructPatchStruct& src);
 
 
-  OptionalMyStructValuePatchStruct& operator=(OptionalMyStructValuePatchStruct&&) noexcept;
-  OptionalMyStructValuePatchStruct& operator=(const OptionalMyStructValuePatchStruct& src);
+  OptionalMyStructPatchStruct& operator=(OptionalMyStructPatchStruct&&) noexcept;
+  OptionalMyStructPatchStruct& operator=(const OptionalMyStructPatchStruct& src);
  private:
   bool __fbthrift_field_clear;
  private:
-  ::test::fixtures::patch::MyStructValuePatch __fbthrift_field_patch;
+  ::test::fixtures::patch::MyStructPatch __fbthrift_field_patch;
  private:
   ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> __fbthrift_field_ensure;
  private:
-  ::test::fixtures::patch::MyStructValuePatch __fbthrift_field_patchAfter;
+  ::test::fixtures::patch::MyStructPatch __fbthrift_field_patchAfter;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
-  bool operator==(const OptionalMyStructValuePatchStruct&) const;
-  bool operator<(const OptionalMyStructValuePatchStruct&) const;
+  bool operator==(const OptionalMyStructPatchStruct&) const;
+  bool operator<(const OptionalMyStructPatchStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
@@ -9294,42 +9294,42 @@ class OptionalMyStructValuePatchStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
     return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
@@ -9374,42 +9374,42 @@ class OptionalMyStructValuePatchStruct final  {
     return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
     return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::test::fixtures::patch::MyStructValuePatch>
+  template <typename..., typename T = ::test::fixtures::patch::MyStructPatch>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
@@ -9437,18 +9437,18 @@ class OptionalMyStructValuePatchStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalMyStructValuePatchStruct>;
-  friend void swap(OptionalMyStructValuePatchStruct& a, OptionalMyStructValuePatchStruct& b);
+  friend class ::apache::thrift::Cpp2Ops<OptionalMyStructPatchStruct>;
+  friend void swap(OptionalMyStructPatchStruct& a, OptionalMyStructPatchStruct& b);
 };
 
 template <class Protocol_>
-unsigned long OptionalMyStructValuePatchStruct::read(Protocol_* iprot) {
+unsigned long OptionalMyStructPatchStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
-using OptionalMyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>;
+using OptionalMyStructPatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructPatchStruct>;
 
 
 }}} // test::fixtures::patch
