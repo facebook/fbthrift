@@ -74,3 +74,9 @@ struct Name {
 struct UnionEnumAttributes {
   1: list<string> attributes;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/UnionEnumAttributes")
+
+// This annotation is for using a custom trait for structs.
+@scope.Struct
+struct StructTrait {
+  1: string name;
+} (thrift.uri = "facebook.com/thrift/annotation/hack/StructTrait")

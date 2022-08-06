@@ -93,6 +93,21 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 74
+      },
+      "StructTrait" : {
+        "name" : "StructTrait",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "key" : 1,
+            "lineno" : 81,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 80
       }
       },
   "source_path" : "thrift/annotation/hack",

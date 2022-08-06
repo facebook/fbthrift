@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/hack.thrift"
+
 struct MyStruct {
   1: string foo;
 } (php.structtrait)
@@ -25,3 +27,13 @@ struct MySecondStruct {
 struct MyThirdStruct {
   1: string foo;
 } (php.structtrait = 'CustomTraitName')
+
+@hack.StructTrait
+struct MyFourthStruct {
+  1: string foo;
+}
+
+@hack.StructTrait{name = 'CustomTraitName'}
+struct MyFifthStruct {
+  1: string foo;
+}

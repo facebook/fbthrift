@@ -701,6 +701,24 @@ class t_hack_generator : public t_concat_generator {
     return "";
   }
 
+  std::pair<bool, const std::string> find_hack_struct_trait(
+      const t_struct* tstruct) const {
+    if (const std::string* annotation =
+            tstruct->find_annotation_or_null("php.structtrait")) {
+      return std::make_pair(true, *annotation);
+    }
+    if (const auto annotation = tstruct->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/hack/StructTrait")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "name") {
+          return std::make_pair(true, item.second->get_string());
+        }
+      }
+      return std::make_pair(true, "");
+    }
+    return std::make_pair(false, "");
+  }
+
   std::string hack_namespace(const t_program* p) const {
     std::string hack_ns = p->get_namespace("hack");
     std::replace(hack_ns.begin(), hack_ns.end(), '.', '\\');
@@ -2663,12 +2681,12 @@ void t_hack_generator::generate_php_struct_spec(
 void t_hack_generator::generate_php_struct_struct_trait(
     std::ofstream& out, const t_struct* tstruct, const std::string& name) {
   std::string traitName;
-  if (const auto* structtrait =
-          tstruct->find_annotation_or_null("php.structtrait")) {
-    if (structtrait->empty() || *structtrait == "1") {
+  auto struct_trait = find_hack_struct_trait(tstruct);
+  if (struct_trait.first) {
+    if (struct_trait.second.empty() || struct_trait.second == "1") {
       traitName = hack_name(name, tstruct->program()) + "Trait";
     } else {
-      traitName = hack_name(*structtrait, tstruct->program());
+      traitName = hack_name(struct_trait.second, tstruct->program());
     }
   } else if (struct_trait_) {
     traitName = hack_name(name, tstruct->program()) + "Trait";
