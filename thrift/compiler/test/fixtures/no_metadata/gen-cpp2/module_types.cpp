@@ -228,10 +228,10 @@ const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
-  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
-  swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
-  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
+  swap(a.__fbthrift_field_MyIntField, b.__fbthrift_field_MyIntField);
+  swap(a.__fbthrift_field_MyStringField, b.__fbthrift_field_MyStringField);
+  swap(a.__fbthrift_field_MyDataField, b.__fbthrift_field_MyDataField);
+  swap(a.__fbthrift_field_myEnum, b.__fbthrift_field_myEnum);
   swap(a.__isset, b.__isset);
 }
 

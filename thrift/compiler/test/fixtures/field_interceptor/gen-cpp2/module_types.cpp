@@ -155,7 +155,7 @@ bool InterceptedFields::operator<(FOLLY_MAYBE_UNUSED const InterceptedFields& rh
 
 void swap(FOLLY_MAYBE_UNUSED InterceptedFields& a, FOLLY_MAYBE_UNUSED InterceptedFields& b) {
   using ::std::swap;
-  swap(a.access_field_ref().value(), b.access_field_ref().value());
+  swap(a.__fbthrift_field_access_field, b.__fbthrift_field_access_field);
   swap(a.access_shared_field, b.access_shared_field);
   swap(a.access_optional_shared_field, b.access_optional_shared_field);
   swap(a.access_shared_const_field, b.access_shared_const_field);

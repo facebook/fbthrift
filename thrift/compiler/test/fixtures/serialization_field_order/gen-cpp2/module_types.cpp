@@ -97,9 +97,9 @@ bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
   swap(a.__isset, b.__isset);
 }
 
@@ -200,9 +200,9 @@ bool Foo2::operator<(FOLLY_MAYBE_UNUSED const Foo2& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Foo2& a, FOLLY_MAYBE_UNUSED Foo2& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
   swap(a.__isset, b.__isset);
 }
 

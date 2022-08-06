@@ -96,8 +96,8 @@ const ::cpp2::Foo& Included::get_MyTransitiveField() const& {
 
 void swap(FOLLY_MAYBE_UNUSED Included& a, FOLLY_MAYBE_UNUSED Included& b) {
   using ::std::swap;
-  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
-  swap(a.MyTransitiveField_ref().value(), b.MyTransitiveField_ref().value());
+  swap(a.__fbthrift_field_MyIntField, b.__fbthrift_field_MyIntField);
+  swap(a.__fbthrift_field_MyTransitiveField, b.__fbthrift_field_MyTransitiveField);
   swap(a.__isset, b.__isset);
 }
 

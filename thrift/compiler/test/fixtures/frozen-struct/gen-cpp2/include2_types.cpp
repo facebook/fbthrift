@@ -103,8 +103,8 @@ bool IncludedB::operator<(FOLLY_MAYBE_UNUSED const IncludedB& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED IncludedB& a, FOLLY_MAYBE_UNUSED IncludedB& b) {
   using ::std::swap;
-  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
-  swap(a.strField_ref().value(), b.strField_ref().value());
+  swap(a.__fbthrift_field_i32Field, b.__fbthrift_field_i32Field);
+  swap(a.__fbthrift_field_strField, b.__fbthrift_field_strField);
   swap(a.__isset, b.__isset);
 }
 

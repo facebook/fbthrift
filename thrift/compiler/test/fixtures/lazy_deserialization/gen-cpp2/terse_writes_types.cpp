@@ -160,10 +160,10 @@ const ::std::vector<::std::int32_t>& TerseFoo::get_field4() const& {
 
 void swap(FOLLY_MAYBE_UNUSED TerseFoo& a, FOLLY_MAYBE_UNUSED TerseFoo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
-  swap(a.field4_ref().value(), b.field4_ref().value());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -447,10 +447,15 @@ const ::std::vector<::std::int32_t>& TerseLazyFoo::get_field2() const& {
 
 void swap(FOLLY_MAYBE_UNUSED TerseLazyFoo& a, FOLLY_MAYBE_UNUSED TerseLazyFoo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
-  swap(a.field4_ref().value(), b.field4_ref().value());
+  const auto relaxed = std::memory_order_relaxed;
+  swap(a.__fbthrift_protocol_, b.__fbthrift_protocol_);
+  swap(a.__fbthrift_serializedData_, b.__fbthrift_serializedData_);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  a.__fbthrift_isDeserialized_.field3.store(b.__fbthrift_isDeserialized_.field3.exchange(a.__fbthrift_isDeserialized_.field3.load(relaxed), relaxed), relaxed);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
+  a.__fbthrift_isDeserialized_.field4.store(b.__fbthrift_isDeserialized_.field4.exchange(a.__fbthrift_isDeserialized_.field4.load(relaxed), relaxed), relaxed);
   swap(a.__isset, b.__isset);
 }
 
@@ -614,10 +619,10 @@ const ::std::vector<::std::int32_t>* TerseOptionalFoo::get_field4() const& {
 
 void swap(FOLLY_MAYBE_UNUSED TerseOptionalFoo& a, FOLLY_MAYBE_UNUSED TerseOptionalFoo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -901,10 +906,15 @@ const ::std::vector<::std::int32_t>* TerseOptionalLazyFoo::get_field2() const& {
 
 void swap(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo& a, FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  const auto relaxed = std::memory_order_relaxed;
+  swap(a.__fbthrift_protocol_, b.__fbthrift_protocol_);
+  swap(a.__fbthrift_serializedData_, b.__fbthrift_serializedData_);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  a.__fbthrift_isDeserialized_.field3.store(b.__fbthrift_isDeserialized_.field3.exchange(a.__fbthrift_isDeserialized_.field3.load(relaxed), relaxed), relaxed);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
+  a.__fbthrift_isDeserialized_.field4.store(b.__fbthrift_isDeserialized_.field4.exchange(a.__fbthrift_isDeserialized_.field4.load(relaxed), relaxed), relaxed);
   swap(a.__isset, b.__isset);
 }
 

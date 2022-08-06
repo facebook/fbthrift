@@ -98,7 +98,7 @@ bool Fiery::operator<(FOLLY_MAYBE_UNUSED const Fiery& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Fiery& a, FOLLY_MAYBE_UNUSED Fiery& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
 }
 
 template void Fiery::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -203,7 +203,7 @@ bool Serious::operator<(FOLLY_MAYBE_UNUSED const Serious& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Serious& a, FOLLY_MAYBE_UNUSED Serious& b) {
   using ::std::swap;
-  swap(a.sonnet_ref().value_unchecked(), b.sonnet_ref().value_unchecked());
+  swap(a.__fbthrift_field_sonnet, b.__fbthrift_field_sonnet);
   swap(a.__isset, b.__isset);
 }
 
@@ -320,8 +320,8 @@ bool ComplexFieldNames::operator<(FOLLY_MAYBE_UNUSED const ComplexFieldNames& rh
 
 void swap(FOLLY_MAYBE_UNUSED ComplexFieldNames& a, FOLLY_MAYBE_UNUSED ComplexFieldNames& b) {
   using ::std::swap;
-  swap(a.error_message_ref().value(), b.error_message_ref().value());
-  swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
+  swap(a.__fbthrift_field_error_message, b.__fbthrift_field_error_message);
+  swap(a.__fbthrift_field_internal_error_message, b.__fbthrift_field_internal_error_message);
   swap(a.__isset, b.__isset);
 }
 
@@ -438,8 +438,8 @@ bool CustomFieldNames::operator<(FOLLY_MAYBE_UNUSED const CustomFieldNames& rhs)
 
 void swap(FOLLY_MAYBE_UNUSED CustomFieldNames& a, FOLLY_MAYBE_UNUSED CustomFieldNames& b) {
   using ::std::swap;
-  swap(a.error_message_ref().value(), b.error_message_ref().value());
-  swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
+  swap(a.__fbthrift_field_error_message, b.__fbthrift_field_error_message);
+  swap(a.__fbthrift_field_internal_error_message, b.__fbthrift_field_internal_error_message);
   swap(a.__isset, b.__isset);
 }
 
@@ -557,8 +557,8 @@ bool ExceptionWithPrimitiveField::operator<(FOLLY_MAYBE_UNUSED const ExceptionWi
 
 void swap(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField& a, FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
-  swap(a.error_code_ref().value(), b.error_code_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
+  swap(a.__fbthrift_field_error_code, b.__fbthrift_field_error_code);
   swap(a.__isset, b.__isset);
 }
 

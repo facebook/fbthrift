@@ -79,7 +79,7 @@ bool ReflectionStruct::operator<(FOLLY_MAYBE_UNUSED const ReflectionStruct& rhs)
 
 void swap(FOLLY_MAYBE_UNUSED ReflectionStruct& a, FOLLY_MAYBE_UNUSED ReflectionStruct& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
   swap(a.__isset, b.__isset);
 }
 

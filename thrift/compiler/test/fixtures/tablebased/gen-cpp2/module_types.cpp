@@ -225,11 +225,11 @@ bool TrivialTypesStruct::operator<(FOLLY_MAYBE_UNUSED const TrivialTypesStruct& 
 
 void swap(FOLLY_MAYBE_UNUSED TrivialTypesStruct& a, FOLLY_MAYBE_UNUSED TrivialTypesStruct& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value_unchecked(), b.fieldA_ref().value_unchecked());
-  swap(a.fieldB_ref().value_unchecked(), b.fieldB_ref().value_unchecked());
-  swap(a.fieldC_ref().value_unchecked(), b.fieldC_ref().value_unchecked());
-  swap(a.fieldD_ref().value_unchecked(), b.fieldD_ref().value_unchecked());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
+  swap(a.__fbthrift_field_fieldB, b.__fbthrift_field_fieldB);
+  swap(a.__fbthrift_field_fieldC, b.__fbthrift_field_fieldC);
+  swap(a.fieldD, b.fieldD);
+  swap(a.__fbthrift_field_fieldE, b.__fbthrift_field_fieldE);
   swap(a.__isset, b.__isset);
 }
 
@@ -475,14 +475,14 @@ const ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& Container
 
 void swap(FOLLY_MAYBE_UNUSED ContainerStruct& a, FOLLY_MAYBE_UNUSED ContainerStruct& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
-  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
-  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
-  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
-  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
-  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
+  swap(a.__fbthrift_field_fieldB, b.__fbthrift_field_fieldB);
+  swap(a.__fbthrift_field_fieldC, b.__fbthrift_field_fieldC);
+  swap(a.__fbthrift_field_fieldD, b.__fbthrift_field_fieldD);
+  swap(a.__fbthrift_field_fieldE, b.__fbthrift_field_fieldE);
+  swap(a.__fbthrift_field_fieldF, b.__fbthrift_field_fieldF);
+  swap(a.__fbthrift_field_fieldG, b.__fbthrift_field_fieldG);
+  swap(a.__fbthrift_field_fieldH, b.__fbthrift_field_fieldH);
   swap(a.__isset, b.__isset);
 }
 

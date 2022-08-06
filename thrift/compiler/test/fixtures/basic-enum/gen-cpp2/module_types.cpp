@@ -166,8 +166,8 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
-  swap(a.myBigEnum_ref().value(), b.myBigEnum_ref().value());
+  swap(a.__fbthrift_field_myEnum, b.__fbthrift_field_myEnum);
+  swap(a.__fbthrift_field_myBigEnum, b.__fbthrift_field_myBigEnum);
   swap(a.__isset, b.__isset);
 }
 

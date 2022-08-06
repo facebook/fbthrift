@@ -128,10 +128,10 @@ bool Default::operator<(FOLLY_MAYBE_UNUSED const Default& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Default& a, FOLLY_MAYBE_UNUSED Default& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -263,10 +263,10 @@ bool NonAtomic::operator<(FOLLY_MAYBE_UNUSED const NonAtomic& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED NonAtomic& a, FOLLY_MAYBE_UNUSED NonAtomic& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -398,10 +398,10 @@ bool Atomic::operator<(FOLLY_MAYBE_UNUSED const Atomic& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Atomic& a, FOLLY_MAYBE_UNUSED Atomic& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -533,10 +533,10 @@ bool AtomicFoo::operator<(FOLLY_MAYBE_UNUSED const AtomicFoo& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED AtomicFoo& a, FOLLY_MAYBE_UNUSED AtomicFoo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
-  swap(a.field3_ref().value_unchecked(), b.field3_ref().value_unchecked());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 

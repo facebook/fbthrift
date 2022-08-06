@@ -336,15 +336,15 @@ const ::std::set<float>& MyStruct::get_floatSet() const& {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
-  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
-  swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
-  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
-  swap(a.oneway_ref().value(), b.oneway_ref().value());
-  swap(a.readonly_ref().value(), b.readonly_ref().value());
-  swap(a.idempotent_ref().value(), b.idempotent_ref().value());
-  swap(a.floatSet_ref().value(), b.floatSet_ref().value());
-  swap(a.no_hack_codegen_field_ref().value(), b.no_hack_codegen_field_ref().value());
+  swap(a.__fbthrift_field_MyIntField, b.__fbthrift_field_MyIntField);
+  swap(a.__fbthrift_field_MyStringField, b.__fbthrift_field_MyStringField);
+  swap(a.__fbthrift_field_MyDataField, b.__fbthrift_field_MyDataField);
+  swap(a.__fbthrift_field_myEnum, b.__fbthrift_field_myEnum);
+  swap(a.__fbthrift_field_oneway, b.__fbthrift_field_oneway);
+  swap(a.__fbthrift_field_readonly, b.__fbthrift_field_readonly);
+  swap(a.__fbthrift_field_idempotent, b.__fbthrift_field_idempotent);
+  swap(a.__fbthrift_field_floatSet, b.__fbthrift_field_floatSet);
+  swap(a.__fbthrift_field_no_hack_codegen_field, b.__fbthrift_field_no_hack_codegen_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -575,7 +575,7 @@ bool ReservedKeyword::operator<(FOLLY_MAYBE_UNUSED const ReservedKeyword& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED ReservedKeyword& a, FOLLY_MAYBE_UNUSED ReservedKeyword& b) {
   using ::std::swap;
-  swap(a.reserved_field_ref().value(), b.reserved_field_ref().value());
+  swap(a.__fbthrift_field_reserved_field, b.__fbthrift_field_reserved_field);
   swap(a.__isset, b.__isset);
 }
 

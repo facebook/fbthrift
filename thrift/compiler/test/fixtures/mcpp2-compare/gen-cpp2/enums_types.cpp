@@ -209,7 +209,7 @@ bool SomeStruct::operator<(FOLLY_MAYBE_UNUSED const SomeStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED SomeStruct& a, FOLLY_MAYBE_UNUSED SomeStruct& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
   swap(a.__isset, b.__isset);
 }
 

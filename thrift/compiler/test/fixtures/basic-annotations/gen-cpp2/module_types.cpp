@@ -118,7 +118,7 @@ bool MyStructNestedAnnotation::operator<(FOLLY_MAYBE_UNUSED const MyStructNested
 
 void swap(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation& a, FOLLY_MAYBE_UNUSED MyStructNestedAnnotation& b) {
   using ::std::swap;
-  swap(a.name_ref().value(), b.name_ref().value());
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
   swap(a.__isset, b.__isset);
 }
 
@@ -537,16 +537,16 @@ std::deque<std::string> YourStruct::get_cpp_type_annotation() && {
 
 void swap(FOLLY_MAYBE_UNUSED YourStruct& a, FOLLY_MAYBE_UNUSED YourStruct& b) {
   using ::std::swap;
-  swap(a.majorVer_ref().value(), b.majorVer_ref().value());
-  swap(a.package_ref().value(), b.package_ref().value());
-  swap(a.annotation_with_quote_ref().value(), b.annotation_with_quote_ref().value());
-  swap(a.class__ref().value(), b.class__ref().value());
-  swap(a.annotation_with_trailing_comma_ref().value(), b.annotation_with_trailing_comma_ref().value());
-  swap(a.empty_annotations_ref().value(), b.empty_annotations_ref().value());
-  swap(a.my_enum_ref().value(), b.my_enum_ref().value());
-  swap(a.cpp_type_annotation_ref().value(), b.cpp_type_annotation_ref().value());
-  swap(a.my_union_ref().value(), b.my_union_ref().value());
-  swap(a.my_id_ref().value(), b.my_id_ref().value());
+  swap(a.__fbthrift_field_majorVer, b.__fbthrift_field_majorVer);
+  swap(a.__fbthrift_field_package, b.__fbthrift_field_package);
+  swap(a.__fbthrift_field_annotation_with_quote, b.__fbthrift_field_annotation_with_quote);
+  swap(a.__fbthrift_field_class_, b.__fbthrift_field_class_);
+  swap(a.__fbthrift_field_annotation_with_trailing_comma, b.__fbthrift_field_annotation_with_trailing_comma);
+  swap(a.__fbthrift_field_empty_annotations, b.__fbthrift_field_empty_annotations);
+  swap(a.__fbthrift_field_my_enum, b.__fbthrift_field_my_enum);
+  swap(a.__fbthrift_field_cpp_type_annotation, b.__fbthrift_field_cpp_type_annotation);
+  swap(a.__fbthrift_field_my_union, b.__fbthrift_field_my_union);
+  swap(a.__fbthrift_field_my_id, b.__fbthrift_field_my_id);
   swap(a.__isset, b.__isset);
 }
 
@@ -660,8 +660,8 @@ bool SecretStruct::operator<(FOLLY_MAYBE_UNUSED const SecretStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED SecretStruct& a, FOLLY_MAYBE_UNUSED SecretStruct& b) {
   using ::std::swap;
-  swap(a.id_ref().value(), b.id_ref().value());
-  swap(a.password_ref().value(), b.password_ref().value());
+  swap(a.__fbthrift_field_id, b.__fbthrift_field_id);
+  swap(a.__fbthrift_field_password, b.__fbthrift_field_password);
   swap(a.__isset, b.__isset);
 }
 

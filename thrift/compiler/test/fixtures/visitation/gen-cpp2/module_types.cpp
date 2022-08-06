@@ -573,8 +573,8 @@ bool structA::operator<(FOLLY_MAYBE_UNUSED const structA& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED structA& a, FOLLY_MAYBE_UNUSED structA& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
   swap(a.__isset, b.__isset);
 }
 
@@ -801,8 +801,8 @@ bool structB::operator<(FOLLY_MAYBE_UNUSED const structB& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED structB& a, FOLLY_MAYBE_UNUSED structB& b) {
   using ::std::swap;
-  swap(a.c_ref().value(), b.c_ref().value());
-  swap(a.d_ref().value(), b.d_ref().value());
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
+  swap(a.__fbthrift_field_d, b.__fbthrift_field_d);
   swap(a.__isset, b.__isset);
 }
 
@@ -1420,36 +1420,36 @@ const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflecti
 
 void swap(FOLLY_MAYBE_UNUSED structC& a, FOLLY_MAYBE_UNUSED structC& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value(), b.b_ref().value());
-  swap(a.c_ref().value(), b.c_ref().value());
-  swap(a.d_ref().value(), b.d_ref().value());
-  swap(a.e_ref().value(), b.e_ref().value());
-  swap(a.f_ref().value(), b.f_ref().value());
-  swap(a.g_ref().value(), b.g_ref().value());
-  swap(a.h_ref().value(), b.h_ref().value());
-  swap(a.i_ref().value(), b.i_ref().value());
-  swap(a.j_ref().value(), b.j_ref().value());
-  swap(a.j1_ref().value(), b.j1_ref().value());
-  swap(a.j2_ref().value(), b.j2_ref().value());
-  swap(a.j3_ref().value(), b.j3_ref().value());
-  swap(a.k_ref().value(), b.k_ref().value());
-  swap(a.k1_ref().value(), b.k1_ref().value());
-  swap(a.k2_ref().value(), b.k2_ref().value());
-  swap(a.k3_ref().value(), b.k3_ref().value());
-  swap(a.l_ref().value(), b.l_ref().value());
-  swap(a.l1_ref().value(), b.l1_ref().value());
-  swap(a.l2_ref().value(), b.l2_ref().value());
-  swap(a.l3_ref().value(), b.l3_ref().value());
-  swap(a.m1_ref().value(), b.m1_ref().value());
-  swap(a.m2_ref().value(), b.m2_ref().value());
-  swap(a.m3_ref().value(), b.m3_ref().value());
-  swap(a.n1_ref().value(), b.n1_ref().value());
-  swap(a.n2_ref().value(), b.n2_ref().value());
-  swap(a.n3_ref().value(), b.n3_ref().value());
-  swap(a.o1_ref().value(), b.o1_ref().value());
-  swap(a.o2_ref().value(), b.o2_ref().value());
-  swap(a.o3_ref().value(), b.o3_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
+  swap(a.__fbthrift_field_d, b.__fbthrift_field_d);
+  swap(a.__fbthrift_field_e, b.__fbthrift_field_e);
+  swap(a.__fbthrift_field_f, b.__fbthrift_field_f);
+  swap(a.__fbthrift_field_g, b.__fbthrift_field_g);
+  swap(a.__fbthrift_field_h, b.__fbthrift_field_h);
+  swap(a.__fbthrift_field_i, b.__fbthrift_field_i);
+  swap(a.__fbthrift_field_j, b.__fbthrift_field_j);
+  swap(a.__fbthrift_field_j1, b.__fbthrift_field_j1);
+  swap(a.__fbthrift_field_j2, b.__fbthrift_field_j2);
+  swap(a.__fbthrift_field_j3, b.__fbthrift_field_j3);
+  swap(a.__fbthrift_field_k, b.__fbthrift_field_k);
+  swap(a.__fbthrift_field_k1, b.__fbthrift_field_k1);
+  swap(a.__fbthrift_field_k2, b.__fbthrift_field_k2);
+  swap(a.__fbthrift_field_k3, b.__fbthrift_field_k3);
+  swap(a.__fbthrift_field_l, b.__fbthrift_field_l);
+  swap(a.__fbthrift_field_l1, b.__fbthrift_field_l1);
+  swap(a.__fbthrift_field_l2, b.__fbthrift_field_l2);
+  swap(a.__fbthrift_field_l3, b.__fbthrift_field_l3);
+  swap(a.__fbthrift_field_m1, b.__fbthrift_field_m1);
+  swap(a.__fbthrift_field_m2, b.__fbthrift_field_m2);
+  swap(a.__fbthrift_field_m3, b.__fbthrift_field_m3);
+  swap(a.__fbthrift_field_n1, b.__fbthrift_field_n1);
+  swap(a.__fbthrift_field_n2, b.__fbthrift_field_n2);
+  swap(a.__fbthrift_field_n3, b.__fbthrift_field_n3);
+  swap(a.__fbthrift_field_o1, b.__fbthrift_field_o1);
+  swap(a.__fbthrift_field_o2, b.__fbthrift_field_o2);
+  swap(a.__fbthrift_field_o3, b.__fbthrift_field_o3);
   swap(a.__isset, b.__isset);
 }
 
@@ -1689,12 +1689,12 @@ const ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
 
 void swap(FOLLY_MAYBE_UNUSED struct1& a, FOLLY_MAYBE_UNUSED struct1& b) {
   using ::std::swap;
-  swap(a.field0_ref().value(), b.field0_ref().value());
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
-  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
-  swap(a.field5_ref().value(), b.field5_ref().value());
+  swap(a.__fbthrift_field_field0, b.__fbthrift_field_field0);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
+  swap(a.__fbthrift_field_field5, b.__fbthrift_field_field5);
   swap(a.__isset, b.__isset);
 }
 
@@ -1901,13 +1901,13 @@ const ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
 
 void swap(FOLLY_MAYBE_UNUSED struct2& a, FOLLY_MAYBE_UNUSED struct2& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
-  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
-  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
-  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
-  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
+  swap(a.__fbthrift_field_fieldB, b.__fbthrift_field_fieldB);
+  swap(a.__fbthrift_field_fieldC, b.__fbthrift_field_fieldC);
+  swap(a.__fbthrift_field_fieldD, b.__fbthrift_field_fieldD);
+  swap(a.__fbthrift_field_fieldE, b.__fbthrift_field_fieldE);
+  swap(a.__fbthrift_field_fieldF, b.__fbthrift_field_fieldF);
+  swap(a.__fbthrift_field_fieldG, b.__fbthrift_field_fieldG);
   swap(a.__isset, b.__isset);
 }
 
@@ -2329,24 +2329,24 @@ const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& struct3::
 
 void swap(FOLLY_MAYBE_UNUSED struct3& a, FOLLY_MAYBE_UNUSED struct3& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
-  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
-  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
-  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
-  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
-  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
-  swap(a.fieldI_ref().value(), b.fieldI_ref().value());
-  swap(a.fieldJ_ref().value(), b.fieldJ_ref().value());
-  swap(a.fieldK_ref().value(), b.fieldK_ref().value());
-  swap(a.fieldL_ref().value(), b.fieldL_ref().value());
-  swap(a.fieldM_ref().value(), b.fieldM_ref().value());
-  swap(a.fieldN_ref().value(), b.fieldN_ref().value());
-  swap(a.fieldO_ref().value(), b.fieldO_ref().value());
-  swap(a.fieldP_ref().value(), b.fieldP_ref().value());
-  swap(a.fieldQ_ref().value(), b.fieldQ_ref().value());
-  swap(a.fieldR_ref().value(), b.fieldR_ref().value());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
+  swap(a.__fbthrift_field_fieldB, b.__fbthrift_field_fieldB);
+  swap(a.__fbthrift_field_fieldC, b.__fbthrift_field_fieldC);
+  swap(a.__fbthrift_field_fieldD, b.__fbthrift_field_fieldD);
+  swap(a.__fbthrift_field_fieldE, b.__fbthrift_field_fieldE);
+  swap(a.__fbthrift_field_fieldF, b.__fbthrift_field_fieldF);
+  swap(a.__fbthrift_field_fieldG, b.__fbthrift_field_fieldG);
+  swap(a.__fbthrift_field_fieldH, b.__fbthrift_field_fieldH);
+  swap(a.__fbthrift_field_fieldI, b.__fbthrift_field_fieldI);
+  swap(a.__fbthrift_field_fieldJ, b.__fbthrift_field_fieldJ);
+  swap(a.__fbthrift_field_fieldK, b.__fbthrift_field_fieldK);
+  swap(a.__fbthrift_field_fieldL, b.__fbthrift_field_fieldL);
+  swap(a.__fbthrift_field_fieldM, b.__fbthrift_field_fieldM);
+  swap(a.__fbthrift_field_fieldN, b.__fbthrift_field_fieldN);
+  swap(a.__fbthrift_field_fieldO, b.__fbthrift_field_fieldO);
+  swap(a.__fbthrift_field_fieldP, b.__fbthrift_field_fieldP);
+  swap(a.__fbthrift_field_fieldQ, b.__fbthrift_field_fieldQ);
+  swap(a.__fbthrift_field_fieldR, b.__fbthrift_field_fieldR);
   swap(a.__isset, b.__isset);
 }
 
@@ -2534,9 +2534,9 @@ bool struct4::operator<(FOLLY_MAYBE_UNUSED const struct4& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED struct4& a, FOLLY_MAYBE_UNUSED struct4& b) {
   using ::std::swap;
-  swap(a.field0_ref().value(), b.field0_ref().value());
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value(), b.field2_ref().value());
+  swap(a.__fbthrift_field_field0, b.__fbthrift_field_field0);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
   swap(a.field3, b.field3);
   swap(a.__isset, b.__isset);
 }
@@ -2706,11 +2706,11 @@ const ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
 
 void swap(FOLLY_MAYBE_UNUSED struct5& a, FOLLY_MAYBE_UNUSED struct5& b) {
   using ::std::swap;
-  swap(a.field0_ref().value(), b.field0_ref().value());
-  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
-  swap(a.field4_ref().value(), b.field4_ref().value());
+  swap(a.__fbthrift_field_field0, b.__fbthrift_field_field0);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   swap(a.__isset, b.__isset);
 }
 
@@ -2818,7 +2818,7 @@ bool struct_binary::operator<(FOLLY_MAYBE_UNUSED const struct_binary& rhs) const
 
 void swap(FOLLY_MAYBE_UNUSED struct_binary& a, FOLLY_MAYBE_UNUSED struct_binary& b) {
   using ::std::swap;
-  swap(a.bi_ref().value(), b.bi_ref().value());
+  swap(a.__fbthrift_field_bi, b.__fbthrift_field_bi);
   swap(a.__isset, b.__isset);
 }
 
@@ -2935,9 +2935,9 @@ const ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
 
 void swap(FOLLY_MAYBE_UNUSED dep_A_struct& a, FOLLY_MAYBE_UNUSED dep_A_struct& b) {
   using ::std::swap;
-  swap(a.b_ref().value(), b.b_ref().value());
-  swap(a.c_ref().value(), b.c_ref().value());
-  swap(a.i_a_ref().value(), b.i_a_ref().value());
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
+  swap(a.__fbthrift_field_i_a, b.__fbthrift_field_i_a);
   swap(a.__isset, b.__isset);
 }
 
@@ -3066,9 +3066,9 @@ const ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
 
 void swap(FOLLY_MAYBE_UNUSED dep_B_struct& a, FOLLY_MAYBE_UNUSED dep_B_struct& b) {
   using ::std::swap;
-  swap(a.b_ref().value(), b.b_ref().value());
-  swap(a.c_ref().value(), b.c_ref().value());
-  swap(a.i_a_ref().value(), b.i_a_ref().value());
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
+  swap(a.__fbthrift_field_i_a, b.__fbthrift_field_i_a);
   swap(a.__isset, b.__isset);
 }
 
@@ -3163,7 +3163,7 @@ bool annotated::operator<(FOLLY_MAYBE_UNUSED const annotated& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED annotated& a, FOLLY_MAYBE_UNUSED annotated& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
   swap(a.__isset, b.__isset);
 }
 
@@ -3779,34 +3779,34 @@ bool struct_with_special_names::operator<(FOLLY_MAYBE_UNUSED const struct_with_s
 
 void swap(FOLLY_MAYBE_UNUSED struct_with_special_names& a, FOLLY_MAYBE_UNUSED struct_with_special_names& b) {
   using ::std::swap;
-  swap(a.get_ref().value(), b.get_ref().value());
-  swap(a.getter_ref().value(), b.getter_ref().value());
-  swap(a.lists_ref().value(), b.lists_ref().value());
-  swap(a.maps_ref().value(), b.maps_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.name_to_value_ref().value(), b.name_to_value_ref().value());
-  swap(a.names_ref().value(), b.names_ref().value());
-  swap(a.prefix_tree_ref().value(), b.prefix_tree_ref().value());
-  swap(a.sets_ref().value(), b.sets_ref().value());
-  swap(a.setter_ref().value(), b.setter_ref().value());
-  swap(a.str_ref().value(), b.str_ref().value());
-  swap(a.strings_ref().value(), b.strings_ref().value());
-  swap(a.type_ref().value(), b.type_ref().value());
-  swap(a.value_ref().value(), b.value_ref().value());
-  swap(a.value_to_name_ref().value(), b.value_to_name_ref().value());
-  swap(a.values_ref().value(), b.values_ref().value());
-  swap(a.id_ref().value(), b.id_ref().value());
-  swap(a.ids_ref().value(), b.ids_ref().value());
-  swap(a.descriptor_ref().value(), b.descriptor_ref().value());
-  swap(a.descriptors_ref().value(), b.descriptors_ref().value());
-  swap(a.key_ref().value(), b.key_ref().value());
-  swap(a.keys_ref().value(), b.keys_ref().value());
-  swap(a.annotation_ref().value(), b.annotation_ref().value());
-  swap(a.annotations_ref().value(), b.annotations_ref().value());
-  swap(a.member_ref().value(), b.member_ref().value());
-  swap(a.members_ref().value(), b.members_ref().value());
-  swap(a.field_ref().value(), b.field_ref().value());
-  swap(a.fields_ref().value(), b.fields_ref().value());
+  swap(a.__fbthrift_field_get, b.__fbthrift_field_get);
+  swap(a.__fbthrift_field_getter, b.__fbthrift_field_getter);
+  swap(a.__fbthrift_field_lists, b.__fbthrift_field_lists);
+  swap(a.__fbthrift_field_maps, b.__fbthrift_field_maps);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_name_to_value, b.__fbthrift_field_name_to_value);
+  swap(a.__fbthrift_field_names, b.__fbthrift_field_names);
+  swap(a.__fbthrift_field_prefix_tree, b.__fbthrift_field_prefix_tree);
+  swap(a.__fbthrift_field_sets, b.__fbthrift_field_sets);
+  swap(a.__fbthrift_field_setter, b.__fbthrift_field_setter);
+  swap(a.__fbthrift_field_str, b.__fbthrift_field_str);
+  swap(a.__fbthrift_field_strings, b.__fbthrift_field_strings);
+  swap(a.__fbthrift_field_type, b.__fbthrift_field_type);
+  swap(a.__fbthrift_field_value, b.__fbthrift_field_value);
+  swap(a.__fbthrift_field_value_to_name, b.__fbthrift_field_value_to_name);
+  swap(a.__fbthrift_field_values, b.__fbthrift_field_values);
+  swap(a.__fbthrift_field_id, b.__fbthrift_field_id);
+  swap(a.__fbthrift_field_ids, b.__fbthrift_field_ids);
+  swap(a.__fbthrift_field_descriptor, b.__fbthrift_field_descriptor);
+  swap(a.__fbthrift_field_descriptors, b.__fbthrift_field_descriptors);
+  swap(a.__fbthrift_field_key, b.__fbthrift_field_key);
+  swap(a.__fbthrift_field_keys, b.__fbthrift_field_keys);
+  swap(a.__fbthrift_field_annotation, b.__fbthrift_field_annotation);
+  swap(a.__fbthrift_field_annotations, b.__fbthrift_field_annotations);
+  swap(a.__fbthrift_field_member, b.__fbthrift_field_member);
+  swap(a.__fbthrift_field_members, b.__fbthrift_field_members);
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
+  swap(a.__fbthrift_field_fields, b.__fbthrift_field_fields);
   swap(a.__isset, b.__isset);
 }
 
@@ -3956,11 +3956,11 @@ bool struct_with_indirections::operator<(FOLLY_MAYBE_UNUSED const struct_with_in
 
 void swap(FOLLY_MAYBE_UNUSED struct_with_indirections& a, FOLLY_MAYBE_UNUSED struct_with_indirections& b) {
   using ::std::swap;
-  swap(a.real_ref().value(), b.real_ref().value());
-  swap(a.fake_ref().value(), b.fake_ref().value());
-  swap(a.number_ref().value(), b.number_ref().value());
-  swap(a.result_ref().value(), b.result_ref().value());
-  swap(a.phrase_ref().value(), b.phrase_ref().value());
+  swap(a.__fbthrift_field_real, b.__fbthrift_field_real);
+  swap(a.__fbthrift_field_fake, b.__fbthrift_field_fake);
+  swap(a.__fbthrift_field_number, b.__fbthrift_field_number);
+  swap(a.__fbthrift_field_result, b.__fbthrift_field_result);
+  swap(a.__fbthrift_field_phrase, b.__fbthrift_field_phrase);
   swap(a.__isset, b.__isset);
 }
 

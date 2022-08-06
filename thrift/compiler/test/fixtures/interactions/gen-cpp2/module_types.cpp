@@ -98,7 +98,7 @@ bool CustomException::operator<(FOLLY_MAYBE_UNUSED const CustomException& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED CustomException& a, FOLLY_MAYBE_UNUSED CustomException& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
   swap(a.__isset, b.__isset);
 }
 

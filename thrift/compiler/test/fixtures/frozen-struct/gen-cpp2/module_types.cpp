@@ -212,12 +212,12 @@ const ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
 
 void swap(FOLLY_MAYBE_UNUSED ModuleA& a, FOLLY_MAYBE_UNUSED ModuleA& b) {
   using ::std::swap;
-  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
-  swap(a.strField_ref().value(), b.strField_ref().value());
-  swap(a.listField_ref().value(), b.listField_ref().value());
-  swap(a.mapField_ref().value(), b.mapField_ref().value());
-  swap(a.inclAField_ref().value(), b.inclAField_ref().value());
-  swap(a.inclBField_ref().value(), b.inclBField_ref().value());
+  swap(a.__fbthrift_field_i32Field, b.__fbthrift_field_i32Field);
+  swap(a.__fbthrift_field_strField, b.__fbthrift_field_strField);
+  swap(a.__fbthrift_field_listField, b.__fbthrift_field_listField);
+  swap(a.__fbthrift_field_mapField, b.__fbthrift_field_mapField);
+  swap(a.__fbthrift_field_inclAField, b.__fbthrift_field_inclAField);
+  swap(a.__fbthrift_field_inclBField, b.__fbthrift_field_inclBField);
   swap(a.__isset, b.__isset);
 }
 
@@ -321,8 +321,8 @@ bool ModuleB::operator<(FOLLY_MAYBE_UNUSED const ModuleB& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED ModuleB& a, FOLLY_MAYBE_UNUSED ModuleB& b) {
   using ::std::swap;
-  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
-  swap(a.inclEnumB_ref().value(), b.inclEnumB_ref().value());
+  swap(a.__fbthrift_field_i32Field, b.__fbthrift_field_i32Field);
+  swap(a.__fbthrift_field_inclEnumB, b.__fbthrift_field_inclEnumB);
   swap(a.__isset, b.__isset);
 }
 
@@ -406,7 +406,7 @@ bool DirectlyAdapted::operator<(FOLLY_MAYBE_UNUSED const DirectlyAdapted& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED DirectlyAdapted& a, FOLLY_MAYBE_UNUSED DirectlyAdapted& b) {
   using ::std::swap;
-  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
   swap(a.__isset, b.__isset);
 }
 

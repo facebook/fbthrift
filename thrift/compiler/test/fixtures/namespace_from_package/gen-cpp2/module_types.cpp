@@ -83,7 +83,7 @@ bool Foo::operator<(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
-  swap(a.MyInt_ref().value(), b.MyInt_ref().value());
+  swap(a.__fbthrift_field_MyInt, b.__fbthrift_field_MyInt);
   swap(a.__isset, b.__isset);
 }
 

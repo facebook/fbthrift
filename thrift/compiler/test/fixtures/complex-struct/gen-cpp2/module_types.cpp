@@ -151,10 +151,10 @@ bool MyStructFloatFieldThrowExp::operator<(FOLLY_MAYBE_UNUSED const MyStructFloa
 
 void swap(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp& a, FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp& b) {
   using ::std::swap;
-  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
-  swap(a.MyByteField_ref().value(), b.MyByteField_ref().value());
-  swap(a.myStringField_ref().value(), b.myStringField_ref().value());
-  swap(a.myFloatField_ref().value(), b.myFloatField_ref().value());
+  swap(a.__fbthrift_field_myLongField, b.__fbthrift_field_myLongField);
+  swap(a.__fbthrift_field_MyByteField, b.__fbthrift_field_MyByteField);
+  swap(a.__fbthrift_field_myStringField, b.__fbthrift_field_myStringField);
+  swap(a.__fbthrift_field_myFloatField, b.__fbthrift_field_myFloatField);
   swap(a.__isset, b.__isset);
 }
 
@@ -269,8 +269,8 @@ const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypede
 
 void swap(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp& a, FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp& b) {
   using ::std::swap;
-  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
-  swap(a.mapListOfFloats_ref().value(), b.mapListOfFloats_ref().value());
+  swap(a.__fbthrift_field_myLongField, b.__fbthrift_field_myLongField);
+  swap(a.__fbthrift_field_mapListOfFloats, b.__fbthrift_field_mapListOfFloats);
   swap(a.__isset, b.__isset);
 }
 
@@ -905,34 +905,34 @@ const ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& 
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
-  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
-  swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
-  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
-  swap(a.MyBoolField_ref().value(), b.MyBoolField_ref().value());
-  swap(a.MyByteField_ref().value(), b.MyByteField_ref().value());
-  swap(a.MyShortField_ref().value(), b.MyShortField_ref().value());
-  swap(a.MyLongField_ref().value(), b.MyLongField_ref().value());
-  swap(a.MyDoubleField_ref().value(), b.MyDoubleField_ref().value());
-  swap(a.lDouble_ref().value(), b.lDouble_ref().value());
-  swap(a.lShort_ref().value(), b.lShort_ref().value());
-  swap(a.lInteger_ref().value(), b.lInteger_ref().value());
-  swap(a.lLong_ref().value(), b.lLong_ref().value());
-  swap(a.lString_ref().value(), b.lString_ref().value());
-  swap(a.lBool_ref().value(), b.lBool_ref().value());
-  swap(a.lByte_ref().value(), b.lByte_ref().value());
-  swap(a.mShortString_ref().value(), b.mShortString_ref().value());
-  swap(a.mIntegerString_ref().value(), b.mIntegerString_ref().value());
-  swap(a.mStringMyStruct_ref().value(), b.mStringMyStruct_ref().value());
-  swap(a.mStringBool_ref().value(), b.mStringBool_ref().value());
-  swap(a.mIntegerInteger_ref().value(), b.mIntegerInteger_ref().value());
-  swap(a.mIntegerBool_ref().value(), b.mIntegerBool_ref().value());
-  swap(a.sShort_ref().value(), b.sShort_ref().value());
-  swap(a.sMyStruct_ref().value(), b.sMyStruct_ref().value());
-  swap(a.sLong_ref().value(), b.sLong_ref().value());
-  swap(a.sString_ref().value(), b.sString_ref().value());
-  swap(a.sByte_ref().value(), b.sByte_ref().value());
-  swap(a.mListList_ref().value(), b.mListList_ref().value());
+  swap(a.__fbthrift_field_MyIntField, b.__fbthrift_field_MyIntField);
+  swap(a.__fbthrift_field_MyStringField, b.__fbthrift_field_MyStringField);
+  swap(a.__fbthrift_field_MyDataField, b.__fbthrift_field_MyDataField);
+  swap(a.__fbthrift_field_myEnum, b.__fbthrift_field_myEnum);
+  swap(a.__fbthrift_field_MyBoolField, b.__fbthrift_field_MyBoolField);
+  swap(a.__fbthrift_field_MyByteField, b.__fbthrift_field_MyByteField);
+  swap(a.__fbthrift_field_MyShortField, b.__fbthrift_field_MyShortField);
+  swap(a.__fbthrift_field_MyLongField, b.__fbthrift_field_MyLongField);
+  swap(a.__fbthrift_field_MyDoubleField, b.__fbthrift_field_MyDoubleField);
+  swap(a.__fbthrift_field_lDouble, b.__fbthrift_field_lDouble);
+  swap(a.__fbthrift_field_lShort, b.__fbthrift_field_lShort);
+  swap(a.__fbthrift_field_lInteger, b.__fbthrift_field_lInteger);
+  swap(a.__fbthrift_field_lLong, b.__fbthrift_field_lLong);
+  swap(a.__fbthrift_field_lString, b.__fbthrift_field_lString);
+  swap(a.__fbthrift_field_lBool, b.__fbthrift_field_lBool);
+  swap(a.__fbthrift_field_lByte, b.__fbthrift_field_lByte);
+  swap(a.__fbthrift_field_mShortString, b.__fbthrift_field_mShortString);
+  swap(a.__fbthrift_field_mIntegerString, b.__fbthrift_field_mIntegerString);
+  swap(a.__fbthrift_field_mStringMyStruct, b.__fbthrift_field_mStringMyStruct);
+  swap(a.__fbthrift_field_mStringBool, b.__fbthrift_field_mStringBool);
+  swap(a.__fbthrift_field_mIntegerInteger, b.__fbthrift_field_mIntegerInteger);
+  swap(a.__fbthrift_field_mIntegerBool, b.__fbthrift_field_mIntegerBool);
+  swap(a.__fbthrift_field_sShort, b.__fbthrift_field_sShort);
+  swap(a.__fbthrift_field_sMyStruct, b.__fbthrift_field_sMyStruct);
+  swap(a.__fbthrift_field_sLong, b.__fbthrift_field_sLong);
+  swap(a.__fbthrift_field_sString, b.__fbthrift_field_sString);
+  swap(a.__fbthrift_field_sByte, b.__fbthrift_field_sByte);
+  swap(a.__fbthrift_field_mListList, b.__fbthrift_field_mListList);
   swap(a.__isset, b.__isset);
 }
 
@@ -1045,8 +1045,8 @@ bool SimpleStruct::operator<(FOLLY_MAYBE_UNUSED const SimpleStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED SimpleStruct& a, FOLLY_MAYBE_UNUSED SimpleStruct& b) {
   using ::std::swap;
-  swap(a.age_ref().value(), b.age_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
+  swap(a.__fbthrift_field_age, b.__fbthrift_field_age);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
   swap(a.__isset, b.__isset);
 }
 
@@ -1479,24 +1479,24 @@ const ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::
 
 void swap(FOLLY_MAYBE_UNUSED ComplexNestedStruct& a, FOLLY_MAYBE_UNUSED ComplexNestedStruct& b) {
   using ::std::swap;
-  swap(a.setOfSetOfInt_ref().value(), b.setOfSetOfInt_ref().value());
-  swap(a.listofListOfListOfListOfEnum_ref().value(), b.listofListOfListOfListOfEnum_ref().value());
-  swap(a.listOfListOfMyStruct_ref().value(), b.listOfListOfMyStruct_ref().value());
-  swap(a.setOfListOfListOfLong_ref().value(), b.setOfListOfListOfLong_ref().value());
-  swap(a.setOfSetOfsetOfLong_ref().value(), b.setOfSetOfsetOfLong_ref().value());
-  swap(a.mapStructListOfListOfLong_ref().value(), b.mapStructListOfListOfLong_ref().value());
-  swap(a.mKeyStructValInt_ref().value(), b.mKeyStructValInt_ref().value());
-  swap(a.listOfMapKeyIntValInt_ref().value(), b.listOfMapKeyIntValInt_ref().value());
-  swap(a.listOfMapKeyStrValList_ref().value(), b.listOfMapKeyStrValList_ref().value());
-  swap(a.mapKeySetValLong_ref().value(), b.mapKeySetValLong_ref().value());
-  swap(a.mapKeyListValLong_ref().value(), b.mapKeyListValLong_ref().value());
-  swap(a.mapKeyMapValMap_ref().value(), b.mapKeyMapValMap_ref().value());
-  swap(a.mapKeySetValMap_ref().value(), b.mapKeySetValMap_ref().value());
-  swap(a.NestedMaps_ref().value(), b.NestedMaps_ref().value());
-  swap(a.mapKeyIntValList_ref().value(), b.mapKeyIntValList_ref().value());
-  swap(a.mapKeyIntValSet_ref().value(), b.mapKeyIntValSet_ref().value());
-  swap(a.mapKeySetValInt_ref().value(), b.mapKeySetValInt_ref().value());
-  swap(a.mapKeyListValSet_ref().value(), b.mapKeyListValSet_ref().value());
+  swap(a.__fbthrift_field_setOfSetOfInt, b.__fbthrift_field_setOfSetOfInt);
+  swap(a.__fbthrift_field_listofListOfListOfListOfEnum, b.__fbthrift_field_listofListOfListOfListOfEnum);
+  swap(a.__fbthrift_field_listOfListOfMyStruct, b.__fbthrift_field_listOfListOfMyStruct);
+  swap(a.__fbthrift_field_setOfListOfListOfLong, b.__fbthrift_field_setOfListOfListOfLong);
+  swap(a.__fbthrift_field_setOfSetOfsetOfLong, b.__fbthrift_field_setOfSetOfsetOfLong);
+  swap(a.__fbthrift_field_mapStructListOfListOfLong, b.__fbthrift_field_mapStructListOfListOfLong);
+  swap(a.__fbthrift_field_mKeyStructValInt, b.__fbthrift_field_mKeyStructValInt);
+  swap(a.__fbthrift_field_listOfMapKeyIntValInt, b.__fbthrift_field_listOfMapKeyIntValInt);
+  swap(a.__fbthrift_field_listOfMapKeyStrValList, b.__fbthrift_field_listOfMapKeyStrValList);
+  swap(a.__fbthrift_field_mapKeySetValLong, b.__fbthrift_field_mapKeySetValLong);
+  swap(a.__fbthrift_field_mapKeyListValLong, b.__fbthrift_field_mapKeyListValLong);
+  swap(a.__fbthrift_field_mapKeyMapValMap, b.__fbthrift_field_mapKeyMapValMap);
+  swap(a.__fbthrift_field_mapKeySetValMap, b.__fbthrift_field_mapKeySetValMap);
+  swap(a.__fbthrift_field_NestedMaps, b.__fbthrift_field_NestedMaps);
+  swap(a.__fbthrift_field_mapKeyIntValList, b.__fbthrift_field_mapKeyIntValList);
+  swap(a.__fbthrift_field_mapKeyIntValSet, b.__fbthrift_field_mapKeyIntValSet);
+  swap(a.__fbthrift_field_mapKeySetValInt, b.__fbthrift_field_mapKeySetValInt);
+  swap(a.__fbthrift_field_mapKeyListValSet, b.__fbthrift_field_mapKeyListValSet);
   swap(a.__isset, b.__isset);
 }
 
@@ -2140,28 +2140,28 @@ const ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& def
 
 void swap(FOLLY_MAYBE_UNUSED defaultStruct& a, FOLLY_MAYBE_UNUSED defaultStruct& b) {
   using ::std::swap;
-  swap(a.myLongDFset_ref().value(), b.myLongDFset_ref().value());
-  swap(a.myLongDF_ref().value(), b.myLongDF_ref().value());
-  swap(a.portDFset_ref().value(), b.portDFset_ref().value());
-  swap(a.portNum_ref().value(), b.portNum_ref().value());
-  swap(a.myBinaryDFset_ref().value(), b.myBinaryDFset_ref().value());
-  swap(a.myBinary_ref().value(), b.myBinary_ref().value());
-  swap(a.myByteDFSet_ref().value(), b.myByteDFSet_ref().value());
-  swap(a.myByte_ref().value(), b.myByte_ref().value());
-  swap(a.myDoubleDFset_ref().value(), b.myDoubleDFset_ref().value());
-  swap(a.myDoubleDFZero_ref().value(), b.myDoubleDFZero_ref().value());
-  swap(a.myDouble_ref().value(), b.myDouble_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
-  swap(a.myList_ref().value(), b.myList_ref().value());
-  swap(a.mySet_ref().value(), b.mySet_ref().value());
-  swap(a.simpleStruct_ref().value(), b.simpleStruct_ref().value());
-  swap(a.listStructDFset_ref().value(), b.listStructDFset_ref().value());
-  swap(a.myUnion_ref().value(), b.myUnion_ref().value());
-  swap(a.listUnionDFset_ref().value(), b.listUnionDFset_ref().value());
-  swap(a.mapNestlistStructDfSet_ref().value(), b.mapNestlistStructDfSet_ref().value());
-  swap(a.mapJavaTypeDFset_ref().value(), b.mapJavaTypeDFset_ref().value());
-  swap(a.emptyMap_ref().value(), b.emptyMap_ref().value());
-  swap(a.enumMapDFset_ref().value(), b.enumMapDFset_ref().value());
+  swap(a.__fbthrift_field_myLongDFset, b.__fbthrift_field_myLongDFset);
+  swap(a.__fbthrift_field_myLongDF, b.__fbthrift_field_myLongDF);
+  swap(a.__fbthrift_field_portDFset, b.__fbthrift_field_portDFset);
+  swap(a.__fbthrift_field_portNum, b.__fbthrift_field_portNum);
+  swap(a.__fbthrift_field_myBinaryDFset, b.__fbthrift_field_myBinaryDFset);
+  swap(a.__fbthrift_field_myBinary, b.__fbthrift_field_myBinary);
+  swap(a.__fbthrift_field_myByteDFSet, b.__fbthrift_field_myByteDFSet);
+  swap(a.__fbthrift_field_myByte, b.__fbthrift_field_myByte);
+  swap(a.__fbthrift_field_myDoubleDFset, b.__fbthrift_field_myDoubleDFset);
+  swap(a.__fbthrift_field_myDoubleDFZero, b.__fbthrift_field_myDoubleDFZero);
+  swap(a.__fbthrift_field_myDouble, b.__fbthrift_field_myDouble);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  swap(a.__fbthrift_field_myList, b.__fbthrift_field_myList);
+  swap(a.__fbthrift_field_mySet, b.__fbthrift_field_mySet);
+  swap(a.__fbthrift_field_simpleStruct, b.__fbthrift_field_simpleStruct);
+  swap(a.__fbthrift_field_listStructDFset, b.__fbthrift_field_listStructDFset);
+  swap(a.__fbthrift_field_myUnion, b.__fbthrift_field_myUnion);
+  swap(a.__fbthrift_field_listUnionDFset, b.__fbthrift_field_listUnionDFset);
+  swap(a.__fbthrift_field_mapNestlistStructDfSet, b.__fbthrift_field_mapNestlistStructDfSet);
+  swap(a.__fbthrift_field_mapJavaTypeDFset, b.__fbthrift_field_mapJavaTypeDFset);
+  swap(a.__fbthrift_field_emptyMap, b.__fbthrift_field_emptyMap);
+  swap(a.__fbthrift_field_enumMapDFset, b.__fbthrift_field_enumMapDFset);
   swap(a.__isset, b.__isset);
 }
 
@@ -2417,15 +2417,15 @@ const ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& MyStructTy
 
 void swap(FOLLY_MAYBE_UNUSED MyStructTypeDef& a, FOLLY_MAYBE_UNUSED MyStructTypeDef& b) {
   using ::std::swap;
-  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
-  swap(a.myLongTypeDef_ref().value(), b.myLongTypeDef_ref().value());
-  swap(a.myStringField_ref().value(), b.myStringField_ref().value());
-  swap(a.myStringTypedef_ref().value(), b.myStringTypedef_ref().value());
-  swap(a.myMapField_ref().value(), b.myMapField_ref().value());
-  swap(a.myMapTypedef_ref().value(), b.myMapTypedef_ref().value());
-  swap(a.myListField_ref().value(), b.myListField_ref().value());
-  swap(a.myListTypedef_ref().value(), b.myListTypedef_ref().value());
-  swap(a.myMapListOfTypeDef_ref().value(), b.myMapListOfTypeDef_ref().value());
+  swap(a.__fbthrift_field_myLongField, b.__fbthrift_field_myLongField);
+  swap(a.__fbthrift_field_myLongTypeDef, b.__fbthrift_field_myLongTypeDef);
+  swap(a.__fbthrift_field_myStringField, b.__fbthrift_field_myStringField);
+  swap(a.__fbthrift_field_myStringTypedef, b.__fbthrift_field_myStringTypedef);
+  swap(a.__fbthrift_field_myMapField, b.__fbthrift_field_myMapField);
+  swap(a.__fbthrift_field_myMapTypedef, b.__fbthrift_field_myMapTypedef);
+  swap(a.__fbthrift_field_myListField, b.__fbthrift_field_myListField);
+  swap(a.__fbthrift_field_myListTypedef, b.__fbthrift_field_myListTypedef);
+  swap(a.__fbthrift_field_myMapListOfTypeDef, b.__fbthrift_field_myMapListOfTypeDef);
   swap(a.__isset, b.__isset);
 }
 
@@ -2704,10 +2704,10 @@ const ::std::map<::std::int32_t, ::cpp2::FMap>& TypeRemapped::get_ioMap() const&
 
 void swap(FOLLY_MAYBE_UNUSED TypeRemapped& a, FOLLY_MAYBE_UNUSED TypeRemapped& b) {
   using ::std::swap;
-  swap(a.lsMap_ref().value(), b.lsMap_ref().value());
-  swap(a.ioMap_ref().value(), b.ioMap_ref().value());
-  swap(a.BigInteger_ref().value(), b.BigInteger_ref().value());
-  swap(a.binaryTestBuffer_ref().value(), b.binaryTestBuffer_ref().value());
+  swap(a.__fbthrift_field_lsMap, b.__fbthrift_field_lsMap);
+  swap(a.__fbthrift_field_ioMap, b.__fbthrift_field_ioMap);
+  swap(a.__fbthrift_field_BigInteger, b.__fbthrift_field_BigInteger);
+  swap(a.__fbthrift_field_binaryTestBuffer, b.__fbthrift_field_binaryTestBuffer);
   swap(a.__isset, b.__isset);
 }
 
@@ -2899,8 +2899,8 @@ bool reqXcep::operator<(FOLLY_MAYBE_UNUSED const reqXcep& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED reqXcep& a, FOLLY_MAYBE_UNUSED reqXcep& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
-  swap(a.errorCode_ref().value(), b.errorCode_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
+  swap(a.__fbthrift_field_errorCode, b.__fbthrift_field_errorCode);
 }
 
 template void reqXcep::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3014,8 +3014,8 @@ bool optXcep::operator<(FOLLY_MAYBE_UNUSED const optXcep& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED optXcep& a, FOLLY_MAYBE_UNUSED optXcep& b) {
   using ::std::swap;
-  swap(a.message_ref().value_unchecked(), b.message_ref().value_unchecked());
-  swap(a.errorCode_ref().value_unchecked(), b.errorCode_ref().value_unchecked());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
+  swap(a.__fbthrift_field_errorCode, b.__fbthrift_field_errorCode);
   swap(a.__isset, b.__isset);
 }
 
@@ -3205,12 +3205,12 @@ const ::std::map<::std::int64_t, ::std::string>& complexException::get_lsMap() c
 
 void swap(FOLLY_MAYBE_UNUSED complexException& a, FOLLY_MAYBE_UNUSED complexException& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
-  swap(a.listStrings_ref().value(), b.listStrings_ref().value());
-  swap(a.errorEnum_ref().value(), b.errorEnum_ref().value());
-  swap(a.unionError_ref().value_unchecked(), b.unionError_ref().value_unchecked());
-  swap(a.structError_ref().value(), b.structError_ref().value());
-  swap(a.lsMap_ref().value(), b.lsMap_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
+  swap(a.__fbthrift_field_listStrings, b.__fbthrift_field_listStrings);
+  swap(a.__fbthrift_field_errorEnum, b.__fbthrift_field_errorEnum);
+  swap(a.__fbthrift_field_unionError, b.__fbthrift_field_unionError);
+  swap(a.__fbthrift_field_structError, b.__fbthrift_field_structError);
+  swap(a.__fbthrift_field_lsMap, b.__fbthrift_field_lsMap);
   swap(a.__isset, b.__isset);
 }
 

@@ -249,7 +249,7 @@ bool ASimpleStruct::operator==(FOLLY_MAYBE_UNUSED const ASimpleStruct& rhs) cons
 
 void swap(FOLLY_MAYBE_UNUSED ASimpleStruct& a, FOLLY_MAYBE_UNUSED ASimpleStruct& b) {
   using ::std::swap;
-  swap(a.boolField_ref().value(), b.boolField_ref().value());
+  swap(a.__fbthrift_field_boolField, b.__fbthrift_field_boolField);
   swap(a.__isset, b.__isset);
 }
 
@@ -336,7 +336,7 @@ bool ASimpleStructNoexcept::operator<(FOLLY_MAYBE_UNUSED const ASimpleStructNoex
 
 void swap(FOLLY_MAYBE_UNUSED ASimpleStructNoexcept& a, FOLLY_MAYBE_UNUSED ASimpleStructNoexcept& b) {
   using ::std::swap;
-  swap(a.boolField_ref().value(), b.boolField_ref().value());
+  swap(a.__fbthrift_field_boolField, b.__fbthrift_field_boolField);
   swap(a.__isset, b.__isset);
 }
 
@@ -600,17 +600,17 @@ const ::std::map<::some::valid::ns::MyEnumA, ::std::string>& MyStruct::get_MyMap
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.MyBoolField_ref().value(), b.MyBoolField_ref().value());
-  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
-  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
-  swap(a.MyStringField2_ref().value(), b.MyStringField2_ref().value());
-  swap(a.MyBinaryField_ref().value(), b.MyBinaryField_ref().value());
-  swap(a.MyBinaryField2_ref().value_unchecked(), b.MyBinaryField2_ref().value_unchecked());
-  swap(a.MyBinaryField3_ref().value(), b.MyBinaryField3_ref().value());
-  swap(a.MyBinaryListField4_ref().value(), b.MyBinaryListField4_ref().value());
-  swap(a.MyMapEnumAndInt_ref().value(), b.MyMapEnumAndInt_ref().value());
-  swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
-  swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
+  swap(a.__fbthrift_field_MyBoolField, b.__fbthrift_field_MyBoolField);
+  swap(a.__fbthrift_field_MyIntField, b.__fbthrift_field_MyIntField);
+  swap(a.__fbthrift_field_MyStringField, b.__fbthrift_field_MyStringField);
+  swap(a.__fbthrift_field_MyStringField2, b.__fbthrift_field_MyStringField2);
+  swap(a.__fbthrift_field_MyBinaryField, b.__fbthrift_field_MyBinaryField);
+  swap(a.__fbthrift_field_MyBinaryField2, b.__fbthrift_field_MyBinaryField2);
+  swap(a.__fbthrift_field_MyBinaryField3, b.__fbthrift_field_MyBinaryField3);
+  swap(a.__fbthrift_field_MyBinaryListField4, b.__fbthrift_field_MyBinaryListField4);
+  swap(a.__fbthrift_field_MyMapEnumAndInt, b.__fbthrift_field_MyMapEnumAndInt);
+  swap(a.__fbthrift_field_MyCustomField, b.__fbthrift_field_MyCustomField);
+  swap(a.__fbthrift_field_MyOptCustomField, b.__fbthrift_field_MyOptCustomField);
   swap(a.__isset, b.__isset);
 }
 
@@ -1500,23 +1500,23 @@ const ::std::vector<::some::valid::ns::unionTypeDef>& AnException::get_a_union_t
 
 void swap(FOLLY_MAYBE_UNUSED AnException& a, FOLLY_MAYBE_UNUSED AnException& b) {
   using ::std::swap;
-  swap(a.code_ref().value(), b.code_ref().value());
-  swap(a.req_code_ref().value(), b.req_code_ref().value());
-  swap(a.message2_ref().value(), b.message2_ref().value());
-  swap(a.req_message_ref().value(), b.req_message_ref().value());
-  swap(a.exception_list_ref().value(), b.exception_list_ref().value());
-  swap(a.exception_set_ref().value(), b.exception_set_ref().value());
-  swap(a.exception_map_ref().value(), b.exception_map_ref().value());
-  swap(a.req_exception_map_ref().value(), b.req_exception_map_ref().value());
-  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
-  swap(a.enum_container_ref().value(), b.enum_container_ref().value());
-  swap(a.a_struct_ref().value(), b.a_struct_ref().value());
-  swap(a.a_set_struct_ref().value(), b.a_set_struct_ref().value());
-  swap(a.a_union_list_ref().value(), b.a_union_list_ref().value());
-  swap(a.union_typedef_ref().value(), b.union_typedef_ref().value());
-  swap(a.a_union_typedef_list_ref().value(), b.a_union_typedef_list_ref().value());
-  swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
-  swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
+  swap(a.__fbthrift_field_code, b.__fbthrift_field_code);
+  swap(a.__fbthrift_field_req_code, b.__fbthrift_field_req_code);
+  swap(a.__fbthrift_field_message2, b.__fbthrift_field_message2);
+  swap(a.__fbthrift_field_req_message, b.__fbthrift_field_req_message);
+  swap(a.__fbthrift_field_exception_list, b.__fbthrift_field_exception_list);
+  swap(a.__fbthrift_field_exception_set, b.__fbthrift_field_exception_set);
+  swap(a.__fbthrift_field_exception_map, b.__fbthrift_field_exception_map);
+  swap(a.__fbthrift_field_req_exception_map, b.__fbthrift_field_req_exception_map);
+  swap(a.__fbthrift_field_enum_field, b.__fbthrift_field_enum_field);
+  swap(a.__fbthrift_field_enum_container, b.__fbthrift_field_enum_container);
+  swap(a.__fbthrift_field_a_struct, b.__fbthrift_field_a_struct);
+  swap(a.__fbthrift_field_a_set_struct, b.__fbthrift_field_a_set_struct);
+  swap(a.__fbthrift_field_a_union_list, b.__fbthrift_field_a_union_list);
+  swap(a.__fbthrift_field_union_typedef, b.__fbthrift_field_union_typedef);
+  swap(a.__fbthrift_field_a_union_typedef_list, b.__fbthrift_field_a_union_typedef_list);
+  swap(a.__fbthrift_field_MyCustomField, b.__fbthrift_field_MyCustomField);
+  swap(a.__fbthrift_field_MyOptCustomField, b.__fbthrift_field_MyOptCustomField);
   swap(a.__isset, b.__isset);
 }
 
@@ -1669,9 +1669,9 @@ bool AnotherException::operator<(FOLLY_MAYBE_UNUSED const AnotherException& rhs)
 
 void swap(FOLLY_MAYBE_UNUSED AnotherException& a, FOLLY_MAYBE_UNUSED AnotherException& b) {
   using ::std::swap;
-  swap(a.code_ref().value(), b.code_ref().value());
-  swap(a.req_code_ref().value(), b.req_code_ref().value());
-  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.__fbthrift_field_code, b.__fbthrift_field_code);
+  swap(a.__fbthrift_field_req_code, b.__fbthrift_field_req_code);
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
   swap(a.__isset, b.__isset);
 }
 
@@ -2442,52 +2442,52 @@ const ::std::map<::std::string, ::std::int32_t>& containerStruct::get_fieldAE() 
 
 void swap(FOLLY_MAYBE_UNUSED containerStruct& a, FOLLY_MAYBE_UNUSED containerStruct& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-  swap(a.req_fieldA_ref().value(), b.req_fieldA_ref().value());
-  swap(a.opt_fieldA_ref().value_unchecked(), b.opt_fieldA_ref().value_unchecked());
-  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
-  swap(a.req_fieldB_ref().value(), b.req_fieldB_ref().value());
-  swap(a.opt_fieldB_ref().value_unchecked(), b.opt_fieldB_ref().value_unchecked());
-  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
-  swap(a.req_fieldC_ref().value(), b.req_fieldC_ref().value());
-  swap(a.opt_fieldC_ref().value_unchecked(), b.opt_fieldC_ref().value_unchecked());
-  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
-  swap(a.req_fieldE_ref().value(), b.req_fieldE_ref().value());
-  swap(a.opt_fieldE_ref().value_unchecked(), b.opt_fieldE_ref().value_unchecked());
-  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
-  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
-  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
-  swap(a.fieldI_ref().value(), b.fieldI_ref().value());
-  swap(a.fieldJ_ref().value(), b.fieldJ_ref().value());
-  swap(a.fieldK_ref().value(), b.fieldK_ref().value());
-  swap(a.fieldL_ref().value(), b.fieldL_ref().value());
-  swap(a.fieldM_ref().value(), b.fieldM_ref().value());
-  swap(a.fieldN_ref().value(), b.fieldN_ref().value());
-  swap(a.fieldO_ref().value(), b.fieldO_ref().value());
-  swap(a.fieldP_ref().value(), b.fieldP_ref().value());
-  swap(a.fieldQ_ref().value(), b.fieldQ_ref().value());
-  swap(a.fieldR_ref().value(), b.fieldR_ref().value());
-  swap(a.req_fieldR_ref().value(), b.req_fieldR_ref().value());
-  swap(a.opt_fieldR_ref().value_unchecked(), b.opt_fieldR_ref().value_unchecked());
-  swap(a.fieldS_ref().value(), b.fieldS_ref().value());
-  swap(a.fieldT_ref().value(), b.fieldT_ref().value());
-  swap(a.fieldU_ref().value(), b.fieldU_ref().value());
-  swap(a.fieldV_ref().value(), b.fieldV_ref().value());
-  swap(a.req_fieldV_ref().value(), b.req_fieldV_ref().value());
-  swap(a.opt_fieldV_ref().value_unchecked(), b.opt_fieldV_ref().value_unchecked());
-  swap(a.fieldW_ref().value(), b.fieldW_ref().value());
-  swap(a.fieldX_ref().value(), b.fieldX_ref().value());
-  swap(a.req_fieldX_ref().value(), b.req_fieldX_ref().value());
-  swap(a.opt_fieldX_ref().value_unchecked(), b.opt_fieldX_ref().value_unchecked());
-  swap(a.fieldY_ref().value(), b.fieldY_ref().value());
-  swap(a.fieldZ_ref().value(), b.fieldZ_ref().value());
-  swap(a.fieldAA_ref().value(), b.fieldAA_ref().value());
-  swap(a.fieldAB_ref().value(), b.fieldAB_ref().value());
-  swap(a.fieldAC_ref().value(), b.fieldAC_ref().value());
-  swap(a.fieldAD_ref().value(), b.fieldAD_ref().value());
-  swap(a.fieldAE_ref().value(), b.fieldAE_ref().value());
-  swap(a.fieldSD_ref().value(), b.fieldSD_ref().value());
+  swap(a.fieldA, b.fieldA);
+  swap(a.req_fieldA, b.req_fieldA);
+  swap(a.opt_fieldA, b.opt_fieldA);
+  swap(a.fieldB, b.fieldB);
+  swap(a.req_fieldB, b.req_fieldB);
+  swap(a.opt_fieldB, b.opt_fieldB);
+  swap(a.fieldC, b.fieldC);
+  swap(a.req_fieldC, b.req_fieldC);
+  swap(a.opt_fieldC, b.opt_fieldC);
+  swap(a.fieldD, b.fieldD);
+  swap(a.fieldE, b.fieldE);
+  swap(a.req_fieldE, b.req_fieldE);
+  swap(a.opt_fieldE, b.opt_fieldE);
+  swap(a.fieldF, b.fieldF);
+  swap(a.fieldG, b.fieldG);
+  swap(a.fieldH, b.fieldH);
+  swap(a.fieldI, b.fieldI);
+  swap(a.fieldJ, b.fieldJ);
+  swap(a.fieldK, b.fieldK);
+  swap(a.fieldL, b.fieldL);
+  swap(a.fieldM, b.fieldM);
+  swap(a.fieldN, b.fieldN);
+  swap(a.fieldO, b.fieldO);
+  swap(a.fieldP, b.fieldP);
+  swap(a.fieldQ, b.fieldQ);
+  swap(a.fieldR, b.fieldR);
+  swap(a.req_fieldR, b.req_fieldR);
+  swap(a.opt_fieldR, b.opt_fieldR);
+  swap(a.fieldS, b.fieldS);
+  swap(a.fieldT, b.fieldT);
+  swap(a.fieldU, b.fieldU);
+  swap(a.fieldV, b.fieldV);
+  swap(a.req_fieldV, b.req_fieldV);
+  swap(a.opt_fieldV, b.opt_fieldV);
+  swap(a.fieldW, b.fieldW);
+  swap(a.fieldX, b.fieldX);
+  swap(a.req_fieldX, b.req_fieldX);
+  swap(a.opt_fieldX, b.opt_fieldX);
+  swap(a.fieldY, b.fieldY);
+  swap(a.fieldZ, b.fieldZ);
+  swap(a.fieldAA, b.fieldAA);
+  swap(a.fieldAB, b.fieldAB);
+  swap(a.fieldAC, b.fieldAC);
+  swap(a.fieldAD, b.fieldAD);
+  swap(a.fieldAE, b.fieldAE);
+  swap(a.fieldSD, b.fieldSD);
   swap(a.__isset, b.__isset);
 }
 
@@ -2707,10 +2707,10 @@ const ::some::valid::ns::AStruct& MyIncludedStruct::get_ARequiredField() const& 
 
 void swap(FOLLY_MAYBE_UNUSED MyIncludedStruct& a, FOLLY_MAYBE_UNUSED MyIncludedStruct& b) {
   using ::std::swap;
-  swap(a.MyIncludedInt_ref().value(), b.MyIncludedInt_ref().value());
-  swap(a.MyIncludedStruct_ref().value(), b.MyIncludedStruct_ref().value());
+  swap(a.__fbthrift_field_MyIncludedInt, b.__fbthrift_field_MyIncludedInt);
+  swap(a.__fbthrift_field_MyIncludedStruct, b.__fbthrift_field_MyIncludedStruct);
   swap(a.ARefField, b.ARefField);
-  swap(a.ARequiredField_ref().value(), b.ARequiredField_ref().value());
+  swap(a.__fbthrift_field_ARequiredField, b.__fbthrift_field_ARequiredField);
   swap(a.__isset, b.__isset);
 }
 
@@ -3174,7 +3174,7 @@ const ::some::valid::ns::containerStruct& AnnotatedStruct::get_struct_struct() c
 
 void swap(FOLLY_MAYBE_UNUSED AnnotatedStruct& a, FOLLY_MAYBE_UNUSED AnnotatedStruct& b) {
   using ::std::swap;
-  swap(a.no_annotation_ref().value(), b.no_annotation_ref().value());
+  swap(a.no_annotation, b.no_annotation);
   swap(a.cpp_unique_ref, b.cpp_unique_ref);
   swap(a.cpp2_unique_ref, b.cpp2_unique_ref);
   swap(a.container_with_ref, b.container_with_ref);
@@ -3193,27 +3193,27 @@ void swap(FOLLY_MAYBE_UNUSED AnnotatedStruct& a, FOLLY_MAYBE_UNUSED AnnotatedStr
   swap(a.opt_ref_type_const, b.opt_ref_type_const);
   swap(a.opt_ref_type_unique, b.opt_ref_type_unique);
   swap(a.opt_ref_type_shared, b.opt_ref_type_shared);
-  swap(a.base_type_ref().value(), b.base_type_ref().value());
-  swap(a.list_type_ref().value(), b.list_type_ref().value());
-  swap(a.set_type_ref().value(), b.set_type_ref().value());
-  swap(a.map_type_ref().value(), b.map_type_ref().value());
-  swap(a.map_struct_type_ref().value(), b.map_struct_type_ref().value());
-  swap(a.iobuf_type_ref().value(), b.iobuf_type_ref().value());
-  swap(a.iobuf_ptr_ref().value(), b.iobuf_ptr_ref().value());
-  swap(a.list_i32_template_ref().value(), b.list_i32_template_ref().value());
-  swap(a.list_string_template_ref().value(), b.list_string_template_ref().value());
-  swap(a.set_template_ref().value(), b.set_template_ref().value());
-  swap(a.map_template_ref().value(), b.map_template_ref().value());
-  swap(a.typedef_list_template_ref().value(), b.typedef_list_template_ref().value());
-  swap(a.typedef_deque_template_ref().value(), b.typedef_deque_template_ref().value());
-  swap(a.typedef_set_template_ref().value(), b.typedef_set_template_ref().value());
-  swap(a.typedef_map_template_ref().value(), b.typedef_map_template_ref().value());
-  swap(a.indirection_a_ref().value(), b.indirection_a_ref().value());
-  swap(a.indirection_b_ref().value(), b.indirection_b_ref().value());
-  swap(a.indirection_c_ref().value(), b.indirection_c_ref().value());
-  swap(a.iobuf_type_val_ref().value(), b.iobuf_type_val_ref().value());
-  swap(a.iobuf_ptr_val_ref().value(), b.iobuf_ptr_val_ref().value());
-  swap(a.struct_struct_ref().value(), b.struct_struct_ref().value());
+  swap(a.base_type, b.base_type);
+  swap(a.list_type, b.list_type);
+  swap(a.set_type, b.set_type);
+  swap(a.map_type, b.map_type);
+  swap(a.map_struct_type, b.map_struct_type);
+  swap(a.iobuf_type, b.iobuf_type);
+  swap(a.iobuf_ptr, b.iobuf_ptr);
+  swap(a.list_i32_template, b.list_i32_template);
+  swap(a.list_string_template, b.list_string_template);
+  swap(a.set_template, b.set_template);
+  swap(a.map_template, b.map_template);
+  swap(a.typedef_list_template, b.typedef_list_template);
+  swap(a.typedef_deque_template, b.typedef_deque_template);
+  swap(a.typedef_set_template, b.typedef_set_template);
+  swap(a.typedef_map_template, b.typedef_map_template);
+  swap(a.indirection_a, b.indirection_a);
+  swap(a.indirection_b, b.indirection_b);
+  swap(a.indirection_c, b.indirection_c);
+  swap(a.iobuf_type_val, b.iobuf_type_val);
+  swap(a.iobuf_ptr_val, b.iobuf_ptr_val);
+  swap(a.struct_struct, b.struct_struct);
   swap(a.__isset, b.__isset);
 }
 
@@ -3442,8 +3442,8 @@ const ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& ComplexContainerSt
 
 void swap(FOLLY_MAYBE_UNUSED ComplexContainerStruct& a, FOLLY_MAYBE_UNUSED ComplexContainerStruct& b) {
   using ::std::swap;
-  swap(a.map_of_iobufs_ref().value(), b.map_of_iobufs_ref().value());
-  swap(a.map_of_iobuf_ptrs_ref().value(), b.map_of_iobuf_ptrs_ref().value());
+  swap(a.__fbthrift_field_map_of_iobufs, b.__fbthrift_field_map_of_iobufs);
+  swap(a.__fbthrift_field_map_of_iobuf_ptrs, b.__fbthrift_field_map_of_iobuf_ptrs);
   swap(a.__isset, b.__isset);
 }
 
@@ -3540,8 +3540,8 @@ bool FloatStruct::operator<(FOLLY_MAYBE_UNUSED const FloatStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED FloatStruct& a, FOLLY_MAYBE_UNUSED FloatStruct& b) {
   using ::std::swap;
-  swap(a.floatField_ref().value(), b.floatField_ref().value());
-  swap(a.doubleField_ref().value(), b.doubleField_ref().value());
+  swap(a.__fbthrift_field_floatField, b.__fbthrift_field_floatField);
+  swap(a.__fbthrift_field_doubleField, b.__fbthrift_field_doubleField);
   swap(a.__isset, b.__isset);
 }
 
@@ -3738,7 +3738,7 @@ bool AllRequiredNoExceptMoveCtrStruct::operator<(FOLLY_MAYBE_UNUSED const AllReq
 
 void swap(FOLLY_MAYBE_UNUSED AllRequiredNoExceptMoveCtrStruct& a, FOLLY_MAYBE_UNUSED AllRequiredNoExceptMoveCtrStruct& b) {
   using ::std::swap;
-  swap(a.intField_ref().value(), b.intField_ref().value());
+  swap(a.__fbthrift_field_intField, b.__fbthrift_field_intField);
 }
 
 template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

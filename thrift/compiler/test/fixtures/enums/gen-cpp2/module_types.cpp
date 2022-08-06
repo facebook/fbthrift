@@ -267,10 +267,10 @@ const ::std::set<::std::int32_t>& SomeStruct::get_tags() const& {
 
 void swap(FOLLY_MAYBE_UNUSED SomeStruct& a, FOLLY_MAYBE_UNUSED SomeStruct& b) {
   using ::std::swap;
-  swap(a.reasonable_ref().value(), b.reasonable_ref().value());
-  swap(a.fine_ref().value(), b.fine_ref().value());
-  swap(a.questionable_ref().value(), b.questionable_ref().value());
-  swap(a.tags_ref().value(), b.tags_ref().value());
+  swap(a.__fbthrift_field_reasonable, b.__fbthrift_field_reasonable);
+  swap(a.__fbthrift_field_fine, b.__fbthrift_field_fine);
+  swap(a.__fbthrift_field_questionable, b.__fbthrift_field_questionable);
+  swap(a.__fbthrift_field_tags, b.__fbthrift_field_tags);
   swap(a.__isset, b.__isset);
 }
 
@@ -384,10 +384,10 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.me2_3_ref().value(), b.me2_3_ref().value());
-  swap(a.me3_n3_ref().value(), b.me3_n3_ref().value());
-  swap(a.me1_t1_ref().value(), b.me1_t1_ref().value());
-  swap(a.me1_t2_ref().value(), b.me1_t2_ref().value());
+  swap(a.__fbthrift_field_me2_3, b.__fbthrift_field_me2_3);
+  swap(a.__fbthrift_field_me3_n3, b.__fbthrift_field_me3_n3);
+  swap(a.__fbthrift_field_me1_t1, b.__fbthrift_field_me1_t1);
+  swap(a.__fbthrift_field_me1_t2, b.__fbthrift_field_me1_t2);
   swap(a.__isset, b.__isset);
 }
 

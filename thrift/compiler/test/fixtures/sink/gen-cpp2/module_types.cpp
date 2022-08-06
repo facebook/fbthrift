@@ -92,7 +92,7 @@ bool InitialResponse::operator<(FOLLY_MAYBE_UNUSED const InitialResponse& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED InitialResponse& a, FOLLY_MAYBE_UNUSED InitialResponse& b) {
   using ::std::swap;
-  swap(a.content_ref().value(), b.content_ref().value());
+  swap(a.__fbthrift_field_content, b.__fbthrift_field_content);
   swap(a.__isset, b.__isset);
 }
 
@@ -188,7 +188,7 @@ bool FinalResponse::operator<(FOLLY_MAYBE_UNUSED const FinalResponse& rhs) const
 
 void swap(FOLLY_MAYBE_UNUSED FinalResponse& a, FOLLY_MAYBE_UNUSED FinalResponse& b) {
   using ::std::swap;
-  swap(a.content_ref().value(), b.content_ref().value());
+  swap(a.__fbthrift_field_content, b.__fbthrift_field_content);
   swap(a.__isset, b.__isset);
 }
 
@@ -284,7 +284,7 @@ bool SinkPayload::operator<(FOLLY_MAYBE_UNUSED const SinkPayload& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED SinkPayload& a, FOLLY_MAYBE_UNUSED SinkPayload& b) {
   using ::std::swap;
-  swap(a.content_ref().value(), b.content_ref().value());
+  swap(a.__fbthrift_field_content, b.__fbthrift_field_content);
   swap(a.__isset, b.__isset);
 }
 
@@ -380,7 +380,7 @@ bool CompatibleWithKeywordSink::operator<(FOLLY_MAYBE_UNUSED const CompatibleWit
 
 void swap(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink& a, FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink& b) {
   using ::std::swap;
-  swap(a.sink_ref().value(), b.sink_ref().value());
+  swap(a.__fbthrift_field_sink, b.__fbthrift_field_sink);
   swap(a.__isset, b.__isset);
 }
 
@@ -482,7 +482,7 @@ bool InitialException::operator<(FOLLY_MAYBE_UNUSED const InitialException& rhs)
 
 void swap(FOLLY_MAYBE_UNUSED InitialException& a, FOLLY_MAYBE_UNUSED InitialException& b) {
   using ::std::swap;
-  swap(a.reason_ref().value(), b.reason_ref().value());
+  swap(a.__fbthrift_field_reason, b.__fbthrift_field_reason);
   swap(a.__isset, b.__isset);
 }
 
@@ -584,7 +584,7 @@ bool SinkException1::operator<(FOLLY_MAYBE_UNUSED const SinkException1& rhs) con
 
 void swap(FOLLY_MAYBE_UNUSED SinkException1& a, FOLLY_MAYBE_UNUSED SinkException1& b) {
   using ::std::swap;
-  swap(a.reason_ref().value(), b.reason_ref().value());
+  swap(a.__fbthrift_field_reason, b.__fbthrift_field_reason);
   swap(a.__isset, b.__isset);
 }
 
@@ -687,7 +687,7 @@ bool SinkException2::operator<(FOLLY_MAYBE_UNUSED const SinkException2& rhs) con
 
 void swap(FOLLY_MAYBE_UNUSED SinkException2& a, FOLLY_MAYBE_UNUSED SinkException2& b) {
   using ::std::swap;
-  swap(a.reason_ref().value(), b.reason_ref().value());
+  swap(a.__fbthrift_field_reason, b.__fbthrift_field_reason);
   swap(a.__isset, b.__isset);
 }
 

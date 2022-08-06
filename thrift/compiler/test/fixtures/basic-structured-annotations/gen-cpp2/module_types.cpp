@@ -133,8 +133,8 @@ bool structured_annotation_inline::operator<(FOLLY_MAYBE_UNUSED const structured
 
 void swap(FOLLY_MAYBE_UNUSED structured_annotation_inline& a, FOLLY_MAYBE_UNUSED structured_annotation_inline& b) {
   using ::std::swap;
-  swap(a.count_ref().value(), b.count_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
+  swap(a.__fbthrift_field_count, b.__fbthrift_field_count);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
   swap(a.__isset, b.__isset);
 }
 
@@ -234,7 +234,7 @@ bool structured_annotation_with_default::operator<(FOLLY_MAYBE_UNUSED const stru
 
 void swap(FOLLY_MAYBE_UNUSED structured_annotation_with_default& a, FOLLY_MAYBE_UNUSED structured_annotation_with_default& b) {
   using ::std::swap;
-  swap(a.name_ref().value(), b.name_ref().value());
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
   swap(a.__isset, b.__isset);
 }
 
@@ -321,7 +321,7 @@ bool structured_annotation_forward::operator<(FOLLY_MAYBE_UNUSED const structure
 
 void swap(FOLLY_MAYBE_UNUSED structured_annotation_forward& a, FOLLY_MAYBE_UNUSED structured_annotation_forward& b) {
   using ::std::swap;
-  swap(a.count_ref().value(), b.count_ref().value());
+  swap(a.__fbthrift_field_count, b.__fbthrift_field_count);
   swap(a.__isset, b.__isset);
 }
 
@@ -459,9 +459,9 @@ const ::test::fixtures::basic-structured-annotations::structured_annotation_forw
 
 void swap(FOLLY_MAYBE_UNUSED structured_annotation_recursive& a, FOLLY_MAYBE_UNUSED structured_annotation_recursive& b) {
   using ::std::swap;
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.recurse_ref().value(), b.recurse_ref().value());
-  swap(a.forward_ref().value(), b.forward_ref().value());
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_recurse, b.__fbthrift_field_recurse);
+  swap(a.__fbthrift_field_forward, b.__fbthrift_field_forward);
   swap(a.__isset, b.__isset);
 }
 
@@ -592,8 +592,8 @@ const ::test::fixtures::basic-structured-annotations::structured_annotation_with
 
 void swap(FOLLY_MAYBE_UNUSED structured_annotation_nested& a, FOLLY_MAYBE_UNUSED structured_annotation_nested& b) {
   using ::std::swap;
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.nest_ref().value(), b.nest_ref().value());
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_nest, b.__fbthrift_field_nest);
   swap(a.__isset, b.__isset);
 }
 
@@ -732,10 +732,10 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.annotated_field_ref().value(), b.annotated_field_ref().value());
-  swap(a.annotated_type_ref().value(), b.annotated_type_ref().value());
-  swap(a.annotated_recursive_ref().value(), b.annotated_recursive_ref().value());
-  swap(a.annotated_nested_ref().value(), b.annotated_nested_ref().value());
+  swap(a.__fbthrift_field_annotated_field, b.__fbthrift_field_annotated_field);
+  swap(a.__fbthrift_field_annotated_type, b.__fbthrift_field_annotated_type);
+  swap(a.__fbthrift_field_annotated_recursive, b.__fbthrift_field_annotated_recursive);
+  swap(a.__fbthrift_field_annotated_nested, b.__fbthrift_field_annotated_nested);
   swap(a.__isset, b.__isset);
 }
 
@@ -841,7 +841,7 @@ bool MyException::operator<(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyException& a, FOLLY_MAYBE_UNUSED MyException& b) {
   using ::std::swap;
-  swap(a.context_ref().value(), b.context_ref().value());
+  swap(a.__fbthrift_field_context, b.__fbthrift_field_context);
   swap(a.__isset, b.__isset);
 }
 

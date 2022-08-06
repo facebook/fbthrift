@@ -105,7 +105,7 @@ bool AStruct::operator<(FOLLY_MAYBE_UNUSED const AStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED AStruct& a, FOLLY_MAYBE_UNUSED AStruct& b) {
   using ::std::swap;
-  swap(a.FieldA_ref().value(), b.FieldA_ref().value());
+  swap(a.__fbthrift_field_FieldA, b.__fbthrift_field_FieldA);
   swap(a.__isset, b.__isset);
 }
 

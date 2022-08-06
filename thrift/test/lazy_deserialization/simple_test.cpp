@@ -66,6 +66,24 @@ TYPED_TEST(LazyDeserialization, Moveable) {
   EXPECT_EQ(foo.field4_ref(), bar.field4_ref());
 }
 
+TYPED_TEST(LazyDeserialization, Swap) {
+  auto temp = this->genLazyStruct();
+  typename TypeParam::LazyStruct bar, baz;
+  swap(bar, temp);
+
+  EXPECT_EQ(temp.field1_ref(), baz.field1_ref());
+  EXPECT_EQ(temp.field2_ref(), baz.field2_ref());
+  EXPECT_EQ(temp.field3_ref(), baz.field3_ref());
+  EXPECT_EQ(temp.field4_ref(), baz.field4_ref());
+
+  baz = this->genLazyStruct();
+
+  EXPECT_EQ(bar.field1_ref(), baz.field1_ref());
+  EXPECT_EQ(bar.field2_ref(), baz.field2_ref());
+  EXPECT_EQ(bar.field3_ref(), baz.field3_ref());
+  EXPECT_EQ(bar.field4_ref(), baz.field4_ref());
+}
+
 template <typename T>
 class Serialization : public testing::Test {};
 

@@ -183,7 +183,7 @@ bool MyStructWithCustomDefault::operator<(FOLLY_MAYBE_UNUSED const MyStructWithC
 
 void swap(FOLLY_MAYBE_UNUSED MyStructWithCustomDefault& a, FOLLY_MAYBE_UNUSED MyStructWithCustomDefault& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
   swap(a.__isset, b.__isset);
 }
 
@@ -480,20 +480,20 @@ const ::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStru
 
 void swap(FOLLY_MAYBE_UNUSED StructLevelTerseStruct& a, FOLLY_MAYBE_UNUSED StructLevelTerseStruct& b) {
   using ::std::swap;
-  swap(a.bool_field_ref().value(), b.bool_field_ref().value());
-  swap(a.byte_field_ref().value(), b.byte_field_ref().value());
-  swap(a.short_field_ref().value(), b.short_field_ref().value());
-  swap(a.int_field_ref().value(), b.int_field_ref().value());
-  swap(a.long_field_ref().value(), b.long_field_ref().value());
-  swap(a.float_field_ref().value(), b.float_field_ref().value());
-  swap(a.double_field_ref().value(), b.double_field_ref().value());
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.binary_field_ref().value(), b.binary_field_ref().value());
-  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
-  swap(a.list_field_ref().value(), b.list_field_ref().value());
-  swap(a.set_field_ref().value(), b.set_field_ref().value());
-  swap(a.map_field_ref().value(), b.map_field_ref().value());
-  swap(a.struct_field_ref().value(), b.struct_field_ref().value());
+  swap(a.__fbthrift_field_bool_field, b.__fbthrift_field_bool_field);
+  swap(a.__fbthrift_field_byte_field, b.__fbthrift_field_byte_field);
+  swap(a.__fbthrift_field_short_field, b.__fbthrift_field_short_field);
+  swap(a.__fbthrift_field_int_field, b.__fbthrift_field_int_field);
+  swap(a.__fbthrift_field_long_field, b.__fbthrift_field_long_field);
+  swap(a.__fbthrift_field_float_field, b.__fbthrift_field_float_field);
+  swap(a.__fbthrift_field_double_field, b.__fbthrift_field_double_field);
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_binary_field, b.__fbthrift_field_binary_field);
+  swap(a.__fbthrift_field_enum_field, b.__fbthrift_field_enum_field);
+  swap(a.__fbthrift_field_list_field, b.__fbthrift_field_list_field);
+  swap(a.__fbthrift_field_set_field, b.__fbthrift_field_set_field);
+  swap(a.__fbthrift_field_map_field, b.__fbthrift_field_map_field);
+  swap(a.__fbthrift_field_struct_field, b.__fbthrift_field_struct_field);
 }
 
 template void StructLevelTerseStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -978,34 +978,34 @@ const ::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStru
 
 void swap(FOLLY_MAYBE_UNUSED FieldLevelTerseStruct& a, FOLLY_MAYBE_UNUSED FieldLevelTerseStruct& b) {
   using ::std::swap;
-  swap(a.terse_bool_field_ref().value(), b.terse_bool_field_ref().value());
-  swap(a.terse_byte_field_ref().value(), b.terse_byte_field_ref().value());
-  swap(a.terse_short_field_ref().value(), b.terse_short_field_ref().value());
-  swap(a.terse_int_field_ref().value(), b.terse_int_field_ref().value());
-  swap(a.terse_long_field_ref().value(), b.terse_long_field_ref().value());
-  swap(a.terse_float_field_ref().value(), b.terse_float_field_ref().value());
-  swap(a.terse_double_field_ref().value(), b.terse_double_field_ref().value());
-  swap(a.terse_string_field_ref().value(), b.terse_string_field_ref().value());
-  swap(a.terse_binary_field_ref().value(), b.terse_binary_field_ref().value());
-  swap(a.terse_enum_field_ref().value(), b.terse_enum_field_ref().value());
-  swap(a.terse_list_field_ref().value(), b.terse_list_field_ref().value());
-  swap(a.terse_set_field_ref().value(), b.terse_set_field_ref().value());
-  swap(a.terse_map_field_ref().value(), b.terse_map_field_ref().value());
-  swap(a.terse_struct_field_ref().value(), b.terse_struct_field_ref().value());
-  swap(a.bool_field_ref().value(), b.bool_field_ref().value());
-  swap(a.byte_field_ref().value(), b.byte_field_ref().value());
-  swap(a.short_field_ref().value(), b.short_field_ref().value());
-  swap(a.int_field_ref().value(), b.int_field_ref().value());
-  swap(a.long_field_ref().value(), b.long_field_ref().value());
-  swap(a.float_field_ref().value(), b.float_field_ref().value());
-  swap(a.double_field_ref().value(), b.double_field_ref().value());
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.binary_field_ref().value(), b.binary_field_ref().value());
-  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
-  swap(a.list_field_ref().value(), b.list_field_ref().value());
-  swap(a.set_field_ref().value(), b.set_field_ref().value());
-  swap(a.map_field_ref().value(), b.map_field_ref().value());
-  swap(a.struct_field_ref().value(), b.struct_field_ref().value());
+  swap(a.__fbthrift_field_terse_bool_field, b.__fbthrift_field_terse_bool_field);
+  swap(a.__fbthrift_field_terse_byte_field, b.__fbthrift_field_terse_byte_field);
+  swap(a.__fbthrift_field_terse_short_field, b.__fbthrift_field_terse_short_field);
+  swap(a.__fbthrift_field_terse_int_field, b.__fbthrift_field_terse_int_field);
+  swap(a.__fbthrift_field_terse_long_field, b.__fbthrift_field_terse_long_field);
+  swap(a.__fbthrift_field_terse_float_field, b.__fbthrift_field_terse_float_field);
+  swap(a.__fbthrift_field_terse_double_field, b.__fbthrift_field_terse_double_field);
+  swap(a.__fbthrift_field_terse_string_field, b.__fbthrift_field_terse_string_field);
+  swap(a.__fbthrift_field_terse_binary_field, b.__fbthrift_field_terse_binary_field);
+  swap(a.__fbthrift_field_terse_enum_field, b.__fbthrift_field_terse_enum_field);
+  swap(a.__fbthrift_field_terse_list_field, b.__fbthrift_field_terse_list_field);
+  swap(a.__fbthrift_field_terse_set_field, b.__fbthrift_field_terse_set_field);
+  swap(a.__fbthrift_field_terse_map_field, b.__fbthrift_field_terse_map_field);
+  swap(a.__fbthrift_field_terse_struct_field, b.__fbthrift_field_terse_struct_field);
+  swap(a.__fbthrift_field_bool_field, b.__fbthrift_field_bool_field);
+  swap(a.__fbthrift_field_byte_field, b.__fbthrift_field_byte_field);
+  swap(a.__fbthrift_field_short_field, b.__fbthrift_field_short_field);
+  swap(a.__fbthrift_field_int_field, b.__fbthrift_field_int_field);
+  swap(a.__fbthrift_field_long_field, b.__fbthrift_field_long_field);
+  swap(a.__fbthrift_field_float_field, b.__fbthrift_field_float_field);
+  swap(a.__fbthrift_field_double_field, b.__fbthrift_field_double_field);
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_binary_field, b.__fbthrift_field_binary_field);
+  swap(a.__fbthrift_field_enum_field, b.__fbthrift_field_enum_field);
+  swap(a.__fbthrift_field_list_field, b.__fbthrift_field_list_field);
+  swap(a.__fbthrift_field_set_field, b.__fbthrift_field_set_field);
+  swap(a.__fbthrift_field_map_field, b.__fbthrift_field_map_field);
+  swap(a.__fbthrift_field_struct_field, b.__fbthrift_field_struct_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -1321,20 +1321,20 @@ const ::facebook::thrift::test::terse_write::deprecated_tag_incompatible::MyStru
 
 void swap(FOLLY_MAYBE_UNUSED TerseStructWithCustomDefault& a, FOLLY_MAYBE_UNUSED TerseStructWithCustomDefault& b) {
   using ::std::swap;
-  swap(a.bool_field_ref().value(), b.bool_field_ref().value());
-  swap(a.byte_field_ref().value(), b.byte_field_ref().value());
-  swap(a.short_field_ref().value(), b.short_field_ref().value());
-  swap(a.int_field_ref().value(), b.int_field_ref().value());
-  swap(a.long_field_ref().value(), b.long_field_ref().value());
-  swap(a.float_field_ref().value(), b.float_field_ref().value());
-  swap(a.double_field_ref().value(), b.double_field_ref().value());
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.binary_field_ref().value(), b.binary_field_ref().value());
-  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
-  swap(a.list_field_ref().value(), b.list_field_ref().value());
-  swap(a.set_field_ref().value(), b.set_field_ref().value());
-  swap(a.map_field_ref().value(), b.map_field_ref().value());
-  swap(a.struct_field_ref().value(), b.struct_field_ref().value());
+  swap(a.__fbthrift_field_bool_field, b.__fbthrift_field_bool_field);
+  swap(a.__fbthrift_field_byte_field, b.__fbthrift_field_byte_field);
+  swap(a.__fbthrift_field_short_field, b.__fbthrift_field_short_field);
+  swap(a.__fbthrift_field_int_field, b.__fbthrift_field_int_field);
+  swap(a.__fbthrift_field_long_field, b.__fbthrift_field_long_field);
+  swap(a.__fbthrift_field_float_field, b.__fbthrift_field_float_field);
+  swap(a.__fbthrift_field_double_field, b.__fbthrift_field_double_field);
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_binary_field, b.__fbthrift_field_binary_field);
+  swap(a.__fbthrift_field_enum_field, b.__fbthrift_field_enum_field);
+  swap(a.__fbthrift_field_list_field, b.__fbthrift_field_list_field);
+  swap(a.__fbthrift_field_set_field, b.__fbthrift_field_set_field);
+  swap(a.__fbthrift_field_map_field, b.__fbthrift_field_map_field);
+  swap(a.__fbthrift_field_struct_field, b.__fbthrift_field_struct_field);
 }
 
 template void TerseStructWithCustomDefault::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1479,9 +1479,9 @@ bool AdaptedFields::operator<(FOLLY_MAYBE_UNUSED const AdaptedFields& rhs) const
 
 void swap(FOLLY_MAYBE_UNUSED AdaptedFields& a, FOLLY_MAYBE_UNUSED AdaptedFields& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
-  swap(a.field2_ref().value(), b.field2_ref().value());
-  swap(a.field3_ref().value(), b.field3_ref().value());
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
 }
 
 template void AdaptedFields::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

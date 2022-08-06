@@ -177,7 +177,7 @@ bool SimpleException::operator<(FOLLY_MAYBE_UNUSED const SimpleException& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED SimpleException& a, FOLLY_MAYBE_UNUSED SimpleException& b) {
   using ::std::swap;
-  swap(a.err_code_ref().value(), b.err_code_ref().value());
+  swap(a.__fbthrift_field_err_code, b.__fbthrift_field_err_code);
   swap(a.__isset, b.__isset);
 }
 
@@ -283,7 +283,7 @@ bool OptionalRefStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalRefStruct& rh
 
 void swap(FOLLY_MAYBE_UNUSED OptionalRefStruct& a, FOLLY_MAYBE_UNUSED OptionalRefStruct& b) {
   using ::std::swap;
-  swap(a.optional_blob_ref().value_unchecked(), b.optional_blob_ref().value_unchecked());
+  swap(a.optional_blob, b.optional_blob);
   swap(a.__isset, b.__isset);
 }
 
@@ -456,14 +456,14 @@ bool SimpleStruct::operator<(FOLLY_MAYBE_UNUSED const SimpleStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED SimpleStruct& a, FOLLY_MAYBE_UNUSED SimpleStruct& b) {
   using ::std::swap;
-  swap(a.is_on_ref().value(), b.is_on_ref().value());
-  swap(a.tiny_int_ref().value(), b.tiny_int_ref().value());
-  swap(a.small_int_ref().value(), b.small_int_ref().value());
-  swap(a.nice_sized_int_ref().value(), b.nice_sized_int_ref().value());
-  swap(a.big_int_ref().value(), b.big_int_ref().value());
-  swap(a.real_ref().value(), b.real_ref().value());
-  swap(a.smaller_real_ref().value(), b.smaller_real_ref().value());
-  swap(a.hidden_field_ref().value(), b.hidden_field_ref().value());
+  swap(a.__fbthrift_field_is_on, b.__fbthrift_field_is_on);
+  swap(a.__fbthrift_field_tiny_int, b.__fbthrift_field_tiny_int);
+  swap(a.__fbthrift_field_small_int, b.__fbthrift_field_small_int);
+  swap(a.__fbthrift_field_nice_sized_int, b.__fbthrift_field_nice_sized_int);
+  swap(a.__fbthrift_field_big_int, b.__fbthrift_field_big_int);
+  swap(a.__fbthrift_field_real, b.__fbthrift_field_real);
+  swap(a.__fbthrift_field_smaller_real, b.__fbthrift_field_smaller_real);
+  swap(a.__fbthrift_field_hidden_field, b.__fbthrift_field_hidden_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -671,15 +671,15 @@ const ::py3::simple::SimpleStruct& ComplexStruct::get_structTwo() const& {
 
 void swap(FOLLY_MAYBE_UNUSED ComplexStruct& a, FOLLY_MAYBE_UNUSED ComplexStruct& b) {
   using ::std::swap;
-  swap(a.structOne_ref().value(), b.structOne_ref().value());
-  swap(a.structTwo_ref().value(), b.structTwo_ref().value());
-  swap(a.an_integer_ref().value(), b.an_integer_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.an_enum_ref().value(), b.an_enum_ref().value());
-  swap(a.some_bytes_ref().value(), b.some_bytes_ref().value());
-  swap(a.from_ref().value(), b.from_ref().value());
-  swap(a.cdef_ref().value(), b.cdef_ref().value());
-  swap(a.bytes_with_cpp_type_ref().value(), b.bytes_with_cpp_type_ref().value());
+  swap(a.__fbthrift_field_structOne, b.__fbthrift_field_structOne);
+  swap(a.__fbthrift_field_structTwo, b.__fbthrift_field_structTwo);
+  swap(a.__fbthrift_field_an_integer, b.__fbthrift_field_an_integer);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_an_enum, b.__fbthrift_field_an_enum);
+  swap(a.__fbthrift_field_some_bytes, b.__fbthrift_field_some_bytes);
+  swap(a.__fbthrift_field_from, b.__fbthrift_field_from);
+  swap(a.__fbthrift_field_cdef, b.__fbthrift_field_cdef);
+  swap(a.__fbthrift_field_bytes_with_cpp_type, b.__fbthrift_field_bytes_with_cpp_type);
   swap(a.__isset, b.__isset);
 }
 
@@ -860,7 +860,7 @@ const ::py3::simple::BinaryUnion& BinaryUnionStruct::get_u() const& {
 
 void swap(FOLLY_MAYBE_UNUSED BinaryUnionStruct& a, FOLLY_MAYBE_UNUSED BinaryUnionStruct& b) {
   using ::std::swap;
-  swap(a.u_ref().value(), b.u_ref().value());
+  swap(a.__fbthrift_field_u, b.__fbthrift_field_u);
   swap(a.__isset, b.__isset);
 }
 

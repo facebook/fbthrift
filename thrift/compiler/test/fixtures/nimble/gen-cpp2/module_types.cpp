@@ -105,10 +105,10 @@ bool BasicTypes::operator<(FOLLY_MAYBE_UNUSED const BasicTypes& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED BasicTypes& a, FOLLY_MAYBE_UNUSED BasicTypes& b) {
   using ::std::swap;
-  swap(a.first_ref().value(), b.first_ref().value());
-  swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());
-  swap(a.third_ref().value_unchecked(), b.third_ref().value_unchecked());
-  swap(a.isTrue_ref().value(), b.isTrue_ref().value());
+  swap(a.__fbthrift_field_first, b.__fbthrift_field_first);
+  swap(a.__fbthrift_field_second, b.__fbthrift_field_second);
+  swap(a.__fbthrift_field_third, b.__fbthrift_field_third);
+  swap(a.__fbthrift_field_isTrue, b.__fbthrift_field_isTrue);
   swap(a.__isset, b.__isset);
 }
 

@@ -655,7 +655,7 @@ void swap(FOLLY_MAYBE_UNUSED StructWithUnion& a, FOLLY_MAYBE_UNUSED StructWithUn
   using ::std::swap;
   swap(a.u, b.u);
   swap(a.aDouble, b.aDouble);
-  swap(a.f_ref().value(), b.f_ref().value());
+  swap(a.__fbthrift_field_f, b.__fbthrift_field_f);
   swap(a.__isset, b.__isset);
 }
 
@@ -771,7 +771,7 @@ const ::std::vector<::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& 
 
 void swap(FOLLY_MAYBE_UNUSED RecursiveStruct& a, FOLLY_MAYBE_UNUSED RecursiveStruct& b) {
   using ::std::swap;
-  swap(a.mes_ref().value_unchecked(), b.mes_ref().value_unchecked());
+  swap(a.__fbthrift_field_mes, b.__fbthrift_field_mes);
   swap(a.__isset, b.__isset);
 }
 

@@ -292,19 +292,19 @@ const ::std::set<::std::int32_t>* containerStruct2::get_opt_fieldC() const& {
 
 void swap(FOLLY_MAYBE_UNUSED containerStruct2& a, FOLLY_MAYBE_UNUSED containerStruct2& b) {
   using ::std::swap;
-  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-  swap(a.req_fieldA_ref().value(), b.req_fieldA_ref().value());
-  swap(a.opt_fieldA_ref().value_unchecked(), b.opt_fieldA_ref().value_unchecked());
-  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
-  swap(a.req_fieldB_ref().value(), b.req_fieldB_ref().value());
-  swap(a.opt_fieldB_ref().value_unchecked(), b.opt_fieldB_ref().value_unchecked());
-  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
-  swap(a.req_fieldC_ref().value(), b.req_fieldC_ref().value());
-  swap(a.opt_fieldC_ref().value_unchecked(), b.opt_fieldC_ref().value_unchecked());
-  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
-  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
-  swap(a.req_fieldE_ref().value(), b.req_fieldE_ref().value());
-  swap(a.opt_fieldE_ref().value_unchecked(), b.opt_fieldE_ref().value_unchecked());
+  swap(a.__fbthrift_field_fieldA, b.__fbthrift_field_fieldA);
+  swap(a.__fbthrift_field_req_fieldA, b.__fbthrift_field_req_fieldA);
+  swap(a.__fbthrift_field_opt_fieldA, b.__fbthrift_field_opt_fieldA);
+  swap(a.__fbthrift_field_fieldB, b.__fbthrift_field_fieldB);
+  swap(a.__fbthrift_field_req_fieldB, b.__fbthrift_field_req_fieldB);
+  swap(a.__fbthrift_field_opt_fieldB, b.__fbthrift_field_opt_fieldB);
+  swap(a.__fbthrift_field_fieldC, b.__fbthrift_field_fieldC);
+  swap(a.__fbthrift_field_req_fieldC, b.__fbthrift_field_req_fieldC);
+  swap(a.__fbthrift_field_opt_fieldC, b.__fbthrift_field_opt_fieldC);
+  swap(a.__fbthrift_field_fieldD, b.__fbthrift_field_fieldD);
+  swap(a.__fbthrift_field_fieldE, b.__fbthrift_field_fieldE);
+  swap(a.__fbthrift_field_req_fieldE, b.__fbthrift_field_req_fieldE);
+  swap(a.__fbthrift_field_opt_fieldE, b.__fbthrift_field_opt_fieldE);
   swap(a.__isset, b.__isset);
 }
 

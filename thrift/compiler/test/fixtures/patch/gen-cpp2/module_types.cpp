@@ -105,8 +105,8 @@ bool MyData::operator<(FOLLY_MAYBE_UNUSED const MyData& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyData& a, FOLLY_MAYBE_UNUSED MyData& b) {
   using ::std::swap;
-  swap(a.data1_ref().value(), b.data1_ref().value());
-  swap(a.data2_ref().value(), b.data2_ref().value());
+  swap(a.__fbthrift_field_data1, b.__fbthrift_field_data1);
+  swap(a.__fbthrift_field_data2, b.__fbthrift_field_data2);
 }
 
 template void MyData::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -782,30 +782,30 @@ const ::test::fixtures::patch::MyUnion& MyStruct::get_unionVal() const& {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.boolVal_ref().value(), b.boolVal_ref().value());
-  swap(a.byteVal_ref().value(), b.byteVal_ref().value());
-  swap(a.i16Val_ref().value(), b.i16Val_ref().value());
-  swap(a.i32Val_ref().value(), b.i32Val_ref().value());
-  swap(a.i64Val_ref().value(), b.i64Val_ref().value());
-  swap(a.floatVal_ref().value(), b.floatVal_ref().value());
-  swap(a.doubleVal_ref().value(), b.doubleVal_ref().value());
-  swap(a.stringVal_ref().value(), b.stringVal_ref().value());
-  swap(a.binaryVal_ref().value(), b.binaryVal_ref().value());
-  swap(a.structVal_ref().value(), b.structVal_ref().value());
-  swap(a.optBoolVal_ref().value_unchecked(), b.optBoolVal_ref().value_unchecked());
-  swap(a.optByteVal_ref().value_unchecked(), b.optByteVal_ref().value_unchecked());
-  swap(a.optI16Val_ref().value_unchecked(), b.optI16Val_ref().value_unchecked());
-  swap(a.optI32Val_ref().value_unchecked(), b.optI32Val_ref().value_unchecked());
-  swap(a.optI64Val_ref().value_unchecked(), b.optI64Val_ref().value_unchecked());
-  swap(a.optFloatVal_ref().value_unchecked(), b.optFloatVal_ref().value_unchecked());
-  swap(a.optDoubleVal_ref().value_unchecked(), b.optDoubleVal_ref().value_unchecked());
-  swap(a.optStringVal_ref().value_unchecked(), b.optStringVal_ref().value_unchecked());
-  swap(a.optBinaryVal_ref().value_unchecked(), b.optBinaryVal_ref().value_unchecked());
-  swap(a.optStructVal_ref().value_unchecked(), b.optStructVal_ref().value_unchecked());
-  swap(a.optListVal_ref().value_unchecked(), b.optListVal_ref().value_unchecked());
-  swap(a.optSetVal_ref().value_unchecked(), b.optSetVal_ref().value_unchecked());
-  swap(a.optMapVal_ref().value_unchecked(), b.optMapVal_ref().value_unchecked());
-  swap(a.unionVal_ref().value(), b.unionVal_ref().value());
+  swap(a.__fbthrift_field_boolVal, b.__fbthrift_field_boolVal);
+  swap(a.__fbthrift_field_byteVal, b.__fbthrift_field_byteVal);
+  swap(a.__fbthrift_field_i16Val, b.__fbthrift_field_i16Val);
+  swap(a.__fbthrift_field_i32Val, b.__fbthrift_field_i32Val);
+  swap(a.__fbthrift_field_i64Val, b.__fbthrift_field_i64Val);
+  swap(a.__fbthrift_field_floatVal, b.__fbthrift_field_floatVal);
+  swap(a.__fbthrift_field_doubleVal, b.__fbthrift_field_doubleVal);
+  swap(a.__fbthrift_field_stringVal, b.__fbthrift_field_stringVal);
+  swap(a.__fbthrift_field_binaryVal, b.__fbthrift_field_binaryVal);
+  swap(a.__fbthrift_field_structVal, b.__fbthrift_field_structVal);
+  swap(a.__fbthrift_field_optBoolVal, b.__fbthrift_field_optBoolVal);
+  swap(a.__fbthrift_field_optByteVal, b.__fbthrift_field_optByteVal);
+  swap(a.__fbthrift_field_optI16Val, b.__fbthrift_field_optI16Val);
+  swap(a.__fbthrift_field_optI32Val, b.__fbthrift_field_optI32Val);
+  swap(a.__fbthrift_field_optI64Val, b.__fbthrift_field_optI64Val);
+  swap(a.__fbthrift_field_optFloatVal, b.__fbthrift_field_optFloatVal);
+  swap(a.__fbthrift_field_optDoubleVal, b.__fbthrift_field_optDoubleVal);
+  swap(a.__fbthrift_field_optStringVal, b.__fbthrift_field_optStringVal);
+  swap(a.__fbthrift_field_optBinaryVal, b.__fbthrift_field_optBinaryVal);
+  swap(a.__fbthrift_field_optStructVal, b.__fbthrift_field_optStructVal);
+  swap(a.__fbthrift_field_optListVal, b.__fbthrift_field_optListVal);
+  swap(a.__fbthrift_field_optSetVal, b.__fbthrift_field_optSetVal);
+  swap(a.__fbthrift_field_optMapVal, b.__fbthrift_field_optMapVal);
+  swap(a.__fbthrift_field_unionVal, b.__fbthrift_field_unionVal);
   swap(a.__isset, b.__isset);
 }
 
@@ -950,8 +950,8 @@ bool MyDataFieldPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyDataFieldPatch
 
 void swap(FOLLY_MAYBE_UNUSED MyDataFieldPatchStruct& a, FOLLY_MAYBE_UNUSED MyDataFieldPatchStruct& b) {
   using ::std::swap;
-  swap(a.data1_ref().value(), b.data1_ref().value());
-  swap(a.data2_ref().value(), b.data2_ref().value());
+  swap(a.__fbthrift_field_data1, b.__fbthrift_field_data1);
+  swap(a.__fbthrift_field_data2, b.__fbthrift_field_data2);
   swap(a.__isset, b.__isset);
 }
 
@@ -1099,8 +1099,8 @@ bool MyDataPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyDataPatchStruct& rh
 void swap(FOLLY_MAYBE_UNUSED MyDataPatchStruct& a, FOLLY_MAYBE_UNUSED MyDataPatchStruct& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__isset, b.__isset);
 }
 
@@ -1262,10 +1262,10 @@ bool OptionalMyDataPatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyDat
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyDataPatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyDataPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -1395,7 +1395,7 @@ bool InnerUnionFieldPatchStruct::operator<(FOLLY_MAYBE_UNUSED const InnerUnionFi
 
 void swap(FOLLY_MAYBE_UNUSED InnerUnionFieldPatchStruct& a, FOLLY_MAYBE_UNUSED InnerUnionFieldPatchStruct& b) {
   using ::std::swap;
-  swap(a.innerOption_ref().value(), b.innerOption_ref().value());
+  swap(a.__fbthrift_field_innerOption, b.__fbthrift_field_innerOption);
   swap(a.__isset, b.__isset);
 }
 
@@ -1560,10 +1560,10 @@ const ::test::fixtures::patch::InnerUnion& InnerUnionPatchStruct::get_ensure() c
 
 void swap(FOLLY_MAYBE_UNUSED InnerUnionPatchStruct& a, FOLLY_MAYBE_UNUSED InnerUnionPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
-  swap(a.ensure_ref().value(), b.ensure_ref().value());
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -1731,10 +1731,10 @@ bool OptionalInnerUnionPatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalI
 
 void swap(FOLLY_MAYBE_UNUSED OptionalInnerUnionPatchStruct& a, FOLLY_MAYBE_UNUSED OptionalInnerUnionPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -1894,9 +1894,9 @@ bool MyUnionFieldPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyUnionFieldPat
 
 void swap(FOLLY_MAYBE_UNUSED MyUnionFieldPatchStruct& a, FOLLY_MAYBE_UNUSED MyUnionFieldPatchStruct& b) {
   using ::std::swap;
-  swap(a.option1_ref().value(), b.option1_ref().value());
-  swap(a.option2_ref().value(), b.option2_ref().value());
-  swap(a.option3_ref().value(), b.option3_ref().value());
+  swap(a.__fbthrift_field_option1, b.__fbthrift_field_option1);
+  swap(a.__fbthrift_field_option2, b.__fbthrift_field_option2);
+  swap(a.__fbthrift_field_option3, b.__fbthrift_field_option3);
   swap(a.__isset, b.__isset);
 }
 
@@ -2073,10 +2073,10 @@ const ::test::fixtures::patch::MyUnion& MyUnionPatchStruct::get_ensure() const& 
 
 void swap(FOLLY_MAYBE_UNUSED MyUnionPatchStruct& a, FOLLY_MAYBE_UNUSED MyUnionPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
-  swap(a.ensure_ref().value(), b.ensure_ref().value());
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -2244,10 +2244,10 @@ bool OptionalMyUnionPatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyUn
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyUnionPatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyUnionPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -2422,10 +2422,10 @@ const ::std::vector<::std::int16_t>& MyStructField21PatchStruct::get_append() co
 
 void swap(FOLLY_MAYBE_UNUSED MyStructField21PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField21PatchStruct& b) {
   using ::std::swap;
-  swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.prepend_ref().value(), b.prepend_ref().value());
-  swap(a.append_ref().value(), b.append_ref().value());
+  swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_prepend, b.__fbthrift_field_prepend);
+  swap(a.__fbthrift_field_append, b.__fbthrift_field_append);
   swap(a.__isset, b.__isset);
 }
 
@@ -2584,10 +2584,10 @@ const ::std::vector<::std::int16_t>* OptionalMyStructField21PatchStruct::get_ens
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField21PatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
-  swap(a.ensure_ref().value_unchecked(), b.ensure_ref().value_unchecked());
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -2756,10 +2756,10 @@ const ::std::set<::std::string>& MyStructField22PatchStruct::get_add() const& {
 
 void swap(FOLLY_MAYBE_UNUSED MyStructField22PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField22PatchStruct& b) {
   using ::std::swap;
-  swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.remove_ref().value(), b.remove_ref().value());
-  swap(a.add_ref().value(), b.add_ref().value());
+  swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_remove, b.__fbthrift_field_remove);
+  swap(a.__fbthrift_field_add, b.__fbthrift_field_add);
   swap(a.__isset, b.__isset);
 }
 
@@ -2918,10 +2918,10 @@ const ::std::set<::std::string>* OptionalMyStructField22PatchStruct::get_ensure(
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField22PatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
-  swap(a.ensure_ref().value_unchecked(), b.ensure_ref().value_unchecked());
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -3071,9 +3071,9 @@ const ::std::map<::std::string, ::std::string>& MyStructField23PatchStruct::get_
 
 void swap(FOLLY_MAYBE_UNUSED MyStructField23PatchStruct& a, FOLLY_MAYBE_UNUSED MyStructField23PatchStruct& b) {
   using ::std::swap;
-  swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.put_ref().value(), b.put_ref().value());
+  swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_put, b.__fbthrift_field_put);
   swap(a.__isset, b.__isset);
 }
 
@@ -3232,10 +3232,10 @@ const ::std::map<::std::string, ::std::string>* OptionalMyStructField23PatchStru
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructField23PatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
-  swap(a.ensure_ref().value_unchecked(), b.ensure_ref().value_unchecked());
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 
@@ -3704,30 +3704,30 @@ bool MyStructFieldPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructFieldP
 
 void swap(FOLLY_MAYBE_UNUSED MyStructFieldPatchStruct& a, FOLLY_MAYBE_UNUSED MyStructFieldPatchStruct& b) {
   using ::std::swap;
-  swap(a.boolVal_ref().value(), b.boolVal_ref().value());
-  swap(a.byteVal_ref().value(), b.byteVal_ref().value());
-  swap(a.i16Val_ref().value(), b.i16Val_ref().value());
-  swap(a.i32Val_ref().value(), b.i32Val_ref().value());
-  swap(a.i64Val_ref().value(), b.i64Val_ref().value());
-  swap(a.floatVal_ref().value(), b.floatVal_ref().value());
-  swap(a.doubleVal_ref().value(), b.doubleVal_ref().value());
-  swap(a.stringVal_ref().value(), b.stringVal_ref().value());
-  swap(a.binaryVal_ref().value(), b.binaryVal_ref().value());
-  swap(a.structVal_ref().value(), b.structVal_ref().value());
-  swap(a.optBoolVal_ref().value(), b.optBoolVal_ref().value());
-  swap(a.optByteVal_ref().value(), b.optByteVal_ref().value());
-  swap(a.optI16Val_ref().value(), b.optI16Val_ref().value());
-  swap(a.optI32Val_ref().value(), b.optI32Val_ref().value());
-  swap(a.optI64Val_ref().value(), b.optI64Val_ref().value());
-  swap(a.optFloatVal_ref().value(), b.optFloatVal_ref().value());
-  swap(a.optDoubleVal_ref().value(), b.optDoubleVal_ref().value());
-  swap(a.optStringVal_ref().value(), b.optStringVal_ref().value());
-  swap(a.optBinaryVal_ref().value(), b.optBinaryVal_ref().value());
-  swap(a.optStructVal_ref().value(), b.optStructVal_ref().value());
-  swap(a.optListVal_ref().value(), b.optListVal_ref().value());
-  swap(a.optSetVal_ref().value(), b.optSetVal_ref().value());
-  swap(a.optMapVal_ref().value(), b.optMapVal_ref().value());
-  swap(a.unionVal_ref().value(), b.unionVal_ref().value());
+  swap(a.__fbthrift_field_boolVal, b.__fbthrift_field_boolVal);
+  swap(a.__fbthrift_field_byteVal, b.__fbthrift_field_byteVal);
+  swap(a.__fbthrift_field_i16Val, b.__fbthrift_field_i16Val);
+  swap(a.__fbthrift_field_i32Val, b.__fbthrift_field_i32Val);
+  swap(a.__fbthrift_field_i64Val, b.__fbthrift_field_i64Val);
+  swap(a.__fbthrift_field_floatVal, b.__fbthrift_field_floatVal);
+  swap(a.__fbthrift_field_doubleVal, b.__fbthrift_field_doubleVal);
+  swap(a.__fbthrift_field_stringVal, b.__fbthrift_field_stringVal);
+  swap(a.__fbthrift_field_binaryVal, b.__fbthrift_field_binaryVal);
+  swap(a.__fbthrift_field_structVal, b.__fbthrift_field_structVal);
+  swap(a.__fbthrift_field_optBoolVal, b.__fbthrift_field_optBoolVal);
+  swap(a.__fbthrift_field_optByteVal, b.__fbthrift_field_optByteVal);
+  swap(a.__fbthrift_field_optI16Val, b.__fbthrift_field_optI16Val);
+  swap(a.__fbthrift_field_optI32Val, b.__fbthrift_field_optI32Val);
+  swap(a.__fbthrift_field_optI64Val, b.__fbthrift_field_optI64Val);
+  swap(a.__fbthrift_field_optFloatVal, b.__fbthrift_field_optFloatVal);
+  swap(a.__fbthrift_field_optDoubleVal, b.__fbthrift_field_optDoubleVal);
+  swap(a.__fbthrift_field_optStringVal, b.__fbthrift_field_optStringVal);
+  swap(a.__fbthrift_field_optBinaryVal, b.__fbthrift_field_optBinaryVal);
+  swap(a.__fbthrift_field_optStructVal, b.__fbthrift_field_optStructVal);
+  swap(a.__fbthrift_field_optListVal, b.__fbthrift_field_optListVal);
+  swap(a.__fbthrift_field_optSetVal, b.__fbthrift_field_optSetVal);
+  swap(a.__fbthrift_field_optMapVal, b.__fbthrift_field_optMapVal);
+  swap(a.__fbthrift_field_unionVal, b.__fbthrift_field_unionVal);
   swap(a.__isset, b.__isset);
 }
 
@@ -4007,8 +4007,8 @@ bool MyStructPatchStruct::operator<(FOLLY_MAYBE_UNUSED const MyStructPatchStruct
 void swap(FOLLY_MAYBE_UNUSED MyStructPatchStruct& a, FOLLY_MAYBE_UNUSED MyStructPatchStruct& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_assign, b.__fbthrift_field_assign);
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__isset, b.__isset);
 }
 
@@ -4170,10 +4170,10 @@ bool OptionalMyStructPatchStruct::operator<(FOLLY_MAYBE_UNUSED const OptionalMyS
 
 void swap(FOLLY_MAYBE_UNUSED OptionalMyStructPatchStruct& a, FOLLY_MAYBE_UNUSED OptionalMyStructPatchStruct& b) {
   using ::std::swap;
-  swap(a.clear_ref().value(), b.clear_ref().value());
-  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_clear, b.__fbthrift_field_clear);
+  swap(a.__fbthrift_field_patch, b.__fbthrift_field_patch);
   swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
-  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__fbthrift_field_patchAfter, b.__fbthrift_field_patchAfter);
   swap(a.__isset, b.__isset);
 }
 

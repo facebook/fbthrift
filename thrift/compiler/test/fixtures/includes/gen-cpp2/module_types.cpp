@@ -130,9 +130,9 @@ const ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIncludedField_ref().value(), b.MyIncludedField_ref().value());
-  swap(a.MyOtherIncludedField_ref().value(), b.MyOtherIncludedField_ref().value());
-  swap(a.MyIncludedInt_ref().value(), b.MyIncludedInt_ref().value());
+  swap(a.__fbthrift_field_MyIncludedField, b.__fbthrift_field_MyIncludedField);
+  swap(a.__fbthrift_field_MyOtherIncludedField, b.__fbthrift_field_MyOtherIncludedField);
+  swap(a.__fbthrift_field_MyIncludedInt, b.__fbthrift_field_MyIncludedInt);
   swap(a.__isset, b.__isset);
 }
 

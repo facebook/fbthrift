@@ -119,8 +119,8 @@ const ::module1::Struct& Struct::get_second() const& {
 
 void swap(FOLLY_MAYBE_UNUSED Struct& a, FOLLY_MAYBE_UNUSED Struct& b) {
   using ::std::swap;
-  swap(a.first_ref().value(), b.first_ref().value());
-  swap(a.second_ref().value(), b.second_ref().value());
+  swap(a.__fbthrift_field_first, b.__fbthrift_field_first);
+  swap(a.__fbthrift_field_second, b.__fbthrift_field_second);
   swap(a.__isset, b.__isset);
 }
 
@@ -247,8 +247,8 @@ const ::module2::Struct& BigStruct::get_s() const& {
 
 void swap(FOLLY_MAYBE_UNUSED BigStruct& a, FOLLY_MAYBE_UNUSED BigStruct& b) {
   using ::std::swap;
-  swap(a.s_ref().value(), b.s_ref().value());
-  swap(a.id_ref().value(), b.id_ref().value());
+  swap(a.__fbthrift_field_s, b.__fbthrift_field_s);
+  swap(a.__fbthrift_field_id, b.__fbthrift_field_id);
   swap(a.__isset, b.__isset);
 }
 

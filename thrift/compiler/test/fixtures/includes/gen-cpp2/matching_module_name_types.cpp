@@ -87,7 +87,7 @@ const ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() cons
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.OtherStructField_ref().value(), b.OtherStructField_ref().value());
+  swap(a.__fbthrift_field_OtherStructField, b.__fbthrift_field_OtherStructField);
   swap(a.__isset, b.__isset);
 }
 

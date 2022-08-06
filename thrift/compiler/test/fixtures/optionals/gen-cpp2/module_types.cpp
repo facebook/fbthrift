@@ -132,10 +132,10 @@ bool Color::operator<(FOLLY_MAYBE_UNUSED const Color& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Color& a, FOLLY_MAYBE_UNUSED Color& b) {
   using ::std::swap;
-  swap(a.red_ref().value(), b.red_ref().value());
-  swap(a.green_ref().value(), b.green_ref().value());
-  swap(a.blue_ref().value(), b.blue_ref().value());
-  swap(a.alpha_ref().value(), b.alpha_ref().value());
+  swap(a.__fbthrift_field_red, b.__fbthrift_field_red);
+  swap(a.__fbthrift_field_green, b.__fbthrift_field_green);
+  swap(a.__fbthrift_field_blue, b.__fbthrift_field_blue);
+  swap(a.__fbthrift_field_alpha, b.__fbthrift_field_alpha);
   swap(a.__isset, b.__isset);
 }
 
@@ -290,11 +290,11 @@ const ::cpp2::Color& Vehicle::get_color() const& {
 
 void swap(FOLLY_MAYBE_UNUSED Vehicle& a, FOLLY_MAYBE_UNUSED Vehicle& b) {
   using ::std::swap;
-  swap(a.color_ref().value(), b.color_ref().value());
-  swap(a.licensePlate_ref().value_unchecked(), b.licensePlate_ref().value_unchecked());
-  swap(a.description_ref().value_unchecked(), b.description_ref().value_unchecked());
-  swap(a.name_ref().value_unchecked(), b.name_ref().value_unchecked());
-  swap(a.hasAC_ref().value_unchecked(), b.hasAC_ref().value_unchecked());
+  swap(a.__fbthrift_field_color, b.__fbthrift_field_color);
+  swap(a.__fbthrift_field_licensePlate, b.__fbthrift_field_licensePlate);
+  swap(a.__fbthrift_field_description, b.__fbthrift_field_description);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_hasAC, b.__fbthrift_field_hasAC);
   swap(a.__isset, b.__isset);
 }
 
@@ -537,16 +537,16 @@ const ::std::vector<::cpp2::Vehicle>* Person::get_vehicles() const& {
 
 void swap(FOLLY_MAYBE_UNUSED Person& a, FOLLY_MAYBE_UNUSED Person& b) {
   using ::std::swap;
-  swap(a.id_ref().value(), b.id_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.age_ref().value_unchecked(), b.age_ref().value_unchecked());
-  swap(a.address_ref().value_unchecked(), b.address_ref().value_unchecked());
-  swap(a.favoriteColor_ref().value_unchecked(), b.favoriteColor_ref().value_unchecked());
-  swap(a.friends_ref().value_unchecked(), b.friends_ref().value_unchecked());
-  swap(a.bestFriend_ref().value_unchecked(), b.bestFriend_ref().value_unchecked());
-  swap(a.petNames_ref().value_unchecked(), b.petNames_ref().value_unchecked());
-  swap(a.afraidOfAnimal_ref().value_unchecked(), b.afraidOfAnimal_ref().value_unchecked());
-  swap(a.vehicles_ref().value_unchecked(), b.vehicles_ref().value_unchecked());
+  swap(a.__fbthrift_field_id, b.__fbthrift_field_id);
+  swap(a.__fbthrift_field_name, b.__fbthrift_field_name);
+  swap(a.__fbthrift_field_age, b.__fbthrift_field_age);
+  swap(a.__fbthrift_field_address, b.__fbthrift_field_address);
+  swap(a.__fbthrift_field_favoriteColor, b.__fbthrift_field_favoriteColor);
+  swap(a.__fbthrift_field_friends, b.__fbthrift_field_friends);
+  swap(a.__fbthrift_field_bestFriend, b.__fbthrift_field_bestFriend);
+  swap(a.__fbthrift_field_petNames, b.__fbthrift_field_petNames);
+  swap(a.__fbthrift_field_afraidOfAnimal, b.__fbthrift_field_afraidOfAnimal);
+  swap(a.__fbthrift_field_vehicles, b.__fbthrift_field_vehicles);
   swap(a.__isset, b.__isset);
 }
 

@@ -222,11 +222,11 @@ bool Internship::operator<(FOLLY_MAYBE_UNUSED const Internship& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Internship& a, FOLLY_MAYBE_UNUSED Internship& b) {
   using ::std::swap;
-  swap(a.weeks_ref().value(), b.weeks_ref().value());
-  swap(a.title_ref().value(), b.title_ref().value());
-  swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
-  swap(a.compensation_ref().value_unchecked(), b.compensation_ref().value_unchecked());
-  swap(a.school_ref().value_unchecked(), b.school_ref().value_unchecked());
+  swap(a.__fbthrift_field_weeks, b.__fbthrift_field_weeks);
+  swap(a.__fbthrift_field_title, b.__fbthrift_field_title);
+  swap(a.__fbthrift_field_employer, b.__fbthrift_field_employer);
+  swap(a.__fbthrift_field_compensation, b.__fbthrift_field_compensation);
+  swap(a.__fbthrift_field_school, b.__fbthrift_field_school);
   swap(a.__isset, b.__isset);
 }
 
@@ -315,8 +315,8 @@ bool Range::operator<(FOLLY_MAYBE_UNUSED const Range& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Range& a, FOLLY_MAYBE_UNUSED Range& b) {
   using ::std::swap;
-  swap(a.min_ref().value(), b.min_ref().value());
-  swap(a.max_ref().value(), b.max_ref().value());
+  swap(a.__fbthrift_field_min, b.__fbthrift_field_min);
+  swap(a.__fbthrift_field_max, b.__fbthrift_field_max);
 }
 
 template void Range::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -422,8 +422,8 @@ bool struct1::operator<(FOLLY_MAYBE_UNUSED const struct1& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED struct1& a, FOLLY_MAYBE_UNUSED struct1& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
   swap(a.__isset, b.__isset);
 }
 
@@ -568,10 +568,10 @@ const ::std::vector<::std::int32_t>& struct2::get_d() const& {
 
 void swap(FOLLY_MAYBE_UNUSED struct2& a, FOLLY_MAYBE_UNUSED struct2& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value(), b.b_ref().value());
-  swap(a.c_ref().value(), b.c_ref().value());
-  swap(a.d_ref().value(), b.d_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
+  swap(a.__fbthrift_field_d, b.__fbthrift_field_d);
   swap(a.__isset, b.__isset);
 }
 
@@ -703,9 +703,9 @@ const ::cpp2::struct2& struct3::get_c() const& {
 
 void swap(FOLLY_MAYBE_UNUSED struct3& a, FOLLY_MAYBE_UNUSED struct3& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value(), b.b_ref().value());
-  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
   swap(a.__isset, b.__isset);
 }
 
@@ -829,9 +829,9 @@ bool struct4::operator<(FOLLY_MAYBE_UNUSED const struct4& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED struct4& a, FOLLY_MAYBE_UNUSED struct4& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
-  swap(a.b_ref().value_unchecked(), b.b_ref().value_unchecked());
-  swap(a.c_ref().value_unchecked(), b.c_ref().value_unchecked());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
   swap(a.__isset, b.__isset);
 }
 

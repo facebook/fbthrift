@@ -127,8 +127,8 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.myIntField_ref().value(), b.myIntField_ref().value());
-  swap(a.myStringField_ref().value(), b.myStringField_ref().value());
+  swap(a.__fbthrift_field_myIntField, b.__fbthrift_field_myIntField);
+  swap(a.__fbthrift_field_myStringField, b.__fbthrift_field_myStringField);
   swap(a.__isset, b.__isset);
 }
 

@@ -477,9 +477,9 @@ const ::cpp2::containerTypedef& Val::get_typedefValue() const& {
 
 void swap(FOLLY_MAYBE_UNUSED Val& a, FOLLY_MAYBE_UNUSED Val& b) {
   using ::std::swap;
-  swap(a.strVal_ref().value(), b.strVal_ref().value());
-  swap(a.intVal_ref().value(), b.intVal_ref().value());
-  swap(a.typedefValue_ref().value(), b.typedefValue_ref().value());
+  swap(a.__fbthrift_field_strVal, b.__fbthrift_field_strVal);
+  swap(a.__fbthrift_field_intVal, b.__fbthrift_field_intVal);
+  swap(a.__fbthrift_field_typedefValue, b.__fbthrift_field_typedefValue);
   swap(a.__isset, b.__isset);
 }
 
@@ -790,7 +790,7 @@ bool NonCopyableStruct::operator<(FOLLY_MAYBE_UNUSED const NonCopyableStruct& rh
 
 void swap(FOLLY_MAYBE_UNUSED NonCopyableStruct& a, FOLLY_MAYBE_UNUSED NonCopyableStruct& b) {
   using ::std::swap;
-  swap(a.num_ref().value(), b.num_ref().value());
+  swap(a.__fbthrift_field_num, b.__fbthrift_field_num);
   swap(a.__isset, b.__isset);
 }
 

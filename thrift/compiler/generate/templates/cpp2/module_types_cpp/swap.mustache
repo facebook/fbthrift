@@ -25,9 +25,17 @@ void swap(Struct& a, Struct& b) {
 
 %>void swap(FOLLY_MAYBE_UNUSED <%struct:cpp_underlying_name%>& a, FOLLY_MAYBE_UNUSED <%struct:cpp_underlying_name%>& b) {
   using ::std::swap;
-<%#struct:fields%>
-  swap(a.<% > module_types_cpp/field_value_ref%>, b.<% > module_types_cpp/field_value_ref%>);
-<%/struct:fields%>
+<%#struct:lazy_fields?%>
+  const auto relaxed = std::memory_order_relaxed;
+  swap(a.__fbthrift_protocol_, b.__fbthrift_protocol_);
+  swap(a.__fbthrift_serializedData_, b.__fbthrift_serializedData_);
+<%/struct:lazy_fields?%>
+<%#struct:fields_in_layout_order%>
+  swap(a.<%field:cpp_storage_name%>, b.<%field:cpp_storage_name%>);
+<%#field:lazy?%>
+  a.__fbthrift_isDeserialized_.<%field:cpp_name%>.store(b.__fbthrift_isDeserialized_.<%field:cpp_name%>.exchange(a.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed), relaxed), relaxed);
+<%/field:lazy?%>
+<%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>
   swap(a.__isset, b.__isset);
 <%/struct:isset_fields?%>

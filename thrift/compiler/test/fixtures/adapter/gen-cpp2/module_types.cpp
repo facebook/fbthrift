@@ -243,17 +243,17 @@ bool Foo::operator==(FOLLY_MAYBE_UNUSED const Foo& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Foo& a, FOLLY_MAYBE_UNUSED Foo& b) {
   using ::std::swap;
-  swap(a.intField_ref().value(), b.intField_ref().value());
-  swap(a.optionalIntField_ref().value_unchecked(), b.optionalIntField_ref().value_unchecked());
-  swap(a.intFieldWithDefault_ref().value(), b.intFieldWithDefault_ref().value());
-  swap(a.setField_ref().value(), b.setField_ref().value());
-  swap(a.optionalSetField_ref().value_unchecked(), b.optionalSetField_ref().value_unchecked());
-  swap(a.mapField_ref().value(), b.mapField_ref().value());
-  swap(a.optionalMapField_ref().value_unchecked(), b.optionalMapField_ref().value_unchecked());
-  swap(a.binaryField_ref().value(), b.binaryField_ref().value());
-  swap(a.longField_ref().value(), b.longField_ref().value());
-  swap(a.adaptedLongField_ref().value(), b.adaptedLongField_ref().value());
-  swap(a.doubleAdaptedField_ref().value(), b.doubleAdaptedField_ref().value());
+  swap(a.__fbthrift_field_intField, b.__fbthrift_field_intField);
+  swap(a.__fbthrift_field_optionalIntField, b.__fbthrift_field_optionalIntField);
+  swap(a.__fbthrift_field_intFieldWithDefault, b.__fbthrift_field_intFieldWithDefault);
+  swap(a.__fbthrift_field_setField, b.__fbthrift_field_setField);
+  swap(a.__fbthrift_field_optionalSetField, b.__fbthrift_field_optionalSetField);
+  swap(a.__fbthrift_field_mapField, b.__fbthrift_field_mapField);
+  swap(a.__fbthrift_field_optionalMapField, b.__fbthrift_field_optionalMapField);
+  swap(a.__fbthrift_field_binaryField, b.__fbthrift_field_binaryField);
+  swap(a.__fbthrift_field_longField, b.__fbthrift_field_longField);
+  swap(a.__fbthrift_field_adaptedLongField, b.__fbthrift_field_adaptedLongField);
+  swap(a.__fbthrift_field_doubleAdaptedField, b.__fbthrift_field_doubleAdaptedField);
   swap(a.__isset, b.__isset);
 }
 
@@ -453,7 +453,7 @@ bool DirectlyAdapted::operator<(FOLLY_MAYBE_UNUSED const DirectlyAdapted& rhs) c
 
 void swap(FOLLY_MAYBE_UNUSED DirectlyAdapted& a, FOLLY_MAYBE_UNUSED DirectlyAdapted& b) {
   using ::std::swap;
-  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -651,13 +651,13 @@ const ::std::vector<::facebook::thrift::test::FooWithAdapter>* Bar::get_optional
 
 void swap(FOLLY_MAYBE_UNUSED Bar& a, FOLLY_MAYBE_UNUSED Bar& b) {
   using ::std::swap;
-  swap(a.structField_ref().value(), b.structField_ref().value());
-  swap(a.optionalStructField_ref().value_unchecked(), b.optionalStructField_ref().value_unchecked());
-  swap(a.structListField_ref().value(), b.structListField_ref().value());
-  swap(a.optionalStructListField_ref().value_unchecked(), b.optionalStructListField_ref().value_unchecked());
-  swap(a.unionField_ref().value(), b.unionField_ref().value());
-  swap(a.optionalUnionField_ref().value_unchecked(), b.optionalUnionField_ref().value_unchecked());
-  swap(a.adaptedStructField_ref().value(), b.adaptedStructField_ref().value());
+  swap(a.__fbthrift_field_structField, b.__fbthrift_field_structField);
+  swap(a.__fbthrift_field_optionalStructField, b.__fbthrift_field_optionalStructField);
+  swap(a.__fbthrift_field_structListField, b.__fbthrift_field_structListField);
+  swap(a.__fbthrift_field_optionalStructListField, b.__fbthrift_field_optionalStructListField);
+  swap(a.__fbthrift_field_unionField, b.__fbthrift_field_unionField);
+  swap(a.__fbthrift_field_optionalUnionField, b.__fbthrift_field_optionalUnionField);
+  swap(a.__fbthrift_field_adaptedStructField, b.__fbthrift_field_adaptedStructField);
   swap(a.__isset, b.__isset);
 }
 
@@ -841,7 +841,7 @@ bool StructWithFieldAdapter::operator<(FOLLY_MAYBE_UNUSED const StructWithFieldA
 
 void swap(FOLLY_MAYBE_UNUSED StructWithFieldAdapter& a, FOLLY_MAYBE_UNUSED StructWithFieldAdapter& b) {
   using ::std::swap;
-  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
   swap(a.shared_field, b.shared_field);
   swap(a.opt_shared_field, b.opt_shared_field);
   swap(a.__fbthrift_field_opt_boxed_field, b.__fbthrift_field_opt_boxed_field);
@@ -984,9 +984,9 @@ bool TerseAdaptedFields::operator<(FOLLY_MAYBE_UNUSED const TerseAdaptedFields& 
 
 void swap(FOLLY_MAYBE_UNUSED TerseAdaptedFields& a, FOLLY_MAYBE_UNUSED TerseAdaptedFields& b) {
   using ::std::swap;
-  swap(a.int_field_ref().value(), b.int_field_ref().value());
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.set_field_ref().value(), b.set_field_ref().value());
+  swap(a.__fbthrift_field_int_field, b.__fbthrift_field_int_field);
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_set_field, b.__fbthrift_field_set_field);
 }
 
 template void TerseAdaptedFields::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1170,7 +1170,7 @@ bool B::operator<(FOLLY_MAYBE_UNUSED const B& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED B& a, FOLLY_MAYBE_UNUSED B& b) {
   using ::std::swap;
-  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
   swap(a.__isset, b.__isset);
 }
 
@@ -1263,7 +1263,7 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
   swap(a.__isset, b.__isset);
 }
 

@@ -127,7 +127,7 @@ bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
-  swap(a.myString_ref().value(), b.myString_ref().value());
+  swap(a.__fbthrift_field_myString, b.__fbthrift_field_myString);
   swap(a.__isset, b.__isset);
 }
 
@@ -338,7 +338,7 @@ bool MyException::operator<(FOLLY_MAYBE_UNUSED const MyException& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED MyException& a, FOLLY_MAYBE_UNUSED MyException& b) {
   using ::std::swap;
-  swap(a.myString_ref().value(), b.myString_ref().value());
+  swap(a.__fbthrift_field_myString, b.__fbthrift_field_myString);
   swap(a.__isset, b.__isset);
 }
 

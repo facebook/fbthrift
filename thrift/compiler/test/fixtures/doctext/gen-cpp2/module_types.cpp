@@ -105,7 +105,7 @@ bool A::operator<(FOLLY_MAYBE_UNUSED const A& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED A& a, FOLLY_MAYBE_UNUSED A& b) {
   using ::std::swap;
-  swap(a.useless_field_ref().value(), b.useless_field_ref().value());
+  swap(a.__fbthrift_field_useless_field, b.__fbthrift_field_useless_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -315,7 +315,7 @@ bool Bang::operator<(FOLLY_MAYBE_UNUSED const Bang& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Bang& a, FOLLY_MAYBE_UNUSED Bang& b) {
   using ::std::swap;
-  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.__fbthrift_field_message, b.__fbthrift_field_message);
   swap(a.__isset, b.__isset);
 }
 

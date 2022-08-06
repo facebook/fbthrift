@@ -92,7 +92,7 @@ bool Fields::operator<(FOLLY_MAYBE_UNUSED const Fields& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED Fields& a, FOLLY_MAYBE_UNUSED Fields& b) {
   using ::std::swap;
-  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
+  swap(a.__fbthrift_field_injected_field, b.__fbthrift_field_injected_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -188,7 +188,7 @@ bool FieldsInjectedToEmptyStruct::operator<(FOLLY_MAYBE_UNUSED const FieldsInjec
 
 void swap(FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct& b) {
   using ::std::swap;
-  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
+  swap(a.__fbthrift_field_injected_field, b.__fbthrift_field_injected_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -295,8 +295,8 @@ bool FieldsInjectedToStruct::operator<(FOLLY_MAYBE_UNUSED const FieldsInjectedTo
 
 void swap(FOLLY_MAYBE_UNUSED FieldsInjectedToStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedToStruct& b) {
   using ::std::swap;
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_injected_field, b.__fbthrift_field_injected_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -423,8 +423,8 @@ bool FieldsInjectedWithIncludedStruct::operator<(FOLLY_MAYBE_UNUSED const Fields
 
 void swap(FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct& a, FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct& b) {
   using ::std::swap;
-  swap(a.string_field_ref().value(), b.string_field_ref().value());
-  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
+  swap(a.__fbthrift_field_string_field, b.__fbthrift_field_string_field);
+  swap(a.__fbthrift_field_injected_field, b.__fbthrift_field_injected_field);
   swap(a.__fbthrift_field_injected_structured_annotation_field, b.__fbthrift_field_injected_structured_annotation_field);
   swap(a.__fbthrift_field_injected_unstructured_annotation_field, b.__fbthrift_field_injected_unstructured_annotation_field);
   swap(a.__isset, b.__isset);

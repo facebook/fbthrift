@@ -79,7 +79,7 @@ bool B::operator<(FOLLY_MAYBE_UNUSED const B& rhs) const {
 
 void swap(FOLLY_MAYBE_UNUSED B& a, FOLLY_MAYBE_UNUSED B& b) {
   using ::std::swap;
-  swap(a.field_ref().value_unchecked(), b.field_ref().value_unchecked());
+  swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -175,7 +175,7 @@ std::unordered_map<::std::int32_t, ::apache::thrift::test::B>* A::get_some_map()
 
 void swap(FOLLY_MAYBE_UNUSED A& a, FOLLY_MAYBE_UNUSED A& b) {
   using ::std::swap;
-  swap(a.some_map_ref().value_unchecked(), b.some_map_ref().value_unchecked());
+  swap(a.__fbthrift_field_some_map, b.__fbthrift_field_some_map);
   swap(a.__isset, b.__isset);
 }
 
