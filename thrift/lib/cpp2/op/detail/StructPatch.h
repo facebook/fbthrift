@@ -22,26 +22,18 @@
 #include <thrift/lib/cpp2/op/detail/BasePatch.h>
 #include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
+#include <thrift/lib/cpp2/type/TagUtil.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
 
-template <typename U, typename T = folly::remove_cvref_t<U>>
-using structured_tag = folly::conditional_t<
-    is_thrift_union_v<T>,
-    type::union_t<T>,
-    folly::conditional_t<
-        is_thrift_exception_v<T>,
-        type::exception_t<T>,
-        type::struct_t<T>>>;
-
 // Requires Patch have fields with ids 1:1 with the fields they patch.
 template <typename Patch>
 class FieldPatch : public BasePatch<Patch, FieldPatch<Patch>> {
   using Base = BasePatch<Patch, FieldPatch>;
-  using PTag = structured_tag<Patch>;
+  using PTag = type::structured_tag<Patch>;
 
  public:
   using Base::apply;
@@ -88,7 +80,7 @@ class FieldPatch : public BasePatch<Patch, FieldPatch<Patch>> {
   // Gets the field reference, for the given field
   template <typename Id, typename T>
   constexpr static decltype(auto) get(Id, T&& data) {
-    return op::get<structured_tag<T>, Id>(std::forward<T>(data));
+    return op::get<type::structured_tag<T>, Id>(std::forward<T>(data));
   }
 
   friend bool operator==(const FieldPatch& lhs, const FieldPatch& rhs) {
