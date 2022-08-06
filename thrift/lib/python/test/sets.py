@@ -20,7 +20,10 @@ import copy
 import unittest
 from typing import AbstractSet, Sequence, Tuple
 
+from folly.iobuf import IOBuf
+
 from testing.thrift_types import easy, EasySet, SetI32, SetI32Lists, SetSetI32Lists
+from thrift.python.test.containers.thrift_types import Foo, Sets
 
 
 class SetTests(unittest.TestCase):
@@ -175,3 +178,32 @@ class SetTests(unittest.TestCase):
         self.assertLessEqual(a, f)
         self.assertGreaterEqual(a, d)
         self.assertGreaterEqual(f, a)
+
+    def test_struct_with_set_fields(self) -> None:
+        s = Sets(
+            boolSet={True, False},
+            byteSet={1, 2, 3},
+            i16Set={4, 5, 6},
+            i64Set={7, 8, 9},
+            doubleSet={1.23, 4.56},
+            floatSet={7.89, 10.11},
+            stringSet={"foo", "bar"},
+            binarySet={b"foo", b"bar"},
+            iobufSet={IOBuf(b"foo"), IOBuf(b"bar")},
+            structSet={Foo(value=1), Foo(value=2)},
+        )
+        self.assertEqual(s.boolSet, {True, False})
+        self.assertEqual(s.byteSet, {1, 2, 3})
+        self.assertEqual(s.i16Set, {4, 5, 6})
+        self.assertEqual(s.i64Set, {7, 8, 9})
+        self.assertEqual(s.doubleSet, {1.23, 4.56})
+        self.assertEqual(s.floatSet, {7.89, 10.11})
+        self.assertEqual(s.stringSet, {"foo", "bar"})
+        self.assertEqual(s.binarySet, {b"foo", b"bar"})
+        self.assertEqual(s.iobufSet, {IOBuf(b"foo"), IOBuf(b"bar")})
+        self.assertEqual(s.structSet, {Foo(value=1), Foo(value=2)})
+        # test reaccess the set element won't have to recreating the struct
+        structs1 = list(s.structSet)
+        structs2 = list(s.structSet)
+        self.assertIs(structs1[0], structs2[0])
+        self.assertIs(structs1[1], structs2[1])

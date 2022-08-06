@@ -161,7 +161,7 @@ cdef class BadEnum:
 
 cdef class Container:
     cdef object _fbthrift_val_info
-    cdef object _fbthrift_data
+    cdef object _fbthrift_elements
 
 cdef class List(Container):
     pass

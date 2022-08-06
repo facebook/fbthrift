@@ -20,6 +20,8 @@ import unittest
 
 from enum import Enum
 
+from folly.iobuf import IOBuf
+
 from testing.thrift_types import (
     easy,
     F14MapFollyString,
@@ -30,6 +32,7 @@ from testing.thrift_types import (
     StrStrIntListMapMap,
     StrStrMap,
 )
+from thrift.python.test.containers.thrift_types import Foo, Maps
 
 
 class MyStringEnum(str, Enum):
@@ -139,3 +142,34 @@ class MapTests(unittest.TestCase):
         self.assertEqual(a, b)
         self.assertEqual(a, d)
         self.assertNotEqual(a, c)
+
+    def test_struct_with_map_fields(self) -> None:
+        s = Maps(
+            boolMap={True: True, False: False},
+            byteMap={1: 1, 2: 2, 3: 3},
+            i16Map={4: 4, 5: 5, 6: 6},
+            i64Map={7: 7, 8: 8, 9: 9},
+            doubleMap={1.23: 1.23, 4.56: 4.56},
+            floatMap={7.89: 7.89, 10.11: 10.11},
+            stringMap={"foo": "foo", "bar": "bar"},
+            binaryMap={b"foo": b"foo", b"bar": b"bar"},
+            iobufMap={IOBuf(b"foo"): IOBuf(b"foo"), IOBuf(b"bar"): IOBuf(b"bar")},
+            structMap={Foo(value=1): Foo(value=1), Foo(value=2): Foo(value=2)},
+        )
+        self.assertEqual(s.boolMap, {True: True, False: False})
+        self.assertEqual(s.byteMap, {1: 1, 2: 2, 3: 3})
+        self.assertEqual(s.i16Map, {4: 4, 5: 5, 6: 6})
+        self.assertEqual(s.i64Map, {7: 7, 8: 8, 9: 9})
+        self.assertEqual(s.doubleMap, {1.23: 1.23, 4.56: 4.56})
+        self.assertEqual(s.floatMap, {7.89: 7.89, 10.11: 10.11})
+        self.assertEqual(s.stringMap, {"foo": "foo", "bar": "bar"})
+        self.assertEqual(s.binaryMap, {b"foo": b"foo", b"bar": b"bar"})
+        self.assertEqual(
+            s.iobufMap, {IOBuf(b"foo"): IOBuf(b"foo"), IOBuf(b"bar"): IOBuf(b"bar")}
+        )
+        self.assertEqual(
+            s.structMap, {Foo(value=1): Foo(value=1), Foo(value=2): Foo(value=2)}
+        )
+        # test reaccess the map element won't have to recreating the struct
+        self.assertIs(s.structMap[Foo(value=1)], s.structMap[Foo(value=1)])
+        self.assertIs(s.structMap[Foo(value=2)], s.structMap[Foo(value=2)])

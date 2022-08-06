@@ -61,6 +61,9 @@ cdef class TypeInfo:
     def to_python_value(self, object value):
         return value
 
+    def to_container_value(self, object value):
+        return self.to_internal_data(value)
+
 
 cdef class IntegerTypeInfo:
     @staticmethod
@@ -84,6 +87,8 @@ cdef class IntegerTypeInfo:
     def to_python_value(self, object value):
         return value
 
+    def to_container_value(self, object value not None):
+        return self.to_internal_data(value)
 
 
 cdef class StringTypeInfo:
@@ -103,6 +108,11 @@ cdef class StringTypeInfo:
     def to_python_value(self, object value):
         return value.decode("UTF-8")
 
+    def to_container_value(self, object value not None):
+        if not isinstance(value, str):
+            raise TypeError(f"value {value} is not a <class 'str'>.")
+        return value
+
 
 cdef class IOBufTypeInfo:
     @staticmethod
@@ -117,6 +127,8 @@ cdef class IOBufTypeInfo:
     def to_python_value(self, object value):
         return value
 
+    def to_container_value(self, IOBuf value):
+        return value
 
 
 typeinfo_bool = TypeInfo.create(boolTypeInfo, (pbool,))
@@ -232,16 +244,19 @@ cdef class ListTypeInfo:
 
     # validate and convert to format serializer may understand
     def to_internal_data(self, value not None):
-        if isinstance(value, List):
-            return (<List>value)._fbthrift_data
         return tuple(self.val_info.to_internal_data(v) for v in value)
 
     # convert deserialized data to user format
     def to_python_value(self, object value):
         cdef List inst = List.__new__(List)
         inst._fbthrift_val_info = self.val_info
-        inst._fbthrift_data = value
+        inst._fbthrift_elements = tuple(self.val_info.to_python_value(v) for v in value)
         return inst
+
+    def to_container_value(self, object value not None):
+        if isinstance(value, List):
+            return value
+        return List(self.val_info, value)
 
 
 cdef class SetTypeInfo:
@@ -260,8 +275,13 @@ cdef class SetTypeInfo:
     def to_python_value(self, object value):
         cdef Set inst = Set.__new__(Set)
         inst._fbthrift_val_info = self.val_info
-        inst._fbthrift_data = value
+        inst._fbthrift_elements = frozenset(self.val_info.to_python_value(v) for v in value)
         return inst
+
+    def to_container_value(self, object value not None):
+        if isinstance(value, Set):
+            return value
+        return Set(self.val_info, value)
 
 
 cdef class MapTypeInfo:
@@ -287,10 +307,15 @@ cdef class MapTypeInfo:
         cdef Map inst = Map.__new__(Map)
         inst._fbthrift_key_info = self.key_info
         inst._fbthrift_val_info = self.val_info
-        inst._fbthrift_data = {
-            k: v for k, v in value
+        inst._fbthrift_elements = {
+            self.key_info.to_python_value(k): self.val_info.to_python_value(v) for k, v in value
         }
         return inst
+
+    def to_container_value(self, object value not None):
+        if isinstance(value, Map):
+            return value
+        return Map(self.key_info, self.val_info, value)
 
 
 cdef class StructTypeInfo:
@@ -327,6 +352,11 @@ cdef class StructTypeInfo:
     def to_python_value(self, object value):
         return self._class._fbthrift_create(value)
 
+    def to_container_value(self, object value not None):
+        if not isinstance(value, self._class):
+            raise TypeError(f"value {value} is not a {self._class !r}.")
+        return value
+
 
 cdef class EnumTypeInfo:
     def __cinit__(self, klass):
@@ -345,6 +375,11 @@ cdef class EnumTypeInfo:
         except ValueError:
             return BadEnum(self._class, value)
 
+    def to_container_value(self, object value not None):
+        if not isinstance(value, self._class):
+            raise TypeError(f"value {value} is not '{self._class}'.")
+        return value
+
 
 cdef class AdaptedTypeInfo:
     def __cinit__(self, orig_type_info, adapter_class):
@@ -362,6 +397,9 @@ cdef class AdaptedTypeInfo:
         return self._adapter_class.from_thrift(
             self._orig_type_info.to_python_value(value)
         )
+
+    def to_container_value(self, object value not None):
+        return value
 
 
 cdef void set_struct_field(tuple struct_tuple, int16_t index, value) except *:
@@ -770,8 +808,7 @@ cdef class Container:
     Base class for immutable container types
     """
     def __len__(Container self):
-        return len(self._fbthrift_data)
-
+        return len(self._fbthrift_elements)
 
 
 cdef list_compare(object first, object second, int op):
@@ -822,10 +859,10 @@ cdef class List(Container):
                 "If you really want to pass a string or bytes into a "
                 "_typing.Sequence[str] field, explicitly convert it first."
             )
-        self._fbthrift_data = tuple(val_info.to_internal_data(v) for v in values)
+        self._fbthrift_elements = tuple(val_info.to_container_value(v) for v in values)
 
     def __hash__(self):
-        return hash(tuple(self))
+        return hash(self._fbthrift_elements)
 
     def __add__(List self, other):
         return list(itertools.chain(self, other))
@@ -863,40 +900,38 @@ cdef class List(Container):
 
     def __getitem__(self, object index_obj):
         if not isinstance(index_obj, slice):
-            return self._fbthrift_val_info.to_python_value(self._fbthrift_data[index_obj])
-        return [self._fbthrift_val_info.to_python_value(v) for v in self._fbthrift_data[index_obj]]
+            return self._fbthrift_elements[index_obj]
+        return List(self._fbthrift_val_info, self._fbthrift_elements[index_obj])
 
     def __contains__(self, item):
         if item is None:
             return False
         try:
-            return self._fbthrift_val_info.to_internal_data(item) in self._fbthrift_data
+            return self._fbthrift_val_info.to_container_value(item) in self._fbthrift_elements
         except TypeError:
             return False
 
     def __iter__(self):
-        for v in self._fbthrift_data:
-            yield self._fbthrift_val_info.to_python_value(v)
+        return iter(self._fbthrift_elements)
 
     def __reversed__(self):
-        for v in reversed(self._fbthrift_data):
-            yield self._fbthrift_val_info.to_python_value(v)
+        return reversed(self._fbthrift_elements)
 
     def index(self, item, start=0, stop=None):
         try:
-            item_value = self._fbthrift_val_info.to_internal_data(item)
+            item_value = self._fbthrift_val_info.to_container_value(item)
         except TypeError:
             raise ValueError(f"{item} is not in list")
         if stop is None:
             stop = len(self)
-        return self._fbthrift_data.index(item_value, start, stop)
+        return self._fbthrift_elements.index(item_value, start, stop)
 
     def count(self, item):
         try:
-            item_value = self._fbthrift_val_info.to_internal_data(item)
+            item_value = self._fbthrift_val_info.to_container_value(item)
         except TypeError:
             return 0
-        return self._fbthrift_data.count(item_value)
+        return self._fbthrift_elements.count(item_value)
 
 Sequence.register(List)
 
@@ -925,40 +960,40 @@ cdef class Set(Container):
                 "If you really want to pass a string or bytes into a "
                 "_typing.Sequence[str] field, explicitly convert it first."
             )
-        self._fbthrift_data = frozenset(val_info.to_internal_data(v) for v in values)
+        self._fbthrift_elements = frozenset(val_info.to_container_value(v) for v in values)
 
     def __hash__(self):
-        return hash(tuple(self))
+        return hash(self._fbthrift_elements)
 
     def __and__(Set self, other):
-        return frozenset(self) & other
+        return self._fbthrift_elements & other
 
     def __rand__(Set self, other):
-        return other & frozenset(self)
+        return other & self._fbthrift_elements
 
     def __sub__(Set self, other):
-        return frozenset(self) - other
+        return self._fbthrift_elements - other
 
     def __rsub__(Set self, other):
-        return other - frozenset(self)
+        return other - self._fbthrift_elements
 
     def __or__(Set self, other):
-        return frozenset(self) | other
+        return self._fbthrift_elements | other
 
     def __ror__(Set self, other):
-        return other | frozenset(self)
+        return other | self._fbthrift_elements
 
     def __xor__(Set self, other):
-        return frozenset(self) ^ other
+        return self._fbthrift_elements ^ other
 
     def __rxor__(Set self, other):
-        return other ^ frozenset(self)
+        return other ^ self._fbthrift_elements
 
     def __eq__(Set self, other):
-        return frozenset(self) == other
+        return self._fbthrift_elements == other
 
     def __lt__(Set self, other):
-        return frozenset(self) < other
+        return self._fbthrift_elements < other
 
     def __gt__(Set self, other):
         return not (self == other or self < other)
@@ -981,17 +1016,15 @@ cdef class Set(Container):
         if item is None:
             return False
         try:
-            return self._fbthrift_val_info.to_internal_data(item) in self._fbthrift_data
+            return self._fbthrift_val_info.to_container_value(item) in self._fbthrift_elements
         except TypeError:
             return False
 
     def __iter__(self):
-        for v in self._fbthrift_data:
-            yield self._fbthrift_val_info.to_python_value(v)
+        return iter(self._fbthrift_elements)
 
     def __reversed__(self):
-        for v in reversed(self._fbthrift_data):
-            yield self._fbthrift_val_info.to_python_value(v)
+        return reversed(self._fbthrift_elements)
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1039,8 +1072,8 @@ cdef class Map(Container):
     def __init__(self, key_info, val_info, values):
         self._fbthrift_key_info = key_info
         self._fbthrift_val_info = val_info
-        self._fbthrift_data = {
-            key_info.to_internal_data(k): val_info.to_internal_data(v)
+        self._fbthrift_elements = {
+            key_info.to_container_value(k): val_info.to_container_value(v)
             for k, v in values.items()
         }
 
@@ -1065,36 +1098,33 @@ cdef class Map(Container):
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
     def __reduce__(Map self):
-        return (Map, (self._fbthrift_val_info, dict(self),))
+        return (Map, (self._fbthrift_key_info, self._fbthrift_val_info, dict(self),))
 
     def __getitem__(Map self, object key):
         try:
-            key_obj = self._fbthrift_key_info.to_internal_data(key)
+            key_obj = self._fbthrift_key_info.to_container_value(key)
         except TypeError:
             raise KeyError(repr(key))
-        return self._fbthrift_val_info.to_python_value(self._fbthrift_data[key_obj])
+        return self._fbthrift_elements[key_obj]
 
     def __contains__(self, key):
         try:
-            key_obj = self._fbthrift_key_info.to_internal_data(key)
+            key_obj = self._fbthrift_key_info.to_container_value(key)
         except TypeError:
             return False
-        return key_obj in self._fbthrift_data
+        return key_obj in self._fbthrift_elements
 
     def __iter__(Map self):
-        for k in self._fbthrift_data:
-            yield self._fbthrift_key_info.to_python_value(k)
+        return iter(self._fbthrift_elements)
 
     def keys(Map self):
-        return self.__iter__()
+        return self._fbthrift_elements.keys()
 
     def values(Map self):
-        for v in self._fbthrift_data.values():
-            yield self._fbthrift_val_info.to_python_value(v)
+        return self._fbthrift_elements.values()
 
     def items(self):
-        for k, v in self._fbthrift_data.items():
-            yield self._fbthrift_key_info.to_python_value(k), self._fbthrift_val_info.to_python_value(v)
+        return self._fbthrift_elements.items()
 
     def get(Map self, key, default=None):
         try:

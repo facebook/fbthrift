@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import asyncio
 import unittest
-from typing import Mapping
 
 from apache.thrift.test.terse_write.terse_write.thrift_types import (
     EmptyStruct,
@@ -48,6 +47,7 @@ from thrift.python.serializer import (
     serialize,
     serialize_iobuf,
 )
+from thrift.python.test.containers.thrift_types import Foo, Lists, Maps, Sets
 from thrift.python.types import StructOrUnion
 
 
@@ -139,6 +139,51 @@ class SerializerTests(unittest.TestCase):
 
     def test_serialize_iobuf_list_struct(self) -> None:
         control = IOBufListStruct(iobufs=[IOBuf(b"foo"), IOBuf(b"bar")])
+        self.thrift_serialization_round_trip(control)
+
+    def test_serialize_lists_struct(self) -> None:
+        control = Lists(
+            boolList=[True, False],
+            byteList=[1, 2, 3],
+            i16List=[4, 5, 6],
+            i64List=[7, 8, 9],
+            doubleList=[1.23, 4.56],
+            floatList=[7.0, 8.0],
+            stringList=["foo", "bar"],
+            binaryList=[b"foo", b"bar"],
+            iobufList=[IOBuf(b"foo"), IOBuf(b"bar")],
+            structList=[Foo(value=1), Foo(value=2)],
+        )
+        self.thrift_serialization_round_trip(control)
+
+    def test_serialize_set_struct(self) -> None:
+        control = Sets(
+            boolSet={True, False},
+            byteSet={1, 2, 3},
+            i16Set={4, 5, 6},
+            i64Set={7, 8, 9},
+            doubleSet={1.23, 4.56},
+            floatSet={7, 8},
+            stringSet={"foo", "bar"},
+            binarySet={b"foo", b"bar"},
+            iobufSet={IOBuf(b"foo"), IOBuf(b"bar")},
+            structSet={Foo(value=1), Foo(value=2)},
+        )
+        self.thrift_serialization_round_trip(control)
+
+    def test_serialize_map_struct(self) -> None:
+        control = Maps(
+            boolMap={True: 1, False: 0},
+            byteMap={1: 1, 2: 2, 3: 3},
+            i16Map={4: 4, 5: 5, 6: 6},
+            i64Map={7: 7, 8: 8, 9: 9},
+            doubleMap={1.23: 1.23, 4.56: 4.56},
+            floatMap={7.0: 7.0, 8.0: 8.0},
+            stringMap={"foo": "foo", "bar": "bar"},
+            binaryMap={b"foo": b"foo", b"bar": b"bar"},
+            iobufMap={IOBuf(b"foo"): IOBuf(b"foo"), IOBuf(b"bar"): IOBuf(b"bar")},
+            structMap={Foo(value=1): Foo(value=1), Foo(value=2): Foo(value=2)},
+        )
         self.thrift_serialization_round_trip(control)
 
     def test_deserialize_with_length(self) -> None:

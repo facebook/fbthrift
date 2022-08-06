@@ -19,6 +19,8 @@ from __future__ import annotations
 import itertools
 import unittest
 
+from folly.iobuf import IOBuf
+
 from testing.thrift_types import (
     easy,
     EasyList,
@@ -27,6 +29,7 @@ from testing.thrift_types import (
     StringList,
     StrList2D,
 )
+from thrift.python.test.containers.thrift_types import Foo, Lists
 
 
 class ListTests(unittest.TestCase):
@@ -161,3 +164,30 @@ class ListTests(unittest.TestCase):
         self.assertGreaterEqual(a, d)
         self.assertLessEqual(a, c)
         self.assertGreaterEqual(c, e)
+
+    def test_struct_with_list_fields(self) -> None:
+        s = Lists(
+            boolList=[True, False],
+            byteList=[1, 2, 3],
+            i16List=[4, 5, 6],
+            i64List=[7, 8, 9],
+            doubleList=[1.23, 4.56],
+            floatList=[7.89, 10.11],
+            stringList=["foo", "bar"],
+            binaryList=[b"foo", b"bar"],
+            iobufList=[IOBuf(b"foo"), IOBuf(b"bar")],
+            structList=[Foo(value=1), Foo(value=2)],
+        )
+        self.assertEqual(s.boolList, [True, False])
+        self.assertEqual(s.byteList, [1, 2, 3])
+        self.assertEqual(s.i16List, [4, 5, 6])
+        self.assertEqual(s.i64List, [7, 8, 9])
+        self.assertEqual(s.doubleList, [1.23, 4.56])
+        self.assertEqual(s.floatList, [7.89, 10.11])
+        self.assertEqual(s.stringList, ["foo", "bar"])
+        self.assertEqual(s.binaryList, [b"foo", b"bar"])
+        self.assertEqual(s.iobufList, [IOBuf(b"foo"), IOBuf(b"bar")])
+        self.assertEqual(s.structList, [Foo(value=1), Foo(value=2)])
+        # test reaccess the list element not recreating the struct
+        self.assertIs(s.structList[0], s.structList[0])
+        self.assertIs(s.structList[1], s.structList[1])
