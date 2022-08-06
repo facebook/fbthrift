@@ -158,6 +158,42 @@ TEST(FieldMaskTest, MaskRefIsMask) {
   }
 }
 
+TEST(FieldMaskTest, ThrowIfContainsMapMask) {
+  throwIfContainsMapMask(allMask()); // don't throw
+  throwIfContainsMapMask(noneMask()); // don't throw
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[5] = allMask();
+    EXPECT_THROW(throwIfContainsMapMask(m), std::runtime_error);
+  }
+  {
+    Mask m;
+    m.excludes_map_ref().emplace()[5] = allMask();
+    EXPECT_THROW(throwIfContainsMapMask(m), std::runtime_error);
+  }
+  {
+    Mask m;
+    auto& includes = m.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2].excludes_ref().emplace()[5] = noneMask();
+    throwIfContainsMapMask(m); // don't throw
+  }
+  {
+    Mask m;
+    auto& includes = m.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2].includes_map_ref().emplace()[5] = noneMask();
+    EXPECT_THROW(throwIfContainsMapMask(m), std::runtime_error);
+  }
+  {
+    Mask m;
+    auto& includes = m.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2].excludes_map_ref().emplace()[5] = noneMask();
+    EXPECT_THROW(throwIfContainsMapMask(m), std::runtime_error);
+  }
+}
+
 TEST(FieldMaskTest, MaskRefGetIncludes) {
   Mask m;
   // includes{8: excludes{},

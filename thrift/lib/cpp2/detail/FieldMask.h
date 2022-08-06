@@ -253,4 +253,8 @@ Mask path(const Mask& other) {
   }
   throw std::runtime_error("field doesn't exist");
 }
+
+// Throws a runtime error if the mask contains a map mask.
+void throwIfContainsMapMask(const Mask& mask);
+
 } // namespace apache::thrift::protocol::detail

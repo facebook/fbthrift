@@ -21,6 +21,7 @@ using apache::thrift::protocol::FieldIdToMask;
 namespace apache::thrift::protocol {
 
 Mask reverseMask(const Mask& mask) {
+  detail::throwIfContainsMapMask(mask);
   Mask reverse;
   if (mask.includes_ref()) {
     reverse.excludes_ref() = mask.includes_ref().value();
@@ -31,11 +32,13 @@ Mask reverseMask(const Mask& mask) {
 }
 
 void clear(const Mask& mask, protocol::Object& obj) {
+  detail::throwIfContainsMapMask(mask);
   (detail::MaskRef{mask, false}).clear(obj);
 }
 
 void copy(
     const Mask& mask, const protocol::Object& src, protocol::Object& dst) {
+  detail::throwIfContainsMapMask(mask);
   (detail::MaskRef{mask, false}).copy(src, dst);
 }
 
@@ -129,6 +132,8 @@ Mask createExcludesMask(FieldIdToMask&& map) {
 }
 
 Mask operator&(const Mask& lhs, const Mask& rhs) {
+  detail::throwIfContainsMapMask(lhs);
+  detail::throwIfContainsMapMask(rhs);
   if (lhs.includes_ref()) {
     if (rhs.includes_ref()) { // lhs=includes rhs=includes
       return createIncludesMask(intersectMask(
@@ -147,6 +152,8 @@ Mask operator&(const Mask& lhs, const Mask& rhs) {
       unionMask(lhs.excludes_ref().value(), rhs.excludes_ref().value()));
 }
 Mask operator|(const Mask& lhs, const Mask& rhs) {
+  detail::throwIfContainsMapMask(lhs);
+  detail::throwIfContainsMapMask(rhs);
   if (lhs.includes_ref()) {
     if (rhs.includes_ref()) { // lhs=includes rhs=includes
       return createIncludesMask(
@@ -165,6 +172,8 @@ Mask operator|(const Mask& lhs, const Mask& rhs) {
       intersectMask(lhs.excludes_ref().value(), rhs.excludes_ref().value()));
 }
 Mask operator-(const Mask& lhs, const Mask& rhs) {
+  detail::throwIfContainsMapMask(lhs);
+  detail::throwIfContainsMapMask(rhs);
   if (lhs.includes_ref()) {
     if (rhs.includes_ref()) { // lhs=includes rhs=includes
       return createIncludesMask(

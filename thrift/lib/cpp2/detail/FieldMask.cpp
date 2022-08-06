@@ -152,4 +152,15 @@ void errorIfNotObject(const protocol::Value& value) {
   }
 }
 
+void throwIfContainsMapMask(const Mask& mask) {
+  if (mask.includes_map_ref() || mask.excludes_map_ref()) {
+    throw std::runtime_error("map mask is not implemented");
+  }
+  const FieldIdToMask& map = mask.includes_ref() ? mask.includes_ref().value()
+                                                 : mask.excludes_ref().value();
+  for (auto& [_, nestedMask] : map) {
+    throwIfContainsMapMask(nestedMask);
+  }
+}
+
 } // namespace apache::thrift::protocol::detail

@@ -49,6 +49,7 @@ void copy(const Mask& mask, const protocol::Object& src, protocol::Object& dst);
 template <typename T>
 bool is_compatible_with(const Mask& mask) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  detail::throwIfContainsMapMask(mask);
   detail::MaskRef ref{mask, false};
   if (ref.isAllMask() || ref.isNoneMask()) {
     return true;
@@ -62,6 +63,7 @@ bool is_compatible_with(const Mask& mask) {
 template <typename T>
 void ensure(const Mask& mask, T& t) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  detail::throwIfContainsMapMask(mask);
   detail::errorIfNotCompatible<T>(mask);
   return detail::ensure_fields(detail::MaskRef{mask, false}, t);
 }
@@ -72,6 +74,7 @@ void ensure(const Mask& mask, T& t) {
 template <typename T>
 void clear(const Mask& mask, T& t) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  detail::throwIfContainsMapMask(mask);
   detail::errorIfNotCompatible<T>(mask);
   return detail::clear_fields(detail::MaskRef{mask, false}, t);
 }
@@ -82,6 +85,7 @@ void clear(const Mask& mask, T& t) {
 template <typename T>
 void copy(const Mask& mask, const T& src, T& dst) {
   static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  detail::throwIfContainsMapMask(mask);
   detail::errorIfNotCompatible<T>(mask);
   detail::copy_fields(detail::MaskRef{mask, false}, src, dst);
 }
