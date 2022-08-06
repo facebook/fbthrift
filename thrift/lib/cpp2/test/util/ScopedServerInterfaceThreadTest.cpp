@@ -32,6 +32,7 @@
 #include <folly/test/TestUtils.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/OtherService.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/SimpleService.h>
@@ -515,15 +516,11 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
 
   for (size_t i = 0; i < 2; ++i) {
     auto ts = make_shared<ThriftServer>();
-    auto tf = make_shared<apache::thrift::concurrency::PosixThreadFactory>(
-        apache::thrift::concurrency::PosixThreadFactory::ATTACHED);
-    auto tm =
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1);
-    tm->threadFactory(move(tf));
-    tm->start();
+    ts->setThreadManagerType(
+        apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+    ts->setNumCPUWorkerThreads(1);
     ts->setAddress({"::1", 0});
     ts->setIOThreadPool(std::make_shared<folly::IOThreadPoolExecutor>(1));
-    ts->setThreadManager(tm);
     ts->setAcceptExecutor({});
     auto serviceImpl = this->newService();
     ts->setInterface(serviceImpl);
