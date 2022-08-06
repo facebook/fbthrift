@@ -1107,7 +1107,8 @@ class PatchOp(_fbthrift_python_types.Enum, enum.Enum):
     Assign = 1
     Clear = 2
     Patch = 3
-    Ensure = 4
+    EnsureUnion = 4
+    EnsureStruct = 5
     PatchAfter = 6
     Remove = 7
     Add = 8

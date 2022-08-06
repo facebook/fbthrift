@@ -29,15 +29,34 @@ enum PatchOp: int {
    */
   Clear = 2;
   /**
-   * Apply a structured patch.
+   * Apply a field/value-wise patch.
    */
   Patch = 3;
   /**
    * Set to the given default, if not already of the same type.
+   * 
+   * In a dynamic context this means the ids/values must match exactly:
+   *     ensureUnion(Object ensureUnion, Object value) {
+   *       if (ensureUnion.ids() != value.ids())
+   *         value = ensureUnion;
+   *     }
    */
-  Ensure = 4;
+  EnsureUnion = 4;
   /**
-   * Apply a structured patch, after other ops.
+   *  * A pair-wise ensure operation.
+   *  *
+   *  * For maps this is an "add if key not present".
+   *  *
+   *  * For structs, this can be use to encodes the default state of the fields, based
+   *  * on thier qualifier type:
+   *  * - optional: absent
+   *  * - terse: intrinsic default
+   *  * - fill: custom default
+   * *
+   */
+  EnsureStruct = 5;
+  /**
+   * Apply a field/value-wise patch after all other ops.
    */
   PatchAfter = 6;
   /**
@@ -50,8 +69,8 @@ enum PatchOp: int {
   /**
    * Add if not present.
    * 
-   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
-   * types, and non-overwriting 'insert' for maps.
+   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
+   * types.
    */
   Add = 8;
   /**
@@ -77,7 +96,8 @@ class PatchOp_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
           1 => "Assign",
           2 => "Clear",
           3 => "Patch",
-          4 => "Ensure",
+          4 => "EnsureUnion",
+          5 => "EnsureStruct",
           6 => "PatchAfter",
           7 => "Remove",
           8 => "Add",

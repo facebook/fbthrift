@@ -8,7 +8,8 @@
         "Assign" : 1,
         "Clear" : 2,
         "Patch" : 3,
-        "Ensure" : 4,
+        "EnsureUnion" : 4,
+        "EnsureStruct" : 5,
         "PatchAfter" : 6,
         "Remove" : 7,
         "Add" : 8,
@@ -22,7 +23,7 @@
           "column" : 1
         },
         "end" : {
-          "line" : 272,
+          "line" : 292,
           "column" : 2
         }
       }

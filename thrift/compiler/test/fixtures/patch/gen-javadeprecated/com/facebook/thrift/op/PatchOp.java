@@ -22,15 +22,34 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
    */
   Clear(2),
   /**
-   * Apply a structured patch.
+   * Apply a field/value-wise patch.
    */
   Patch(3),
   /**
    * Set to the given default, if not already of the same type.
+   * 
+   * In a dynamic context this means the ids/values must match exactly:
+   *     ensureUnion(Object ensureUnion, Object value) {
+   *       if (ensureUnion.ids() != value.ids())
+   *         value = ensureUnion;
+   *     }
    */
-  Ensure(4),
+  EnsureUnion(4),
   /**
-   * Apply a structured patch, after other ops.
+   *  * A pair-wise ensure operation.
+   *  *
+   *  * For maps this is an "add if key not present".
+   *  *
+   *  * For structs, this can be use to encodes the default state of the fields, based
+   *  * on thier qualifier type:
+   *  * - optional: absent
+   *  * - terse: intrinsic default
+   *  * - fill: custom default
+   * *
+   */
+  EnsureStruct(5),
+  /**
+   * Apply a field/value-wise patch after all other ops.
    */
   PatchAfter(6),
   /**
@@ -43,8 +62,8 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
   /**
    * Add if not present.
    * 
-   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
-   * types, and non-overwriting 'insert' for maps.
+   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
+   * types.
    */
   Add(8),
   /**
@@ -86,7 +105,9 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
       case 3:
         return Patch;
       case 4:
-        return Ensure;
+        return EnsureUnion;
+      case 5:
+        return EnsureStruct;
       case 6:
         return PatchAfter;
       case 7:

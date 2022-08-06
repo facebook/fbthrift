@@ -29,44 +29,50 @@
           },
           "Patch" : {
             "name" : "Patch",
-            "docstring" : "Apply a structured patch.\n",
+            "docstring" : "Apply a field/value-wise patch.\n",
             "lineno" : 235,
             "value" : 3
           },
-          "Ensure" : {
-            "name" : "Ensure",
-            "docstring" : "Set to the given default, if not already of the same type.\n",
-            "lineno" : 238,
+          "EnsureUnion" : {
+            "name" : "EnsureUnion",
+            "docstring" : "Set to the given default, if not already of the same type.\n\nIn a dynamic context this means the ids/values must match exactly:\n    ensureUnion(Object ensureUnion, Object value) {\n      if (ensureUnion.ids() != value.ids())\n        value = ensureUnion;\n    }\n",
+            "lineno" : 246,
             "value" : 4
+          },
+          "EnsureStruct" : {
+            "name" : "EnsureStruct",
+            "docstring" : " * A pair-wise ensure operation.\n *\n * For maps this is an \"add if key not present\".\n *\n * For structs, this can be use to encodes the default state of the fields, based\n * on thier qualifier type:\n * - optional: absent\n * - terse: intrinsic default\n * - fill: custom default\n*\n",
+            "lineno" : 259,
+            "value" : 5
           },
           "PatchAfter" : {
             "name" : "PatchAfter",
-            "docstring" : "Apply a structured patch, after other ops.\n",
-            "lineno" : 244,
+            "docstring" : "Apply a field/value-wise patch after all other ops.\n",
+            "lineno" : 264,
             "value" : 6
           },
           "Remove" : {
             "name" : "Remove",
             "docstring" : "Remove if present.\n\nA key/value-based remove for set/list, 'saturating subtract' for\nnumeric/'counting' types, and 'remove by key' for maps.\n",
-            "lineno" : 252,
+            "lineno" : 272,
             "value" : 7
           },
           "Add" : {
             "name" : "Add",
-            "docstring" : "Add if not present.\n\nA key/value-based add for set/list, 'saturating add' for numeric/'counting'\ntypes, and non-overwriting 'insert' for maps.\n",
-            "lineno" : 260,
+            "docstring" : "Add if not present.\n\nA key/value-based add for set/list and 'saturating add' for numeric/'counting'\ntypes.\n",
+            "lineno" : 280,
             "value" : 8
           },
           "Put" : {
             "name" : "Put",
             "docstring" : "Add even if present.\n\nIdentical to 'add' for set, 'append' for list, overwriting\n'update or insert' for maps, 'invert' for boolean.\n",
-            "lineno" : 268,
+            "lineno" : 288,
             "value" : 9
           },
           "Prepend" : {
             "name" : "Prepend",
             "docstring" : "Add to the beginning of a list, string, or binary value.\n",
-            "lineno" : 271,
+            "lineno" : 291,
             "value" : 10
           },
           "Unspecified" : {

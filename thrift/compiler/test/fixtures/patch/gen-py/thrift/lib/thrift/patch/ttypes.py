@@ -49,7 +49,8 @@ class PatchOp:
   Assign = 1
   Clear = 2
   Patch = 3
-  Ensure = 4
+  EnsureUnion = 4
+  EnsureStruct = 5
   PatchAfter = 6
   Remove = 7
   Add = 8
@@ -61,7 +62,8 @@ class PatchOp:
     1: "Assign",
     2: "Clear",
     3: "Patch",
-    4: "Ensure",
+    4: "EnsureUnion",
+    5: "EnsureStruct",
     6: "PatchAfter",
     7: "Remove",
     8: "Add",
@@ -74,7 +76,8 @@ class PatchOp:
     "Assign": 1,
     "Clear": 2,
     "Patch": 3,
-    "Ensure": 4,
+    "EnsureUnion": 4,
+    "EnsureStruct": 5,
     "PatchAfter": 6,
     "Remove": 7,
     "Add": 8,

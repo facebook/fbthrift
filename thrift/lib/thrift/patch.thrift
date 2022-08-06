@@ -231,16 +231,36 @@ enum PatchOp {
   /** Set to the intrinsic default (which might be 'unset'). */
   Clear = 2,
 
-  /** Apply a structured patch. */
+  /** Apply a field/value-wise patch. */
   Patch = 3,
 
-  /** Set to the given default, if not already of the same type. */
-  Ensure = 4,
+  /**
+   * Set to the given default, if not already of the same type.
+   *
+   * In a dynamic context this means the ids/values must match exactly:
+   *     ensureUnion(Object ensureUnion, Object value) {
+   *       if (ensureUnion.ids() != value.ids())
+   *         value = ensureUnion;
+   *     }
+   */
+  EnsureUnion = 4,
+
+  /**
+   * A pair-wise ensure operation.
+   *
+   * For maps this is an "add if key not present".
+   *
+   * For structs, this can be use to encodes the default state of the fields, based
+   * on thier qualifier type:
+   * - optional: absent
+   * - terse: intrinsic default
+   * - fill: custom default
+  **/
+  EnsureStruct = 5,
 
   // TODO(afuller): Add a variant of ensure, which only ensures if 'unset'.
-  // EnsureIfUnset = 5,
 
-  /** Apply a structured patch, after other ops. */
+  /** Apply a field/value-wise patch after all other ops. */
   PatchAfter = 6,
 
   /**
@@ -254,8 +274,8 @@ enum PatchOp {
   /**
    * Add if not present.
    *
-   * A key/value-based add for set/list, 'saturating add' for numeric/'counting'
-   * types, and non-overwriting 'insert' for maps.
+   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
+   * types.
    */
   Add = 8,
 
