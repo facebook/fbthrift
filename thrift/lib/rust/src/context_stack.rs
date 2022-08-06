@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-use crate::thrift_protocol::ProtocolID;
-use anyhow::Error;
 use std::marker::PhantomData;
+
+use anyhow::Error;
+
+use crate::thrift_protocol::ProtocolID;
 
 pub struct SerializedMessage<'a, Name: ?Sized, Buffer> {
     pub protocol: ProtocolID,

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-use crate::errors::ProtocolError;
-use crate::Result;
 use bytes::Buf;
 use bytes::BufMut;
+
+use crate::errors::ProtocolError;
+use crate::Result;
 
 pub const MAX_VARINT_U64: usize = 64 / 7 + 1; // max number of bytes for a u64 varint
 
@@ -129,17 +130,19 @@ pub fn unzigzag(v: u64) -> i64 {
 
 #[cfg(test)]
 mod test {
-    use super::*;
-    use crate::bufext::BufMutExt;
-    use bufsize::SizeCounter;
-    use bytes::BytesMut;
-    use quickcheck::quickcheck;
     use std::i16;
     use std::i32;
     use std::i64;
     use std::i8;
     use std::io::Cursor;
     use std::u64;
+
+    use bufsize::SizeCounter;
+    use bytes::BytesMut;
+    use quickcheck::quickcheck;
+
+    use super::*;
+    use crate::bufext::BufMutExt;
 
     fn baseline_varint_u64<T: BufMut>(buf: &mut T, v: u64) {
         let mut v = v;

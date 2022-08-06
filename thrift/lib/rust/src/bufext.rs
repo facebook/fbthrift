@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-use crate::varint;
+use std::io::Cursor;
+
 use bufsize::SizeCounter;
 use bytes::buf::Chain;
 use bytes::Buf;
 use bytes::BufMut;
 use bytes::Bytes;
 use bytes::BytesMut;
-use std::io::Cursor;
+
+use crate::varint;
 
 pub trait BufExt: Buf {
     /// Reset buffer back to the beginning.

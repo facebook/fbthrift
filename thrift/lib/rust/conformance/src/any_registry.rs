@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-use crate::universal_name::ensure_registered;
-use crate::universal_name::get_universal_hash;
-use crate::universal_name::get_universal_hash_prefix;
-use crate::universal_name::UniversalHashAlgorithm;
+use std::any::TypeId;
+use std::collections::HashMap;
+use std::collections::HashSet;
+
 use anyhow::anyhow;
 use anyhow::bail;
 use anyhow::ensure;
@@ -27,9 +27,11 @@ use fbthrift::compact_protocol;
 use fbthrift::simplejson_protocol;
 use fbthrift::GetUri;
 use protocol::StandardProtocol;
-use std::any::TypeId;
-use std::collections::HashMap;
-use std::collections::HashSet;
+
+use crate::universal_name::ensure_registered;
+use crate::universal_name::get_universal_hash;
+use crate::universal_name::get_universal_hash_prefix;
+use crate::universal_name::UniversalHashAlgorithm;
 
 pub struct AnyRegistry {
     uri_to_typeid: HashMap<&'static str, TypeId>,
@@ -132,10 +134,11 @@ fn deserialize<T: DeserializeSlice>(data: &[u8], protocol: StandardProtocol) -> 
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use anyhow::Result;
     use maplit::btreemap;
     use testset::struct_map_string_i32;
+
+    use super::*;
 
     fn get_test_object() -> struct_map_string_i32 {
         struct_map_string_i32 {

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-use crate::protocol::should_break;
-use crate::protocol::ProtocolReader;
-use crate::Result;
-use bytes::Bytes;
-use ordered_float::OrderedFloat;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::hash::Hash;
 use std::sync::Arc;
+
+use bytes::Bytes;
+use ordered_float::OrderedFloat;
+
+use crate::protocol::should_break;
+use crate::protocol::ProtocolReader;
+use crate::Result;
 
 // Read trait. Every type that needs to be deserialized will implement this trait.
 pub trait Deserialize<P>

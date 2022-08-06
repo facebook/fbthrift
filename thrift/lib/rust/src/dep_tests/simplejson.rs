@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-use crate::proptest::gen_main_struct;
+use std::collections::BTreeMap;
+use std::io::Cursor;
+
 use anyhow::Result;
 use fbthrift::simplejson_protocol::deserialize;
 use fbthrift::simplejson_protocol::serialize;
@@ -30,8 +32,8 @@ use fbthrift_test_if::SubStruct;
 use fbthrift_test_if::Un;
 use fbthrift_test_if::UnOne;
 use proptest::prelude::*;
-use std::collections::BTreeMap;
-use std::io::Cursor;
+
+use crate::proptest::gen_main_struct;
 
 #[test]
 fn test_large_roundtrip() -> Result<()> {

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-use crate::bridge::ffi;
-use anyhow::Result;
-use cxx::let_cxx_string;
 use std::collections::HashSet;
 
+use anyhow::Result;
+use cxx::let_cxx_string;
 pub use ffi::UniversalHashAlgorithm;
+
+use crate::bridge::ffi;
 
 pub fn get_universal_hash(alg: UniversalHashAlgorithm, uri: &str) -> Result<Vec<u8>> {
     let_cxx_string!(uri = uri);
@@ -67,8 +68,9 @@ fn matches_universal_hash(universal_hash: &[u8], prefix: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use maplit::hashset;
+
+    use super::*;
 
     #[test]
     fn test_get_universal_hash() {

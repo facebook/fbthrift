@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+use std::marker::PhantomData;
+
+use anyhow::Error;
+
 use crate::context_stack::ContextStack;
 use crate::context_stack::DummyContextStack;
-use anyhow::Error;
-use std::marker::PhantomData;
 
 pub trait RequestContext {
     type ContextStack: ContextStack;

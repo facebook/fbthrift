@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
+use std::ffi::CStr;
+use std::future::Future;
+use std::pin::Pin;
+use std::sync::Arc;
+
+use futures::future;
+use futures::stream::Stream;
+use futures::FutureExt;
+
 use crate::help::Spawner;
 use crate::Framing;
 use crate::FramingDecoded;
 use crate::FramingEncodedFinal;
 use crate::Protocol;
-use futures::future;
-use futures::stream::Stream;
-use futures::FutureExt;
-use std::ffi::CStr;
-use std::future::Future;
-use std::pin::Pin;
-use std::sync::Arc;
 
 pub trait ClientFactory {
     type Api: ?Sized;

@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-use crate::bufext::BufExt;
-use crate::bufext::BufMutExt;
+use std::io::Cursor;
+
 use bytes::Bytes;
 use bytes::BytesMut;
-use std::io::Cursor;
+
+use crate::bufext::BufExt;
+use crate::bufext::BufMutExt;
 
 /// Helper type alias to get encoding buffer type
 pub type FramingEncoded<F> = <F as Framing>::EncBuf;

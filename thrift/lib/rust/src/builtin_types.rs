@@ -16,6 +16,7 @@
 
 // Types that are available by default in `rust.type` annotations.
 
+pub use std::collections::*;
+
 pub use bytes::Bytes;
 pub use ordered_float::OrderedFloat;
-pub use std::collections::*;

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-use crate::bufext::BufExt;
-use bytes::Bytes;
 use std::io::Cursor;
+
+use bytes::Bytes;
+
+use crate::bufext::BufExt;
 
 /// Trait implemented on types that can be used as `binary` types in
 /// thrift.  These types copy data from the Thrift buffer.

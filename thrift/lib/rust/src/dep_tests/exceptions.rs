@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+use std::error::Error;
+
 use anyhow::Result;
 use fbthrift_test_if::types::TestException;
 use fbthrift_test_if::types::TestExceptionMsgOverride;
 use fbthrift_test_if::types::TestExceptionMsgOverrideOptional;
-use std::error::Error;
 
 #[test]
 fn test_should_implement_error() -> Result<()> {

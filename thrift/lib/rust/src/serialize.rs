@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-use crate::protocol::ProtocolWriter;
-use crate::ttype::GetTType;
-use bytes::Bytes;
-use ordered_float::OrderedFloat;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::hash::Hash;
 use std::sync::Arc;
+
+use bytes::Bytes;
+use ordered_float::OrderedFloat;
+
+use crate::protocol::ProtocolWriter;
+use crate::ttype::GetTType;
 
 // Write trait. Every type that needs to be serialized will implement this trait.
 pub trait Serialize<P>

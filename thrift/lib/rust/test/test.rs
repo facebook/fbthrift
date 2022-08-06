@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+use std::collections::BTreeMap;
+use std::collections::BTreeSet;
+use std::collections::HashMap;
+use std::collections::HashSet;
+use std::fmt::Debug;
+use std::io::Cursor;
+
 use bytes::Bytes;
 use fbthrift::serialize;
 use fbthrift::CompactProtocol;
@@ -30,12 +37,6 @@ use interface::TestEnumEmpty;
 use interface::TestSkipV1;
 use interface::TestSkipV2;
 use smallvec::SmallVec;
-use std::collections::BTreeMap;
-use std::collections::BTreeSet;
-use std::collections::HashMap;
-use std::collections::HashSet;
-use std::fmt::Debug;
-use std::io::Cursor;
 
 #[test]
 fn test_nonstandard_collection_types() {

@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-use crate::errors::ProtocolError;
-use crate::Result;
-use bytes::Bytes;
-use ordered_float::OrderedFloat;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::hash::Hash;
+
+use bytes::Bytes;
+use ordered_float::OrderedFloat;
+
+use crate::errors::ProtocolError;
+use crate::Result;
 
 /// Will be able to add missing types once #![feature(associated_consts)] lands
 #[derive(PartialEq, Copy, Clone, Debug)]

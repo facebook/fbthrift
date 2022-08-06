@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+use std::io::Cursor;
+
+use bufsize::SizeCounter;
+use bytes::Bytes;
+use bytes::BytesMut;
+use ghost::phantom;
+
 use crate::binary_type::CopyFromBuf;
 use crate::bufext::BufExt;
 use crate::bufext::BufMutExt;
@@ -31,11 +38,6 @@ use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 use crate::varint;
 use crate::Result;
-use bufsize::SizeCounter;
-use bytes::Bytes;
-use bytes::BytesMut;
-use ghost::phantom;
-use std::io::Cursor;
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
 const PROTOCOL_ID: u8 = 0x82;

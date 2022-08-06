@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-use crate::DeterministicAccumulator;
-use crate::Hasher;
 use anyhow::Result;
 use fbthrift::protocol::ProtocolWriter;
 use fbthrift::thrift_protocol::MessageType;
 use fbthrift::ttype::TType;
+
+use crate::DeterministicAccumulator;
+use crate::Hasher;
 
 pub struct DeterministicProtocolSerializer<T: Hasher, F: Fn() -> T> {
     acc: DeterministicAccumulator<T, F>,

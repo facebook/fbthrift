@@ -17,13 +17,13 @@
 pub mod deterministic_accumulator;
 pub mod deterministic_protocol;
 pub mod hasher;
-use crate::deterministic_protocol::DeterministicProtocolSerializer;
 use anyhow::Result;
 use fbthrift::protocol::ProtocolWriter;
 use fbthrift::Serialize;
 
 pub use crate::deterministic_accumulator::DeterministicAccumulator;
 pub use crate::deterministic_accumulator::DeterministicAccumulatorError;
+use crate::deterministic_protocol::DeterministicProtocolSerializer;
 pub use crate::hasher::Hasher;
 pub use crate::hasher::Sha256Hasher;
 pub fn deterministic_hash<

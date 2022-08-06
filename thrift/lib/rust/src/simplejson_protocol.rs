@@ -14,6 +14,21 @@
  * limitations under the License.
  */
 
+use std::io::Cursor;
+
+use anyhow::anyhow;
+use anyhow::bail;
+use anyhow::Context;
+use bufsize::SizeCounter;
+use bytes::buf::Writer;
+use bytes::Buf;
+use bytes::BufMut;
+use bytes::Bytes;
+use bytes::BytesMut;
+use ghost::phantom;
+use serde_json::ser::CompactFormatter;
+use serde_json::ser::Formatter;
+
 use crate::binary_type::CopyFromBuf;
 use crate::bufext::BufExt;
 use crate::bufext::BufMutExt;
@@ -32,19 +47,6 @@ use crate::thrift_protocol::MessageType;
 use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 use crate::Result;
-use anyhow::anyhow;
-use anyhow::bail;
-use anyhow::Context;
-use bufsize::SizeCounter;
-use bytes::buf::Writer;
-use bytes::Buf;
-use bytes::BufMut;
-use bytes::Bytes;
-use bytes::BytesMut;
-use ghost::phantom;
-use serde_json::ser::CompactFormatter;
-use serde_json::ser::Formatter;
-use std::io::Cursor;
 
 #[phantom]
 #[derive(Copy, Clone)]

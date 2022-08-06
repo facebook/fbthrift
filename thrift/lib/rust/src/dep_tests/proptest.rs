@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+use std::collections::BTreeMap;
+
 use fbthrift_test_if::En;
 use fbthrift_test_if::MainStruct;
 use fbthrift_test_if::Small;
@@ -22,7 +24,6 @@ use fbthrift_test_if::Un;
 use fbthrift_test_if::UnOne;
 use fbthrift_test_if::UnTwo;
 use proptest::prelude::*;
-use std::collections::BTreeMap;
 
 prop_compose! {
     pub(crate) fn gen_map()(

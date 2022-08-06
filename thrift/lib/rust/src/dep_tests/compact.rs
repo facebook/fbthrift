@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-use crate::proptest::gen_main_struct;
 use anyhow::Result;
 use fbthrift::compact_protocol::deserialize;
 use fbthrift::compact_protocol::serialize;
 use fbthrift::ttype::TType;
 use fbthrift_test_if::Un;
 use proptest::prelude::*;
+
+use crate::proptest::gen_main_struct;
 
 #[test]
 fn test_unknown_union() -> Result<()> {

@@ -16,6 +16,8 @@
 
 // NOTE: See dep_test/cpp_compat_test.cpp for a comparison
 
+use serde_json::json;
+
 use super::BOOL_VALUES;
 use super::DOUBLE_VALUES;
 use super::INT64_VALUES;
@@ -26,7 +28,6 @@ use crate::ttype::TType;
 use crate::Deserialize;
 use crate::ProtocolWriter;
 use crate::SimpleJsonProtocol;
-use serde_json::json;
 
 #[test]
 fn write_bool_list() {

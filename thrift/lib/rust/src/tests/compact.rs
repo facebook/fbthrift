@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+use std::io::Cursor;
+use std::u8;
+
+use bytes::Buf;
+use bytes::Bytes;
+
 use super::BOOL_VALUES;
 use super::BYTE_VALUES;
 use super::DOUBLE_VALUES;
@@ -27,10 +33,6 @@ use crate::CompactProtocol;
 use crate::Protocol;
 use crate::ProtocolReader;
 use crate::ProtocolWriter;
-use bytes::Buf;
-use bytes::Bytes;
-use std::io::Cursor;
-use std::u8;
 
 #[test]
 fn read_write_bool_list() {

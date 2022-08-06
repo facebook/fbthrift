@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+use std::ffi::CStr;
+use std::marker::PhantomData;
+use std::pin::Pin;
+use std::sync::Arc;
+use std::sync::Mutex;
+
+use anyhow::bail;
+use anyhow::Error;
+use anyhow::Result;
+use async_trait::async_trait;
+use futures::stream::Stream;
+
 use crate::application_exception::ApplicationException;
 use crate::application_exception::ApplicationExceptionErrorCode;
 use crate::context_stack::ContextStack;
@@ -29,16 +41,6 @@ use crate::protocol::ProtocolWriter;
 use crate::request_context::RequestContext;
 use crate::serialize::Serialize;
 use crate::ttype::TType;
-use anyhow::bail;
-use anyhow::Error;
-use anyhow::Result;
-use async_trait::async_trait;
-use futures::stream::Stream;
-use std::ffi::CStr;
-use std::marker::PhantomData;
-use std::pin::Pin;
-use std::sync::Arc;
-use std::sync::Mutex;
 
 pub trait ReplyState<F>
 where

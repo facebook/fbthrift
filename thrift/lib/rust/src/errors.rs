@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-use crate::ttype::TType;
-use crate::ApplicationException;
 use anyhow::Error;
 use thiserror::Error;
+
+use crate::ttype::TType;
+use crate::ApplicationException;
 
 #[derive(Debug, Error)]
 #[allow(dead_code)]

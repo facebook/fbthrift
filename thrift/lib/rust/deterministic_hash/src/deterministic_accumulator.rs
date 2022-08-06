@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-pub use crate::hasher::Hasher;
 use anyhow::Result;
 use thiserror::Error;
+
+pub use crate::hasher::Hasher;
 
 #[derive(Error, Debug, PartialEq)]
 pub enum DeterministicAccumulatorError {
