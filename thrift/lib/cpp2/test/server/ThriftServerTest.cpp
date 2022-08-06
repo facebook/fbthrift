@@ -3550,6 +3550,60 @@ TEST(ThriftServer, SetupThreadManager) {
       [](auto& ts) { ts.setupThreadManager(); });
 }
 
+TEST(ThriftServer, GetSetMaxRequests) {
+  for (auto target : std::array<uint32_t, 2>{1000, 0}) {
+    {
+      // Test set before setupThreadManager
+      ThriftServer server;
+      server.setInterface(std::make_shared<TestInterface>());
+      server.setMaxRequests(target);
+      EXPECT_EQ(server.getMaxRequests(), target);
+      // Make the thrift server simple to create
+      server.setThreadManagerType(
+          apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+      server.setNumCPUWorkerThreads(1);
+      server.setupThreadManager();
+      EXPECT_EQ(server.getMaxRequests(), target);
+      if (server.useResourcePools()) {
+        auto concurrencyLimit =
+            target == 0 ? std::numeric_limits<decltype(target)>::max() : target;
+        EXPECT_EQ(
+            concurrencyLimit,
+            server.resourcePoolSet()
+                .resourcePool(ResourcePoolHandle::defaultAsync())
+                .concurrencyController()
+                .value()
+                .get()
+                .getExecutionLimitRequests());
+      }
+    }
+    {
+      // Test set after setupThreadManager
+      ThriftServer server;
+      server.setInterface(std::make_shared<TestInterface>());
+      // Make the thrift server simple to create
+      server.setThreadManagerType(
+          apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+      server.setNumCPUWorkerThreads(1);
+      server.setupThreadManager();
+      server.setMaxRequests(target);
+      EXPECT_EQ(server.getMaxRequests(), target);
+      if (server.useResourcePools()) {
+        auto concurrencyLimit =
+            target == 0 ? std::numeric_limits<decltype(target)>::max() : target;
+        EXPECT_EQ(
+            concurrencyLimit,
+            server.resourcePoolSet()
+                .resourcePool(ResourcePoolHandle::defaultAsync())
+                .concurrencyController()
+                .value()
+                .get()
+                .getExecutionLimitRequests());
+      }
+    }
+  }
+}
+
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {
