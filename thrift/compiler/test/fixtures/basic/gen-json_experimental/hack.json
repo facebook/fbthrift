@@ -75,6 +75,24 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 67
+      },
+      "UnionEnumAttributes" : {
+        "name" : "UnionEnumAttributes",
+        "fields" : {
+          "attributes" : {
+            "name" : "attributes",
+            "key" : 1,
+            "lineno" : 75,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "string"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 74
       }
       },
   "source_path" : "thrift/annotation/hack",

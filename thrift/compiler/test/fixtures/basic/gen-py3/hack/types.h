@@ -63,6 +63,16 @@ void reset_field<::facebook::thrift::annotation::hack::Name>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::hack::UnionEnumAttributes>(
+    ::facebook::thrift::annotation::hack::UnionEnumAttributes& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.attributes_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::UnionEnumAttributes>().attributes_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -95,6 +105,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::Name>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::UnionEnumAttributes>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

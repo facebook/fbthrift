@@ -144,6 +144,38 @@
           "column" : 60
         }
       }
+    },
+    "UnionEnumAttributes" : {
+      "lineno" : 73,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "attributes" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 75,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 75,
+              "column" : 29
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 73,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 76,
+          "column" : 75
+        }
+      }
     }
   }
 }

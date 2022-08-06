@@ -16,6 +16,8 @@
 
 namespace hack test.fixtures.jsenum
 
+include "thrift/annotation/hack.thrift"
+
 enum MyThriftEnum {
   foo = 1,
   bar = 2,
@@ -38,3 +40,9 @@ union UnionTesting {
   1: string foo;
   3: i64 bar;
 } (hack.union_enum_attributes = "EnumAttributes")
+
+@hack.UnionEnumAttributes{attributes = ["EnumAttributes", "EnumAttributes2"]}
+union UnionTestingStructured {
+  1: string foo;
+  3: i64 bar;
+}

@@ -13,7 +13,7 @@ namespace thrift\annotation\hack;
  * FieldWrapper
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/FieldWrapper'))>>
-class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class FieldWrapper implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -30,9 +30,6 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'name' => ?string,
   );
 
-  const type TShape = shape(
-    'name' => string,
-  );
   const int STRUCTURAL_ID = 2593878277785201336;
   /**
    * Original thrift field:-
@@ -93,31 +90,8 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['name'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'name' => $this->name,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'name') !== null) {
-      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
-    }
   }
 
 }
@@ -127,7 +101,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Adapter
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Adapter'))>>
-class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class Adapter implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -144,9 +118,6 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'name' => ?string,
   );
 
-  const type TShape = shape(
-    'name' => string,
-  );
   const int STRUCTURAL_ID = 2593878277785201336;
   /**
    * Original thrift field:-
@@ -211,31 +182,8 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['name'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'name' => $this->name,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'name') !== null) {
-      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
-    }
   }
 
 }
@@ -245,7 +193,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * SkipCodegen
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/SkipCodegen'))>>
-class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class SkipCodegen implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -262,9 +210,6 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'reason' => ?string,
   );
 
-  const type TShape = shape(
-    'reason' => string,
-  );
   const int STRUCTURAL_ID = 3707764047816594739;
   /**
    * Original thrift field:-
@@ -329,31 +274,8 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['reason'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'reason' => $this->reason,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'reason') !== null) {
-      $this->reason = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['reason']);
-    }
   }
 
 }
@@ -363,7 +285,7 @@ class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Name
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Name'))>>
-class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class Name implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -386,10 +308,6 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'reason' => ?string,
   );
 
-  const type TShape = shape(
-    'name' => string,
-    'reason' => string,
-  );
   const int STRUCTURAL_ID = 4844827548325959202;
   /**
    * Original thrift field:-
@@ -463,36 +381,8 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['name'],
-      $shape['reason'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'name' => $this->name,
-      'reason' => $this->reason,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'name') !== null) {
-      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
-    }
-    if (idx($parsed, 'reason') !== null) {
-      $this->reason = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['reason']);
-    }
   }
 
 }
@@ -502,7 +392,7 @@ class Name implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * UnionEnumAttributes
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/UnionEnumAttributes'))>>
-class UnionEnumAttributes implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class UnionEnumAttributes implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -524,9 +414,6 @@ class UnionEnumAttributes implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'attributes' => ?Vector<string>,
   );
 
-  const type TShape = shape(
-    'attributes' => vec<string>,
-  );
   const int STRUCTURAL_ID = 4379867690114498379;
   /**
    * Original thrift field:-
@@ -595,38 +482,8 @@ class UnionEnumAttributes implements \IThriftSyncStruct, \IThriftShapishSyncStru
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      (new Vector($shape['attributes'])),
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'attributes' => vec($this->attributes),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'attributes') !== null) {
-      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, Vector<string>>($parsed['attributes']);
-      $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
-        $_elem5 = '';
-        $_elem5 = $_value2;
-        $_container4 []= $_elem5;
-      }
-      $this->attributes = $_container4;
-    }
   }
 
 }

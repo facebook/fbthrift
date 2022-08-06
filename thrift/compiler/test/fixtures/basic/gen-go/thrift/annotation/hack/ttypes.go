@@ -510,3 +510,135 @@ func (p *Name) String() string {
   return fmt.Sprintf("Name({Name:%s Reason:%s})", nameVal, reasonVal)
 }
 
+// Attributes:
+//  - Attributes
+type UnionEnumAttributes struct {
+  Attributes []string `thrift:"attributes,1" db:"attributes" json:"attributes"`
+}
+
+func NewUnionEnumAttributes() *UnionEnumAttributes {
+  return &UnionEnumAttributes{}
+}
+
+
+func (p *UnionEnumAttributes) GetAttributes() []string {
+  return p.Attributes
+}
+type UnionEnumAttributesBuilder struct {
+  obj *UnionEnumAttributes
+}
+
+func NewUnionEnumAttributesBuilder() *UnionEnumAttributesBuilder{
+  return &UnionEnumAttributesBuilder{
+    obj: NewUnionEnumAttributes(),
+  }
+}
+
+func (p UnionEnumAttributesBuilder) Emit() *UnionEnumAttributes{
+  return &UnionEnumAttributes{
+    Attributes: p.obj.Attributes,
+  }
+}
+
+func (u *UnionEnumAttributesBuilder) Attributes(attributes []string) *UnionEnumAttributesBuilder {
+  u.obj.Attributes = attributes
+  return u
+}
+
+func (u *UnionEnumAttributes) SetAttributes(attributes []string) *UnionEnumAttributes {
+  u.Attributes = attributes
+  return u
+}
+
+func (p *UnionEnumAttributes) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *UnionEnumAttributes)  ReadField1(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]string, 0, size)
+  p.Attributes =  tSlice
+  for i := 0; i < size; i ++ {
+    var _elem1 string
+    if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
+    p.Attributes = append(p.Attributes, _elem1)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *UnionEnumAttributes) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("UnionEnumAttributes"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *UnionEnumAttributes) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("attributes", thrift.LIST, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:attributes: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.STRING, len(p.Attributes)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.Attributes {
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:attributes: ", p), err) }
+  return err
+}
+
+func (p *UnionEnumAttributes) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  attributesVal := fmt.Sprintf("%v", p.Attributes)
+  return fmt.Sprintf("UnionEnumAttributes({Attributes:%s})", attributesVal)
+}
+

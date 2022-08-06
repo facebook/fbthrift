@@ -68,3 +68,9 @@ struct Name {
   1: string name;
   2: string reason;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/Name")
+
+// This annotation is for adding Hack attributes to union enums.
+@scope.Union
+struct UnionEnumAttributes {
+  1: list<string> attributes;
+} (thrift.uri = "facebook.com/thrift/annotation/hack/UnionEnumAttributes")

@@ -33,6 +33,7 @@
 
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
@@ -672,6 +673,32 @@ class t_hack_generator : public t_concat_generator {
           .get_string();
     }
     return default_name;
+  }
+
+  const std::string find_union_enum_attributes(const t_struct& tstruct) {
+    if (const std::string* annotation =
+            tstruct.find_annotation_or_null("hack.union_enum_attributes")) {
+      return *annotation;
+    }
+    if (const auto annotation = tstruct.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/hack/UnionEnumAttributes")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "attributes") {
+          std::string result = "";
+          bool first = true;
+          for (const auto& attribute : item.second->get_list()) {
+            if (first) {
+              first = false;
+            } else {
+              result += ", ";
+            }
+            result += attribute->get_string();
+          }
+          return result;
+        }
+      }
+    }
+    return "";
   }
 
   std::string hack_namespace(const t_program* p) const {
@@ -4233,9 +4260,10 @@ void t_hack_generator::generate_php_union_enum(
   //   __EMPTY__ = 0;
   //   field1 = 1;
   // }
-  if (const std::string* union_enum_attributes =
-          tstruct->find_annotation_or_null("hack.union_enum_attributes")) {
-    indent(out) << "<<" << *union_enum_attributes << ">>\n";
+  const std::string union_enum_attributes =
+      find_union_enum_attributes(*tstruct);
+  if (!union_enum_attributes.empty()) {
+    indent(out) << "<<" << union_enum_attributes << ">>\n";
   }
   out << "enum " << union_enum_name(name, tstruct->program(), true)
       << ": int {\n";
