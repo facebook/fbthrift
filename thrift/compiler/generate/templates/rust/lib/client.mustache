@@ -149,7 +149,7 @@
                 .instrument(::tracing::trace_span!("call_stream", method = "{{service:name}}.{{function:name}}"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -173,18 +173,20 @@
                 })
                 .boxed();
 
-                {{#function:stream_has_first_response?}}
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
+                {{#function:stream_has_first_response?}}
                 let initial: ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{!
                     }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error> =
                     ::std::convert::From::from(res);
                 initial.map(move |initial| (initial, new_stream))
                 {{/function:stream_has_first_response?}}
                 {{^function:stream_has_first_response?}}
-                ::std::result::Result::Ok(new_stream)
+                let initial: ::std::result::Result<(), {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
                 {{/function:stream_has_first_response?}}
             }
             .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))

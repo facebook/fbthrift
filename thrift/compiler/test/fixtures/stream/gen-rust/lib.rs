@@ -217,6 +217,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for ReturnstreamResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ReturnstreamResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = ReturnstreamResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "ReturnstreamResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum ReturnstreamExn {
             #[doc(hidden)]
@@ -494,6 +535,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for StreamthrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = StreamthrowsResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = StreamthrowsResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamthrowsResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum StreamthrowsExn {
             #[doc(hidden)]
@@ -765,6 +847,52 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for ServicethrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                    ::fbthrift::Field::new("e", ::fbthrift::TType::Struct, 1),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ServicethrowsResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = ServicethrowsResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((::fbthrift::TType::Struct, 1), false) => {
+                            once = true;
+                            alt = ServicethrowsResponseExn::e(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "ServicethrowsResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum ServicethrowsExn {
             #[doc(hidden)]
@@ -1071,6 +1199,52 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for BoththrowsResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                    ::fbthrift::Field::new("e", ::fbthrift::TType::Struct, 1),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = BoththrowsResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = BoththrowsResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((::fbthrift::TType::Struct, 1), false) => {
+                            once = true;
+                            alt = BoththrowsResponseExn::e(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "BoththrowsResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum BoththrowsExn {
             #[doc(hidden)]
@@ -2354,6 +2528,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for ReturnstreamFastResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ReturnstreamFastResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = ReturnstreamFastResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "ReturnstreamFastResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum ReturnstreamFastExn {
             #[doc(hidden)]
@@ -2470,7 +2685,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.returnstream"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2492,7 +2707,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::pub_sub_streaming_service::ReturnstreamResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::pub_sub_streaming_service::ReturnstreamError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("PubSubStreamingService.returnstream"))
             .boxed()
@@ -2528,7 +2749,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.streamthrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2550,7 +2771,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::pub_sub_streaming_service::StreamthrowsResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::pub_sub_streaming_service::StreamthrowsError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("PubSubStreamingService.streamthrows"))
             .boxed()
@@ -2586,7 +2813,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.servicethrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2608,7 +2835,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::pub_sub_streaming_service::ServicethrowsResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::pub_sub_streaming_service::ServicethrowsError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("PubSubStreamingService.servicethrows"))
             .boxed()
@@ -2644,7 +2877,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.boththrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2666,7 +2899,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::pub_sub_streaming_service::BoththrowsResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::pub_sub_streaming_service::BoththrowsError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("PubSubStreamingService.boththrows"))
             .boxed()
@@ -2702,7 +2941,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.responseandstreamstreamthrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2724,7 +2963,7 @@ pub mod client {
                 })
                 .boxed();
 
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
@@ -2766,7 +3005,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.responseandstreamservicethrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2788,7 +3027,7 @@ pub mod client {
                 })
                 .boxed();
 
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
@@ -2830,7 +3069,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.responseandstreamboththrows"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2852,7 +3091,7 @@ pub mod client {
                 })
                 .boxed();
 
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
@@ -2896,7 +3135,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "PubSubStreamingService.returnstreamFast"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2918,7 +3157,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::pub_sub_streaming_service::ReturnstreamFastError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("PubSubStreamingService.returnstreamFast"))
             .boxed()
@@ -5750,6 +5995,19 @@ pub mod errors {
             }
         }
 
+        impl ::std::convert::From<crate::services::pub_sub_streaming_service::ReturnstreamResponseExn> for
+            ::std::result::Result<(), ReturnstreamError>
+        {
+            fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamResponseExn) -> Self {
+                match e {
+                    crate::services::pub_sub_streaming_service::ReturnstreamResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ReturnstreamResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(ReturnstreamError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type ReturnstreamStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ReturnstreamStreamExn> for
@@ -5775,6 +6033,19 @@ pub mod errors {
                     crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamthrowsError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::pub_sub_streaming_service::StreamthrowsResponseExn> for
+            ::std::result::Result<(), StreamthrowsError>
+        {
+            fn from(e: crate::services::pub_sub_streaming_service::StreamthrowsResponseExn) -> Self {
+                match e {
+                    crate::services::pub_sub_streaming_service::StreamthrowsResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::StreamthrowsResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamthrowsError::ApplicationException(aexn)),
                 }
             }
@@ -5875,6 +6146,21 @@ pub mod errors {
             }
         }
 
+        impl ::std::convert::From<crate::services::pub_sub_streaming_service::ServicethrowsResponseExn> for
+            ::std::result::Result<(), ServicethrowsError>
+        {
+            fn from(e: crate::services::pub_sub_streaming_service::ServicethrowsResponseExn) -> Self {
+                match e {
+                    crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(ServicethrowsError::ApplicationException(aexn)),
+                    crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::e(exn) =>
+                        ::std::result::Result::Err(ServicethrowsError::e(exn)),
+                }
+            }
+        }
+
         pub type ServicethrowsStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ServicethrowsStreamExn> for
@@ -5937,6 +6223,21 @@ pub mod errors {
                     crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BoththrowsError::ApplicationException(aexn)),
                     crate::services::pub_sub_streaming_service::BoththrowsExn::e(exn) =>
+                        ::std::result::Result::Err(BoththrowsError::e(exn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::pub_sub_streaming_service::BoththrowsResponseExn> for
+            ::std::result::Result<(), BoththrowsError>
+        {
+            fn from(e: crate::services::pub_sub_streaming_service::BoththrowsResponseExn) -> Self {
+                match e {
+                    crate::services::pub_sub_streaming_service::BoththrowsResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::BoththrowsResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(BoththrowsError::ApplicationException(aexn)),
+                    crate::services::pub_sub_streaming_service::BoththrowsResponseExn::e(exn) =>
                         ::std::result::Result::Err(BoththrowsError::e(exn)),
                 }
             }
@@ -6258,6 +6559,19 @@ pub mod errors {
                     crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(ReturnstreamFastError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn> for
+            ::std::result::Result<(), ReturnstreamFastError>
+        {
+            fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn) -> Self {
+                match e {
+                    crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ReturnstreamFastError::ApplicationException(aexn)),
                 }
             }

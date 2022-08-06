@@ -1056,6 +1056,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = StreamByIdResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = StreamByIdResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum StreamByIdExn {
             #[doc(hidden)]
@@ -1333,6 +1374,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithExceptionResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = StreamByIdWithExceptionResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = StreamByIdWithExceptionResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdWithExceptionResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum StreamByIdWithExceptionExn {
             #[doc(hidden)]
@@ -2287,7 +2369,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamById"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2309,7 +2391,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::my_service::StreamByIdResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::my_service::StreamByIdError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("MyService.streamById"))
             .boxed()
@@ -2345,7 +2433,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithException"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2367,7 +2455,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::my_service::StreamByIdWithExceptionResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::my_service::StreamByIdWithExceptionError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("MyService.streamByIdWithException"))
             .boxed()
@@ -2403,7 +2497,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithResponse"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2425,7 +2519,7 @@ pub mod client {
                 })
                 .boxed();
 
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: crate::services::my_service::StreamByIdWithResponseResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
@@ -5718,6 +5812,19 @@ pub mod errors {
             }
         }
 
+        impl ::std::convert::From<crate::services::my_service::StreamByIdResponseExn> for
+            ::std::result::Result<(), StreamByIdError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdResponseExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type StreamByIdStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::StreamByIdStreamExn> for
@@ -5743,6 +5850,19 @@ pub mod errors {
                     crate::services::my_service::StreamByIdWithExceptionExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdWithExceptionError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::my_service::StreamByIdWithExceptionResponseExn> for
+            ::std::result::Result<(), StreamByIdWithExceptionError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdWithExceptionResponseExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdWithExceptionResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithExceptionResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdWithExceptionError::ApplicationException(aexn)),
                 }
             }

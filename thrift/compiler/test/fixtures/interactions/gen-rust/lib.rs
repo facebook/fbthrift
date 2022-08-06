@@ -483,6 +483,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for TruthifyResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = TruthifyResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = TruthifyResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "TruthifyResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum TruthifyExn {
             #[doc(hidden)]
@@ -1101,6 +1142,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for TruthifyResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = TruthifyResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = TruthifyResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "TruthifyResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum TruthifyExn {
             #[doc(hidden)]
@@ -2206,7 +2288,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyInteraction.truthify"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2228,7 +2310,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::my_interaction::TruthifyResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::my_interaction::TruthifyError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("MyInteraction.truthify"))
             .boxed()
@@ -2773,7 +2861,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyInteractionFast.truthify"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -2795,7 +2883,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::my_interaction_fast::TruthifyResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::my_interaction_fast::TruthifyError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("MyInteractionFast.truthify"))
             .boxed()
@@ -3656,7 +3750,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.serialize"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -3678,7 +3772,7 @@ pub mod client {
                 })
                 .boxed();
 
-                let de = P::deserializer(_initial);
+                let de = P::deserializer(initial);
                 let res: crate::services::my_service::SerializeResponseExn =
                     ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
@@ -6974,6 +7068,19 @@ pub mod errors {
             }
         }
 
+        impl ::std::convert::From<crate::services::my_interaction::TruthifyResponseExn> for
+            ::std::result::Result<(), TruthifyError>
+        {
+            fn from(e: crate::services::my_interaction::TruthifyResponseExn) -> Self {
+                match e {
+                    crate::services::my_interaction::TruthifyResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::TruthifyResponseExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type TruthifyStreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_interaction::TruthifyStreamExn> for
@@ -7049,6 +7156,19 @@ pub mod errors {
                     crate::services::my_interaction_fast::TruthifyExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::my_interaction_fast::TruthifyResponseExn> for
+            ::std::result::Result<(), TruthifyError>
+        {
+            fn from(e: crate::services::my_interaction_fast::TruthifyResponseExn) -> Self {
+                match e {
+                    crate::services::my_interaction_fast::TruthifyResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::TruthifyResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
                 }
             }

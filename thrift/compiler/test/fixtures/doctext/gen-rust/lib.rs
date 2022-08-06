@@ -351,6 +351,47 @@ pub mod services {
             }
         }
 
+        impl<P> ::fbthrift::Deserialize<P> for NumbersResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = NumbersResponseExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = NumbersResponseExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "NumbersResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
 
         pub enum NumbersExn {
             #[doc(hidden)]
@@ -654,7 +695,7 @@ pub mod client {
                 .instrument(::tracing::trace_span!("call_stream", method = "C.numbers"));
 
             async move {
-                let (_initial, stream) = call_stream.await?;
+                let (initial, stream) = call_stream.await?;
 
                 let new_stream = stream.then(|item_res| {
                     async move {
@@ -676,7 +717,13 @@ pub mod client {
                 })
                 .boxed();
 
-                ::std::result::Result::Ok(new_stream)
+                let de = P::deserializer(initial);
+                let res: crate::services::c::NumbersResponseExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<(), crate::errors::c::NumbersError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |_| new_stream)
             }
             .instrument(::tracing::info_span!("C.numbers"))
             .boxed()
@@ -2019,6 +2066,19 @@ pub mod errors {
                     crate::services::c::NumbersExn::Success(res) =>
                         ::std::result::Result::Ok(res),
                     crate::services::c::NumbersExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(NumbersError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        impl ::std::convert::From<crate::services::c::NumbersResponseExn> for
+            ::std::result::Result<(), NumbersError>
+        {
+            fn from(e: crate::services::c::NumbersResponseExn) -> Self {
+                match e {
+                    crate::services::c::NumbersResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::c::NumbersResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(NumbersError::ApplicationException(aexn)),
                 }
             }

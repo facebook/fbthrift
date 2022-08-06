@@ -107,10 +107,12 @@
             }
         }
 
-        {{#function:returns_stream?}}{{!
-        }}{{#function:stream_has_first_response?}}
+        {{#function:returns_stream?}}
         impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn> for
-            ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{function:upcamel}}Error>
+            ::std::result::Result<{{!
+            }}{{#function:stream_has_first_response?}}{{>lib/function_stream_first_response_type}}{{/function:stream_has_first_response?}}{{!
+            }}{{^function:stream_has_first_response?}}(){{/function:stream_has_first_response?}}{{!
+            }}, {{function:upcamel}}Error>
         {
             fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}ResponseExn) -> Self {
                 match e {
@@ -126,8 +128,7 @@
             }
         }
 
-        {{/function:stream_has_first_response?}}{{!
-        }}{{#function:stream_exceptions?}}
+        {{#function:stream_exceptions?}}
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}StreamError {
             {{#function:stream_exceptions}}
