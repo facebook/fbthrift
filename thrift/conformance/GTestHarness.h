@@ -150,7 +150,7 @@ client_fn_map<Client> getServers() {
 }
 
 testing::AssertionResult RunRoundTripTest(
-    ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip);
+    ConformanceServiceAsyncClient& client, const RoundTripTestCase& roundTrip);
 
 testing::AssertionResult RunRpcTest(
     RPCConformanceServiceAsyncClient& client, const RpcTestCase& rpc);

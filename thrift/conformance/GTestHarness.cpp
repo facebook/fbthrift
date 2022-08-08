@@ -23,7 +23,7 @@
 namespace apache::thrift::conformance {
 
 testing::AssertionResult RunRoundTripTest(
-    ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip) {
+    ConformanceServiceAsyncClient& client, const RoundTripTestCase& roundTrip) {
   RoundTripResponse res;
   try {
     client.sync_roundTrip(res, *roundTrip.request());
