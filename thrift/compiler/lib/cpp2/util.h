@@ -335,6 +335,11 @@ auto lpt_split(std::vector<T> vec, size_t k, F size) {
 
 t_field_id get_internal_injected_field_id(t_field_id id);
 
+// If node has cpp.Adapter and it comes from a transitive annotation
+// This function returns such annotation
+const t_const* get_transitive_annotation_of_adapter_or_null(
+    const t_named& node);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

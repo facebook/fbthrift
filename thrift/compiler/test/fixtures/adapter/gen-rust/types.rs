@@ -136,6 +136,17 @@ pub struct A {
 }
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Config {
+    pub path: ::std::string::String,
+    // This field forces `..Default::default()` when instantiating this
+    // struct, to make code future-proof against new fields added later to
+    // the definition in Thrift. If you don't want this, add the annotation
+    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+    #[doc(hidden)]
+    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MyStruct {
     pub field: ::std::primitive::i32,
     // This field forces `..Default::default()` when instantiating this
@@ -978,6 +989,80 @@ where
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        })
+    }
+}
+
+
+#[allow(clippy::derivable_impls)]
+impl ::std::default::Default for self::Config {
+    fn default() -> Self {
+        Self {
+            path: ::std::default::Default::default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        }
+    }
+}
+
+impl ::std::fmt::Debug for self::Config {
+    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        formatter
+            .debug_struct("Config")
+            .field("path", &self.path)
+            .finish()
+    }
+}
+
+unsafe impl ::std::marker::Send for self::Config {}
+unsafe impl ::std::marker::Sync for self::Config {}
+
+impl ::fbthrift::GetTType for self::Config {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl ::fbthrift::GetUri for self::Config {
+    fn uri() -> &'static str {
+        "facebook.com/thrift/test/Config"
+    }
+}
+
+impl<P> ::fbthrift::Serialize<P> for self::Config
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    fn write(&self, p: &mut P) {
+        p.write_struct_begin("Config");
+        p.write_field_begin("path", ::fbthrift::TType::String, 1);
+        ::fbthrift::Serialize::write(&self.path, p);
+        p.write_field_end();
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for self::Config
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        static FIELDS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("path", ::fbthrift::TType::String, 1),
+        ];
+        let mut field_path = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::String, 1) => field_path = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            path: field_path.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }

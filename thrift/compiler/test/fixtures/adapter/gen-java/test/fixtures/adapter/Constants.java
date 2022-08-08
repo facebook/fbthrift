@@ -20,4 +20,10 @@ public final class Constants {
     public static final String VAR2 = "20";
 
     public static final test.fixtures.adapter.MyStruct VAR3 = new test.fixtures.adapter.MyStruct.Builder().setField(30).build();
+
+    public static final int VAR4 = 40;
+
+    public static final String VAR5 = "50";
+
+    public static final test.fixtures.adapter.MyStruct VAR6 = new test.fixtures.adapter.MyStruct.Builder().setField(60).build();
 }

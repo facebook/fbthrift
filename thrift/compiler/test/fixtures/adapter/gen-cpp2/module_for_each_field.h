@@ -102,6 +102,14 @@ struct ForEachField<::facebook::thrift::test::B> {
 };
 
 template <>
+struct ForEachField<::facebook::thrift::test::Config> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).path_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::facebook::thrift::test::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {

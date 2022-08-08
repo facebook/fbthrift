@@ -3,42 +3,26 @@
   "thrift_module" : "module",
   "constants" : {
     "var1" : {
-      "lineno" : 188,
+      "lineno" : 195,
       "value" : 10,
       "type_enum" : "I32",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 188,
+          "line" : 195,
           "column" : 1
         },
         "end" : {
-          "line" : 189,
+          "line" : 196,
           "column" : 20
         }
       }
     },
     "var2" : {
-      "lineno" : 191,
+      "lineno" : 198,
       "value" : "20",
       "type_enum" : "STRING",
       "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 191,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 192,
-          "column" : 25
-        }
-      }
-    },
-    "var3" : {
-      "lineno" : 198,
-      "value" : { "field" : 30 },
-      "type_enum" : "STRUCT",
-      "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
           "line" : 198,
@@ -46,6 +30,70 @@
         },
         "end" : {
           "line" : 199,
+          "column" : 25
+        }
+      }
+    },
+    "var3" : {
+      "lineno" : 205,
+      "value" : { "field" : 30 },
+      "type_enum" : "STRUCT",
+      "spec_args" : "MyStruct",
+      "source_range" : {
+        "begin" : {
+          "line" : 205,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 206,
+          "column" : 43
+        }
+      }
+    },
+    "var4" : {
+      "lineno" : 208,
+      "value" : 40,
+      "type_enum" : "I32",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 208,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 209,
+          "column" : 20
+        }
+      }
+    },
+    "var5" : {
+      "lineno" : 211,
+      "value" : "50",
+      "type_enum" : "STRING",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 211,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 212,
+          "column" : 25
+        }
+      }
+    },
+    "var6" : {
+      "lineno" : 214,
+      "value" : { "field" : 60 },
+      "type_enum" : "STRUCT",
+      "spec_args" : "MyStruct",
+      "source_range" : {
+        "begin" : {
+          "line" : 214,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 215,
           "column" : 43
         }
       }
@@ -837,8 +885,40 @@
         }
       }
     },
+    "Config" : {
+      "lineno" : 188,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "path" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 192,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 192,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 188,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 193,
+          "column" : 2
+        }
+      }
+    },
     "MyStruct" : {
-      "lineno" : 194,
+      "lineno" : 201,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -848,11 +928,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 195,
+              "line" : 202,
               "column" : 3
             },
             "end" : {
-              "line" : 195,
+              "line" : 202,
               "column" : 15
             }
           }
@@ -860,11 +940,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 194,
+          "line" : 201,
           "column" : 1
         },
         "end" : {
-          "line" : 196,
+          "line" : 203,
           "column" : 2
         }
       }

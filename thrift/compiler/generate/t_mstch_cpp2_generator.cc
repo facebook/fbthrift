@@ -1711,6 +1711,10 @@ class mstch_cpp2_const : public mstch_const {
             {"constant:cpp_name", &mstch_cpp2_const::cpp_name},
             {"constant:cpp_adapter", &mstch_cpp2_const::cpp_adapter},
             {"constant:cpp_type", &mstch_cpp2_const::cpp_type},
+            {"constant:uri", &mstch_cpp2_const::uri},
+            {"constant:has_extra_arg?", &mstch_cpp2_const::has_extra_arg},
+            {"constant:extra_arg", &mstch_cpp2_const::extra_arg},
+            {"constant:extra_arg_type", &mstch_cpp2_const::extra_arg_type},
         });
   }
   mstch::node enum_value() {
@@ -1739,6 +1743,21 @@ class mstch_cpp2_const : public mstch_const {
   }
   mstch::node cpp_type() {
     return context_->resolver().get_native_type(*const_);
+  }
+  mstch::node uri() { return const_->uri(); }
+  mstch::node has_extra_arg() {
+    return cpp2::get_transitive_annotation_of_adapter_or_null(*const_) !=
+        nullptr;
+  }
+  mstch::node extra_arg() {
+    auto anno = cpp2::get_transitive_annotation_of_adapter_or_null(*const_);
+    return std::shared_ptr<mstch_base>(std::make_shared<mstch_const_value>(
+        anno->value(), factories_, cache_, pos_, anno, &*anno->type()));
+  }
+  mstch::node extra_arg_type() {
+    auto anno = cpp2::get_transitive_annotation_of_adapter_or_null(*const_);
+    return std::shared_ptr<mstch_base>(std::make_shared<mstch_cpp2_type>(
+        &*anno->type(), factories_, cache_, pos_, context_));
   }
 
  private:

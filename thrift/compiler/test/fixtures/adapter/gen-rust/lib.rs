@@ -18,6 +18,15 @@ pub mod consts {
             field: 30,
             ..::std::default::Default::default()
         });
+
+    pub const var4: ::std::primitive::i32 = 40;
+
+    pub const var5: &::std::primitive::str = "50";
+
+    pub static var6: ::once_cell::sync::Lazy<crate::types::MyStruct> = ::once_cell::sync::Lazy::new(|| crate::types::MyStruct {
+            field: 60,
+            ..::std::default::Default::default()
+        });
 }
 
 pub mod types;
@@ -27,6 +36,7 @@ pub mod dependencies {
     pub use cpp as cpp;
     pub use python as python;
     pub use thrift as thrift;
+    pub use scope as scope;
     pub use hack as hack;
 }
 

@@ -615,6 +615,20 @@ t_field_id get_internal_injected_field_id(t_field_id id) {
   return internal_id;
 }
 
+const t_const* get_transitive_annotation_of_adapter_or_null(
+    const t_named& node) {
+  for (const auto* annotation : node.structured_annotations()) {
+    const t_type& annotation_type = *annotation->type();
+    if (is_transitive_annotation(annotation_type)) {
+      if (annotation_type.find_structured_annotation_or_null(
+              "facebook.com/thrift/annotation/cpp/Adapter")) {
+        return annotation;
+      }
+    }
+  }
+  return nullptr;
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

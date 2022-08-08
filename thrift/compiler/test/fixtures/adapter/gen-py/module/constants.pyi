@@ -9,6 +9,7 @@ import typing as __T
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
+import thrift.annotation.scope.ttypes
 import thrift.annotation.hack.ttypes
 import my
 from module.ttypes import *
@@ -16,3 +17,6 @@ from module.ttypes import *
 var1: int
 var2: str
 var3: MyStruct
+var4: int
+var5: str
+var6: MyStruct

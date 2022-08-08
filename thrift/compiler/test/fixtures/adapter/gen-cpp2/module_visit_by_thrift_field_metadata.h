@@ -166,6 +166,19 @@ struct VisitByFieldId<::facebook::thrift::test::B> {
 };
 
 template <>
+struct VisitByFieldId<::facebook::thrift::test::Config> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).path_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::facebook::thrift::test::Config");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::facebook::thrift::test::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {

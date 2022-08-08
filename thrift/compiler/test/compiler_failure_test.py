@@ -2056,15 +2056,28 @@ class CompilerFailureTest(unittest.TestCase):
                 package "facebook.com/thrift/test"
 
                 @cpp.Adapter{name="MyAdapter"}
+                @scope.Transitive
+                struct Config { 1: string path; }
+
+                @Config{path = "to/my/service"}
                 const i32 Foo = 10;
 
-                @cpp.Adapter{name="MyAdapter"}
+                @Config{path = "to/my/service"}
                 const string Bar = "20";
 
                 struct MyStruct { 1: i32 field; }
 
-                @cpp.Adapter{name="MyAdapter"}
+                @Config{path = "to/my/service"}
                 const MyStruct Baz = MyStruct{field=30};
+
+                @cpp.Adapter{name="MyAdapter"}
+                const i32 Foo2 = 10;
+
+                @cpp.Adapter{name="MyAdapter"}
+                const string Bar2 = "20";
+
+                @cpp.Adapter{name="MyAdapter"}
+                const MyStruct Baz2 = MyStruct{field=30};
                 """
             ),
         )
@@ -2073,9 +2086,12 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift:6] Using adapters on const `Foo` is only allowed in the experimental mode.\n"
-            "[ERROR:foo.thrift:9] Using adapters on const `Bar` is only allowed in the experimental mode.\n"
-            "[ERROR:foo.thrift:14] Using adapters on const `Baz` is only allowed in the experimental mode.\n",
+            "[ERROR:foo.thrift:10] Using adapters on const `Foo` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:13] Using adapters on const `Bar` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:18] Using adapters on const `Baz` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:21] Using adapters on const `Foo2` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:24] Using adapters on const `Bar2` is only allowed in the experimental mode.\n"
+            "[ERROR:foo.thrift:27] Using adapters on const `Baz2` is only allowed in the experimental mode.\n",
         )
 
         write_file(
@@ -2084,20 +2100,35 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 include "thrift/annotation/cpp.thrift"
                 include "thrift/annotation/thrift.thrift"
+                include "thrift/annotation/scope.thrift"
 
                 @thrift.Experimental
                 package "facebook.com/thrift/test"
 
                 @cpp.Adapter{name="MyAdapter"}
+                @scope.Transitive
+                @thrift.Experimental
+                struct Config { 1: string path; }
+
+                @Config{path = "to/my/service"}
                 const i32 Foo = 10;
 
-                @cpp.Adapter{name="MyAdapter"}
+                @Config{path = "to/my/service"}
                 const string Bar = "20";
 
                 struct MyStruct { 1: i32 field; }
 
-                @cpp.Adapter{name="MyAdapter"}
+                @Config{path = "to/my/service"}
                 const MyStruct Baz = MyStruct{field=30};
+
+                @cpp.Adapter{name="MyAdapter"}
+                const i32 Foo2 = 10;
+
+                @cpp.Adapter{name="MyAdapter"}
+                const string Bar2 = "20";
+
+                @cpp.Adapter{name="MyAdapter"}
+                const MyStruct Baz2 = MyStruct{field=30};
                 """
             ),
         )

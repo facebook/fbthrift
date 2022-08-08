@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-namespace cpp2 apache.thrift.test.basic
-
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 cpp_include "thrift/lib/cpp2/Adapt.h"
+
+@thrift.Experimental
+package "apache.org/thrift/test/basic"
 
 @cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
 typedef i64 DurationMs
@@ -212,5 +213,29 @@ service AdapterService {
 }
 
 @cpp.Adapter{name = "::apache::thrift::test::VariableAdapter"}
-@thrift.Experimental
+@scope.Transitive
+struct Person {
+  1: string name;
+}
+
+@Person{name = "Foo"}
 const i32 timeout = 42;
+
+@Person{name = "Bar"}
+const string msg = "hello, world";
+
+struct Person2 {
+  1: string name;
+}
+
+@Person{name = "NameFromAnnotation"}
+const Person2 person = Person2{name = "DefaultName"};
+
+@cpp.Adapter{name = "::apache::thrift::test::VariableAdapter"}
+const i32 timeout_no_transitive = 420;
+
+@cpp.Adapter{name = "::apache::thrift::test::VariableAdapter"}
+const string msg_no_transitive = "hello, world 2";
+
+@cpp.Adapter{name = "::apache::thrift::test::VariableAdapter"}
+const Person2 person_no_transitive = Person2{name = "DefaultName 2"};

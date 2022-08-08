@@ -21,9 +21,9 @@ namespace java.swift test.fixtures.adapter
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/python.thrift"
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/scope.thrift"
 include "thrift/annotation/hack.thrift"
 
-@thrift.Experimental
 package "facebook.com/thrift/test"
 
 @hack.Adapter{name = '\Adapter2'}
@@ -186,14 +186,30 @@ service Service {
 }
 
 @cpp.Adapter{name = "MyVarAdapter"}
+@scope.Transitive
+@thrift.Experimental
+struct Config {
+  1: string path;
+}
+
+@Config{path = "foo"}
 const i32 var1 = 10;
 
-@cpp.Adapter{name = "MyVarAdapter"}
+@Config{path = "bar"}
 const string var2 = "20";
 
 struct MyStruct {
   1: i32 field;
 }
 
-@cpp.Adapter{name = "MyVarAdapter"}
+@Config{path = "baz"}
 const MyStruct var3 = MyStruct{field = 30};
+
+@Config{path = "foo2"}
+const i32 var4 = 40;
+
+@Config{path = "bar2"}
+const string var5 = "50";
+
+@Config{path = "baz2"}
+const MyStruct var6 = MyStruct{field = 60};

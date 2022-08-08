@@ -13,7 +13,8 @@ import (
 	cpp0 "thrift/annotation/cpp"
 	python1 "thrift/annotation/python"
 	thrift2 "thrift/annotation/thrift"
-	hack3 "thrift/annotation/hack"
+	scope3 "thrift/annotation/scope"
+	hack4 "thrift/annotation/hack"
 
 )
 
@@ -27,7 +28,8 @@ var _ = context.Background
 var _ = cpp0.GoUnusedProtection__
 var _ = python1.GoUnusedProtection__
 var _ = thrift2.GoUnusedProtection__
-var _ = hack3.GoUnusedProtection__
+var _ = scope3.GoUnusedProtection__
+var _ = hack4.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 type SetWithAdapter = []string
@@ -418,13 +420,13 @@ func (p *Foo)  ReadField4(iprot thrift.Protocol) error {
   tSet := make(SetWithAdapter, 0, size)
   p.SetField =  tSet
   for i := 0; i < size; i ++ {
-    var _elem4 string
+    var _elem5 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem4 = v
+      _elem5 = v
     }
-    p.SetField = append(p.SetField, _elem4)
+    p.SetField = append(p.SetField, _elem5)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -440,13 +442,13 @@ func (p *Foo)  ReadField5(iprot thrift.Protocol) error {
   tSet := make(SetWithAdapter, 0, size)
   p.OptionalSetField =  tSet
   for i := 0; i < size; i ++ {
-    var _elem5 string
+    var _elem6 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem5 = v
+      _elem6 = v
     }
-    p.OptionalSetField = append(p.OptionalSetField, _elem5)
+    p.OptionalSetField = append(p.OptionalSetField, _elem6)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -462,32 +464,32 @@ func (p *Foo)  ReadField6(iprot thrift.Protocol) error {
   tMap := make(map[string]ListWithElemAdapterWithAdapter, size)
   p.MapField =  tMap
   for i := 0; i < size; i ++ {
-    var _key6 string
+    var _key7 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key6 = v
+      _key7 = v
     }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
     }
     tSlice := make(ListWithElemAdapterWithAdapter, 0, size)
-    _val7 :=  tSlice
+    _val8 :=  tSlice
     for i := 0; i < size; i ++ {
-      var _elem8 StringWithAdapter
+      var _elem9 StringWithAdapter
       if v, err := iprot.ReadString(); err != nil {
         return thrift.PrependError("error reading field 0: ", err)
       } else {
         temp := StringWithAdapter(v)
-        _elem8 = temp
+        _elem9 = temp
       }
-      _val7 = append(_val7, _elem8)
+      _val8 = append(_val8, _elem9)
     }
     if err := iprot.ReadListEnd(); err != nil {
       return thrift.PrependError("error reading list end: ", err)
     }
-    p.MapField[_key6] = _val7
+    p.MapField[_key7] = _val8
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -503,32 +505,32 @@ func (p *Foo)  ReadField7(iprot thrift.Protocol) error {
   tMap := make(map[string]ListWithElemAdapterWithAdapter, size)
   p.OptionalMapField =  tMap
   for i := 0; i < size; i ++ {
-    var _key9 string
+    var _key10 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key9 = v
+      _key10 = v
     }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
     }
     tSlice := make(ListWithElemAdapterWithAdapter, 0, size)
-    _val10 :=  tSlice
+    _val11 :=  tSlice
     for i := 0; i < size; i ++ {
-      var _elem11 StringWithAdapter
+      var _elem12 StringWithAdapter
       if v, err := iprot.ReadString(); err != nil {
         return thrift.PrependError("error reading field 0: ", err)
       } else {
         temp := StringWithAdapter(v)
-        _elem11 = temp
+        _elem12 = temp
       }
-      _val10 = append(_val10, _elem11)
+      _val11 = append(_val11, _elem12)
     }
     if err := iprot.ReadListEnd(); err != nil {
       return thrift.PrependError("error reading list end: ", err)
     }
-    p.OptionalMapField[_key9] = _val10
+    p.OptionalMapField[_key10] = _val11
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -1028,13 +1030,13 @@ func (p *Baz)  ReadField4(iprot thrift.Protocol) error {
   tSet := make(SetWithAdapter, 0, size)
   p.SetField =  tSet
   for i := 0; i < size; i ++ {
-    var _elem12 string
+    var _elem13 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem12 = v
+      _elem13 = v
     }
-    p.SetField = append(p.SetField, _elem12)
+    p.SetField = append(p.SetField, _elem13)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -1050,32 +1052,32 @@ func (p *Baz)  ReadField6(iprot thrift.Protocol) error {
   tMap := make(map[string]ListWithElemAdapterWithAdapter, size)
   p.MapField =  tMap
   for i := 0; i < size; i ++ {
-    var _key13 string
+    var _key14 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key13 = v
+      _key14 = v
     }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
     }
     tSlice := make(ListWithElemAdapterWithAdapter, 0, size)
-    _val14 :=  tSlice
+    _val15 :=  tSlice
     for i := 0; i < size; i ++ {
-      var _elem15 StringWithAdapter
+      var _elem16 StringWithAdapter
       if v, err := iprot.ReadString(); err != nil {
         return thrift.PrependError("error reading field 0: ", err)
       } else {
         temp := StringWithAdapter(v)
-        _elem15 = temp
+        _elem16 = temp
       }
-      _val14 = append(_val14, _elem15)
+      _val15 = append(_val15, _elem16)
     }
     if err := iprot.ReadListEnd(); err != nil {
       return thrift.PrependError("error reading list end: ", err)
     }
-    p.MapField[_key13] = _val14
+    p.MapField[_key14] = _val15
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -1501,11 +1503,11 @@ func (p *Bar)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]*FooWithAdapter, 0, size)
   p.StructListField =  tSlice
   for i := 0; i < size; i ++ {
-    _elem16 := NewFooWithAdapter()
-    if err := _elem16.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem16), err)
+    _elem17 := NewFooWithAdapter()
+    if err := _elem17.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem17), err)
     }
-    p.StructListField = append(p.StructListField, _elem16)
+    p.StructListField = append(p.StructListField, _elem17)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1521,11 +1523,11 @@ func (p *Bar)  ReadField4(iprot thrift.Protocol) error {
   tSlice := make([]*FooWithAdapter, 0, size)
   p.OptionalStructListField =  tSlice
   for i := 0; i < size; i ++ {
-    _elem17 := NewFooWithAdapter()
-    if err := _elem17.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem17), err)
+    _elem18 := NewFooWithAdapter()
+    if err := _elem18.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem18), err)
     }
-    p.OptionalStructListField = append(p.OptionalStructListField, _elem17)
+    p.OptionalStructListField = append(p.OptionalStructListField, _elem18)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -2229,13 +2231,13 @@ func (p *TerseAdaptedFields)  ReadField3(iprot thrift.Protocol) error {
   tSet := make([]int32, 0, size)
   p.SetField =  tSet
   for i := 0; i < size; i ++ {
-    var _elem18 int32
+    var _elem19 int32
     if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem18 = v
+      _elem19 = v
     }
-    p.SetField = append(p.SetField, _elem18)
+    p.SetField = append(p.SetField, _elem19)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -2500,6 +2502,117 @@ func (p *A) String() string {
   }
 
   return fmt.Sprintf("A({})")
+}
+
+// Attributes:
+//  - Path
+type Config struct {
+  Path string `thrift:"path,1" db:"path" json:"path"`
+}
+
+func NewConfig() *Config {
+  return &Config{}
+}
+
+
+func (p *Config) GetPath() string {
+  return p.Path
+}
+type ConfigBuilder struct {
+  obj *Config
+}
+
+func NewConfigBuilder() *ConfigBuilder{
+  return &ConfigBuilder{
+    obj: NewConfig(),
+  }
+}
+
+func (p ConfigBuilder) Emit() *Config{
+  return &Config{
+    Path: p.obj.Path,
+  }
+}
+
+func (c *ConfigBuilder) Path(path string) *ConfigBuilder {
+  c.obj.Path = path
+  return c
+}
+
+func (c *Config) SetPath(path string) *Config {
+  c.Path = path
+  return c
+}
+
+func (p *Config) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Config)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Path = v
+  }
+  return nil
+}
+
+func (p *Config) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Config"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Config) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("path", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:path: ", p), err) }
+  if err := oprot.WriteString(string(p.Path)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.path (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:path: ", p), err) }
+  return err
+}
+
+func (p *Config) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  pathVal := fmt.Sprintf("%v", p.Path)
+  return fmt.Sprintf("Config({Path:%s})", pathVal)
 }
 
 // Attributes:

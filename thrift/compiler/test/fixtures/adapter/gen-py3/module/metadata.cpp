@@ -20,6 +20,7 @@ namespace test {
   ::apache::thrift::detail::md::StructMetadata<TerseAdaptedFields>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<B>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<A>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Config>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::facebook::thrift::test::Service>>::gen(response);
   return metadata;

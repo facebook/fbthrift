@@ -33,27 +33,73 @@ class module_CONSTANTS implements \IThriftConstants {
     );
   }
 
+  /**
+   * Original thrift constant:-
+   * i32 var4
+   */
+  const int var4 = 40;
+
+  /**
+   * Original thrift constant:-
+   * string var5
+   */
+  const string var5 = "50";
+
+  /**
+   * Original thrift constant:-
+   * struct module.MyStruct var6
+   */
+  <<__Memoize>>
+  public static function var6()[]: \thrift\test\MyStruct{
+    return \thrift\test\MyStruct::fromShape(
+      shape(
+        "field" => 60,
+      )
+    );
+  }
+
 
   public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'var1' => dict[
-        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
           shape(
-            "name" => "MyVarAdapter",
+            "path" => "foo",
           )
         ),
       ],
       'var2' => dict[
-        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
           shape(
-            "name" => "MyVarAdapter",
+            "path" => "bar",
           )
         ),
       ],
       'var3' => dict[
-        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
           shape(
-            "name" => "MyVarAdapter",
+            "path" => "baz",
+          )
+        ),
+      ],
+      'var4' => dict[
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
+          shape(
+            "path" => "foo2",
+          )
+        ),
+      ],
+      'var5' => dict[
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
+          shape(
+            "path" => "bar2",
+          )
+        ),
+      ],
+      'var6' => dict[
+        '\thrift\test\Config' => \thrift\test\Config::fromShape(
+          shape(
+            "path" => "baz2",
           )
         ),
       ],

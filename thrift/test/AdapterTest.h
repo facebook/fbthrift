@@ -264,12 +264,22 @@ struct CountingAdapter {
 template <typename T>
 struct VariableWrapper {
   T value;
+  std::string name = "";
+  std::string uri = "";
 };
 
 struct VariableAdapter {
+  // This is necessary as type hint, since adapted_t doesn't support forwarding
+  // annotation
   template <typename T>
   static VariableWrapper<T> fromThrift(T value) {
     return {value};
+  }
+
+  template <typename T, typename Anno>
+  static VariableWrapper<T> fromThrift(
+      T value, Anno annotation, std::string uri) {
+    return {value, *annotation.name(), uri};
   }
 };
 

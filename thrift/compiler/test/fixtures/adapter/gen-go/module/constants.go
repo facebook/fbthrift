@@ -13,7 +13,8 @@ import (
 	cpp0 "thrift/annotation/cpp"
 	python1 "thrift/annotation/python"
 	thrift2 "thrift/annotation/thrift"
-	hack3 "thrift/annotation/hack"
+	scope3 "thrift/annotation/scope"
+	hack4 "thrift/annotation/hack"
 
 )
 
@@ -27,14 +28,22 @@ var _ = context.Background
 var _ = cpp0.GoUnusedProtection__
 var _ = python1.GoUnusedProtection__
 var _ = thrift2.GoUnusedProtection__
-var _ = hack3.GoUnusedProtection__
+var _ = scope3.GoUnusedProtection__
+var _ = hack4.GoUnusedProtection__
 const Var1 = 10
 const Var2 = "20"
 var Var3 *MyStruct
+const Var4 = 40
+const Var5 = "50"
+var Var6 *MyStruct
 
 func init() {
 Var3 = &MyStruct{
   Field: 30,
+}
+
+Var6 = &MyStruct{
+  Field: 60,
 }
 
 }

@@ -13,6 +13,7 @@
 #include "thrift/annotation/gen-cpp2/cpp_metadata.h"
 #include "thrift/annotation/gen-cpp2/python_metadata.h"
 #include "thrift/annotation/gen-cpp2/thrift_metadata.h"
+#include "thrift/annotation/gen-cpp2/scope_metadata.h"
 #include "thrift/annotation/gen-cpp2/hack_metadata.h"
 
 namespace facebook {
@@ -63,6 +64,11 @@ class StructMetadata<::facebook::thrift::test::A> {
 };
 template <>
 class StructMetadata<::facebook::thrift::test::B> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::facebook::thrift::test::Config> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

@@ -233,6 +233,33 @@ StructMetadata<::facebook::thrift::test::B>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::facebook::thrift::test::Config>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.Config", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Config = res.first->second;
+  module_Config.name() = "module.Config";
+  module_Config.is_union() = false;
+  static const auto* const
+  module_Config_fields = new std::array<EncodedThriftField, 1>{{
+    {1, "path", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *module_Config_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_Config.fields()->push_back(std::move(field));
+  }
+  module_Config.structured_annotations()->push_back(*cvStruct("cpp.Adapter", {{"name", cvString(R"(MyVarAdapter)")}}).cv_struct_ref());
+  module_Config.structured_annotations()->push_back(*cvStruct("scope.Transitive", {}).cv_struct_ref());
+  module_Config.structured_annotations()->push_back(*cvStruct("thrift.Experimental", {}).cv_struct_ref());
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::facebook::thrift::test::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {

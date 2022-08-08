@@ -55,7 +55,9 @@ constexpr <%type:cpp_type%> const <%program:name%>_constants::<%constant:name%>_
 <%#constant:cpp_adapter%>
 const <%constant:cpp_type%>& <%program:name%>_constants::<%constant:name%>() {
   static const folly::Indestructible<<%constant:cpp_type%>> instance(
-      <%constant:cpp_adapter%>::fromThrift(<%type:cpp_type%>(<% > common/iterate_const_values%>)));
+      <%constant:cpp_adapter%>::fromThrift(<%type:cpp_type%>(<% > common/iterate_const_values%>)<%#constant:has_extra_arg?%>,
+                                           <%#constant:extra_arg%><%#constant:extra_arg_type%><% > common/iterate_const_values%><%/constant:extra_arg_type%><%/constant:extra_arg%>,
+                                           "<%constant:uri%>"<%/constant:has_extra_arg?%>));
   return *instance;
 }
 <%/constant:cpp_adapter%>

@@ -150,6 +150,16 @@ void reset_field<::facebook::thrift::test::A>(
 }
 
 template<>
+void reset_field<::facebook::thrift::test::Config>(
+    ::facebook::thrift::test::Config& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.path_ref().copy_from(default_inst<::facebook::thrift::test::Config>().path_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::facebook::thrift::test::MyStruct>(
     ::facebook::thrift::test::MyStruct& obj, uint16_t index) {
   switch (index) {
@@ -222,6 +232,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::test::A>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::test::Config>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

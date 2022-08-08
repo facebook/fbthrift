@@ -19,12 +19,13 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
+import thrift.annotation.scope.ttypes
 import thrift.annotation.hack.ttypes
 
 import my
 
 
-from .ttypes import UTF8STRINGS, Foo, Baz, Bar, DirectlyAdapted, StructWithFieldAdapter, TerseAdaptedFields, B, A, MyStruct, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, ListWithElemAdapter_withAdapter, MyI64, DoubleTypedefI64, MyI32, FooWithAdapter, StructWithAdapter, UnionWithAdapter, AdaptedA
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, DirectlyAdapted, StructWithFieldAdapter, TerseAdaptedFields, B, A, Config, MyStruct, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, ListWithElemAdapter_withAdapter, MyI64, DoubleTypedefI64, MyI32, FooWithAdapter, StructWithAdapter, UnionWithAdapter, AdaptedA
 
 var1 = 10
 
@@ -32,5 +33,13 @@ var2 = "20"
 
 var3 = MyStruct(**{
   "field" : 30,
+})
+
+var4 = 40
+
+var5 = "50"
+
+var6 = MyStruct(**{
+  "field" : 60,
 })
 

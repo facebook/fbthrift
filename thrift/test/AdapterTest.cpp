@@ -817,6 +817,36 @@ static_assert(
 
 TEST(VariableAdapterTest, Integer) {
   EXPECT_EQ(basic::adapter_constants::timeout().value, 42);
+  EXPECT_EQ(basic::adapter_constants::timeout().name, "Foo");
+  EXPECT_EQ(
+      basic::adapter_constants::timeout().uri,
+      "apache.org/thrift/test/basic/timeout");
+
+  EXPECT_EQ(basic::adapter_constants::msg().value, "hello, world");
+  EXPECT_EQ(basic::adapter_constants::msg().name, "Bar");
+  EXPECT_EQ(
+      basic::adapter_constants::msg().uri, "apache.org/thrift/test/basic/msg");
+
+  EXPECT_EQ(basic::adapter_constants::person().value.name(), "DefaultName");
+  EXPECT_EQ(basic::adapter_constants::person().name, "NameFromAnnotation");
+  EXPECT_EQ(
+      basic::adapter_constants::person().uri,
+      "apache.org/thrift/test/basic/person");
+
+  EXPECT_EQ(basic::adapter_constants::timeout_no_transitive().value, 420);
+  EXPECT_EQ(basic::adapter_constants::timeout_no_transitive().name, "");
+  EXPECT_EQ(basic::adapter_constants::timeout_no_transitive().uri, "");
+
+  EXPECT_EQ(
+      basic::adapter_constants::msg_no_transitive().value, "hello, world 2");
+  EXPECT_EQ(basic::adapter_constants::msg_no_transitive().name, "");
+  EXPECT_EQ(basic::adapter_constants::msg_no_transitive().uri, "");
+
+  EXPECT_EQ(
+      basic::adapter_constants::person_no_transitive().value.name(),
+      "DefaultName 2");
+  EXPECT_EQ(basic::adapter_constants::person_no_transitive().name, "");
+  EXPECT_EQ(basic::adapter_constants::person_no_transitive().uri, "");
 }
 
 } // namespace apache::thrift::test

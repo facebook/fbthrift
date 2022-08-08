@@ -2973,6 +2973,129 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 /**
  * Original thrift struct:-
+ * Config
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/Config'))>>
+class Config implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'path',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'path' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'path' => ?string,
+  );
+
+  const type TShape = shape(
+    'path' => string,
+  );
+  const int STRUCTURAL_ID = 4266277309871357727;
+  /**
+   * Original thrift field:-
+   * 1: string path
+   */
+  public string $path;
+
+  public function __construct(?string $path = null)[] {
+    $this->path = $path ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'path'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Config';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Config",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "path",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+          shape(
+            "name" => "MyVarAdapter",
+          )
+        ),
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['path'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'path' => $this->path,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'path') !== null) {
+      $this->path = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['path']);
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * MyStruct
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/test/MyStruct'))>>

@@ -8,6 +8,7 @@
 #include "thrift/annotation/gen-cpp2/cpp_visitation.h"
 #include "thrift/annotation/gen-cpp2/python_visitation.h"
 #include "thrift/annotation/gen-cpp2/thrift_visitation.h"
+#include "thrift/annotation/gen-cpp2/scope_visitation.h"
 #include "thrift/annotation/gen-cpp2/hack_visitation.h"
 #include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_for_each_field.h"
 #include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_visit_union.h"

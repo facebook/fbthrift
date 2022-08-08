@@ -179,6 +179,16 @@ const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::Config>::fields_names = {{
+  "path",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::facebook::thrift::test::Config>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::Config>::fields_types = {{
+  TType::T_STRING,
+}};
+
 const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::thrift::test::MyStruct>::fields_names = {{
   "field",
 }};

@@ -27,4 +27,13 @@ public class Constants {
     var3.setField(30);
   }
 
+  public static final Integer var4 = 40;
+
+  public static final String var5 = "50";
+
+  public static final MyStruct var6 = new MyStruct();
+  static {
+    var6.setField(60);
+  }
+
 }

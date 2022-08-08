@@ -17,6 +17,9 @@ struct module_constants {
   const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::int32_t>& var1();
   const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& var2();
   const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& var3();
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::int32_t>& var4();
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& var5();
+  const static ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& var6();
 };
 
 }}} // facebook::thrift::test

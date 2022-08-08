@@ -1196,6 +1196,106 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::facebook::thrift::test::Config>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::facebook::thrift::test::Config>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace facebook { namespace thrift { namespace test {
+
+const char* Config::__fbthrift_thrift_uri() {
+  return "facebook.com/thrift/test/Config";
+}
+
+const folly::StringPiece Config::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<Config>::fields_names[folly::to_underlying(ord) - 1];
+}
+
+Config::Config(const Config&) = default;
+Config& Config::operator=(const Config&) = default;
+Config::Config(FOLLY_MAYBE_UNUSED Config&& other) noexcept :
+    __fbthrift_field_path(std::move(other.__fbthrift_field_path)),
+    __isset(other.__isset) {
+}
+
+Config& Config::operator=(FOLLY_MAYBE_UNUSED Config&& other) noexcept {
+    this->__fbthrift_field_path = std::move(other.__fbthrift_field_path);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+Config::Config(apache::thrift::FragileConstructor, ::std::string path__arg) :
+    __fbthrift_field_path(std::move(path__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void Config::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_path = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+void Config::__fbthrift_clear_terse_fields() {
+}
+
+bool Config::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool Config::operator==(FOLLY_MAYBE_UNUSED const Config& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.path_ref() == rhs.path_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool Config::operator<(FOLLY_MAYBE_UNUSED const Config& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.path_ref() == rhs.path_ref())) {
+    return lhs.path_ref() < rhs.path_ref();
+  }
+  return false;
+}
+
+
+void swap(FOLLY_MAYBE_UNUSED Config& a, FOLLY_MAYBE_UNUSED Config& b) {
+  using ::std::swap;
+  swap(a.__fbthrift_field_path, b.__fbthrift_field_path);
+  swap(a.__isset, b.__isset);
+}
+
+template void Config::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Config::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Config::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Config::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Config::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Config::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Config::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Config::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+}}} // facebook::thrift::test
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::facebook::thrift::test::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
