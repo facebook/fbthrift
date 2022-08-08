@@ -839,7 +839,6 @@ FieldWrapper.thrift_spec = (
 )
 
 FieldWrapper.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/FieldWrapper",
 }
 FieldWrapper.thrift_field_annotations = {
 }
@@ -863,7 +862,6 @@ Adapter.thrift_spec = (
 )
 
 Adapter.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/Adapter",
 }
 Adapter.thrift_field_annotations = {
 }
@@ -887,7 +885,6 @@ SkipCodegen.thrift_spec = (
 )
 
 SkipCodegen.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/SkipCodegen",
 }
 SkipCodegen.thrift_field_annotations = {
 }
@@ -912,7 +909,6 @@ Name.thrift_spec = (
 )
 
 Name.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/Name",
 }
 Name.thrift_field_annotations = {
 }
@@ -938,7 +934,6 @@ UnionEnumAttributes.thrift_spec = (
 )
 
 UnionEnumAttributes.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/UnionEnumAttributes",
 }
 UnionEnumAttributes.thrift_field_annotations = {
 }
@@ -962,7 +957,6 @@ StructTrait.thrift_spec = (
 )
 
 StructTrait.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/hack/StructTrait",
 }
 StructTrait.thrift_field_annotations = {
 }

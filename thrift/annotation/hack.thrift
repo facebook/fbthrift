@@ -36,7 +36,7 @@ namespace hs2 facebook.thrift.annotation.hack
 struct FieldWrapper {
   // The name of a Hack wrapper class used to wrap the field
   1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/FieldWrapper")
+}
 
 // An annotation that applies a Hack adapter to types. For example:
 // @hack.Adapter{name="\TimestampAdapter"}
@@ -52,13 +52,13 @@ struct FieldWrapper {
 struct Adapter {
   // The name of a Hack adapter class that implements IThriftAdapter
   1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/Adapter")
+}
 
 @scope.Field
 @scope.Function
 struct SkipCodegen {
   1: string reason;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/SkipCodegen")
+}
 
 // This annotation is mainly used to rename symbols which can result in symbol
 // conflict errors in Hack codegen.
@@ -67,19 +67,19 @@ struct SkipCodegen {
 struct Name {
   1: string name;
   2: string reason;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/Name")
+}
 
 // This annotation is for adding Hack attributes to union enums.
 @scope.Union
 struct UnionEnumAttributes {
   1: list<string> attributes;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/UnionEnumAttributes")
+}
 
 // This annotation is for using a custom trait for structs.
 @scope.Struct
 struct StructTrait {
   1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/StructTrait")
+}
 
 // This annotation is for adding Hack attributes.
 struct Attributes {
