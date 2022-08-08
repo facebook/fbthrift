@@ -267,6 +267,12 @@ class StructTests(unittest.TestCase):
         e = easy()
         self.assertEqual(e, e._to_python())
 
+    def test_immutability(self) -> None:
+        e = easy()
+        with self.assertRaises(AttributeError):
+            # pyre-ignore[41]: Cannot reassign final attribute `name`.
+            e.name = "foo"
+
 
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:

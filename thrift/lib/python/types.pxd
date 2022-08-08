@@ -135,6 +135,7 @@ cdef class AdaptedTypeInfo:
 
 cdef class StructOrUnion:
     cdef object _fbthrift_data
+    cdef object _fbthrift_fields_cache
     cdef folly.iobuf.IOBuf _serialize(StructOrUnion self, Protocol proto)
     cdef uint32_t _deserialize(StructOrUnion self, folly.iobuf.IOBuf buf, Protocol proto) except? 0
     cdef _fbthrift_get_field_value(self, int16_t index)

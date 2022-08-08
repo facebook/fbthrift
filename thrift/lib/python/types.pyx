@@ -30,6 +30,7 @@ import cython
 import enum
 import functools
 import itertools
+import threading
 
 from thrift.python.exceptions cimport GeneratedError
 from thrift.python.serializer cimport cserialize, cdeserialize
@@ -423,6 +424,7 @@ cdef class Struct(StructOrUnion):
         self._fbthrift_data = createStructTuple(
             info.cpp_obj.get().getStructInfo()
         )
+        self._fbthrift_fields_cache = dict()
 
     def __init__(self, **kwargs):
         cdef StructInfo info = self._fbthrift_struct_info
@@ -530,11 +532,18 @@ cdef class Struct(StructOrUnion):
         return cdeserialize(deref(info.cpp_obj), buf._this, self._fbthrift_data, proto)
 
     cdef _fbthrift_get_field_value(self, int16_t index):
+        if index in self._fbthrift_fields_cache:
+            return self._fbthrift_fields_cache[index]
         data = self._fbthrift_data[index + 1]
         if data is None:
             return
         cdef StructInfo info = self._fbthrift_struct_info
-        return info.type_infos[index].to_python_value(data)
+        with threading.Lock():
+            if index in self._fbthrift_fields_cache:
+                return self._fbthrift_fields_cache[index]
+            val = info.type_infos[index].to_python_value(data)
+            self._fbthrift_fields_cache[index] = val
+            return val
 
 
     @classmethod
@@ -694,19 +703,19 @@ cdef class Union(StructOrUnion):
 
 cdef make_fget_struct(i, field_id, adapter_class):
     if adapter_class:
-        return functools.cached_property(lambda self:
+        return property(lambda self:
             adapter_class.from_thrift_field(
                 (<Struct>self)._fbthrift_get_field_value(i),
                 field_id,
                 self,
             )
         )
-    return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
+    return property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
 
 
 cdef make_fget_union(type_value, adapter_class):
     if adapter_class:
-        return functools.cached_property(lambda self:
+        return property(lambda self:
             adapter_class.from_thrift_field(
                 (<Union>self)._fbthrift_get_field_value(type_value),
                 type_value,
