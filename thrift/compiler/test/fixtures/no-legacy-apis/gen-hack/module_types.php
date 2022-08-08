@@ -400,7 +400,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\no-legacy-a
       $this->_type = \fixtures\no-legacy-apis\MyUnionEnum::myEnum;
     }
     if (idx($parsed, 'myDataItem') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\no-legacy-apis\MyStruct>($parsed['myDataItem']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\no-legacy-apis\MyStruct>($parsed['myDataItem']));
       $_tmp1 = \fixtures\no-legacy-apis\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myDataItem = $_tmp1;

@@ -2054,7 +2054,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patch']));
       $_tmp1 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -2063,7 +2063,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
@@ -2319,7 +2319,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patch']));
       $_tmp1 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -2333,7 +2333,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       }
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patchAfter']));
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patchAfter']));
       $_tmp4 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
@@ -2589,7 +2589,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patch']));
       $_tmp1 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -2603,7 +2603,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       }
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patchAfter']));
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patchAfter']));
       $_tmp4 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
@@ -2859,7 +2859,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patch']));
       $_tmp1 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -2873,7 +2873,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       }
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patchAfter']));
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patchAfter']));
       $_tmp4 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->patchAfter = $_tmp4;
@@ -3129,7 +3129,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patch']));
       $_tmp1 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -3138,7 +3138,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
@@ -3394,7 +3394,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patch']));
       $_tmp1 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -3403,7 +3403,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
@@ -3659,7 +3659,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patch']));
       $_tmp1 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -3668,7 +3668,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
@@ -3924,7 +3924,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patch']));
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -3933,7 +3933,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;
@@ -4189,7 +4189,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patch']));
       $_tmp1 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -4198,7 +4198,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['ensure']);
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patchAfter']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patchAfter']));
       $_tmp3 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patchAfter = $_tmp3;

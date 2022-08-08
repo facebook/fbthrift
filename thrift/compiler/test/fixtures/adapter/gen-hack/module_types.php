@@ -2027,13 +2027,13 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'structField') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['structField']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['structField']));
       $_tmp1 = \thrift\test\Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->structField = $_tmp1;
     }
     if (idx($parsed, 'optionalStructField') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['optionalStructField']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Foo>($parsed['optionalStructField']));
       $_tmp3 = \thrift\test\Foo::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->optionalStructField = $_tmp3;
@@ -2043,7 +2043,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_container8 = Vector {};
       foreach($_json7 as $_key5 => $_value6) {
         $_elem9 = \thrift\test\Foo::withDefaultValues();
-        $_tmp10 = json_encode($_value6);
+        $_tmp10 = \json_encode($_value6);
         $_tmp11 = \thrift\test\Foo::withDefaultValues();
         $_tmp11->readFromJson($_tmp10);
         $_elem9 = $_tmp11;
@@ -2056,7 +2056,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $_container16 = Vector {};
       foreach($_json15 as $_key13 => $_value14) {
         $_elem17 = \thrift\test\Foo::withDefaultValues();
-        $_tmp18 = json_encode($_value14);
+        $_tmp18 = \json_encode($_value14);
         $_tmp19 = \thrift\test\Foo::withDefaultValues();
         $_tmp19->readFromJson($_tmp18);
         $_elem17 = $_tmp19;
@@ -2065,19 +2065,19 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optionalStructListField = $_container16;
     }
     if (idx($parsed, 'unionField') !== null) {
-      $_tmp20 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['unionField']));
+      $_tmp20 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['unionField']));
       $_tmp21 = \thrift\test\Baz::withDefaultValues();
       $_tmp21->readFromJson($_tmp20);
       $this->unionField = $_tmp21;
     }
     if (idx($parsed, 'optionalUnionField') !== null) {
-      $_tmp22 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['optionalUnionField']));
+      $_tmp22 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\Baz>($parsed['optionalUnionField']));
       $_tmp23 = \thrift\test\Baz::withDefaultValues();
       $_tmp23->readFromJson($_tmp22);
       $this->optionalUnionField = $_tmp23;
     }
     if (idx($parsed, 'adaptedStructField') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\DirectlyAdapted>($parsed['adaptedStructField']));
+      $_tmp24 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\DirectlyAdapted>($parsed['adaptedStructField']));
       $_tmp25 = \thrift\test\DirectlyAdapted::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->adaptedStructField = $_tmp25;
@@ -2885,7 +2885,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\AdaptedA>($parsed['a']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\AdaptedA>($parsed['a']));
       $_tmp1 = \thrift\test\A::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->a = $_tmp1;

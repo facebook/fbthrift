@@ -265,7 +265,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg2 = $_tmp1;

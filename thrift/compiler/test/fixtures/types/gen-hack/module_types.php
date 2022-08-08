@@ -1345,7 +1345,7 @@ class TrivialNestedWithDefault implements \IThriftSyncStruct {
       }
     }
     if (idx($parsed, 'n') !== null) {
-      $_tmp1 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, TrivialNumeric>($parsed['n']));
+      $_tmp1 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, TrivialNumeric>($parsed['n']));
       $_tmp2 = TrivialNumeric::withDefaultValues();
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
@@ -1629,7 +1629,7 @@ class ComplexNestedWithDefault implements \IThriftSyncStruct {
       $this->z = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['z']);
     }
     if (idx($parsed, 'n') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ComplexString>($parsed['n']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, ComplexString>($parsed['n']));
       $_tmp1 = ComplexString::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
@@ -2053,7 +2053,7 @@ class MyStruct implements \IThriftSyncStruct {
       $this->majorVer = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['majorVer']);
     }
     if (idx($parsed, 'data') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyDataItem>($parsed['data']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyDataItem>($parsed['data']));
       $_tmp1 = MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
@@ -2578,13 +2578,13 @@ class ForwardUsageRoot implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'ForwardUsageStruct') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageStruct>($parsed['ForwardUsageStruct']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageStruct>($parsed['ForwardUsageStruct']));
       $_tmp1 = ForwardUsageStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
     }
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageByRef>($parsed['ForwardUsageByRef']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageByRef>($parsed['ForwardUsageByRef']));
       $_tmp3 = ForwardUsageByRef::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
@@ -2687,7 +2687,7 @@ class ForwardUsageStruct implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
@@ -2790,7 +2790,7 @@ class ForwardUsageByRef implements \IThriftSyncStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, ForwardUsageRoot>($parsed['foo']));
       $_tmp1 = ForwardUsageRoot::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;

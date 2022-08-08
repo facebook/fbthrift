@@ -836,7 +836,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
+      $_tmp24 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
       $_tmp25 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;
@@ -2010,7 +2010,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->terse_map_field = $_container21;
     }
     if (idx($parsed, 'terse_struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['terse_struct_field']));
+      $_tmp24 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['terse_struct_field']));
       $_tmp25 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->terse_struct_field = $_tmp25;
@@ -2106,7 +2106,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->map_field = $_container47;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp50 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
+      $_tmp50 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStruct>($parsed['struct_field']));
       $_tmp51 = \thrift\test\terse_write\MyStruct::withDefaultValues();
       $_tmp51->readFromJson($_tmp50);
       $this->struct_field = $_tmp51;
@@ -2729,7 +2729,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
       $this->map_field = $_container21;
     }
     if (idx($parsed, 'struct_field') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStructWithCustomDefault>($parsed['struct_field']));
+      $_tmp24 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\terse_write\MyStructWithCustomDefault>($parsed['struct_field']));
       $_tmp25 = \thrift\test\terse_write\MyStructWithCustomDefault::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->struct_field = $_tmp25;

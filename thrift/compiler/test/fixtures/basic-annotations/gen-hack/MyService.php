@@ -1385,7 +1385,7 @@ class MyService_ping_result extends \ThriftSyncStructWithoutResult {
     }
 
     if (idx($parsed, 'myExcept') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyException>($parsed['myExcept']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyException>($parsed['myExcept']));
       $_tmp1 = MyException::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myExcept = $_tmp1;

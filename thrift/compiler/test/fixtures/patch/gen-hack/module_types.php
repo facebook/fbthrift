@@ -590,7 +590,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\patch\MyUni
       $this->_type = \fixtures\patch\MyUnionEnum::option2;
     }
     if (idx($parsed, 'option3') !== null) {
-      $_tmp1 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['option3']));
+      $_tmp1 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['option3']));
       $_tmp2 = \fixtures\patch\InnerUnion::withDefaultValues();
       $_tmp2->readFromJson($_tmp1);
       $this->option3 = $_tmp2;
@@ -1446,7 +1446,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->binaryVal = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['binaryVal']);
     }
     if (idx($parsed, 'structVal') !== null) {
-      $_tmp3 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['structVal']));
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['structVal']));
       $_tmp4 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
       $this->structVal = $_tmp4;
@@ -1494,7 +1494,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optBinaryVal = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['optBinaryVal']);
     }
     if (idx($parsed, 'optStructVal') !== null) {
-      $_tmp8 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['optStructVal']));
+      $_tmp8 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['optStructVal']));
       $_tmp9 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->optStructVal = $_tmp9;
@@ -1535,7 +1535,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->optMapVal = $_container27;
     }
     if (idx($parsed, 'unionVal') !== null) {
-      $_tmp29 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['unionVal']));
+      $_tmp29 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['unionVal']));
       $_tmp30 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp30->readFromJson($_tmp29);
       $this->unionVal = $_tmp30;
@@ -1725,13 +1725,13 @@ class MyDataFieldPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     }
 
     if (idx($parsed, 'data1') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['data1']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['data1']));
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->data1 = $_tmp1;
     }
     if (idx($parsed, 'data2') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['data2']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['data2']));
       $_tmp3 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->data2 = $_tmp3;
@@ -1935,7 +1935,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'assign') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['assign']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['assign']));
       $_tmp1 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->assign = $_tmp1;
@@ -1944,7 +1944,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataFieldPatch>($parsed['patch']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataFieldPatch>($parsed['patch']));
       $_tmp3 = \fixtures\patch\MyDataFieldPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patch = $_tmp3;
@@ -2197,19 +2197,19 @@ class OptionalMyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyDataPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyData>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\MyData::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\MyDataPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
@@ -2351,7 +2351,7 @@ class InnerUnionFieldPatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     }
 
     if (idx($parsed, 'innerOption') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['innerOption']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['innerOption']));
       $_tmp1 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->innerOption = $_tmp1;
@@ -2603,19 +2603,19 @@ class InnerUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionFieldPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionFieldPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\InnerUnionFieldPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\InnerUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionFieldPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionFieldPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\InnerUnionFieldPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
@@ -2868,19 +2868,19 @@ class OptionalInnerUnionPatch implements \IThriftSyncStruct, \IThriftShapishSync
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\InnerUnionPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnion>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\InnerUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\InnerUnionPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
@@ -3114,19 +3114,19 @@ class MyUnionFieldPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     }
 
     if (idx($parsed, 'option1') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['option1']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['option1']));
       $_tmp1 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->option1 = $_tmp1;
     }
     if (idx($parsed, 'option2') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['option2']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['option2']));
       $_tmp3 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->option2 = $_tmp3;
     }
     if (idx($parsed, 'option3') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['option3']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\InnerUnionPatch>($parsed['option3']));
       $_tmp5 = \fixtures\patch\InnerUnionPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->option3 = $_tmp5;
@@ -3378,19 +3378,19 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionFieldPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionFieldPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyUnionFieldPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionFieldPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionFieldPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\MyUnionFieldPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
@@ -3643,19 +3643,19 @@ class OptionalMyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyUnionPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnion>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\MyUnion::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\MyUnionPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;
@@ -4841,145 +4841,145 @@ class MyStructFieldPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     }
 
     if (idx($parsed, 'boolVal') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['boolVal']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['boolVal']));
       $_tmp1 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->boolVal = $_tmp1;
     }
     if (idx($parsed, 'byteVal') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['byteVal']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['byteVal']));
       $_tmp3 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->byteVal = $_tmp3;
     }
     if (idx($parsed, 'i16Val') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['i16Val']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['i16Val']));
       $_tmp5 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->i16Val = $_tmp5;
     }
     if (idx($parsed, 'i32Val') !== null) {
-      $_tmp6 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['i32Val']));
+      $_tmp6 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['i32Val']));
       $_tmp7 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp7->readFromJson($_tmp6);
       $this->i32Val = $_tmp7;
     }
     if (idx($parsed, 'i64Val') !== null) {
-      $_tmp8 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['i64Val']));
+      $_tmp8 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['i64Val']));
       $_tmp9 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->i64Val = $_tmp9;
     }
     if (idx($parsed, 'floatVal') !== null) {
-      $_tmp10 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['floatVal']));
+      $_tmp10 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['floatVal']));
       $_tmp11 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp11->readFromJson($_tmp10);
       $this->floatVal = $_tmp11;
     }
     if (idx($parsed, 'doubleVal') !== null) {
-      $_tmp12 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['doubleVal']));
+      $_tmp12 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['doubleVal']));
       $_tmp13 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp13->readFromJson($_tmp12);
       $this->doubleVal = $_tmp13;
     }
     if (idx($parsed, 'stringVal') !== null) {
-      $_tmp14 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['stringVal']));
+      $_tmp14 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['stringVal']));
       $_tmp15 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp15->readFromJson($_tmp14);
       $this->stringVal = $_tmp15;
     }
     if (idx($parsed, 'binaryVal') !== null) {
-      $_tmp16 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['binaryVal']));
+      $_tmp16 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['binaryVal']));
       $_tmp17 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp17->readFromJson($_tmp16);
       $this->binaryVal = $_tmp17;
     }
     if (idx($parsed, 'structVal') !== null) {
-      $_tmp18 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['structVal']));
+      $_tmp18 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyDataPatch>($parsed['structVal']));
       $_tmp19 = \fixtures\patch\MyDataPatch::withDefaultValues();
       $_tmp19->readFromJson($_tmp18);
       $this->structVal = $_tmp19;
     }
     if (idx($parsed, 'optBoolVal') !== null) {
-      $_tmp20 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBoolPatch>($parsed['optBoolVal']));
+      $_tmp20 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBoolPatch>($parsed['optBoolVal']));
       $_tmp21 = \thrift\op\OptionalBoolPatch::withDefaultValues();
       $_tmp21->readFromJson($_tmp20);
       $this->optBoolVal = $_tmp21;
     }
     if (idx($parsed, 'optByteVal') !== null) {
-      $_tmp22 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBytePatch>($parsed['optByteVal']));
+      $_tmp22 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBytePatch>($parsed['optByteVal']));
       $_tmp23 = \thrift\op\OptionalBytePatch::withDefaultValues();
       $_tmp23->readFromJson($_tmp22);
       $this->optByteVal = $_tmp23;
     }
     if (idx($parsed, 'optI16Val') !== null) {
-      $_tmp24 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI16Patch>($parsed['optI16Val']));
+      $_tmp24 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI16Patch>($parsed['optI16Val']));
       $_tmp25 = \thrift\op\OptionalI16Patch::withDefaultValues();
       $_tmp25->readFromJson($_tmp24);
       $this->optI16Val = $_tmp25;
     }
     if (idx($parsed, 'optI32Val') !== null) {
-      $_tmp26 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI32Patch>($parsed['optI32Val']));
+      $_tmp26 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI32Patch>($parsed['optI32Val']));
       $_tmp27 = \thrift\op\OptionalI32Patch::withDefaultValues();
       $_tmp27->readFromJson($_tmp26);
       $this->optI32Val = $_tmp27;
     }
     if (idx($parsed, 'optI64Val') !== null) {
-      $_tmp28 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI64Patch>($parsed['optI64Val']));
+      $_tmp28 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalI64Patch>($parsed['optI64Val']));
       $_tmp29 = \thrift\op\OptionalI64Patch::withDefaultValues();
       $_tmp29->readFromJson($_tmp28);
       $this->optI64Val = $_tmp29;
     }
     if (idx($parsed, 'optFloatVal') !== null) {
-      $_tmp30 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalFloatPatch>($parsed['optFloatVal']));
+      $_tmp30 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalFloatPatch>($parsed['optFloatVal']));
       $_tmp31 = \thrift\op\OptionalFloatPatch::withDefaultValues();
       $_tmp31->readFromJson($_tmp30);
       $this->optFloatVal = $_tmp31;
     }
     if (idx($parsed, 'optDoubleVal') !== null) {
-      $_tmp32 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalDoublePatch>($parsed['optDoubleVal']));
+      $_tmp32 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalDoublePatch>($parsed['optDoubleVal']));
       $_tmp33 = \thrift\op\OptionalDoublePatch::withDefaultValues();
       $_tmp33->readFromJson($_tmp32);
       $this->optDoubleVal = $_tmp33;
     }
     if (idx($parsed, 'optStringVal') !== null) {
-      $_tmp34 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalStringPatch>($parsed['optStringVal']));
+      $_tmp34 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalStringPatch>($parsed['optStringVal']));
       $_tmp35 = \thrift\op\OptionalStringPatch::withDefaultValues();
       $_tmp35->readFromJson($_tmp34);
       $this->optStringVal = $_tmp35;
     }
     if (idx($parsed, 'optBinaryVal') !== null) {
-      $_tmp36 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBinaryPatch>($parsed['optBinaryVal']));
+      $_tmp36 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\OptionalBinaryPatch>($parsed['optBinaryVal']));
       $_tmp37 = \thrift\op\OptionalBinaryPatch::withDefaultValues();
       $_tmp37->readFromJson($_tmp36);
       $this->optBinaryVal = $_tmp37;
     }
     if (idx($parsed, 'optStructVal') !== null) {
-      $_tmp38 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyDataPatch>($parsed['optStructVal']));
+      $_tmp38 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyDataPatch>($parsed['optStructVal']));
       $_tmp39 = \fixtures\patch\OptionalMyDataPatch::withDefaultValues();
       $_tmp39->readFromJson($_tmp38);
       $this->optStructVal = $_tmp39;
     }
     if (idx($parsed, 'optListVal') !== null) {
-      $_tmp40 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField21Patch>($parsed['optListVal']));
+      $_tmp40 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField21Patch>($parsed['optListVal']));
       $_tmp41 = \fixtures\patch\OptionalMyStructField21Patch::withDefaultValues();
       $_tmp41->readFromJson($_tmp40);
       $this->optListVal = $_tmp41;
     }
     if (idx($parsed, 'optSetVal') !== null) {
-      $_tmp42 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField22Patch>($parsed['optSetVal']));
+      $_tmp42 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField22Patch>($parsed['optSetVal']));
       $_tmp43 = \fixtures\patch\OptionalMyStructField22Patch::withDefaultValues();
       $_tmp43->readFromJson($_tmp42);
       $this->optSetVal = $_tmp43;
     }
     if (idx($parsed, 'optMapVal') !== null) {
-      $_tmp44 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField23Patch>($parsed['optMapVal']));
+      $_tmp44 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\OptionalMyStructField23Patch>($parsed['optMapVal']));
       $_tmp45 = \fixtures\patch\OptionalMyStructField23Patch::withDefaultValues();
       $_tmp45->readFromJson($_tmp44);
       $this->optMapVal = $_tmp45;
     }
     if (idx($parsed, 'unionVal') !== null) {
-      $_tmp46 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['unionVal']));
+      $_tmp46 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyUnionPatch>($parsed['unionVal']));
       $_tmp47 = \fixtures\patch\MyUnionPatch::withDefaultValues();
       $_tmp47->readFromJson($_tmp46);
       $this->unionVal = $_tmp47;
@@ -5534,7 +5534,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField21Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField21Patch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyStructField21Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -5555,7 +5555,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->ensure = $_container6;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp9 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField21Patch>($parsed['patchAfter']));
+      $_tmp9 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField21Patch>($parsed['patchAfter']));
       $_tmp10 = \fixtures\patch\MyStructField21Patch::withDefaultValues();
       $_tmp10->readFromJson($_tmp9);
       $this->patchAfter = $_tmp10;
@@ -6095,7 +6095,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField22Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField22Patch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyStructField22Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -6111,7 +6111,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->ensure = $_container6;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp8 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField22Patch>($parsed['patchAfter']));
+      $_tmp8 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField22Patch>($parsed['patchAfter']));
       $_tmp9 = \fixtures\patch\MyStructField22Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->patchAfter = $_tmp9;
@@ -6626,7 +6626,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField23Patch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField23Patch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyStructField23Patch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
@@ -6642,7 +6642,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
       $this->ensure = $_container6;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp8 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField23Patch>($parsed['patchAfter']));
+      $_tmp8 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructField23Patch>($parsed['patchAfter']));
       $_tmp9 = \fixtures\patch\MyStructField23Patch::withDefaultValues();
       $_tmp9->readFromJson($_tmp8);
       $this->patchAfter = $_tmp9;
@@ -6846,7 +6846,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'assign') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStruct>($parsed['assign']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStruct>($parsed['assign']));
       $_tmp1 = \fixtures\patch\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->assign = $_tmp1;
@@ -6855,7 +6855,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructFieldPatch>($parsed['patch']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructFieldPatch>($parsed['patch']));
       $_tmp3 = \fixtures\patch\MyStructFieldPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->patch = $_tmp3;
@@ -7108,19 +7108,19 @@ class OptionalMyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
     if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructPatch>($parsed['patch']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructPatch>($parsed['patch']));
       $_tmp1 = \fixtures\patch\MyStructPatch::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->patch = $_tmp1;
     }
     if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStruct>($parsed['ensure']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStruct>($parsed['ensure']));
       $_tmp3 = \fixtures\patch\MyStruct::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->ensure = $_tmp3;
     }
     if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructPatch>($parsed['patchAfter']));
+      $_tmp4 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\patch\MyStructPatch>($parsed['patchAfter']));
       $_tmp5 = \fixtures\patch\MyStructPatch::withDefaultValues();
       $_tmp5->readFromJson($_tmp4);
       $this->patchAfter = $_tmp5;

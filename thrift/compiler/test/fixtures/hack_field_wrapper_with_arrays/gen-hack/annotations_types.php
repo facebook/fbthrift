@@ -519,13 +519,13 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
       $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
     if (idx($parsed, 'recurse') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($parsed['recurse']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($parsed['recurse']));
       $_tmp1 = structured_annotation_recursive::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->recurse = $_tmp1;
     }
     if (idx($parsed, 'default') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($parsed['default']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($parsed['default']));
       $_tmp3 = structured_annotation_with_default::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->default = $_tmp3;
@@ -535,7 +535,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
       $_container8 = dict[];
       foreach($_json7 as $_key5 => $_value6) {
         $_value9 = structured_annotation_recursive::withDefaultValues();
-        $_tmp10 = json_encode($_value6);
+        $_tmp10 = \json_encode($_value6);
         $_tmp11 = structured_annotation_recursive::withDefaultValues();
         $_tmp11->readFromJson($_tmp10);
         $_value9 = $_tmp11;

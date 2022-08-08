@@ -349,7 +349,7 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
       $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg2 = $_tmp1;
@@ -451,7 +451,7 @@ class Service1_func_result extends \ThriftSyncStructWithResult {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['success']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['success']));
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
@@ -604,7 +604,7 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
       $this->arg1 = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['arg1']);
     }
     if (idx($parsed, 'arg2') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['arg2']));
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->arg2 = $_tmp1;
@@ -706,7 +706,7 @@ class Service1_func1_result extends \ThriftSyncStructWithResult {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['success']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyStruct>($parsed['success']));
       $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;

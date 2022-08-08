@@ -1075,7 +1075,7 @@ void t_hack_generator::generate_json_struct(
     const std::string& prefix_json) {
   std::string enc = namer("$_tmp");
   indent(out) << enc << " = "
-              << "json_encode(" << prefix_json << ");\n";
+              << "\\json_encode(" << prefix_json << ");\n";
   std::string tmp = namer("$_tmp");
   t_field felem(tstruct, tmp);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << "\n";

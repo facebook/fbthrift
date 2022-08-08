@@ -376,7 +376,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->MyStringField = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['MyStringField']);
     }
     if (idx($parsed, 'MyDataField') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['MyDataField']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['MyDataField']));
       $_tmp1 = \fixtures\basic\MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
@@ -755,14 +755,14 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic\MyUni
       $this->_type = \fixtures\basic\MyUnionEnum::myEnum;
     }
     if (idx($parsed, 'myStruct') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyStruct>($parsed['myStruct']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyStruct>($parsed['myStruct']));
       $_tmp1 = \fixtures\basic\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myStruct = $_tmp1;
       $this->_type = \fixtures\basic\MyUnionEnum::myStruct;
     }
     if (idx($parsed, 'myDataItem') !== null) {
-      $_tmp2 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['myDataItem']));
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \fixtures\basic\MyDataItem>($parsed['myDataItem']));
       $_tmp3 = \fixtures\basic\MyDataItem::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;

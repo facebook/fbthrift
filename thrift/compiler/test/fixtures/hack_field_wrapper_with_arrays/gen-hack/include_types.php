@@ -235,7 +235,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     }
 
     if (idx($parsed, 'nested_struct') !== null) {
-      $_tmp0 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyNestedStruct>($parsed['nested_struct']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyNestedStruct>($parsed['nested_struct']));
       $_tmp1 = MyNestedStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->nested_struct = $_tmp1;
@@ -1238,7 +1238,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
       $_container4 = dict[];
       foreach($_json3 as $_key1 => $_value2) {
         $_value5 = MyStruct::withDefaultValues();
-        $_tmp6 = json_encode($_value2);
+        $_tmp6 = \json_encode($_value2);
         $_tmp7 = MyStruct::withDefaultValues();
         $_tmp7->readFromJson($_tmp6);
         $_value5 = $_tmp7;
@@ -1255,7 +1255,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
         $_container18 = vec[];
         foreach($_json17 as $_key15 => $_value16) {
           $_elem19 = MyStruct::withDefaultValues();
-          $_tmp20 = json_encode($_value16);
+          $_tmp20 = \json_encode($_value16);
           $_tmp21 = MyStruct::withDefaultValues();
           $_tmp21->readFromJson($_tmp20);
           $_elem19 = $_tmp21;
@@ -1297,7 +1297,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
         $_container45 = dict[];
         foreach($_json44 as $_key42 => $_value43) {
           $_value46 = MyStruct::withDefaultValues();
-          $_tmp47 = json_encode($_value43);
+          $_tmp47 = \json_encode($_value43);
           $_tmp48 = MyStruct::withDefaultValues();
           $_tmp48->readFromJson($_tmp47);
           $_value46 = $_tmp48;
@@ -1321,7 +1321,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
           $_container65 = vec[];
           foreach($_json64 as $_key62 => $_value63) {
             $_elem66 = MyStruct::withDefaultValues();
-            $_tmp67 = json_encode($_value63);
+            $_tmp67 = \json_encode($_value63);
             $_tmp68 = MyStruct::withDefaultValues();
             $_tmp68->readFromJson($_tmp67);
             $_elem66 = $_tmp68;
@@ -1344,7 +1344,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
         $_container79 = dict[];
         foreach($_json78 as $_key76 => $_value77) {
           $_value80 = MyStruct::withDefaultValues();
-          $_tmp81 = json_encode($_value77);
+          $_tmp81 = \json_encode($_value77);
           $_tmp82 = MyStruct::withDefaultValues();
           $_tmp82->readFromJson($_tmp81);
           $_value80 = $_tmp82;

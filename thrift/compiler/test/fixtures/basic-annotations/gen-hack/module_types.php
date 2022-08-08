@@ -756,7 +756,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $this->cpp_type_annotation = $_container4;
     }
     if (idx($parsed, 'my_union') !== null) {
-      $_tmp6 = json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyUnion>($parsed['my_union']));
+      $_tmp6 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, MyUnion>($parsed['my_union']));
       $_tmp7 = MyUnion::withDefaultValues();
       $_tmp7->readFromJson($_tmp6);
       $this->my_union = $_tmp7;
