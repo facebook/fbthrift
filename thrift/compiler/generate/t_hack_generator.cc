@@ -128,6 +128,8 @@ class t_hack_generator : public t_concat_generator {
 
   void init_generator() override;
   void close_generator() override;
+  void init_codegen_file(
+      std::ofstream& file_, std::string file_name_, bool skip_ns = false);
 
   /**
    * Program-level generation functions
@@ -665,7 +667,8 @@ class t_hack_generator : public t_concat_generator {
     if (annotation) {
       const std::string* name;
       const std::string* underlying_name = new std::string("");
-      const std::string* underlying_namespace = new std::string("");
+      const std::string* extra_namespace =
+          new std::string("thrift_adapted_types");
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           name = new std::string(
@@ -674,33 +677,26 @@ class t_hack_generator : public t_concat_generator {
           underlying_name = new std::string(
               hack_name(item.second->get_string(), ttype->program(), true));
         } else if (item.first->get_string() == "extraNamespace") {
-          underlying_namespace = &item.second->get_string();
+          extra_namespace = &item.second->get_string();
         }
       }
       if (name) {
         // If both name and ns are not provided,
         // then we need to nest the namespace
-        if (underlying_name->empty() && underlying_namespace->empty()) {
-          underlying_namespace = new std::string("thrift_adapted_types");
+        if (underlying_name->empty()) {
           underlying_name = new std::string(hack_name(ttype, true));
-
-          auto [ns, ns_type] = get_namespace(ttype->program());
-          if (ns_type == HackThriftNamespaceType::HACK ||
-              ns_type == HackThriftNamespaceType::PACKAGE) {
-            underlying_namespace =
-                new std::string(ns + "\\thrift_adapted_types");
-          }
-        } else if (underlying_namespace->empty()) {
-          // If name is provided, then use the underlying struct's namespace.
-          auto [ns, ns_type] = get_namespace(ttype->program());
-          if (ns_type == HackThriftNamespaceType::HACK ||
-              ns_type == HackThriftNamespaceType::PACKAGE) {
-            return {name, underlying_name, &ns};
-          }
-          return {name, underlying_name, nullptr};
         }
 
-        return {name, underlying_name, underlying_namespace};
+        auto [ns, ns_type] = get_namespace(ttype->program());
+        if (ns_type == HackThriftNamespaceType::HACK ||
+            ns_type == HackThriftNamespaceType::PACKAGE) {
+          return {
+              name,
+              underlying_name,
+              new std::string(ns + "\\" + *extra_namespace)};
+        }
+
+        return {name, underlying_name, extra_namespace};
       }
     }
     return {nullptr, nullptr, nullptr};
@@ -1008,6 +1004,7 @@ class t_hack_generator : public t_concat_generator {
    * File streams
    */
   std::ofstream f_types_;
+  std::ofstream f_adapted_types_;
   std::ofstream f_consts_;
   std::ofstream f_helpers_;
   std::ofstream f_service_;
@@ -1429,38 +1426,52 @@ void t_hack_generator::generate_instance_key(std::ofstream& out) {
 void t_hack_generator::init_generator() {
   // Make output directory
   boost::filesystem::create_directory(get_out_dir());
-
-  // Make output file
-  std::string f_types_name = get_out_dir() + program_name_ + "_types.php";
-  f_types_.open(f_types_name.c_str());
-  record_genfile(f_types_name);
-
-  // Print header
-  f_types_ << "<?hh\n" << autogen_comment() << "\n";
-
-  auto [ns, ns_type] = get_namespace(program_);
-  bool has_hack_ns =
-      (ns_type == HackThriftNamespaceType::HACK ||
-       ns_type == HackThriftNamespaceType::PACKAGE);
-  if (has_hack_ns) {
-    f_types_ << "namespace " << ns << ";\n\n";
-  }
+  init_codegen_file(f_types_, get_out_dir() + program_name_ + "_types.php");
 
   // Print header
   if (!program_->consts().empty()) {
-    std::string f_consts_name =
-        get_out_dir() + program_name_ + "_constants.php";
-    f_consts_.open(f_consts_name.c_str());
-    record_genfile(f_consts_name);
-    f_consts_ << "<?hh\n" << autogen_comment();
+    init_codegen_file(
+        f_consts_, get_out_dir() + program_name_ + "_constants.php");
     constants_values_.clear();
-    if (has_hack_ns) {
-      f_consts_ << "namespace " << ns << ";\n\n";
-    }
+    auto [ns, ns_type] = get_namespace(program_);
     f_consts_ << "class "
               << (ns_type != HackThriftNamespaceType::PHP ? program_name_ + "_"
                                                           : ns)
               << "CONSTANTS implements \\IThriftConstants {\n";
+  }
+
+  if (!program_->structs().empty()) {
+    bool codegen_file_open = false;
+    for (const auto* tstruct : program_->structs()) {
+      auto [wrapper, name, ns] = find_hack_wrapper(tstruct, false);
+      if (wrapper) {
+        if (!codegen_file_open) {
+          init_codegen_file(
+              f_adapted_types_,
+              get_out_dir() + program_name_ + "_adapted_types.php",
+              true);
+          codegen_file_open = true;
+        }
+      }
+    }
+  }
+}
+
+void t_hack_generator::init_codegen_file(
+    std::ofstream& file_, std::string file_name_, bool skip_ns) {
+  file_.open(file_name_.c_str());
+  record_genfile(file_name_);
+
+  // Print header
+  file_ << "<?hh\n" << autogen_comment() << "\n";
+
+  if (skip_ns) {
+    return;
+  } else {
+    auto [ns, _] = get_namespace(program_);
+    if (has_hack_namespace) {
+      file_ << "namespace " << ns << ";\n\n";
+    }
   }
 }
 
@@ -1509,6 +1520,9 @@ void t_hack_generator::close_generator() {
     // close constants class
     f_consts_ << "}\n\n";
     f_consts_.close();
+  }
+  if (f_adapted_types_.is_open()) {
+    f_adapted_types_.close();
   }
 }
 
@@ -5014,15 +5028,7 @@ void t_hack_generator::generate_service(const t_service* tservice) {
 void t_hack_generator::generate_service(
     const t_service* tservice, bool mangle) {
   std::string f_base_name = php_servicename_mangle(mangle, tservice);
-  std::string f_service_name = get_out_dir() + f_base_name + ".php";
-  f_service_.open(f_service_name.c_str());
-  record_genfile(f_service_name);
-
-  f_service_ << "<?hh\n" << autogen_comment() << "\n";
-  auto [ns, _] = get_namespace(program_);
-  if (has_hack_namespace) {
-    f_service_ << "namespace " << ns << ";\n\n";
-  }
+  init_codegen_file(f_service_, get_out_dir() + f_base_name + ".php");
 
   // Generate the main parts of the service
   generate_service_interface(
