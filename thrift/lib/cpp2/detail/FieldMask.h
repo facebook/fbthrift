@@ -22,6 +22,9 @@
 #include <thrift/lib/thrift/gen-cpp2/protocol_types.h>
 
 namespace apache::thrift::protocol::detail {
+// TODO: replace MapId with ValueId
+// Runtime and compile time representations for a map id.
+enum class MapId : int64_t {};
 
 // MaskRef struct represents the Field Mask and whether the mask is coming from
 // excludes mask. MaskRef is used for inputs and outputs for Field Mask
@@ -35,7 +38,14 @@ class MaskRef {
   // Get nested MaskRef with the given field id. If the id does not exist in the
   // map, it returns noneMask or allMask depending on whether the field should
   // be included.
+  // Throws a runtime exception if the mask is not a field mask.
   MaskRef get(FieldId id) const;
+
+  // Get nested MaskRef with the given map id. If the id does not exist in the
+  // map, it returns noneMask or allMask depending on whether the field
+  // should be included.
+  // Throws a runtime exception if the mask is not a map mask.
+  MaskRef get(MapId id) const;
 
   // Returns whether the ref includes all fields.
   bool isAllMask() const;

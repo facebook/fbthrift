@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/detail/FieldMask.h>
 #include <thrift/lib/thrift/gen-cpp2/field_mask_constants.h>
 
@@ -22,17 +23,37 @@ using apache::thrift::protocol::field_mask_constants;
 namespace apache::thrift::protocol::detail {
 // Gets the mask of the given field id if it exists in the map, otherwise,
 // returns noneMask.
-const Mask& getMask(const FieldIdToMask& map, int16_t fieldId) {
+const Mask& getMask(const FieldIdToMask& map, FieldId id) {
+  auto fieldId = folly::to_underlying(id);
   return map.contains(fieldId) ? map.at(fieldId)
                                : field_mask_constants::noneMask();
 }
 
+// Gets the mask of the given map id if it exists in the map, otherwise,
+// returns noneMask.
+const Mask& getMask(const MapIdToMask& map, MapId id) {
+  auto mapId = folly::to_underlying(id);
+  return map.contains(mapId) ? map.at(mapId) : field_mask_constants::noneMask();
+}
+
 MaskRef MaskRef::get(FieldId id) const {
-  int16_t fieldId = static_cast<int16_t>(id);
-  if (mask.includes_ref()) {
-    return MaskRef{getMask(mask.includes_ref().value(), fieldId), is_exclusion};
+  if (!isFieldMask()) {
+    throw std::runtime_error("using FieldId for a non field mask.");
   }
-  return MaskRef{getMask(mask.excludes_ref().value(), fieldId), !is_exclusion};
+  if (mask.includes_ref()) {
+    return MaskRef{getMask(mask.includes_ref().value(), id), is_exclusion};
+  }
+  return MaskRef{getMask(mask.excludes_ref().value(), id), !is_exclusion};
+}
+
+MaskRef MaskRef::get(MapId id) const {
+  if (!isMapMask()) {
+    throw std::runtime_error("using MapId for a non map mask.");
+  }
+  if (mask.includes_map_ref()) {
+    return MaskRef{getMask(mask.includes_map_ref().value(), id), is_exclusion};
+  }
+  return MaskRef{getMask(mask.excludes_map_ref().value(), id), !is_exclusion};
 }
 
 bool MaskRef::isAllMask() const {

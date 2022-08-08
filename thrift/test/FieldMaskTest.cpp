@@ -194,63 +194,121 @@ TEST(FieldMaskTest, ThrowIfContainsMapMask) {
   }
 }
 
+// test MaskRef get method with includes mask. nested is mask.includes[_map][9].
+template <typename Id>
+void testMaskRefGetIncludes(const Mask& mask, const Mask& nested) {
+  MaskRef ref{mask, false};
+  MaskRef refExclusion{mask, true};
+
+  EXPECT_TRUE(ref.get(Id{7}).isNoneMask()); // doesn't exist
+  EXPECT_TRUE(refExclusion.get(Id{7}).isAllMask()); // doesn't exist
+  EXPECT_TRUE(ref.get(Id{8}).isAllMask());
+  EXPECT_TRUE(refExclusion.get(Id{8}).isNoneMask());
+  EXPECT_TRUE(literallyEqual(ref.get(Id{9}), (MaskRef{nested, false})));
+  EXPECT_TRUE(literallyEqual(refExclusion.get(Id{9}), (MaskRef{nested, true})));
+  // recursive calls to MaskRef Get
+  EXPECT_TRUE(ref.get(Id{9}).get(Id{4}).isAllMask());
+  EXPECT_TRUE(refExclusion.get(Id{9}).get(Id{4}).isNoneMask());
+  EXPECT_TRUE(ref.get(Id{9}).get(Id{5}).isNoneMask()); // doesn't exist
+  EXPECT_TRUE(refExclusion.get(Id{9}).get(Id{5}).isAllMask()); // doesn't exist
+}
+
 TEST(FieldMaskTest, MaskRefGetIncludes) {
-  Mask m;
+  Mask mask;
   // includes{8: excludes{},
   //          9: includes{4: excludes{}}
-  auto& includes = m.includes_ref().emplace();
+  auto& includes = mask.includes_ref().emplace();
   includes[8] = allMask();
   includes[9].includes_ref().emplace()[4] = allMask();
 
+  testMaskRefGetIncludes<FieldId>(mask, includes[9]);
+}
+
+TEST(FieldMaskTest, MaskRefGetIncludesMap) {
+  Mask mask;
+  // includes_map{8: excludes{},
+  //              9: includes_map{4: excludes{}}
+  auto& includes = mask.includes_map_ref().emplace();
+  includes[8] = allMask();
+  includes[9].includes_map_ref().emplace()[4] = allMask();
+
+  testMaskRefGetIncludes<MapId>(mask, includes[9]);
+}
+
+// test MaskRef get method with excludes mask. nested is mask.excludes[_map][9].
+template <typename Id>
+void testMaskRefGetExcludes(const Mask& mask, const Mask& nested) {
+  MaskRef ref{mask, false};
+  MaskRef refExclusion{mask, true};
+
+  EXPECT_TRUE(ref.get(Id{7}).isAllMask()); // doesn't exist
+  EXPECT_TRUE(refExclusion.get(Id{7}).isNoneMask()); // doesn't exist
+  EXPECT_TRUE(ref.get(Id{8}).isNoneMask());
+  EXPECT_TRUE(refExclusion.get(Id{8}).isAllMask());
+  EXPECT_TRUE(literallyEqual(ref.get(Id{9}), (MaskRef{nested, true})));
   EXPECT_TRUE(
-      (MaskRef{m, false}).get(FieldId{7}).isNoneMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{7}).isAllMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, false}).get(FieldId{8}).isAllMask());
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{8}).isNoneMask());
-  EXPECT_TRUE(literallyEqual(
-      (MaskRef{m, false}).get(FieldId{9}), (MaskRef{includes[9], false})));
-  EXPECT_TRUE(literallyEqual(
-      (MaskRef{m, true}).get(FieldId{9}), (MaskRef{includes[9], true})));
+      literallyEqual(refExclusion.get(Id{9}), (MaskRef{nested, false})));
   // recursive calls to MaskRef Get
-  EXPECT_TRUE((MaskRef{m, false}).get(FieldId{9}).get(FieldId{4}).isAllMask());
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{9}).get(FieldId{4}).isNoneMask());
-  EXPECT_TRUE((MaskRef{m, false})
-                  .get(FieldId{9})
-                  .get(FieldId{5})
-                  .isNoneMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, true})
-                  .get(FieldId{9})
-                  .get(FieldId{5})
-                  .isAllMask()); // doesn't exist
+  EXPECT_TRUE(ref.get(Id{9}).get(Id{4}).isNoneMask());
+  EXPECT_TRUE(refExclusion.get(Id{9}).get(Id{4}).isAllMask());
+  EXPECT_TRUE(ref.get(Id{9}).get(Id{5}).isAllMask()); // doesn't exist
+  EXPECT_TRUE(refExclusion.get(Id{9}).get(Id{5}).isNoneMask()); // doesn't exist
 }
 
 TEST(FieldMaskTest, MaskRefGetExcludes) {
-  Mask m;
+  Mask mask;
   // excludes{8: excludes{},
   //          9: includes{4: excludes{}}
-  auto& excludes = m.excludes_ref().emplace();
+  auto& excludes = mask.excludes_ref().emplace();
   excludes[8] = allMask();
   excludes[9].includes_ref().emplace()[4] = allMask();
 
-  EXPECT_TRUE((MaskRef{m, false}).get(FieldId{7}).isAllMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{7}).isNoneMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, false}).get(FieldId{8}).isNoneMask());
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{8}).isAllMask());
-  EXPECT_TRUE(literallyEqual(
-      (MaskRef{m, false}).get(FieldId{9}), (MaskRef{excludes[9], true})));
-  EXPECT_TRUE(literallyEqual(
-      (MaskRef{m, true}).get(FieldId{9}), (MaskRef{excludes[9], false})));
-  // recursive calls to MaskRef Get
-  EXPECT_TRUE((MaskRef{m, false}).get(FieldId{9}).get(FieldId{4}).isNoneMask());
-  EXPECT_TRUE((MaskRef{m, true}).get(FieldId{9}).get(FieldId{4}).isAllMask());
-  EXPECT_TRUE((MaskRef{m, false})
-                  .get(FieldId{9})
-                  .get(FieldId{5})
-                  .isAllMask()); // doesn't exist
-  EXPECT_TRUE((MaskRef{m, true})
-                  .get(FieldId{9})
-                  .get(FieldId{5})
-                  .isNoneMask()); // doesn't exist
+  testMaskRefGetExcludes<FieldId>(mask, excludes[9]);
+}
+
+TEST(FieldMaskTest, MaskRefGetExcludesMap) {
+  Mask mask;
+  // excludes_map{8: excludes{},
+  //              9: includes_map{4: excludes{}}
+  auto& excludes = mask.excludes_map_ref().emplace();
+  excludes[8] = allMask();
+  excludes[9].includes_map_ref().emplace()[4] = allMask();
+
+  testMaskRefGetExcludes<MapId>(mask, excludes[9]);
+}
+
+TEST(FieldMaskTest, MaskRefGetException) {
+  {
+    Mask m;
+    EXPECT_THROW((MaskRef{m, false}).get(FieldId{1}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(FieldId{1}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, false}).get(MapId{1}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(MapId{1}), std::runtime_error);
+  }
+  {
+    Mask m;
+    m.includes_map_ref().emplace()[4] = allMask();
+    EXPECT_THROW((MaskRef{m, false}).get(FieldId{4}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(FieldId{4}), std::runtime_error);
+  }
+  {
+    Mask m;
+    m.excludes_map_ref().emplace()[4] = allMask();
+    EXPECT_THROW((MaskRef{m, false}).get(FieldId{4}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(FieldId{4}), std::runtime_error);
+  }
+  {
+    Mask m;
+    m.includes_ref().emplace()[4] = allMask();
+    EXPECT_THROW((MaskRef{m, false}).get(MapId{4}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(MapId{4}), std::runtime_error);
+  }
+  {
+    Mask m;
+    m.excludes_ref().emplace()[4] = allMask();
+    EXPECT_THROW((MaskRef{m, false}).get(MapId{4}), std::runtime_error);
+    EXPECT_THROW((MaskRef{m, true}).get(MapId{4}), std::runtime_error);
+  }
 }
 
 TEST(FieldMaskTest, SchemalessClear) {
