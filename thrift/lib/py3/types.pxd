@@ -72,6 +72,7 @@ cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
     void map_getitem[T](const shared_ptr[T]& cpp_obj, ...)
     void reset_field[T](T& obj, uint16_t index) except +
     string_view get_field_name_by_index[T](size_t idx) except +
+    T* get_union_field_value[T](...) except +
 
     cdef cppclass set_iter[T]:
         set_iter()
@@ -269,6 +270,7 @@ cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
 
     cdef cppclass union_field_ref[T]:
         void assign "operator="(T)
+        void assign_ptr "operator="(...)
         T value()
         # Cython doesn't handle references very well, so use a different name
         # for value in the contexts where references actually work.

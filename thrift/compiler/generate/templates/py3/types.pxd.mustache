@@ -50,6 +50,8 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
     terse_field_ref as __terse_field_ref,
+    union_field_ref as __union_field_ref,
+    get_union_field_value as __get_union_field_value,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
@@ -170,10 +172,16 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
     {{#struct:py3_fields}}
+        {{^field:has_ref_api?}}
+        __union_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
+            }}{{field:py_name}}_ref"{{> types/field_cppname}}_ref" ()
+        {{/field:has_ref_api?}}{{!
+        }}{{#field:has_ref_api?}}
         {{#field:type}}const {{> types/cython_cpp_struct_field_type}}& get_{{field:py_name}} "get_{{field:cppName}}" () const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
         {{#field:type}}{{> types/cython_cpp_struct_field_type}}& set_{{field:py_name}} "set_{{field:cppName}}" (const {{> types/cython_cpp_type}}&){{/field:type}}
+        {{/field:has_ref_api?}}
     {{/struct:py3_fields}}{{/struct:union?}}
 
 {{/program:structs}}

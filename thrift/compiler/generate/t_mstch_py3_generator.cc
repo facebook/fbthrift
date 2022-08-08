@@ -910,7 +910,7 @@ class mstch_py3_field : public mstch_field {
     }
 
     const t_struct* parentStruct = mstch_field::field_context_->strct;
-    return parentStruct->is_union() || generate_legacy_api(*parentStruct);
+    return generate_legacy_api(*parentStruct);
   }
 
  protected:

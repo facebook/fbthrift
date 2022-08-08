@@ -299,12 +299,12 @@ cdef class MyUnion(thrift.py3.types.Union):
         if myEnum is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_myEnum(<cMyEnum><int>myEnum)
+            deref(c_inst).myEnum_ref().assign(<cMyEnum><int>myEnum)
             any_set = True
         if myDataItem is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_myDataItem(deref((<MyStruct?> myDataItem)._cpp_obj))
+            deref(c_inst).myDataItem_ref().assign(deref((<MyStruct?> myDataItem)._cpp_obj))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -339,9 +339,9 @@ cdef class MyUnion(thrift.py3.types.Union):
         if type == 0:    # Empty
             self.value = None
         elif type == 1:
-            self.value = translate_cpp_enum_to_python(MyEnum, <int>deref(self._cpp_obj).get_myEnum())
+            self.value = translate_cpp_enum_to_python(MyEnum, <int>deref(self._cpp_obj).myEnum_ref().value())
         elif type == 2:
-            self.value = MyStruct._fbthrift_create(make_shared[cMyStruct](deref(self._cpp_obj).get_myDataItem()))
+            self.value = MyStruct._fbthrift_create(make_shared[cMyStruct](deref(self._cpp_obj).myDataItem_ref().value()))
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](

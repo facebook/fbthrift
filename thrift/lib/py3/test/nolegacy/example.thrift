@@ -81,15 +81,14 @@ struct TestStructWithBoxAnnotation {
 struct TestStructWithRefAnnotation {
   1: optional list<i32> data (cpp2.ref = "true");
 }
-/* ---
-Fails to compile (not yet supported):
-1) Union
+
 union TestUnion {
   1: byte tiny;
   2: i16 small;
   3: i32 medium;
   4: i64 large;
-  5: string unbounded;
-  6: string name (py3.name = "name_");
+  5: string strval;
+  // Thrift-py3 does not support constructors with cpp ref field arguments
+  // Use deserialization in order to create such a unions
+  6: list<i32> dataptr (cpp2.ref_type = "shared");
 }
-*/

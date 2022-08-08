@@ -563,12 +563,12 @@ cdef class TestUnion(thrift.py3.types.Union):
         if enumVal is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_enumVal(<cTestEnum><int>enumVal)
+            deref(c_inst).enumVal_ref().assign(<cTestEnum><int>enumVal)
             any_set = True
         if structVal is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_structVal(deref((<TestStruct?> structVal)._cpp_obj))
+            deref(c_inst).structVal_ref().assign(deref((<TestStruct?> structVal)._cpp_obj))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -603,9 +603,9 @@ cdef class TestUnion(thrift.py3.types.Union):
         if type == 0:    # Empty
             self.value = None
         elif type == 1:
-            self.value = translate_cpp_enum_to_python(TestEnum, <int>deref(self._cpp_obj).get_enumVal())
+            self.value = translate_cpp_enum_to_python(TestEnum, <int>deref(self._cpp_obj).enumVal_ref().value())
         elif type == 2:
-            self.value = TestStruct._fbthrift_create(make_shared[cTestStruct](deref(self._cpp_obj).get_structVal()))
+            self.value = TestStruct._fbthrift_create(make_shared[cTestStruct](deref(self._cpp_obj).structVal_ref().value()))
 
     def __copy__(TestUnion self):
         cdef shared_ptr[cTestUnion] cpp_obj = make_shared[cTestUnion](

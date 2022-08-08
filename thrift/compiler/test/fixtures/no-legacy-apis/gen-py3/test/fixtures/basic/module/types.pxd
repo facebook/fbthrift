@@ -31,6 +31,8 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
     terse_field_ref as __terse_field_ref,
+    union_field_ref as __union_field_ref,
+    get_union_field_value as __get_union_field_value,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
@@ -99,10 +101,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const cMyEnum& get_myEnum "get_myEnum" () const
-        cMyEnum& set_myEnum "set_myEnum" (const cMyEnum&)
-        const cMyStruct& get_myDataItem "get_myDataItem" () const
-        cMyStruct& set_myDataItem "set_myDataItem" (const cMyStruct&)
+        __union_field_ref[cMyEnum] myEnum_ref"myEnum_ref" ()
+        __union_field_ref[cMyStruct] myDataItem_ref"myDataItem_ref" ()
 
 
 

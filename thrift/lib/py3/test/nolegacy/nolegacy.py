@@ -27,7 +27,12 @@ from testing.example.types import (
     TestStructWithMixin,
     TestStructWithRefAnnotation,
     TestStructWithSet,
+    TestUnion,
 )
+
+from thrift.py3.common import Protocol
+
+from thrift.py3.serializer import deserialize
 
 
 class NoLegacyTest(unittest.TestCase):
@@ -131,3 +136,42 @@ class NoLegacyTest(unittest.TestCase):
     def test_struct_with_valid_ref_data(self) -> None:
         testStruct = TestStructWithRefAnnotation(data=[1, 2, 3])
         self.assertEqual(testStruct.data, [1, 2, 3])
+
+    def test_empty_union(self) -> None:
+        testUnion = TestUnion()
+        self.assertEqual(testUnion.type, TestUnion.Type.EMPTY)
+
+    def test_valid_union(self) -> None:
+        tiny = 2**7 - 1
+        union = TestUnion.fromValue(tiny)
+        self.assertEqual(union.type, TestUnion.Type.tiny)
+        self.assertEqual(union.tiny, tiny)
+
+        small = 2**15 - 1
+        union = TestUnion.fromValue(small)
+        self.assertEqual(union.type, TestUnion.Type.small)
+        self.assertEqual(union.small, small)
+
+        medium = 2**31 - 1
+        union = TestUnion.fromValue(medium)
+        self.assertEqual(union.type, TestUnion.Type.medium)
+        self.assertEqual(union.medium, medium)
+
+        large = 2**63 - 1
+        union = TestUnion.fromValue(large)
+        self.assertEqual(union.type, TestUnion.Type.large)
+        self.assertEqual(union.large, large)
+
+        str_val = "Test string"
+        union = TestUnion.fromValue(str_val)
+        self.assertEqual(union.type, TestUnion.Type.strval)
+        self.assertEqual(union.strval, str_val)
+
+    def test_valid_union_with_ref_field_set(self) -> None:
+        # Thrift-py3 union does not support python object ctors with the cpp.ref
+        # Hence using deserialization to check that union cpp refs are supported
+        testUnion = deserialize(
+            TestUnion, b'{"dataptr":[1,2,3]}', protocol=Protocol.JSON
+        )
+        self.assertEqual(testUnion.type, TestUnion.Type.dataptr)
+        self.assertEqual(testUnion.dataptr, [1, 2, 3])

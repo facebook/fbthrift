@@ -28,6 +28,7 @@
 #include <folly/Range.h>
 
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 
 namespace thrift {
 namespace py3 {
@@ -370,6 +371,11 @@ template <typename T>
 void assign_shared_const_ptr(
     std::shared_ptr<const T>& x, std::shared_ptr<const T> y) {
   x = std::move(y);
+}
+
+template <typename T, typename U>
+T* get_union_field_value(apache::thrift::union_field_ref<U&> ref) {
+  return &ref.value();
 }
 
 } // namespace py3
