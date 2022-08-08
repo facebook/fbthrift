@@ -150,7 +150,7 @@ class ServerConfigs {
   }
 
   void decActiveRequests() {
-    if (!isActiveRequestsTrackingDisabled()) {
+    if (!isActiveRequestsTrackingDisabled() && activeRequests_ > 0) {
       --activeRequests_;
     }
   }
