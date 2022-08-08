@@ -81,13 +81,13 @@ void errorIfNotCompatible(const Mask& mask) {
 }
 
 // Validates the fields in the StructTag with the MaskRef.
-template <typename StructTag>
+template <typename Struct>
 bool validate_fields(MaskRef ref) {
   // Get the field ids in the thrift struct type.
   std::unordered_set<FieldId> ids;
-  ids.reserve(op::size_v<StructTag>);
-  op::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
-    ids.insert(op::get_field_id<StructTag, decltype(fieldOrdinalTag)>());
+  ids.reserve(op::size_v<Struct>);
+  op::for_each_ordinal<Struct>([&](auto fieldOrdinalTag) {
+    ids.insert(op::get_field_id<Struct, decltype(fieldOrdinalTag)>());
   });
   const FieldIdToMask& map = ref.mask.includes_ref()
       ? ref.mask.includes_ref().value()
@@ -100,21 +100,21 @@ bool validate_fields(MaskRef ref) {
   }
   // Validates each field in the struct.
   bool isValid = true;
-  op::for_each_ordinal<StructTag>([&](auto fieldOrdinalTag) {
+  op::for_each_ordinal<Struct>([&](auto fieldOrdinalTag) {
     if (!isValid) { // short circuit
       return;
     }
     using OrdinalTag = decltype(fieldOrdinalTag);
-    MaskRef next = ref.get(op::get_field_id<StructTag, OrdinalTag>());
+    MaskRef next = ref.get(op::get_field_id<Struct, OrdinalTag>());
     if (next.isAllMask() || next.isNoneMask()) {
       return;
     }
     // Check if the field is a thrift struct type. It uses native_type
     // as we don't support adapted struct fields in field mask.
-    using FieldType = op::get_native_type<StructTag, OrdinalTag>;
+    using FieldType = op::get_native_type<Struct, OrdinalTag>;
     if constexpr (is_thrift_struct_v<FieldType>) {
       // Need to validate the struct type.
-      isValid &= detail::validate_fields<type::struct_t<FieldType>>(next);
+      isValid &= detail::validate_fields<FieldType>(next);
       return;
     }
     isValid = false;
@@ -125,16 +125,15 @@ bool validate_fields(MaskRef ref) {
 // Ensures the masked fields in the given thrift struct.
 template <typename T>
 void ensure_fields(MaskRef ref, T& t) {
-  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
-    using StructTag = type::struct_t<T>;
+  op::for_each_ordinal<T>([&](auto fieldOrdinalTag) {
     using OrdinalTag = decltype(fieldOrdinalTag);
-    MaskRef next = ref.get(op::get_field_id<StructTag, OrdinalTag>());
+    MaskRef next = ref.get(op::get_field_id<T, OrdinalTag>());
     if (next.isNoneMask()) {
       return;
     }
-    auto& field = op::get<StructTag, OrdinalTag>(t).ensure();
+    auto& field = op::get<T, OrdinalTag>(t).ensure();
     // Need to ensure the struct object.
-    using FieldType = op::get_native_type<StructTag, OrdinalTag>;
+    using FieldType = op::get_native_type<T, OrdinalTag>;
     if constexpr (is_thrift_struct_v<FieldType>) {
       return ensure_fields(next, field);
     }
@@ -144,17 +143,16 @@ void ensure_fields(MaskRef ref, T& t) {
 // Clears the masked fields in the given thrift struct.
 template <typename T>
 void clear_fields(MaskRef ref, T& t) {
-  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
-    using StructTag = type::struct_t<T>;
+  op::for_each_ordinal<T>([&](auto fieldOrdinalTag) {
     using OrdinalTag = decltype(fieldOrdinalTag);
-    MaskRef next = ref.get(op::get_field_id<StructTag, OrdinalTag>());
+    MaskRef next = ref.get(op::get_field_id<T, OrdinalTag>());
     if (next.isNoneMask()) {
       return;
     }
     // TODO(aoka): Support smart pointers and thrift box references.
-    auto field_ref = op::get<StructTag, OrdinalTag>(t);
+    auto field_ref = op::get<T, OrdinalTag>(t);
     if (next.isAllMask()) {
-      op::clear_field<op::get_field_tag<StructTag, OrdinalTag>>(field_ref, t);
+      op::clear_field<op::get_field_tag<T, OrdinalTag>>(field_ref, t);
       return;
     }
     if constexpr (apache::thrift::detail::is_optional_field_ref<
@@ -164,7 +162,7 @@ void clear_fields(MaskRef ref, T& t) {
       }
     }
     // Need to clear the struct object.
-    using FieldType = op::get_native_type<StructTag, OrdinalTag>;
+    using FieldType = op::get_native_type<T, OrdinalTag>;
     if constexpr (is_thrift_struct_v<FieldType>) {
       clear_fields(next, field_ref.value());
     }
@@ -176,17 +174,16 @@ void clear_fields(MaskRef ref, T& t) {
 template <typename T>
 bool copy_fields(MaskRef ref, const T& src, T& dst) {
   bool copied = false;
-  op::for_each_ordinal<type::struct_t<T>>([&](auto fieldOrdinalTag) {
-    using StructTag = type::struct_t<T>;
+  op::for_each_ordinal<T>([&](auto fieldOrdinalTag) {
     using OrdinalTag = decltype(fieldOrdinalTag);
-    MaskRef next = ref.get(op::get_field_id<StructTag, OrdinalTag>());
+    MaskRef next = ref.get(op::get_field_id<T, OrdinalTag>());
     // Id doesn't exist in field mask, skip.
     if (next.isNoneMask()) {
       return;
     }
     // TODO(aoka): Support smart pointers and thrift box references.
-    auto src_ref = op::get<StructTag, OrdinalTag>(src);
-    auto dst_ref = op::get<StructTag, OrdinalTag>(dst);
+    auto src_ref = op::get<T, OrdinalTag>(src);
+    auto dst_ref = op::get<T, OrdinalTag>(dst);
     // Field ref has a value unless it is optional ref and not set.
     bool srcHasValue = true;
     bool dstHasValue = true;
@@ -204,11 +201,11 @@ bool copy_fields(MaskRef ref, const T& src, T& dst) {
         dst_ref.copy_from(src_ref);
         copied = true;
       } else {
-        op::clear_field<op::get_field_tag<StructTag, OrdinalTag>>(dst_ref, dst);
+        op::clear_field<op::get_field_tag<T, OrdinalTag>>(dst_ref, dst);
       }
       return;
     }
-    using FieldType = op::get_native_type<StructTag, OrdinalTag>;
+    using FieldType = op::get_native_type<T, OrdinalTag>;
     if constexpr (is_thrift_struct_v<FieldType>) {
       // Field doesn't exist in src, so just clear dst with the mask.
       if (!srcHasValue) {
@@ -244,9 +241,9 @@ template <typename T, typename Ident, typename... Idents>
 Mask path(const Mask& other) {
   if constexpr (is_thrift_struct_v<T>) {
     Mask mask;
-    using fieldId = op::get_field_id<type::struct_t<T>, Ident>;
+    using fieldId = op::get_field_id<T, Ident>;
     static_assert(fieldId::value != FieldId{});
-    using FieldType = op::get_native_type<type::struct_t<T>, Ident>;
+    using FieldType = op::get_native_type<T, Ident>;
     mask.includes_ref().emplace()[static_cast<int16_t>(fieldId::value)] =
         path<FieldType, Idents...>(other);
     return mask;

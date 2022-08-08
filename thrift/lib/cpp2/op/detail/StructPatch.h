@@ -33,7 +33,6 @@ namespace detail {
 template <typename Patch>
 class FieldPatch : public BasePatch<Patch, FieldPatch<Patch>> {
   using Base = BasePatch<Patch, FieldPatch>;
-  using PTag = type::structured_tag<Patch>;
 
  public:
   using Base::apply;
@@ -55,21 +54,21 @@ class FieldPatch : public BasePatch<Patch, FieldPatch<Patch>> {
 
   template <typename T>
   void assignFrom(T&& val) {
-    op::for_each_field_id<PTag>([&](auto id) {
+    op::for_each_field_id<Patch>([&](auto id) {
       get(id, data_)->assign(get(id, std::forward<T>(val)));
     });
   }
 
   template <typename T>
   void apply(T& val) const {
-    op::for_each_field_id<PTag>(
+    op::for_each_field_id<Patch>(
         [&](auto id) { get(id, data_)->apply(get(id, val)); });
   }
 
   template <typename U>
   void merge(U&& next) {
     auto&& tval = std::forward<U>(next).toThrift();
-    op::for_each_field_id<PTag>([&](auto id) {
+    op::for_each_field_id<Patch>([&](auto id) {
       get(id, data_)->merge(*get(id, std::forward<decltype(tval)>(tval)));
     });
   }
@@ -80,7 +79,7 @@ class FieldPatch : public BasePatch<Patch, FieldPatch<Patch>> {
   // Gets the field reference, for the given field
   template <typename Id, typename T>
   constexpr static decltype(auto) get(Id, T&& data) {
-    return op::get<type::structured_tag<T>, Id>(std::forward<T>(data));
+    return op::get<folly::remove_cvref_t<T>, Id>(std::forward<T>(data));
   }
 
   friend bool operator==(const FieldPatch& lhs, const FieldPatch& rhs) {

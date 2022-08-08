@@ -54,7 +54,7 @@ bool is_compatible_with(const Mask& mask) {
   if (ref.isAllMask() || ref.isNoneMask()) {
     return true;
   }
-  return detail::validate_fields<type::struct_t<T>>(ref);
+  return detail::validate_fields<T>(ref);
 }
 
 // Ensures that the masked fields have value in the thrift struct.

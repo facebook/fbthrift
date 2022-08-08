@@ -47,40 +47,40 @@ void copySharedPointer(auto&& src, auto&& dst) {
 }
 
 void testFieldRef(auto src, auto dst, auto ordinal) {
-  using StructTag = type::struct_t<decltype(src)>;
-  auto srcField = op::get<StructTag, decltype(ordinal)>(src);
-  auto dstField = op::get<StructTag, decltype(ordinal)>(dst);
+  using Struct = decltype(src);
+  auto srcField = op::get<Struct, decltype(ordinal)>(src);
+  auto dstField = op::get<Struct, decltype(ordinal)>(dst);
   // test src = field_ref<T&>
   copyFieldRef(srcField, srcField, dstField);
   // test src = field_ref<const T&>
   const auto& srcConstRef = src;
-  auto srcConstField = op::get<StructTag, decltype(ordinal)>(srcConstRef);
+  auto srcConstField = op::get<Struct, decltype(ordinal)>(srcConstRef);
   copyFieldRef(srcField, srcConstField, dstField);
   // test src = field_ref<T&&>
   auto&& srcRvalueRef = std::move(src);
-  auto srcRvalueField = op::get<StructTag, decltype(ordinal)>(
+  auto srcRvalueField = op::get<Struct, decltype(ordinal)>(
       std::forward<decltype(srcRvalueRef)>(srcRvalueRef));
   copyFieldRef(srcField, srcRvalueField, dstField);
   // test src = field_ref<const T&&>
   const auto&& srcRvalueConstRef = std::move(src);
-  auto srcRvalueConstField = op::get<StructTag, decltype(ordinal)>(
+  auto srcRvalueConstField = op::get<Struct, decltype(ordinal)>(
       std::forward<decltype(srcRvalueConstRef)>(srcRvalueConstRef));
   copyFieldRef(srcField, srcRvalueConstField, dstField);
 }
 
 void testCopyNotOptional(auto src, auto dst, auto ordinal) {
-  using StructTag = type::struct_t<decltype(src)>;
-  auto srcField = op::get<StructTag, decltype(ordinal)>(src);
-  auto dstField = op::get<StructTag, decltype(ordinal)>(dst);
+  using Struct = decltype(src);
+  auto srcField = op::get<Struct, decltype(ordinal)>(src);
+  auto dstField = op::get<Struct, decltype(ordinal)>(dst);
   op::copy(srcField, dstField);
   EXPECT_EQ(*dstField, 0);
   testFieldRef(src, dst, ordinal);
 }
 
 void testCopyOptional(auto src, auto dst, auto ordinal) {
-  using StructTag = type::struct_t<decltype(src)>;
-  auto srcField = op::get<StructTag, decltype(ordinal)>(src);
-  auto dstField = op::get<StructTag, decltype(ordinal)>(dst);
+  using Struct = decltype(src);
+  auto srcField = op::get<Struct, decltype(ordinal)>(src);
+  auto dstField = op::get<Struct, decltype(ordinal)>(dst);
   // src doesn't have value.
   op::copy(srcField, dstField);
   EXPECT_FALSE(dstField.has_value());
@@ -93,10 +93,10 @@ void testCopyOptional(auto src, auto dst, auto ordinal) {
 }
 
 void testCopyUniquePointer(auto src, auto dst, auto ordinal) {
-  using StructTag = type::struct_t<decltype(src)>;
-  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
-  auto& srcField = op::get<StructTag, decltype(ordinal)>(src);
-  auto& dstField = op::get<StructTag, decltype(ordinal)>(dst);
+  using Struct = decltype(src);
+  using FieldTag = op::get_field_tag<Struct, decltype(ordinal)>;
+  auto& srcField = op::get<Struct, decltype(ordinal)>(src);
+  auto& dstField = op::get<Struct, decltype(ordinal)>(dst);
 
   // src doesn't have value.
   op::copy(srcField, dstField);
@@ -127,10 +127,10 @@ void testCopyUniquePointer(auto src, auto dst, auto ordinal) {
 }
 
 void testCopySharedPointer(auto src, auto dst, auto ordinal) {
-  using StructTag = type::struct_t<decltype(src)>;
-  using FieldTag = op::get_field_tag<StructTag, decltype(ordinal)>;
-  auto& srcField = op::get<StructTag, decltype(ordinal)>(src);
-  auto& dstField = op::get<StructTag, decltype(ordinal)>(dst);
+  using Struct = decltype(src);
+  using FieldTag = op::get_field_tag<Struct, decltype(ordinal)>;
+  auto& srcField = op::get<Struct, decltype(ordinal)>(src);
+  auto& dstField = op::get<Struct, decltype(ordinal)>(dst);
 
   // src doesn't have value.
   op::copy(srcField, dstField);
@@ -158,34 +158,30 @@ void testCopySharedPointer(auto src, auto dst, auto ordinal) {
 
 TEST(CopyTest, FieldRefCopyNotOptional) {
   FieldRefNotOptionalStruct src, dst;
-  op::for_each_ordinal<type::struct_t<FieldRefNotOptionalStruct>>(
-      [&](auto fieldOrdinalTag) {
-        testCopyNotOptional(src, dst, fieldOrdinalTag);
-      });
+  op::for_each_ordinal<FieldRefNotOptionalStruct>([&](auto fieldOrdinalTag) {
+    testCopyNotOptional(src, dst, fieldOrdinalTag);
+  });
 }
 
 TEST(CopyTest, FieldRefCopyOptional) {
   FieldRefOptionalStruct src, dst;
-  op::for_each_ordinal<type::struct_t<FieldRefOptionalStruct>>(
-      [&](auto fieldOrdinalTag) {
-        testCopyOptional(src, dst, fieldOrdinalTag);
-      });
+  op::for_each_ordinal<FieldRefOptionalStruct>([&](auto fieldOrdinalTag) {
+    testCopyOptional(src, dst, fieldOrdinalTag);
+  });
 }
 
 TEST(CopyTest, UniquePointer) {
   UniquePointerStruct src, dst;
-  op::for_each_ordinal<type::struct_t<UniquePointerStruct>>(
-      [&](auto fieldOrdinalTag) {
-        testCopyUniquePointer(src, dst, fieldOrdinalTag);
-      });
+  op::for_each_ordinal<UniquePointerStruct>([&](auto fieldOrdinalTag) {
+    testCopyUniquePointer(src, dst, fieldOrdinalTag);
+  });
 }
 
 TEST(CopyTest, SharedPointer) {
   SharedPointerStruct src, dst;
-  op::for_each_ordinal<type::struct_t<SharedPointerStruct>>(
-      [&](auto fieldOrdinalTag) {
-        testCopySharedPointer(src, dst, fieldOrdinalTag);
-      });
+  op::for_each_ordinal<SharedPointerStruct>([&](auto fieldOrdinalTag) {
+    testCopySharedPointer(src, dst, fieldOrdinalTag);
+  });
 }
 
 TEST(CopyTest, Optional) {

@@ -32,47 +32,50 @@ using apache::thrift::detail::st::struct_private_access;
 
 TEST(FieldsTest, Get) {
   test_cpp2::cpp_reflection::struct3 s;
-  using Tag = type::struct_t<test_cpp2::cpp_reflection::struct3>;
-  EXPECT_EQ(&(*op::get<Tag, field_id<2>>(s)), &*s.fieldA());
+  using Struct = test_cpp2::cpp_reflection::struct3;
+  EXPECT_EQ(&(*op::get<Struct, field_id<2>>(s)), &*s.fieldA());
 
   s.fieldA() = 10;
-  EXPECT_EQ((op::get<Tag, field_id<2>>(s)), 10);
-  op::get<Tag, field_id<2>>(s) = 20;
+  EXPECT_EQ((op::get<Struct, field_id<2>>(s)), 10);
+  op::get<Struct, field_id<2>>(s) = 20;
   EXPECT_EQ(*s.fieldA(), 20);
-  test::same_tag<decltype(s.fieldA()), decltype(op::get<Tag, field_id<2>>(s))>;
+  test::
+      same_tag<decltype(s.fieldA()), decltype(op::get<Struct, field_id<2>>(s))>;
 
   s.fieldE()->ui_ref() = 10;
-  EXPECT_EQ((op::get<Tag, field_id<5>>(s)->ui_ref()), 10);
-  op::get<Tag, field_id<5>>(s)->us_ref() = "20";
+  EXPECT_EQ((op::get<Struct, field_id<5>>(s)->ui_ref()), 10);
+  op::get<Struct, field_id<5>>(s)->us_ref() = "20";
   EXPECT_EQ(s.fieldE()->us_ref(), "20");
-  test::same_tag<decltype(s.fieldE()), decltype(op::get<Tag, field_id<5>>(s))>;
+  test::
+      same_tag<decltype(s.fieldE()), decltype(op::get<Struct, field_id<5>>(s))>;
 }
 
 TEST(FieldsTest, field_id_by_ordinal) {
-  using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  EXPECT_EQ(op::size_v<StructTag>, 19);
+  EXPECT_EQ(op::size_v<test_cpp2::cpp_reflection::struct3>, 19);
 }
 
 TEST(UnionFieldsTest, Get) {
   test_cpp2::cpp_reflection::union1 u;
-  using Tag = type::union_t<test_cpp2::cpp_reflection::union1>;
+  using Union = test_cpp2::cpp_reflection::union1;
 
-  EXPECT_THROW((*op::get<Tag, field_id<1>>(u)), bad_field_access);
+  EXPECT_THROW((*op::get<Union, field_id<1>>(u)), bad_field_access);
 
   u.ui_ref() = 10;
-  EXPECT_EQ((op::get<Tag, field_id<1>>(u)), 10);
-  EXPECT_THROW((*op::get<Tag, field_id<2>>(u)), bad_field_access);
-  test::same_tag<decltype(u.ui_ref()), decltype(op::get<Tag, field_id<1>>(u))>;
-  EXPECT_EQ(&(*op::get<Tag, field_id<1>>(u)), &*u.ui_ref());
+  EXPECT_EQ((op::get<Union, field_id<1>>(u)), 10);
+  EXPECT_THROW((*op::get<Union, field_id<2>>(u)), bad_field_access);
+  test::
+      same_tag<decltype(u.ui_ref()), decltype(op::get<Union, field_id<1>>(u))>;
+  EXPECT_EQ(&(*op::get<Union, field_id<1>>(u)), &*u.ui_ref());
 
-  op::get<Tag, field_id<1>>(u) = 20;
+  op::get<Union, field_id<1>>(u) = 20;
   EXPECT_EQ(u.ui_ref(), 20);
-  EXPECT_EQ((op::get<Tag, field_id<1>>(u)), 20);
+  EXPECT_EQ((op::get<Union, field_id<1>>(u)), 20);
 
   u.us_ref() = "foo";
-  EXPECT_EQ((*op::get<Tag, field_id<3>>(u)), "foo");
-  test::same_tag<decltype(u.us_ref()), decltype(op::get<Tag, field_id<3>>(u))>;
-  EXPECT_THROW((*op::get<Tag, field_id<1>>(u)), bad_field_access);
+  EXPECT_EQ((*op::get<Union, field_id<3>>(u)), "foo");
+  test::
+      same_tag<decltype(u.us_ref()), decltype(op::get<Union, field_id<3>>(u))>;
+  EXPECT_THROW((*op::get<Union, field_id<1>>(u)), bad_field_access);
 }
 
 template <
@@ -96,46 +99,45 @@ void checkField(const char* identName) {
     test::same_tag<Ordinal, struct_private_access::ordinal<Struct, TypeTag>>;
   }
 
-  using StructTag = struct_t<Struct>;
-  test::same_tag<op::get_ordinal<StructTag, Ordinal>, Ordinal>;
-  test::same_tag<op::get_field_id<StructTag, Ordinal>, Id>;
-  test::same_tag<op::get_type_tag<StructTag, Ordinal>, TypeTag>;
-  test::same_tag<op::get_ident<StructTag, Ordinal>, Ident>;
-  test::same_tag<op::get_field_tag<StructTag, Ordinal>, FieldTag>;
-  EXPECT_EQ((op::get_field_name<StructTag, Ordinal>), identName);
+  test::same_tag<op::get_ordinal<Struct, Ordinal>, Ordinal>;
+  test::same_tag<op::get_field_id<Struct, Ordinal>, Id>;
+  test::same_tag<op::get_type_tag<Struct, Ordinal>, TypeTag>;
+  test::same_tag<op::get_ident<Struct, Ordinal>, Ident>;
+  test::same_tag<op::get_field_tag<Struct, Ordinal>, FieldTag>;
+  EXPECT_EQ((op::get_field_name<Struct, Ordinal>), identName);
 
-  test::same_tag<op::get_ordinal<StructTag, Id>, Ordinal>;
-  test::same_tag<op::get_field_id<StructTag, Id>, Id>;
-  test::same_tag<op::get_type_tag<StructTag, Id>, TypeTag>;
-  test::same_tag<op::get_ident<StructTag, Id>, Ident>;
-  test::same_tag<op::get_field_tag<StructTag, Id>, FieldTag>;
-  EXPECT_EQ((op::get_field_name<StructTag, Id>), identName);
+  test::same_tag<op::get_ordinal<Struct, Id>, Ordinal>;
+  test::same_tag<op::get_field_id<Struct, Id>, Id>;
+  test::same_tag<op::get_type_tag<Struct, Id>, TypeTag>;
+  test::same_tag<op::get_ident<Struct, Id>, Ident>;
+  test::same_tag<op::get_field_tag<Struct, Id>, FieldTag>;
+  EXPECT_EQ((op::get_field_name<Struct, Id>), identName);
 
   if constexpr (is_type_tag_unique && !std::is_void_v<TypeTag>) {
-    test::same_tag<op::get_ordinal<StructTag, TypeTag>, Ordinal>;
-    test::same_tag<op::get_field_id<StructTag, TypeTag>, Id>;
-    test::same_tag<op::get_type_tag<StructTag, TypeTag>, TypeTag>;
-    test::same_tag<op::get_ident<StructTag, TypeTag>, Ident>;
-    test::same_tag<op::get_field_tag<StructTag, TypeTag>, FieldTag>;
-    EXPECT_EQ((op::get_field_name<StructTag, TypeTag>), identName);
+    test::same_tag<op::get_ordinal<Struct, TypeTag>, Ordinal>;
+    test::same_tag<op::get_field_id<Struct, TypeTag>, Id>;
+    test::same_tag<op::get_type_tag<Struct, TypeTag>, TypeTag>;
+    test::same_tag<op::get_ident<Struct, TypeTag>, Ident>;
+    test::same_tag<op::get_field_tag<Struct, TypeTag>, FieldTag>;
+    EXPECT_EQ((op::get_field_name<Struct, TypeTag>), identName);
   }
 
   if constexpr (!std::is_void_v<Ident>) {
-    test::same_tag<op::get_ordinal<StructTag, Ident>, Ordinal>;
-    test::same_tag<op::get_field_id<StructTag, Ident>, Id>;
-    test::same_tag<op::get_type_tag<StructTag, Ident>, TypeTag>;
-    test::same_tag<op::get_ident<StructTag, Ident>, Ident>;
-    test::same_tag<op::get_field_tag<StructTag, Ident>, FieldTag>;
-    EXPECT_EQ((op::get_field_name<StructTag, Ident>), identName);
+    test::same_tag<op::get_ordinal<Struct, Ident>, Ordinal>;
+    test::same_tag<op::get_field_id<Struct, Ident>, Id>;
+    test::same_tag<op::get_type_tag<Struct, Ident>, TypeTag>;
+    test::same_tag<op::get_ident<Struct, Ident>, Ident>;
+    test::same_tag<op::get_field_tag<Struct, Ident>, FieldTag>;
+    EXPECT_EQ((op::get_field_name<Struct, Ident>), identName);
   }
 
   if constexpr (!std::is_void_v<FieldTag>) {
-    test::same_tag<op::get_ordinal<StructTag, FieldTag>, Ordinal>;
-    test::same_tag<op::get_field_id<StructTag, FieldTag>, Id>;
-    test::same_tag<op::get_type_tag<StructTag, FieldTag>, TypeTag>;
-    test::same_tag<op::get_ident<StructTag, FieldTag>, Ident>;
-    test::same_tag<op::get_field_tag<StructTag, FieldTag>, FieldTag>;
-    EXPECT_EQ((op::get_field_name<StructTag, FieldTag>), identName);
+    test::same_tag<op::get_ordinal<Struct, FieldTag>, Ordinal>;
+    test::same_tag<op::get_field_id<Struct, FieldTag>, Id>;
+    test::same_tag<op::get_type_tag<Struct, FieldTag>, TypeTag>;
+    test::same_tag<op::get_ident<Struct, FieldTag>, Ident>;
+    test::same_tag<op::get_field_tag<Struct, FieldTag>, FieldTag>;
+    EXPECT_EQ((op::get_field_name<Struct, FieldTag>), identName);
   }
 }
 
@@ -253,41 +255,41 @@ TEST(FieldsTest, IsReflectionMetadata) {
   static_assert(!is_id_v<IncompleteType>);
   static_assert(!is_id_v<int>);
 
-  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  using Struct = test_cpp2::cpp_reflection::struct3;
   // TODO(ytj): We need to figure out a way to test compile error
-  // op::get_field_id<Tag, int>{}; // compile error
-  // op::get_ordinal<Tag, int>{}; // compile error
-  // op::get_type_tag<Tag, int>{}; // compile error
-  // op::get_ident<Tag, int>{}; // compile error
-  // op::get_native_type<Tag, int>{}; // compile error
+  // op::get_field_id<Struct, int>{}; // compile error
+  // op::get_ordinal<Struct, int>{}; // compile error
+  // op::get_type_tag<Struct, int>{}; // compile error
+  // op::get_ident<Struct, int>{}; // compile error
+  // op::get_native_type<Struct, int>{}; // compile error
 }
 
 TEST(FieldsTest, NotFoundFieldInfo) {
-  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  using Struct = test_cpp2::cpp_reflection::struct3;
 
-  test::same_tag<op::get_ordinal<Tag, field_ordinal<0>>, field_ordinal<0>>;
-  test::same_tag<op::get_field_id<Tag, field_ordinal<0>>, field_id<0>>;
-  test::same_tag<op::get_type_tag<Tag, field_ordinal<0>>, void>;
-  test::same_tag<op::get_ident<Tag, field_ordinal<0>>, void>;
-  test::same_tag<op::get_field_tag<Tag, field_ordinal<0>>, void>;
+  test::same_tag<op::get_ordinal<Struct, field_ordinal<0>>, field_ordinal<0>>;
+  test::same_tag<op::get_field_id<Struct, field_ordinal<0>>, field_id<0>>;
+  test::same_tag<op::get_type_tag<Struct, field_ordinal<0>>, void>;
+  test::same_tag<op::get_ident<Struct, field_ordinal<0>>, void>;
+  test::same_tag<op::get_field_tag<Struct, field_ordinal<0>>, void>;
 
-  test::same_tag<op::get_ordinal<Tag, field_id<200>>, field_ordinal<0>>;
-  test::same_tag<op::get_field_id<Tag, field_id<200>>, field_id<0>>;
-  test::same_tag<op::get_type_tag<Tag, field_id<200>>, void>;
-  test::same_tag<op::get_ident<Tag, field_id<200>>, void>;
-  test::same_tag<op::get_field_tag<Tag, field_id<200>>, void>;
+  test::same_tag<op::get_ordinal<Struct, field_id<200>>, field_ordinal<0>>;
+  test::same_tag<op::get_field_id<Struct, field_id<200>>, field_id<0>>;
+  test::same_tag<op::get_type_tag<Struct, field_id<200>>, void>;
+  test::same_tag<op::get_ident<Struct, field_id<200>>, void>;
+  test::same_tag<op::get_field_tag<Struct, field_id<200>>, void>;
 
-  test::same_tag<op::get_ordinal<Tag, binary_t>, field_ordinal<0>>;
-  test::same_tag<op::get_field_id<Tag, binary_t>, field_id<0>>;
-  test::same_tag<op::get_type_tag<Tag, binary_t>, void>;
-  test::same_tag<op::get_ident<Tag, binary_t>, void>;
-  test::same_tag<op::get_field_tag<Tag, binary_t>, void>;
+  test::same_tag<op::get_ordinal<Struct, binary_t>, field_ordinal<0>>;
+  test::same_tag<op::get_field_id<Struct, binary_t>, field_id<0>>;
+  test::same_tag<op::get_type_tag<Struct, binary_t>, void>;
+  test::same_tag<op::get_ident<Struct, binary_t>, void>;
+  test::same_tag<op::get_field_tag<Struct, binary_t>, void>;
 
-  test::same_tag<op::get_ordinal<Tag, tag::a>, field_ordinal<0>>;
-  test::same_tag<op::get_field_id<Tag, tag::a>, field_id<0>>;
-  test::same_tag<op::get_type_tag<Tag, tag::a>, void>;
-  test::same_tag<op::get_ident<Tag, tag::a>, void>;
-  test::same_tag<op::get_field_tag<Tag, tag::a>, void>;
+  test::same_tag<op::get_ordinal<Struct, tag::a>, field_ordinal<0>>;
+  test::same_tag<op::get_field_id<Struct, tag::a>, field_id<0>>;
+  test::same_tag<op::get_type_tag<Struct, tag::a>, void>;
+  test::same_tag<op::get_ident<Struct, tag::a>, void>;
+  test::same_tag<op::get_field_tag<Struct, tag::a>, void>;
 }
 
 
@@ -297,39 +299,38 @@ bool isIdentTag(folly::tag_t<Ident>) {
 }
 
 TEST(FieldsTest, HelperAPIs) {
-  using Tag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  using Struct = test_cpp2::cpp_reflection::struct3;
 
-  test::same_tag<op::get_native_type<Tag, field_ordinal<1>>, std::int32_t>;
-  test::same_tag<op::get_native_type<Tag, tag::fieldA>, std::int32_t>;
-  test::same_tag<op::get_native_type<Tag, field_id<11>>, std::deque<std::string>>;
-  EXPECT_EQ((op::get_field_id_v<Tag, field_ordinal<1>>), FieldId{2});
-  EXPECT_EQ((op::get_ordinal_v<Tag, field_id<2>>), FieldOrdinal{1});
+  test::same_tag<op::get_native_type<Struct, field_ordinal<1>>, std::int32_t>;
+  test::same_tag<op::get_native_type<Struct, tag::fieldA>, std::int32_t>;
+  test::same_tag<op::get_native_type<Struct, field_id<11>>, std::deque<std::string>>;
+  EXPECT_EQ((op::get_field_id_v<Struct, field_ordinal<1>>), FieldId{2});
+  EXPECT_EQ((op::get_ordinal_v<Struct, field_id<2>>), FieldOrdinal{1});
 
   int count = 0;
-  op::for_each_field_id<Tag>([&](auto id) {
+  op::for_each_field_id<Struct>([&](auto id) {
     EXPECT_TRUE(is_field_id_v<decltype(id)>);
     count++;
   });
-  EXPECT_EQ(count, op::size_v<Tag>);
+  EXPECT_EQ(count, op::size_v<Struct>);
 
   count = 0;
-  op::for_each_ident<Tag>([&](auto id) {
+  op::for_each_ident<Struct>([&](auto id) {
     EXPECT_TRUE(isIdentTag(id));
     count++;
   });
-  EXPECT_EQ(count, op::size_v<Tag>);
+  EXPECT_EQ(count, op::size_v<Struct>);
 
   count = 0;
-  op::for_each_ordinal<Tag>([&](auto id) {
+  op::for_each_ordinal<Struct>([&](auto id) {
     EXPECT_TRUE(is_ordinal_v<decltype(id)>);
     count++;
   });
 
-  EXPECT_EQ(count, op::size_v<Tag>);
+  EXPECT_EQ(count, op::size_v<Struct>);
 }
 
 TEST(FieldsTest, GetFieldNameCppName) {
-  using StructTag = type::struct_t<test_cpp2::cpp_reflection::struct_with_renamed_field>;
-  EXPECT_EQ((op::get_field_name<StructTag, field_ordinal<1>>), "fancy.idl.name");
+  EXPECT_EQ((op::get_field_name<test_cpp2::cpp_reflection::struct_with_renamed_field, field_ordinal<1>>), "fancy.idl.name");
 }
 } // namespace apache::thrift::type

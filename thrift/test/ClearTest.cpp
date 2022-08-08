@@ -135,16 +135,15 @@ template <size_t Ord, typename Struct>
 void clear_struct_impl(Struct& s) {
   if constexpr (Ord != 0) {
     using FieldOrdinal = field_ordinal<Ord>;
-    using FieldTag = op::get_field_tag<type::struct_t<Struct>, FieldOrdinal>;
-    op::clear_field<FieldTag>(
-        op::get<type::struct_t<Struct>, FieldOrdinal>(s), s);
+    using FieldTag = op::get_field_tag<Struct, FieldOrdinal>;
+    op::clear_field<FieldTag>(op::get<Struct, FieldOrdinal>(s), s);
     clear_struct_impl<Ord - 1>(s);
   }
 }
 
 template <typename Struct>
 void clear_struct(Struct& s) {
-  clear_struct_impl<op::size_v<type::struct_t<Struct>>>(s);
+  clear_struct_impl<op::size_v<Struct>>(s);
 }
 
 TEST(ClearStructTest, StructWithDefaultStruct) {
