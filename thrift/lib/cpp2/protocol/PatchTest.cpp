@@ -475,13 +475,13 @@ TEST_F(PatchTest, Map) {
            value)
            .mapValue_ref());
 
-  // Add
+  // Ensure
   {
     EXPECT_EQ(
         *value.mapValue_ref(),
         *applyContainerPatch(
              makePatch(
-                 op::PatchOp::Add,
+                 op::PatchOp::EnsureStruct,
                  asValueStruct<type::map<type::string_t, type::string_t>>(
                      std::map<std::string, std::string>{{"key", "test 42"}})),
              value)
@@ -495,7 +495,7 @@ TEST_F(PatchTest, Map) {
     auto patchResult =
         *applyContainerPatch(
              makePatch(
-                 op::PatchOp::Add,
+                 op::PatchOp::EnsureStruct,
                  asValueStruct<type::map<type::string_t, type::string_t>>(
                      std::map<std::string, std::string>{
                          {"new key", "new value"}})),
@@ -529,7 +529,7 @@ TEST_F(PatchTest, Map) {
     auto patchObj = patchAddOperation(
         patchAddOperation(
             makePatch(
-                op::PatchOp::Add,
+                op::PatchOp::EnsureStruct,
                 asValueStruct<type::map<type::string_t, type::string_t>>(
                     std::map<std::string, std::string>{
                         {"added key", "added value"}})),
@@ -538,6 +538,62 @@ TEST_F(PatchTest, Map) {
         op::PatchOp::Put,
         expected);
 
+    EXPECT_EQ(
+        *expected.mapValue_ref(),
+        *applyContainerPatch(patchObj, value).mapValue_ref());
+  }
+
+  // Patch
+  {
+    auto value =
+        asValueStruct<type::map<type::string_t, type::list<type::string_t>>>(
+            std::map<std::string, std::vector<std::string>>{
+                {"key", std::vector<std::string>{"test"}}});
+    auto elementPatchValue = asValueStruct<type::list<type::string_t>>(
+        std::vector<std::string>{"foo"});
+    Value fieldPatchValue;
+    fieldPatchValue.objectValue_ref() =
+        makePatch(op::PatchOp::Put, elementPatchValue);
+    Value mapPatch;
+    mapPatch.mapValue_ref().ensure()[asValueStruct<type::string_t>("key")] =
+        fieldPatchValue;
+    auto patchObj = makePatch(op::PatchOp::Patch, mapPatch);
+    auto expected =
+        asValueStruct<type::map<type::string_t, type::list<type::string_t>>>(
+            std::map<std::string, std::vector<std::string>>{
+                {"key", std::vector<std::string>{"test", "foo"}}});
+    EXPECT_EQ(
+        *expected.mapValue_ref(),
+        *applyContainerPatch(patchObj, value).mapValue_ref());
+  }
+
+  // Ensure and PatchAfter
+  {
+    auto value =
+        asValueStruct<type::map<type::string_t, type::list<type::string_t>>>(
+            std::map<std::string, std::vector<std::string>>{
+                {"key", std::vector<std::string>{"test"}}});
+    Value fieldPatchValue;
+    fieldPatchValue.objectValue_ref() = makePatch(
+        op::PatchOp::Put,
+        asValueStruct<type::list<type::string_t>>(
+            std::vector<std::string>{"foo"}));
+    Value mapPatch;
+    mapPatch.mapValue_ref().ensure()[asValueStruct<type::string_t>("new key")] =
+        fieldPatchValue;
+
+    auto patchObj = patchAddOperation(
+        makePatch(op::PatchOp::PatchAfter, mapPatch),
+        op::PatchOp::EnsureStruct,
+        asValueStruct<type::map<type::string_t, type::list<type::string_t>>>(
+            std::map<std::string, std::vector<std::string>>{
+                {"new key", std::vector<std::string>{}}}));
+
+    auto expected =
+        asValueStruct<type::map<type::string_t, type::list<type::string_t>>>(
+            std::map<std::string, std::vector<std::string>>{
+                {"key", std::vector<std::string>{"test"}},
+                {"new key", std::vector<std::string>{"foo"}}});
     EXPECT_EQ(
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
@@ -579,21 +635,18 @@ TEST_F(PatchTest, Struct) {
 
   // Patch
   auto applyFieldPatchTest = [&](auto op, auto expected) {
-    {
-      Value fieldPatchValue;
-      fieldPatchValue.objectValue_ref() = makePatch(
-          op,
-          asValueStruct<type::list<type::i32_t>>(std::vector<int>{3, 2, 1}));
-      Value fieldPatch;
-      fieldPatch.objectValue_ref().ensure().members().ensure()[1] =
-          fieldPatchValue;
-      EXPECT_EQ(
-          expected,
-          applyContainerPatch(makePatch(op::PatchOp::Patch, fieldPatch), value)
-              .objectValue_ref()
-              ->members()
-              .ensure()[1]);
-    }
+    Value fieldPatchValue;
+    fieldPatchValue.objectValue_ref() = makePatch(
+        op, asValueStruct<type::list<type::i32_t>>(std::vector<int>{3, 2, 1}));
+    Value fieldPatch;
+    fieldPatch.objectValue_ref().ensure().members().ensure()[1] =
+        fieldPatchValue;
+    EXPECT_EQ(
+        expected,
+        applyContainerPatch(makePatch(op::PatchOp::Patch, fieldPatch), value)
+            .objectValue_ref()
+            ->members()
+            .ensure()[1]);
   };
 
   applyFieldPatchTest(

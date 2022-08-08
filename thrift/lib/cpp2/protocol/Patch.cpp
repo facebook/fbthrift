@@ -307,9 +307,11 @@ void ApplyPatch::operator()(
       Value::Type::mapValue,
       {PatchOp::Assign,
        PatchOp::Clear,
-       PatchOp::Add,
+       PatchOp::Patch,
+       PatchOp::EnsureStruct,
        PatchOp::Put,
-       PatchOp::Remove});
+       PatchOp::Remove,
+       PatchOp::PatchAfter});
   if (applyAssign<type::map_c>(patch, value)) {
     return; // Ignore all other ops.
   }
@@ -320,20 +322,40 @@ void ApplyPatch::operator()(
     }
   }
 
+  auto patchElements = [&](auto patchFields) {
+    for (const auto& [keyv, valv] : *patchFields->mapValue_ref()) {
+      // Only patch values for fields that exist for now
+      auto fieldIt = value.find(keyv);
+      if (fieldIt != value.end()) {
+        applyPatch(*valv.objectValue_ref(), fieldIt->second);
+      }
+    }
+  };
+
+  if (auto* patchFields = findOp(patch, PatchOp::Patch)) {
+    patchElements(patchFields);
+  }
+
+  // This is basicly inserting key/value pair into the map if key doesn't exist
+  if (auto* ensure = findOp(patch, PatchOp::EnsureStruct)) {
+    value.insert(
+        ensure->mapValue_ref()->begin(), ensure->mapValue_ref()->end());
+  }
+
   if (auto* remove = findOp(patch, PatchOp::Remove)) {
     for (const auto& key : *remove->setValue_ref()) {
       value.erase(key);
     }
   }
 
-  if (auto* add = findOp(patch, PatchOp::Add)) {
-    value.insert(add->mapValue_ref()->begin(), add->mapValue_ref()->end());
-  }
-
-  if (auto* add = findOp(patch, PatchOp::Put)) {
-    for (const auto& [key, val] : *add->mapValue_ref()) {
+  if (auto* put = findOp(patch, PatchOp::Put)) {
+    for (const auto& [key, val] : *put->mapValue_ref()) {
       value.insert_or_assign(key, val);
     }
+  }
+
+  if (auto* patchFields = findOp(patch, PatchOp::PatchAfter)) {
+    patchElements(patchFields);
   }
 }
 
