@@ -98,6 +98,150 @@ class FieldWrapper implements \IThriftSyncStruct {
 
 /**
  * Original thrift struct:-
+ * Wrapper
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Wrapper'))>>
+class Wrapper implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'underlyingName',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'extraNamespace',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+    'underlyingName' => 2,
+    'extraNamespace' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+    ?'underlyingName' => ?string,
+    ?'extraNamespace' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 1284986773698322040;
+  /**
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+  /**
+   * Original thrift field:-
+   * 2: string underlyingName
+   */
+  public string $underlyingName;
+  /**
+   * Original thrift field:-
+   * 3: string extraNamespace
+   */
+  public string $extraNamespace;
+
+  public function __construct(?string $name = null, ?string $underlyingName = null, ?string $extraNamespace = null)[] {
+    $this->name = $name ?? '';
+    $this->underlyingName = $underlyingName ?? '';
+    $this->extraNamespace = $extraNamespace ?? "thrift_adapted_types";
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'underlyingName'),
+      Shapes::idx($shape, 'extraNamespace'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Wrapper';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.Wrapper",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "underlyingName",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "extraNamespace",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Typedef' => \thrift\annotation\Typedef::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * Adapter
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Adapter'))>>

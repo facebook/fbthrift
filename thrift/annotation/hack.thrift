@@ -38,6 +38,30 @@ struct FieldWrapper {
   1: string name;
 }
 
+// An annotation that applies a Hack wrapper to fields, typedef or structs.
+// For example:
+//
+//   struct User {
+//     @hack.FieldWrapper{name="MyWrapper"}
+//     1: i64 id;
+//   }
+//
+@scope.Typedef
+@scope.Struct
+@scope.Field
+struct Wrapper {
+  // The name of a Hack wrapper class used to wrap the field
+  1: string name;
+  // When applied directly to a typedef or struct, the IDL name of the
+  // type will refer to the adapted type in Hack and the underlying thrift struct will be
+  // generated in a nested namespace and/or with a different name. By default the type/struct
+  // will be generated in a nested 'thrift_adapted_types' namespace with the same name,
+  // but both of these can be changed by setting these fields.
+  // Empty string enables the nested namespace and uses the IDL name for the struct.
+  2: string underlyingName;
+  3: string extraNamespace = "thrift_adapted_types";
+} (thrift.uri = "facebook.com/thrift/annotation/hack/Wrapper")
+
 // An annotation that applies a Hack adapter to types. For example:
 // @hack.Adapter{name="\TimestampAdapter"}
 // typedef i64 Timestamp;

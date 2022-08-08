@@ -24,13 +24,28 @@
         "is_union" : false,
         "lineno" : 36
       },
-      "Adapter" : {
-        "name" : "Adapter",
+      "Wrapper" : {
+        "name" : "Wrapper",
         "fields" : {
           "name" : {
             "name" : "name",
             "key" : 1,
             "lineno" : 54,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "underlyingName" : {
+            "name" : "underlyingName",
+            "key" : 2,
+            "lineno" : 61,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "extraNamespace" : {
+            "name" : "extraNamespace",
+            "default_value" : "thrift_adapted_types",
+            "key" : 3,
+            "lineno" : 62,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
@@ -39,20 +54,35 @@
         "is_union" : false,
         "lineno" : 52
       },
-      "SkipCodegen" : {
-        "name" : "SkipCodegen",
+      "Adapter" : {
+        "name" : "Adapter",
         "fields" : {
-          "reason" : {
-            "name" : "reason",
+          "name" : {
+            "name" : "name",
             "key" : 1,
-            "lineno" : 60,
+            "lineno" : 78,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 59
+        "lineno" : 76
+      },
+      "SkipCodegen" : {
+        "name" : "SkipCodegen",
+        "fields" : {
+          "reason" : {
+            "name" : "reason",
+            "key" : 1,
+            "lineno" : 84,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 83
       },
       "Name" : {
         "name" : "Name",
@@ -60,21 +90,21 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 68,
+            "lineno" : 92,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "reason" : {
             "name" : "reason",
             "key" : 2,
-            "lineno" : 69,
+            "lineno" : 93,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 67
+        "lineno" : 91
       },
       "UnionEnumAttributes" : {
         "name" : "UnionEnumAttributes",
@@ -82,7 +112,7 @@
           "attributes" : {
             "name" : "attributes",
             "key" : 1,
-            "lineno" : 75,
+            "lineno" : 99,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "list",
@@ -92,7 +122,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 74
+        "lineno" : 98
       },
       "StructTrait" : {
         "name" : "StructTrait",
@@ -100,14 +130,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 81,
+            "lineno" : 105,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 80
+        "lineno" : 104
       },
       "Attributes" : {
         "name" : "Attributes",
@@ -115,7 +145,7 @@
           "attributes" : {
             "name" : "attributes",
             "key" : 1,
-            "lineno" : 86,
+            "lineno" : 110,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "list",
@@ -125,7 +155,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 85
+        "lineno" : 109
       }
       },
   "source_path" : "thrift/annotation/hack",

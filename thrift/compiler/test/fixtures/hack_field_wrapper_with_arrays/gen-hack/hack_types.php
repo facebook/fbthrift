@@ -134,6 +134,200 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 /**
  * Original thrift struct:-
+ * Wrapper
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Wrapper'))>>
+class Wrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'underlyingName',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'extraNamespace',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+    'underlyingName' => 2,
+    'extraNamespace' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+    ?'underlyingName' => ?string,
+    ?'extraNamespace' => ?string,
+  );
+
+  const type TShape = shape(
+    'name' => string,
+    'underlyingName' => string,
+    'extraNamespace' => string,
+  );
+  const int STRUCTURAL_ID = 1284986773698322040;
+  /**
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+  /**
+   * Original thrift field:-
+   * 2: string underlyingName
+   */
+  public string $underlyingName;
+  /**
+   * Original thrift field:-
+   * 3: string extraNamespace
+   */
+  public string $extraNamespace;
+
+  public function __construct(?string $name = null, ?string $underlyingName = null, ?string $extraNamespace = null)[] {
+    $this->name = $name ?? '';
+    $this->underlyingName = $underlyingName ?? '';
+    $this->extraNamespace = $extraNamespace ?? "thrift_adapted_types";
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'underlyingName'),
+      Shapes::idx($shape, 'extraNamespace'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'name'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'underlyingName'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'extraNamespace'), 'map value is mixed'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Wrapper';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.Wrapper",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "underlyingName",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "extraNamespace",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Typedef' => \thrift\annotation\Typedef::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['name'],
+      $shape['underlyingName'],
+      $shape['extraNamespace'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'name' => $this->name,
+      'underlyingName' => $this->underlyingName,
+      'extraNamespace' => $this->extraNamespace,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'name') !== null) {
+      $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
+    }
+    if (idx($parsed, 'underlyingName') !== null) {
+      $this->underlyingName = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['underlyingName']);
+    }
+    if (idx($parsed, 'extraNamespace') !== null) {
+      $this->extraNamespace = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['extraNamespace']);
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * Adapter
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Adapter'))>>

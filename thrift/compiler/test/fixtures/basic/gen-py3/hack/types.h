@@ -30,6 +30,22 @@ void reset_field<::facebook::thrift::annotation::hack::FieldWrapper>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::hack::Wrapper>(
+    ::facebook::thrift::annotation::hack::Wrapper& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Wrapper>().name_ref());
+      return;
+    case 1:
+      obj.underlyingName_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Wrapper>().underlyingName_ref());
+      return;
+    case 2:
+      obj.extraNamespace_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Wrapper>().extraNamespace_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::facebook::thrift::annotation::hack::Adapter>(
     ::facebook::thrift::annotation::hack::Adapter& obj, uint16_t index) {
   switch (index) {
@@ -95,6 +111,16 @@ void reset_field<::facebook::thrift::annotation::hack::Attributes>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::Wrapper>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

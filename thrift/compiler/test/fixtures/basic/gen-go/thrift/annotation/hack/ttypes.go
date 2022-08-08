@@ -137,6 +137,203 @@ func (p *FieldWrapper) String() string {
 
 // Attributes:
 //  - Name
+//  - UnderlyingName
+//  - ExtraNamespace
+type Wrapper struct {
+  Name string `thrift:"name,1" db:"name" json:"name"`
+  UnderlyingName string `thrift:"underlyingName,2" db:"underlyingName" json:"underlyingName"`
+  ExtraNamespace string `thrift:"extraNamespace,3" db:"extraNamespace" json:"extraNamespace"`
+}
+
+func NewWrapper() *Wrapper {
+  return &Wrapper{
+    ExtraNamespace: "thrift_adapted_types",
+  }
+}
+
+
+func (p *Wrapper) GetName() string {
+  return p.Name
+}
+
+func (p *Wrapper) GetUnderlyingName() string {
+  return p.UnderlyingName
+}
+
+func (p *Wrapper) GetExtraNamespace() string {
+  return p.ExtraNamespace
+}
+type WrapperBuilder struct {
+  obj *Wrapper
+}
+
+func NewWrapperBuilder() *WrapperBuilder{
+  return &WrapperBuilder{
+    obj: NewWrapper(),
+  }
+}
+
+func (p WrapperBuilder) Emit() *Wrapper{
+  return &Wrapper{
+    Name: p.obj.Name,
+    UnderlyingName: p.obj.UnderlyingName,
+    ExtraNamespace: p.obj.ExtraNamespace,
+  }
+}
+
+func (w *WrapperBuilder) Name(name string) *WrapperBuilder {
+  w.obj.Name = name
+  return w
+}
+
+func (w *WrapperBuilder) UnderlyingName(underlyingName string) *WrapperBuilder {
+  w.obj.UnderlyingName = underlyingName
+  return w
+}
+
+func (w *WrapperBuilder) ExtraNamespace(extraNamespace string) *WrapperBuilder {
+  w.obj.ExtraNamespace = extraNamespace
+  return w
+}
+
+func (w *Wrapper) SetName(name string) *Wrapper {
+  w.Name = name
+  return w
+}
+
+func (w *Wrapper) SetUnderlyingName(underlyingName string) *Wrapper {
+  w.UnderlyingName = underlyingName
+  return w
+}
+
+func (w *Wrapper) SetExtraNamespace(extraNamespace string) *Wrapper {
+  w.ExtraNamespace = extraNamespace
+  return w
+}
+
+func (p *Wrapper) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Wrapper)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
+  return nil
+}
+
+func (p *Wrapper)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.UnderlyingName = v
+  }
+  return nil
+}
+
+func (p *Wrapper)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.ExtraNamespace = v
+  }
+  return nil
+}
+
+func (p *Wrapper) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Wrapper"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Wrapper) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:name: ", p), err) }
+  if err := oprot.WriteString(string(p.Name)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:name: ", p), err) }
+  return err
+}
+
+func (p *Wrapper) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("underlyingName", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:underlyingName: ", p), err) }
+  if err := oprot.WriteString(string(p.UnderlyingName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.underlyingName (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:underlyingName: ", p), err) }
+  return err
+}
+
+func (p *Wrapper) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("extraNamespace", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:extraNamespace: ", p), err) }
+  if err := oprot.WriteString(string(p.ExtraNamespace)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.extraNamespace (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:extraNamespace: ", p), err) }
+  return err
+}
+
+func (p *Wrapper) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  nameVal := fmt.Sprintf("%v", p.Name)
+  underlyingNameVal := fmt.Sprintf("%v", p.UnderlyingName)
+  extraNamespaceVal := fmt.Sprintf("%v", p.ExtraNamespace)
+  return fmt.Sprintf("Wrapper({Name:%s UnderlyingName:%s ExtraNamespace:%s})", nameVal, underlyingNameVal, extraNamespaceVal)
+}
+
+// Attributes:
+//  - Name
 type Adapter struct {
   Name string `thrift:"name,1" db:"name" json:"name"`
 }
