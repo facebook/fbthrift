@@ -314,6 +314,111 @@ class MySecondThriftStruct implements \IThriftSyncStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * MyThirdThriftStruct
+ */
+<<ApiEnum, JSEnum>>
+class MyThirdThriftStruct implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 4302560019326481254;
+  /**
+   * Original thrift field:-
+   * 1: i32 foo
+   */
+  <<FieldAttribute>>
+  public int $foo;
+
+  public function __construct(?int $foo = null)[] {
+    $this->foo = $foo ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyThirdThriftStruct';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module1.MyThirdThriftStruct",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\hack\Attributes' => \thrift\annotation\hack\Attributes::fromShape(
+          shape(
+            "attributes" => Vector {
+              "ApiEnum",
+              "JSEnum",
+            },
+          )
+        ),
+      ],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[
+            '\thrift\annotation\hack\Attributes' => \thrift\annotation\hack\Attributes::fromShape(
+              shape(
+                "attributes" => Vector {
+                  "FieldAttribute",
+                },
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
 <<EnumAttributes>>
 enum UnionTestingEnum: int {
   _EMPTY_ = 0;

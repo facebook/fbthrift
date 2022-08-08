@@ -208,6 +208,38 @@
           "column" : 67
         }
       }
+    },
+    "Attributes" : {
+      "lineno" : 85,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "attributes" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 86,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 86,
+              "column" : 29
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 85,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 87,
+          "column" : 2
+        }
+      }
     }
   }
 }

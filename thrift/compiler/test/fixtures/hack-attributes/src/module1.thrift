@@ -36,6 +36,12 @@ struct MySecondThriftStruct {
   3: i64 baz;
 }
 
+@hack.Attributes{attributes = ["ApiEnum", "JSEnum"]}
+struct MyThirdThriftStruct {
+  @hack.Attributes{attributes = ["FieldAttribute"]}
+  1: i32 foo;
+}
+
 union UnionTesting {
   1: string foo;
   3: i64 bar;

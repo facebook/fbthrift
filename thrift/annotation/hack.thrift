@@ -80,3 +80,8 @@ struct UnionEnumAttributes {
 struct StructTrait {
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/StructTrait")
+
+// This annotation is for adding Hack attributes.
+struct Attributes {
+  1: list<string> attributes;
+}

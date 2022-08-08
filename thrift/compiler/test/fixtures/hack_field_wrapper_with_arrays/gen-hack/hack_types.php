@@ -806,3 +806,142 @@ class StructTrait implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Attributes
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/Attributes'))>>
+class Attributes implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'attributes',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'harray',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'attributes' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'attributes' => ?vec<string>,
+  );
+
+  const type TShape = shape(
+    'attributes' => vec<string>,
+  );
+  const int STRUCTURAL_ID = 4379867690114498379;
+  /**
+   * Original thrift field:-
+   * 1: list<string> attributes
+   */
+  public vec<string> $attributes;
+
+  public function __construct(?vec<string> $attributes = null)[] {
+    $this->attributes = $attributes ?? vec[];
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'attributes'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      HH\FIXME\UNSAFE_CAST<mixed, vec<string>>(idx($map, 'attributes'), 'map value is mixed'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Attributes';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.Attributes",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "attributes",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['attributes'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'attributes' => $this->attributes,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'attributes') !== null) {
+      $_json3 = HH\FIXME\UNSAFE_CAST<mixed, vec<string>>($parsed['attributes']);
+      $_container4 = vec[];
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = '';
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->attributes = $_container4;
+    }
+  }
+
+}
+

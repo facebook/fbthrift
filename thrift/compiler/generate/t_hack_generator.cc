@@ -701,6 +701,32 @@ class t_hack_generator : public t_concat_generator {
     return "";
   }
 
+  const std::string find_attributes(const t_named& tnamed) {
+    if (const std::string* annotation =
+            tnamed.find_annotation_or_null("hack.attributes")) {
+      return *annotation;
+    }
+    if (const auto annotation = tnamed.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/hack/Attributes")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "attributes") {
+          std::string result = "";
+          bool first = true;
+          for (const auto& attribute : item.second->get_list()) {
+            if (first) {
+              first = false;
+            } else {
+              result += ", ";
+            }
+            result += attribute->get_string();
+          }
+          return result;
+        }
+      }
+    }
+    return "";
+  }
+
   std::pair<bool, const std::string> find_hack_struct_trait(
       const t_struct* tstruct) const {
     if (const std::string* annotation =
@@ -3806,9 +3832,9 @@ void t_hack_generator::generate_php_struct_fields(
       generate_php_docstring(out, &field);
     }
 
-    if (const std::string* field_attributes =
-            field.find_annotation_or_null("hack.attributes")) {
-      indent(out) << "<<" << *field_attributes << ">>\n";
+    const std::string field_attributes = find_attributes(field);
+    if (!field_attributes.empty()) {
+      indent(out) << "<<" << field_attributes << ">>\n";
     }
 
     if (type == ThriftStructType::EXCEPTION && field.name() == "code") {
@@ -4523,10 +4549,9 @@ void t_hack_generator::generate_hack_attributes(
   }
 
   if (include_user_defined) {
-    const std::string* user_attributes =
-        type->find_annotation_or_null("hack.attributes");
-    if (user_attributes) {
-      attributes_parts.emplace_back(*user_attributes);
+    const std::string user_attributes = find_attributes(*type);
+    if (!user_attributes.empty()) {
+      attributes_parts.emplace_back(user_attributes);
     }
   }
 

@@ -108,6 +108,24 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 80
+      },
+      "Attributes" : {
+        "name" : "Attributes",
+        "fields" : {
+          "attributes" : {
+            "name" : "attributes",
+            "key" : 1,
+            "lineno" : 86,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "string"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 85
       }
       },
   "source_path" : "thrift/annotation/hack",
