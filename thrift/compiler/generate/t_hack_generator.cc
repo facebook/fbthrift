@@ -634,15 +634,76 @@ class t_hack_generator : public t_concat_generator {
   }
 
   const std::string* find_hack_wrapper(const t_field& node) {
-    if (const auto annotation = node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/FieldWrapper")) {
+    auto annotation = node.find_structured_annotation_or_null(
+        "facebook.com/thrift/annotation/hack/FieldWrapper");
+    if (!annotation) {
+      annotation = node.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/hack/Wrapper");
+    }
+    if (annotation) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
-          return &item.second->get_string();
+          return new std::string(
+              (has_hack_namespace ? "\\" : "") + item.second->get_string());
         }
       }
     }
     return nullptr;
+  }
+
+  std::tuple<const std::string*, const std::string*, const std::string*>
+  find_hack_wrapper(
+      const t_type* ttype, bool look_up_through_hierarchy = true) {
+    const t_const* annotation;
+    auto uri = "facebook.com/thrift/annotation/hack/Wrapper";
+    if (look_up_through_hierarchy) {
+      annotation =
+          t_typedef::get_first_structured_annotation_or_null(ttype, uri);
+    } else {
+      annotation = ttype->find_structured_annotation_or_null(uri);
+    }
+    if (annotation) {
+      const std::string* name;
+      const std::string* underlying_name = new std::string("");
+      const std::string* underlying_namespace = new std::string("");
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "name") {
+          name = new std::string(
+              (has_hack_namespace ? "\\" : "") + item.second->get_string());
+        } else if (item.first->get_string() == "underlyingName") {
+          underlying_name = new std::string(
+              hack_name(item.second->get_string(), ttype->program(), true));
+        } else if (item.first->get_string() == "extraNamespace") {
+          underlying_namespace = &item.second->get_string();
+        }
+      }
+      if (name) {
+        // If both name and ns are not provided,
+        // then we need to nest the namespace
+        if (underlying_name->empty() && underlying_namespace->empty()) {
+          underlying_namespace = new std::string("thrift_adapted_types");
+          underlying_name = new std::string(hack_name(ttype, true));
+
+          auto [ns, ns_type] = get_namespace(ttype->program());
+          if (ns_type == HackThriftNamespaceType::HACK ||
+              ns_type == HackThriftNamespaceType::PACKAGE) {
+            underlying_namespace =
+                new std::string(ns + "\\thrift_adapted_types");
+          }
+        } else if (underlying_namespace->empty()) {
+          // If name is provided, then use the underlying struct's namespace.
+          auto [ns, ns_type] = get_namespace(ttype->program());
+          if (ns_type == HackThriftNamespaceType::HACK ||
+              ns_type == HackThriftNamespaceType::PACKAGE) {
+            return {name, underlying_name, &ns};
+          }
+          return {name, underlying_name, nullptr};
+        }
+
+        return {name, underlying_name, underlying_namespace};
+      }
+    }
+    return {nullptr, nullptr, nullptr};
   }
 
   const std::string* find_hack_field_adapter(const t_field& node) {
@@ -810,6 +871,22 @@ class t_hack_generator : public t_concat_generator {
 
   std::string hack_name(const t_type* t, bool decl = false) {
     return hack_name(find_hack_name(t), t->program(), decl);
+  }
+
+  std::string hack_wrapped_type_name(
+      const std::string* underlying_name,
+      const std::string* underlying_ns,
+      bool decl = false) {
+    if (decl) {
+      return *underlying_name;
+    }
+    if (underlying_ns) {
+      return "\\" + *underlying_ns + "\\" + *underlying_name;
+    } else if (has_hack_namespace) {
+      return "\\" + *underlying_name;
+    } else {
+      return *underlying_name;
+    }
   }
 
   std::string php_path(const t_program* p) {
