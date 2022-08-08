@@ -47,7 +47,7 @@ FOLLY_INLINE_VARIABLE constexpr bool
     is_ordinal_v<std::integral_constant<Ordinal, ord>> = true;
 
 // Runtime and compile time representations for a field id.
-enum class FieldId : int16_t {};
+enum class FieldId : int16_t; // defined in id.thrift
 template <FieldId id>
 using field_id_tag = std::integral_constant<FieldId, id>;
 template <std::underlying_type_t<FieldId> id>

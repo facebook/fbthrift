@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
 // The **id representations** for well-known Thrift types.
@@ -36,6 +37,10 @@ namespace java.swift com.facebook.thrift.type_id
 namespace py.asyncio apache_thrift_asyncio.id
 namespace go thrift.lib.thrift.id
 namespace py thrift.lib.thrift.id
+
+/** A field id is a signed 16-bit integer. */
+@cpp.StrongType
+typedef i16 FieldId
 
 // An opaque ID for a value stored in an external location (i.e. a Thrift 'pointer').
 //
@@ -95,60 +100,41 @@ const ExternId noId = 0;
 // The id of an externally stored Thrift Value.
 //
 // See 'any.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId ValueId
 
 // The id of an externally stored Thrift Protocol.
 //
 // See 'type.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId ProtocolId
 
 // The id of an externally stored type.
 //
 // See 'type.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId TypeId
 
 // The id of an externally stored definition.
 //
 // See 'schema.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId DefinitionId
 
 // The id of an externally stored package.
 //
 // See 'schema.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId PackageId
 
 // The id of an externally stored program.
 //
 // See 'schema.thrift'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId ProgramId
 
 // The id of externally stored source code.
 //
 // TODO(afuller): Add concrete definitions for 'source'.
-@thrift.Experimental // TODO(afuller): Make strong.
+@cpp.StrongType
 typedef ExternId SourceId
-
-// An unordered set of value ids, that can contain *at most one* value
-// of any type.
-@thrift.Experimental // TODO(afuller): Adapt!
-typedef set<ValueId> AnnotationIds
-
-// An list of definition ids, in the order they were declared in the IDL/AST.
-//
-// Changing the order of definitions is always backward compatible.
-// TODO(afuller): Add conformance tests to make sure this is true.
-@thrift.Experimental // TODO(afuller): Adapt!
-typedef list<DefinitionId> DefinitionIds
-
-// An list of programs ids, in the order they were included in the IDL/AST.
-//
-// Changing the order of include is always backwards compatible.
-// TODO(afuller): Add conformance tests to make sure this is true.
-@thrift.Experimental // TODO(afuller): Adapt!
-typedef list<ProgramId> IncludeIds

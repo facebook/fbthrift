@@ -40,6 +40,25 @@ include "thrift/lib/thrift/type.thrift"
 @thrift.v1alpha
 package "facebook.com/thrift/type"
 
+// An unordered set of value ids, that can contain *at most one* value
+// of any type.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef set<id.ValueId> AnnotationIds
+
+// An list of definition ids, in the order they were declared in the IDL/AST.
+//
+// Changing the order of definitions is always backward compatible.
+// TODO(afuller): Add conformance tests to make sure this is true.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef list<id.DefinitionId> DefinitionIds
+
+// An list of programs ids, in the order they were included in the IDL/AST.
+//
+// Changing the order of include is always backwards compatible.
+// TODO(afuller): Add conformance tests to make sure this is true.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef list<id.ProgramId> IncludeIds
+
 /** A list of parsed packages, accessible via a `PackageId`. */
 typedef list<standard.UriStruct> PackageList
 
@@ -94,7 +113,7 @@ struct Definition {
   // TODO(afuller): Consider supporting unstructured annotations for backward
   // compatibility, by documenting and populating a map<string, string>
   // pseudo-structured annotation value.
-  3: id.AnnotationIds annotations;
+  3: AnnotationIds annotations;
 }
 
 /**
@@ -138,10 +157,6 @@ struct Enum {
   2: list<EnumValue> values;
 }
 
-/** A field id is a signed 16-bit integer. */
-@cpp.StrongType
-typedef i16 FieldId
-
 /** The field qualifier. */
 enum FieldQualifier {
   /** `Terse` v1+, `Fill` pre-v1. */
@@ -167,7 +182,7 @@ struct Field {
    */
   @api.Immutable
   @api.Unique
-  1: FieldId id;
+  1: id.FieldId id;
 
   /** The qualifier for the field. */
   // TODO(afuller): Document compatibility semantics, and add conformance tests.
@@ -479,7 +494,7 @@ struct Program {
    *
    * Changing the order of includes is always backward compatible.
    */
-  3: id.IncludeIds includes;
+  3: IncludeIds includes;
 
   /**
    * The definitions included in this program, in the order declared in the
@@ -489,7 +504,7 @@ struct Program {
    */
   // TODO(afuller): Fix type resolution order bugs in the parser to make this
   // comment true in all cases.
-  4: id.DefinitionIds definitions;
+  4: DefinitionIds definitions;
 }
 
 /** A list of programs, accessible by `ProgramId`. */
