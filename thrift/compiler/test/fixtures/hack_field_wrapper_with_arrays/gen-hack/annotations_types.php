@@ -75,6 +75,131 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   }
 }
 
+type i64WithWrapper = int;
+/**
+ * Original thrift struct:-
+ * StructWithWrapper
+ */
+class StructWithWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'int_field',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'int_field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'int_field' => ?int,
+  );
+
+  const type TShape = shape(
+    'int_field' => int,
+  );
+  const int STRUCTURAL_ID = 8549930382776002541;
+  /**
+   * Original thrift field:-
+   * 1: i64 int_field
+   */
+  public int $int_field;
+
+  public function __construct(?int $int_field = null)[] {
+    $this->int_field = $int_field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'int_field'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      HH\FIXME\UNSAFE_CAST<mixed, int>(idx($map, 'int_field'), 'map value is mixed'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'StructWithWrapper';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "annotations.StructWithWrapper",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "int_field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+          shape(
+            "name" => "\MyStructWrapper",
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['int_field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'int_field' => $this->int_field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'int_field') !== null) {
+      $this->int_field = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['int_field']);
+    }
+  }
+
+}
+
 /**
  * Original thrift struct:-
  * structured_annotation_with_default
@@ -235,12 +360,17 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
       ),
       'format' => 'harray',
     ),
+    5 => shape(
+      'var' => 'int_field',
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
     'recurse' => 2,
     'default' => 3,
     'recurse_map' => 4,
+    'int_field' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -248,6 +378,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     ?'recurse' => ?structured_annotation_recursive,
     ?'default' => ?structured_annotation_with_default,
     ?'recurse_map' => ?dict<string, structured_annotation_recursive>,
+    ?'int_field' => ?i64WithWrapper,
   );
 
   const type TShape = shape(
@@ -255,8 +386,9 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     ?'recurse' => ?structured_annotation_recursive::TShape,
     ?'default' => ?structured_annotation_with_default::TShape,
     'recurse_map' => dict<arraykey, structured_annotation_recursive::TShape>,
+    'int_field' => i64WithWrapper,
   );
-  const int STRUCTURAL_ID = 3657350985282928675;
+  const int STRUCTURAL_ID = 3145177041506723998;
   /**
    * Original thrift field:-
    * 1: string name
@@ -282,10 +414,16 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
    * 4: map<string, struct annotations.structured_annotation_recursive> recurse_map
    */
   public dict<string, structured_annotation_recursive> $recurse_map;
+  /**
+   * Original thrift field:-
+   * 5: i64 int_field
+   */
+  public i64WithWrapper $int_field;
 
   public function __construct()[] {
     $this->name = '';
     $this->recurse_map = dict[];
+    $this->int_field = 0;
     $this->recurse = MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?structured_annotation_recursive, structured_annotation_recursive>(null, 2, $this);
   }
 
@@ -311,6 +449,10 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     if ($recurse_map !== null) {
       $obj->recurse_map = $recurse_map;
     }
+    $int_field = Shapes::idx($shape, 'int_field');
+    if ($int_field !== null) {
+      $obj->int_field = $int_field;
+    }
     return $obj;
   }
 
@@ -331,6 +473,10 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     $recurse_map = idx($map, 'recurse_map');
     if ($recurse_map !== null) {
       $obj->recurse_map = HH\FIXME\UNSAFE_CAST<mixed, dict<string, structured_annotation_recursive>>($recurse_map, 'Map value is mixed');
+    }
+    $int_field = idx($map, 'int_field');
+    if ($int_field !== null) {
+      $obj->int_field = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($int_field, 'Map value is mixed');
     }
     return $obj;
   }
@@ -431,6 +577,26 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
               "name" => "recurse_map",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "annotations.i64WithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "int_field",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -450,6 +616,16 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
             ),
           ],
           'type' => dict[],
+        ),
+        'int_field' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+              shape(
+                "name" => "\MyTypeIntWrapper",
+              )
+            ),
+          ],
         ),
       ],
     );
@@ -478,6 +654,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
           await structured_annotation_recursive::__genFromShape($val0)
       )
     );
+    $obj->int_field = $shape['int_field'];
     return $obj;
   }
 
@@ -502,6 +679,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
         async $val0 ==> 
           await $val0->__genToShape()
       ),
+      'int_field' => $this->int_field,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -543,6 +721,9 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
       }
       $this->recurse_map = $_container8;
     }
+    if (idx($parsed, 'int_field') !== null) {
+      $this->int_field = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($parsed['int_field']);
+    }
   }
 
 }
@@ -559,27 +740,40 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'annotated_recursive',
       'type' => \TType::STRING,
     ),
+    2 => shape(
+      'var' => 'annotated_struct_wrapper',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'annotated_recursive' => 1,
+    'annotated_struct_wrapper' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'annotated_recursive' => ?string,
+    ?'annotated_struct_wrapper' => ?string,
   );
 
   const type TShape = shape(
     'annotated_recursive' => string,
+    'annotated_struct_wrapper' => string,
   );
-  const int STRUCTURAL_ID = 3960003855539302324;
+  const int STRUCTURAL_ID = 589959247947768145;
   /**
    * Original thrift field:-
    * 1: string annotated_recursive
    */
   public string $annotated_recursive;
+  /**
+   * Original thrift field:-
+   * 2: string annotated_struct_wrapper
+   */
+  public string $annotated_struct_wrapper;
 
-  public function __construct(?string $annotated_recursive = null)[] {
+  public function __construct(?string $annotated_recursive = null, ?string $annotated_struct_wrapper = null)[] {
     $this->annotated_recursive = $annotated_recursive ?? '';
+    $this->annotated_struct_wrapper = $annotated_struct_wrapper ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -589,12 +783,14 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'annotated_recursive'),
+      Shapes::idx($shape, 'annotated_struct_wrapper'),
     );
   }
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'annotated_recursive'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, string>(idx($map, 'annotated_struct_wrapper'), 'map value is mixed'),
     );
   }
 
@@ -616,6 +812,17 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 )
               ),
               "name" => "annotated_recursive",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "annotated_struct_wrapper",
             )
           ),
         ],
@@ -659,6 +866,8 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       "key_struct1" => $structured_annotation_recursive2,
       "key_struct2" => $structured_annotation_recursive4,
     ];
+
+    $structured_annotation_recursive0->int_field = 10;
 
     $structured_annotation_recursive6 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive6->name = "abc_struct_field";
@@ -706,6 +915,16 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ],
           'type' => dict[],
         ),
+        'annotated_struct_wrapper' => shape(
+          'field' => dict[
+            'StructWithWrapper' => StructWithWrapper::fromShape(
+              shape(
+                "int_field" => 11,
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }
@@ -717,12 +936,14 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['annotated_recursive'],
+      $shape['annotated_struct_wrapper'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'annotated_recursive' => $this->annotated_recursive,
+      'annotated_struct_wrapper' => $this->annotated_struct_wrapper,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -738,6 +959,9 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
     if (idx($parsed, 'annotated_recursive') !== null) {
       $this->annotated_recursive = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotated_recursive']);
+    }
+    if (idx($parsed, 'annotated_struct_wrapper') !== null) {
+      $this->annotated_struct_wrapper = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['annotated_struct_wrapper']);
     }
   }
 

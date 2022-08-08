@@ -35,6 +35,7 @@ struct Internship {
   @include.AnnotationStruct
   4: optional double compensation;
   5: optional string school;
+  6: include.i64WithWrapper intern_id;
 }
 
 struct SWE {
@@ -48,6 +49,7 @@ const Internship instagram = {
   "employer": Company.INSTAGRAM,
   "compensation": 1200.0,
   "school": "Monters University",
+  "intern_id": 10011,
 };
 
 const list<Internship> internList = [
@@ -57,6 +59,7 @@ const list<Internship> internList = [
     "title": "Sales Intern",
     "employer": Company.FACEBOOK,
     "compensation": 1000.0,
+    "intern_id": 10013,
   },
 ];
 
@@ -66,3 +69,10 @@ const list<SWE> engineers = [
   {"employer": Company.WHATSAPP, "compensation": 1200.0},
   {"employer": Company.OCULUS, "compensation": 1200.0},
 ];
+
+const list<include.StructWithWrapper> wrapped_structs = [
+  {"int_field": 1},
+  {"int_field": 2},
+];
+
+const list<include.i64WithWrapper> wrapped_ints = [1, 2];

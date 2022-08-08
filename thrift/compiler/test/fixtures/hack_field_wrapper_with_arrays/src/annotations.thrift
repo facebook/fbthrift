@@ -16,6 +16,14 @@
 
 include "thrift/annotation/hack.thrift"
 
+@hack.Wrapper{name = "\MyStructWrapper"}
+struct StructWithWrapper {
+  1: i64 int_field;
+}
+
+@hack.Wrapper{name = "\MyTypeIntWrapper"}
+typedef i64 i64WithWrapper
+
 struct structured_annotation_with_default {
   1: i32 count = 0;
 }
@@ -26,6 +34,7 @@ struct structured_annotation_recursive {
   2: structured_annotation_recursive recurse;
   3: structured_annotation_with_default default;
   4: map<string, structured_annotation_recursive> recurse_map;
+  5: i64WithWrapper int_field;
 }
 
 @structured_annotation_recursive{
@@ -42,6 +51,7 @@ struct structured_annotation_recursive {
       recurse = structured_annotation_recursive{name = "fed_struct"},
     },
   },
+  int_field = 10,
 }
 struct MyStruct {
 
@@ -61,6 +71,8 @@ struct MyStruct {
     },
   }
   1: string annotated_recursive;
+  @StructWithWrapper{int_field = 11}
+  2: string annotated_struct_wrapper;
 }
 
 @structured_annotation_recursive{

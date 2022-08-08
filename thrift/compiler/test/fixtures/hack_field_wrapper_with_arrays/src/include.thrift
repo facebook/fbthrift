@@ -27,6 +27,9 @@ struct MyStruct {
 @hack.Adapter{name = "\MyAdapter1"}
 typedef i64 i64WithAdapter
 
+@hack.Wrapper{name = "\MyTypeIntWrapper", extraNamespace = "detail"}
+typedef i64 i64WithWrapper
+
 struct MyNestedStruct {
   @hack.FieldWrapper{name = "\MyFieldWrapper"}
   1: i64 wrapped_field;
@@ -42,6 +45,10 @@ struct MyNestedStruct {
   @hack.FieldWrapper{name = "\MyFieldWrapper"}
   @hack.SkipCodegen{reason = "invalid map key"}
   6: optional map<MyStruct, string> invalid_key_map;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
+  7: i64WithWrapper wrapped_type_int;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
+  8: StructWithWrapper double_wrapped_struct;
 }
 
 struct MyComplexStruct {
@@ -56,9 +63,18 @@ struct MyComplexStruct {
     map<string, list<MyStruct>>
   > list_of_map_of_string_to_list_of_MyStruct;
   6: list<map<string, MyStruct>> list_of_map_of_string_to_MyStruct;
+  7: list<
+    map<string, StructWithWrapper>
+  > list_of_map_of_string_to_StructWithWrapper;
 }
 
 service Service1 {
   MyStruct func(1: string arg1, 2: MyStruct arg2);
   MyStruct func1(1: string arg1, 2: MyStruct arg2);
+  i64WithWrapper func2(1: StructWithWrapper arg1, 2: i64WithWrapper arg2);
+}
+
+@hack.Wrapper{name = "\MyStructWrapper"}
+struct StructWithWrapper {
+  1: i64 int_field;
 }

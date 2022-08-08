@@ -10,7 +10,7 @@ class constants_CONSTANTS implements \IThriftConstants {
    * Original thrift constant:-
    * enum constants.Company my_company
    */
-  const Company my_company = Company::FACEBOOK;
+  const MyCompany my_company = Company::FACEBOOK;
 
   /**
    * Original thrift constant:-
@@ -28,6 +28,8 @@ class constants_CONSTANTS implements \IThriftConstants {
     $Internship0->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1200.0);
 
     $Internship0->school = "Monters University";
+
+    $Internship0->intern_id = 10011;
 
     return $Internship0;
   }
@@ -49,6 +51,8 @@ class constants_CONSTANTS implements \IThriftConstants {
 
     $Internship0->school = "Monters University";
 
+    $Internship0->intern_id = 10011;
+
     $Internship1 = Internship::withDefaultValues();
     $Internship1->weeks = 10;
 
@@ -57,6 +61,8 @@ class constants_CONSTANTS implements \IThriftConstants {
     $Internship1->employer = Company::FACEBOOK;
 
     $Internship1->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1000.0);
+
+    $Internship1->intern_id = 10013;
 
     return vec[
       $Internship0,
@@ -91,6 +97,35 @@ class constants_CONSTANTS implements \IThriftConstants {
       ),
     ];
   }
+
+  /**
+   * Original thrift constant:-
+   * list<struct include.StructWithWrapper> wrapped_structs
+   */
+  <<__Memoize>>
+  public static function wrapped_structs()[]: vec<StructWithWrapper>{
+    return vec[
+      StructWithWrapper::fromShape(
+        shape(
+          "int_field" => 1,
+        )
+      ),
+      StructWithWrapper::fromShape(
+        shape(
+          "int_field" => 2,
+        )
+      ),
+    ];
+  }
+
+  /**
+   * Original thrift constant:-
+   * list<i64> wrapped_ints
+   */
+  const vec<i64WithWrapper> wrapped_ints = vec[
+    1,
+    2,
+  ];
 
 
   public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {

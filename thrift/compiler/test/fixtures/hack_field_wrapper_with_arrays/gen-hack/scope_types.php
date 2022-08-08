@@ -8,6 +8,7 @@
 
 namespace thrift\annotation;
 
+type Enum = \thrift\annotation\FbthriftInternalEnum;
 /**
  * Original thrift struct:-
  * Program

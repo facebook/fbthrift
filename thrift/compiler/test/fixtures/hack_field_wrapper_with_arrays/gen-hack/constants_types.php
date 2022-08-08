@@ -47,6 +47,7 @@ class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   }
 }
 
+type MyCompany = Company;
 /**
  * Original thrift struct:-
  * Internship
@@ -77,6 +78,10 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
       'var' => 'school',
       'type' => \TType::STRING,
     ),
+    6 => shape(
+      'var' => 'intern_id',
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'weeks' => 1,
@@ -84,6 +89,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     'employer' => 3,
     'compensation' => 4,
     'school' => 5,
+    'intern_id' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -92,6 +98,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     ?'employer' => ?Company,
     ?'compensation' => ?float,
     ?'school' => ?string,
+    ?'intern_id' => ?i64WithWrapper,
   );
 
   const type TShape = shape(
@@ -100,8 +107,9 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     ?'employer' => ?Company,
     ?'compensation' => ?float,
     ?'school' => ?string,
+    'intern_id' => i64WithWrapper,
   );
-  const int STRUCTURAL_ID = 5601694484190969969;
+  const int STRUCTURAL_ID = 2043029874796299989;
   /**
    * Original thrift field:-
    * 1: i32 weeks
@@ -132,10 +140,16 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
    * 5: string school
    */
   public ?string $school;
+  /**
+   * Original thrift field:-
+   * 6: i64 intern_id
+   */
+  public i64WithWrapper $intern_id;
 
   public function __construct()[] {
     $this->weeks = 0;
     $this->title = '';
+    $this->intern_id = 0;
     $this->compensation = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?float, Internship>(null, 4, $this);
   }
 
@@ -165,6 +179,10 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     if ($school !== null) {
       $obj->school = $school;
     }
+    $intern_id = Shapes::idx($shape, 'intern_id');
+    if ($intern_id !== null) {
+      $obj->intern_id = $intern_id;
+    }
     return $obj;
   }
 
@@ -189,6 +207,10 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     $school = idx($map, 'school');
     if ($school !== null) {
       $obj->school = HH\FIXME\UNSAFE_CAST<mixed, string>($school, 'Map value is mixed');
+    }
+    $intern_id = idx($map, 'intern_id');
+    if ($intern_id !== null) {
+      $obj->intern_id = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($intern_id, 'Map value is mixed');
     }
     return $obj;
   }
@@ -264,6 +286,26 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
               "is_optional" => true,
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.i64WithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "intern_id",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -282,6 +324,17 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
             ),
           ],
           'type' => dict[],
+        ),
+        'intern_id' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+              shape(
+                "name" => "\MyTypeIntWrapper",
+                "extraNamespace" => "detail",
+              )
+            ),
+          ],
         ),
       ],
     );
@@ -307,6 +360,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     if ($school !== null) {
       $obj->school = $school;
     }
+    $obj->intern_id = $shape['intern_id'];
     return $obj;
   }
 
@@ -318,6 +372,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
       'employer' => $this->employer,
       'compensation' => $compensation,
       'school' => $this->school,
+      'intern_id' => $this->intern_id,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -352,6 +407,9 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     }
     if (idx($parsed, 'school') !== null) {
       $this->school = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['school']);
+    }
+    if (idx($parsed, 'intern_id') !== null) {
+      $this->intern_id = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($parsed['intern_id']);
     }
   }
 

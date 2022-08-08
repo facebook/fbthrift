@@ -26,6 +26,14 @@ interface Service1AsyncIf extends \IThriftAsyncIf {
    *         2: MyStruct arg2);
    */
   public function func1(string $arg1, ?MyStruct $arg2): Awaitable<MyStruct>;
+
+  /**
+   * Original thrift definition:-
+   * i64WithWrapper
+   *   func2(1: StructWithWrapper arg1,
+   *         2: i64WithWrapper arg2);
+   */
+  public function func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): Awaitable<i64WithWrapper>;
 }
 
 /**
@@ -48,6 +56,14 @@ interface Service1If extends \IThriftSyncIf {
    *         2: MyStruct arg2);
    */
   public function func1(string $arg1, ?MyStruct $arg2): MyStruct;
+
+  /**
+   * Original thrift definition:-
+   * i64WithWrapper
+   *   func2(1: StructWithWrapper arg1,
+   *         2: i64WithWrapper arg2);
+   */
+  public function func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): i64WithWrapper;
 }
 
 /**
@@ -77,6 +93,14 @@ interface Service1ClientIf extends \IThriftSyncIf {
    *         2: MyStruct arg2);
    */
   public function func1(string $arg1, ?MyStruct $arg2): Awaitable<MyStruct>;
+
+  /**
+   * Original thrift definition:-
+   * i64WithWrapper
+   *   func2(1: StructWithWrapper arg1,
+   *         2: i64WithWrapper arg2);
+   */
+  public function func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): Awaitable<i64WithWrapper>;
 }
 
 /**
@@ -133,6 +157,27 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
     return await $this->genAwaitResponse(Service1_func1_result::class, "func1", false, $currentseqid, $rpc_options);
   }
 
+  /**
+   * Original thrift definition:-
+   * i64WithWrapper
+   *   func2(1: StructWithWrapper arg1,
+   *         2: i64WithWrapper arg2);
+   */
+  public async function func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): Awaitable<i64WithWrapper> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $args = Service1_func2_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    await $this->asyncHandler_->genBefore("Service1", "func2", $args);
+    $currentseqid = $this->sendImplHelper($args, "func2", false);
+    return await $this->genAwaitResponse(Service1_func2_result::class, "func2", false, $currentseqid, $rpc_options);
+  }
+
 }
 
 class Service1Client extends \ThriftClientBase implements Service1ClientIf {
@@ -180,6 +225,27 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
     return await $this->genAwaitResponse(Service1_func1_result::class, "func1", false, $currentseqid, $rpc_options);
   }
 
+  /**
+   * Original thrift definition:-
+   * i64WithWrapper
+   *   func2(1: StructWithWrapper arg1,
+   *         2: i64WithWrapper arg2);
+   */
+  public async function func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): Awaitable<i64WithWrapper> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $args = Service1_func2_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    await $this->asyncHandler_->genBefore("Service1", "func2", $args);
+    $currentseqid = $this->sendImplHelper($args, "func2", false);
+    return await $this->genAwaitResponse(Service1_func2_result::class, "func2", false, $currentseqid, $rpc_options);
+  }
+
   /* send and recv functions */
   public function send_func(string $arg1, ?MyStruct $arg2): int {
     $args = Service1_func_args::fromShape(shape(
@@ -200,6 +266,16 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
   }
   public function recv_func1(?int $expectedsequenceid = null): MyStruct {
     return $this->recvImplHelper(Service1_func1_result::class, "func1", false, $expectedsequenceid);
+  }
+  public function send_func2(?StructWithWrapper $arg1, i64WithWrapper $arg2): int {
+    $args = Service1_func2_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    return $this->sendImplHelper($args, "func2", false);
+  }
+  public function recv_func2(?int $expectedsequenceid = null): i64WithWrapper {
+    return $this->recvImplHelper(Service1_func2_result::class, "func2", false, $expectedsequenceid);
   }
 }
 
@@ -294,6 +370,50 @@ abstract class Service1AsyncProcessorBase extends \ThriftAsyncProcessor {
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'func1', $result);
+  }
+  protected async function process_func2(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('func2');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'func2', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'Service1_func2_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'Service1_func2_args');
+    } else {
+      $args = Service1_func2_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'func2', $args);
+    $result = Service1_func2_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'Service1', 'func2', $args);
+      $result->success = await $this->handler->func2($args->arg1, $args->arg2);
+      $this->eventHandler_->postExec($handler_ctx, 'func2', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'func2', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'func2', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'func2', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'func2', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("func2", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'func2', $result);
   }
   protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $reply_type = \TMessageType::REPLY;
@@ -426,6 +546,50 @@ abstract class Service1SyncProcessorBase extends \ThriftSyncProcessor {
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'func1', $result);
+  }
+  protected function process_func2(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('func2');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'func2', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'Service1_func2_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'Service1_func2_args');
+    } else {
+      $args = Service1_func2_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'func2', $args);
+    $result = Service1_func2_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'Service1', 'func2', $args);
+      $result->success = $this->handler->func2($args->arg1, $args->arg2);
+      $this->eventHandler_->postExec($handler_ctx, 'func2', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'func2', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'func2', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'func2', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'func2', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("func2", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'func2', $result);
   }
   protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $reply_type = \TMessageType::REPLY;
@@ -981,6 +1145,304 @@ class Service1_func1_result extends \ThriftSyncStructWithResult {
 
 }
 
+class Service1_func2_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'arg1',
+      'type' => \TType::STRUCT,
+      'class' => StructWithWrapper::class,
+    ),
+    2 => shape(
+      'var' => 'arg2',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'arg1' => 1,
+    'arg2' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'arg1' => ?StructWithWrapper,
+    ?'arg2' => ?i64WithWrapper,
+  );
+
+  const type TShape = shape(
+    ?'arg1' => ?StructWithWrapper::TShape,
+    'arg2' => i64WithWrapper,
+  );
+  const int STRUCTURAL_ID = 7334474533984828341;
+  public ?StructWithWrapper $arg1;
+  public i64WithWrapper $arg2;
+
+  public function __construct(?StructWithWrapper $arg1 = null, ?i64WithWrapper $arg2 = null)[] {
+    $this->arg1 = $arg1;
+    $this->arg2 = $arg2 ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'arg1'),
+      Shapes::idx($shape, 'arg2'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      HH\FIXME\UNSAFE_CAST<mixed, StructWithWrapper>(idx($map, 'arg1'), 'map value is mixed'),
+      HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>(idx($map, 'arg2'), 'map value is mixed'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Service1_func2_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "include.func2_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.StructWithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "include.StructWithWrapper",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "arg1",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.i64WithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "arg2",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'arg1' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+              shape(
+                "name" => "\MyStructWrapper",
+              )
+            ),
+          ],
+        ),
+        'arg2' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+              shape(
+                "name" => "\MyTypeIntWrapper",
+                "extraNamespace" => "detail",
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'arg1') === null ? null : (StructWithWrapper::__fromShape($shape['arg1'])),
+      $shape['arg2'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'arg1' => $this->arg1?->__toShape(),
+      'arg2' => $this->arg2,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'arg1') !== null) {
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, StructWithWrapper>($parsed['arg1']));
+      $_tmp1 = StructWithWrapper::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->arg1 = $_tmp1;
+    }
+    if (idx($parsed, 'arg2') !== null) {
+      $this->arg2 = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($parsed['arg2']);
+    }
+  }
+
+}
+
+class Service1_func2_result extends \ThriftSyncStructWithResult {
+  use \ThriftSerializationTrait;
+
+  const type TResult = i64WithWrapper;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?this::TResult,
+  );
+
+  const int STRUCTURAL_ID = 338438324750488489;
+  public ?this::TResult $success;
+
+  public function __construct(?this::TResult $success = null)[] {
+    $this->success = $success;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>(idx($map, 'success'), 'map value is mixed'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Service1_func2_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "include.Service1_func2_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.i64WithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(
+              shape(
+                "name" => "\MyTypeIntWrapper",
+                "extraNamespace" => "detail",
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $this->success = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($parsed['success']);
+    }
+  }
+
+}
+
 class Service1StaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
@@ -1071,6 +1533,71 @@ class Service1StaticMetadata implements \IThriftServiceStaticMetadata {
               ],
             )
           ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "func2",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.i64WithWrapper",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          shape(
+                            "name" => "include.StructWithWrapper",
+                            "underlyingType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_struct" => tmeta_ThriftStructType::fromShape(
+                                  shape(
+                                    "name" => "include.StructWithWrapper",
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "arg1",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 2,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          shape(
+                            "name" => "include.i64WithWrapper",
+                            "underlyingType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "arg2",
+                  )
+                ),
+              ],
+            )
+          ),
         ],
       )
     );
@@ -1096,6 +1623,8 @@ class Service1StaticMetadata implements \IThriftServiceStaticMetadata {
             'structs' => dict[
               'include.MyStruct' => MyStruct::getStructMetadata(),
               'include.MyNestedStruct' => MyNestedStruct::getStructMetadata(),
+              'include.StructWithWrapper' => StructWithWrapper::getStructMetadata(),
+              'include.StructWithWrapper' => StructWithWrapper::getStructMetadata(),
             ],
             'exceptions' => dict[
             ],
