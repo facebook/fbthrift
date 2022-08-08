@@ -98,7 +98,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     ?'employer' => ?Company,
     ?'compensation' => ?float,
     ?'school' => ?string,
-    ?'intern_id' => ?i64WithWrapper,
+    ?'intern_id' => ?\detail\i64WithWrapper,
   );
 
   const type TShape = shape(
@@ -107,7 +107,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     ?'employer' => ?Company,
     ?'compensation' => ?float,
     ?'school' => ?string,
-    'intern_id' => i64WithWrapper,
+    'intern_id' => \detail\i64WithWrapper,
   );
   const int STRUCTURAL_ID = 2043029874796299989;
   /**
@@ -210,7 +210,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     }
     $intern_id = idx($map, 'intern_id');
     if ($intern_id !== null) {
-      $obj->intern_id = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($intern_id, 'Map value is mixed');
+      $obj->intern_id = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($intern_id, 'Map value is mixed');
     }
     return $obj;
   }

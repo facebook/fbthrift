@@ -75,7 +75,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   }
 }
 
-type i64WithWrapper = int;
+type i64WithWrapper = \MyTypeIntWrapper<int>;
 /**
  * Original thrift struct:-
  * StructWithWrapper
@@ -378,7 +378,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     ?'recurse' => ?structured_annotation_recursive,
     ?'default' => ?structured_annotation_with_default,
     ?'recurse_map' => ?dict<string, structured_annotation_recursive>,
-    ?'int_field' => ?i64WithWrapper,
+    ?'int_field' => ?\thrift_adapted_types\i64WithWrapper,
   );
 
   const type TShape = shape(
@@ -386,7 +386,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     ?'recurse' => ?structured_annotation_recursive::TShape,
     ?'default' => ?structured_annotation_with_default::TShape,
     'recurse_map' => dict<arraykey, structured_annotation_recursive::TShape>,
-    'int_field' => i64WithWrapper,
+    'int_field' => \thrift_adapted_types\i64WithWrapper,
   );
   const int STRUCTURAL_ID = 3145177041506723998;
   /**
@@ -476,7 +476,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     }
     $int_field = idx($map, 'int_field');
     if ($int_field !== null) {
-      $obj->int_field = HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($int_field, 'Map value is mixed');
+      $obj->int_field = HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\i64WithWrapper>($int_field, 'Map value is mixed');
     }
     return $obj;
   }

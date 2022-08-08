@@ -7,7 +7,7 @@
  */
 
 type i64WithAdapter = \MyAdapter1::THackType;
-type i64WithWrapper = int;
+type i64WithWrapper = \MyTypeIntWrapper<int>;
 /**
  * Original thrift struct:-
  * AnnotationStruct
@@ -309,8 +309,8 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     ?'adapted_type' => ?\MyAdapter1::THackType,
     ?'adapted__and_wrapped_type' => ?\MyAdapter1::THackType,
     ?'optional_adapted_and_wrapped_type' => ?i64WithAdapter,
-    ?'wrapped_type_int' => ?i64WithWrapper,
-    ?'double_wrapped_struct' => ?StructWithWrapper,
+    ?'wrapped_type_int' => ?\detail\i64WithWrapper,
+    ?'double_wrapped_struct' => ?\thrift_adapted_types\StructWithWrapper,
   );
 
   const type TShape = shape(
@@ -319,8 +319,8 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     'adapted_type' => \MyAdapter1::THackType,
     'adapted__and_wrapped_type' => \MyAdapter1::THackType,
     ?'optional_adapted_and_wrapped_type' => ?i64WithAdapter,
-    'wrapped_type_int' => i64WithWrapper,
-    ?'double_wrapped_struct' => ?StructWithWrapper::TShape,
+    'wrapped_type_int' => \detail\i64WithWrapper,
+    ?'double_wrapped_struct' => ?\thrift_adapted_types\StructWithWrapper::TShape,
   );
   const int STRUCTURAL_ID = 1369530209384758369;
   /**
@@ -395,8 +395,8 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 2, $this);
     $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter1::THackType, MyNestedStruct>(\MyAdapter1::fromThrift(0), 4, $this);
     $this->optional_adapted_and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\MyAdapter1::THackType, MyNestedStruct>(null, 5, $this);
-    $this->wrapped_type_int = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<i64WithWrapper, MyNestedStruct>(0, 7, $this);
-    $this->double_wrapped_struct = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?StructWithWrapper, MyNestedStruct>(null, 8, $this);
+    $this->wrapped_type_int = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper, MyNestedStruct>(0, 7, $this);
+    $this->double_wrapped_struct = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\thrift_adapted_types\StructWithWrapper, MyNestedStruct>(null, 8, $this);
   }
 
   public static function withDefaultValues()[]: this {
@@ -460,11 +460,11 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     }
     $wrapped_type_int = idx($map, 'wrapped_type_int');
     if ($wrapped_type_int !== null) {
-      await $obj->get_wrapped_type_int()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>($wrapped_type_int, 'Map value is mixed'));
+      await $obj->get_wrapped_type_int()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($wrapped_type_int, 'Map value is mixed'));
     }
     $double_wrapped_struct = idx($map, 'double_wrapped_struct');
     if ($double_wrapped_struct !== null) {
-      await $obj->get_double_wrapped_struct()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, StructWithWrapper>($double_wrapped_struct, 'Map value is mixed'));
+      await $obj->get_double_wrapped_struct()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($double_wrapped_struct, 'Map value is mixed'));
     }
     return $obj;
   }
@@ -950,7 +950,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     ?'map_of_string_to_map_of_string_to_MyStruct' => ?dict<string, dict<string, MyStruct>>,
     ?'list_of_map_of_string_to_list_of_MyStruct' => ?vec<dict<string, vec<MyStruct>>>,
     ?'list_of_map_of_string_to_MyStruct' => ?vec<dict<string, MyStruct>>,
-    ?'list_of_map_of_string_to_StructWithWrapper' => ?vec<dict<string, StructWithWrapper>>,
+    ?'list_of_map_of_string_to_StructWithWrapper' => ?vec<dict<string, \thrift_adapted_types\StructWithWrapper>>,
   );
 
   const type TShape = shape(
@@ -960,7 +960,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     'map_of_string_to_map_of_string_to_MyStruct' => dict<arraykey, dict<arraykey, MyStruct::TShape>>,
     'list_of_map_of_string_to_list_of_MyStruct' => vec<dict<arraykey, vec<MyStruct::TShape>>>,
     'list_of_map_of_string_to_MyStruct' => vec<dict<arraykey, MyStruct::TShape>>,
-    'list_of_map_of_string_to_StructWithWrapper' => vec<dict<arraykey, StructWithWrapper::TShape>>,
+    'list_of_map_of_string_to_StructWithWrapper' => vec<dict<arraykey, \thrift_adapted_types\StructWithWrapper::TShape>>,
   );
   const int STRUCTURAL_ID = 6139035146599508839;
   /**

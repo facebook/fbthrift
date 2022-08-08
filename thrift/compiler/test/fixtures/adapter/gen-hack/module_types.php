@@ -2760,20 +2760,20 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?\thrift\test\AdaptedA,
+    ?'a' => ?\thrift\test\A,
   );
 
   const type TShape = shape(
-    ?'a' => ?\thrift\test\AdaptedA,
+    ?'a' => ?\thrift\test\A::TShape,
   );
   const int STRUCTURAL_ID = 1135805466744601735;
   /**
    * Original thrift field:-
    * 1: struct module.A a
    */
-  public ?\thrift\test\AdaptedA $a;
+  public ?\thrift\test\A $a;
 
-  public function __construct(?\thrift\test\AdaptedA $a = null)[] {
+  public function __construct(?\thrift\test\A $a = null)[] {
     $this->a = $a;
   }
 
@@ -2885,7 +2885,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\AdaptedA>($parsed['a']));
+      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\A>($parsed['a']));
       $_tmp1 = \thrift\test\A::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->a = $_tmp1;

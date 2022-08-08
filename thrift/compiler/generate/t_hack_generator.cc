@@ -102,7 +102,7 @@ class t_hack_generator : public t_concat_generator {
     auto [_, ns_type_] = get_namespace(program);
     has_hack_namespace = ns_type_ == HackThriftNamespaceType::HACK ||
         ns_type_ == HackThriftNamespaceType::PACKAGE;
-
+    has_nested_ns = false;
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
       throw std::runtime_error(
@@ -538,6 +538,8 @@ class t_hack_generator : public t_concat_generator {
     IMMUTABLE_COLLECTIONS = 3,
     IGNORE_ADAPTER = 4,
     IGNORE_TYPEDEF = 5,
+    IGNORE_WRAPPER = 6,
+    RECURSIVE_IGNORE_WRAPPER = 7,
   };
 
   std::string declare_field(
@@ -592,7 +594,9 @@ class t_hack_generator : public t_concat_generator {
           {TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, false},
           {TypeToTypehintVariations::IGNORE_ADAPTER, false},
           {TypeToTypehintVariations::IS_ANY_SHAPE, false},
-          {TypeToTypehintVariations::IGNORE_TYPEDEF, false}});
+          {TypeToTypehintVariations::IGNORE_TYPEDEF, false},
+          {TypeToTypehintVariations::IGNORE_WRAPPER, false},
+          {TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER, false}});
   std::string type_to_param_typehint(
       const t_type* ttype, bool nullable = false);
 
@@ -646,7 +650,8 @@ class t_hack_generator : public t_concat_generator {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           return new std::string(
-              (has_hack_namespace ? "\\" : "") + item.second->get_string());
+              (has_hack_namespace || has_nested_ns ? "\\" : "") +
+              item.second->get_string());
         }
       }
     }
@@ -672,7 +677,8 @@ class t_hack_generator : public t_concat_generator {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           name = new std::string(
-              (has_hack_namespace ? "\\" : "") + item.second->get_string());
+              (has_hack_namespace || has_nested_ns ? "\\" : "") +
+              item.second->get_string());
         } else if (item.first->get_string() == "underlyingName") {
           underlying_name = new std::string(
               hack_name(item.second->get_string(), ttype->program(), true));
@@ -861,7 +867,7 @@ class t_hack_generator : public t_concat_generator {
       }
       return "\\" + ns + "\\" + name;
     }
-    return (!decl && has_hack_namespace ? "\\" : "") +
+    return (!decl && (has_hack_namespace || has_nested_ns) ? "\\" : "") +
         (ns_type == HackThriftNamespaceType::PHP ? ns : "") + name;
   }
 
@@ -878,7 +884,7 @@ class t_hack_generator : public t_concat_generator {
     }
     if (underlying_ns) {
       return "\\" + *underlying_ns + "\\" + *underlying_name;
-    } else if (has_hack_namespace) {
+    } else if (has_hack_namespace || has_nested_ns) {
       return "\\" + *underlying_name;
     } else {
       return *underlying_name;
@@ -1127,6 +1133,8 @@ class t_hack_generator : public t_concat_generator {
   std::string array_keyword_;
 
   bool has_hack_namespace;
+
+  bool has_nested_ns;
 
   std::map<std::string, ThriftShapishStructType> struct_async_type_;
 };
@@ -2833,7 +2841,9 @@ void t_hack_generator::generate_php_struct_shape_spec(
       typehint = type_to_typehint(
           t,
           {{TypeToTypehintVariations::IS_SHAPE, !is_constructor_shape},
-           {TypeToTypehintVariations::IS_ANY_SHAPE, true}});
+           {TypeToTypehintVariations::IS_ANY_SHAPE, true},
+           {TypeToTypehintVariations::IGNORE_WRAPPER, true},
+           {TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER, true}});
     }
 
     std::string dval = "";
@@ -4136,9 +4146,9 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
   if (!adapter.empty()) {
     hack_typehint = adapter + "::THackType";
   } else {
-    hack_typehint = type_to_typehint(field.get_type());
+    hack_typehint = type_to_typehint(
+        field.get_type(), {{TypeToTypehintVariations::IGNORE_WRAPPER, true}});
   }
-  type_to_typehint(field.type().get_type());
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -4975,7 +4985,9 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method(
     indent_up();
 
     if (method_type == ThriftAsyncStructCreationMethod::FROM_MAP) {
-      std::string typehint = type_to_typehint(field.get_type());
+      std::string typehint = type_to_typehint(
+          field.get_type(),
+          {{TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER, true}});
       field_ref = "HH\\FIXME\\UNSAFE_CAST<mixed, " + typehint + ">(" +
           field_ref + ", 'Map value is mixed')";
     }
@@ -6025,33 +6037,71 @@ void t_hack_generator::generate_php_docstring_stream_exceptions(
  */
 std::string t_hack_generator::type_to_typehint(
     const t_type* ttype, std::map<TypeToTypehintVariations, bool> variations) {
-  if (!variations[TypeToTypehintVariations::IGNORE_TYPEDEF] && typedef_) {
-    if (ttype->is_typedef()) {
-      bool is_typedef = true;
-      if (const auto* ttypedef =
-              dynamic_cast<const t_placeholder_typedef*>(ttype)) {
-        is_typedef = ttypedef->get_true_type()->is_typedef();
-      }
-      if (is_typedef) {
-        return hack_name(ttype);
-      }
-    }
+  bool is_typedef = ttype->is_typedef();
+  if (const auto* ttypedef =
+          dynamic_cast<const t_placeholder_typedef*>(ttype)) {
+    is_typedef = ttypedef->get_true_type()->is_typedef();
+    ttype = ttypedef->get_type();
   }
+  bool use_defined_type_const = is_typedef &&
+      !variations[TypeToTypehintVariations::IGNORE_TYPEDEF] && typedef_;
+  bool ignore_wrapper =
+      variations[TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER] ||
+      variations[TypeToTypehintVariations::IGNORE_WRAPPER];
+
+  bool immutable_collections =
+      variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] ||
+      const_collections_;
+  bool nullable = variations[TypeToTypehintVariations::NULLABLE];
+
+  variations[TypeToTypehintVariations::IGNORE_WRAPPER] =
+      variations[TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER];
+  variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
+
+  // Resolve wrapper on typedef
+  auto [wrapper, name, ns] = find_hack_wrapper(ttype, false);
+  if (wrapper) {
+    if (use_defined_type_const || ttype->is_struct()) {
+      // If its a struct or defined typedef, then we can use the name
+      // directly as it refers to the wrapped version
+      auto struct_name = hack_name(ttype);
+      if (ignore_wrapper) {
+        // If wrapper is ignored, then use the underlying_type
+        struct_name = hack_wrapped_type_name(name, ns);
+      }
+      return (nullable ? "?" : "") + struct_name +
+          (variations[TypeToTypehintVariations::IS_SHAPE] && ttype->is_struct()
+               ? "::TShape"
+               : "");
+    } else if (const auto* ttypedef = dynamic_cast<const t_typedef*>(ttype)) {
+      ttype = ttypedef->get_type();
+      // typedef_ option is not enabled or typedef is ignored.
+      // Cannot use the type constant here and
+      // need to use the actual type here
+      auto typehint = type_to_typehint(ttype, variations);
+
+      if (ignore_wrapper) {
+        return typehint;
+      }
+      return (nullable ? "?" : "") + *wrapper + "<" + typehint + ">";
+    }
+  } else if (use_defined_type_const) {
+    // This is a typedef without wrapper, we can use the type constant directly
+    return hack_name(ttype);
+  }
+
   if (!variations[TypeToTypehintVariations::IGNORE_ADAPTER]) {
     // Check the adapter before resolving typedefs.
     if (const auto* adapter = find_hack_adapter(ttype)) {
       return *adapter + "::THackType";
     }
   }
-  variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
+
   if (const auto* ttypedef = dynamic_cast<const t_typedef*>(ttype)) {
     return type_to_typehint(ttypedef->get_type(), variations);
   }
+
   ttype = ttype->get_true_type();
-  bool immutable_collections =
-      variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] ||
-      const_collections_;
-  bool nullable = variations[TypeToTypehintVariations::NULLABLE];
   if (ttype->is_base_type()) {
     switch (((t_base_type*)ttype)->get_base()) {
       case t_base_type::TYPE_VOID:
@@ -6099,7 +6149,6 @@ std::string t_hack_generator::type_to_typehint(
     variations[TypeToTypehintVariations::IGNORE_ADAPTER] = false;
     variations[TypeToTypehintVariations::IMMUTABLE_COLLECTIONS] =
         immutable_collections;
-    variations[TypeToTypehintVariations::IGNORE_TYPEDEF] = false;
     return prefix + "<" + type_to_typehint(tlist->get_elem_type(), variations) +
         ">";
   } else if (const auto* tmap = dynamic_cast<const t_map*>(ttype)) {
