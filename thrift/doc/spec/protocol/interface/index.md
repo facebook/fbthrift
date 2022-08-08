@@ -16,7 +16,7 @@ The client **must** specify the method name in the request as follows:
 
 ### Serialization Details
 
-The parameters to an Interface method **must** be treated as fields of a Thrift struct with an empty name (`""`). The order of the fields **must** be the same as the order of the parameters in the IDL. If the Interface method has no parameters then the struct **must** have no fields. To prepare for sending the request through one of the underlying transport protocols, this unnamed struct **must** be serialized with one of Thrift’s [data protocols](../data.md).
+The parameters to an Interface method **must** be treated as fields of a Thrift struct with an empty name (`""`). The Field IDs **must** be the same as those specified in the IDL. If the Interface method has no parameters then the struct **must** have no fields. To prepare for sending the request through one of the underlying transport protocols, this unnamed struct **must** be serialized with one of Thrift’s [data protocols](../data.md).
 
 For example, this method:
 
@@ -58,7 +58,23 @@ The server **must** serialize the response depending on the response type as des
 
 ### Declared Response and Declared Exception
 
-The Thrift struct used to represent declared responses and [declared exceptions](../../definition/exception.md#exceptions) **must** be a struct with an empty name (`""`). The first field in the struct **must** be for the declared response. If the declared response type is `void` then the field for the declared response **must** be skipped. The Thrift struct **must** also have a field for each declared exception for that Interface. The correct field **must** be filled in by the server and then serialized using one of Thrift’s data protocols.
+The Thrift struct used to represent declared responses and [declared exceptions](../../definition/exception.md#exceptions) **must** be a union with an empty name (`""`). The first field in the union with Field ID of `0` **must** be for the declared response. If the declared response type is `void` then the field for the declared response **must** be skipped. The Thrift struct **must** also have a field for each declared exception for that Interface with Field IDs matching those specified in the IDL. The correct field **must** be filled in by the server and then serialized using one of Thrift’s data protocols.
+
+For example, this method:
+
+```
+i32 foo(1: i32 a, 2: string b) throws (1: MyException e1, 2: OtherException e2);
+```
+
+would use the following union as its response struct:
+
+```
+union <Anonymous> {
+  0: i32 response;
+  1: MyException e1;
+  2: OtherException e2;
+}
+```
 
 If the response is a declared response, the response metadata **must** indicate that it is a declared response.
 
