@@ -363,7 +363,11 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
   checkOps(
       patch,
       Value::Type::objectValue,
-      {PatchOp::Assign, PatchOp::Clear, PatchOp::Patch});
+      {PatchOp::Assign,
+       PatchOp::Clear,
+       PatchOp::Patch,
+       PatchOp::EnsureStruct,
+       PatchOp::PatchAfter});
   if (applyAssign<type::struct_c>(patch, value)) {
     return; // Ignore all other ops.
   }
@@ -374,7 +378,7 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
     }
   }
 
-  if (auto* patchFields = findOp(patch, PatchOp::Patch)) {
+  auto applyFieldPatch = [&](auto patchFields) {
     auto& valueMembers = value.members().ensure();
     for (const auto& [id, field_value] :
          *patchFields->objectValue_ref()->members()) {
@@ -384,6 +388,24 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
         applyPatch(*field_value.objectValue_ref(), fieldIt->second);
       }
     }
+  };
+
+  if (auto* patchFields = findOp(patch, PatchOp::Patch)) {
+    applyFieldPatch(patchFields);
+  }
+
+  if (auto* ensure = findOp(patch, PatchOp::EnsureStruct)) {
+    for (const auto& [id, val] : *ensure->mapValue_ref()) {
+      if (id.if_i16()) {
+        value.members()->insert({*id.i16Value_ref(), val});
+      } else {
+        throw std::runtime_error("EnsureStruct should have i16 typed keys");
+      }
+    }
+  }
+
+  if (auto* patchFields = findOp(patch, PatchOp::PatchAfter)) {
+    applyFieldPatch(patchFields);
   }
 }
 

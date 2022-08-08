@@ -652,9 +652,37 @@ TEST_F(PatchTest, Struct) {
   applyFieldPatchTest(
       op::PatchOp::Assign, patchValue.objectValue_ref()->members().ensure()[1]);
 
-  auto expected = asValueStruct<type::list<type::i32_t>>(
-      std::vector<int>{1, 2, 3, 3, 2, 1});
-  applyFieldPatchTest(op::PatchOp::Put, expected);
+  applyFieldPatchTest(
+      op::PatchOp::Put,
+      asValueStruct<type::list<type::i32_t>>(
+          std::vector<int>{1, 2, 3, 3, 2, 1}));
+
+  // Ensure and PatchAfter
+  test::testset::struct_with<type::list<type::i32_t>> source;
+  auto sourceValue = asValueStruct<type::struct_c>(source);
+
+  Value ensureValuePatch;
+  ensureValuePatch.mapValue_ref().ensure()[asValueStruct<type::i16_t>(1)] =
+      asValueStruct<type::list<type::i32_t>>(std::vector<int32_t>{});
+
+  Value fieldPatchValue;
+  fieldPatchValue.objectValue_ref() = makePatch(
+      op::PatchOp::Put,
+      asValueStruct<type::list<type::i32_t>>(std::vector<int32_t>{42}));
+  Value fieldPatch;
+  fieldPatch.objectValue_ref().ensure().members().ensure()[1] = fieldPatchValue;
+
+  EXPECT_EQ(
+      asValueStruct<type::list<type::i32_t>>(std::vector<int32_t>{42}),
+      applyContainerPatch(
+          patchAddOperation(
+              makePatch(op::PatchOp::PatchAfter, fieldPatch),
+              op::PatchOp::EnsureStruct,
+              ensureValuePatch),
+          sourceValue)
+          .objectValue_ref()
+          ->members()
+          .ensure()[1]);
 }
 
 } // namespace
