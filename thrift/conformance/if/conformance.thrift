@@ -22,8 +22,6 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 
 include "thrift/conformance/if/serialization.thrift"
-include "thrift/conformance/if/test_suite.thrift"
-include "thrift/conformance/if/rpc.thrift"
 
 // The conformance test service.
 service ConformanceService {
@@ -31,15 +29,4 @@ service ConformanceService {
   serialization.RoundTripResponse roundTrip(
     1: serialization.RoundTripRequest request,
   );
-
-  // =================== Conformance framework - Only for Server Tests ===================
-  void sendTestCase(1: test_suite.TestCase testCase);
-  rpc.ServerTestResult getTestResult();
-
-  // =================== Conformance framework - Only for Client Tests ===================
-  test_suite.TestCase getTestCase();
-  void sendTestResult(1: rpc.ClientTestResult result);
-
-  // =================== Request-Response ===================
-  rpc.Response requestResponseBasic(1: rpc.Request req);
 }

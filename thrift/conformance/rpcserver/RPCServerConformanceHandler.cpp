@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#pragma once
-
-#include <thrift/conformance/if/gen-cpp2/ConformanceService.h>
+#include <thrift/conformance/rpcserver/RPCServerConformanceHandler.h>
 
 namespace apache::thrift::conformance {
 
-class ConformanceHandler
-    : public apache::thrift::ServiceHandler<ConformanceService> {
- public:
-  void roundTrip(
-      RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
-};
+void RPCServerConformanceHandler::requestResponseBasic(
+    Response& res, std::unique_ptr<Request> req) {
+  result_.requestResponseBasic_ref().emplace().request() = *req;
+  res = *testCase_->serverInstruction_ref()
+             ->requestResponseBasic_ref()
+             ->response();
+}
 
 } // namespace apache::thrift::conformance

@@ -69,3 +69,16 @@ struct RequestResponseBasicClientInstruction {
 struct RequestResponseBasicServerInstruction {
   1: Response response;
 }
+
+service RPCConformanceService {
+  // =================== Conformance framework - Only for Server Tests ===================
+  void sendTestCase(1: RpcTestCase testCase);
+  ServerTestResult getTestResult();
+
+  // =================== Conformance framework - Only for Client Tests ===================
+  RpcTestCase getTestCase();
+  void sendTestResult(1: ClientTestResult result);
+
+  // =================== Request-Response ===================
+  Response requestResponseBasic(1: Request req);
+}

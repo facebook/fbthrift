@@ -16,15 +16,25 @@
 
 #pragma once
 
-#include <thrift/conformance/if/gen-cpp2/ConformanceService.h>
+#include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 
 namespace apache::thrift::conformance {
 
-class ConformanceHandler
-    : public apache::thrift::ServiceHandler<ConformanceService> {
+class RPCServerConformanceHandler
+    : public apache::thrift::ServiceHandler<RPCConformanceService> {
  public:
-  void roundTrip(
-      RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
+  void requestResponseBasic(
+      Response& res, std::unique_ptr<Request> req) override;
+
+  void sendTestCase(std::unique_ptr<RpcTestCase> req) override {
+    testCase_ = std::move(req);
+  }
+
+  void getTestResult(ServerTestResult& res) override { res = result_; }
+
+ private:
+  std::unique_ptr<RpcTestCase> testCase_;
+  ServerTestResult result_;
 };
 
 } // namespace apache::thrift::conformance

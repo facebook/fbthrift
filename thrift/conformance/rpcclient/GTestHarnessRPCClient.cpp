@@ -23,18 +23,18 @@
 #include <folly/Subprocess.h>
 #include <folly/futures/Future.h>
 #include <thrift/conformance/Utils.h>
-#include <thrift/conformance/if/gen-cpp2/ConformanceService.h>
+#include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 namespace apache::thrift::conformance {
 
 class ConformanceVerificationServer
-    : public apache::thrift::ServiceHandler<ConformanceService> {
+    : public apache::thrift::ServiceHandler<RPCConformanceService> {
  public:
-  explicit ConformanceVerificationServer(const TestCase& testCase)
+  explicit ConformanceVerificationServer(const RpcTestCase& testCase)
       : testCase_(testCase) {}
 
-  void getTestCase(TestCase& testCase) override {
+  void getTestCase(RpcTestCase& testCase) override {
     testCase = testCase_;
     getTestReceivedPromise_.setValue();
   }
@@ -45,10 +45,8 @@ class ConformanceVerificationServer
 
   void requestResponseBasic(
       Response& res, std::unique_ptr<Request> req) override {
-    res = *testCase_.rpc_ref()
-               ->serverInstruction()
-               ->requestResponseBasic_ref()
-               ->response();
+    res =
+        *testCase_.serverInstruction()->requestResponseBasic_ref()->response();
     serverResult_.requestResponseBasic_ref().emplace().request() = *req;
   }
 
@@ -63,7 +61,7 @@ class ConformanceVerificationServer
   const ServerTestResult& serverResult() { return serverResult_; }
 
  private:
-  const TestCase& testCase_;
+  const RpcTestCase& testCase_;
   folly::Promise<folly::Unit> getTestReceivedPromise_;
   folly::Promise<ClientTestResult> clientResultPromise_;
   ServerTestResult serverResult_;
@@ -75,7 +73,8 @@ class RPCClientConformanceTest : public testing::Test {
       std::string_view clientCmd, const TestCase* testCase, bool conforming)
       : testCase_(*testCase),
         conforming_(conforming),
-        handler_(std::make_shared<ConformanceVerificationServer>(testCase_)),
+        handler_(std::make_shared<ConformanceVerificationServer>(
+            *testCase_.rpc_ref())),
         server_(handler_) {
     clientProcess_ = folly::Subprocess(std::vector<std::string>{
         std::string(clientCmd),

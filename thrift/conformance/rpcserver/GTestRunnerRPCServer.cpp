@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#pragma once
-
-#include <thrift/conformance/if/gen-cpp2/ConformanceService.h>
+#include <thrift/conformance/GTestHarness.h>
+#include <thrift/conformance/Utils.h>
+#include <thrift/conformance/if/gen-cpp2/RPCConformanceServiceAsyncClient.h>
 
 namespace apache::thrift::conformance {
 
-class ConformanceHandler
-    : public apache::thrift::ServiceHandler<ConformanceService> {
- public:
-  void roundTrip(
-      RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
-};
+// Register the tests with gtest.
+THRIFT_CONFORMANCE_TEST(
+    getSuites(),
+    getServers<RPCConformanceServiceAsyncClient>(),
+    getNonconforming());
 
 } // namespace apache::thrift::conformance

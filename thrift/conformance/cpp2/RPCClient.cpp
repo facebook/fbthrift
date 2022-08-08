@@ -21,7 +21,7 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBaseManager.h>
 
-#include <thrift/conformance/if/gen-cpp2/ConformanceService.h>
+#include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
@@ -29,8 +29,8 @@ DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
 
-std::unique_ptr<Client<ConformanceService>> createClient() {
-  return std::make_unique<Client<ConformanceService>>(
+std::unique_ptr<Client<RPCConformanceService>> createClient() {
+  return std::make_unique<Client<RPCConformanceService>>(
       RocketClientChannel::newChannel(
           folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
               folly::EventBaseManager::get()->getEventBase(),
@@ -49,10 +49,10 @@ RequestResponseBasicClientTestResult runRequestResponseTest(
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
-  TestCase testCase;
+  RpcTestCase testCase;
   auto client = createClient();
   client->sync_getTestCase(testCase);
-  auto& clientInstruction = *testCase.rpc_ref()->clientInstruction_ref();
+  auto& clientInstruction = *testCase.clientInstruction_ref();
 
   ClientTestResult result;
   switch (clientInstruction.getType()) {
