@@ -23,7 +23,7 @@ namespace apache::thrift::conformance {
 // Register the tests with gtest.
 THRIFT_CONFORMANCE_TEST(
     getSuites(),
-    getServers<RPCConformanceServiceAsyncClient>(),
+    getServers<Client<RPCConformanceService>>(),
     getNonconforming());
 
 } // namespace apache::thrift::conformance

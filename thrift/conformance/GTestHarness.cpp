@@ -23,7 +23,7 @@
 namespace apache::thrift::conformance {
 
 testing::AssertionResult RunRoundTripTest(
-    ConformanceServiceAsyncClient& client, const RoundTripTestCase& roundTrip) {
+    Client<ConformanceService>& client, const RoundTripTestCase& roundTrip) {
   RoundTripResponse res;
   try {
     client.sync_roundTrip(res, *roundTrip.request());
@@ -57,7 +57,7 @@ testing::AssertionResult RunRoundTripTest(
 }
 
 RequestResponseBasicClientTestResult RunRequestResponseBasic(
-    RPCConformanceServiceAsyncClient& client,
+    Client<RPCConformanceService>& client,
     const RequestResponseBasicClientInstruction& instruction) {
   RequestResponseBasicClientTestResult result;
   client.sync_requestResponseBasic(
@@ -66,7 +66,7 @@ RequestResponseBasicClientTestResult RunRequestResponseBasic(
 }
 
 ClientTestResult RunClientSteps(
-    RPCConformanceServiceAsyncClient& client,
+    Client<RPCConformanceService>& client,
     const ClientInstruction& clientInstruction) {
   ClientTestResult result;
   switch (clientInstruction.getType()) {
@@ -81,7 +81,7 @@ ClientTestResult RunClientSteps(
 }
 
 testing::AssertionResult RunRpcTest(
-    RPCConformanceServiceAsyncClient& client, const RpcTestCase& rpc) {
+    Client<RPCConformanceService>& client, const RpcTestCase& rpc) {
   client.sync_sendTestCase(rpc);
   auto actualClientResult = RunClientSteps(client, *rpc.clientInstruction());
   if (actualClientResult != *rpc.clientTestResult()) {

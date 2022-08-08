@@ -150,10 +150,10 @@ client_fn_map<Client> getServers() {
 }
 
 testing::AssertionResult RunRoundTripTest(
-    ConformanceServiceAsyncClient& client, const RoundTripTestCase& roundTrip);
+    Client<ConformanceService>& client, const RoundTripTestCase& roundTrip);
 
 testing::AssertionResult RunRpcTest(
-    RPCConformanceServiceAsyncClient& client, const RpcTestCase& rpc);
+    Client<RPCConformanceService>& client, const RpcTestCase& rpc);
 
 template <typename Client>
 class ConformanceTest : public testing::Test {
@@ -202,12 +202,16 @@ template <typename Client>
 testing::AssertionResult RunTestCase(Client& client, const TestCase& testCase) {
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::roundTrip:
-      if constexpr (std::is_same_v<Client, ConformanceServiceAsyncClient>) {
+      if constexpr (std::is_same_v<
+                        Client,
+                        apache::thrift::Client<ConformanceService>>) {
         return RunRoundTripTest(client, *testCase.roundTrip_ref());
       }
       return testing::AssertionFailure() << "Invalid test client.";
     case TestCaseUnion::Type::rpc:
-      if constexpr (std::is_same_v<Client, RPCConformanceServiceAsyncClient>) {
+      if constexpr (std::is_same_v<
+                        Client,
+                        apache::thrift::Client<RPCConformanceService>>) {
         return RunRpcTest(client, *testCase.rpc_ref());
       }
       return testing::AssertionFailure() << "Invalid test client.";
