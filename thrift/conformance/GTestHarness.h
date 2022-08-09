@@ -89,10 +89,12 @@ std::unique_ptr<Client> createClient(
 template <typename Client>
 class ClientAndServer {
  public:
-  explicit ClientAndServer(std::string cmd)
+  explicit ClientAndServer(
+      std::string cmd, ChannelType type = ChannelType::Header)
       : server_(
             std::vector<std::string>{std::move(cmd)},
-            folly::Subprocess::Options().pipeStdout()) {
+            folly::Subprocess::Options().pipeStdout()),
+        channelType_(type) {
     LOG(INFO) << "Starting binary: " << cmd;
     std::string port;
     server_.communicate(
@@ -103,7 +105,7 @@ class ClientAndServer {
             }),
         [](int, int) { return true; });
     LOG(INFO) << "Using port: " << port;
-    client_ = createClient<Client>(&eb_, folly::to<int>(port));
+    client_ = createClient<Client>(&eb_, folly::to<int>(port), channelType_);
   }
 
   ~ClientAndServer() {
@@ -118,19 +120,21 @@ class ClientAndServer {
   folly::EventBase eb_;
   folly::Subprocess server_;
   std::unique_ptr<Client> client_;
+  ChannelType channelType_;
 };
 
 // Creates a map from name to client provider, using lazily initalized
 // ClientAndServers.
 template <typename Client>
-client_fn_map<Client> getServers() {
+client_fn_map<Client> getServers(ChannelType type = ChannelType::Header) {
   auto cmds = parseCmds(getEnvOrThrow("THRIFT_CONFORMANCE_SERVER_BINARIES"));
   client_fn_map<Client> result;
   for (const auto& entry : cmds) {
     result.emplace(
         entry.first,
         [name = std::string(entry.first),
-         cmd = std::string(entry.second)]() -> Client& {
+         cmd = std::string(entry.second),
+         type]() -> Client& {
           static folly::Synchronized<std::map<
               std::string_view,
               std::unique_ptr<ClientAndServer<Client>>>>
@@ -141,7 +145,9 @@ client_fn_map<Client> getServers() {
           auto itr = lockedClients->find(name);
           if (itr == lockedClients->end()) {
             itr = lockedClients->emplace_hint(
-                itr, name, std::make_unique<ClientAndServer<Client>>(cmd));
+                itr,
+                name,
+                std::make_unique<ClientAndServer<Client>>(cmd, type));
           }
           return itr->second->getClient();
         });
