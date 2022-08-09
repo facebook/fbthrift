@@ -22,7 +22,7 @@
 
 namespace apache::thrift::conformance {
 
-testing::AssertionResult RunRoundTripTest(
+testing::AssertionResult runRoundTripTest(
     Client<ConformanceService>& client, const RoundTripTestCase& roundTrip) {
   RoundTripResponse res;
   try {
@@ -56,7 +56,7 @@ testing::AssertionResult RunRoundTripTest(
   return testing::AssertionSuccess();
 }
 
-RequestResponseBasicClientTestResult RunRequestResponseBasic(
+RequestResponseBasicClientTestResult runRequestResponseBasic(
     Client<RPCConformanceService>& client,
     const RequestResponseBasicClientInstruction& instruction) {
   RequestResponseBasicClientTestResult result;
@@ -66,7 +66,7 @@ RequestResponseBasicClientTestResult RunRequestResponseBasic(
 }
 
 RequestResponseDeclaredExceptionClientTestResult
-RunRequestResponseDeclaredException(
+runRequestResponseDeclaredException(
     RPCConformanceServiceAsyncClient& client,
     const RequestResponseDeclaredExceptionClientInstruction& instruction) {
   RequestResponseDeclaredExceptionClientTestResult result;
@@ -78,18 +78,18 @@ RunRequestResponseDeclaredException(
   return result;
 }
 
-ClientTestResult RunClientSteps(
+ClientTestResult runClientSteps(
     Client<RPCConformanceService>& client,
     const ClientInstruction& clientInstruction) {
   ClientTestResult result;
   switch (clientInstruction.getType()) {
     case ClientInstruction::Type::requestResponseBasic:
-      result.set_requestResponseBasic(RunRequestResponseBasic(
+      result.set_requestResponseBasic(runRequestResponseBasic(
           client, *clientInstruction.requestResponseBasic_ref()));
       break;
     case ClientInstruction::Type::requestResponseDeclaredException:
       result.set_requestResponseDeclaredException(
-          RunRequestResponseDeclaredException(
+          runRequestResponseDeclaredException(
               client,
               *clientInstruction.requestResponseDeclaredException_ref()));
       break;
@@ -99,10 +99,10 @@ ClientTestResult RunClientSteps(
   return result;
 }
 
-testing::AssertionResult RunRpcTest(
+testing::AssertionResult runRpcTest(
     Client<RPCConformanceService>& client, const RpcTestCase& rpc) {
   client.sync_sendTestCase(rpc);
-  auto actualClientResult = RunClientSteps(client, *rpc.clientInstruction());
+  auto actualClientResult = runClientSteps(client, *rpc.clientInstruction());
   if (actualClientResult != *rpc.clientTestResult()) {
     return testing::AssertionFailure();
   }

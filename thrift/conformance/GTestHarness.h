@@ -149,10 +149,10 @@ client_fn_map<Client> getServers() {
   return result;
 }
 
-testing::AssertionResult RunRoundTripTest(
+testing::AssertionResult runRoundTripTest(
     Client<ConformanceService>& client, const RoundTripTestCase& roundTrip);
 
-testing::AssertionResult RunRpcTest(
+testing::AssertionResult runRpcTest(
     Client<RPCConformanceService>& client, const RpcTestCase& rpc);
 
 template <typename Client>
@@ -172,7 +172,7 @@ class ConformanceTest : public testing::Test {
 
  protected:
   void TestBody() override {
-    testing::AssertionResult conforming = RunTestCase(*client_, testCase_);
+    testing::AssertionResult conforming = runTestCase(*client_, testCase_);
     if (conforming_) {
       EXPECT_TRUE(conforming) << "For more detail see:"
                               << std::endl
@@ -199,20 +199,20 @@ class ConformanceTest : public testing::Test {
 
 // Runs a conformance test case against the given client.
 template <typename Client>
-testing::AssertionResult RunTestCase(Client& client, const TestCase& testCase) {
+testing::AssertionResult runTestCase(Client& client, const TestCase& testCase) {
   switch (testCase.test()->getType()) {
     case TestCaseUnion::Type::roundTrip:
       if constexpr (std::is_same_v<
                         Client,
                         apache::thrift::Client<ConformanceService>>) {
-        return RunRoundTripTest(client, *testCase.roundTrip_ref());
+        return runRoundTripTest(client, *testCase.roundTrip_ref());
       }
       return testing::AssertionFailure() << "Invalid test client.";
     case TestCaseUnion::Type::rpc:
       if constexpr (std::is_same_v<
                         Client,
                         apache::thrift::Client<RPCConformanceService>>) {
-        return RunRpcTest(client, *testCase.rpc_ref());
+        return runRpcTest(client, *testCase.rpc_ref());
       }
       return testing::AssertionFailure() << "Invalid test client.";
     default:
@@ -223,7 +223,7 @@ testing::AssertionResult RunTestCase(Client& client, const TestCase& testCase) {
 
 // Registers a test suite with gtest.
 template <typename Client>
-void RegisterTests(
+void registerTests(
     std::string_view category,
     const TestSuite* suite,
     const std::set<std::string>& nonconforming,
@@ -236,7 +236,7 @@ void RegisterTests(
           fmt::format("{}/{}/{}", category, *suite->name(), *testCase.name());
       std::string fullName = fmt::format("{}.{}", suiteName, *test.name());
       bool conforming = nonconforming.find(fullName) == nonconforming.end();
-      RegisterTest(
+      registerTest(
           suiteName.c_str(),
           test.name()->c_str(),
           nullptr,
@@ -265,7 +265,7 @@ class ConformanceTestRegistration {
       : suites_(std::move(suites)) {
     for (const auto& entry : clientFns) {
       for (const auto& suite : suites_) {
-        RegisterTests<Client>(
+        registerTests<Client>(
             entry.first, &suite, nonconforming, entry.second, file, line);
       }
     }

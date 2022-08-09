@@ -61,7 +61,7 @@ std::set<std::string> getNonconforming();
 //
 // TODO(afuller): Delete once gtest is updated.
 template <typename Factory>
-inline testing::TestInfo* RegisterTest(
+inline testing::TestInfo* registerTest(
     const char* test_suite_name,
     const char* test_name,
     const char* type_param,

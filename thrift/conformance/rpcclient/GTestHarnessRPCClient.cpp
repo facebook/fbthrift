@@ -140,7 +140,7 @@ class RPCClientConformanceTest : public testing::Test {
   folly::Subprocess clientProcess_;
 };
 
-void RegisterTests(
+void registerTests(
     std::string_view category,
     const TestSuite* suite,
     const std::set<std::string>& nonconforming,
@@ -153,7 +153,7 @@ void RegisterTests(
           fmt::format("{}/{}/{}", category, *suite->name(), *testCase.name());
       std::string fullName = fmt::format("{}.{}", suiteName, *test.name());
       bool conforming = nonconforming.find(fullName) == nonconforming.end();
-      RegisterTest(
+      registerTest(
           suiteName.c_str(),
           test.name()->c_str(),
           nullptr,

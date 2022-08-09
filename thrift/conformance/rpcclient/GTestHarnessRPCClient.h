@@ -32,7 +32,7 @@
 namespace apache::thrift::conformance {
 
 // Registers a test suite with gtest.
-void RegisterTests(
+void registerTests(
     std::string_view name,
     const TestSuite* suite,
     const std::set<std::string>& nonconforming,
@@ -53,7 +53,7 @@ class RPCClientConformanceTestRegistration {
       : suites_(std::move(suites)) {
     for (const auto& entry : clientCmds) {
       for (const auto& suite : suites_) {
-        RegisterTests(
+        registerTests(
             entry.first, &suite, nonconforming, entry.second, file, line);
       }
     }
