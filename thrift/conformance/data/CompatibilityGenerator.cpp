@@ -80,6 +80,47 @@ template <class TT>
   return testCase;
 }
 
+template <class TT>
+[[nodiscard]] TestCase addFieldWithCustomDefaultTestCase(
+    const Protocol& protocol) {
+  const typename struct_ByFieldType<TT, mod_set<FieldModifier::CustomDefault>>::
+      type def;
+
+  RoundTripTestCase roundTrip;
+  roundTrip.request()->value() = AnyRegistry::generated().store(def, protocol);
+  roundTrip.request()->value()->data() = *serialize({}, protocol);
+  roundTrip.expectedResponse().emplace().value() =
+      AnyRegistry::generated().store(def, protocol);
+
+  TestCase testCase;
+  testCase.name() =
+      fmt::format("testset.{}/AddFieldWithCustomDefault", type::getName<TT>());
+  testCase.test()->roundTrip_ref() = std::move(roundTrip);
+  return testCase;
+}
+
+template <class TT>
+[[nodiscard]] TestCase addOptionalFieldWithCustomDefaultTestCase(
+    const Protocol& protocol) {
+  const typename struct_ByFieldType<
+      TT,
+      mod_set<FieldModifier::Optional, FieldModifier::CustomDefault>>::type def;
+
+  RoundTripTestCase roundTrip;
+  roundTrip.request()->value() = AnyRegistry::generated().store(def, protocol);
+  roundTrip.request()->value()->data() = *serialize({}, protocol);
+  roundTrip.expectedResponse().emplace().value() =
+      AnyRegistry::generated().store(def, protocol);
+  roundTrip.expectedResponse().emplace().value()->data() =
+      *serialize({}, protocol);
+
+  TestCase testCase;
+  testCase.name() = fmt::format(
+      "testset.{}/AddOptionalFieldWithCustomDefault", type::getName<TT>());
+  testCase.test()->roundTrip_ref() = std::move(roundTrip);
+  return testCase;
+}
+
 template <class T>
 [[nodiscard]] Object toObject(const T& t) {
   Value v;
@@ -391,6 +432,8 @@ Test createCompatibilityTest(const Protocol& protocol) {
             mod_set<FieldModifier::Optional>>(protocol));
 
   addToTest(changeEnumValueTestCases(protocol));
+  addToTest({addFieldWithCustomDefaultTestCase<TT>(protocol)});
+  addToTest({addOptionalFieldWithCustomDefaultTestCase<TT>(protocol)});
 
   return test;
 }
