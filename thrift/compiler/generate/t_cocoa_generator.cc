@@ -275,7 +275,7 @@ void t_cocoa_generator::init_generator() {
   cocoa_prefix_ = program_->get_namespace("cocoa");
 
   // we have a .h header file...
-  std::string f_header_name = program_name_ + ".h";
+  std::string f_header_name = get_program()->name() + ".h";
   std::string f_header_fullname = get_out_dir() + f_header_name;
   f_header_.open(f_header_fullname.c_str());
 
@@ -288,7 +288,7 @@ void t_cocoa_generator::init_generator() {
   }
 
   // ...and a .m implementation file
-  std::string f_impl_name = get_out_dir() + program_name_ + ".m";
+  std::string f_impl_name = get_out_dir() + get_program()->name() + ".m";
   f_impl_.open(f_impl_name.c_str());
 
   f_impl_ << autogen_comment() << std::endl;
@@ -513,7 +513,7 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
 
   std::ostringstream const_interface;
   std::string constants_class_name =
-      cocoa_prefix_ + program_name_ + "Constants";
+      cocoa_prefix_ + get_program()->name() + "Constants";
 
   const_interface << "@interface " << constants_class_name << " : "
                   << kStructInheritanceRootObjectName << " ";

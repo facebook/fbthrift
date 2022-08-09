@@ -41,9 +41,7 @@ t_generation_context::t_generation_context(
 }
 
 t_generator::t_generator(t_program* program, t_generation_context context)
-    : program_(program), context_(std::move(context)) {
-  program_name_ = get_program_name(program_);
-}
+    : program_(program), context_(std::move(context)) {}
 
 generator_factory::generator_factory(
     std::string name, std::string long_name, std::string documentation)

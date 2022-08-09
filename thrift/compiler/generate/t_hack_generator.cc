@@ -1432,19 +1432,21 @@ void t_hack_generator::generate_instance_key(std::ofstream& out) {
  * @param tprogram The program to generate
  */
 void t_hack_generator::init_generator() {
-  // Make output directory
+  // Make output directory.
   boost::filesystem::create_directory(get_out_dir());
-  init_codegen_file(f_types_, get_out_dir() + program_name_ + "_types.php");
+  init_codegen_file(
+      f_types_, get_out_dir() + get_program()->name() + "_types.php");
 
-  // Print header
+  // Print header.
   if (!program_->consts().empty()) {
     init_codegen_file(
-        f_consts_, get_out_dir() + program_name_ + "_constants.php");
+        f_consts_, get_out_dir() + get_program()->name() + "_constants.php");
     constants_values_.clear();
     auto [ns, ns_type] = get_namespace(program_);
     f_consts_ << "class "
-              << (ns_type != HackThriftNamespaceType::PHP ? program_name_ + "_"
-                                                          : ns)
+              << (ns_type != HackThriftNamespaceType::PHP
+                      ? get_program()->name() + "_"
+                      : ns)
               << "CONSTANTS implements \\IThriftConstants {\n";
   }
 
@@ -1456,7 +1458,7 @@ void t_hack_generator::init_generator() {
         if (!codegen_file_open) {
           init_codegen_file(
               f_adapted_types_,
-              get_out_dir() + program_name_ + "_adapted_types.php",
+              get_out_dir() + get_program()->name() + "_adapted_types.php",
               true);
           codegen_file_open = true;
         }
