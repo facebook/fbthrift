@@ -166,6 +166,50 @@ Test createRequestResponseNoArgVoidResponse() {
   return ret;
 }
 
+Test createRequestResponseFragmentationTest() {
+  Test ret;
+  ret.name() = "RequestResponseFragmentationTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseFragmentation/Success";
+
+  const uint32_t maxFrameSize = (1 << 24) - 1;
+  const std::string largeData = std::string(maxFrameSize * 2, 'a');
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = largeData;
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = largeData;
+
+  rpcTest.serverInstruction_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = largeData;
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .requestResponseBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = largeData;
+
+  return ret;
+}
+
 } // namespace
 
 TestSuite createRPCTestSuite() {
@@ -175,6 +219,7 @@ TestSuite createRPCTestSuite() {
   suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseUndeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseNoArgVoidResponse());
+  suite.tests()->push_back(createRequestResponseFragmentationTest());
   return suite;
 }
 
