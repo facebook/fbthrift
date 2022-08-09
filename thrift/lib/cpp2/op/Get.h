@@ -101,10 +101,10 @@ void for_each_ident(F&& f) {
 // Gets the thrift field name, for example:
 //
 //   // Returns the thrift field name associated with field 7 in MyStruct.
-//   get_field_name<MyStruct, field_id<7>>
+//   get_name<MyStruct, field_id<7>>
 //
 template <typename S, class Id>
-FOLLY_INLINE_VARIABLE const folly::StringPiece get_field_name =
+FOLLY_INLINE_VARIABLE const folly::StringPiece get_name =
     ::apache::thrift::detail::st::struct_private_access::
         __fbthrift_get_field_name<S, get_ordinal<S, Id>>();
 
