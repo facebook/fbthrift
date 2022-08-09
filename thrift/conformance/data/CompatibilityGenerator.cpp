@@ -43,8 +43,10 @@
 
 // TODO: use FieldQualifier
 using apache::thrift::test::testset::FieldModifier;
+using apache::thrift::test::testset::detail::exception_ByFieldType;
 using apache::thrift::test::testset::detail::mod_set;
 using apache::thrift::test::testset::detail::struct_ByFieldType;
+using apache::thrift::test::testset::detail::union_ByFieldType;
 namespace mp11 = boost::mp11;
 
 namespace apache::thrift::conformance::data {
@@ -380,6 +382,64 @@ template <class Old, class New>
   return ret;
 }
 
+template <class TT>
+[[nodiscard]] std::vector<TestCase> changeStructType(const Protocol& protocol) {
+  std::vector<TestCase> ret;
+  for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
+    typename struct_ByFieldType<TT, mod_set<>>::type s;
+    typename union_ByFieldType<TT, mod_set<>>::type u;
+    typename exception_ByFieldType<TT, mod_set<>>::type e;
+
+    s.field_1() = value.value;
+    u.field_1_ref() = value.value;
+    e.field_1() = value.value;
+
+    auto get_name = [&](const auto& i) -> std::string_view {
+      if constexpr (std::is_same_v<
+                        folly::remove_cvref_t<decltype(i)>,
+                        folly::remove_cvref_t<decltype(s)>>) {
+        return "Struct";
+      } else if constexpr (std::is_same_v<
+                               folly::remove_cvref_t<decltype(i)>,
+                               folly::remove_cvref_t<decltype(u)>>) {
+        return "Union";
+      } else if constexpr (std::is_same_v<
+                               folly::remove_cvref_t<decltype(i)>,
+                               folly::remove_cvref_t<decltype(e)>>) {
+        return "Exception";
+      } else {
+        static_assert(sizeof(i) == 0);
+      }
+    };
+
+    folly::for_each(std::tuple(s, u, e), [&](auto old_data) {
+      folly::for_each(std::tuple(s, u, e), [&](auto new_data) {
+        if constexpr (std::is_same_v<decltype(old_data), decltype(new_data)>) {
+          return;
+        }
+
+        RoundTripTestCase roundTrip;
+        roundTrip.request()->value() =
+            AnyRegistry::generated().store(new_data, protocol);
+        roundTrip.request()->value()->data() =
+            *serializeThriftStruct(old_data, protocol);
+        roundTrip.expectedResponse().emplace().value() =
+            AnyRegistry::generated().store(new_data, protocol);
+        TestCase testCase;
+        testCase.name() = fmt::format(
+            "testset.{}/{}To{}/{}",
+            type::getName<TT>(),
+            get_name(old_data),
+            get_name(new_data),
+            value.name);
+        testCase.test()->roundTrip_ref() = std::move(roundTrip);
+        ret.push_back(std::move(testCase));
+      });
+    });
+  }
+  return ret;
+}
+
 template <typename TT>
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
@@ -434,6 +494,7 @@ Test createCompatibilityTest(const Protocol& protocol) {
   addToTest(changeEnumValueTestCases(protocol));
   addToTest({addFieldWithCustomDefaultTestCase<TT>(protocol)});
   addToTest({addOptionalFieldWithCustomDefaultTestCase<TT>(protocol)});
+  addToTest(changeStructType<TT>(protocol));
 
   return test;
 }
