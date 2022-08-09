@@ -22,6 +22,7 @@
 #include <fmt/core.h>
 #include <folly/Subprocess.h>
 #include <folly/futures/Future.h>
+#include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/Utils.h>
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -126,7 +127,7 @@ class RPCClientConformanceTest : public testing::Test {
     }
 
     auto& expectedClientResult = *testCase_.rpc_ref()->clientTestResult();
-    if (*actualClientResult != expectedClientResult) {
+    if (!equal(*actualClientResult, expectedClientResult)) {
       EXPECT_FALSE(conforming_);
     }
 

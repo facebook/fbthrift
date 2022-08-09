@@ -18,6 +18,7 @@
 
 #include <stdexcept>
 
+#include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
@@ -138,7 +139,7 @@ testing::AssertionResult runRpcTest(
     Client<RPCConformanceService>& client, const RpcTestCase& rpc) {
   client.sync_sendTestCase(rpc);
   auto actualClientResult = runClientSteps(client, *rpc.clientInstruction());
-  if (actualClientResult != *rpc.clientTestResult()) {
+  if (!equal(actualClientResult, *rpc.clientTestResult())) {
     return testing::AssertionFailure();
   }
 

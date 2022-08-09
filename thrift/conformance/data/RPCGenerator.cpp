@@ -115,14 +115,11 @@ Test createRequestResponseUndeclaredExceptionTest() {
       .request()
       .emplace()
       .data() = "hello";
-  // TODO(akramam) This will become problematic in server tests because servers
-  // in other languages will not prepend "std::runtime_error" to the exception
-  // message.
   rpcTest.clientTestResult_ref()
       .emplace()
       .requestResponseUndeclaredException_ref()
       .emplace()
-      .exceptionMessage() = "std::runtime_error: my undeclared exception";
+      .exceptionMessage() = "my undeclared exception";
 
   rpcTest.serverInstruction_ref()
       .emplace()
