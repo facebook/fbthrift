@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,4 +20,7 @@ struct foo {
   1: float bar;
   2: float baz = 1;
   3: float baz1 = 12.345;
+  4: double test_double = 0.17836774747774789;
 }
+
+const double test_double = 0.17836774747774789;

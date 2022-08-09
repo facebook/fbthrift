@@ -18,7 +18,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -289,16 +288,10 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
       {"container?", type == cv::CV_MAP || type == cv::CV_LIST},
   };
 
-  const auto format_double_string = [](const double d) {
-    std::ostringstream oss;
-    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
-    return oss.str();
-  };
-
   switch (type) {
     case cv::CV_DOUBLE:
-      result.emplace("value", format_double_string(value.get_double()));
-      result.emplace("double_value", format_double_string(value.get_double()));
+      result.emplace("value", fmt::format("{}", value.get_double()));
+      result.emplace("double_value", fmt::format("{}", value.get_double()));
       result.emplace("nonzero?", value.get_double() != 0.0);
       break;
     case cv::CV_BOOL:

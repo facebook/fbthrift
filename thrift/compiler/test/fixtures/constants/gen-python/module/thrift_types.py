@@ -665,11 +665,11 @@ maxIntHex = 9223372036854775807
 
 maxIntBin = 9223372036854775807
 
-maxDub = float(1.79769313486232e+308)
+maxDub = float(1.7976931348623157e+308)
 
-minDub = float(2.2250738585072e-308)
+minDub = float(2.2250738585072014e-308)
 
-minSDub = float(4.94065645841247e-324)
+minSDub = float(5e-324)
 
 maxPIntDec = 9223372036854775807
 
@@ -679,11 +679,11 @@ maxPIntHex = 9223372036854775807
 
 maxPIntBin = 9223372036854775807
 
-maxPDub = float(1.79769313486232e+308)
+maxPDub = float(1.7976931348623157e+308)
 
-minPDub = float(2.2250738585072e-308)
+minPDub = float(2.2250738585072014e-308)
 
-minPSDub = float(4.94065645841247e-324)
+minPSDub = float(5e-324)
 
 minIntDec = -9223372036854775808
 
@@ -693,11 +693,11 @@ minIntHex = -9223372036854775808
 
 minIntBin = -9223372036854775808
 
-maxNDub = float(-1.79769313486232e+308)
+maxNDub = float(-1.7976931348623157e+308)
 
-minNDub = float(-2.2250738585072e-308)
+minNDub = float(-2.2250738585072014e-308)
 
-minNSDub = float(-4.94065645841247e-324)
+minNSDub = float(-5e-324)
 
 MyCompany = Company
 MyStringIdentifier = str

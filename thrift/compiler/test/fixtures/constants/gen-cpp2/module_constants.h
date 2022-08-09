@@ -291,19 +291,19 @@ multi line string.
     return maxIntBin_;
   }
 
-  static constexpr double const maxDub_ = static_cast<double>(1.79769313486232e+308);
+  static constexpr double const maxDub_ = static_cast<double>(1.7976931348623157e+308);
 
   static constexpr double maxDub() {
     return maxDub_;
   }
 
-  static constexpr double const minDub_ = static_cast<double>(2.2250738585072e-308);
+  static constexpr double const minDub_ = static_cast<double>(2.2250738585072014e-308);
 
   static constexpr double minDub() {
     return minDub_;
   }
 
-  static constexpr double const minSDub_ = static_cast<double>(4.94065645841247e-324);
+  static constexpr double const minSDub_ = static_cast<double>(5e-324);
 
   static constexpr double minSDub() {
     return minSDub_;
@@ -333,19 +333,19 @@ multi line string.
     return maxPIntBin_;
   }
 
-  static constexpr double const maxPDub_ = static_cast<double>(1.79769313486232e+308);
+  static constexpr double const maxPDub_ = static_cast<double>(1.7976931348623157e+308);
 
   static constexpr double maxPDub() {
     return maxPDub_;
   }
 
-  static constexpr double const minPDub_ = static_cast<double>(2.2250738585072e-308);
+  static constexpr double const minPDub_ = static_cast<double>(2.2250738585072014e-308);
 
   static constexpr double minPDub() {
     return minPDub_;
   }
 
-  static constexpr double const minPSDub_ = static_cast<double>(4.94065645841247e-324);
+  static constexpr double const minPSDub_ = static_cast<double>(5e-324);
 
   static constexpr double minPSDub() {
     return minPSDub_;
@@ -375,19 +375,19 @@ multi line string.
     return minIntBin_;
   }
 
-  static constexpr double const maxNDub_ = static_cast<double>(-1.79769313486232e+308);
+  static constexpr double const maxNDub_ = static_cast<double>(-1.7976931348623157e+308);
 
   static constexpr double maxNDub() {
     return maxNDub_;
   }
 
-  static constexpr double const minNDub_ = static_cast<double>(-2.2250738585072e-308);
+  static constexpr double const minNDub_ = static_cast<double>(-2.2250738585072014e-308);
 
   static constexpr double minNDub() {
     return minNDub_;
   }
 
-  static constexpr double const minNSDub_ = static_cast<double>(-4.94065645841247e-324);
+  static constexpr double const minNSDub_ = static_cast<double>(-5e-324);
 
   static constexpr double minNSDub() {
     return minNSDub_;

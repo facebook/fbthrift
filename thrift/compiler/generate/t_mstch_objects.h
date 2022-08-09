@@ -16,11 +16,9 @@
 
 #pragma once
 
-#include <iomanip>
 #include <map>
 #include <memory>
 #include <set>
-#include <sstream>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
@@ -1210,11 +1208,6 @@ class mstch_const_value : public mstch_base {
         });
   }
 
-  std::string format_double_string(const double d) {
-    std::ostringstream oss;
-    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
-    return oss.str();
-  }
   mstch::node is_bool() { return type_ == cv::CV_BOOL; }
   mstch::node is_double() { return type_ == cv::CV_DOUBLE; }
   mstch::node is_integer() {

@@ -137,15 +137,15 @@ TEST(constants, examples) {
   EXPECT_EQ(test_constants::maxIntOct(), 0777777777777777777777);
   EXPECT_EQ(test_constants::maxIntHex(), 0x7FFFFFFFFFFFFFFF);
   EXPECT_EQ(test_constants::maxDub(), 1.79769313486231e+308);
-  EXPECT_EQ(test_constants::minDub(), 2.2250738585072e-308);
+  EXPECT_EQ(test_constants::minDub(), 2.2250738585072014e-308);
   EXPECT_EQ(test_constants::minSDub(), 4.9406564584124654e-324);
 
   EXPECT_EQ(test_constants::maxPIntDec(), +9223372036854775807);
   EXPECT_EQ(test_constants::maxPDub(), +1.79769313486231e+308);
-  EXPECT_EQ(test_constants::minPDub(), +2.2250738585072e-308);
+  EXPECT_EQ(test_constants::minPDub(), +2.2250738585072014e-308);
   EXPECT_EQ(test_constants::minPSDub(), +4.9406564584124654e-324);
 
   EXPECT_EQ(test_constants::maxNDub(), -1.79769313486231e+308);
-  EXPECT_EQ(test_constants::minNDub(), -2.2250738585072e-308);
+  EXPECT_EQ(test_constants::minNDub(), -2.2250738585072014e-308);
   EXPECT_EQ(test_constants::minNSDub(), -4.9406564584124654e-324);
 }

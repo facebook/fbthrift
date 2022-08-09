@@ -15,6 +15,7 @@
  */
 
 #include <cctype>
+#include <iomanip>
 #include <set>
 
 #include <boost/algorithm/string.hpp>

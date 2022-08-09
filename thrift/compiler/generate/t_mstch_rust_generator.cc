@@ -1009,16 +1009,13 @@ class mstch_rust_value : public mstch_base {
     return type_->is_float() || type_->is_double();
   }
   mstch::node floating_point_value() {
-    std::ostringstream oss;
-    oss << std::setprecision(std::numeric_limits<double>::digits10);
-    oss << const_value_->get_double();
-    auto digits = oss.str();
-    if (digits.find('.') == std::string::npos &&
-        digits.find('e') == std::string::npos &&
-        digits.find('E') == std::string::npos) {
-      digits += ".0";
+    auto str = fmt::format("{}", const_value_->get_double());
+    if (str.find('.') == std::string::npos &&
+        str.find('e') == std::string::npos &&
+        str.find('E') == std::string::npos) {
+      str += ".0";
     }
-    return digits;
+    return str;
   }
   mstch::node is_string() { return type_->is_string(); }
   mstch::node is_binary() { return type_->is_binary(); }

@@ -16,6 +16,8 @@
 
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
+#include <fmt/core.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -273,7 +275,7 @@ mstch::node mstch_const_map_element::element_value() {
 mstch::node mstch_const_value::value() {
   switch (type_) {
     case cv::CV_DOUBLE:
-      return format_double_string(const_value_->get_double());
+      return fmt::format("{}", const_value_->get_double());
     case cv::CV_BOOL:
       return std::to_string(const_value_->get_bool());
     case cv::CV_INTEGER:
@@ -286,24 +288,17 @@ mstch::node mstch_const_value::value() {
 }
 
 mstch::node mstch_const_value::integer_value() {
-  if (type_ == cv::CV_INTEGER) {
-    return std::to_string(const_value_->get_integer());
-  }
-  return mstch::node();
+  return type_ == cv::CV_INTEGER ? std::to_string(const_value_->get_integer())
+                                 : mstch::node();
 }
 
 mstch::node mstch_const_value::double_value() {
-  if (type_ == cv::CV_DOUBLE) {
-    return format_double_string(const_value_->get_double());
-  }
-  return mstch::node();
+  return type_ == cv::CV_DOUBLE ? fmt::format("{}", const_value_->get_double())
+                                : mstch::node();
 }
 
 mstch::node mstch_const_value::bool_value() {
-  if (type_ == cv::CV_BOOL) {
-    return const_value_->get_bool() == true;
-  }
-  return mstch::node();
+  return type_ == cv::CV_BOOL ? const_value_->get_bool() : mstch::node();
 }
 
 mstch::node mstch_const_value::is_non_zero() {
@@ -311,7 +306,7 @@ mstch::node mstch_const_value::is_non_zero() {
     case cv::CV_DOUBLE:
       return const_value_->get_double() != 0.0;
     case cv::CV_BOOL:
-      return const_value_->get_bool() == true;
+      return const_value_->get_bool();
     case cv::CV_INTEGER:
       return const_value_->get_integer() != 0;
     default:
