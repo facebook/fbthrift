@@ -60,6 +60,15 @@ requestResponseDeclaredExceptionTest(
   return result;
 }
 
+RequestResponseNoArgVoidResponseClientTestResult
+requestResponseNoArgVoidResponseTest(
+    const RequestResponseNoArgVoidResponseClientInstruction&) {
+  RequestResponseNoArgVoidResponseClientTestResult result;
+  auto client = createClient();
+  client->sync_requestResponseNoArgVoidResponse();
+  return result;
+}
+
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
@@ -78,6 +87,11 @@ int main(int argc, char** argv) {
       result.set_requestResponseDeclaredException(
           requestResponseDeclaredExceptionTest(
               *clientInstruction.requestResponseDeclaredException_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseNoArgVoidResponse:
+      result.set_requestResponseNoArgVoidResponse(
+          requestResponseNoArgVoidResponseTest(
+              *clientInstruction.requestResponseNoArgVoidResponse_ref()));
       break;
     default:
       throw std::runtime_error("Invalid TestCase type");

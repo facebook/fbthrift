@@ -34,4 +34,8 @@ void RPCServerConformanceHandler::requestResponseDeclaredException(
                        ->userException());
 }
 
+void RPCServerConformanceHandler::requestResponseNoArgVoidResponse() {
+  result_.requestResponseNoArgVoidResponse_ref().emplace();
+}
+
 } // namespace apache::thrift::conformance

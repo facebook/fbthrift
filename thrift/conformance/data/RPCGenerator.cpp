@@ -100,6 +100,35 @@ Test createRequestResponseDeclaredExceptionTest() {
   return ret;
 }
 
+Test createRequestResponseNoArgVoidResponse() {
+  Test ret;
+  ret.name() = "RequestResponseNoArgVoidResponseTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseNoArgVoidResponse/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .requestResponseNoArgVoidResponse_ref()
+      .emplace();
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .requestResponseNoArgVoidResponse_ref()
+      .emplace();
+
+  rpcTest.serverInstruction_ref()
+      .emplace()
+      .requestResponseNoArgVoidResponse_ref()
+      .emplace();
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .requestResponseNoArgVoidResponse_ref()
+      .emplace();
+
+  return ret;
+}
+
 } // namespace
 
 TestSuite createRPCTestSuite() {
@@ -107,6 +136,7 @@ TestSuite createRPCTestSuite() {
   suite.name() = "ThriftRPCTest";
   suite.tests()->push_back(createRequestResponseBasicTest());
   suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
+  suite.tests()->push_back(createRequestResponseNoArgVoidResponse());
   return suite;
 }
 

@@ -18,6 +18,7 @@
 
 #include <stdexcept>
 
+#include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache::thrift::conformance {
@@ -78,6 +79,15 @@ runRequestResponseDeclaredException(
   return result;
 }
 
+RequestResponseNoArgVoidResponseClientTestResult
+runRequestResponseNoArgVoidResponse(
+    RPCConformanceServiceAsyncClient& client,
+    const RequestResponseNoArgVoidResponseClientInstruction&) {
+  RequestResponseNoArgVoidResponseClientTestResult result;
+  client.sync_requestResponseNoArgVoidResponse();
+  return result;
+}
+
 ClientTestResult runClientSteps(
     Client<RPCConformanceService>& client,
     const ClientInstruction& clientInstruction) {
@@ -92,6 +102,12 @@ ClientTestResult runClientSteps(
           runRequestResponseDeclaredException(
               client,
               *clientInstruction.requestResponseDeclaredException_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseNoArgVoidResponse:
+      result.set_requestResponseNoArgVoidResponse(
+          runRequestResponseNoArgVoidResponse(
+              client,
+              *clientInstruction.requestResponseNoArgVoidResponse_ref()));
       break;
     default:
       break;

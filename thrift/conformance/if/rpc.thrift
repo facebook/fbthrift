@@ -47,11 +47,13 @@ exception UserException {
 union ServerTestResult {
   1: RequestResponseBasicServerTestResult requestResponseBasic;
   2: RequestResponseDeclaredExceptionServerTestResult requestResponseDeclaredException;
+  3: RequestResponseNoArgVoidResponseServerTestResult requestResponseNoArgVoidResponse;
 }
 
 union ClientTestResult {
   1: RequestResponseBasicClientTestResult requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientTestResult requestResponseDeclaredException;
+  3: RequestResponseNoArgVoidResponseClientTestResult requestResponseNoArgVoidResponse;
 }
 
 struct RequestResponseBasicServerTestResult {
@@ -62,9 +64,13 @@ struct RequestResponseDeclaredExceptionServerTestResult {
   1: Request request;
 }
 
+struct RequestResponseNoArgVoidResponseServerTestResult {}
+
 struct RequestResponseBasicClientTestResult {
   1: Response response;
 }
+
+struct RequestResponseNoArgVoidResponseClientTestResult {}
 
 struct RequestResponseDeclaredExceptionClientTestResult {
   // TODO(dokwon): Remove @thrift.Box after fixing incomplete type bug.
@@ -75,23 +81,27 @@ struct RequestResponseDeclaredExceptionClientTestResult {
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
+  3: RequestResponseNoArgVoidResponseClientInstruction requestResponseNoArgVoidResponse;
 }
 
 union ServerInstruction {
   1: RequestResponseBasicServerInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionServerInstruction requestResponseDeclaredException;
+  3: RequestResponseNoArgVoidResponseServerInstruction requestResponseNoArgVoidResponse;
 }
 
 struct RequestResponseBasicClientInstruction {
   1: Request request;
 }
 
-struct RequestResponseBasicServerInstruction {
-  1: Response response;
-}
-
 struct RequestResponseDeclaredExceptionClientInstruction {
   1: Request request;
+}
+
+struct RequestResponseNoArgVoidResponseClientInstruction {}
+
+struct RequestResponseBasicServerInstruction {
+  1: Response response;
 }
 
 struct RequestResponseDeclaredExceptionServerInstruction {
@@ -99,6 +109,8 @@ struct RequestResponseDeclaredExceptionServerInstruction {
   @thrift.Box
   1: optional UserException userException;
 }
+
+struct RequestResponseNoArgVoidResponseServerInstruction {}
 
 service RPCConformanceService {
   // =================== Conformance framework - Only for Server Tests ===================
@@ -114,4 +126,5 @@ service RPCConformanceService {
   void requestResponseDeclaredException(1: Request req) throws (
     1: UserException e,
   );
+  void requestResponseNoArgVoidResponse();
 }

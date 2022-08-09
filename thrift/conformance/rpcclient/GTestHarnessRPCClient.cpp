@@ -58,6 +58,10 @@ class ConformanceVerificationServer
                          ->userException());
   }
 
+  void requestResponseNoArgVoidResponse() override {
+    serverResult_.requestResponseNoArgVoidResponse_ref().emplace();
+  }
+
   folly::SemiFuture<folly::Unit> getTestReceived() {
     return getTestReceivedPromise_.getSemiFuture();
   }
