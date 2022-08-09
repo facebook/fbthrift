@@ -19,6 +19,7 @@
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -49,7 +50,7 @@ const t_const* t_named::find_structured_annotation_or_null(
 
 bool is_transitive_annotation(const t_named& node) {
   for (const auto* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() == t_named::kTransitiveUri) {
+    if (annotation->type()->uri() == kTransitiveUri) {
       return true;
     }
   }

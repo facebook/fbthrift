@@ -627,7 +627,7 @@ TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
       adapter_builder(program_, "cpp").make("MyAdapter"));
 
   auto transitive = t_struct(nullptr, "Transitive");
-  transitive.set_uri("facebook.com/thrift/annotation/Transitive");
+  transitive.set_uri(kTransitiveUri);
   annotation.add_structured_annotation(
       std::make_unique<t_const>(&program_, &transitive, "", nullptr));
 

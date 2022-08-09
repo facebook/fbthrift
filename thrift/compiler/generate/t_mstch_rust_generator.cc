@@ -27,6 +27,7 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
+#include <thrift/compiler/lib/uri.h>
 
 using namespace std;
 
@@ -277,8 +278,7 @@ enum class FieldKind { Box, Arc, Inline };
 
 bool node_is_boxed(const t_named& node) {
   return node.has_annotation("rust.box") || node.has_annotation("thrift.box") ||
-      node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/Box");
+      node.find_structured_annotation_or_null(kBoxUri);
 }
 
 bool node_is_arced(const t_named& node) {

@@ -36,6 +36,7 @@
 #include <thrift/compiler/gen/cpp/detail/gen.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/lib/uri.h>
 
 template <>
 struct std::hash<std::pair<
@@ -135,12 +136,11 @@ class type_resolver {
 
   static const std::string* find_field_interceptor(const t_field& node) {
     return get_string_from_annotation_or_null(
-        node, "facebook.com/thrift/annotation/cpp/FieldInterceptor", "name");
+        node, kCppFieldInterceptorUri, "name");
   }
   static const std::string* find_structured_adapter_annotation(
       const t_named& node) {
-    return get_string_from_annotation_or_null(
-        node, "facebook.com/thrift/annotation/cpp/Adapter", "name");
+    return get_string_from_annotation_or_null(node, kCppAdapterUri, "name");
   }
   static const t_const* find_nontransitive_adapter(const t_type& node);
 

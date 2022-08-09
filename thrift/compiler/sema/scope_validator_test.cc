@@ -32,6 +32,7 @@
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/diagnostic.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -42,19 +43,19 @@ class ScopeValidatorTest : public ::testing::Test {
       : loc(source_mgr.add_string("path/to/file.thrift", "").start),
         program{"path/to/file.thrift"} {
     program.set_name("MyProgram");
-    scopeProgram.set_uri("facebook.com/thrift/annotation/Program");
-    scopeStruct.set_uri("facebook.com/thrift/annotation/Struct");
-    scopeUnion.set_uri("facebook.com/thrift/annotation/Union");
-    scopeException.set_uri("facebook.com/thrift/annotation/Exception");
-    scopeField.set_uri("facebook.com/thrift/annotation/Field");
-    scopeTypedef.set_uri("facebook.com/thrift/annotation/Typedef");
-    scopeService.set_uri("facebook.com/thrift/annotation/Service");
-    scopeInteraction.set_uri("facebook.com/thrift/annotation/Interaction");
-    scopeFunction.set_uri("facebook.com/thrift/annotation/Function");
-    scopeEnum.set_uri("facebook.com/thrift/annotation/Enum");
-    scopeEnumValue.set_uri("facebook.com/thrift/annotation/EnumValue");
-    scopeConst.set_uri("facebook.com/thrift/annotation/Const");
-    metaTransitive.set_uri("facebook.com/thrift/annotation/Transitive");
+    scopeProgram.set_uri(kScopeProgramUri);
+    scopeStruct.set_uri(kScopeStructUri);
+    scopeUnion.set_uri(kScopeUnionUri);
+    scopeException.set_uri(kScopeExceptionUri);
+    scopeField.set_uri(kScopeFieldUri);
+    scopeTypedef.set_uri(kScopeTypedefUri);
+    scopeService.set_uri(kScopeServiceUri);
+    scopeInteraction.set_uri(kScopeInteractionUri);
+    scopeFunction.set_uri(kScopeFunctionUri);
+    scopeEnum.set_uri(kScopeEnumUri);
+    scopeEnumValue.set_uri(kScopeEnumValueUri);
+    scopeConst.set_uri(kScopeConstUri);
+    metaTransitive.set_uri(kTransitiveUri);
   }
 
   void SetUp() override {

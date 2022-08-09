@@ -28,6 +28,7 @@
 #include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/lib/uri.h>
 
 using namespace std;
 
@@ -748,8 +749,8 @@ class mstch_java_field : public mstch_field {
   mstch::node is_typedef_adapter() {
     auto type = field_->get_type();
     if (type->is_typedef()) {
-      auto has_annotation = type->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/java/Adapter");
+      auto has_annotation =
+          type->find_structured_annotation_or_null(kJavaAdapterUri);
       return has_annotation != nullptr;
     } else {
       return false;
@@ -766,8 +767,8 @@ class mstch_java_field : public mstch_field {
 
   mstch::node get_structed_annotation_attribute(const std::string& field) {
     auto type = field_->get_type();
-    if (auto annotation = type->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/java/Adapter")) {
+    if (auto annotation =
+            type->find_structured_annotation_or_null(kJavaAdapterUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == field) {
           return item.second->get_string();

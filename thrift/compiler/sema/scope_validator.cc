@@ -26,6 +26,7 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -33,23 +34,20 @@ namespace compiler {
 
 namespace {
 
-// Indicates that an annotation should be preserved in the runtime schema.
-constexpr auto kSchemaAnnotationUri = "facebook.com/thrift/annotation/Schema";
-
 const std::unordered_map<std::string, std::type_index>& uri_map() {
   static const std::unordered_map<std::string, std::type_index> kUriMap = {
-      {"facebook.com/thrift/annotation/Program", typeid(t_program)},
-      {"facebook.com/thrift/annotation/Struct", typeid(t_struct)},
-      {"facebook.com/thrift/annotation/Union", typeid(t_union)},
-      {"facebook.com/thrift/annotation/Exception", typeid(t_exception)},
-      {"facebook.com/thrift/annotation/Field", typeid(t_field)},
-      {"facebook.com/thrift/annotation/Typedef", typeid(t_typedef)},
-      {"facebook.com/thrift/annotation/Service", typeid(t_service)},
-      {"facebook.com/thrift/annotation/Interaction", typeid(t_interaction)},
-      {"facebook.com/thrift/annotation/Function", typeid(t_function)},
-      {"facebook.com/thrift/annotation/Enum", typeid(t_enum)},
-      {"facebook.com/thrift/annotation/EnumValue", typeid(t_enum_value)},
-      {"facebook.com/thrift/annotation/Const", typeid(t_const)},
+      {kScopeProgramUri, typeid(t_program)},
+      {kScopeStructUri, typeid(t_struct)},
+      {kScopeUnionUri, typeid(t_union)},
+      {kScopeExceptionUri, typeid(t_exception)},
+      {kScopeFieldUri, typeid(t_field)},
+      {kScopeTypedefUri, typeid(t_typedef)},
+      {kScopeServiceUri, typeid(t_service)},
+      {kScopeInteractionUri, typeid(t_interaction)},
+      {kScopeFunctionUri, typeid(t_function)},
+      {kScopeEnumUri, typeid(t_enum)},
+      {kScopeEnumValueUri, typeid(t_enum_value)},
+      {kScopeConstUri, typeid(t_const)},
   };
   return kUriMap;
 }

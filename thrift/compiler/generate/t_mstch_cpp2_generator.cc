@@ -31,6 +31,7 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {
@@ -973,8 +974,8 @@ class cpp_mstch_typedef : public mstch_typedef {
     return context_->resolver().get_underlying_type_name(*typedef_);
   }
   mstch::node cpp_strong_type() {
-    return typedef_->find_structured_annotation_or_null(
-               "facebook.com/thrift/annotation/cpp/StrongType") != nullptr;
+    return typedef_->find_structured_annotation_or_null(kCppStrongTypeUri) !=
+        nullptr;
   }
 
  private:
@@ -1162,8 +1163,8 @@ class cpp_mstch_struct : public mstch_struct {
     bool result = false;
     cpp2::for_each_transitive_field(struct_, [&result](const t_field* field) {
       auto has_move_only_adapter = [](const auto* strct) {
-        if (auto adapter = strct->find_structured_annotation_or_null(
-                "facebook.com/thrift/annotation/cpp/Adapter")) {
+        if (auto adapter =
+                strct->find_structured_annotation_or_null(kCppAdapterUri)) {
           if (auto val = adapter->get_value_from_structured_annotation_or_null(
                   "moveOnly")) {
             return val->get_bool();
@@ -1199,7 +1200,7 @@ class cpp_mstch_struct : public mstch_struct {
   mstch::node cpp_trivially_relocatable() {
     return nullptr !=
         struct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/TriviallyRelocatable");
+            kCppTriviallyRelocatableUri);
   }
   mstch::node is_eligible_for_constexpr() {
     return is_eligible_for_constexpr_(struct_) ||
@@ -1259,7 +1260,7 @@ class cpp_mstch_struct : public mstch_struct {
   mstch::node indexing() { return has_lazy_fields(); }
   mstch::node write_lazy_field_checksum() {
     if (struct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/DisableLazyChecksum")) {
+            kCppDisableLazyChecksumUri)) {
       return std::string("false");
     }
 
@@ -1369,7 +1370,7 @@ class cpp_mstch_struct : public mstch_struct {
 
   mstch::node scoped_enum_as_union_type() {
     return struct_->find_structured_annotation_or_null(
-        "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType");
+        kCppScopedEnumAsUnionTypeUri);
   }
 
   mstch::node extra_namespace() {
@@ -1458,8 +1459,7 @@ class cpp_mstch_struct : public mstch_struct {
     }
 
     if (!struct_->has_annotation("cpp.minimize_padding") &&
-        !struct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/MinimizePadding")) {
+        !struct_->find_structured_annotation_or_null(kCppMinimizePaddingUri)) {
       return fields_in_layout_order_ = struct_->fields().copy();
     }
 
@@ -1731,7 +1731,7 @@ class cpp_mstch_field : public mstch_field {
   // specified in FieldInterceptor.
   mstch::node cpp_accessor_attribute() {
     if (const t_const* annotation = field_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/FieldInterceptor")) {
+            kCppFieldInterceptorUri)) {
       if (const auto* val =
               annotation->get_value_from_structured_annotation_or_null(
                   "noinline")) {

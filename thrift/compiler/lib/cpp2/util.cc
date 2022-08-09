@@ -38,6 +38,7 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -73,8 +74,7 @@ bool is_custom_type(const t_type& type) {
                  "cpp.type",
                  "cpp2.type",
              }) ||
-      t_typedef::get_first_structured_annotation_or_null(
-             &type, "facebook.com/thrift/annotation/cpp/Adapter");
+      t_typedef::get_first_structured_annotation_or_null(&type, kCppAdapterUri);
 }
 
 std::unordered_map<t_struct*, std::vector<t_struct*>>
@@ -180,8 +180,8 @@ gen_adapter_dependency_graph(
       const auto* type = &*typedf->type();
       bool has_adapter = gen::cpp::type_resolver::find_first_adapter(*typedf);
       if (has_adapter) {
-        if (auto* annotation = typedf->find_structured_annotation_or_null(
-                "facebook.com/thrift/annotation/cpp/Adapter")) {
+        if (auto* annotation =
+                typedf->find_structured_annotation_or_null(kCppAdapterUri)) {
           if (annotation->get_value_from_structured_annotation_or_null(
                   "adaptedType")) {
             has_adapter = false;
@@ -452,8 +452,7 @@ std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
 
 bool is_mixin(const t_field& field) {
   return field.has_annotation("cpp.mixin") ||
-      field.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/Mixin") != nullptr;
+      field.find_structured_annotation_or_null(kMixinUri) != nullptr;
 }
 
 bool has_ref_annotation(const t_field& field) {
@@ -620,8 +619,7 @@ const t_const* get_transitive_annotation_of_adapter_or_null(
   for (const auto* annotation : node.structured_annotations()) {
     const t_type& annotation_type = *annotation->type();
     if (is_transitive_annotation(annotation_type)) {
-      if (annotation_type.find_structured_annotation_or_null(
-              "facebook.com/thrift/annotation/cpp/Adapter")) {
+      if (annotation_type.find_structured_annotation_or_null(kCppAdapterUri)) {
         return annotation;
       }
     }

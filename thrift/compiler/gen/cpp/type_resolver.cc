@@ -25,6 +25,7 @@
 #include <thrift/compiler/ast/t_set.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -36,8 +37,8 @@ const std::string& type_resolver::get_native_type(
     const t_field& field, const t_structured& parent) {
   const t_type& type = *field.type();
 
-  if (auto* annotation = field.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Adapter")) {
+  if (auto* annotation =
+          field.find_structured_annotation_or_null(kCppAdapterUri)) {
     if (auto* adaptedType =
             annotation->get_value_from_structured_annotation_or_null(
                 "adaptedType")) {
@@ -63,8 +64,8 @@ const std::string& type_resolver::get_native_type(
 const std::string& type_resolver::get_native_type(const t_const& cnst) {
   const t_type& type = *cnst.type();
 
-  if (auto* annotation = cnst.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Adapter")) {
+  if (auto* annotation =
+          cnst.find_structured_annotation_or_null(kCppAdapterUri)) {
     if (auto* adaptedType =
             annotation->get_value_from_structured_annotation_or_null(
                 "adaptedType")) {
@@ -171,17 +172,15 @@ const std::string& type_resolver::get_storage_type(
 }
 
 const t_const* type_resolver::find_nontransitive_adapter(const t_type& node) {
-  if (!node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/Transitive")) {
-    return node.find_structured_annotation_or_null(
-        "facebook.com/thrift/annotation/cpp/Adapter");
+  if (!node.find_structured_annotation_or_null(kTransitiveUri)) {
+    return node.find_structured_annotation_or_null(kCppAdapterUri);
   }
   return nullptr;
 }
 
 const std::string* type_resolver::find_first_adapter(const t_type& node) {
   if (auto annotation = t_typedef::get_first_structured_annotation_or_null(
-          &node, "facebook.com/thrift/annotation/cpp/Adapter")) {
+          &node, kCppAdapterUri)) {
     return &annotation->get_value_from_structured_annotation("name")
                 .get_string();
   }

@@ -34,6 +34,7 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/lib/uri.h>
 
 #include <fmt/format.h>
 
@@ -129,13 +130,12 @@ inline bool field_has_isset(const t_field* field) {
 
 inline bool is_lazy(const t_field* field) {
   return field->has_annotation("cpp.experimental.lazy") ||
-      field->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Lazy") != nullptr;
+      field->find_structured_annotation_or_null(kCppLazyUri) != nullptr;
 }
 
 inline bool is_lazy_ref(const t_field* field) {
-  if (const t_const* anno = field->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Lazy")) {
+  if (const t_const* anno =
+          field->find_structured_annotation_or_null(kCppLazyUri)) {
     for (const auto& kv : anno->value()->get_map()) {
       if (kv.first->get_string() == "ref") {
         return kv.second->get_bool();
@@ -214,8 +214,7 @@ std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
 bool is_mixin(const t_field& field);
 
 inline const t_const* packed_isset(const t_struct& s) {
-  return s.find_structured_annotation_or_null(
-      "facebook.com/thrift/annotation/cpp/PackIsset");
+  return s.find_structured_annotation_or_null(kCppPackIssetUri);
 }
 
 bool has_ref_annotation(const t_field& f);

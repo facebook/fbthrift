@@ -40,6 +40,7 @@
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/sema/const_checker.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
@@ -48,13 +49,6 @@ namespace thrift {
 namespace compiler {
 
 namespace {
-
-constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
-constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
-constexpr auto kCppFieldInterceptorUri =
-    "facebook.com/thrift/annotation/cpp/FieldInterceptor";
-constexpr auto kHackAdapterUri = "facebook.com/thrift/annotation/hack/Adapter";
-constexpr auto kReserveIdsUri = "facebook.com/thrift/annotation/ReserveIds";
 constexpr auto kCppUnstructuredAdapter = "cpp.adapter";
 constexpr auto kHackUnstructuredAdapter = "hack.adapter";
 
@@ -496,7 +490,7 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
   basic_ast_visitor<true> visit;
   visit.add_definition_visitor([&](const t_named& node) {
     const auto& uri = node.uri();
-    if (uri.empty() || uri == t_named::kTransitiveUri) {
+    if (uri.empty() || uri == kTransitiveUri) {
       return;
     }
     auto result = uri_to_node.emplace(uri, &node);

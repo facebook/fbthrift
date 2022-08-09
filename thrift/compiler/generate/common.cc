@@ -26,6 +26,7 @@
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_set.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -100,8 +101,6 @@ std::unordered_set<const t_type*> collect_types(const t_struct* strct) {
   }
   return types;
 }
-
-const char* kNoLegacyUri = "facebook.com/thrift/annotation/NoLegacy";
 
 bool generate_legacy_api(const t_program& p) {
   return p.find_structured_annotation_or_null(kNoLegacyUri) == nullptr;

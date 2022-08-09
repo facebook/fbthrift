@@ -17,6 +17,7 @@
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -42,8 +43,7 @@ enum class RefType {
 
 reference_type find_ref_type(const t_field& node) {
   if (node.has_annotation({"cpp.box", "thrift.box"}) ||
-      node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/Box")) {
+      node.find_structured_annotation_or_null(kBoxUri)) {
     return reference_type::boxed;
   }
 
@@ -73,8 +73,8 @@ reference_type find_ref_type(const t_field& node) {
     return reference_type::unique;
   }
 
-  if (const t_const* anno = node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Ref")) {
+  if (const t_const* anno =
+          node.find_structured_annotation_or_null(kCppRefUri)) {
     for (const auto& kv : anno->value()->get_map()) {
       if (kv.first->get_string() == "type") {
         switch (static_cast<RefType>(kv.second->get_integer())) {

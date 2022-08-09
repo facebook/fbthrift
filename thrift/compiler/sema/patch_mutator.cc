@@ -18,6 +18,7 @@
 
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/sema/standard_mutator_stage.h>
 
 namespace apache {
@@ -124,8 +125,8 @@ struct StructGen {
   operator t_type_ref() { return generated; }
 
   void set_adapter(std::string name, t_program& program) {
-    auto annotation = dynamic_cast<const t_type*>(program.scope()->find_def(
-        "facebook.com/thrift/annotation/cpp/Adapter"));
+    auto annotation =
+        dynamic_cast<const t_type*>(program.scope()->find_def(kCppAdapterUri));
     assert(annotation); // transitive include from patch.thrift
     auto value = std::make_unique<t_const_value>();
     value->set_map();

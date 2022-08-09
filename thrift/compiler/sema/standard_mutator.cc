@@ -17,19 +17,13 @@
 #include <thrift/compiler/sema/standard_mutator.h>
 
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/sema/patch_mutator.h>
 #include <thrift/compiler/sema/standard_mutator_stage.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
-
-constexpr auto kTerseWriteUri = "facebook.com/thrift/annotation/TerseWrite";
-constexpr auto kSetGenerated = "facebook.com/thrift/annotation/SetGenerated";
-constexpr auto kInjectMetadataFieldsUri =
-    "facebook.com/thrift/annotation/InjectMetadataFields";
-constexpr auto kGenDefaultEnumValueUri =
-    "facebook.com/thrift/annotation/GenDefaultEnumValue";
 
 // TODO(afuller): Instead of mutating the AST, readers should look for
 // the interaction level annotation and the validation logic should be moved to
@@ -170,7 +164,7 @@ void mutate_inject_metadata_fields(
 }
 
 void set_generated(diagnostic_context&, mutator_context&, t_named& node) {
-  if (node.find_structured_annotation_or_null(kSetGenerated)) {
+  if (node.find_structured_annotation_or_null(kSetGeneratedUri)) {
     node.set_generated();
   }
 }

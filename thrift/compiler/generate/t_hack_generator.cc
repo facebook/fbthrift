@@ -37,6 +37,7 @@
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -629,7 +630,7 @@ class t_hack_generator : public t_concat_generator {
   const std::string* find_hack_adapter(const t_type* type) {
     if (const auto annotation =
             t_typedef::get_first_structured_annotation_or_null(
-                type, "facebook.com/thrift/annotation/hack/Adapter")) {
+                type, kHackAdapterUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           return &item.second->get_string();
@@ -640,11 +641,10 @@ class t_hack_generator : public t_concat_generator {
   }
 
   const std::string* find_hack_wrapper(const t_field& node) {
-    auto annotation = node.find_structured_annotation_or_null(
-        "facebook.com/thrift/annotation/hack/FieldWrapper");
+    auto annotation =
+        node.find_structured_annotation_or_null(kHackFieldWrapperUri);
     if (!annotation) {
-      annotation = node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/hack/Wrapper");
+      annotation = node.find_structured_annotation_or_null(kHackWrapperUri);
     }
     if (annotation) {
       for (const auto& item : annotation->value()->get_map()) {
@@ -661,14 +661,10 @@ class t_hack_generator : public t_concat_generator {
   std::tuple<const std::string*, const std::string*, const std::string*>
   find_hack_wrapper(
       const t_type* ttype, bool look_up_through_hierarchy = true) {
-    const t_const* annotation;
-    auto uri = "facebook.com/thrift/annotation/hack/Wrapper";
-    if (look_up_through_hierarchy) {
-      annotation =
-          t_typedef::get_first_structured_annotation_or_null(ttype, uri);
-    } else {
-      annotation = ttype->find_structured_annotation_or_null(uri);
-    }
+    const t_const* annotation = look_up_through_hierarchy
+        ? t_typedef::get_first_structured_annotation_or_null(
+              ttype, kHackWrapperUri)
+        : ttype->find_structured_annotation_or_null(kHackWrapperUri);
     if (annotation) {
       const std::string* name;
       const std::string* underlying_name = new std::string("");
@@ -709,8 +705,8 @@ class t_hack_generator : public t_concat_generator {
   }
 
   const std::string* find_hack_field_adapter(const t_field& node) {
-    if (const auto annotation = node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/Adapter")) {
+    if (const auto annotation =
+            node.find_structured_annotation_or_null(kHackAdapterUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           return &item.second->get_string();
@@ -730,8 +726,8 @@ class t_hack_generator : public t_concat_generator {
             tnamed->find_annotation_or_null("hack.name")) {
       return *annotation;
     }
-    if (const auto annotation = tnamed->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/Name")) {
+    if (const auto annotation =
+            tnamed->find_structured_annotation_or_null(kHackNameUri)) {
       return annotation->get_value_from_structured_annotation("name")
           .get_string();
     }
@@ -744,7 +740,7 @@ class t_hack_generator : public t_concat_generator {
       return *annotation;
     }
     if (const auto annotation = tstruct.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/UnionEnumAttributes")) {
+            kHackUnionEnumAttributesUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "attributes") {
           std::string result = "";
@@ -769,8 +765,8 @@ class t_hack_generator : public t_concat_generator {
             tnamed.find_annotation_or_null("hack.attributes")) {
       return *annotation;
     }
-    if (const auto annotation = tnamed.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/Attributes")) {
+    if (const auto annotation =
+            tnamed.find_structured_annotation_or_null(kHackAttributeUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "attributes") {
           std::string result = "";
@@ -796,8 +792,8 @@ class t_hack_generator : public t_concat_generator {
             tstruct->find_annotation_or_null("php.structtrait")) {
       return std::make_pair(true, *annotation);
     }
-    if (const auto annotation = tstruct->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/hack/StructTrait")) {
+    if (const auto annotation =
+            tstruct->find_structured_annotation_or_null(kHackStructTraitUri)) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           return std::make_pair(true, item.second->get_string());
@@ -2616,8 +2612,8 @@ bool t_hack_generator::is_valid_hack_type(const t_type* type) {
 }
 
 bool t_hack_generator::skip_codegen(const t_field* field) {
-  const auto skip_codegen_field = field->find_structured_annotation_or_null(
-      "facebook.com/thrift/annotation/hack/SkipCodegen");
+  const auto skip_codegen_field =
+      field->find_structured_annotation_or_null(kHackSkipCodegenUri);
   bool is_valid_type = is_valid_hack_type(field->get_type());
   if (!is_valid_type && skip_codegen_field == nullptr) {
     throw std::runtime_error(
@@ -2630,8 +2626,7 @@ bool t_hack_generator::skip_codegen(const t_field* field) {
 
 bool t_hack_generator::skip_codegen(const t_function* tfunction) {
   const auto skip_codegen_function =
-      tfunction->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/hack/SkipCodegen");
+      tfunction->find_structured_annotation_or_null(kHackSkipCodegenUri);
   const t_type* invalid_type = nullptr;
   std::string field_name;
   const t_type* type = tfunction->get_return_type();
@@ -2760,8 +2755,7 @@ void t_hack_generator::generate_php_struct_spec(
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
   indent_up();
   const auto fields =
-      tstruct->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/SerializeInFieldIdOrder")
+      tstruct->find_structured_annotation_or_null(kSerializeInFieldIdOrderUri)
       ? tstruct->fields_id_order()
       : tstruct->fields().copy();
   for (const auto* field_ptr : fields) {

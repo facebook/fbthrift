@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -37,9 +38,6 @@ class t_const;
  */
 class t_named : public t_node {
  public:
-  static constexpr auto kTransitiveUri =
-      "facebook.com/thrift/annotation/Transitive";
-
   ~t_named() override;
 
   void set_name(const std::string& name) { name_ = name; }

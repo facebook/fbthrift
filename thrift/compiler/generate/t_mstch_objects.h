@@ -28,6 +28,7 @@
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -984,7 +985,7 @@ class mstch_struct : public mstch_base {
 
   field_range get_members_in_serialization_order() {
     if (struct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/SerializeInFieldIdOrder")) {
+            kSerializeInFieldIdOrderUri)) {
       return get_members_in_key_order();
     }
 

@@ -33,6 +33,7 @@
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/lib/py3/util.h>
+#include <thrift/compiler/lib/uri.h>
 
 namespace apache {
 namespace thrift {
@@ -45,8 +46,7 @@ bool is_type_iobuf(const std::string& name) {
 }
 
 const t_const* find_structured_adapter_annotation(const t_named& node) {
-  return node.find_structured_annotation_or_null(
-      "facebook.com/thrift/annotation/python/Adapter");
+  return node.find_structured_annotation_or_null(kPythonAdapterUri);
 }
 
 const std::string get_annotation_property(
