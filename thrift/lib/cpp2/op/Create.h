@@ -17,6 +17,7 @@
 // Operations supported by all ThriftType values.
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/detail/Create.h>
 
 namespace apache {
@@ -34,7 +35,7 @@ namespace op {
 //   create<field_t<FieldId, adapted<FieldAdapter, type::i32_t>>>(Struct)
 //    -> AdaptedWithContext<int32_t>{};
 template <typename Tag>
-constexpr detail::Create<Tag> create{};
+FOLLY_INLINE_VARIABLE constexpr detail::Create<Tag> create{};
 
 } // namespace op
 } // namespace thrift

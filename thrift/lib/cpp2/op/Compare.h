@@ -17,6 +17,7 @@
 // Operations supported by all ThriftType values.
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/detail/Compare.h>
 
 namespace apache {
@@ -34,7 +35,7 @@ namespace op {
 template <typename Tag>
 struct EqualTo : detail::EqualTo<Tag> {};
 template <typename Tag>
-constexpr EqualTo<Tag> equal{};
+FOLLY_INLINE_VARIABLE constexpr EqualTo<Tag> equal{};
 
 // A binary operator that returns true iff the given Thrift values are identical
 // to each other (i.e. they are same representations).
@@ -47,7 +48,7 @@ constexpr EqualTo<Tag> equal{};
 template <typename Tag>
 struct IdenticalTo : detail::IdenticalTo<Tag> {};
 template <typename Tag>
-constexpr IdenticalTo<Tag> identical{};
+FOLLY_INLINE_VARIABLE constexpr IdenticalTo<Tag> identical{};
 
 } // namespace op
 } // namespace thrift

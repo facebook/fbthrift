@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/detail/Ensure.h>
 
 namespace apache {
@@ -30,7 +31,7 @@ namespace op {
 //   // constructs a smart pointer if doesn't exist.
 //   ensure<field_tag>(foo.smart_ptr_ref(), foo)
 template <typename Tag>
-constexpr detail::Ensure<Tag> ensure{};
+FOLLY_INLINE_VARIABLE constexpr detail::Ensure<Tag> ensure{};
 
 } // namespace op
 } // namespace thrift

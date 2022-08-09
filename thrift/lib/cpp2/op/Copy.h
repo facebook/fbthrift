@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/detail/Copy.h>
 
 namespace apache {
@@ -32,7 +33,7 @@ namespace op {
 //   copy(src.unique_ptr_ref(), dst.unique_ptr_ref())
 //   // If src is nullptr, it sets dst to nullptr, otherwise shares the pointer.
 //   copy(src.shared_ptr_ref(), dst.shared_ptr_ref())
-constexpr detail::Copy copy{};
+FOLLY_INLINE_VARIABLE constexpr detail::Copy copy{};
 
 } // namespace op
 } // namespace thrift

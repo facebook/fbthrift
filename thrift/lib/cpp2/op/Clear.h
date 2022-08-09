@@ -17,6 +17,7 @@
 // Operations supported by all ThriftType values.
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/detail/Clear.h>
 
 namespace apache {
@@ -38,7 +39,7 @@ namespace op {
 //   isEmpty<set<i32_t>>({}) -> true
 //   isEmpty<set<i32_t>>({0}) -> false
 template <typename Tag>
-constexpr detail::Empty<Tag> isEmpty{};
+FOLLY_INLINE_VARIABLE constexpr detail::Empty<Tag> isEmpty{};
 
 // Returns the 'intrinsic' default for the given type.
 //
@@ -49,14 +50,15 @@ constexpr detail::Empty<Tag> isEmpty{};
 //   getDefault<type::set<type::i32_t>>() -> {}
 //   getDefault<type::string_t>() -> ""
 template <typename Tag>
-constexpr detail::GetIntrinsicDefault<Tag> getIntrinsicDefault{};
+FOLLY_INLINE_VARIABLE constexpr detail::GetIntrinsicDefault<Tag>
+    getIntrinsicDefault{};
 
 // Clears the given value, leaving it equal to its intrinsic default.
 // For example:
 //   clear<i32_t>(myInt) // sets myInt = 0.
 //   clear<set<i32_t>>(myIntSet) // calls myIntSet.clear()
 template <typename Tag>
-constexpr detail::Clear<Tag> clear{};
+FOLLY_INLINE_VARIABLE constexpr detail::Clear<Tag> clear{};
 
 // Clears the given field, setting the field to initial state.
 // For example:
@@ -65,7 +67,7 @@ constexpr detail::Clear<Tag> clear{};
 //   // calls foo.optional_field().reset().
 //   clear_field<field_tag>(foo.optional_field(), foo)
 template <typename Tag>
-constexpr detail::ClearField<Tag> clear_field{};
+FOLLY_INLINE_VARIABLE constexpr detail::ClearField<Tag> clear_field{};
 
 } // namespace op
 } // namespace thrift
