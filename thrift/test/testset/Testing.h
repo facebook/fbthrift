@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,8 +85,9 @@ using to_gtest_types_t = typename to_gtest_types<Ts>::type;
   _THRIFT_INST_TESTSET_BATCH(Test, structs, 12); \
   _THRIFT_INST_TESTSET_BATCH(Test, structs, 13); \
   _THRIFT_INST_TESTSET_BATCH(Test, structs, 14); \
-  _THRIFT_INST_TESTSET_LAST(Test, structs, 15)
-_THRIFT_CHECK_TESTSET_BATCHES(structs, 16);
+  _THRIFT_INST_TESTSET_BATCH(Test, structs, 15); \
+  _THRIFT_INST_TESTSET_LAST(Test, structs, 16)
+_THRIFT_CHECK_TESTSET_BATCHES(structs, 17);
 
 #define THRIFT_INST_TESTSET_UNIONS(Test)       \
   _THRIFT_INST_TESTSET_BATCH(Test, unions, 0); \
