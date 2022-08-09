@@ -328,6 +328,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // If set, the thread factory that should be used to create worker threads.
   std::shared_ptr<concurrency::ThreadFactory> threadFactory_;
 
+  // The default thread priority to use (only applies to SIMPLE or
+  // PRIORITY_QUEUE ThreadManagerType and if no threadFactory supplied)
+  std::optional<concurrency::PosixThreadFactory::THREAD_PRIORITY>
+      threadPriority_;
+
   // Notification of various server events. Note that once observer_ has been
   // set, it cannot be set again and will remain alive for (at least) the
   // lifetime of *this.
@@ -448,6 +453,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   bool configMutable() { return !thriftConfig_.isFrozen(); }
 
   /**
+   * Set the default priority for CPU worker threads. This will only apply when
+   * the thread manager type is SIMPLE or PRIORITY_QUEUE.
+   */
+  void setCPUWorkerThreadPriority(
+      concurrency::PosixThreadFactory::THREAD_PRIORITY priority) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    CHECK(!threadManager_);
+    CHECK(!threadFactory_);
+    threadPriority_ = priority;
+  }
+
+  /**
    * Set the ThreadFactory that will be used to create worker threads for the
    * service.  If not set, a default factory will be used.  Must be called
    * before the thread manager is started.
@@ -457,6 +475,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     CHECK(!threadManager_);
+    CHECK(!threadPriority_);
     threadFactory_ = std::move(threadFactory);
   }
 

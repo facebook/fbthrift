@@ -647,6 +647,7 @@ void ThriftServer::setupThreadManager() {
             threadManager;
         switch (threadManagerType_) {
           case ThreadManagerType::PRIORITY:
+            CHECK(!threadPriority_);
             if (std::any_of(
                     std::begin(threadManagerPrioritiesAndPoolSizes_),
                     std::end(threadManagerPrioritiesAndPoolSizes_),
@@ -682,27 +683,41 @@ void ThriftServer::setupThreadManager() {
                 getNumCPUWorkerThreads());
             break;
           case ThreadManagerType::EXECUTOR_ADAPTER:
+            CHECK(!threadPriority_);
             threadManager =
                 std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
                     threadManagerExecutors_);
             break;
         }
         threadManager->enableCodel(getEnableCodel());
-        // If a thread factory has been specified, use it.
+
+        std::shared_ptr<concurrency::ThreadFactory> threadFactory;
         if (threadFactory_) {
-          if (threadInitializer_ || threadFinalizer_) {
+          CHECK(!threadPriority_);
+          threadFactory = threadFactory_;
+        } else if (threadPriority_) {
+          auto factory = std::make_shared<concurrency::PosixThreadFactory>();
+          factory->setPriority(threadPriority_.value());
+          threadFactory = factory;
+        }
+
+        if (threadInitializer_ || threadFinalizer_) {
+          if (threadFactory) {
             // Wrap the thread factory if initializer/finalizer are specified.
-            auto initFactory = std::make_shared<concurrency::InitThreadFactory>(
-                threadFactory_,
+            threadFactory = std::make_shared<concurrency::InitThreadFactory>(
+                std::move(threadFactory),
                 std::move(threadInitializer_),
                 std::move(threadFinalizer_));
-            threadManager->threadFactory(initFactory);
           } else {
-            threadManager->threadFactory(threadFactory_);
+            LOG(FATAL)
+                << "setThreadInit not supported without setThreadFactory";
           }
-        } else if (threadInitializer_ || threadFinalizer_) {
-          LOG(FATAL) << "setThreadInit not supported without setThreadFactory";
         }
+
+        if (threadFactory) {
+          threadManager->threadFactory(std::move(threadFactory));
+        }
+
         auto poolThreadName = getCPUWorkerThreadName();
         if (!poolThreadName.empty()) {
           threadManager->setNamePrefix(poolThreadName);
@@ -849,6 +864,7 @@ void ThriftServer::ensureResourcePools() {
   }
 
   if (threadManagerType_ == ThreadManagerType::EXECUTOR_ADAPTER) {
+    CHECK(!threadPriority_);
     for (std::size_t i = 0; i < concurrency::N_PRIORITIES; ++i) {
       auto executor = threadManagerExecutors_[i];
       if (!executor) {
@@ -897,6 +913,7 @@ void ThriftServer::ensureResourcePools() {
 
     switch (threadManagerType_) {
       case ThreadManagerType::PRIORITY: {
+        CHECK(!threadPriority_);
         Pool priorityPools[] = {
             {"HIGH_IMPORTANT",
              "HI",
@@ -952,7 +969,8 @@ void ThriftServer::ensureResourcePools() {
         pools.push_back(Pool{
             "NORMAL",
             "N",
-            concurrency::PosixThreadFactory::NORMAL_PRI,
+            threadPriority_.value_or(
+                concurrency::PosixThreadFactory::NORMAL_PRI),
             getNumCPUWorkerThreads(),
             ResourcePoolHandle::defaultAsync(),
             concurrency::NORMAL});
@@ -962,7 +980,8 @@ void ThriftServer::ensureResourcePools() {
         pools.push_back(Pool{
             "NORMAL",
             "N",
-            concurrency::PosixThreadFactory::NORMAL_PRI,
+            threadPriority_.value_or(
+                concurrency::PosixThreadFactory::NORMAL_PRI),
             getNumCPUWorkerThreads(),
             ResourcePoolHandle::defaultAsync(),
             concurrency::NORMAL});
