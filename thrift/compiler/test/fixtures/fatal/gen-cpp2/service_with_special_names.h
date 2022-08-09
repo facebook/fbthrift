@@ -201,7 +201,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 using service_with_special_namesSvIf [[deprecated("Use apache::thrift::ServiceHandler<service_with_special_names> instead")]] = ::apache::thrift::ServiceHandler<service_with_special_names>;
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class service_with_special_namesSvNull : public service_with_special_namesSvIf {
+class service_with_special_namesSvNull : public ::apache::thrift::ServiceHandler<service_with_special_names> {
  public:
   ::std::int32_t get() override;
   ::std::int32_t getter() override;

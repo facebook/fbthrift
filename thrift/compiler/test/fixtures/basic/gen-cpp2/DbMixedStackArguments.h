@@ -71,7 +71,7 @@ namespace test { namespace fixtures { namespace basic {
 using DbMixedStackArgumentsSvIf [[deprecated("Use apache::thrift::ServiceHandler<DbMixedStackArguments> instead")]] = ::apache::thrift::ServiceHandler<DbMixedStackArguments>;
 }}} // test::fixtures::basic
 namespace test { namespace fixtures { namespace basic {
-class DbMixedStackArgumentsSvNull : public DbMixedStackArgumentsSvIf {
+class DbMixedStackArgumentsSvNull : public ::apache::thrift::ServiceHandler<DbMixedStackArguments> {
  public:
   void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) override;
   void getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) override;

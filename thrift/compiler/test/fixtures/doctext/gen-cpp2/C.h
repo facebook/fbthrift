@@ -72,7 +72,7 @@ namespace cpp2 {
 using CSvIf [[deprecated("Use apache::thrift::ServiceHandler<C> instead")]] = ::apache::thrift::ServiceHandler<C>;
 } // cpp2
 namespace cpp2 {
-class CSvNull : public CSvIf {
+class CSvNull : public ::apache::thrift::ServiceHandler<C> {
  public:
   void f() override;
   void thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) override;

@@ -102,7 +102,7 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(apache::thrift
   iface_->setRequestContext(nullptr);
   ::cpp2::GoodService_BadInteraction_foo_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.BadInteraction.foo", serverRequest.requestContext()));
-  auto& iface = static_cast<GoodServiceSvIf::BadInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<GoodService>::BadInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "foo", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }

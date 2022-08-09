@@ -102,7 +102,7 @@ void AAsyncProcessor::executeRequest_I_interact(apache::thrift::ServerRequest&& 
   iface_->setRequestContext(nullptr);
   ::cpp2::A_I_interact_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "A.I.interact", serverRequest.requestContext()));
-  auto& iface = static_cast<ASvIf::IIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<A>::IIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "interact", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -412,7 +412,7 @@ void CAsyncProcessor::executeRequest_I_interact(apache::thrift::ServerRequest&& 
   iface_->setRequestContext(nullptr);
   ::cpp2::C_I_interact_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.I.interact", serverRequest.requestContext()));
-  auto& iface = static_cast<CSvIf::IIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<C>::IIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "interact", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }

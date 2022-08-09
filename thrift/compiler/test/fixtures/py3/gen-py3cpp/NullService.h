@@ -56,7 +56,7 @@ namespace cpp2 {
 using NullServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<NullService> instead")]] = ::apache::thrift::ServiceHandler<NullService>;
 } // cpp2
 namespace cpp2 {
-class NullServiceSvNull : public NullServiceSvIf {
+class NullServiceSvNull : public ::apache::thrift::ServiceHandler<NullService> {
  public:
 };
 

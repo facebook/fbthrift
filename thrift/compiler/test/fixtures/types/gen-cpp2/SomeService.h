@@ -67,7 +67,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 using SomeServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<SomeService> instead")]] = ::apache::thrift::ServiceHandler<SomeService>;
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class SomeServiceSvNull : public SomeServiceSvIf {
+class SomeServiceSvNull : public ::apache::thrift::ServiceHandler<SomeService> {
  public:
   void bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/) override;
   void binary_keyed_map(::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>& /*_return*/, std::unique_ptr<::std::vector<::std::int64_t>> /*r*/) override;

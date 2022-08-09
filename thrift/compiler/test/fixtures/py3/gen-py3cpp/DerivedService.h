@@ -66,7 +66,7 @@ namespace py3 { namespace simple {
 using DerivedServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<DerivedService> instead")]] = ::apache::thrift::ServiceHandler<DerivedService>;
 }} // py3::simple
 namespace py3 { namespace simple {
-class DerivedServiceSvNull : public DerivedServiceSvIf, virtual public ::py3::simple::SimpleServiceSvIf {
+class DerivedServiceSvNull : public ::apache::thrift::ServiceHandler<DerivedService>, virtual public ::apache::thrift::ServiceHandler<::py3::simple::SimpleService> {
  public:
   ::std::int32_t get_six() override;
 };

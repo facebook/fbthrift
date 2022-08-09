@@ -72,7 +72,7 @@ namespace test { namespace fixtures { namespace basic-structured-annotations {
 using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 }}} // test::fixtures::basic-structured-annotations
 namespace test { namespace fixtures { namespace basic-structured-annotations {
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceSvNull : public ::apache::thrift::ServiceHandler<MyService> {
  public:
   void first(::test::fixtures::basic-structured-annotations::annotated_inline_string& /*_return*/) override;
   bool second(::std::int64_t /*count*/) override;

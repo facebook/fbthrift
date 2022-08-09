@@ -99,7 +99,7 @@ namespace extra { namespace svc {
 using ExtraServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<ExtraService> instead")]] = ::apache::thrift::ServiceHandler<ExtraService>;
 }} // extra::svc
 namespace extra { namespace svc {
-class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public ::some::valid::ns::ParamServiceSvIf {
+class ExtraServiceSvNull : public ::apache::thrift::ServiceHandler<ExtraService>, virtual public ::apache::thrift::ServiceHandler<::some::valid::ns::ParamService> {
  public:
   bool simple_function() override;
   bool throws_function2(bool /*param1*/) override;

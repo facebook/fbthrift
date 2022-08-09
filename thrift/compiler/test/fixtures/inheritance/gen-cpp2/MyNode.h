@@ -66,7 +66,7 @@ namespace cpp2 {
 using MyNodeSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyNode> instead")]] = ::apache::thrift::ServiceHandler<MyNode>;
 } // cpp2
 namespace cpp2 {
-class MyNodeSvNull : public MyNodeSvIf, virtual public ::cpp2::MyRootSvIf {
+class MyNodeSvNull : public ::apache::thrift::ServiceHandler<MyNode>, virtual public ::apache::thrift::ServiceHandler<::cpp2::MyRoot> {
  public:
   void do_mid() override;
 };

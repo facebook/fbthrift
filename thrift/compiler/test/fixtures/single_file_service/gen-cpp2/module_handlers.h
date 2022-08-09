@@ -102,7 +102,7 @@ namespace cpp2 {
 using ASvIf [[deprecated("Use apache::thrift::ServiceHandler<A> instead")]] = ::apache::thrift::ServiceHandler<A>;
 } // cpp2
 namespace cpp2 {
-class ASvNull : public ASvIf {
+class ASvNull : public ::apache::thrift::ServiceHandler<A> {
  public:
   void foo(::cpp2::Foo& /*_return*/) override;
 };
@@ -209,7 +209,7 @@ namespace cpp2 {
 using BSvIf [[deprecated("Use apache::thrift::ServiceHandler<B> instead")]] = ::apache::thrift::ServiceHandler<B>;
 } // cpp2
 namespace cpp2 {
-class BSvNull : public BSvIf, virtual public ::cpp2::ASvIf {
+class BSvNull : public ::apache::thrift::ServiceHandler<B>, virtual public ::apache::thrift::ServiceHandler<::cpp2::A> {
  public:
   void bar(std::unique_ptr<::cpp2::Foo> /*foo*/) override;
   ::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t> sink_stuff() override;
@@ -332,7 +332,7 @@ namespace cpp2 {
 using CSvIf [[deprecated("Use apache::thrift::ServiceHandler<C> instead")]] = ::apache::thrift::ServiceHandler<C>;
 } // cpp2
 namespace cpp2 {
-class CSvNull : public CSvIf {
+class CSvNull : public ::apache::thrift::ServiceHandler<C> {
  public:
 };
 

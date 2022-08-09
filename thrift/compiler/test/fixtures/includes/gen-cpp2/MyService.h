@@ -68,7 +68,7 @@ namespace cpp2 {
 using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 } // cpp2
 namespace cpp2 {
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceSvNull : public ::apache::thrift::ServiceHandler<MyService> {
  public:
   void query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) override;
   void has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) override;

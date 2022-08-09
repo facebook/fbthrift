@@ -70,7 +70,7 @@ namespace facebook { namespace thrift { namespace test {
 using ServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<Service> instead")]] = ::apache::thrift::ServiceHandler<Service>;
 }}} // facebook::thrift::test
 namespace facebook { namespace thrift { namespace test {
-class ServiceSvNull : public ServiceSvIf {
+class ServiceSvNull : public ::apache::thrift::ServiceHandler<Service> {
  public:
   ::facebook::thrift::test::MyI32 func(std::unique_ptr<::facebook::thrift::test::StringWithAdapter> /*arg1*/, std::unique_ptr<::std::string> /*arg2*/, std::unique_ptr<::facebook::thrift::test::Foo> /*arg3*/) override;
 };

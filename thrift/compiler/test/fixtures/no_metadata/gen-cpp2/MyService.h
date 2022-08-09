@@ -86,7 +86,7 @@ namespace cpp2 {
 using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 } // cpp2
 namespace cpp2 {
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceSvNull : public ::apache::thrift::ServiceHandler<MyService> {
  public:
   void ping() override;
   void getRandomData(::std::string& /*_return*/) override;

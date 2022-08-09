@@ -65,7 +65,7 @@ namespace test { namespace namespace_from_package { namespace module {
 using TestServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<TestService> instead")]] = ::apache::thrift::ServiceHandler<TestService>;
 }}} // test::namespace_from_package::module
 namespace test { namespace namespace_from_package { namespace module {
-class TestServiceSvNull : public TestServiceSvIf {
+class TestServiceSvNull : public ::apache::thrift::ServiceHandler<TestService> {
  public:
   ::std::int64_t init(::std::int64_t /*int1*/) override;
 };

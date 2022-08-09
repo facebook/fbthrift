@@ -188,7 +188,7 @@ namespace some { namespace valid { namespace ns {
 using ParamServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<ParamService> instead")]] = ::apache::thrift::ServiceHandler<ParamService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-class ParamServiceSvNull : public ParamServiceSvIf {
+class ParamServiceSvNull : public ::apache::thrift::ServiceHandler<ParamService> {
  public:
   void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) override;
   void void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) override;

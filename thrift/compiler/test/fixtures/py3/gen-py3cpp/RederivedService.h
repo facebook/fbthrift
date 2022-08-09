@@ -66,7 +66,7 @@ namespace py3 { namespace simple {
 using RederivedServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<RederivedService> instead")]] = ::apache::thrift::ServiceHandler<RederivedService>;
 }} // py3::simple
 namespace py3 { namespace simple {
-class RederivedServiceSvNull : public RederivedServiceSvIf, virtual public ::py3::simple::DerivedServiceSvIf {
+class RederivedServiceSvNull : public ::apache::thrift::ServiceHandler<RederivedService>, virtual public ::apache::thrift::ServiceHandler<::py3::simple::DerivedService> {
  public:
   ::std::int32_t get_seven() override;
 };

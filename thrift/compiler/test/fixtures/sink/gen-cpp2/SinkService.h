@@ -88,7 +88,7 @@ namespace cpp2 {
 using SinkServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<SinkService> instead")]] = ::apache::thrift::ServiceHandler<SinkService>;
 } // cpp2
 namespace cpp2 {
-class SinkServiceSvNull : public SinkServiceSvIf {
+class SinkServiceSvNull : public ::apache::thrift::ServiceHandler<SinkService> {
  public:
   ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> method() override;
   ::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> methodAndReponse() override;

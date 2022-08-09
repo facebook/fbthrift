@@ -93,7 +93,7 @@ namespace cpp2 {
 using PubSubStreamingServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<PubSubStreamingService> instead")]] = ::apache::thrift::ServiceHandler<PubSubStreamingService>;
 } // cpp2
 namespace cpp2 {
-class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
+class PubSubStreamingServiceSvNull : public ::apache::thrift::ServiceHandler<PubSubStreamingService> {
  public:
 };
 

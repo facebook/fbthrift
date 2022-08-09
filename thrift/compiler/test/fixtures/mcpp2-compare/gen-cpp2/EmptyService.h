@@ -59,7 +59,7 @@ namespace some { namespace valid { namespace ns {
 using EmptyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<EmptyService> instead")]] = ::apache::thrift::ServiceHandler<EmptyService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-class EmptyServiceSvNull : public EmptyServiceSvIf {
+class EmptyServiceSvNull : public ::apache::thrift::ServiceHandler<EmptyService> {
  public:
 };
 

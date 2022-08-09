@@ -66,7 +66,7 @@ namespace cpp2 {
 using MyLeafSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyLeaf> instead")]] = ::apache::thrift::ServiceHandler<MyLeaf>;
 } // cpp2
 namespace cpp2 {
-class MyLeafSvNull : public MyLeafSvIf, virtual public ::cpp2::MyNodeSvIf {
+class MyLeafSvNull : public ::apache::thrift::ServiceHandler<MyLeaf>, virtual public ::apache::thrift::ServiceHandler<::cpp2::MyNode> {
  public:
   void do_leaf() override;
 };

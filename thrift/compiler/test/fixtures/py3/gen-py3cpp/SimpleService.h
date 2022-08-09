@@ -261,7 +261,7 @@ namespace py3 { namespace simple {
 using SimpleServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<SimpleService> instead")]] = ::apache::thrift::ServiceHandler<SimpleService>;
 }} // py3::simple
 namespace py3 { namespace simple {
-class SimpleServiceSvNull : public SimpleServiceSvIf {
+class SimpleServiceSvNull : public ::apache::thrift::ServiceHandler<SimpleService> {
  public:
   ::std::int32_t get_five() override;
   ::std::int32_t add_five(::std::int32_t /*num*/) override;

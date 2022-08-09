@@ -111,7 +111,7 @@ namespace test { namespace fixtures { namespace basic {
 using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 }}} // test::fixtures::basic
 namespace test { namespace fixtures { namespace basic {
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceSvNull : public ::apache::thrift::ServiceHandler<MyService> {
  public:
   void ping() override;
   void getRandomData(::std::string& /*_return*/) override;

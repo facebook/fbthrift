@@ -91,7 +91,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 using service3SvIf [[deprecated("Use apache::thrift::ServiceHandler<service3> instead")]] = ::apache::thrift::ServiceHandler<service3>;
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class service3SvNull : public service3SvIf {
+class service3SvNull : public ::apache::thrift::ServiceHandler<service3> {
  public:
   void methodA() override;
   void methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) override;

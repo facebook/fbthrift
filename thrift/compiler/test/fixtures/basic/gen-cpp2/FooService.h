@@ -66,7 +66,7 @@ namespace test { namespace fixtures { namespace basic {
 using FooServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<FooService> instead")]] = ::apache::thrift::ServiceHandler<FooService>;
 }}} // test::fixtures::basic
 namespace test { namespace fixtures { namespace basic {
-class FooServiceSvNull : public FooServiceSvIf {
+class FooServiceSvNull : public ::apache::thrift::ServiceHandler<FooService> {
  public:
   void simple_rpc() override;
 };

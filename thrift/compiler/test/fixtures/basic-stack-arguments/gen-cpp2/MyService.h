@@ -76,7 +76,7 @@ namespace cpp2 {
 using MyServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyService> instead")]] = ::apache::thrift::ServiceHandler<MyService>;
 } // cpp2
 namespace cpp2 {
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceSvNull : public ::apache::thrift::ServiceHandler<MyService> {
  public:
   bool hasDataById(::std::int64_t /*id*/) override;
   void getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) override;

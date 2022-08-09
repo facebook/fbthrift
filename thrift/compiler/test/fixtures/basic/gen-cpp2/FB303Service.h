@@ -66,7 +66,7 @@ namespace test { namespace fixtures { namespace basic {
 using FB303ServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<FB303Service> instead")]] = ::apache::thrift::ServiceHandler<FB303Service>;
 }}} // test::fixtures::basic
 namespace test { namespace fixtures { namespace basic {
-class FB303ServiceSvNull : public FB303ServiceSvIf {
+class FB303ServiceSvNull : public ::apache::thrift::ServiceHandler<FB303Service> {
  public:
   void simple_rpc(::test::fixtures::basic::ReservedKeyword& /*_return*/, ::std::int32_t /*int_parameter*/) override;
 };

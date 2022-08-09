@@ -81,7 +81,7 @@ namespace cpp2 {
 using NestedContainersSvIf [[deprecated("Use apache::thrift::ServiceHandler<NestedContainers> instead")]] = ::apache::thrift::ServiceHandler<NestedContainers>;
 } // cpp2
 namespace cpp2 {
-class NestedContainersSvNull : public NestedContainersSvIf {
+class NestedContainersSvNull : public ::apache::thrift::ServiceHandler<NestedContainers> {
  public:
   void mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/) override;
   void mapSet(std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> /*foo*/) override;

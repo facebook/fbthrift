@@ -60,7 +60,7 @@ namespace cpp2 {
 using MyServiceFastSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyServiceFast> instead")]] = ::apache::thrift::ServiceHandler<MyServiceFast>;
 } // cpp2
 namespace cpp2 {
-class MyServiceFastSvNull : public MyServiceFastSvIf {
+class MyServiceFastSvNull : public ::apache::thrift::ServiceHandler<MyServiceFast> {
  public:
 };
 

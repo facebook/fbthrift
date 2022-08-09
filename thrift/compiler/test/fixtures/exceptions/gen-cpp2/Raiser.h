@@ -76,7 +76,7 @@ namespace cpp2 {
 using RaiserSvIf [[deprecated("Use apache::thrift::ServiceHandler<Raiser> instead")]] = ::apache::thrift::ServiceHandler<Raiser>;
 } // cpp2
 namespace cpp2 {
-class RaiserSvNull : public RaiserSvIf {
+class RaiserSvNull : public ::apache::thrift::ServiceHandler<Raiser> {
  public:
   void doBland() override;
   void doRaise() override;

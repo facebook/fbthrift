@@ -333,7 +333,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate(apache::th
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.frobnicate", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -420,7 +420,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_ping(apache::thrift::
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteraction_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.ping", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -462,7 +462,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify(apache::thri
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteraction_truthify_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.truthify", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "truthify", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -535,7 +535,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_encode(apache::thrift
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteraction_encode_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.encode", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "encode", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -631,7 +631,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate(apache
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteractionFast_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.frobnicate", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -699,7 +699,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_ping(apache::thri
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteractionFast_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.ping", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -739,7 +739,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify(apache::
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteractionFast_truthify_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.truthify", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "truthify", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -810,7 +810,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode(apache::th
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_MyInteractionFast_encode_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.encode", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "encode", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
@@ -896,7 +896,7 @@ void MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate(apache
   iface_->setRequestContext(nullptr);
   ::cpp2::MyService_SerialInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.SerialInteraction.frobnicate", serverRequest.requestContext()));
-  auto& iface = static_cast<MyServiceSvIf::SerialInteractionIf&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<MyService>::SerialInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }

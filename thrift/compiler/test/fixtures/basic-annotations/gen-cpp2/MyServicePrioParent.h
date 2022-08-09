@@ -67,7 +67,7 @@ namespace cpp2 {
 using MyServicePrioParentSvIf [[deprecated("Use apache::thrift::ServiceHandler<MyServicePrioParent> instead")]] = ::apache::thrift::ServiceHandler<MyServicePrioParent>;
 } // cpp2
 namespace cpp2 {
-class MyServicePrioParentSvNull : public MyServicePrioParentSvIf {
+class MyServicePrioParentSvNull : public ::apache::thrift::ServiceHandler<MyServicePrioParent> {
  public:
   void ping() override;
   void pong() override;

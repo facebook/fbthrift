@@ -93,7 +93,7 @@ namespace cpp2 {
 using GoodServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<GoodService> instead")]] = ::apache::thrift::ServiceHandler<GoodService>;
 } // cpp2
 namespace cpp2 {
-class GoodServiceSvNull : public GoodServiceSvIf {
+class GoodServiceSvNull : public ::apache::thrift::ServiceHandler<GoodService> {
  public:
   ::std::int32_t bar() override;
 };

@@ -140,7 +140,7 @@ namespace some { namespace valid { namespace ns {
 using ReturnServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler<ReturnService> instead")]] = ::apache::thrift::ServiceHandler<ReturnService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-class ReturnServiceSvNull : public ReturnServiceSvIf {
+class ReturnServiceSvNull : public ::apache::thrift::ServiceHandler<ReturnService> {
  public:
   bool boolReturn() override;
   ::std::int16_t i16Return() override;

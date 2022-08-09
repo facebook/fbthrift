@@ -76,7 +76,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
 <%/field:type%><%/function:args%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", serverRequest.requestContext()));
 <%#service:interaction?%>
-  auto& iface = static_cast<<%service:parent_service_cpp_name%>SvIf::<%service:name%>If&>(*tile);
+  auto& iface = static_cast<apache::thrift::ServiceHandler<<%service:parent_service_cpp_name%>>::<%service:name%>If&>(*tile);
 <%/service:interaction?%>
   try {
     deserializeRequest<ProtocolIn_>(args, "<%function:name%>", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
