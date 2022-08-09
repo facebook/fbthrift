@@ -131,7 +131,7 @@ struct Foo {
   4: IOBufPtr iobuf_ptr
 }
 ```
-This completely replaces the underlying type of a thrift for a custom implementation. It is also possible to add `cpp_include` to bring in additional data structures and use them in conjunction with `cpp2.type`. It is required that the custom type matches the specified Thrift type even for internal container types. Prefer types that can leverage`reserve(size_t)` as Thrift makes uses these optimizations.*Special Case*: `cpp.type="std::unique_ptr<folly::IOBuf>"`: This annotation can be used to define a type as `IOBuf` or `unique_ptr<IOBuf>` so that you can leverage Thrift2's support for zero-copy buffer manipulation through `IOBuf`.During deserialization, thrift receives a buffer that is used to allocate the appropriate fields in the struct. When using smart pointers, instead of making a copy of the data, it only modifies the pointer to point to the address that is used by the buffer.
+This completely replaces the underlying type of a thrift for a custom implementation. It is also possible to add `cpp_include` to bring in additional data structures and use them in conjunction with `cpp.type`. It is required that the custom type matches the specified Thrift type even for internal container types. Prefer types that can leverage`reserve(size_t)` as Thrift makes uses these optimizations.*Special Case*: `cpp.type="std::unique_ptr<folly::IOBuf>"`: This annotation can be used to define a type as `IOBuf` or `unique_ptr<IOBuf>` so that you can leverage Thrift2's support for zero-copy buffer manipulation through `IOBuf`.During deserialization, thrift receives a buffer that is used to allocate the appropriate fields in the struct. When using smart pointers, instead of making a copy of the data, it only modifies the pointer to point to the address that is used by the buffer.
 
 The custom type must provide the following methods
 
@@ -146,8 +146,11 @@ The custom type must provide the following methods
 * Example:
 
 ```
-cpp_include "folly/sorted_vector_types.h"  // Inside some thrift structs
+cpp_include "folly/sorted_vector_types.h"
+
+struct Example {
   1: set<i64> (cpp.template = "folly::sorted_vector_set") shards;
+}
 ```
 
 Specifies a template to use for the container type to replace the default. It somewhat overlaps with `cpp.type` but the advantage is probably you just need to specify the template type once in the annotation, without repeating the inner types.
@@ -175,9 +178,11 @@ struct BinaryTree {
 }
 ```
 
-Makes a field a reference, not a value and Thrift generates a `std::unique_ptr/std::shared_ptr` for the annotated field, not a value.This annotation is added to support recursive types. However, you can also use it to turn a field from a value to a pointer. Note if it is a container type, you don't need this annotation. You still need this if your struct indirectly contains a member of itself. See `thrift/test/Recursive.thrift` for examples.Also if you use it to support recursive types, be sure to make the field optional. The reason is as a recursive field, at some point you must assign a `nullptr` to it to stop the recursion. It obviously cannot be required. If it is default (not optional or required), Thrift always serializes an empty struct and this is different from a `nullptr` and it fails serialization/deserialization round trip equality test. For more information see the discussion in [D2145563](https://www.internalfb.com/intern/diff/2145563/) and we also added a Thrift compiler warning: "cpp.ref field must be optional if it is recursive".`@cpp.Ref` is equivalent having type`@cpp.RefType.Unique`.
+Makes a field a reference, not a value and Thrift generates a `std::unique_ptr/std::shared_ptr` for the annotated field, not a value. This annotation is added to support recursive types. However, you can also use it to turn a field from a value to a pointer. `@cpp.Ref` is equivalent having type`@cpp.RefType.Unique`. All `@cpp.Ref` fields **should be** optional.
 
-#### cpp2.noncopyable and cpp2.noncomparable
+NOTE: A struct may transitively contain itself as a field only if at least one of the fields in the inclusion chain is either an optional Ref field or a container. Otherwise the struct would have infinite size. See [`thrift/test/Recursive.thrift`](https://github.com/facebook/fbthrift/blob/main/thrift/test/Recursive.thrift) for examples. 
+
+#### cpp.noncopyable and cpp.noncomparable
 
 * Where to use: struct/union/exception
 * Value: None
@@ -189,7 +194,7 @@ typedef binary (cpp.type = "folly::IOBuf") IOBuf
 union NonCopyableUnion {
   1: i32 a,
   2: IOBuf buf,
-} (cpp2.noncopyable, cpp2.noncomparable)
+} (cpp.noncopyable, cpp.noncomparable)
 ```
 
 This is to avoid generating copy constructor/copy assignment constructor and overridden equality operator for types. You rarely need to use them.
@@ -235,7 +240,7 @@ service MyService {
 }
 ```
 
-Designate a priority level for the annotated method. By default all methods have the same priority level. This is only used in cpp2 when `ThriftServer` uses a `PriorityThreadManager`.
+Designate a priority level for the annotated method. By default all methods have the same priority level. This is only used in C++ when `ThriftServer` uses a `PriorityThreadManager`.
 
 #### message
 
@@ -251,19 +256,12 @@ exception MyException {
 
 The annotation's value should be the name of a string field in the exception. The code generator then generates a constructor which uses a string to initialize that string field. The exception class's `what()` method is overridden to returns the content of that string field.
 
-#### final
-
-* Where to use: struct
-* Value: none
-
-Do not allow user classes inheriting from a thrift struct.
-
 #### no_default_comparators
 
 * Where to use: struct
 * Value: none
 
-Do not generate a default comparator even if the struct is orderable. This is only supported in cpp2 and there is no usage in fbcode, so maybe another test feature.
+Do not generate a default comparator even if the struct is orderable.
 
 #### thread
 
@@ -278,7 +276,7 @@ service MyService {
 }
 ```
 
-Causes the request to be executed on the event base thread directly instead of rescheduling onto a thread manager thread, provided the async_eb_ handler method is implemented. You should only execute the request on the event base thread if it is very fast and you have measured that rescheduling is a substantial chunk of your service's CPU usage. If a request executing on the event base thread blocks or takes a long time, all other requests sharing the same event base are affected and latency will increase significantly. This is only supported in cpp2.We strongly discourage the use of this annotation unless strictly necessary. You will have to implement the harder-to-use async_eb_ handler method; implementing any other method will cause the rescheduling regardless of this annotation. This also disables queue timeouts, an important form of overload protection.
+Causes the request to be executed on the event base thread directly instead of rescheduling onto a thread manager thread, provided the async_eb_ handler method is implemented. You should only execute the request on the event base thread if it is very fast and you have measured that rescheduling is a substantial chunk of your service's CPU usage. If a request executing on the event base thread blocks or takes a long time, all other requests sharing the same event base are affected and latency will increase significantly. This is only supported in C++. We strongly discourage the use of this annotation unless strictly necessary. You will have to implement the harder-to-use async_eb_ handler method; implementing any other method will cause the rescheduling regardless of this annotation. This also disables queue timeouts, an important form of overload protection.
 
 #### cpp.indirection
 
@@ -292,8 +290,8 @@ typedef i64 (cpp.type = "Seconds", cpp.indirection) seconds
 struct MyStruct {
   1: seconds s;
 }
-// C++ file
 
+// C++ file
 struct Seconds : private boost::totally_ordered<Seconds> {
   FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(number);
   std::int64_t number = 0;
@@ -304,13 +302,13 @@ struct Seconds : private boost::totally_ordered<Seconds> {
 };
 ```
 
-Together with `cpp.type` annotation, this annotation defines a new type and uses the indirect method to access its value. Only supported in cpp.
+Together with `cpp.type` annotation, this annotation defines a new type and uses the indirect method to access its value.
 
 #### frozen and frozen2
 
 * Where to use: struct, not exception. This is also supported through code generator flag and currently only used through code generator flag.
 
-#### cpp.methods
+#### cpp.methods (deprecated)
 
 * Where to use: struct
 * Value: valid code
@@ -327,7 +325,7 @@ struct MyStruct {
   )
 ```
 
-Insert some code into the Thrift generated header file. Works in both cpp and cpp2. Unsupported.
+Insert some code into the Thrift generated header file.
 
 #### cpp.enum_type
 
@@ -352,11 +350,14 @@ This will mark the struct or member as deprecated and will issue a warning when 
 * Example:
 
 ```
+// Default struct message: "class MyStruct is deprecated"
 struct MyStruct {
  1: i32 a
-} (deprecated)// Default struct message: "class MyStruct is deprecated"struct MyStruct3 {
- 1: i32 a = 0 (deprecated)
-} (deprecated = "This is not longer supported") // Default member message: "i32 a is deprecated"
+} (deprecated)
+
+struct MyStruct3 {
+ 1: i32 a = 0 (deprecated)  // Default member message: "i32 a is deprecated"
+} (deprecated = "This is not longer supported")
 ```
 
 #### cpp.MinimizePadding
@@ -388,7 +389,7 @@ int8_t small;
 int8_t tiny;
 ```
 
-which gives the size of 16 bytes compared to 32 bytes if `cpp.minimize_padding` was not specified.
+which gives the size of 16 bytes compared to 32 bytes if `cpp.MinimizePadding` was not specified.
 
 #### cpp.name
 
@@ -596,8 +597,6 @@ function timeSinceCreated(Document $doc): Duration {
 
 This completely replaces the underlying type of a thrift for a custom implementation and uses the specified adapter to convert to and from the underlying Thrift type during (de)serialization.
 
-More detail: https://www.internalfb.com/intern/wiki/Thrift/Thrift_Guide/Adapter/
-
 #### hack.attributes
 
 * Where to use: field or struct type
@@ -621,9 +620,6 @@ struct MyThriftStruct {
   3: string baz;
 } (hack.attributes = "ClassAttribute")
 ```
-
-
-
 
 ```
 //thrift compiler will generate this for you
@@ -650,7 +646,7 @@ class MyThriftStruct implements \IThriftStruct {
 #### python.Adapter
 
 * Where to use: field, typedef
-* Value: a class that implements the [`Adapter`](https://www.internalfb.com/code/fbsource/[8123a79c82306b94e9085db75aaf90f34a4129b3]/fbcode/thrift/lib/python/adapters/base.py?lines=24-51)
+* Value: a class that implements the [Adapter](https://github.com/facebook/fbthrift/blob/main/thrift/lib/python/adapter.pyi)
 * Example:
 
 ```
@@ -681,13 +677,19 @@ assert foo.dt.timestamp() == 0
 
 This completely replaces the underlying type of a thrift for a custom implementation and uses the specified adapter to convert to and from the underlying Thrift type during (de)serialization.
 
+<FbInternalOnly>
+
+More detail: https://www.internalfb.com/intern/wiki/Thrift/Thrift_Guide/Adapter/
+
+</FbInternalOnly>
+
 ### Thrift annotations
 
 Thrift annotations work in all officially supported languages.
 
 #### thrift.Box
 
-* Where to use: field name
+* Where to use: optional field name
 * Value: `true`
 * Example:
 
@@ -697,7 +699,10 @@ struct RecList {
   1: optional RecList next;
 }
 ```
-Similar to @cpp.Ref that thrift generates std::unique_ptr for the annotated field. The API is almost equivalent to a regular thrift field. @cpp.Ref annotation with std::unique_ptr is deprecated. NOTE: The initialization behavior is same as normal field, but different from @cpp.Ref. e.g.
+
+This indicates that a subobject should be allocated separately (e.g. because it is large and infrequently set).
+
+NOTE: The APIs and initialization behavior are same as normal field, but different from `@cpp.Ref`. e.g.
 
 ```
 struct Foo {
@@ -712,8 +717,12 @@ in C++
 
 ```
 Foo foo;
-EXPECT_EQ(*foo.normal(), 0); // error: field doesn't have value.
-EXPECT_EQ(*foo.boxed(), 0); // error: field doesn't have value.
+EXPECT_FALSE(foo.normal().has_value()); // okay
+EXPECT_FALSE(foo.boxed().has_value()); // okay
+EXPECT_FALSE(foo.referred().has_value()); // build failure: std::unique_ptr doesn't have has_value method
+
+EXPECT_EQ(*foo.normal(), 0); // throw bad_field_access exception
+EXPECT_EQ(*foo.boxed(), 0); // throw bad_field_access exception
 EXPECT_EQ(*foo.referred(), 0); // okay, field has value by default
 ```
 
