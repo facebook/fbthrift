@@ -100,6 +100,46 @@ Test createRequestResponseDeclaredExceptionTest() {
   return ret;
 }
 
+Test createRequestResponseUndeclaredExceptionTest() {
+  Test ret;
+  ret.name() = "RequestResponseUndeclaredExceptionTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseUndeclaredException/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .requestResponseUndeclaredException_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  // TODO(akramam) This will become problematic in server tests because servers
+  // in other languages will not prepend "std::runtime_error" to the exception
+  // message.
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .requestResponseUndeclaredException_ref()
+      .emplace()
+      .exceptionMessage() = "std::runtime_error: my undeclared exception";
+
+  rpcTest.serverInstruction_ref()
+      .emplace()
+      .requestResponseUndeclaredException_ref()
+      .emplace()
+      .exceptionMessage() = "my undeclared exception";
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .requestResponseUndeclaredException_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -136,6 +176,7 @@ TestSuite createRPCTestSuite() {
   suite.name() = "ThriftRPCTest";
   suite.tests()->push_back(createRequestResponseBasicTest());
   suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
+  suite.tests()->push_back(createRequestResponseUndeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseNoArgVoidResponse());
   return suite;
 }

@@ -60,6 +60,19 @@ requestResponseDeclaredExceptionTest(
   return result;
 }
 
+RequestResponseUndeclaredExceptionClientTestResult
+requestResponseUndeclaredExceptionTest(
+    const RequestResponseUndeclaredExceptionClientInstruction& instruction) {
+  RequestResponseUndeclaredExceptionClientTestResult result;
+  auto client = createClient();
+  try {
+    client->sync_requestResponseUndeclaredException(*instruction.request());
+  } catch (const TApplicationException& e) {
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 RequestResponseNoArgVoidResponseClientTestResult
 requestResponseNoArgVoidResponseTest(
     const RequestResponseNoArgVoidResponseClientInstruction&) {
@@ -87,6 +100,11 @@ int main(int argc, char** argv) {
       result.set_requestResponseDeclaredException(
           requestResponseDeclaredExceptionTest(
               *clientInstruction.requestResponseDeclaredException_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseUndeclaredException:
+      result.set_requestResponseUndeclaredException(
+          requestResponseUndeclaredExceptionTest(
+              *clientInstruction.requestResponseUndeclaredException_ref()));
       break;
     case ClientInstruction::Type::requestResponseNoArgVoidResponse:
       result.set_requestResponseNoArgVoidResponse(

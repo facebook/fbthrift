@@ -34,6 +34,14 @@ void RPCServerConformanceHandler::requestResponseDeclaredException(
                        ->userException());
 }
 
+void RPCServerConformanceHandler::requestResponseUndeclaredException(
+    std::unique_ptr<Request> req) {
+  result_.requestResponseUndeclaredException_ref().emplace().request() = *req;
+  throw std::runtime_error(*testCase_->serverInstruction()
+                                ->requestResponseUndeclaredException_ref()
+                                ->exceptionMessage());
+}
+
 void RPCServerConformanceHandler::requestResponseNoArgVoidResponse() {
   result_.requestResponseNoArgVoidResponse_ref().emplace();
 }

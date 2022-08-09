@@ -58,6 +58,15 @@ class ConformanceVerificationServer
                          ->userException());
   }
 
+  void requestResponseUndeclaredException(
+      std::unique_ptr<Request> req) override {
+    serverResult_.requestResponseUndeclaredException_ref().emplace().request() =
+        *req;
+    throw std::runtime_error(*testCase_.serverInstruction()
+                                  ->requestResponseUndeclaredException_ref()
+                                  ->exceptionMessage());
+  }
+
   void requestResponseNoArgVoidResponse() override {
     serverResult_.requestResponseNoArgVoidResponse_ref().emplace();
   }

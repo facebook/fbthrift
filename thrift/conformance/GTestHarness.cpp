@@ -79,6 +79,19 @@ runRequestResponseDeclaredException(
   return result;
 }
 
+RequestResponseUndeclaredExceptionClientTestResult
+runRequestResponseUndeclaredException(
+    RPCConformanceServiceAsyncClient& client,
+    const RequestResponseUndeclaredExceptionClientInstruction& instruction) {
+  RequestResponseUndeclaredExceptionClientTestResult result;
+  try {
+    client.sync_requestResponseUndeclaredException(*instruction.request());
+  } catch (const TApplicationException& e) {
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 RequestResponseNoArgVoidResponseClientTestResult
 runRequestResponseNoArgVoidResponse(
     RPCConformanceServiceAsyncClient& client,
@@ -102,6 +115,12 @@ ClientTestResult runClientSteps(
           runRequestResponseDeclaredException(
               client,
               *clientInstruction.requestResponseDeclaredException_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseUndeclaredException:
+      result.set_requestResponseUndeclaredException(
+          runRequestResponseUndeclaredException(
+              client,
+              *clientInstruction.requestResponseUndeclaredException_ref()));
       break;
     case ClientInstruction::Type::requestResponseNoArgVoidResponse:
       result.set_requestResponseNoArgVoidResponse(

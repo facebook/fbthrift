@@ -28,6 +28,9 @@ class RPCServerConformanceHandler
 
   void requestResponseDeclaredException(std::unique_ptr<Request> req) override;
 
+  void requestResponseUndeclaredException(
+      std::unique_ptr<Request> req) override;
+
   void requestResponseNoArgVoidResponse() override;
 
   void sendTestCase(std::unique_ptr<RpcTestCase> req) override {

@@ -48,12 +48,14 @@ union ServerTestResult {
   1: RequestResponseBasicServerTestResult requestResponseBasic;
   2: RequestResponseDeclaredExceptionServerTestResult requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseServerTestResult requestResponseNoArgVoidResponse;
+  4: RequestResponseUndeclaredExceptionServerTestResult requestResponseUndeclaredException;
 }
 
 union ClientTestResult {
   1: RequestResponseBasicClientTestResult requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientTestResult requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseClientTestResult requestResponseNoArgVoidResponse;
+  4: RequestResponseUndeclaredExceptionClientTestResult requestResponseUndeclaredException;
 }
 
 struct RequestResponseBasicServerTestResult {
@@ -61,6 +63,10 @@ struct RequestResponseBasicServerTestResult {
 }
 
 struct RequestResponseDeclaredExceptionServerTestResult {
+  1: Request request;
+}
+
+struct RequestResponseUndeclaredExceptionServerTestResult {
   1: Request request;
 }
 
@@ -78,16 +84,22 @@ struct RequestResponseDeclaredExceptionClientTestResult {
   1: optional UserException userException;
 }
 
+struct RequestResponseUndeclaredExceptionClientTestResult {
+  1: string exceptionMessage;
+}
+
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseClientInstruction requestResponseNoArgVoidResponse;
+  4: RequestResponseUndeclaredExceptionClientInstruction requestResponseUndeclaredException;
 }
 
 union ServerInstruction {
   1: RequestResponseBasicServerInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionServerInstruction requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseServerInstruction requestResponseNoArgVoidResponse;
+  4: RequestResponseUndeclaredExceptionServerInstruction requestResponseUndeclaredException;
 }
 
 struct RequestResponseBasicClientInstruction {
@@ -95,6 +107,10 @@ struct RequestResponseBasicClientInstruction {
 }
 
 struct RequestResponseDeclaredExceptionClientInstruction {
+  1: Request request;
+}
+
+struct RequestResponseUndeclaredExceptionClientInstruction {
   1: Request request;
 }
 
@@ -108,6 +124,10 @@ struct RequestResponseDeclaredExceptionServerInstruction {
   // TODO(dokwon): Remove @thrift.Box after fixing incomplete type bug.
   @thrift.Box
   1: optional UserException userException;
+}
+
+struct RequestResponseUndeclaredExceptionServerInstruction {
+  1: string exceptionMessage;
 }
 
 struct RequestResponseNoArgVoidResponseServerInstruction {}
@@ -126,5 +146,6 @@ service RPCConformanceService {
   void requestResponseDeclaredException(1: Request req) throws (
     1: UserException e,
   );
+  void requestResponseUndeclaredException(1: Request req);
   void requestResponseNoArgVoidResponse();
 }
